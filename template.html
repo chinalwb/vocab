@@ -1,0 +1,422 @@
+<!--HEAD-->
+<title>词汇便签墙</title>
+<script>
+  // stamp the saved theme before paint so there's no flash of the wrong palette
+  try {
+    var t = localStorage.getItem("vk.theme");
+    if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --ground:#f7f6f2;
+  --ink:#1f1f1e;
+  --ink-2:#4a4944;
+  --ink-3:#77756c;
+  --rule:#e2e0d8;
+  --chip:#ffffff;
+  --chip-on:#1f1f1e;
+  --chip-on-ink:#f7f6f2;
+  --shadow:0 1px 2px rgba(31,31,30,.10), 0 1px 3px 1px rgba(31,31,30,.07);
+  --shadow-lift:0 2px 6px rgba(31,31,30,.14), 0 8px 20px -6px rgba(31,31,30,.18);
+  --scrim:rgba(31,31,30,.42);
+  --card-ink:#1f1f1e;
+  --card-ink-2:#4a4944;
+  --card-edge:rgba(31,31,30,.10);
+
+  --a1-1:#dcecd4; --a1-2:#cde5c6; --a1-3:#e7f2e1;
+  --a2-1:#cbe7e1; --a2-2:#bbdfd8; --a2-3:#dbefeb;
+  --b1-1:#d2e3f4; --b1-2:#c1d9ef; --b1-3:#e0ecf8;
+  --b2-1:#fbf0bd; --b2-2:#f7e8a4; --b2-3:#fdf6d4;
+  --c1-1:#fbdcc0; --c1-2:#f7cea7; --c1-3:#fde9d6;
+  --c2-1:#f7cfc9; --c2-2:#f2bab2; --c2-3:#fadfdb;
+  --tm-1:#ddd9f2; --tm-2:#cec9ea; --tm-3:#e9e6f7;
+  --gr-1:#f2d5e4; --gr-2:#ebc2d7; --gr-3:#f7e4ee;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#1b1b19;
+    --ink:#eceae2;
+    --ink-2:#c3c0b5;
+    --ink-3:#928f84;
+    --rule:#343330;
+    --chip:#2a2926;
+    --chip-on:#eceae2;
+    --chip-on-ink:#1b1b19;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 1px 3px 1px rgba(0,0,0,.3);
+    --shadow-lift:0 2px 8px rgba(0,0,0,.55), 0 10px 24px -6px rgba(0,0,0,.5);
+    --scrim:rgba(0,0,0,.62);
+    --card-ink:#efede6;
+    --card-ink-2:#c9c6bb;
+    --card-edge:rgba(255,255,255,.09);
+
+    --a1-1:#2e4a2a; --a1-2:#375835; --a1-3:#263f23;
+    --a2-1:#1d4a45; --a2-2:#245853; --a2-3:#173d39;
+    --b1-1:#254460; --b1-2:#2c5273; --b1-3:#1e3950;
+    --b2-1:#57501c; --b2-2:#665e22; --b2-3:#484216;
+    --c1-1:#5a3a1d; --c1-2:#6b4623; --c1-3:#4a3017;
+    --c2-1:#5b2b28; --c2-2:#6d3430; --c2-3:#4b2320;
+    --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
+    --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#1b1b19;
+  --ink:#eceae2;
+  --ink-2:#c3c0b5;
+  --ink-3:#928f84;
+  --rule:#343330;
+  --chip:#2a2926;
+  --chip-on:#eceae2;
+  --chip-on-ink:#1b1b19;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 1px 3px 1px rgba(0,0,0,.3);
+  --shadow-lift:0 2px 8px rgba(0,0,0,.55), 0 10px 24px -6px rgba(0,0,0,.5);
+  --scrim:rgba(0,0,0,.62);
+  --card-ink:#efede6;
+  --card-ink-2:#c9c6bb;
+  --card-edge:rgba(255,255,255,.09);
+
+  --a1-1:#2e4a2a; --a1-2:#375835; --a1-3:#263f23;
+  --a2-1:#1d4a45; --a2-2:#245853; --a2-3:#173d39;
+  --b1-1:#254460; --b1-2:#2c5273; --b1-3:#1e3950;
+  --b2-1:#57501c; --b2-2:#665e22; --b2-3:#484216;
+  --c1-1:#5a3a1d; --c1-2:#6b4623; --c1-3:#4a3017;
+  --c2-1:#5b2b28; --c2-2:#6d3430; --c2-3:#4b2320;
+  --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
+  --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  font-size:15px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{padding-inline:16px;padding-block:0 64px;max-width:1500px;margin:0 auto}
+
+/* ── header ─────────────────────────────── */
+.top{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:color-mix(in srgb, var(--ground) 92%, transparent);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);
+  margin-inline:-16px;padding:14px 16px 12px;
+}
+.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+h1{
+  font-family:Newsreader,Georgia,"Songti SC",serif;
+  font-weight:600;font-size:26px;line-height:1.15;margin:0;letter-spacing:-.01em;
+}
+.tally{color:var(--ink-3);font-size:12.5px;letter-spacing:.04em}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.search{
+  flex:1 1 200px;min-width:0;max-width:320px;
+  background:var(--chip);color:var(--ink);
+  border:1px solid var(--rule);border-radius:999px;
+  padding:7px 14px;font:inherit;font-size:13.5px;
+}
+.search::placeholder{color:var(--ink-3)}
+.search:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.pill{
+  font:inherit;font-size:12px;font-weight:500;letter-spacing:.03em;
+  background:var(--chip);color:var(--ink-2);
+  border:1px solid var(--rule);border-radius:999px;
+  padding:5px 12px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--sw)}
+.pill[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink);border-color:var(--chip-on)}
+.pill:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.theme{
+  margin-left:auto;flex:0 0 auto;
+  width:32px;height:32px;padding:0;
+  display:inline-grid;place-items:center;
+  background:var(--chip);color:var(--ink-2);
+  border:1px solid var(--rule);border-radius:50%;cursor:pointer;
+}
+.theme:hover{color:var(--ink)}
+.theme:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.theme svg{width:16px;height:16px;display:block}
+
+/* ── sections ───────────────────────────── */
+.sect{margin-top:34px}
+.sect-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.sect-head .badge{
+  font-family:Newsreader,Georgia,serif;font-weight:600;font-size:17px;
+  background:var(--sw);color:var(--card-ink);
+  border:1px solid var(--card-edge);
+  border-radius:8px;padding:2px 11px;letter-spacing:.02em;
+}
+.sect-head .nm{font-size:14px;color:var(--ink-2);font-weight:500}
+.sect-head .ct{font-size:12px;color:var(--ink-3);letter-spacing:.04em}
+
+.grid{columns:4 250px;column-gap:14px}
+.card{
+  break-inside:avoid;-webkit-column-break-inside:avoid;
+  background:var(--sw);color:var(--card-ink);
+  border:1px solid var(--card-edge);border-radius:10px;
+  padding:13px 15px 12px;margin-bottom:14px;
+  box-shadow:var(--shadow);cursor:pointer;text-align:left;width:100%;
+  font:inherit;display:block;
+  transition:box-shadow .16s ease, transform .16s ease;
+}
+.card:hover{box-shadow:var(--shadow-lift);transform:translateY(-1px)}
+.card:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.hw{
+  font-family:Newsreader,Georgia,"Songti SC",serif;
+  font-weight:600;font-size:19px;line-height:1.25;margin:0 0 5px;
+  letter-spacing:-.005em;text-wrap:balance;
+}
+.meta{display:flex;flex-wrap:wrap;gap:4px 8px;margin-bottom:7px;font-size:11.5px;color:var(--card-ink-2);line-height:1.45}
+.card .meta{max-height:3.1em;overflow:hidden}
+.meta .pos{font-weight:500}
+.meta .ipa{font-variant-numeric:tabular-nums;opacity:.9}
+.gloss{
+  margin:0;font-size:13.5px;line-height:1.62;color:var(--card-ink-2);
+  display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;
+}
+.foot{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  margin-top:10px;padding-top:8px;border-top:1px solid var(--card-edge);
+  font-size:11px;color:var(--card-ink-2);letter-spacing:.05em;
+}
+.foot .lv{font-weight:700}
+
+.empty{color:var(--ink-3);font-size:14px;padding:48px 0;text-align:center}
+
+/* ── modal ──────────────────────────────── */
+.scrim{
+  position:fixed;inset:0;z-index:50;background:var(--scrim);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:max(24px,env(safe-area-inset-top,0px)) 16px 40px;overflow-y:auto;
+}
+.sheet{
+  background:var(--sw);color:var(--card-ink);
+  border:1px solid var(--card-edge);border-radius:14px;
+  box-shadow:var(--shadow-lift);
+  width:min(680px,100%);padding:22px 24px 26px;position:relative;
+}
+.sheet h2{
+  font-family:Newsreader,Georgia,"Songti SC",serif;
+  font-weight:600;font-size:25px;line-height:1.2;margin:0 0 6px;padding-right:40px;
+  text-wrap:balance;
+}
+.sheet .meta{font-size:12.5px;margin-bottom:16px}
+.x{
+  position:absolute;top:14px;right:14px;
+  width:30px;height:30px;border-radius:50%;
+  background:transparent;border:1px solid var(--card-edge);
+  color:var(--card-ink-2);font:inherit;font-size:15px;line-height:1;cursor:pointer;
+}
+.x:hover{background:var(--card-edge)}
+.x:focus-visible{outline:2px solid var(--card-ink);outline-offset:1px}
+.body{font-size:14px;color:var(--card-ink)}
+.body p{margin:0 0 11px}
+.body strong{font-weight:700}
+.body code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;
+  background:var(--card-edge);padding:1px 5px;border-radius:4px;
+}
+.body ul{margin:0 0 12px;padding-left:19px}
+.body ul li{margin-bottom:5px}
+.body ol.ex{margin:0 0 13px;padding-left:19px}
+.body ol.ex li{margin-bottom:9px}
+.body ol.ex .en{
+  display:block;font-family:Newsreader,Georgia,serif;font-size:15.5px;line-height:1.45;
+}
+.body ol.ex .zh{display:block;font-size:13px;color:var(--card-ink-2);margin-top:2px}
+.body del{opacity:.65}
+
+@media (max-width:640px){
+  .grid{columns:2 150px;column-gap:10px}
+  .card{margin-bottom:10px;padding:11px 13px}
+  h1{font-size:22px}
+  .sheet{padding:18px 17px 22px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+
+<!--/HEAD-->
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>词汇便签墙</h1>
+      <span class="tally" id="tally"></span>
+    </div>
+    <div class="tools">
+      <input class="search" id="q" type="search" placeholder="搜索单词、释义、语法点…" autocomplete="off" aria-label="搜索">
+      <div class="filters" id="filters"></div>
+      <button class="theme" id="theme" type="button"></button>
+    </div>
+  </header>
+  <main id="board"></main>
+  <p class="empty" id="empty" hidden>没有匹配的条目。</p>
+</div>
+
+<script>
+const DATA = /*__DATA__*/;
+
+const LV = {
+  A1:{nm:"入门",  sw:["--a1-1","--a1-2","--a1-3"]},
+  A2:{nm:"基础",  sw:["--a2-1","--a2-2","--a2-3"]},
+  B1:{nm:"进阶",  sw:["--b1-1","--b1-2","--b1-3"]},
+  B2:{nm:"中高级",sw:["--b2-1","--b2-2","--b2-3"]},
+  C1:{nm:"高级",  sw:["--c1-1","--c1-2","--c1-3"]},
+  C2:{nm:"精通",  sw:["--c2-1","--c2-2","--c2-3"]},
+  TERM:{nm:"术语与固定搭配(无 CEFR 分级)", sw:["--tm-1","--tm-2","--tm-3"]},
+  GRAMMAR:{nm:"语法与语域笔记", sw:["--gr-1","--gr-2","--gr-3"]}
+};
+const LABEL = {TERM:"术语", GRAMMAR:"语法"};
+
+// ── theme toggle ─────────────────────────
+const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.4M12 19v2.4M21.4 12H19M5 12H2.6M18.6 5.4l-1.7 1.7M7.1 16.9l-1.7 1.7M18.6 18.6l-1.7-1.7M7.1 7.1L5.4 5.4"/></svg>';
+const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"/></svg>';
+const themeBtn = document.getElementById("theme");
+const darkMQ = window.matchMedia("(prefers-color-scheme: dark)");
+const effective = () => document.documentElement.dataset.theme || (darkMQ.matches ? "dark" : "light");
+function paintTheme(){
+  const isDark = effective() === "dark";
+  themeBtn.innerHTML = isDark ? SUN : MOON;
+  const label = isDark ? "切换到浅色主题" : "切换到深色主题";
+  themeBtn.setAttribute("aria-label", label);
+  themeBtn.title = label;
+}
+themeBtn.addEventListener("click", () => {
+  const next = effective() === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("vk.theme", next); } catch(e){}
+  paintTheme();
+});
+darkMQ.addEventListener("change", () => { if (!document.documentElement.dataset.theme) paintTheme(); });
+paintTheme();
+
+const board = document.getElementById("board");
+const filters = document.getElementById("filters");
+const q = document.getElementById("q");
+const empty = document.getElementById("empty");
+const total = DATA.reduce((n,g)=>n+g.items.length,0);
+document.getElementById("tally").textContent = total + " 条 · 按 CEFR 等级分组";
+
+let active = "ALL";
+try { const s = localStorage.getItem("vk.level"); if (s) active = s; } catch(e){}
+
+// filter pills
+const mk = (key, text, sw) => {
+  const b = document.createElement("button");
+  b.className = "pill"; b.type = "button"; b.dataset.k = key;
+  b.setAttribute("aria-pressed", String(active === key));
+  if (sw) { b.style.setProperty("--sw", `var(${sw})`); b.innerHTML = '<span class="dot"></span>'; }
+  b.append(text);
+  b.addEventListener("click", () => {
+    active = key;
+    try { localStorage.setItem("vk.level", key); } catch(e){}
+    [...filters.children].forEach(c => c.setAttribute("aria-pressed", String(c.dataset.k === key)));
+    render();
+  });
+  return b;
+};
+filters.append(mk("ALL", "全部"));
+DATA.forEach(g => filters.append(mk(g.level, LABEL[g.level] || g.level, LV[g.level].sw[0])));
+
+// build sections once
+const sections = DATA.map(g => {
+  const sec = document.createElement("section");
+  sec.className = "sect"; sec.dataset.level = g.level;
+  const head = document.createElement("div");
+  head.className = "sect-head";
+  head.style.setProperty("--sw", `var(${LV[g.level].sw[0]})`);
+  head.innerHTML =
+    `<span class="badge">${LABEL[g.level] || g.level}</span>` +
+    `<span class="nm">${LV[g.level].nm}</span>` +
+    `<span class="ct">${g.items.length} 条</span>`;
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  const cards = g.items.map((it, i) => {
+    const c = document.createElement("button");
+    c.className = "card"; c.type = "button";
+    c.style.setProperty("--sw", `var(${LV[g.level].sw[i % 3]})`);
+    const n = (it.html.match(/<li><span class="en">/g) || []).length;
+    const meta = [it.pos && `<span class="pos">${it.pos}</span>`, it.ipa && `<span class="ipa">${it.ipa}</span>`]
+      .filter(Boolean).join("");
+    c.innerHTML =
+      `<h3 class="hw">${it.title}</h3>` +
+      (meta ? `<div class="meta">${meta}</div>` : "") +
+      (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
+      `<div class="foot"><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
+      `<span>${n ? n + " 例句" : "笔记"}</span></div>`;
+    c.addEventListener("click", () => open(it, g.level, i));
+    grid.append(c);
+    return { el: c, hay: (it.title + " " + it.gloss + " " + it.html).toLowerCase() };
+  });
+  sec.append(head, grid);
+  board.append(sec);
+  return { level: g.level, el: sec, cards };
+});
+
+function render(){
+  const term = q.value.trim().toLowerCase();
+  let shown = 0;
+  sections.forEach(s => {
+    if (active !== "ALL" && active !== s.level) { s.el.hidden = true; return; }
+    let n = 0;
+    s.cards.forEach(c => {
+      const hit = !term || c.hay.includes(term);
+      c.el.hidden = !hit;
+      if (hit) n++;
+    });
+    s.el.hidden = n === 0;
+    s.el.querySelector(".ct").textContent = n + " 条";
+    shown += n;
+  });
+  empty.hidden = shown > 0;
+}
+q.addEventListener("input", render);
+
+// modal
+let scrim = null, lastFocus = null;
+function open(it, level, i){
+  lastFocus = document.activeElement;
+  scrim = document.createElement("div");
+  scrim.className = "scrim";
+  const sheet = document.createElement("div");
+  sheet.className = "sheet";
+  sheet.setAttribute("role", "dialog");
+  sheet.setAttribute("aria-modal", "true");
+  sheet.setAttribute("aria-label", it.title);
+  sheet.style.setProperty("--sw", `var(${LV[level].sw[i % 3]})`);
+  const meta = [it.pos, it.ipa, it.cefr && ("CEFR " + it.cefr)].filter(Boolean)
+    .map(x => `<span>${x}</span>`).join("");
+  sheet.innerHTML =
+    `<button class="x" type="button" aria-label="关闭">✕</button>` +
+    `<h2>${it.title}</h2>` +
+    (meta ? `<div class="meta">${meta}</div>` : "") +
+    `<div class="body">${it.html}</div>`;
+  scrim.append(sheet);
+  document.body.append(scrim);
+  sheet.querySelector(".x").addEventListener("click", close);
+  scrim.addEventListener("click", e => { if (e.target === scrim) close(); });
+  sheet.querySelector(".x").focus();
+}
+function close(){
+  if (!scrim) return;
+  scrim.remove(); scrim = null;
+  if (lastFocus) lastFocus.focus();
+}
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") { if (scrim) close(); else if (document.activeElement === q) { q.value = ""; render(); } }
+});
+
+render();
+</script>
