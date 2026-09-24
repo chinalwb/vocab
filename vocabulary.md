@@ -76,6 +76,7 @@
 70. [denote(vs connote)](#denote)
 71. [句子:rush into / get sth straight](#s-rush-into-get-straight)
 72. [make use of](#make-use-of)
+73. [make the most of vs make the best use of](#make-the-most-of)
 
 ---
 
@@ -1935,3 +1936,55 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 描述即时的具体动作时不会用 make use of(*I made use of a hammer* 听着很怪),它更适合**资源、时间、机会、能力**这类对象。
 
 **⚠️ 易错点:** 这个短语和 **make the most of**(充分把握某个机会/时间)是两个独立的搭配,**不要混成 ~~make the most use of~~**。想强调"用得最好"要说 **make the best use of**。
+
+**相关条目:** [make the most of vs make the best use of](#make-the-most-of) —— 这两个近义搭配的分场景辨析。
+
+---
+
+<a id="make-the-most-of"></a>
+## make the most of vs make the best use of
+
+- 词性:phrase
+- CEFR:B2
+
+**English definition:**
+
+- **make the most of (sth)** — to gain as much benefit or enjoyment as possible from something, especially because the opportunity is limited or won't last.
+- **make the best use of (sth)** — to use something in the most effective or efficient way possible.
+
+**含义:** 两个都译作"充分利用",但**侧重点完全不同**——一个讲"别浪费这个机会"(情感),一个讲"怎么用才最高效"(方法)。
+
+**义项一:make the most of —— 充分把握、好好珍惜(强调机会有限、稍纵即逝)**
+
+1. We only have one weekend here, so let's make the most of it.
+   我们在这儿只有一个周末,好好珍惜吧。
+2. She made the most of the opportunity and turned it into a full-time offer.
+   她充分把握住了这个机会,最后拿到了全职 offer。
+3. Make the most of your twenties — you'll never get this time back.
+   好好珍惜你的二十几岁,这段时光一去不复返。
+
+**义项二:make the best use of —— 以最有效的方式使用(强调方法、效率)**
+
+1. How can we make the best use of the budget we've been given?
+   我们怎样才能最有效地使用拿到的这笔预算?
+2. This layout makes the best use of the limited screen space.
+   这个布局最有效地利用了有限的屏幕空间。
+3. He knows how to make the best use of his team's strengths.
+   他懂得如何最大化发挥团队的长处。
+
+**怎么选:看你想强调什么**
+
+- 强调"**别浪费这个机会/时光**",带感慨、劝人珍惜的语气 → **make the most of**
+- 强调"**怎么用才最高效**",在讨论方法和资源分配 → **make the best use of**
+- 两者都能搭 time,但意思不同:
+  - *Make the most of your time here.* —— 好好享受/珍惜在这儿的时光(情感)
+  - *Make the best use of your time.* —— 把时间用在刀刃上,别低效(效率)
+
+**典型搭配对象:**
+
+- **make the most of** + time / opportunity / situation / life / trip / weekend —— 有限、宝贵、会流逝的东西
+- **make the best use of** + budget / resources / space / data / skills —— 可调配、有使用方法可言的东西
+
+**⚠️ 易错点:** **make the most of** 后面**不加 use**;**make the best use of** 里的 best **不能换成 most**。混成 ~~make the most use of~~ 是这两个搭配串味的典型错误。
+
+**相关条目:** [make use of](#make-use-of) —— 这一族的基础搭配,以及 make good/full use of 等程度变体。
