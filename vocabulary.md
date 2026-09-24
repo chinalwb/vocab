@@ -79,6 +79,8 @@
 73. [make the most of vs make the best use of](#make-the-most-of)
 74. [句子:look for / be after(chase for 误用)](#s-chase-for)
 75. [chase](#chase)
+76. [句子:be expected to do / after the refactor](#s-expected-to-work)
+77. [expect 的用法(expect to do,不接 doing)](#expect)
 
 ---
 
@@ -1557,6 +1559,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 **辨析:** try to do 关注"这件事能不能做成",动作本身可能中途受阻、没能完成;try doing 预设动作本身已经顺利做完,句子关心的是"做完之后效果如何"。判断技巧:句子后半段如果是在陈述某个方法带来的结果,多半用 try doing;如果是在描述动作本身遇到阻碍,则用 try to do。
 
+**相关条目:** [expect 的用法](#expect) —— 哪些动词接 to do、哪些接 doing 的分组记忆。
+
 ---
 
 <a id="comma-splice-shared-code"></a>
@@ -2182,3 +2186,90 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **touch base with sb** —— 简单联系/对一下。*Let me touch base with the vendor tomorrow.*(我明天和供应商简单对一下。)
 
 **相关条目:** [句子:look for / be after(chase for 误用)](#s-chase-for) —— "找办法"不该用 chase for 的那句原句订正。
+
+---
+
+<a id="s-expected-to-work"></a>
+## 句子:be expected to do / after the refactor
+
+- 日期:2026-09-24
+
+**我的原句:**
+
+> That function is expected working well after refactoring.
+
+**问题:**
+
+- ❌ **is expected working** —— expect 的结构是 **expect sb/sth to do sth**,被动就是 **be expected to do sth**,不能接 -ing。同类的 be supposed to、be required to、be likely to 也都接 to do。
+- ⚠️ **well** —— 说软件"能正常运行",用 **correctly** 或 **as expected** 更准确;well 更偏"表现得好"。
+- ⚠️ **after refactoring** —— 没错,但工程师之间更常把 refactor 当名词用:**after the refactor**、a big refactor。
+
+**更地道的说法:**
+
+1. That function is expected to work correctly after the refactor.
+   重构之后,那个函数应该能正常工作。(直接改正,保留原句结构)
+2. That function should still work as expected after the refactor.
+   重构之后,那个函数应该仍能按预期运行。(should 比被动的 is expected 更口语,still 强调"和以前一样")
+3. The refactor shouldn't change that function's behavior.
+   这次重构不应该改变那个函数的行为。(按定义重构就不该改变代码行为,这句直接点出了这个前提)
+
+**涉及的搭配:**
+
+- **be expected to do sth** —— 预期会做某事。*The release is expected to ship next week.*(这个版本预计下周发布。)
+- **work as expected** —— 按预期运行。*Everything works as expected.*(一切运行正常。)
+- **the refactor**(n.)—— 重构这件事。*The refactor took two weeks.*(这次重构花了两周。)
+
+**相关条目:** [expect 的用法](#expect) —— 为什么 expect 不接 doing,以及容易混的动词分组。
+
+---
+
+<a id="expect"></a>
+## expect 的用法(expect to do,不接 doing)
+
+- 音标:/ɪkˈspekt/
+- 词性:v.
+- CEFR:A2
+- 日期:2026-09-24
+
+**English definition:** To think or believe that something will happen, or that someone will do something.
+
+**含义:** 预期、预计、期待——指"心里认为将来会发生某事"。**标准英语里 expect 后面接 to do,不接 doing**;"expect doing sth" 是一个错误的记忆。
+
+**义项一:expect to do —— 预计自己会做某事**
+
+1. I expect to finish the review by Friday.
+   我预计周五前能完成代码评审。
+2. We don't expect to see any performance impact.
+   我们预计不会有任何性能影响。
+
+**义项二:expect sb/sth to do —— 预期某人/某物会做某事(被动:be expected to do)**
+
+1. We expect the migration to take about an hour.
+   我们预计迁移大约需要一小时。
+2. That function is expected to work correctly after the refactor.
+   重构之后,那个函数应该能正常工作。
+
+**义项三:expect + 名词 / that 从句**
+
+1. I'm expecting a call from the client.
+   我在等客户的电话。
+2. I expect (that) it'll be fine.
+   我估计不会有问题。
+
+**⚠️ "expect doing" 的错误记忆从哪来:**
+
+- **口语里偶尔能听到** *I didn't expect seeing you here*,但这是不规范的说法。标准说法是 **I didn't expect to see you here**。
+- **-ing 其实是名词**:*You can expect waiting times of up to an hour.* 这里 waiting 修饰 times,整个是名词短语,不是 expect 接动名词。
+- **近义词混了进来**:**anticipate doing**(*We anticipate receiving the results next week.*)和 **look forward to doing** 确实接 doing。look forward to 里的 to 是**介词**,后面只能接名词或 doing,这是最容易把人带偏的地方。
+
+**容易混的两组动词:**
+
+- **接 to do**:expect, hope, plan, decide, want, intend, be supposed to —— 都是"心里想着将来要发生的事",to 本身带有"指向将来"的意味。
+- **接 doing**:anticipate, look forward to, consider, imagine, avoid, risk, mind
+
+**记忆技巧:** 拿不准的时候,把 expect 换成 **hope** 试一下。*I hope to finish* 顺口,*~~I hope finishing~~* 明显不对。expect 和 hope 的用法一样。
+
+**相关条目:**
+
+- [句子:be expected to do / after the refactor](#s-expected-to-work) —— 这个错误出现的那句原句订正。
+- [try to do vs. try doing](#try-to-do-vs-try-doing) —— 另一个 to do / doing 意思不同的动词。
