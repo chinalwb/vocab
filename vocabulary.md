@@ -2171,4 +2171,14 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **catch up with sb** —— **碰个头、聊一聊**(同步近况),语气轻松,不带催促。*I'll catch up with the vendor about this tomorrow.*(我明天和供应商聊聊这件事。)
 - ❌ ~~catch this up with the vendor~~ —— catch up 不接"事情"做宾语,要说 **catch up with sb (about sth)**。
 
+**怎么选:**
+
+- 对方欠你一个答复或交付物、迟迟没动静 → **chase sth up with sb**。*I'll chase this up with the vendor tomorrow.*(我明天去催供应商,把这事落实下来。)
+- 只是想了解进展、交换信息 → **catch up with sb about sth**。*I'll catch up with the vendor about this tomorrow.*(我明天和供应商聊聊这件事。)
+
+**更客气的中性说法(工作邮件里比 chase 更稳妥):**
+
+- **follow up with sb (on sth)** —— 跟进。*I'll follow up with the vendor on this tomorrow.*(我明天就这件事跟供应商跟进一下。)
+- **touch base with sb** —— 简单联系/对一下。*Let me touch base with the vendor tomorrow.*(我明天和供应商简单对一下。)
+
 **相关条目:** [句子:look for / be after(chase for 误用)](#s-chase-for) —— "找办法"不该用 chase for 的那句原句订正。
