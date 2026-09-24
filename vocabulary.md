@@ -77,6 +77,10 @@
 71. [句子:rush into / get sth straight](#s-rush-into-get-straight)
 72. [make use of](#make-use-of)
 73. [make the most of vs make the best use of](#make-the-most-of)
+74. [句子:look for / be after(chase for 误用)](#s-chase-for)
+75. [chase](#chase)
+76. [句子:be expected to do / after the refactor](#s-expected-to-work)
+77. [expect 的用法(expect to do,不接 doing)](#expect)
 
 ---
 
@@ -1555,6 +1559,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 **辨析:** try to do 关注"这件事能不能做成",动作本身可能中途受阻、没能完成;try doing 预设动作本身已经顺利做完,句子关心的是"做完之后效果如何"。判断技巧:句子后半段如果是在陈述某个方法带来的结果,多半用 try doing;如果是在描述动作本身遇到阻碍,则用 try to do。
 
+**相关条目:** [expect 的用法](#expect) —— 哪些动词接 to do、哪些接 doing 的分组记忆。
+
 ---
 
 <a id="comma-splice-shared-code"></a>
@@ -2087,3 +2093,183 @@ platform 等于 10,就代表请求来自 web,对吧?
 **⚠️ 易错点:** **make the most of** 后面**不加 use**;**make the best use of** 里的 best **不能换成 most**。混成 ~~make the most use of~~ 是这两个搭配串味的典型错误。
 
 **相关条目:** [make use of](#make-use-of) —— 这一族的基础搭配,以及 make good/full use of 等程度变体。
+
+---
+
+<a id="s-chase-for"></a>
+## 句子:look for / be after(chase for 误用)
+
+- 日期:2026-09-24
+
+**我的原句:**
+
+> I am chasing for an easier approach.
+
+**问题:**
+
+- ❌ **chase for** —— chase 是及物动词,直接接宾语(chase a dream)或用 **chase after sth**。"chase for" 只在 **chase sb for sth**(催某人要某样东西)里成立,和"寻找"是两回事。
+- ⚠️ **chase 语气过重** —— chase 带有"追逐难以得到的东西"的意味,用来说"找个更简单的办法"有点用力过猛。
+
+**更地道的说法:**
+
+1. I'm looking for an easier approach.
+   我在找一个更简单的办法。(最直接、最常用)
+2. I'm after a simpler approach.
+   我想要个更简单的办法。(be after sth = 想要/在找某样东西,口语,偏英式)
+3. Is there a simpler way to do this?
+   有没有更简单的做法?(直接问出来,工作沟通里最自然)
+
+**涉及的搭配:**
+
+- **look for sth** —— 寻找。*I'm looking for a way to speed this up.*(我在找能加快速度的办法。)
+- **be after sth** —— 想要、在找(口语)。*What exactly are you after?*(你到底想要什么?)
+- **chase sb for sth** —— 催某人要某物。*I need to chase the client for payment.*(我得去催客户付款。)
+- **simpler vs easier** —— simpler 指方案本身不复杂,easier 指做起来省力;技术讨论里 simpler 更常见。
+
+**相关条目:** [chase](#chase) —— chase 的三个义项(追赶 / 追求 / 催促跟进)和 chase sb for sth 的正确用法。
+
+---
+
+<a id="chase"></a>
+## chase
+
+- 音标:/tʃeɪs/
+- 词性:v. / n.
+- CEFR:B1
+- 日期:2026-09-24
+
+**English definition:** To run or go after someone or something in order to catch them; figuratively, to pursue a goal, or to press someone to do something they owe you.
+
+**义项一:追赶、追逐(字面义)**
+
+1. The dog chased the cat up a tree.
+   狗把猫追得爬上了树。
+2. Police chased the suspect down the street.
+   警察沿着街道追捕嫌疑人。
+
+**义项二:追求(难以得到的目标)**
+
+1. She quit her job to chase her dream of becoming a writer.
+   她辞职去追逐当作家的梦想。
+2. Don't chase every new framework — pick one and get good at it.
+   别每出一个新框架就去追,选一个用精。
+
+**义项三:催促、跟进(职场高频)**
+
+1. Can you chase the design team for the final mockups?
+   你能去催一下设计团队要最终稿吗?
+2. I'll chase this up with the vendor tomorrow.
+   我明天找供应商跟进一下这件事。
+
+**常见搭配:**
+
+- **chase sb for sth** —— 催某人要某物(for 只在这个结构里出现)
+- **chase sth up**(英式)/ **follow up on sth**(美式更常说)—— 跟进、催办
+- **chase after sb/sth** —— 追求(常用于感情或梦想)
+- **chase a deadline** —— 赶截止日期
+- **cut to the chase** —— 直奔主题、说重点。*Let's cut to the chase: what's the budget?*(我们直说吧:预算多少?)
+
+**⚠️ 辨析:chase sth up with sb vs catch up with sb**
+
+- **chase sth up with sb** —— **催办**:事情拖着没结果,去找对方要个结论,带一点施压的意味。
+- **catch up with sb** —— **碰个头、聊一聊**(同步近况),语气轻松,不带催促。*I'll catch up with the vendor about this tomorrow.*(我明天和供应商聊聊这件事。)
+- ❌ ~~catch this up with the vendor~~ —— catch up 不接"事情"做宾语,要说 **catch up with sb (about sth)**。
+
+**怎么选:**
+
+- 对方欠你一个答复或交付物、迟迟没动静 → **chase sth up with sb**。*I'll chase this up with the vendor tomorrow.*(我明天去催供应商,把这事落实下来。)
+- 只是想了解进展、交换信息 → **catch up with sb about sth**。*I'll catch up with the vendor about this tomorrow.*(我明天和供应商聊聊这件事。)
+
+**更客气的中性说法(工作邮件里比 chase 更稳妥):**
+
+- **follow up with sb (on sth)** —— 跟进。*I'll follow up with the vendor on this tomorrow.*(我明天就这件事跟供应商跟进一下。)
+- **touch base with sb** —— 简单联系/对一下。*Let me touch base with the vendor tomorrow.*(我明天和供应商简单对一下。)
+
+**相关条目:** [句子:look for / be after(chase for 误用)](#s-chase-for) —— "找办法"不该用 chase for 的那句原句订正。
+
+---
+
+<a id="s-expected-to-work"></a>
+## 句子:be expected to do / after the refactor
+
+- 日期:2026-09-24
+
+**我的原句:**
+
+> That function is expected working well after refactoring.
+
+**问题:**
+
+- ❌ **is expected working** —— expect 的结构是 **expect sb/sth to do sth**,被动就是 **be expected to do sth**,不能接 -ing。同类的 be supposed to、be required to、be likely to 也都接 to do。
+- ⚠️ **well** —— 说软件"能正常运行",用 **correctly** 或 **as expected** 更准确;well 更偏"表现得好"。
+- ⚠️ **after refactoring** —— 没错,但工程师之间更常把 refactor 当名词用:**after the refactor**、a big refactor。
+
+**更地道的说法:**
+
+1. That function is expected to work correctly after the refactor.
+   重构之后,那个函数应该能正常工作。(直接改正,保留原句结构)
+2. That function should still work as expected after the refactor.
+   重构之后,那个函数应该仍能按预期运行。(should 比被动的 is expected 更口语,still 强调"和以前一样")
+3. The refactor shouldn't change that function's behavior.
+   这次重构不应该改变那个函数的行为。(按定义重构就不该改变代码行为,这句直接点出了这个前提)
+
+**涉及的搭配:**
+
+- **be expected to do sth** —— 预期会做某事。*The release is expected to ship next week.*(这个版本预计下周发布。)
+- **work as expected** —— 按预期运行。*Everything works as expected.*(一切运行正常。)
+- **the refactor**(n.)—— 重构这件事。*The refactor took two weeks.*(这次重构花了两周。)
+
+**相关条目:** [expect 的用法](#expect) —— 为什么 expect 不接 doing,以及容易混的动词分组。
+
+---
+
+<a id="expect"></a>
+## expect 的用法(expect to do,不接 doing)
+
+- 音标:/ɪkˈspekt/
+- 词性:v.
+- CEFR:A2
+- 日期:2026-09-24
+
+**English definition:** To think or believe that something will happen, or that someone will do something.
+
+**含义:** 预期、预计、期待——指"心里认为将来会发生某事"。**标准英语里 expect 后面接 to do,不接 doing**;"expect doing sth" 是一个错误的记忆。
+
+**义项一:expect to do —— 预计自己会做某事**
+
+1. I expect to finish the review by Friday.
+   我预计周五前能完成代码评审。
+2. We don't expect to see any performance impact.
+   我们预计不会有任何性能影响。
+
+**义项二:expect sb/sth to do —— 预期某人/某物会做某事(被动:be expected to do)**
+
+1. We expect the migration to take about an hour.
+   我们预计迁移大约需要一小时。
+2. That function is expected to work correctly after the refactor.
+   重构之后,那个函数应该能正常工作。
+
+**义项三:expect + 名词 / that 从句**
+
+1. I'm expecting a call from the client.
+   我在等客户的电话。
+2. I expect (that) it'll be fine.
+   我估计不会有问题。
+
+**⚠️ "expect doing" 的错误记忆从哪来:**
+
+- **口语里偶尔能听到** *I didn't expect seeing you here*,但这是不规范的说法。标准说法是 **I didn't expect to see you here**。
+- **-ing 其实是名词**:*You can expect waiting times of up to an hour.* 这里 waiting 修饰 times,整个是名词短语,不是 expect 接动名词。
+- **近义词混了进来**:**anticipate doing**(*We anticipate receiving the results next week.*)和 **look forward to doing** 确实接 doing。look forward to 里的 to 是**介词**,后面只能接名词或 doing,这是最容易把人带偏的地方。
+
+**容易混的两组动词:**
+
+- **接 to do**:expect, hope, plan, decide, want, intend, be supposed to —— 都是"心里想着将来要发生的事",to 本身带有"指向将来"的意味。
+- **接 doing**:anticipate, look forward to, consider, imagine, avoid, risk, mind
+
+**记忆技巧:** 拿不准的时候,把 expect 换成 **hope** 试一下。*I hope to finish* 顺口,*~~I hope finishing~~* 明显不对。expect 和 hope 的用法一样。
+
+**相关条目:**
+
+- [句子:be expected to do / after the refactor](#s-expected-to-work) —— 这个错误出现的那句原句订正。
+- [try to do vs. try doing](#try-to-do-vs-try-doing) —— 另一个 to do / doing 意思不同的动词。
