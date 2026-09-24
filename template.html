@@ -36,6 +36,7 @@
   --c2-1:#f7cfc9; --c2-2:#f2bab2; --c2-3:#fadfdb;
   --tm-1:#ddd9f2; --tm-2:#cec9ea; --tm-3:#e9e6f7;
   --gr-1:#f2d5e4; --gr-2:#ebc2d7; --gr-3:#f7e4ee;
+  --sn-1:#e8d7c3; --sn-2:#dfcaaf; --sn-3:#f1e5d7;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -63,6 +64,7 @@
     --c2-1:#5b2b28; --c2-2:#6d3430; --c2-3:#4b2320;
     --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
     --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
+    --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
   }
 }
 :root[data-theme="dark"]{
@@ -90,6 +92,7 @@
   --c2-1:#5b2b28; --c2-2:#6d3430; --c2-3:#4b2320;
   --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
   --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
+  --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
 }
 
 *{box-sizing:border-box}
@@ -236,6 +239,12 @@ h1{
 }
 .body ol.ex .zh{display:block;font-size:13px;color:var(--card-ink-2);margin-top:2px}
 .body del{opacity:.65}
+.body blockquote{
+  margin:0 0 13px;padding:9px 14px;
+  border-left:3px solid var(--card-ink-2);
+  background:var(--card-edge);border-radius:0 7px 7px 0;
+  font-family:Newsreader,Georgia,serif;font-size:15px;line-height:1.5;
+}
 
 @media (max-width:640px){
   .grid{columns:2 150px;column-gap:10px}
@@ -276,9 +285,10 @@ const LV = {
   C1:{nm:"高级",  sw:["--c1-1","--c1-2","--c1-3"]},
   C2:{nm:"精通",  sw:["--c2-1","--c2-2","--c2-3"]},
   TERM:{nm:"术语与固定搭配(无 CEFR 分级)", sw:["--tm-1","--tm-2","--tm-3"]},
-  GRAMMAR:{nm:"语法与语域笔记", sw:["--gr-1","--gr-2","--gr-3"]}
+  GRAMMAR:{nm:"语法与语域笔记", sw:["--gr-1","--gr-2","--gr-3"]},
+  SENTENCE:{nm:"整句订正:我的原句 → 更地道的说法", sw:["--sn-1","--sn-2","--sn-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法"};
+const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子"};
 
 // ── theme toggle ─────────────────────────
 const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.4M12 19v2.4M21.4 12H19M5 12H2.6M18.6 5.4l-1.7 1.7M7.1 16.9l-1.7 1.7M18.6 18.6l-1.7-1.7M7.1 7.1L5.4 5.4"/></svg>';
