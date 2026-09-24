@@ -166,6 +166,9 @@ h1{
 .grid{columns:4 250px;column-gap:14px}
 .card{
   break-inside:avoid;-webkit-column-break-inside:avoid;
+  /* skip layout for off-screen cards; `auto` lets the browser remember each
+     card's real height once measured, so the scrollbar stays stable */
+  content-visibility:auto;contain-intrinsic-size:auto 190px;
   background:var(--sw);color:var(--card-ink);
   border:1px solid var(--card-edge);border-radius:10px;
   padding:13px 15px 12px;margin-bottom:14px;
