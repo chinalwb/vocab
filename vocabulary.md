@@ -75,6 +75,7 @@
 69. [tilt / tilted / bias / biased(倾斜与偏向家族)](#tilt-bias)
 70. [denote(vs connote)](#denote)
 71. [句子:rush into / get sth straight](#s-rush-into-get-straight)
+72. [make use of](#make-use-of)
 
 ---
 
@@ -1898,3 +1899,39 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **rush into (doing) sth** —— 仓促地动手做某事,带"没想清楚就上"的贬义。
 - **nail down the details** —— 把细节敲定,工程语境里非常常用。*Let's nail down the details before we touch the code.*
 - **sort everything out** —— 把事情都梳理好。
+
+---
+
+<a id="make-use-of"></a>
+## make use of
+
+- 词性:phrase
+- CEFR:B2
+
+**English definition:** To use something — especially something already available to you — for a particular purpose.
+
+**含义:** 利用、使用——比单纯的 use 更强调"**把手头现有的东西派上用场**",语气也稍正式一点。
+
+1. We should make use of the tools we already have.
+   我们应该利用现有的工具。
+2. She made good use of her time between meetings.
+   她很好地利用了会议之间的空档。
+3. The new design makes full use of the available screen space.
+   新设计充分利用了可用的屏幕空间。
+
+**常见搭配(中间可插入程度词,这是这个短语最实用的地方):**
+
+- **make use of** —— 利用
+- **make good use of** —— 好好利用
+- **make full use of** —— 充分利用
+- **make the best use of** —— 以最有效的方式利用
+- **make little / no use of** —— 很少 / 完全不利用
+- **put sth to good use** —— 把……派上好用场(同义换说法)
+
+**辨析:make use of vs use**
+
+- **use** 是中性的"使用"这个动作本身:*I used a hammer.*
+- **make use of** 强调"**这东西本来就在那儿,我把它用起来了**",带一点"没有浪费、物尽其用"的意味:*We made use of the leftover materials.*(我们把剩余材料利用起来了。)
+- 描述即时的具体动作时不会用 make use of(*I made use of a hammer* 听着很怪),它更适合**资源、时间、机会、能力**这类对象。
+
+**⚠️ 易错点:** 这个短语和 **make the most of**(充分把握某个机会/时间)是两个独立的搭配,**不要混成 ~~make the most use of~~**。想强调"用得最好"要说 **make the best use of**。
