@@ -78,6 +78,7 @@
 72. [make use of](#make-use-of)
 73. [make the most of vs make the best use of](#make-the-most-of)
 74. [句子:look for / be after(chase for 误用)](#s-chase-for)
+75. [chase](#chase)
 
 ---
 
@@ -2120,3 +2121,54 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **be after sth** —— 想要、在找(口语)。*What exactly are you after?*(你到底想要什么?)
 - **chase sb for sth** —— 催某人要某物。*I need to chase the client for payment.*(我得去催客户付款。)
 - **simpler vs easier** —— simpler 指方案本身不复杂,easier 指做起来省力;技术讨论里 simpler 更常见。
+
+**相关条目:** [chase](#chase) —— chase 的三个义项(追赶 / 追求 / 催促跟进)和 chase sb for sth 的正确用法。
+
+---
+
+<a id="chase"></a>
+## chase
+
+- 音标:/tʃeɪs/
+- 词性:v. / n.
+- CEFR:B1
+- 日期:2026-09-24
+
+**English definition:** To run or go after someone or something in order to catch them; figuratively, to pursue a goal, or to press someone to do something they owe you.
+
+**义项一:追赶、追逐(字面义)**
+
+1. The dog chased the cat up a tree.
+   狗把猫追得爬上了树。
+2. Police chased the suspect down the street.
+   警察沿着街道追捕嫌疑人。
+
+**义项二:追求(难以得到的目标)**
+
+1. She quit her job to chase her dream of becoming a writer.
+   她辞职去追逐当作家的梦想。
+2. Don't chase every new framework — pick one and get good at it.
+   别每出一个新框架就去追,选一个用精。
+
+**义项三:催促、跟进(职场高频)**
+
+1. Can you chase the design team for the final mockups?
+   你能去催一下设计团队要最终稿吗?
+2. I'll chase this up with the vendor tomorrow.
+   我明天找供应商跟进一下这件事。
+
+**常见搭配:**
+
+- **chase sb for sth** —— 催某人要某物(for 只在这个结构里出现)
+- **chase sth up**(英式)/ **follow up on sth**(美式更常说)—— 跟进、催办
+- **chase after sb/sth** —— 追求(常用于感情或梦想)
+- **chase a deadline** —— 赶截止日期
+- **cut to the chase** —— 直奔主题、说重点。*Let's cut to the chase: what's the budget?*(我们直说吧:预算多少?)
+
+**⚠️ 辨析:chase sth up with sb vs catch up with sb**
+
+- **chase sth up with sb** —— **催办**:事情拖着没结果,去找对方要个结论,带一点施压的意味。
+- **catch up with sb** —— **碰个头、聊一聊**(同步近况),语气轻松,不带催促。*I'll catch up with the vendor about this tomorrow.*(我明天和供应商聊聊这件事。)
+- ❌ ~~catch this up with the vendor~~ —— catch up 不接"事情"做宾语,要说 **catch up with sb (about sth)**。
+
+**相关条目:** [句子:look for / be after(chase for 误用)](#s-chase-for) —— "找办法"不该用 chase for 的那句原句订正。
