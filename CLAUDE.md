@@ -110,7 +110,7 @@
 - **`main`** —— 发布分支,一旦有内容变更就会触发 Action 构建并部署到 Pages。
 - 用户开一个 `dev → main` 的 PR 并合并,页面才更新。
 
-`index.html` 是构建产物,**不纳入版本管理**(见 `.gitignore`),由 Action 直接部署到 Pages。这样 dev 和 main 不会因为生成文件而分叉,合并时也不会在 `index.html` 上冲突。
+`index.html`、`data.json`、`meta.json` 都是构建产物,**不纳入版本管理**(见 `.gitignore`),由 Action 直接部署到 Pages。这样 dev 和 main 不会因为生成文件而分叉,合并时也不会在 `index.html` 上冲突。
 
 ## 重新生成网页
 
@@ -122,3 +122,39 @@ python3 build.py --artifact out.html    # 额外输出用于发布 Claude artifa
 ```
 
 本机不需要跑 build.py 也能提交——构建由 Action 在 main 上完成。只有想在本地看效果时才跑。
+
+写完条目后可以跑一次 `python3 build.py` 当作格式校验:它会打印各分组的条目数(如 `77 entries -> A1:1, ... SENTENCE:3`),新条目没出现在预期分组里就说明格式有问题。
+
+### build.py 如何解析 vocabulary.md
+
+build.py 没用 markdown 库,而是用正则按行解析,所以下面这些格式约定是**硬性的**,不是风格偏好:
+
+- **切分条目**靠单独成行的 `<a id="..."></a>`(前后各一个换行),紧跟一行 `## 标题`。`id="toc"` 会被跳过。锚点不在单独一行,这个条目就会整个消失。
+- **分组**(决定卡片颜色和分区):标题以 `句子` 开头 → SENTENCE;以 `语法笔记` 或 `语域笔记` 开头 → GRAMMAR;其余看 `- CEFR:` 行里第一个 `A1`–`C2`,没有 CEFR 就归为 TERM(术语)。
+- **元信息**:`- 音标:` / `- 词性:` / `- CEFR:` / `- 日期:` 这几行(全角半角冒号都认)会被抽成卡片上的标签,并从正文里去掉。
+- **例句**:`1. English` 下一行**以 3 个空格缩进**的中文会被识别成这句的翻译;缩进不对,中文就会被当成独立段落。
+- **卡片预览**:句子条目取第一个 `> ` 引用行(要求正文里有 `**我的原句`);其他条目取 `**含义:**` 或 `**规则…**` 后面的文字,截到 150 字。
+- 行内只支持 `**粗体**`、`*斜体*`、`~~删除线~~`、`` `code` `` 和 `[文字](#锚点)` 交叉引用。**表格、标题层级、外部链接都不会被渲染。**
+
+`template.html` 里必须保留 `/*__DATA__*/` 占位符(条目 JSON 注入到这里),以及 `<!--HEAD-->…<!--/HEAD-->` 标记(build.py 靠它把页面拆成独立版 `index.html` 和 artifact 版)。
+
+build.py 内部只有一个解析器 `parse_blocks()`:它把条目正文解析成 `p` / `ul` / `ol` / `quote` 四种块,文本里保留行内 markdown。`index.html` 把这些块渲染成 HTML;`data.json` 则原样输出给 Android App,由 App 自己渲染(`android/.../ui/Inline.kt` 实现了同一套行内语法)。**改解析规则时两边都要看。** 如果 data.json 的结构改了,而旧版 App 读不了,就把 build.py 里的 `SCHEMA` 和 App 里的 `SUPPORTED_SCHEMA` 一起加 1。
+
+注意:`README.md` 里"推送到 `main` 后自动更新"的说法是面向用户在手机上直接编辑的场景;Claude 的写入流程以本文件的 dev 分支规则为准。
+
+## Android App(`android/`)
+
+这是一个自用的 Kotlin + Jetpack Compose App,不上架,直接装 APK。功能:浏览、搜索、交叉引用跳转,以及 SM-2 间隔重复复习。复习进度只存在手机本地的 `filesDir/review.json` 里,**不会写回仓库**。
+
+```bash
+cd android
+./gradlew assembleRelease     # app/build/outputs/apk/release/app-release.apk(用 debug key 签名,可直接装)
+./gradlew installDebug        # 装到已连接的设备或模拟器
+# 用本地数据测试更新检查:在仓库根目录跑 python3 -m http.server 8000,然后
+adb reverse tcp:8000 tcp:8000 && ./gradlew installDebug -PvocabUrl=http://localhost:8000/
+```
+
+- 需要 JDK 17,以及能用的 `python3`:每次 Gradle 构建都会先跑 `../build.py`,把 `data.json` 作为内置快照打进 APK,这样新装的 App 离线也能用。
+- **更新机制**:App 启动、下拉刷新,以及 WorkManager 每 12 小时一次的后台任务,都会去拉 Pages 上的 `meta.json`(很小)。只有 hash 和本地不同时才下载 `data.json`,再按每个条目的 `hash` 做对比,算出新增和修改的条目。这些条目会在列表里带"新"或"已更新"标记,打开之后标记消失。后台检查发现变化时会发通知。
+- 数据源是 Pages,所以 **dev 上的新条目要等用户把 dev 合进 main 之后,App 才看得到**。这和网页的发布节奏一致,是有意这么设计的。
+- `android/` 的改动不会触发 Pages 构建(workflow 有路径过滤),提交到 dev 即可。
