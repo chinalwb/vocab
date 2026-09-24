@@ -86,6 +86,7 @@
 - 音标:英 /kəˈneəri/ 美 /kəˈneri/
 - 词性:n.
 - CEFR:B2
+- 日期:2026-08-07
 
 **义项一:金丝雀(鸟)**
 1. She keeps a canary in a cage by the window.
@@ -110,6 +111,7 @@ canary test / canary release / canary deployment / canary build —— 都是"�
 - 音标:英 /ɔːˈθɒɡənəl/ 美 /ɔːrˈθɑːɡənəl/
 - 词性:adj.
 - CEFR:C2
+- 日期:2026-08-07
 
 **义项一:数学/几何 —— 正交的、成直角的**
 1. In a Cartesian coordinate system, the x-axis and y-axis are orthogonal to each other.
@@ -132,6 +134,7 @@ orthogonal to (something) —— 最常见的介词搭配,表示"与……正交
 ## prose parsing
 
 - 词性:phrase(短语,无 CEFR/音标)
+- 日期:2026-08-11
 
 **释义:** 解析非结构化的自然语言文本来提取信息(比如用正则/字符串匹配从人类可读的日志或输出里猜测状态),通常带贬义/警示色彩,因为这种方式脆弱、格式一变就容易失效——常与结构化数据/字段解析相对。
 
@@ -147,6 +150,8 @@ orthogonal to (something) —— 最常见的介词搭配,表示"与……正交
 
 <a id="intermittent-outage"></a>
 ## intermittent outage
+
+- 日期:2026-08-11
 
 **intermittent**(adj.)
 - 音标:英 /ˌɪntəˈmɪtənt/ 美 /ˌɪntərˈmɪtənt/
@@ -187,6 +192,7 @@ orthogonal to (something) —— 最常见的介词搭配,表示"与……正交
 - 词性:adj.(动词 spend 的过去分词转化)
 - 音标:/spent/
 - CEFR:B2
+- 日期:2026-08-21
 
 **释义:** 表示"用尽、耗尽",不一定是钱——可以是体力、精力,也可以引申指配额等资源被用光。
 
@@ -242,6 +248,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:n.
 - 音标:/ˈbʊkˌkiːpɪŋ/
 - CEFR:B2
+- 日期:2026-08-14
 
 **义项一:记账、簿记(本义,会计语境)**
 1. She took a bookkeeping course before starting her own small business.
@@ -259,6 +266,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## ground truth
 
 - 词性:noun phrase(固定术语,无 CEFR/音标)
+- 日期:2026-08-14
 
 **义项一:机器学习/数据科学本义 —— 真实标签、基准事实**
 1. The model's predictions were compared against the ground truth labels to compute accuracy.
@@ -278,6 +286,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:v.(由名词"坦克/水箱"引申而来的动词用法)
 - 音标:/tæŋk/
 - CEFR:C1(动词的"暴跌/搞砸"义,口语/非正式)
+- 日期:2026-08-14
 
 **义项一:名词本义 —— 坦克;(储水/储油等的)大容器**
 (此处不展开例句,重点在下面的动词引申义)
@@ -296,6 +305,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## hold on
 
 - 词性:phrasal verb
+- 日期:2026-08-19
 
 **义项一:等一下(短暂等待)**
 1. Hold on, let me grab my laptop.
@@ -317,6 +327,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## hold off (on sth)
 
 - 词性:phrasal verb
+- 日期:2026-08-19
 
 **义项一:先不做某事,暂缓/搁置(等条件更合适再说,不一定有具体新时间点)**
 1. Let's hold off on the Feedback modal issue until we get more user reports.
@@ -334,6 +345,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## put off
 
 - 词性:phrasal verb
+- 日期:2026-08-19
 
 **义项一:推迟、延期(最口语化,常隐含"拖延"语感)**
 1. We had to put off the meeting until next Monday.
@@ -353,6 +365,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:v.
 - 音标:/pəˈspoʊn/
 - CEFR:B2
+- 日期:2026-08-19
 
 **释义:** 正式、中性的"推迟",没有褒贬色彩,书面/口语都常用。
 
@@ -370,6 +383,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:v.
 - 音标:/dɪˈfɜːr/
 - CEFR:C1
+- 日期:2026-08-19
 
 **义项一:推迟(制度化/官方场景,如税务、入学、判决)**
 1. Students can defer their admission to the following academic year.
@@ -387,6 +401,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## push back (sth)
 
 - 词性:phrasal verb(口语化,商务场合高频)
+- 日期:2026-08-19
 
 **释义:** 把截止日期/计划往后推,意思接近 postpone / put off。
 
@@ -400,6 +415,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## put (sth) on hold
 
 - 词性:phrase
+- 日期:2026-08-19
 
 **释义:** 暂停/搁置某事,和 hold off 意思非常接近,可互换。
 
@@ -413,6 +429,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## hold up
 
 - 词性:phrasal verb / n.(hold-up)
+- 日期:2026-08-19
 
 ⚠️ 跟 hold on / hold off 形似,但意思不同,容易搞混。
 
@@ -430,6 +447,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## table (sth)
 
 - 词性:v.
+- 日期:2026-08-19
 
 ⚠️ **英式和美式意思正好相反**,经典的跨语境坑。
 
@@ -444,6 +462,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## shelve (sth)
 
 - 词性:v.
+- 日期:2026-08-19
 
 **释义:** 比 hold off 更"重",指**无限期搁置/雪藏**一个计划,暗示可能不会再捡起来了。
 
@@ -459,6 +478,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:n. / v.(一词多义,用法很灵活)
 - 音标:/stɔːl/
 - CEFR:B2
+- 日期:2026-08-19
 
 **义项一:动词 —— 故意拖延、拖时间(常带负面语感,比如为了逃避决定)**
 1. He's just stalling — he doesn't want to give us an answer.
@@ -492,6 +512,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:v. / n.
 - 音标:/ˈtɪŋkər/
 - CEFR:B2
+- 日期:2026-08-19
 
 **义项一:动词(最常见,尤其在技术/编程语境)—— 随手摆弄、试验性地修改**
 1. Feel free to tinker with the code and see what happens if you change the temperature parameter.
@@ -512,6 +533,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:phrasal verb(可分割,separable)
 - 音标:/ruːl aʊt/
 - CEFR:B2
+- 日期:2026-08-20
 
 **释义:** 排除某种可能性、原因、嫌疑等——注意跟"把某任务从项目范围里拿掉"是不同的语义场景,后者应该用 exclude...from / out of scope。
 
@@ -547,6 +569,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 <a id="unstoppable-irresistible-inexorable"></a>
 ## unstoppable / irresistible / inexorable(对应中文"势不可挡")
 
+- 日期:2026-08-21
+
 **unstoppable**
 - 音标:/ʌnˈstɒpəbl/
 - CEFR:B2
@@ -575,6 +599,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 <a id="dangling-modifier"></a>
 ## 语法笔记:悬垂修饰语(dangling modifier)
 
+- 日期:2026-08-21
+
 **问题描述:** "if / when + 动名词(-ing)" 这种缩略状语结构,省略主语时,隐含的主语必须能从主句里清楚地推断出来。如果推不出来(比如主句主语是个物,而 -ing 动作的执行者其实是"人"),就会造成逻辑不清、悬垂修饰语的问题。
 
 **易错点笔记(来自真实错误案例):**
@@ -594,6 +620,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 - 词性:idiom
 - 音标:back burner /bæk ˈbɜːrnər/
+- 日期:2026-08-19
 
 **来源:** 炉灶前后两个火眼的比喻——前面的(front burner)煮需要马上照看的菜,后面的(back burner)放只需小火慢炖、不用马上管的东西。
 
@@ -613,6 +640,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="postpone-family-quickref"></a>
 ## "推迟/暂缓" 类词组一句话辨析速查
+
+- 日期:2026-08-21
 
 - **hold on** = 等一下 / 坚持住(短暂等待,不是搁置计划)
 - **hold off (on)** = 先别启动/先别做,等更合适的时机
@@ -635,6 +664,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:n. / v.(reconnaissance 的非正式缩写)
 - 音标:/ˈriːkɒn/
 - CEFR:非正式缩略语;完整形式 reconnaissance 约 C1/C2
+- 日期:2026-08-21
 
 **释义:** 本义是军事上的"侦察"——先摸清敌情/地形再行动。技术/测试语境里引申为**先探查、摸清情况**,在正式动手写代码/测试用例之前,先了解目标对象(比如 UI、系统)的实际结构。
 
@@ -654,6 +684,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:n.
 - 音标:/kroʊm/
 - CEFR:B2(金属义);UI 义属于技术行话,不特别分级
+- 日期:2026-08-21
 
 **义项一:金属光泽镀层(本义,日常最常见)**
 1. The old motorcycle's chrome exhaust pipe was gleaming in the sun.
@@ -675,6 +706,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:v.(由 "wave one's hand" 引申而来的技术/学术俚语)
 - 音标:/ˈhænd weɪv/
 - CEFR:非正式行话,不算标准 CEFR 词汇
+- 日期:2026-08-24
 
 **释义:** 字面是"挥挥手"这个动作,引申义是用一个模糊、不严谨的解释把某个细节/论证一带而过,不做深入证明或说明——常带批评色彩,指"含糊其辞、蒙混过关"的做法。
 
@@ -694,6 +726,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:adj.
 - 音标:/ˌɪndɪˈpendənt/
 - CEFR:B1
+- 日期:2026-08-24
 
 **义项一:独立自主的(不受他人控制,人/国家/组织)**
 1. After turning 18, she moved out and became fully independent.
@@ -735,6 +768,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:v.(引申义,不是"站立"的字面义)
 - 音标:/stænd/
 - CEFR:B2/C1(此引申用法)
+- 日期:2026-08-24
 
 **释义:** 表示"**保持在某个特定、稳定的状态里**"——已经准备就绪(stand ready),或依然有效、没有被撤销或改变(still stands)。
 
@@ -754,6 +788,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:v.
 - 音标:/ˌkoʊəˈlɛs/
 - CEFR:C1
+- 日期:2026-08-24
 
 **释义:** (若干分散的部分)融合、汇聚成一个整体——可以是具体的物质,也可以是抽象的想法/群体/意见。
 
@@ -771,6 +806,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="wh-question-order"></a>
 ## 语法笔记:why 疑问句 vs how come vs 间接疑问句
+
+- 日期:2026-08-25
 
 **规则总览:** 疑问词提问是否需要 do-support(do/does/did)+ 倒装,要分三种情况看。
 
@@ -794,6 +831,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="synonym-preposition"></a>
 ## synonym / antonym / synonymous 的介词搭配
+
+- 日期:2026-08-25
 
 **标准搭配:**
 - **synonym(s) for X** —— 最常见、最自然的说法。
@@ -820,6 +859,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:adj.
 - 音标:/əˈsɔːrtɪd/
 - CEFR:B2
+- 日期:2026-08-25
 
 **释义:** 各种各样混在一起的、什锦的——通常指同一类物品里,包含不同种类/口味/颜色/尺寸的混合装。
 
@@ -845,6 +885,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:n.(pastry 不可数;pastries 可数复数)
 - 音标:/ˈpeɪstri/(复数 /ˈpeɪstriz/)
 - CEFR:B1/B2
+- 日期:2026-08-25
 
 **义项一:不可数名词 —— (做糕点用的)油酥面团/面皮**
 1. She rolled out the pastry before placing it in the pie dish.
@@ -864,6 +905,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:n.
 - 音标:/ˈbeɪkəri/
 - CEFR:A2/B1
+- 日期:2026-08-25
 
 **释义:** 卖面包/糕点的店铺(地点),不管是不是自己现烤——跟 **pastry**(糕点这种东西本身)是"地点 vs 产品"的区别。
 
@@ -889,6 +931,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="amateur-mature-immature"></a>
 ## amateur / mature / immature
+
+- 日期:2026-08-25
 
 三个词放一起看很有意思——**amateur 和 immature 长得像,容易搞混,但词源完全不相关**;**immature 和 mature 才是一对真正的反义词**。
 
@@ -934,6 +978,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:n.
 - 音标:/ˈæləˌbaɪ/
 - CEFR:B2/C1
+- 日期:2026-08-25
 - 词源:拉丁语,字面意思是"在别处"
 
 **义项一(本义,法律/侦探语境):不在场证明**
@@ -954,6 +999,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:check out = 短语动词(分写);checkout = 名词(连写)
 - 音标:/tʃɛk aʊt/(check out);/ˈtʃɛkaʊt/(checkout)
 - CEFR:A2/B1(基础义);B2(引申义)
+- 日期:2026-08-25
 
 **核心意象:** 核对一下然后"放行/离开"——不管是核实信息、结账离开、退房离开,还是借书"放行"带走,甚至精神上"离场",都能追溯到这个共同的意象。
 
@@ -1029,6 +1075,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 <a id="thing-as-subject"></a>
 ## 语法笔记:物做主语 vs 人做主语
 
+- 日期:2026-08-25
+
 **核心观察:** 中文习惯**以人作主语**("我经常看到……"、"我注意到……"),英语在很多场合更偏好**以物(事物/现象)作主语**,让"人"退到宾语位置。常见动词:**catch, strike, bother, remind, puzzle, surprise, occur to** 等。
 
 **例句:**
@@ -1056,6 +1104,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 <a id="better-way-to-say"></a>
 ## 语法笔记:"What is a better one for this?" 不够自然
 
+- 日期:2026-08-25
+
 **问题:** "a better one" 里的 **one** 指代不清——想代替"句子/说法",但单独看容易让人愣一下"better one 指的是哪个 one"。
 
 **更地道的问法:**
@@ -1070,6 +1120,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="title-zero-article"></a>
 ## 语法笔记:"tutor to Prince Charles" 为何省略冠词
+
+- 日期:2026-08-25
 
 **规则说明:** 当某个身份被表达为"专属于某个人/机构的职位、头衔"时,尤其是 **[职位] to [某人/机构]** 这种结构,英语常常**省略冠词**,让这个名词读起来更像一个"头衔",而不是一个普通的、可数的职业名称。
 
@@ -1098,6 +1150,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="lets-not"></a>
 ## 语法笔记:let's not vs don't 的否定规则
+
+- 日期:2026-08-25
 
 **规则说明:** "let us / let's + 动词原形" 是表示"提议、号召大家一起做某事"的固定句型(第一人称复数祈使句,包含说话人自己在内)。否定时,把 **not** 直接放在动词原形前面,而不是用 don't。
 
@@ -1131,6 +1185,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:endow = v.;endowed with = 形容词短语(endow 的被动分词形式)
 - 音标:endow /ɪnˈdaʊ/
 - CEFR:C1
+- 日期:2026-08-25
 
 **释义:** 天生具备(某种才能、特质、能力),或被赋予(某种资源/特权)——强调这种特质是"与生俱来的"或"被授予的",不是后天努力获得的。
 
@@ -1150,6 +1205,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="for-now"></a>
 ## for now / at the moment / for the moment
+
+- 日期:2026-08-26
 
 三者都表示"目前、暂时",但语气和强调点不同。
 
@@ -1189,6 +1246,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="moment-phrases"></a>
 ## 其他带 moment/moments 的短语
+
+- 日期:2026-08-26
 
 **in a moment** —— 马上、一会儿(很快,通常指几秒到几分钟内)
 1. I'll be with you in a moment.
@@ -1234,6 +1293,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:n.
 - 音标:/ˈseɪfti nɛt/
 - CEFR:B2
+- 日期:2026-08-26
 
 **义项一:字面义 —— (杂技表演/高空作业时用来防止坠落受伤的)安全网**
 1. The trapeze artist performed without a safety net.
@@ -1249,6 +1309,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="concentrate-on"></a>
 ## concentrate on / focus on 及其近义表达
+
+- 日期:2026-08-26
 
 表达"抛开一切、专心投入到某件事/某个技术点上"的一组说法。
 
@@ -1291,6 +1353,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:v.(引申义,不是"起名字"的字面义)
 - 音标:/neɪm/
 - CEFR:基础义 A1(起名字);"指定/开出条件"这个引申义算 B2
+- 日期:2026-08-26
 
 **释义:** 明确说出/指定(自己想要什么),常用于"对方主动给你选择权,让你自己提条件"这种场景。
 
@@ -1308,6 +1371,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="race-out-of-control"></a>
 ## race out of control
+
+- 日期:2026-08-26
 
 **race**(动词,这里的引申义)
 - 音标:/reɪs/
@@ -1333,6 +1398,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="conversely-vs-on-the-contrary"></a>
 ## conversely vs on the contrary
+
+- 日期:2026-08-27
 
 **conversely**(副词)
 - 音标:/kənˈvɜːrsli/
@@ -1366,6 +1433,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 <a id="on-a-basis"></a>
 ## on a ... basis
 
+- 日期:2026-08-27
+
 **basis**(名词)
 - 音标:/ˈbeɪsɪs/
 - CEFR:B1/B2
@@ -1397,6 +1466,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:v.(superseded 是过去式/过去分词)
 - 音标:/ˌsuːpərˈsiːd/
 - CEFR:C1
+- 日期:2026-08-28
 
 **释义:** 取代、替代(通常因为新的东西更先进/更新/更权威,旧的因此被淘汰、不再适用)。
 
@@ -1420,6 +1490,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 词性:contraceptive = n./adj.;contraception = n.(抽象概念)
 - 音标:contraceptive /ˌkɒntrəˈsɛptɪv/
 - CEFR:B2
+- 日期:2026-08-28
 - 词源:contra-(反对、抵抗)+ conception(受孕)+ -ive → 字面就是"抗受孕的"
 
 **义项一:形容词 —— 避孕的**
@@ -1440,6 +1511,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="end-weight"></a>
 ## 语法笔记:What will X be? vs What will be X?(末端重量原则)
+
+- 日期:2026-08-28
 
 **规则总览:** "What will ... be?" 这种问句里,will 和 be 是连在一起还是被主语隔开,取决于**主语的"轻重"(长短/复杂程度)**——这就是英语里的 **"末端重量原则"(end-weight principle)**:轻的成分放前面,重的/长的成分放后面,句子更容易理解。
 
@@ -1466,6 +1539,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 <a id="try-to-do-vs-try-doing"></a>
 ## try to do vs. try doing
 
+- 日期:~2026-09-05
+
 **义项一:try to do sth. —— 尝试去做某事(强调动作/目标能否达成,动作本身可能没能完成)**
 1. I tried to install the app, but the installer kept crashing.
    我试图安装这个 App,但安装程序一直崩溃。
@@ -1484,6 +1559,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="comma-splice-shared-code"></a>
 ## 语法笔记:逗号粘连(comma splice)+ shared code 连字符误用
+
+- 日期:~2026-09-05
 
 **原句(有语病):**
 > The user was using an iPhone, though the feature was built on shared-code, please help check it out.
@@ -1505,6 +1582,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 <a id="percentage-completed"></a>
 ## What percentage of X has been completed (so far)?
 
+- 日期:~2026-09-05
+
 **用法:** 询问/汇报某项工作进度的完成百分比,工作场景里常用的模板句。
 
 1. What percentage of the work has been completed so far?
@@ -1516,6 +1595,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="any-singular-plural"></a>
 ## 语法笔记:any 后面用单数还是复数
+
+- 日期:~2026-09-05
 
 **① any + 不可数名词 —— 没有单复数可选,直接用原形**
 1. Do you have any information on this?
@@ -1540,6 +1621,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 <a id="soften-why-cant-you"></a>
 ## 语域笔记:"Why can't you do this yourself?" 太冲,如何委婉表达
 
+- 日期:~2026-09-05
+
 **原句(直译"你为什么不能自己做这件事",语气偏冲、容易显得质问/冒犯):**
 > Why can't you do this yourself?
 
@@ -1558,6 +1641,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 <a id="stacked-prepositions"></a>
 ## 语法笔记:叠介词短语 vs 复合词/分词短语("in the version for X")
 
+- 日期:2026-09-14
+
 **原句(没有语法错误,但读起来像翻译腔):**
 > Show me the report in the version for Teams chat.
 
@@ -1575,6 +1660,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 <a id="subject-clause-that"></a>
 ## 语法笔记:主语从句必须用 That 引导,不能省略
+
+- 日期:2026-09-14
 
 **规则:** 一个完整的从句(有自己的主谓宾)可以整体充当另一个句子的主语,这叫**主语从句**。但和"宾语从句"不同,**主语从句里的 That 通常不能省略**。
 
@@ -1608,6 +1695,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 音标:英 /ˈetɪket/ 美 /ˈetɪkət/
 - 词性:n.
 - CEFR:B2
+- 日期:2026-09-21
 
 **含义:** 礼仪、礼节——在特定社交/职场/文化场合中约定俗成的得体行为规范,不是法律强制,而是"大家都这么做才显得有教养/专业"的潜规则。
 
@@ -1630,6 +1718,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 音标:英 /prækˈtɪʃənə(r)/ 美 /prækˈtɪʃənər/
 - 词性:n.
 - CEFR:C1
+- 日期:2026-09-21
 
 **English definition:** A person who practices a particular profession, especially medicine, law, or another skilled occupation — someone who actively does the work, as opposed to someone who only studies or teaches it.
 
@@ -1654,6 +1743,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 音标:英 /ˌdiːpraɪˈɒrətaɪz/ 美 /ˌdiːpraɪˈɔːrətaɪz/
 - 词性:v.
 - CEFR:C1
+- 日期:2026-09-22
 
 **English definition:** To treat something as less important than before; to move it lower down a list of priorities.
 
@@ -1682,6 +1772,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 音标:/ˌheld ˈaʊt/
 - 词性:adj.(源自短语动词 hold out 的过去分词)
 - CEFR:C2 / 机器学习专业术语
+- 日期:2026-09-23
 
 **English definition:** (Of data) deliberately set aside and not used during training, so it can later be used to evaluate how a model performs on examples it has never seen.
 
@@ -1710,6 +1801,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 音标:英 /ləʊθ/ 美 /loʊθ/(词尾是**清辅音** /θ/)
 - 词性:adj.
 - CEFR:C2
+- 日期:2026-09-23
 
 **English definition:** Reluctant or unwilling to do something.
 
@@ -1742,6 +1834,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 音标:implication 英 /ˌɪmplɪˈkeɪʃn/ 美 /ˌɪmplɪˈkeɪʃn/;indication 英 /ˌɪndɪˈkeɪʃn/ 美 /ˌɪndɪˈkeɪʃn/
 - 词性:n.
 - CEFR:B2
+- 日期:2026-09-23
 
 **English definition:**
 - **implication** — a conclusion or consequence that follows from something, though not stated directly.
@@ -1770,6 +1863,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 音标:tilt /tɪlt/;tilted /ˈtɪltɪd/;bias /ˈbaɪəs/;biased /ˈbaɪəst/
 - 词性:tilt(v./n.)、tilted(adj.)、bias(n./v.)、biased(adj.)
 - CEFR:均为 B2
+- 日期:2026-09-23
 
 **English definition:**
 - **tilt** — to (cause to) move into a sloping position; figuratively, to shift an advantage toward one side.
@@ -1844,6 +1938,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 音标:英 /dɪˈnəʊt/ 美 /dɪˈnoʊt/
 - 词性:v.
 - CEFR:C1
+- 日期:2026-09-23
 
 **English definition:** To be a sign, symbol, or name for something; to stand for or indicate something.
 
@@ -1873,6 +1968,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 <a id="s-rush-into-get-straight"></a>
 ## 句子:rush into / get sth straight
+
+- 日期:2026-09-24
 
 **我的原句:**
 
@@ -1908,6 +2005,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - 词性:phrase
 - CEFR:B2
+- 日期:2026-09-24
 
 **English definition:** To use something — especially something already available to you — for a particular purpose.
 
@@ -1946,6 +2044,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - 词性:phrase
 - CEFR:B2
+- 日期:2026-09-24
 
 **English definition:**
 
