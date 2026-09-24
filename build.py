@@ -13,7 +13,7 @@ import re
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
-GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR"]
+GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE"]
 
 
 def split_entries(src):
@@ -33,6 +33,8 @@ def split_entries(src):
 
 
 def detect_level(title, raw):
+    if title.startswith("句子"):
+        return "SENTENCE"
     if title.startswith("语法笔记") or title.startswith("语域笔记"):
         return "GRAMMAR"
     m = re.search(r"CEFR[:：]\s*([^\n]+)", raw)
@@ -48,6 +50,10 @@ def meta_field(raw, label):
 
 
 def gloss(raw):
+    # a 句子 entry previews best as the original sentence being corrected
+    m = re.search(r"^>\s*(.+)$", raw, re.M)
+    if m and "**我的原句" in raw:
+        return m.group(1).strip()
     for pat in (r"\*\*含义[:：]?\*\*[:：]?\s*(.+)", r"\*\*规则[^*]*\*\*[:：]?\s*(.+)"):
         m = re.search(pat, raw)
         if m:
@@ -92,7 +98,15 @@ def to_html(raw):
             continue
         mo = re.match(r"^(\d+)\.\s+(.*)$", s)
         mu = re.match(r"^[-*]\s+(.*)$", s)
-        if mo:
+        mq = re.match(r"^>\s?(.*)$", s)
+        if mq:
+            close()
+            quoted = [inline(mq.group(1))]
+            while i + 1 < len(lines) and re.match(r"^>\s?", lines[i + 1].strip()):
+                i += 1
+                quoted.append(inline(re.sub(r"^>\s?", "", lines[i].strip())))
+            out.append("<blockquote>" + "<br>".join(quoted) + "</blockquote>")
+        elif mo:
             if ul:
                 out.append("</ul>")
                 ul = False

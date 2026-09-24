@@ -74,6 +74,7 @@
 68. [implication vs indication + profound 搭配](#implication-vs-indication)
 69. [tilt / tilted / bias / biased(倾斜与偏向家族)](#tilt-bias)
 70. [denote(vs connote)](#denote)
+71. [句子:rush into / get sth straight](#s-rush-into-get-straight)
 
 ---
 
@@ -1865,3 +1866,35 @@ platform 等于 10,就代表请求来自 web,对吧?
   "home" 这个词字面指代一个人居住的地方,但它隐含着温暖和归属感的联想。
 
 **一句话总结:** denote 是"这个符号/词明确代表什么",客观的指代关系;connote 是"这个词让人联想到什么",主观的情感色彩。技术写作里大量遇到 denote,几乎不会遇到 connote。
+
+---
+
+<a id="s-rush-into-get-straight"></a>
+## 句子:rush into / get sth straight
+
+**我的原句:**
+
+> We do not need to rush to write the code until we make everything straight.
+
+**问题:**
+
+- ❌ **make everything straight** —— 搭配错了。"把事情弄清楚"的固定搭配是 **get ... straight**,不用 make。
+- ⚠️ **rush 和 until 语义打架** —— "not ... until" 的含义是"到了那个时间点之后就该做了",套进来就变成"理清楚之后就可以急着写了",而 rush 在任何阶段都不是好事。
+- ⚠️ **rush to write** 更偏"赶紧去写";表达"仓促动手做某事"的地道说法是 **rush into (doing) sth**。
+
+**更地道的说法:**
+
+1. There's no need to rush into writing code — let's get everything straight first.
+   没必要急着写代码,先把事情都理清楚。(最自然:用破折号把"别急"和"先理清"并置,绕开了 until 的时间逻辑问题)
+2. Let's not rush into writing the code before we've got everything straight.
+   在把事情理清楚之前,我们别急着动手写代码。(用 let's not,呼应[语法笔记](#lets-not))
+3. We shouldn't start writing the code until we've got everything straight.
+   等把事情都理清楚了再开始写代码。(保留 not...until 结构,但去掉 rush,逻辑就顺了)
+
+**涉及的搭配:**
+
+- **get sth straight** —— 把……弄清楚、搞明白。*Let me get this straight.*(我确认一下有没有理解对。)
+- **straighten sth out** —— 理顺、解决(同义替换)。*Let's straighten this out first.*
+- **rush into (doing) sth** —— 仓促地动手做某事,带"没想清楚就上"的贬义。
+- **nail down the details** —— 把细节敲定,工程语境里非常常用。*Let's nail down the details before we touch the code.*
+- **sort everything out** —— 把事情都梳理好。
