@@ -77,6 +77,7 @@
 71. [句子:rush into / get sth straight](#s-rush-into-get-straight)
 72. [make use of](#make-use-of)
 73. [make the most of vs make the best use of](#make-the-most-of)
+74. [句子:look for / be after(chase for 误用)](#s-chase-for)
 
 ---
 
@@ -2087,3 +2088,35 @@ platform 等于 10,就代表请求来自 web,对吧?
 **⚠️ 易错点:** **make the most of** 后面**不加 use**;**make the best use of** 里的 best **不能换成 most**。混成 ~~make the most use of~~ 是这两个搭配串味的典型错误。
 
 **相关条目:** [make use of](#make-use-of) —— 这一族的基础搭配,以及 make good/full use of 等程度变体。
+
+---
+
+<a id="s-chase-for"></a>
+## 句子:look for / be after(chase for 误用)
+
+- 日期:2026-09-24
+
+**我的原句:**
+
+> I am chasing for an easier approach.
+
+**问题:**
+
+- ❌ **chase for** —— chase 是及物动词,直接接宾语(chase a dream)或用 **chase after sth**。"chase for" 只在 **chase sb for sth**(催某人要某样东西)里成立,和"寻找"是两回事。
+- ⚠️ **chase 语气过重** —— chase 带有"追逐难以得到的东西"的意味,用来说"找个更简单的办法"有点用力过猛。
+
+**更地道的说法:**
+
+1. I'm looking for an easier approach.
+   我在找一个更简单的办法。(最直接、最常用)
+2. I'm after a simpler approach.
+   我想要个更简单的办法。(be after sth = 想要/在找某样东西,口语,偏英式)
+3. Is there a simpler way to do this?
+   有没有更简单的做法?(直接问出来,工作沟通里最自然)
+
+**涉及的搭配:**
+
+- **look for sth** —— 寻找。*I'm looking for a way to speed this up.*(我在找能加快速度的办法。)
+- **be after sth** —— 想要、在找(口语)。*What exactly are you after?*(你到底想要什么?)
+- **chase sb for sth** —— 催某人要某物。*I need to chase the client for payment.*(我得去催客户付款。)
+- **simpler vs easier** —— simpler 指方案本身不复杂,easier 指做起来省力;技术讨论里 simpler 更常见。
