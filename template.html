@@ -197,6 +197,7 @@ h1{
   font-size:11px;color:var(--card-ink-2);letter-spacing:.05em;
 }
 .foot .lv{font-weight:700}
+.foot .dt{font-variant-numeric:tabular-nums;white-space:nowrap;opacity:.8}
 
 .empty{color:var(--ink-3);font-size:14px;padding:48px 0;text-align:center}
 
@@ -384,12 +385,16 @@ const sections = DATA.map(g => {
     const n = (it.html.match(/<li><span class="en">/g) || []).length;
     const meta = [it.pos && `<span class="pos">${it.pos}</span>`, it.ipa && `<span class="ipa">${it.ipa}</span>`]
       .filter(Boolean).join("");
+    const approx = it.date.startsWith("~");
     c.innerHTML =
       `<h3 class="hw">${it.title}</h3>` +
       (meta ? `<div class="meta">${meta}</div>` : "") +
       (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
-      `<div class="foot"><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
-      `<span>${n ? n + " 例句" : "笔记"}</span></div>`;
+      `<div class="foot">` +
+      `<span><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
+      `${n ? " · " + n + " 例句" : ""}</span>` +
+      `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
+      `</div>`;
     c.addEventListener("click", () => open(it, g.level, i));
     byAnchor[it.anchor] = { it, level: g.level, i };
     grid.append(c);
@@ -447,8 +452,8 @@ function show(it, level, i){
   sheet.setAttribute("aria-modal", "true");
   sheet.setAttribute("aria-label", it.title);
   sheet.style.setProperty("--sw", `var(${LV[level].sw[i % 3]})`);
-  const meta = [it.pos, it.ipa, it.cefr && ("CEFR " + it.cefr)].filter(Boolean)
-    .map(x => `<span>${x}</span>`).join("");
+  const meta = [it.pos, it.ipa, it.cefr && ("CEFR " + it.cefr), it.date && ("收录 " + it.date)]
+    .filter(Boolean).map(x => `<span>${x}</span>`).join("");
   const back = trail[trail.length - 1];
   sheet.innerHTML =
     `<button class="x" type="button" aria-label="关闭">✕</button>` +

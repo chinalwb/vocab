@@ -77,8 +77,8 @@ def inline(t):
 
 
 def to_html(raw):
-    # the 音标/词性/CEFR bullets are rendered as chips, not body text
-    raw = re.sub(r"^(?:-\s*(?:音标|词性|CEFR)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
+    # the 音标/词性/CEFR/日期 bullets are rendered as chips, not body text
+    raw = re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
     lines = raw.split("\n")
     out, i, ul, ol = [], 0, False, False
 
@@ -146,6 +146,7 @@ def build_data(src):
             "ipa": meta_field(e["raw"], "音标"),
             "pos": meta_field(e["raw"], "词性"),
             "cefr": meta_field(e["raw"], "CEFR"),
+            "date": meta_field(e["raw"], "日期"),
             "gloss": re.sub(r"\*\*(.+?)\*\*", r"\1", gloss(e["raw"]))[:150],
             "html": to_html(e["raw"]),
             "level": lvl,
