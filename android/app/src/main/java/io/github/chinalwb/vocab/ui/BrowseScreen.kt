@@ -2,6 +2,7 @@ package io.github.chinalwb.vocab.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,10 +13,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items as gridItems
+import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -23,12 +35,15 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,7 +62,7 @@ import io.github.chinalwb.vocab.data.LibraryState
 
 private const val CHANGED = "CHANGED"
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun BrowseScreen(
     lib: LibraryState,
@@ -55,7 +70,11 @@ fun BrowseScreen(
     onRefresh: () -> Unit,
     onOpen: (String) -> Unit,
     onMarkAllSeen: () -> Unit,
-    modifier: Modifier = Modifier,
+    tiles: Boolean,
+    /** The Scaffold's padding — applied inside the list so content can scroll under the bars. */
+    contentPadding: PaddingValues,
+    /** 1 = status bar showing, 0 = hidden; read at draw time to place pinned headers. */
+    statusBarShown: () -> Float,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var filter by rememberSaveable { mutableStateOf<String?>(null) }
@@ -76,72 +95,185 @@ fun BrowseScreen(
     }
 
     if (lib.data == null && lib.loadError == null) {
-        Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+        Box(Modifier.fillMaxSize().padding(contentPadding), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
     }
-    PullToRefreshBox(isRefreshing = checking, onRefresh = onRefresh, modifier = modifier.fillMaxSize()) {
-        LazyColumn(contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 24.dp)) {
-            item {
-                OutlinedTextField(
-                    value = query,
-                    onValueChange = { query = it },
-                    placeholder = { Text("搜索单词、释义、例句…") },
-                    leadingIcon = { Icon(Icons.Default.Search, null) },
-                    trailingIcon = {
-                        if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Default.Clear, "清空") }
-                    },
-                    singleLine = true,
-                    shape = RoundedCornerShape(50),
-                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-                )
+    val badgeOf = { e: Entry ->
+        when (e.anchor) {
+            in lib.newAnchors -> "新"
+            in lib.updatedAnchors -> "已更新"
+            else -> null
+        }
+    }
+    val search: @Composable () -> Unit = {
+        OutlinedTextField(
+            value = query,
+            onValueChange = { query = it },
+            placeholder = { Text("搜索单词、释义、例句…") },
+            leadingIcon = { Icon(Icons.Default.Search, null) },
+            trailingIcon = {
+                if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Default.Clear, "清空") }
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(50),
+            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+        )
+    }
+    val filters: @Composable () -> Unit = {
+        val present = entries.map { it.level }.toSet()
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(vertical = 8.dp),
+        ) {
+            item { FilterChip(filter == null, { filter = null }, { Text("全部 ${entries.size}") }) }
+            if (changed.isNotEmpty()) item {
+                FilterChip(filter == CHANGED, { filter = if (filter == CHANGED) null else CHANGED }, { Text("有更新 ${changed.size}") })
             }
-            item {
-                val present = entries.map { it.level }.toSet()
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.padding(vertical = 8.dp),
-                ) {
-                    item { FilterChip(filter == null, { filter = null }, { Text("全部 ${entries.size}") }) }
-                    if (changed.isNotEmpty()) item {
-                        FilterChip(filter == CHANGED, { filter = if (filter == CHANGED) null else CHANGED }, { Text("有更新 ${changed.size}") })
-                    }
-                    items(GROUP_ORDER.filter { it in present }) { lvl ->
-                        FilterChip(filter == lvl, { filter = if (filter == lvl) null else lvl }, { Text(levelStyle(lvl).short) })
-                    }
-                }
+            items(GROUP_ORDER.filter { it in present }) { lvl ->
+                FilterChip(filter == lvl, { filter = if (filter == lvl) null else lvl }, { Text(levelStyle(lvl).short) })
             }
-            item { SyncStatus(lib, changed.size, onMarkAllSeen) }
-            if (lib.loadError != null) item { Text(lib.loadError, color = MaterialTheme.colorScheme.error) }
-            if (groups.isEmpty() && lib.data != null) item {
+        }
+    }
+    val status: @Composable () -> Unit = {
+        Column {
+            SyncStatus(lib, changed.size, onMarkAllSeen)
+            if (lib.loadError != null) Text(lib.loadError, color = MaterialTheme.colorScheme.error)
+            if (groups.isEmpty() && lib.data != null) {
                 Text("没有匹配的条目", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(vertical = 32.dp))
             }
-            groups.forEach { (lvl, list) ->
-                stickyHeader(key = "h-$lvl") {
-                    val s = levelStyle(lvl)
-                    Text(
-                        "${s.short} · ${s.name} · ${list.size}",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(top = 16.dp, bottom = 8.dp),
-                    )
+        }
+    }
+    val padding = PaddingValues(
+        start = 16.dp,
+        end = 16.dp,
+        top = contentPadding.calculateTopPadding(),
+        bottom = contentPadding.calculateBottomPadding() + 24.dp,
+    )
+    val pull = rememberPullToRefreshState()
+    val listState = rememberLazyListState()
+    val statusBar = WindowInsets.statusBarsIgnoringVisibility.getTop(LocalDensity.current)
+
+    PullToRefreshBox(
+        isRefreshing = checking,
+        onRefresh = onRefresh,
+        state = pull,
+        modifier = Modifier.fillMaxSize(),
+        // The box now starts under the top bar, so drop the spinner below it.
+        indicator = {
+            PullToRefreshDefaults.Indicator(
+                state = pull,
+                isRefreshing = checking,
+                modifier = Modifier.align(Alignment.TopCenter).padding(top = contentPadding.calculateTopPadding()),
+            )
+        },
+    ) {
+        if (tiles) {
+            // Keep-style masonry: one continuous wall, no section headers — the tile
+            // colour and its level label carry the grouping, so short groups leave no gaps.
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Adaptive(160.dp),
+                contentPadding = padding,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalItemSpacing = 8.dp,
+            ) {
+                item(span = StaggeredGridItemSpan.FullLine) { search() }
+                item(span = StaggeredGridItemSpan.FullLine) { filters() }
+                item(span = StaggeredGridItemSpan.FullLine) { status() }
+                gridItems(groups.flatMap { it.second }, key = { it.anchor }) { e ->
+                    EntryTile(e, badgeOf(e)) { onOpen(e.anchor) }
                 }
-                items(list, key = { it.anchor }) { e ->
-                    EntryCard(
-                        e,
-                        badge = when (e.anchor) {
-                            in lib.newAnchors -> "新"
-                            in lib.updatedAnchors -> "已更新"
-                            else -> null
-                        },
-                        onClick = { onOpen(e.anchor) },
-                    )
-                    Spacer(Modifier.padding(4.dp))
+            }
+        } else {
+            LazyColumn(state = listState, contentPadding = padding) {
+                item { search() }
+                item { filters() }
+                item { status() }
+                groups.forEach { (lvl, list) ->
+                    stickyHeader(key = "h-$lvl") {
+                        GroupHeader(
+                            lvl, list.size,
+                            // The list runs under the status bar now; nudge a header that is
+                            // pinned (or about to be) down so it never sits behind the clock.
+                            Modifier.graphicsLayer {
+                                val info = listState.layoutInfo
+                                val item = info.visibleItemsInfo.firstOrNull { it.key == "h-$lvl" }
+                                val y = (item?.offset ?: 0) - info.viewportStartOffset
+                                translationY = (statusBar * statusBarShown() - y).coerceAtLeast(0f)
+                            },
+                        )
+                    }
+                    items(list, key = { it.anchor }) { e ->
+                        EntryCard(e, badgeOf(e)) { onOpen(e.anchor) }
+                        Spacer(Modifier.padding(4.dp))
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun GroupHeader(level: String, count: Int, modifier: Modifier = Modifier) {
+    val s = levelStyle(level)
+    Text(
+        "${s.short} · ${s.name} · $count",
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(top = 16.dp, bottom = 8.dp),
+    )
+}
+
+@Composable
+private fun Badge(text: String) {
+    Text(
+        text,
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onPrimary,
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50))
+            .padding(horizontal = 8.dp, vertical = 2.dp),
+    )
+}
+
+/** A compact note for the tile grid — the gloss is cut shorter than in the list. */
+@Composable
+private fun EntryTile(e: Entry, badge: String?, onClick: () -> Unit) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(levelColor(e.level))
+            .clickable(onClick = onClick)
+            .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        if (badge != null) Badge(badge)
+        Text(
+            e.title,
+            fontFamily = FontFamily.Serif,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 16.sp,
+            lineHeight = 21.sp,
+            maxLines = 4,
+            overflow = TextOverflow.Ellipsis,
+        )
+        if (e.ipa.isNotEmpty()) {
+            Text(e.ipa, style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        }
+        if (e.gloss.isNotEmpty()) {
+            Text(plain(e.gloss), style = MaterialTheme.typography.bodySmall, maxLines = 6, overflow = TextOverflow.Ellipsis)
+        }
+        Text(
+            levelStyle(e.level).short,
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier
+                .padding(top = 4.dp)
+                .border(1.dp, LocalContentColor.current.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
+                .padding(horizontal = 6.dp, vertical = 1.dp),
+        )
     }
 }
 
@@ -190,16 +322,7 @@ private fun EntryCard(e: Entry, badge: String?, onClick: () -> Unit) {
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
                 )
-                if (badge != null) {
-                    Text(
-                        badge,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50))
-                            .padding(horizontal = 8.dp, vertical = 2.dp),
-                    )
-                }
+                if (badge != null) Badge(badge)
             }
             val sub = listOf(e.ipa, e.pos).filter { it.isNotEmpty() }.joinToString("  ")
             if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.bodySmall)

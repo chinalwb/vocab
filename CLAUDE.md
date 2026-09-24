@@ -144,7 +144,7 @@ build.py 内部只有一个解析器 `parse_blocks()`:它把条目正文解析�
 
 ## Android App(`android/`)
 
-这是一个自用的 Kotlin + Jetpack Compose App,不上架,直接装 APK。功能:浏览、搜索、交叉引用跳转,以及 SM-2 间隔重复复习。复习进度只存在手机本地的 `filesDir/review.json` 里,**不会写回仓库**。
+这是一个自用的 Kotlin + Jetpack Compose App,不上架,直接装 APK。功能:浏览(可切换列表视图和 Keep 式的卡片墙,浏览时上下栏随滚动收起)、搜索、交叉引用跳转,以及 SM-2 间隔重复复习。复习进度只存在手机本地的 `filesDir/review.json` 里,**不会写回仓库**。
 
 ```bash
 cd android
@@ -158,3 +158,4 @@ adb reverse tcp:8000 tcp:8000 && ./gradlew installDebug -PvocabUrl=http://localh
 - **更新机制**:App 启动、下拉刷新,以及 WorkManager 每 12 小时一次的后台任务,都会去拉 Pages 上的 `meta.json`(很小)。只有 hash 和本地不同时才下载 `data.json`,再按每个条目的 `hash` 做对比,算出新增和修改的条目。这些条目会在列表里带"新"或"已更新"标记,打开之后标记消失。后台检查发现变化时会发通知。
 - 数据源是 Pages,所以 **dev 上的新条目要等用户把 dev 合进 main 之后,App 才看得到**。这和网页的发布节奏一致,是有意这么设计的。
 - `android/` 的改动不会触发 Pages 构建(workflow 有路径过滤),提交到 dev 即可。
+- **`android/apk/VoCab.apk` 是提交进仓库的成品 APK**,用户可以直接从 GitHub 下载安装。每次 App 有改动并提交时,都要用 `./gradlew clean assembleRelease` 重新构建,把 `app/build/outputs/apk/release/app-release.apk` 复制过去覆盖,和代码一起提交。**不要用 `-PvocabUrl` 构建这个文件**(会把 localhost 地址打包进去),`versionCode` 不能比手机上已装的小(相同可以覆盖安装),有功能变化时建议递增,方便在系统设置里分辨版本。APK 用本机的 debug key 签名;换一台电脑构建会导致签名不一致,必须先卸载旧版才能安装。

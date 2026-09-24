@@ -4,6 +4,8 @@
 
 **在线浏览:** https://chinalwb.github.io/vocab/
 
+**Android App(VoCab):** [下载 APK](https://github.com/chinalwb/vocab/raw/main/android/apk/VoCab.apk)
+
 ## 内容
 
 `vocabulary.md` 是唯一的内容来源,包含:
@@ -46,7 +48,11 @@
 
 ## Android App
 
-`android/` 里是一个自用的 Android App,用来浏览词条、做间隔重复复习。它从 Pages 拉取 `data.json`,词库更新后会自动提示。构建方法见 `CLAUDE.md`。
+`android/` 里是一个自用的 Android App(VoCab),用来浏览词条、做间隔重复复习。它从 Pages 拉取 `data.json`,词库更新后会自动提示。
+
+**下载:** [VoCab.apk](https://github.com/chinalwb/vocab/raw/main/android/apk/VoCab.apk) —— 在手机浏览器里打开就会直接下载;首次安装需要在系统设置里允许浏览器"安装未知应用"。
+
+构建方法见 `CLAUDE.md`。
 
 ## 本地生成
 
