@@ -70,7 +70,8 @@ def inline(t):
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
     t = re.sub(r"~~(.+?)~~", r"<del>\1</del>", t)
     t = re.sub(r"`(.+?)`", r"<code>\1</code>", t)
-    t = re.sub(r"\[(.+?)\]\(#[^)]+\)", r"<em>\1</em>", t)
+    # cross-references become real links the page turns into card-to-card jumps
+    t = re.sub(r"\[(.+?)\]\(#([^)]+)\)", r'<a class="xref" href="#\2" data-ref="\2">\1</a>', t)
     t = re.sub(r"(?<![\w*])\*([^*\n]+)\*(?![\w*])", r"<em>\1</em>", t)
     return t
 
