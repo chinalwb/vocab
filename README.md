@@ -44,10 +44,14 @@
 
 推送到 `main` 后,GitHub Action 会自动重新生成 `index.html`,页面几分钟后更新 —— 用手机上的 GitHub App 或网页编辑器改也一样生效,不需要电脑。
 
+## Android App
+
+`android/` 里是一个自用的 Android App,用来浏览词条、做间隔重复复习。它从 Pages 拉取 `data.json`,词库更新后会自动提示。构建方法见 `CLAUDE.md`。
+
 ## 本地生成
 
 ```bash
 python build.py
 ```
 
-读取 `vocabulary.md` + `template.html`,输出 `index.html`。`index.html` 是自动生成的,不要手动改它 —— 改 `template.html`。
+读取 `vocabulary.md` + `template.html`,输出 `index.html`,以及给 App 用的 `data.json` / `meta.json`。`index.html` 是自动生成的,不要手动改它 —— 改 `template.html`。

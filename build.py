@@ -4,8 +4,12 @@
   python build.py                       -> index.html (standalone, for GitHub Pages)
   python build.py --artifact out.html   -> also write the body-only variant used
                                            when publishing as a Claude artifact
+Every run also writes data.json + meta.json, which the Android app (android/)
+fetches from Pages.
 """
 import argparse
+import datetime
+import hashlib
 import html
 import json
 import pathlib
@@ -14,6 +18,7 @@ import re
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
 GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE"]
+SCHEMA = 1  # bump when data.json changes shape in a way the app must know about
 
 
 def split_entries(src):
@@ -76,81 +81,109 @@ def inline(t):
     return t
 
 
-def to_html(raw):
+def strip_meta(raw):
     # the 音标/词性/CEFR/日期 bullets are rendered as chips, not body text
-    raw = re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
-    lines = raw.split("\n")
-    out, i, ul, ol = [], 0, False, False
+    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
 
-    def close():
-        nonlocal ul, ol
-        if ul:
-            out.append("</ul>")
-            ul = False
-        if ol:
-            out.append("</ol>")
-            ol = False
 
+def parse_blocks(raw):
+    """Turn an entry body into blocks whose text keeps its inline markdown.
+
+    This is the one parser both outputs share: index.html renders the blocks
+    to HTML, data.json ships them as-is for the Android app to render natively.
+      {"t": "p", "text": s}
+      {"t": "ul", "items": [s, ...]}
+      {"t": "ol", "items": [{"en": s, "zh": s}, ...]}   (zh may be "")
+      {"t": "quote", "lines": [s, ...]}
+    """
+    lines = strip_meta(raw).split("\n")
+    out, cur, i = [], None, 0
     while i < len(lines):
         s = lines[i].strip()
         if not s:
-            close()
+            cur = None
             i += 1
             continue
         mo = re.match(r"^(\d+)\.\s+(.*)$", s)
         mu = re.match(r"^[-*]\s+(.*)$", s)
         mq = re.match(r"^>\s?(.*)$", s)
         if mq:
-            close()
-            quoted = [inline(mq.group(1))]
+            quoted = [mq.group(1)]
             while i + 1 < len(lines) and re.match(r"^>\s?", lines[i + 1].strip()):
                 i += 1
-                quoted.append(inline(re.sub(r"^>\s?", "", lines[i].strip())))
-            out.append("<blockquote>" + "<br>".join(quoted) + "</blockquote>")
+                quoted.append(re.sub(r"^>\s?", "", lines[i].strip()))
+            out.append({"t": "quote", "lines": quoted})
+            cur = None
         elif mo:
-            if ul:
-                out.append("</ul>")
-                ul = False
-            if not ol:
-                out.append('<ol class="ex">')
-                ol = True
-            en, zh = inline(mo.group(2)), ""
+            if not cur or cur["t"] != "ol":
+                cur = {"t": "ol", "items": []}
+                out.append(cur)
+            en, zh = mo.group(2), ""
             nxt = lines[i + 1] if i + 1 < len(lines) else ""
             if nxt.startswith("   ") and not re.match(r"^\s*[-*\d]", nxt.strip()):
-                zh = inline(nxt.strip())
+                zh = nxt.strip()
                 i += 1
-            out.append(f'<li><span class="en">{en}</span>' + (f'<span class="zh">{zh}</span>' if zh else "") + "</li>")
+            cur["items"].append({"en": en, "zh": zh})
         elif mu:
-            if ol:
-                out.append("</ol>")
-                ol = False
-            if not ul:
-                out.append("<ul>")
-                ul = True
-            out.append(f"<li>{inline(mu.group(1))}</li>")
+            if not cur or cur["t"] != "ul":
+                cur = {"t": "ul", "items": []}
+                out.append(cur)
+            cur["items"].append(mu.group(1))
         else:
-            close()
-            out.append(f"<p>{inline(s)}</p>")
+            out.append({"t": "p", "text": s})
+            cur = None
         i += 1
-    close()
+    return out
+
+
+def to_html(blocks):
+    out = []
+    for b in blocks:
+        if b["t"] == "p":
+            out.append(f"<p>{inline(b['text'])}</p>")
+        elif b["t"] == "ul":
+            out.append("<ul>" + "".join(f"<li>{inline(x)}</li>" for x in b["items"]) + "</ul>")
+        elif b["t"] == "ol":
+            out.append('<ol class="ex">' + "".join(
+                f'<li><span class="en">{inline(x["en"])}</span>'
+                + (f'<span class="zh">{inline(x["zh"])}</span>' if x["zh"] else "") + "</li>"
+                for x in b["items"]) + "</ol>")
+        else:
+            out.append("<blockquote>" + "<br>".join(inline(x) for x in b["lines"]) + "</blockquote>")
     return "".join(out)
 
 
-def build_data(src):
-    grouped = {}
+def build_entries(src):
+    out = []
     for e in split_entries(src):
-        lvl = detect_level(e["title"], e["raw"])
-        grouped.setdefault(lvl, []).append({
+        entry = {
             "anchor": e["anchor"],
             "title": e["title"],
+            "level": detect_level(e["title"], e["raw"]),
             "ipa": meta_field(e["raw"], "音标"),
             "pos": meta_field(e["raw"], "词性"),
             "cefr": meta_field(e["raw"], "CEFR"),
             "date": meta_field(e["raw"], "日期"),
             "gloss": re.sub(r"\*\*(.+?)\*\*", r"\1", gloss(e["raw"]))[:150],
-            "html": to_html(e["raw"]),
-            "level": lvl,
-        })
+            "blocks": parse_blocks(e["raw"]),
+        }
+        # lets the app tell an edited entry from an untouched one between fetches
+        entry["hash"] = digest(entry)
+        out.append(entry)
+    return out
+
+
+def digest(obj):
+    return hashlib.sha256(json.dumps(obj, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
+
+
+def page_data(entries):
+    grouped = {}
+    for e in entries:
+        item = {k: e[k] for k in ("anchor", "title", "ipa", "pos", "cefr", "date", "gloss")}
+        item["html"] = to_html(e["blocks"])
+        item["level"] = e["level"]
+        grouped.setdefault(e["level"], []).append(item)
     return [{"level": l, "items": grouped[l]} for l in GROUP_ORDER if l in grouped]
 
 
@@ -180,7 +213,8 @@ def main():
     ap.add_argument("--artifact", metavar="PATH", help="also write the body-only variant here")
     args = ap.parse_args()
 
-    data = build_data((ROOT / "vocabulary.md").read_text(encoding="utf-8"))
+    entries = build_entries((ROOT / "vocabulary.md").read_text(encoding="utf-8"))
+    data = page_data(entries)
     page = (ROOT / "template.html").read_text(encoding="utf-8").replace(
         "/*__DATA__*/", json.dumps(data, ensure_ascii=False))
     if "__DATA__" in page:
@@ -189,6 +223,18 @@ def main():
     head = page.split("<!--HEAD-->", 1)[1].split("<!--/HEAD-->", 1)[0].strip()
     body = page.split("<!--/HEAD-->", 1)[1].strip()
     (ROOT / "index.html").write_text(STANDALONE.format(head=head, body=body), encoding="utf-8")
+
+    # The Android app polls meta.json (tiny) and only downloads data.json when
+    # the hash differs from what it last fetched. Keep SCHEMA in sync with the app.
+    meta = {
+        "schema": SCHEMA,
+        "hash": digest([e["hash"] for e in entries]),
+        "count": len(entries),
+        "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    (ROOT / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+    (ROOT / "data.json").write_text(
+        json.dumps({**meta, "entries": entries}, ensure_ascii=False), encoding="utf-8")
 
     if args.artifact:
         pathlib.Path(args.artifact).write_text(
