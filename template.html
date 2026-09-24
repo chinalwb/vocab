@@ -226,6 +226,15 @@ h1{
 }
 .x:hover{background:var(--card-edge)}
 .x:focus-visible{outline:2px solid var(--card-ink);outline-offset:1px}
+.back{
+  display:inline-block;margin:0 0 10px;padding:3px 10px 3px 8px;
+  background:var(--card-edge);color:var(--card-ink-2);
+  border:1px solid var(--card-edge);border-radius:999px;
+  font:inherit;font-size:12px;cursor:pointer;
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.back:hover{color:var(--card-ink)}
+.back:focus-visible{outline:2px solid var(--card-ink);outline-offset:1px}
 .body{font-size:14px;color:var(--card-ink)}
 .body p{margin:0 0 11px}
 .body strong{font-weight:700}
@@ -242,6 +251,15 @@ h1{
 }
 .body ol.ex .zh{display:block;font-size:13px;color:var(--card-ink-2);margin-top:2px}
 .body del{opacity:.65}
+.xref{
+  color:inherit;text-decoration:underline;
+  text-decoration-thickness:1px;text-underline-offset:2px;
+  text-decoration-color:var(--card-ink-2);
+  cursor:pointer;font-weight:500;
+}
+.xref:hover{text-decoration-thickness:2px}
+.xref:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px;border-radius:2px}
+.xref[data-missing]{text-decoration-style:dotted;cursor:default;opacity:.75}
 .body blockquote{
   margin:0 0 13px;padding:9px 14px;
   border-left:3px solid var(--card-ink-2);
@@ -343,6 +361,9 @@ const mk = (key, text, sw) => {
 filters.append(mk("ALL", "全部"));
 DATA.forEach(g => filters.append(mk(g.level, LABEL[g.level] || g.level, LV[g.level].sw[0])));
 
+// anchor -> entry, so a cross-reference inside a note can open the note it points at
+const byAnchor = {};
+
 // build sections once
 const sections = DATA.map(g => {
   const sec = document.createElement("section");
@@ -370,6 +391,7 @@ const sections = DATA.map(g => {
       `<div class="foot"><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
       `<span>${n ? n + " 例句" : "笔记"}</span></div>`;
     c.addEventListener("click", () => open(it, g.level, i));
+    byAnchor[it.anchor] = { it, level: g.level, i };
     grid.append(c);
     return { el: c, hay: (it.title + " " + it.gloss + " " + it.html).toLowerCase() };
   });
@@ -397,10 +419,26 @@ function render(){
 }
 q.addEventListener("input", render);
 
-// modal
-let scrim = null, lastFocus = null;
-function open(it, level, i){
+// modal. `trail` is the chain of notes walked through via cross-references;
+// show() only renders, so callers own the trail and it survives going back.
+let scrim = null, lastFocus = null, trail = [];
+
+function open(it, level, i){          // opened from a card — starts a fresh chain
   lastFocus = document.activeElement;
+  trail = [];
+  show(it, level, i);
+}
+function follow(t){                   // opened from a cross-reference
+  trail.push(scrim._entry);
+  show(t.it, t.level, t.i);
+}
+function goBack(){
+  const prev = trail.pop();
+  show(prev.it, prev.level, prev.i);
+}
+
+function show(it, level, i){
+  if (scrim) scrim.remove();
   scrim = document.createElement("div");
   scrim.className = "scrim";
   const sheet = document.createElement("div");
@@ -411,20 +449,33 @@ function open(it, level, i){
   sheet.style.setProperty("--sw", `var(${LV[level].sw[i % 3]})`);
   const meta = [it.pos, it.ipa, it.cefr && ("CEFR " + it.cefr)].filter(Boolean)
     .map(x => `<span>${x}</span>`).join("");
+  const back = trail[trail.length - 1];
   sheet.innerHTML =
     `<button class="x" type="button" aria-label="关闭">✕</button>` +
+    (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
     `<h2>${it.title}</h2>` +
     (meta ? `<div class="meta">${meta}</div>` : "") +
     `<div class="body">${it.html}</div>`;
+  scrim._entry = { it, level, i };
   scrim.append(sheet);
   document.body.append(scrim);
+
+  // a cross-reference opens the note it points at, keeping a trail to come back
+  sheet.querySelectorAll(".xref").forEach(a => {
+    const t = byAnchor[a.dataset.ref];
+    if (!t) { a.dataset.missing = "1"; return; }
+    a.addEventListener("click", e => { e.preventDefault(); follow(t); });
+  });
+  if (back) sheet.querySelector(".back").addEventListener("click", goBack);
+
   sheet.querySelector(".x").addEventListener("click", close);
   scrim.addEventListener("click", e => { if (e.target === scrim) close(); });
+  sheet.scrollIntoView({ block: "nearest" });
   sheet.querySelector(".x").focus();
 }
 function close(){
   if (!scrim) return;
-  scrim.remove(); scrim = null;
+  scrim.remove(); scrim = null; trail = [];
   if (lastFocus) lastFocus.focus();
 }
 document.addEventListener("keydown", e => {
