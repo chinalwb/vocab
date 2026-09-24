@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Photo icon: the foreground PNG spans 90 of the 108dp canvas, so every launcher mask
+     shape (circle, squircle, rounded square) crops inside the photo. No monochrome layer —
+     a photo has no sensible single-colour silhouette, so themed-icon mode shows it as is. -->
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
     <background android:drawable="@color/icon_bg" />
-    <foreground android:drawable="@drawable/ic_launcher_foreground" />
-    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
 </adaptive-icon>
