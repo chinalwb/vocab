@@ -15,7 +15,9 @@
 
 **只有用户明确说"存""save""go""记一下"之类的确认之后才写入。** 讲解完可以主动问一句"要存进 vocabulary.md 吗?",但不要不问自存。
 
-写入之后**立即提交并推送**,不用等用户再说一次——这样在任何设备上打开 https://chinalwb.github.io/vocab/ 看到的都是最新的。提交信息写清楚加了哪个词条,例如 `Add entry: deprioritize`。多个词条一次性确认时可以合成一个提交。
+写入之后**自动提交并推送到 `dev` 分支**,不用再问一次。提交信息写清楚加了哪个词条,例如 `Add entry: deprioritize`;一次确认多个词条时合成一个提交。
+
+**绝对不要直接推送到 `main`,也不要自行发起或合并 PR。** `dev` 上的推送不会触发构建;只有 `main` 会发布页面,而**什么时候把 dev 合进 main 由用户自己决定**(他会去开 PR)。如果用户明确要求,才做 main 相关的操作。
 
 ### 写入前必须脱敏
 
@@ -62,13 +64,21 @@
 - **追加,不要改动已有条目**,除非用户要求订正。
 - 追加新条目时,**同时在文件顶部 `## 目录` 里加一行** `N. [标题](#锚点)`,序号接上一条,锚点要和正文里的 `<a id="">` 对应。中文标题和标点会破坏 markdown 自动生成的锚点,所以必须手写 `<a id="">`。
 
+## 分支与发布流程
+
+- **`dev`** —— 日常分支,新词条都提交到这里,推送不触发任何构建。
+- **`main`** —— 发布分支,一旦有内容变更就会触发 Action 构建并部署到 Pages。
+- 用户开一个 `dev → main` 的 PR 并合并,页面才更新。
+
+`index.html` 是构建产物,**不纳入版本管理**(见 `.gitignore`),由 Action 直接部署到 Pages。这样 dev 和 main 不会因为生成文件而分叉,合并时也不会在 `index.html` 上冲突。
+
 ## 重新生成网页
 
 `vocabulary.md` 是唯一的内容来源,`index.html` 由脚本生成,**不要手工编辑 index.html**——要改页面就改 `template.html`。
 
 ```bash
-python3 build.py                        # 生成 index.html
+python3 build.py                        # 本地预览用,生成 index.html(已被 gitignore)
 python3 build.py --artifact out.html    # 额外输出用于发布 Claude artifact 的去壳版本
 ```
 
-推送到 `main` 后 GitHub Action 会自动重新生成并提交 `index.html`,页面 https://chinalwb.github.io/vocab/ 几分钟后更新。所以在本机改完 markdown 后,直接提交推送即可,不必先在本地跑 build.py(跑了也无妨)。
+本机不需要跑 build.py 也能提交——构建由 Action 在 main 上完成。只有想在本地看效果时才跑。
