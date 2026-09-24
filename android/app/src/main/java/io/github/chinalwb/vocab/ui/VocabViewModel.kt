@@ -33,7 +33,19 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     val library = repo.state
     val review = reviews.state
 
+    private val prefs = app.getSharedPreferences("ui", android.content.Context.MODE_PRIVATE)
+    private val _tiles = MutableStateFlow(prefs.getBoolean("tiles", false))
+    /** Browse layout: false = list, true = Keep-style tiles. Remembered across launches. */
+    val tiles = _tiles.asStateFlow()
+
+    fun toggleTiles() {
+        _tiles.value = !_tiles.value
+        prefs.edit().putBoolean("tiles", _tiles.value).apply()
+    }
+
+    private var busy = false
     private val _checking = MutableStateFlow(false)
+    /** Only true for checks the user asked for — the launch-time check runs without a spinner. */
     val checking = _checking.asStateFlow()
 
     private val _messages = Channel<String>(Channel.BUFFERED)
@@ -51,15 +63,17 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun check(quiet: Boolean = false) {
-        if (_checking.value) return
+        if (busy) return
+        busy = true
         viewModelScope.launch {
-            _checking.value = true
+            _checking.value = !quiet
             val msg = when (val r = repo.check()) {
                 is CheckResult.Updated -> describe(r)
                 CheckResult.UpToDate -> if (quiet) null else "已是最新"
                 is CheckResult.Failed -> if (quiet) null else r.message
             }
             _checking.value = false
+            busy = false
             msg?.let { _messages.send(it) }
         }
     }
