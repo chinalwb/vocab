@@ -244,6 +244,7 @@ private fun EntryTile(e: Entry, badge: String?, onClick: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
+            .sharedEntryContainer(e.anchor, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
             .background(levelColor(e.level))
             .clickable(onClick = onClick)
@@ -259,6 +260,7 @@ private fun EntryTile(e: Entry, badge: String?, onClick: () -> Unit) {
             lineHeight = 21.sp,
             maxLines = 4,
             overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.sharedEntryTitle(e.anchor),
         )
         if (e.ipa.isNotEmpty()) {
             Text(e.ipa, style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
@@ -307,6 +309,7 @@ private fun EntryCard(e: Entry, badge: String?, onClick: () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
+            .sharedEntryContainer(e.anchor, RoundedCornerShape(4.dp))
             .background(levelColor(e.level), RoundedCornerShape(4.dp))
             .clickable(onClick = onClick)
             .padding(14.dp)
@@ -320,7 +323,7 @@ private fun EntryCard(e: Entry, badge: String?, onClick: () -> Unit) {
                     fontSize = 19.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).sharedEntryTitle(e.anchor),
                 )
                 if (badge != null) Badge(badge)
             }

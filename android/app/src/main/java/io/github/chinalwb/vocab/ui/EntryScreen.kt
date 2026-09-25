@@ -1,6 +1,10 @@
 package io.github.chinalwb.vocab.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,13 +31,15 @@ import io.github.chinalwb.vocab.data.Entry
  * One entry. Cross-references push another EntryScreen on the nav back stack,
  * so the system back gesture walks back through the chain like the page's ← 返回.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun EntryScreen(entry: Entry?, onBack: () -> Unit, onXref: (String) -> Unit, onSeen: (String) -> Unit) {
     if (entry != null) LaunchedEffect(entry.anchor) { onSeen(entry.anchor) }
     Scaffold(
         topBar = {
             TopAppBar(
+                // Stable padding: the status bar may be re-showing while this page flies in.
+                windowInsets = WindowInsets.statusBarsIgnoringVisibility,
                 title = { Text(entry?.let { levelStyle(it.level).name } ?: "") },
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") }
@@ -41,10 +48,14 @@ fun EntryScreen(entry: Entry?, onBack: () -> Unit, onXref: (String) -> Unit, onS
             )
         }
     ) { pad ->
+        // Only the body grows out of the tapped card; the top bar fades in on its own,
+        // so the flying title never has to pass underneath it.
         Column(
             Modifier
                 .padding(pad)
                 .fillMaxSize()
+                .then(if (entry != null) Modifier.sharedEntryContainer(entry.anchor) else Modifier)
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp, vertical = 16.dp)
         ) {

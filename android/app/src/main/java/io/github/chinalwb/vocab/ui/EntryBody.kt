@@ -32,6 +32,7 @@ fun EntryHeader(entry: Entry) {
             fontWeight = FontWeight.SemiBold,
             fontSize = 26.sp,
             lineHeight = 32.sp,
+            modifier = Modifier.sharedEntryTitle(entry.anchor),
         )
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Chip(levelStyle(entry.level).short, levelColor(entry.level))
