@@ -61,6 +61,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.chinalwb.vocab.ui.BrowseScreen
 import io.github.chinalwb.vocab.ui.EntryScreen
+import io.github.chinalwb.vocab.ui.LocalNavAnimatedScope
+import io.github.chinalwb.vocab.ui.LocalSharedTransitionScope
+import io.github.chinalwb.vocab.ui.TRANSITION_MS
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.runtime.CompositionLocalProvider
 import io.github.chinalwb.vocab.ui.GridViewIcon
 import io.github.chinalwb.vocab.ui.ReviewScreen
 import io.github.chinalwb.vocab.ui.VocabTheme
@@ -76,22 +85,38 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun VocabNav() {
     val nav = rememberNavController()
     val vm: VocabViewModel = viewModel()
     val lib by vm.library.collectAsStateWithLifecycle()
 
-    NavHost(nav, startDestination = "home") {
-        composable("home") { Home(vm, nav) }
-        composable("entry/{anchor}") { back ->
-            val anchor = back.arguments?.getString("anchor").orEmpty()
-            EntryScreen(
-                entry = lib.data?.byAnchor?.get(anchor),
-                onBack = { nav.popBackStack() },
-                onXref = { nav.navigate("entry/$it") },
-                onSeen = vm::markSeen,
-            )
+    // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
+    // the plain fades match the container transform's length so both sides finish together.
+    SharedTransitionLayout {
+        CompositionLocalProvider(LocalSharedTransitionScope provides this) {
+            NavHost(
+                nav,
+                startDestination = "home",
+                enterTransition = { fadeIn(tween(TRANSITION_MS)) },
+                exitTransition = { fadeOut(tween(TRANSITION_MS)) },
+            ) {
+                composable("home") {
+                    CompositionLocalProvider(LocalNavAnimatedScope provides this) { Home(vm, nav) }
+                }
+                composable("entry/{anchor}") { back ->
+                    val anchor = back.arguments?.getString("anchor").orEmpty()
+                    CompositionLocalProvider(LocalNavAnimatedScope provides this) {
+                        EntryScreen(
+                            entry = lib.data?.byAnchor?.get(anchor),
+                            onBack = { nav.popBackStack() },
+                            onXref = { nav.navigate("entry/$it") },
+                            onSeen = vm::markSeen,
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -177,7 +202,10 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
         },
         snackbarHost = { SnackbarHost(snackbar) },
     ) { pad ->
-        val open: (String) -> Unit = { nav.navigate("entry/$it") }
+        val open: (String) -> Unit = {
+            insets.show(WindowInsetsCompat.Type.statusBars())
+            nav.navigate("entry/$it")
+        }
         if (tab == 0) {
             BrowseScreen(
                 lib, checking, { vm.check() }, open, { vm.markAllSeen() }, tiles,
