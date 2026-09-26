@@ -81,6 +81,7 @@
 75. [chase](#chase)
 76. [句子:be expected to do / after the refactor](#s-expected-to-work)
 77. [expect 的用法(expect to do,不接 doing)](#expect)
+78. [severity](#severity)
 
 ---
 
@@ -1770,6 +1771,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **辨析:** deprioritize 只是把重要性调低,任务还在队列里;而 put on hold / shelve 是"暂时停掉不做了"(见 [推迟/暂缓家族速查](#postpone-family-quickref) 对比)。
 
+**相关条目:** [severity](#severity) —— severity 是问题本身多严重,priority 是先修哪个;high severity 的问题也可能被 deprioritize。
+
 ---
 
 <a id="held-out"></a>
@@ -2273,3 +2276,51 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - [句子:be expected to do / after the refactor](#s-expected-to-work) —— 这个错误出现的那句原句订正。
 - [try to do vs. try doing](#try-to-do-vs-try-doing) —— 另一个 to do / doing 意思不同的动词。
+
+---
+
+<a id="severity"></a>
+## severity
+
+- 音标:英 /sɪˈverəti/ 美 /səˈverəti/
+- 词性:n.(多为不可数;表示"级别"时可数,复数 severities)
+- CEFR:C1(形容词 severe 为 B2)
+- 日期:2026-09-26
+
+**English definition:** How serious, harsh, or intense something is — especially something bad, such as an illness, a problem, or a punishment.
+
+**含义:** 严重程度;严厉程度。技术语境里最常指 bug / 事故的**严重级别**。
+
+**义项一:严重程度(问题、疾病、灾害)**
+1. Treatment depends on the severity of the symptoms.
+   治疗方案取决于症状的严重程度。
+2. Nobody realised the severity of the outage until customers started calling.
+   直到客户开始打电话来,大家才意识到这次宕机有多严重。
+
+**义项二:(技术)严重级别,可数**
+1. We classify every incident by severity, from Sev 1 (critical) to Sev 4 (minor).
+   每个事故都按严重级别分类,从 Sev 1(致命)到 Sev 4(轻微)。
+2. This crash is only a low-severity issue because it happens on an obsolete device.
+   这个崩溃只算低严重级别的问题,因为它只出现在一款淘汰的设备上。
+
+**义项三:严厉、苛刻(惩罚、态度、风格)**
+1. The judge was criticised for the severity of the sentence.
+   法官因判得过重而受到批评。
+2. She dresses with a certain severity: all black, no jewellery.
+   她穿着风格很冷峻:一身黑,不戴首饰。
+
+**常见搭配:**
+
+- **the severity of sth** —— 最核心的结构:the severity of the bug / injury / crisis。
+- **high / low / critical severity** —— 作定语时加连字符:a high-severity bug。
+- **Sev 1 / Sev1 / S1** —— 口语和工单里的缩写,读作 "sev one"。
+- **severity level** —— 严重级别。
+- **reduce / assess / underestimate the severity** —— 降低 / 评估 / 低估严重程度。
+
+**辨析:severity vs. priority**
+
+- **severity** —— 问题本身**有多严重**(技术影响),通常由 QA / 工程师判断。
+- **priority** —— **先修哪个**(业务排期),通常由 PM 决定。
+- 所以会有 "high severity, low priority":致命崩溃但只影响极少数旧设备,可以排后面修。
+
+**相关条目:** [deprioritize](#deprioritize) —— 调低 priority 的动作;severity 高的问题也可能被 deprioritize。
