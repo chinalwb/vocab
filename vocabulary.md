@@ -84,6 +84,8 @@
 78. [severity](#severity)
 79. [句子:hit an error / under what circumstances](#s-rate-limit-error)
 80. [句子:error message / shown to users](#s-error-message)
+81. [句子:is off / has been turned off / take effect](#s-global-flag)
+82. [语法笔记:as / since / because 表原因的区别](#as-since-because)
 
 ---
 
@@ -2409,3 +2411,81 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **when this error occurs** —— 发生这个错误时;occur 比 happen 更书面。
 
 **相关条目:** [句子:hit an error / under what circumstances](#s-rate-limit-error) —— 同一场景的上一句提问。
+
+---
+
+<a id="s-global-flag"></a>
+## 句子:is off / has been turned off / take effect
+
+- 日期:2026-09-28
+
+**我的原句:**
+
+> As the global flag has turned off, other flags don't take effect even if they are turned on.
+
+**问题:**
+
+- ❌ **has turned off** —— 主动语态意思成了"flag 自己把自己关掉"。flag 是被人关的 → 说状态用 **is off**,强调动作用被动 **has been turned off**。
+- ⚠️ **As** —— 有歧义,读者可能理解成"当……时 / 随着……"而不是"因为"。这里讲的是规则 / 条件,用 **when / if** 最清楚;确实要表原因用 **since / because**。
+- ⚠️ **other flags** —— 指的是除全局开关外那一组特定的开关,要加定冠词 → **the other flags**。
+- ⚠️ **turned on / off** —— 能用,但技术语境里 **enabled / disabled** 更常见。
+
+**更地道的说法:**
+
+1. When the global flag is off, the other flags have no effect, even if they're on.
+   全局开关关闭时,其他开关即使打开了也不起作用。(把 As 换成 When,歧义消失)
+2. If the global flag is disabled, none of the other flags take effect, regardless of their own settings.
+   全局开关被禁用时,其他开关不管自身怎么设置都不会生效。
+3. The global flag acts as a master switch: turn it off, and all the other flags are ignored.
+   全局开关相当于总开关:把它关掉,其他开关就全部失效。(用比喻一句讲清层级关系)
+
+**涉及的搭配:**
+
+- **take effect / have no effect** —— 生效 / 不起作用。*The new setting takes effect after a restart.*(新设置重启后生效。)
+- **enable / disable a flag** —— 打开 / 关闭开关。*We disabled the flag for all users.*(我们给所有用户关掉了这个开关。)
+- **master switch** —— 总开关。*This toggle is the master switch for all notifications.*(这个开关是所有通知的总开关。)
+- **kill switch** —— 紧急关闭开关(出问题时一键停掉某功能)。*We added a kill switch so we can turn the feature off remotely.*(我们加了个紧急开关,可以远程关掉这个功能。)
+- **regardless of** —— 不管、无论。*The rule applies regardless of the user's role.*(不管用户什么角色,这条规则都适用。)
+
+**相关条目:** [语法笔记:as / since / because 表原因的区别](#as-since-because) —— 原句里 As 的歧义由此引出。
+
+---
+
+<a id="as-since-because"></a>
+## 语法笔记:as / since / because 表原因的区别
+
+- 日期:2026-09-28
+
+**规则:** 三者都能表"因为",但语气强弱、原因是否已知、会不会产生歧义各不相同。
+
+**because —— 最强,原因是新信息**
+- 原因是句子的重点,回答"Why?"。可以单独回答问题,也能被强调(only because / just because)。
+1. The build failed because a dependency was missing.
+   构建失败是因为少了一个依赖。
+2. —Why is it slow? —Because the cache is disabled.
+   ——为什么慢?——因为缓存被关了。
+
+**since —— "既然",原因是双方已知的**
+- 重点在后半句的结论,原因只是铺垫。
+- ⚠️ 和完成时连用时容易被读成"自从":*Since the flag has been turned off, ...* 可能被理解成"自从开关关掉以来……"。
+1. Since you're already here, let's review the PR together.
+   既然你已经在这儿了,我们一起看一下这个 PR 吧。
+2. Since the API is deprecated, we should migrate soon.
+   既然这个 API 已经废弃了,我们应该尽快迁移。
+
+**as —— 最弱,偏正式 / 书面**
+- 原因不重要,顺带一提。
+- ⚠️ 容易被读成"当……时"或"随着……":*As the context grows, ...* 就是"随着"。
+1. As it was getting late, we decided to stop.
+   由于天色已晚,我们决定停下。
+2. As the context size grows, responses get slower.
+   随着上下文变大,响应会变慢。(这里 as 是"随着",不是"因为")
+
+**快速判断:**
+
+- 中文能说成"既然" → **since**
+- 能回答"为什么?" → **because**
+- 书面、原因无关紧要,且上下文不会误读成"当 / 随着" → **as**
+- 其实是在讲条件 / 规则 → 别用这三个,用 **when / if**
+
+**相关条目:** [句子:is off / has been turned off / take effect](#s-global-flag) —— 原句里 As 引起歧义的实例。
