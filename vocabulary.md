@@ -83,6 +83,7 @@
 77. [expect 的用法(expect to do,不接 doing)](#expect)
 78. [severity](#severity)
 79. [句子:hit an error / under what circumstances](#s-rate-limit-error)
+80. [句子:error message / shown to users](#s-error-message)
 
 ---
 
@@ -2365,4 +2366,46 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **under what circumstances** —— 在什么情况下,固定用 under。*Under what circumstances can a refund be issued?*(什么情况下可以退款?)
 - **in this / that situation** —— situation 用 in,不用 at。*What would you do in that situation?*(换你在那种情况下会怎么做?)
 
-**相关条目:** [语法笔记:why 疑问句 vs how come vs 间接疑问句](#wh-question-order) —— 原句里用对了的间接疑问句语序规则。
+**相关条目:**
+
+- [语法笔记:why 疑问句 vs how come vs 间接疑问句](#wh-question-order) —— 原句里用对了的间接疑问句语序规则。
+- [句子:error message / shown to users](#s-error-message) —— 紧接着的追问:用户看到的是什么提示。
+
+---
+
+<a id="s-error-message"></a>
+## 句子:error message / shown to users
+
+- 日期:2026-09-28
+
+**我的原句:**
+
+> What text is shown to user for such an error?
+
+**问题:**
+
+- ❌ **to user** —— user 是可数名词,单数不能裸用 → **to the user**(文档里泛指使用者)或 **to users**(复数泛指,最自然)。
+- ⚠️ **such an error** —— 语法没错,但 such 偏书面,带"这类 / 如此"的意味,用在追问里显得重 → **this error**;想强调"这一类"时用 **this kind of error**。
+- ⚠️ **What text** —— 能懂,但母语者更常说 **message**(提示)或 **copy**(界面文案)。
+
+**更地道的说法:**
+
+1. What message do users see when they hit this error?
+   用户遇到这个错误时会看到什么提示?(最自然:主语换成 users,改用主动语态)
+2. What's the error message shown to users in this case?
+   这种情况下给用户显示的错误信息是什么?(口语,适合即时消息)
+3. What copy do we display for this error?
+   这个错误我们显示的是什么文案?(产品 / 设计语境:copy 指界面文字)
+4. What does the user see when this error occurs?
+   发生这个错误时,用户看到的是什么?(不只问文字,也包括弹窗、toast 等形式)
+
+**小技巧:** 被动句 "What text is shown to users" → 主动句 "What do users see",以人为主语,更直接——这是 C1 写作常用的改法。
+
+**涉及的搭配:**
+
+- **error message** —— 错误提示。*The error message just says "Something went wrong."*(错误提示只写了"出了点问题"。)
+- **show / display a message to users** —— 向用户显示提示。*We display a friendly message to users instead of the raw error.*(我们给用户显示友好的提示,而不是原始报错。)
+- **UI copy / error copy** —— 界面文案 / 错误文案。*The designer will update the error copy.*(设计师会改一下错误文案。)
+- **when this error occurs** —— 发生这个错误时;occur 比 happen 更书面。
+
+**相关条目:** [句子:hit an error / under what circumstances](#s-rate-limit-error) —— 同一场景的上一句提问。
