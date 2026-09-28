@@ -86,6 +86,7 @@
 80. [句子:error message / shown to users](#s-error-message)
 81. [句子:is off / has been turned off / take effect](#s-global-flag)
 82. [语法笔记:as / since / because 表原因的区别](#as-since-because)
+83. [句子:align X with Y's / the goal is](#s-align-ux)
 
 ---
 
@@ -2489,3 +2490,44 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 其实是在讲条件 / 规则 → 别用这三个,用 **when / if**
 
 **相关条目:** [句子:is off / has been turned off / take effect](#s-global-flag) —— 原句里 As 引起歧义的实例。
+
+---
+
+<a id="s-align-ux"></a>
+## 句子:align X with Y's / the goal is
+
+- 日期:2026-09-28
+
+**我的原句:**
+
+> The target is to make the UX align with DeepSeek.
+
+**问题:**
+
+- ⚠️ **align with DeepSeek** —— 比较对象不对等(*faulty comparison*):想说的是"我们的 UX"和"DeepSeek 的 UX"一致,原句却拿 UX 和一个产品比。中文说"和 DeepSeek 对齐"没问题,英文写作要求对等 → **DeepSeek's UX**,或省略重复的名词只写 **DeepSeek's**。
+- ⚠️ **The target is** —— target 多指可量化的指标(a revenue target / a target of 95%);"目标是做成某事"用 **The goal is / The aim is** 更自然。
+- ⚠️ **make the UX align with** —— make + 宾语 + 动词原形没错,但绕;直接用 **align X with Y** 或 **match** 更简洁。
+
+**更地道的说法:**
+
+1. The goal is to align our UX with DeepSeek's.
+   目标是让我们的用户体验和 DeepSeek 的保持一致。(最小改动;DeepSeek's 后省略了 UX)
+2. The goal is to match DeepSeek's UX.
+   目标是做到和 DeepSeek 一样的用户体验。(最简洁)
+3. We want the UX to feel like DeepSeek's.
+   我们希望用户体验用起来像 DeepSeek 那样。(强调"感觉上一致",口语)
+4. We're using DeepSeek's UX as the benchmark.
+   我们以 DeepSeek 的用户体验为标杆。(强调"参照标准",更书面)
+
+**对等比较再举一例:**
+
+- ❌ *Our app's startup time is faster than DeepSeek.*
+- ✅ *Our app's startup time is faster than DeepSeek's.*
+- ✅ *Our app's startup time is faster than that of DeepSeek.*(更正式)
+
+**涉及的搭配:**
+
+- **align X with Y** —— 让 X 和 Y 保持一致。*We need to align the Android UI with the iOS version.*(我们得让安卓界面和 iOS 版本保持一致。)
+- **match sth** —— 和某物一致 / 相符。*The new design should match the brand guidelines.*(新设计要符合品牌规范。)
+- **use sth as a benchmark / reference** —— 以某物为标杆 / 参照。*We used the market leader as a benchmark.*(我们以市场领先者为标杆。)
+- **be on par with sth** —— 和某物水平相当。*Our onboarding should be on par with the top apps.*(我们的新手引导应该达到头部应用的水平。)
