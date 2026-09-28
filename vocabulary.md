@@ -87,6 +87,7 @@
 81. [句子:is off / has been turned off / take effect](#s-global-flag)
 82. [语法笔记:as / since / because 表原因的区别](#as-since-because)
 83. [句子:align X with Y's / the goal is](#s-align-ux)
+84. [翻译:Which test run ...? / lag behind](#which-test-run)
 
 ---
 
@@ -2531,3 +2532,36 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **match sth** —— 和某物一致 / 相符。*The new design should match the brand guidelines.*(新设计要符合品牌规范。)
 - **use sth as a benchmark / reference** —— 以某物为标杆 / 参照。*We used the market leader as a benchmark.*(我们以市场领先者为标杆。)
 - **be on par with sth** —— 和某物水平相当。*Our onboarding should be on par with the top apps.*(我们的新手引导应该达到头部应用的水平。)
+
+---
+
+<a id="which-test-run"></a>
+## 翻译:Which test run ...? / lag behind
+
+- 日期:2026-09-28
+
+**含义:** 中译英练习——「告诉我是哪次测试列表移动的动画比键盘慢。」
+
+**译法:**
+
+1. Tell me which test run showed the list animating slower than the keyboard.
+   告诉我是哪次测试里列表动画比键盘慢。(直译版)
+2. Which test run was it where the list animation lagged behind the keyboard?
+   是哪次测试里列表动画比键盘慢?(对应"是哪次……"的强调语气,口语)
+3. Can you tell me which test showed the list moving slower than the keyboard?
+   能告诉我是哪次测试里列表比键盘移动得慢吗?(加 Can you,发给同事更客气)
+4. In which test run did the list animation fall behind the keyboard?
+   列表动画在哪次测试里落后于键盘?(更书面)
+
+**要点:**
+
+- **"是哪次……"** —— 中文用"是……的"做强调,英文不要硬译成 *It was which test that...*;直接用 **which test run** 引导宾语从句,或用 *Which ... was it where ...?*。
+- **test run** —— "某一次测试运行",比单说 test 更精确(test 也可以指测试用例本身)。
+- **"列表移动的动画"** —— the list animation / the list moving / animating 即可,不必逐字译成 *the animation of the list moving*。
+- **Tell me ...** —— 在即时消息里直接对同事这么写有点命令口吻,通常加 **Can you / Could you**,或直接问 *Which test run ...?*
+
+**常见搭配:**
+
+- **lag behind sth** —— 落后于、跟不上,很适合描述动画不同步。*The list lags behind the keyboard when it opens.*(键盘弹出时,列表跟不上。)
+- **fall behind sth** —— 落后于。*The UI thread fell behind and frames were dropped.*(UI 线程跟不上,掉帧了。)
+- **out of sync (with sth)** —— 不同步。*The two animations are slightly out of sync.*(两个动画有点不同步。)
