@@ -81,6 +81,12 @@
 75. [chase](#chase)
 76. [句子:be expected to do / after the refactor](#s-expected-to-work)
 77. [expect 的用法(expect to do,不接 doing)](#expect)
+78. [severity](#severity)
+79. [句子:hit an error / under what circumstances](#s-rate-limit-error)
+80. [句子:error message / shown to users](#s-error-message)
+81. [句子:is off / has been turned off / take effect](#s-global-flag)
+82. [语法笔记:as / since / because 表原因的区别](#as-since-because)
+83. [句子:align X with Y's / the goal is](#s-align-ux)
 
 ---
 
@@ -830,6 +836,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - ❌ *He didn't tell me why does that sentence use the word "would".*(错,间接疑问句里不能再加 does)
 
 **一句话记忆:** 独立提问用倒装(why does...);how come 天生不倒装;疑问句被"包"进另一句话里(间接疑问句)时,也变回陈述句语序(why it uses...)。
+
+**相关条目:** [句子:hit an error / under what circumstances](#s-rate-limit-error) —— 间接疑问句语序用对了的一个实例(in what situations users would hit...)。
 
 ---
 
@@ -1770,6 +1778,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **辨析:** deprioritize 只是把重要性调低,任务还在队列里;而 put on hold / shelve 是"暂时停掉不做了"(见 [推迟/暂缓家族速查](#postpone-family-quickref) 对比)。
 
+**相关条目:** [severity](#severity) —— severity 是问题本身多严重,priority 是先修哪个;high severity 的问题也可能被 deprioritize。
+
 ---
 
 <a id="held-out"></a>
@@ -2273,3 +2283,251 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - [句子:be expected to do / after the refactor](#s-expected-to-work) —— 这个错误出现的那句原句订正。
 - [try to do vs. try doing](#try-to-do-vs-try-doing) —— 另一个 to do / doing 意思不同的动词。
+
+---
+
+<a id="severity"></a>
+## severity
+
+- 音标:英 /sɪˈverəti/ 美 /səˈverəti/
+- 词性:n.(多为不可数;表示"级别"时可数,复数 severities)
+- CEFR:C1(形容词 severe 为 B2)
+- 日期:2026-09-26
+
+**English definition:** How serious, harsh, or intense something is — especially something bad, such as an illness, a problem, or a punishment.
+
+**含义:** 严重程度;严厉程度。技术语境里最常指 bug / 事故的**严重级别**。
+
+**义项一:严重程度(问题、疾病、灾害)**
+1. Treatment depends on the severity of the symptoms.
+   治疗方案取决于症状的严重程度。
+2. Nobody realised the severity of the outage until customers started calling.
+   直到客户开始打电话来,大家才意识到这次宕机有多严重。
+
+**义项二:(技术)严重级别,可数**
+1. We classify every incident by severity, from Sev 1 (critical) to Sev 4 (minor).
+   每个事故都按严重级别分类,从 Sev 1(致命)到 Sev 4(轻微)。
+2. This crash is only a low-severity issue because it happens on an obsolete device.
+   这个崩溃只算低严重级别的问题,因为它只出现在一款淘汰的设备上。
+
+**义项三:严厉、苛刻(惩罚、态度、风格)**
+1. The judge was criticised for the severity of the sentence.
+   法官因判得过重而受到批评。
+2. She dresses with a certain severity: all black, no jewellery.
+   她穿着风格很冷峻:一身黑,不戴首饰。
+
+**常见搭配:**
+
+- **the severity of sth** —— 最核心的结构:the severity of the bug / injury / crisis。
+- **high / low / critical severity** —— 作定语时加连字符:a high-severity bug。
+- **Sev 1 / Sev1 / S1** —— 口语和工单里的缩写,读作 "sev one"。
+- **severity level** —— 严重级别。
+- **reduce / assess / underestimate the severity** —— 降低 / 评估 / 低估严重程度。
+
+**辨析:severity vs. priority**
+
+- **severity** —— 问题本身**有多严重**(技术影响),通常由 QA / 工程师判断。
+- **priority** —— **先修哪个**(业务排期),通常由 PM 决定。
+- 所以会有 "high severity, low priority":致命崩溃但只影响极少数旧设备,可以排后面修。
+
+**相关条目:** [deprioritize](#deprioritize) —— 调低 priority 的动作;severity 高的问题也可能被 deprioritize。
+
+---
+
+<a id="s-rate-limit-error"></a>
+## 句子:hit an error / under what circumstances
+
+- 日期:2026-09-28
+
+**我的原句:**
+
+> I would like to know at what situation users would run into Rate limit reached error.
+
+**问题:**
+
+- ✅ **语序正确** —— 间接疑问句用陈述语序(users would run into),没有写成 *would users run into*。
+- ❌ **at what situation** —— situation 搭配 **in**;问"哪些情况"用复数更自然 → **in what situations**。也可以用 **under what circumstances**(circumstances 用 under),或直接用 **when**。
+- ❌ **Rate limit reached error** —— 错误名前要加冠词,名称本身加引号 → **the "Rate limit reached" error**。不加引号,读者得自己分辨哪几个词是名称。
+- ⚠️ **run into** —— 没错,但技术语境里更常说 **hit** a rate limit / an error;问原因时用 **trigger**。
+
+**更地道的说法:**
+
+1. I'd like to know in what situations users would hit the "Rate limit reached" error.
+   我想知道用户在哪些情况下会遇到"Rate limit reached"错误。(原句的最小改动版)
+2. I'd like to understand what triggers the "Rate limit reached" error for users.
+   我想了解是什么触发了用户遇到的"Rate limit reached"错误。(从原因切入,问得更精准)
+3. Under what circumstances do users hit the "Rate limit reached" error?
+   用户在什么情况下会遇到"Rate limit reached"错误?(直接提问,偏正式、书面)
+4. When exactly do users run into the "Rate limit reached" error?
+   用户具体什么时候会遇到"Rate limit reached"错误?(口语,适合即时消息)
+
+**涉及的搭配:**
+
+- **hit a rate limit / hit an error** —— 触发限流 / 遇到错误。*We hit the API rate limit after 100 requests.*(发了 100 个请求后就被限流了。)
+- **run into an error / a problem** —— 碰上错误 / 问题。*I ran into a weird error during the build.*(构建时碰到一个奇怪的错误。)
+- **trigger an error** —— 触发错误(主语是原因)。*Sending too many requests at once triggers the error.*(一次发太多请求就会触发这个错误。)
+- **under what circumstances** —— 在什么情况下,固定用 under。*Under what circumstances can a refund be issued?*(什么情况下可以退款?)
+- **in this / that situation** —— situation 用 in,不用 at。*What would you do in that situation?*(换你在那种情况下会怎么做?)
+
+**相关条目:**
+
+- [语法笔记:why 疑问句 vs how come vs 间接疑问句](#wh-question-order) —— 原句里用对了的间接疑问句语序规则。
+- [句子:error message / shown to users](#s-error-message) —— 紧接着的追问:用户看到的是什么提示。
+
+---
+
+<a id="s-error-message"></a>
+## 句子:error message / shown to users
+
+- 日期:2026-09-28
+
+**我的原句:**
+
+> What text is shown to user for such an error?
+
+**问题:**
+
+- ❌ **to user** —— user 是可数名词,单数不能裸用 → **to the user**(文档里泛指使用者)或 **to users**(复数泛指,最自然)。
+- ⚠️ **such an error** —— 语法没错,但 such 偏书面,带"这类 / 如此"的意味,用在追问里显得重 → **this error**;想强调"这一类"时用 **this kind of error**。
+- ⚠️ **What text** —— 能懂,但母语者更常说 **message**(提示)或 **copy**(界面文案)。
+
+**更地道的说法:**
+
+1. What message do users see when they hit this error?
+   用户遇到这个错误时会看到什么提示?(最自然:主语换成 users,改用主动语态)
+2. What's the error message shown to users in this case?
+   这种情况下给用户显示的错误信息是什么?(口语,适合即时消息)
+3. What copy do we display for this error?
+   这个错误我们显示的是什么文案?(产品 / 设计语境:copy 指界面文字)
+4. What does the user see when this error occurs?
+   发生这个错误时,用户看到的是什么?(不只问文字,也包括弹窗、toast 等形式)
+
+**小技巧:** 被动句 "What text is shown to users" → 主动句 "What do users see",以人为主语,更直接——这是 C1 写作常用的改法。
+
+**涉及的搭配:**
+
+- **error message** —— 错误提示。*The error message just says "Something went wrong."*(错误提示只写了"出了点问题"。)
+- **show / display a message to users** —— 向用户显示提示。*We display a friendly message to users instead of the raw error.*(我们给用户显示友好的提示,而不是原始报错。)
+- **UI copy / error copy** —— 界面文案 / 错误文案。*The designer will update the error copy.*(设计师会改一下错误文案。)
+- **when this error occurs** —— 发生这个错误时;occur 比 happen 更书面。
+
+**相关条目:** [句子:hit an error / under what circumstances](#s-rate-limit-error) —— 同一场景的上一句提问。
+
+---
+
+<a id="s-global-flag"></a>
+## 句子:is off / has been turned off / take effect
+
+- 日期:2026-09-28
+
+**我的原句:**
+
+> As the global flag has turned off, other flags don't take effect even if they are turned on.
+
+**问题:**
+
+- ❌ **has turned off** —— 主动语态意思成了"flag 自己把自己关掉"。flag 是被人关的 → 说状态用 **is off**,强调动作用被动 **has been turned off**。
+- ⚠️ **As** —— 有歧义,读者可能理解成"当……时 / 随着……"而不是"因为"。这里讲的是规则 / 条件,用 **when / if** 最清楚;确实要表原因用 **since / because**。
+- ⚠️ **other flags** —— 指的是除全局开关外那一组特定的开关,要加定冠词 → **the other flags**。
+- ⚠️ **turned on / off** —— 能用,但技术语境里 **enabled / disabled** 更常见。
+
+**更地道的说法:**
+
+1. When the global flag is off, the other flags have no effect, even if they're on.
+   全局开关关闭时,其他开关即使打开了也不起作用。(把 As 换成 When,歧义消失)
+2. If the global flag is disabled, none of the other flags take effect, regardless of their own settings.
+   全局开关被禁用时,其他开关不管自身怎么设置都不会生效。
+3. The global flag acts as a master switch: turn it off, and all the other flags are ignored.
+   全局开关相当于总开关:把它关掉,其他开关就全部失效。(用比喻一句讲清层级关系)
+
+**涉及的搭配:**
+
+- **take effect / have no effect** —— 生效 / 不起作用。*The new setting takes effect after a restart.*(新设置重启后生效。)
+- **enable / disable a flag** —— 打开 / 关闭开关。*We disabled the flag for all users.*(我们给所有用户关掉了这个开关。)
+- **master switch** —— 总开关。*This toggle is the master switch for all notifications.*(这个开关是所有通知的总开关。)
+- **kill switch** —— 紧急关闭开关(出问题时一键停掉某功能)。*We added a kill switch so we can turn the feature off remotely.*(我们加了个紧急开关,可以远程关掉这个功能。)
+- **regardless of** —— 不管、无论。*The rule applies regardless of the user's role.*(不管用户什么角色,这条规则都适用。)
+
+**相关条目:** [语法笔记:as / since / because 表原因的区别](#as-since-because) —— 原句里 As 的歧义由此引出。
+
+---
+
+<a id="as-since-because"></a>
+## 语法笔记:as / since / because 表原因的区别
+
+- 日期:2026-09-28
+
+**规则:** 三者都能表"因为",但语气强弱、原因是否已知、会不会产生歧义各不相同。
+
+**because —— 最强,原因是新信息**
+- 原因是句子的重点,回答"Why?"。可以单独回答问题,也能被强调(only because / just because)。
+1. The build failed because a dependency was missing.
+   构建失败是因为少了一个依赖。
+2. —Why is it slow? —Because the cache is disabled.
+   ——为什么慢?——因为缓存被关了。
+
+**since —— "既然",原因是双方已知的**
+- 重点在后半句的结论,原因只是铺垫。
+- ⚠️ 和完成时连用时容易被读成"自从":*Since the flag has been turned off, ...* 可能被理解成"自从开关关掉以来……"。
+1. Since you're already here, let's review the PR together.
+   既然你已经在这儿了,我们一起看一下这个 PR 吧。
+2. Since the API is deprecated, we should migrate soon.
+   既然这个 API 已经废弃了,我们应该尽快迁移。
+
+**as —— 最弱,偏正式 / 书面**
+- 原因不重要,顺带一提。
+- ⚠️ 容易被读成"当……时"或"随着……":*As the context grows, ...* 就是"随着"。
+1. As it was getting late, we decided to stop.
+   由于天色已晚,我们决定停下。
+2. As the context size grows, responses get slower.
+   随着上下文变大,响应会变慢。(这里 as 是"随着",不是"因为")
+
+**快速判断:**
+
+- 中文能说成"既然" → **since**
+- 能回答"为什么?" → **because**
+- 书面、原因无关紧要,且上下文不会误读成"当 / 随着" → **as**
+- 其实是在讲条件 / 规则 → 别用这三个,用 **when / if**
+
+**相关条目:** [句子:is off / has been turned off / take effect](#s-global-flag) —— 原句里 As 引起歧义的实例。
+
+---
+
+<a id="s-align-ux"></a>
+## 句子:align X with Y's / the goal is
+
+- 日期:2026-09-28
+
+**我的原句:**
+
+> The target is to make the UX align with DeepSeek.
+
+**问题:**
+
+- ⚠️ **align with DeepSeek** —— 比较对象不对等(*faulty comparison*):想说的是"我们的 UX"和"DeepSeek 的 UX"一致,原句却拿 UX 和一个产品比。中文说"和 DeepSeek 对齐"没问题,英文写作要求对等 → **DeepSeek's UX**,或省略重复的名词只写 **DeepSeek's**。
+- ⚠️ **The target is** —— target 多指可量化的指标(a revenue target / a target of 95%);"目标是做成某事"用 **The goal is / The aim is** 更自然。
+- ⚠️ **make the UX align with** —— make + 宾语 + 动词原形没错,但绕;直接用 **align X with Y** 或 **match** 更简洁。
+
+**更地道的说法:**
+
+1. The goal is to align our UX with DeepSeek's.
+   目标是让我们的用户体验和 DeepSeek 的保持一致。(最小改动;DeepSeek's 后省略了 UX)
+2. The goal is to match DeepSeek's UX.
+   目标是做到和 DeepSeek 一样的用户体验。(最简洁)
+3. We want the UX to feel like DeepSeek's.
+   我们希望用户体验用起来像 DeepSeek 那样。(强调"感觉上一致",口语)
+4. We're using DeepSeek's UX as the benchmark.
+   我们以 DeepSeek 的用户体验为标杆。(强调"参照标准",更书面)
+
+**对等比较再举一例:**
+
+- ❌ *Our app's startup time is faster than DeepSeek.*
+- ✅ *Our app's startup time is faster than DeepSeek's.*
+- ✅ *Our app's startup time is faster than that of DeepSeek.*(更正式)
+
+**涉及的搭配:**
+
+- **align X with Y** —— 让 X 和 Y 保持一致。*We need to align the Android UI with the iOS version.*(我们得让安卓界面和 iOS 版本保持一致。)
+- **match sth** —— 和某物一致 / 相符。*The new design should match the brand guidelines.*(新设计要符合品牌规范。)
+- **use sth as a benchmark / reference** —— 以某物为标杆 / 参照。*We used the market leader as a benchmark.*(我们以市场领先者为标杆。)
+- **be on par with sth** —— 和某物水平相当。*Our onboarding should be on par with the top apps.*(我们的新手引导应该达到头部应用的水平。)
