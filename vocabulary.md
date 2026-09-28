@@ -82,6 +82,7 @@
 76. [句子:be expected to do / after the refactor](#s-expected-to-work)
 77. [expect 的用法(expect to do,不接 doing)](#expect)
 78. [severity](#severity)
+79. [句子:hit an error / under what circumstances](#s-rate-limit-error)
 
 ---
 
@@ -831,6 +832,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - ❌ *He didn't tell me why does that sentence use the word "would".*(错,间接疑问句里不能再加 does)
 
 **一句话记忆:** 独立提问用倒装(why does...);how come 天生不倒装;疑问句被"包"进另一句话里(间接疑问句)时,也变回陈述句语序(why it uses...)。
+
+**相关条目:** [句子:hit an error / under what circumstances](#s-rate-limit-error) —— 间接疑问句语序用对了的一个实例(in what situations users would hit...)。
 
 ---
 
@@ -2324,3 +2327,42 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 所以会有 "high severity, low priority":致命崩溃但只影响极少数旧设备,可以排后面修。
 
 **相关条目:** [deprioritize](#deprioritize) —— 调低 priority 的动作;severity 高的问题也可能被 deprioritize。
+
+---
+
+<a id="s-rate-limit-error"></a>
+## 句子:hit an error / under what circumstances
+
+- 日期:2026-09-28
+
+**我的原句:**
+
+> I would like to know at what situation users would run into Rate limit reached error.
+
+**问题:**
+
+- ✅ **语序正确** —— 间接疑问句用陈述语序(users would run into),没有写成 *would users run into*。
+- ❌ **at what situation** —— situation 搭配 **in**;问"哪些情况"用复数更自然 → **in what situations**。也可以用 **under what circumstances**(circumstances 用 under),或直接用 **when**。
+- ❌ **Rate limit reached error** —— 错误名前要加冠词,名称本身加引号 → **the "Rate limit reached" error**。不加引号,读者得自己分辨哪几个词是名称。
+- ⚠️ **run into** —— 没错,但技术语境里更常说 **hit** a rate limit / an error;问原因时用 **trigger**。
+
+**更地道的说法:**
+
+1. I'd like to know in what situations users would hit the "Rate limit reached" error.
+   我想知道用户在哪些情况下会遇到"Rate limit reached"错误。(原句的最小改动版)
+2. I'd like to understand what triggers the "Rate limit reached" error for users.
+   我想了解是什么触发了用户遇到的"Rate limit reached"错误。(从原因切入,问得更精准)
+3. Under what circumstances do users hit the "Rate limit reached" error?
+   用户在什么情况下会遇到"Rate limit reached"错误?(直接提问,偏正式、书面)
+4. When exactly do users run into the "Rate limit reached" error?
+   用户具体什么时候会遇到"Rate limit reached"错误?(口语,适合即时消息)
+
+**涉及的搭配:**
+
+- **hit a rate limit / hit an error** —— 触发限流 / 遇到错误。*We hit the API rate limit after 100 requests.*(发了 100 个请求后就被限流了。)
+- **run into an error / a problem** —— 碰上错误 / 问题。*I ran into a weird error during the build.*(构建时碰到一个奇怪的错误。)
+- **trigger an error** —— 触发错误(主语是原因)。*Sending too many requests at once triggers the error.*(一次发太多请求就会触发这个错误。)
+- **under what circumstances** —— 在什么情况下,固定用 under。*Under what circumstances can a refund be issued?*(什么情况下可以退款?)
+- **in this / that situation** —— situation 用 in,不用 at。*What would you do in that situation?*(换你在那种情况下会怎么做?)
+
+**相关条目:** [语法笔记:why 疑问句 vs how come vs 间接疑问句](#wh-question-order) —— 原句里用对了的间接疑问句语序规则。
