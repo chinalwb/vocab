@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -71,6 +72,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.CompositionLocalProvider
 import io.github.chinalwb.vocab.ui.GridViewIcon
+import io.github.chinalwb.vocab.ui.MistakesScreen
 import io.github.chinalwb.vocab.ui.ReviewScreen
 import io.github.chinalwb.vocab.ui.VocabTheme
 import io.github.chinalwb.vocab.ui.VocabViewModel
@@ -173,7 +175,10 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 windowInsets = WindowInsets(0),
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = ground, scrolledContainerColor = ground),
                 scrollBehavior = if (tab == 0) bars else null,
-                title = { Text(if (tab == 0) stringResource(R.string.app_name) else "复习", fontFamily = FontFamily.Serif) },
+                title = {
+                    val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; else -> "错题本" }
+                    Text(name, fontFamily = FontFamily.Serif)
+                },
                 actions = {
                     if (tab == 0) {
                         // Shows the layout you'd switch to, like Keep does.
@@ -198,6 +203,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
             ) {
                 NavigationBarItem(tab == 0, { tab = 0 }, { Icon(Icons.AutoMirrored.Filled.List, null) }, label = { Text("浏览") })
                 NavigationBarItem(tab == 1, { tab = 1 }, { Icon(Icons.Default.Star, null) }, label = { Text("复习") })
+                NavigationBarItem(tab == 2, { tab = 2 }, { Icon(Icons.Default.Warning, null) }, label = { Text("错题") })
             }
         },
         snackbarHost = { SnackbarHost(snackbar) },
@@ -212,6 +218,8 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 contentPadding = pad,
                 statusBarShown = { 1 - bars.state.collapsedFraction },
             )
+        } else if (tab == 2) {
+            MistakesScreen(lib, onOpen = open, modifier = Modifier.padding(pad))
         } else {
             ReviewScreen(
                 lib, review, session,
