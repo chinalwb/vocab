@@ -94,6 +94,7 @@
 88. [句子:see sth as / a long-term project / it takes effort](#s-long-term-project)
 89. [句子:play it safe / go with / make a mistake](#s-play-it-safe)
 90. [on the team(团队成员用 on)](#on-the-team)
+91. [be considered sth vs be regarded / viewed as sth](#considered-vs-regarded-as)
 
 ---
 
@@ -2762,6 +2763,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 **相关条目:**
 
 - [语法笔记:as / since / because 表原因的区别](#as-since-because) —— 这里用 since 的理由。
+- [be considered sth vs be regarded / viewed as sth](#considered-vs-regarded-as) —— see / regard / view 都要带 as,consider 不带。
 - [句子:play it safe / go with / make a mistake](#s-play-it-safe) —— 紧接着的一句:为什么当时没敢用 since。
 
 ---
@@ -2828,3 +2830,49 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ❌ [冠词] **in backend team** —— 特指"后端那个团队"要加定冠词 → **the backend team**。
 - ✅ **in the team** —— 意思清楚,日常使用完全够用;美式 / 职场更常说 **on the team**:*Who on the backend team owns the template file?*
+
+---
+
+<a id="considered-vs-regarded-as"></a>
+## be considered sth vs be regarded / viewed as sth
+
+- 词性:phrase
+- 日期:2026-09-29
+
+**English definition:** To be thought of by people as having a particular quality or being a particular thing. *Consider* takes the description directly; *regard*, *view* and *see* need *as*.
+
+**含义:** 被认为是……、被看作……。
+
+**句型一:be considered (to be) + 形容词 / 名词(不带 as)**
+1. Thirteen is considered an unlucky number in the West.
+   在西方,13 被认为是不吉利的数字。
+2. She is considered one of the best engineers on the team.
+   她被认为是团队里最优秀的工程师之一。
+
+**句型二:be regarded / viewed / seen as + 形容词 / 名词(必须带 as)**
+1. He is widely regarded as the father of modern computing.
+   他被普遍视为现代计算之父。
+2. The update was viewed as a step backwards by many users.
+   很多用户把这次更新看作是一种倒退。
+
+**记法:** **consider 不带 as;regard / view / see 要带 as。**
+
+**我的原句:**
+
+> Why is 13 considered as an unlucky number in Western culture?
+
+- ⚠️ [搭配] **considered as** —— 能用,也有人这么说,但标准写法去掉 as → **Why is 13 considered an unlucky number in Western culture?**
+
+**翻译练习:** 为什么 13 是西方忌讳的数字?
+1. Why is the number 13 considered unlucky in the West?
+   为什么 13 在西方被认为是不吉利的数字?
+2. Why do people in the West avoid the number 13?
+   为什么西方人忌讳数字 13?(从"人们回避它"的角度,更贴近"忌讳")
+
+**要点:**
+
+- "忌讳"别直译成 **taboo**:taboo 指社会 / 宗教上禁止谈论或做的事,分量很重;数字 13 只是"不吉利",用 **unlucky / superstition**。
+- "西方"作名词是 **the West**(大写,带 the),作形容词是 **Western**。
+- 冷知识:对 13 的恐惧叫 **triskaidekaphobia**。
+
+**相关条目:** [句子:see sth as / a long-term project / it takes effort](#s-long-term-project) —— see sth as 同属"要带 as"的一类。
