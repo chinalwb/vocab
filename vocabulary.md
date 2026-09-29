@@ -93,6 +93,7 @@
 87. [句子:be better at sth](#s-better-at)
 88. [句子:see sth as / a long-term project / it takes effort](#s-long-term-project)
 89. [句子:play it safe / go with / make a mistake](#s-play-it-safe)
+90. [on the team(团队成员用 on)](#on-the-team)
 
 ---
 
@@ -2793,3 +2794,37 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **make a mistake / hit an error** —— 犯错用 make,遇到报错用 hit。
 
 **相关条目:** [句子:see sth as / a long-term project / it takes effort](#s-long-term-project) —— 上一句,这里说的 since / because 就出自那句。
+
+---
+
+<a id="on-the-team"></a>
+## on the team(团队成员用 on)
+
+- 词性:phrase
+- 日期:2026-09-29
+
+**English definition:** Being a member of a team, group, or committee — *on* is the usual preposition, especially in American English and workplace talk.
+
+**含义:** 是某个团队的成员。我尝试过 at 和 in,就是没想到 on。
+
+**三个介词怎么选:**
+
+- ✅ **on the team** —— 最常用,美式标准说法,职场高频。
+- ✅ **in the team** —— 也正确,英式英语常见;在美式职场里听着略不习惯。
+- ❌ **at the team** —— 不这么说。at 用于地点 / 机构:*I work at Google.*(我在谷歌工作。)
+
+**语感:** 把团队想成一份"名单 / 平台",成员的名字写在上面,所以用 on。同一逻辑:
+
+1. She's on the backend team.
+   她在后端团队。
+2. He sits on the review committee.
+   他是评审委员会的成员。
+
+**同类搭配:** on a committee / board / panel(委员会、董事会、评审团成员)· on the list(在名单上)· on the call(在电话会议里)· on the project(参与这个项目)。
+
+**我的原句:**
+
+> Who is the owner of the template file in backend team?
+
+- ❌ [冠词] **in backend team** —— 特指"后端那个团队"要加定冠词 → **the backend team**。
+- ✅ **in the team** —— 意思清楚,日常使用完全够用;美式 / 职场更常说 **on the team**:*Who on the backend team owns the template file?*
