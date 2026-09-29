@@ -578,8 +578,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 - ❌ [动词] **The police has** —— police 是集合名词,谓语恒用复数 → **The police have**。
 - ❌ [结构] **ruled out him** —— 代词宾语必须夹在中间 → **ruled him out**。
-- ❌ [搭配] **rule out ... from the suspects** —— → **rule sb out as a suspect** / rule sb out of the suspect list。
-- ❌ [结构] **the evidence he was** —— evidence 后接同位语从句要加 that → **the evidence that he was**。
+- ⚠️ [搭配] **rule out ... from the suspects** —— 能懂,但地道说法是 **rule sb out as a suspect** / rule sb out of the suspect list。
+- ⚠️ [结构] **the evidence he was** —— 口语里省略 that 也能接受,书面语里同位语从句要加 → **the evidence that he was**。
 
 **改正后:** ✅ *The police have ruled him out as a suspect, given the evidence that he was not at the crime scene.*
 
@@ -628,9 +628,9 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 **问题:**
 
-- ❌ [逻辑] **if using it** —— 悬垂修饰语,没有明确主语(是谁在 using?)→ 补主语 **if you use it**,或用被动 **when used**。
+- ⚠️ [逻辑] **if using it** —— 技术写作里这种省略主语的条件句很常见;更严谨的写法是补主语 **if you use it**,或用 **when used**。
 - ❌ [词形] **python** —— 编程语言名是专有名词 → **Python**。
-- ⚠️ [介词] **model name of X** —— 语法没错,技术语境里更常说 **model name for X**。
+- ✅ **model name of X** —— 意思清楚,日常使用完全够用;技术语境也常说 **model name for X**。
 
 **改正后:**
 - ✅ *What is the model name for Gemini 3.5 Flash Lite when used in Python code?*
@@ -877,7 +877,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 > synonyms to immense
 
-- ❌ [介词] **synonyms to** —— synonym / antonym 不搭配 to → **synonyms for / of**。
+- ⚠️ [介词] **synonyms to** —— 有人这么用,但标准搭配是 **synonyms for / of**。
 
 **容易混的点:** 如果用的是形容词 **synonymous**(而不是名词 synonym),搭配的介词是 **with**,不是 for/of:
 
@@ -1729,7 +1729,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 > Platform equals 10 means the request originated from web, right?
 
-- ❌ [结构] **Platform equals 10 means...** —— 完整从句做主语,要用 that 引导 → **That platform equals 10 means...**
+- ⚠️ [结构] **Platform equals 10 means...** —— 口语里常见;正式写作中完整从句做主语要用 that 引导 → **That platform equals 10 means...**
 - ❌ [冠词] **from web** —— → **from the web**。
 
 这句里 "Platform equals 10"(主谓宾结构完整)被当作了主语,严格来说应该加 that:
@@ -2041,7 +2041,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ❌ [搭配] **make everything straight** —— 搭配错了。"把事情弄清楚"的固定搭配是 **get ... straight**,不用 make。
 - ⚠️ [逻辑] **rush 和 until 语义打架** —— "not ... until" 的含义是"到了那个时间点之后就该做了",套进来就变成"理清楚之后就可以急着写了",而 rush 在任何阶段都不是好事。
-- ⚠️ [搭配] **rush to write** 更偏"赶紧去写";表达"仓促动手做某事"的地道说法是 **rush into (doing) sth**。
+- ✅ **rush to write** —— 意思清楚,日常使用完全够用;另一种说法是 **rush into (doing) sth**(仓促动手做某事)。
 
 **更地道的说法:**
 
@@ -2170,7 +2170,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 **问题:**
 
 - ❌ [搭配] **chase for** —— chase 是及物动词,直接接宾语(chase a dream)或用 **chase after sth**。"chase for" 只在 **chase sb for sth**(催某人要某样东西)里成立,和"寻找"是两回事。
-- ⚠️ [语气] **chase 语气过重** —— chase 带有"追逐难以得到的东西"的意味,用来说"找个更简单的办法"有点用力过猛。
+- ✅ **chase(去掉 for 之后)** —— *I'm chasing an easier approach* 本身意思清楚,日常使用完全够用;想更平实可以说 **look for / be after**。
 
 **更地道的说法:**
 
@@ -2263,8 +2263,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 **问题:**
 
 - ❌ [动词] **is expected working** —— expect 的结构是 **expect sb/sth to do sth**,被动就是 **be expected to do sth**,不能接 -ing。同类的 be supposed to、be required to、be likely to 也都接 to do。
-- ⚠️ [搭配] **well** —— 说软件"能正常运行",用 **correctly** 或 **as expected** 更准确;well 更偏"表现得好"。
-- ⚠️ [搭配] **after refactoring** —— 没错,但工程师之间更常把 refactor 当名词用:**after the refactor**、a big refactor。
+- ✅ **well** —— *work well* 意思清楚,日常使用完全够用;想强调"行为符合预期"可以说 **correctly / as expected**。
+- ✅ **after refactoring** —— 意思清楚,日常使用完全够用;工程师之间也常把 refactor 当名词:**after the refactor**。
 
 **更地道的说法:**
 
@@ -2400,7 +2400,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ✅ **语序正确** —— 间接疑问句用陈述语序(users would run into),没有写成 *would users run into*。
 - ❌ [介词] **at what situation** —— situation 搭配 **in**;问"哪些情况"用复数更自然 → **in what situations**。也可以用 **under what circumstances**(circumstances 用 under),或直接用 **when**。
 - ❌ [冠词] **Rate limit reached error** —— 错误名前要加冠词,名称本身加引号 → **the "Rate limit reached" error**。不加引号,读者得自己分辨哪几个词是名称。
-- ⚠️ [搭配] **run into** —— 没错,但技术语境里更常说 **hit** a rate limit / an error;问原因时用 **trigger**。
+- ✅ **run into** —— 意思清楚,日常使用完全够用;技术语境也常说 **hit** a rate limit / an error,问原因时用 **trigger**。
 
 **更地道的说法:**
 
@@ -2440,8 +2440,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 **问题:**
 
 - ❌ [冠词] **to user** —— user 是可数名词,单数不能裸用 → **to the user**(文档里泛指使用者)或 **to users**(复数泛指,最自然)。
-- ⚠️ [语气] **such an error** —— 语法没错,但 such 偏书面,带"这类 / 如此"的意味,用在追问里显得重 → **this error**;想强调"这一类"时用 **this kind of error**。
-- ⚠️ [搭配] **What text** —— 能懂,但母语者更常说 **message**(提示)或 **copy**(界面文案)。
+- ✅ **such an error** —— 意思清楚,日常使用完全够用;更口语的追问可以说 **this error / this kind of error**。
+- ✅ **What text** —— 意思清楚,日常使用完全够用(UI 语境说 text 很常见);也可以说 **message**(提示)或 **copy**(界面文案)。
 
 **更地道的说法:**
 
@@ -2478,10 +2478,10 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **问题:**
 
-- ❌ [动词] **has turned off** —— 主动语态意思成了"flag 自己把自己关掉"。flag 是被人关的 → 说状态用 **is off**,强调动作用被动 **has been turned off**。
+- ⚠️ [动词] **has turned off** —— turn off 可以不及物(*the light turned off*),但 flag 是被人关的,说状态用 **is off**,强调动作用 **has been turned off** 更贴切。
 - ⚠️ [逻辑] **As** —— 有歧义,读者可能理解成"当……时 / 随着……"而不是"因为"。这里讲的是规则 / 条件,用 **when / if** 最清楚;确实要表原因用 **since / because**。
 - ⚠️ [冠词] **other flags** —— 指的是除全局开关外那一组特定的开关,要加定冠词 → **the other flags**。
-- ⚠️ [搭配] **turned on / off** —— 能用,但技术语境里 **enabled / disabled** 更常见。
+- ✅ **turned on / off** —— 意思清楚,日常使用完全够用;技术文档里 **enabled / disabled** 也很常见。
 
 **更地道的说法:**
 
@@ -2560,8 +2560,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 **问题:**
 
 - ⚠️ [逻辑] **align with DeepSeek** —— 比较对象不对等(*faulty comparison*):想说的是"我们的 UX"和"DeepSeek 的 UX"一致,原句却拿 UX 和一个产品比。中文说"和 DeepSeek 对齐"没问题,英文写作要求对等 → **DeepSeek's UX**,或省略重复的名词只写 **DeepSeek's**。
-- ⚠️ [搭配] **The target is** —— target 多指可量化的指标(a revenue target / a target of 95%);"目标是做成某事"用 **The goal is / The aim is** 更自然。
-- ⚠️ [直译] **make the UX align with** —— make + 宾语 + 动词原形没错,但绕;直接用 **align X with Y** 或 **match** 更简洁。
+- ✅ **The target is** —— 意思清楚,日常使用完全够用;target 多指可量化指标,泛指"目标是做某事"时 **The goal is / The aim is** 更常见。
+- ✅ **make the UX align with** —— 语法正确、意思清楚,日常使用完全够用;更简洁的说法是 **align X with Y** 或 **match**。
 
 **更地道的说法:**
 
@@ -2636,7 +2636,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 > Including some screenshots and code is never harmful.
 
-- ❌ [搭配] **is never harmful** —— 不是固定说法:harmful 分量太重(harmful chemicals / harmful to health),读起来像事实判断而不是建议 → **It never hurts to include some screenshots and code.**
+- ⚠️ [搭配] **is never harmful** —— 语法没错,但不是惯用说法:harmful 分量太重(harmful chemicals / harmful to health)→ **It never hurts to include some screenshots and code.**
 
 **句型一:it never hurts to do sth(最常用)**
 1. It never hurts to ask.
@@ -2672,8 +2672,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 **问题:**
 
 - ❌ [词形] **in multi lines** —— multi 是前缀,不能单独当形容词 → **multiple lines**(复合词 **multi-line** 只能作前置定语:a multi-line title);介词用 **on**:**on multiple lines**。
-- ⚠️ [介词] **fit into a single line** —— 母语者说 **fit on one line**(介词同样用 on);条件句里 *cannot* 偏重,用 **doesn't** 更自然。
-- ⚠️ [动词] **the bug is fixed** —— 没错;**has been fixed** 更强调结果。开头可换成更口语的 **Looks like**。
+- ✅ **fit into a single line** —— 意思清楚,日常使用完全够用;更常见的说法是 **fit on one line**,条件句里用 **doesn't** 比 *cannot* 更轻。
+- ✅ **the bug is fixed** —— 意思清楚,日常使用完全够用;**has been fixed** 更强调结果,口语开头也可以用 **Looks like**。
 - ✅ **the title is truncated** —— truncated 用得准确,是"文字被截断"的标准说法。
 
 **更地道的说法:**
@@ -2743,9 +2743,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **问题:**
 
-- ⚠️ [搭配] **take it as** —— take sth as = "理解为"(I'll take that as a compliment);"当作"用 **see / treat it as**。
+- ✅ **take it as** —— 意思清楚,日常使用完全够用(*I take it as a challenge*);**see / treat it as** 是更常见的"当作"。
 - ❌ [词形] **long term project** —— 前置定语加连字符 → **a long-term project**。
-- ❌ [冠词] **requires huge effort** —— "一番努力"可数,要加冠词 → **a huge effort**(或 a lot of effort)。
+- ⚠️ [冠词] **requires huge effort** —— effort 作不可数名词也成立,但"一番努力"更常见的说法是 **a huge effort**(或 a lot of effort)。
 - ⚠️ [直译] **to reach C1 level for my writing skills** —— 绕 → **get my writing to C1**。
 
 **更地道的说法:**
@@ -2779,7 +2779,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [结构] **it seemed like that** —— like 和 that 二选一;说自己的感受,直接 **I wasn't confident** 即可。
 - ⚠️ [结构] **confident to use** —— → **confident enough to use** / **confident about using**。
 - ❌ [搭配] **mistakes I've hit** —— 犯错用 **make**:**mistakes I'd made**(hit 搭配 bug / error / limit)。
-- ❌ [词形] **a more safe word** —— 单音节词比较级 → **safer**。
+- ⚠️ [词形] **a more safe word** —— 有人这么用,但单音节词的标准比较级是 **safer**。
 - ⚠️ [语气] **Therefore / took a word** —— 聊天里 Therefore 太正式 → **so**;选用某词 → **went with** / **played it safe**。
 
 **更地道的说法:**
