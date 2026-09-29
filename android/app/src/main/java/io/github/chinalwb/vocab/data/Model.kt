@@ -24,6 +24,8 @@ data class VocabData(
     val hash: String,
     val count: Int,
     val generated: String,
+    /** 错题本 categories in display order — MISTAKE_TYPES in build.py. */
+    val mistakeTypes: List<MistakeType> = emptyList(),
     val entries: List<Entry>,
 ) {
     @Transient
@@ -42,6 +44,8 @@ data class Entry(
     val date: String = "",
     val gloss: String = "",
     val blocks: List<Block> = emptyList(),
+    /** The user's own mistakes in this entry — the tagged ❌/⚠️ bullets. */
+    val mistakes: List<Mistake> = emptyList(),
     val hash: String = "",
 ) {
     @Transient
@@ -82,3 +86,16 @@ sealed interface Block {
 
 @Serializable
 data class Example(val en: String, val zh: String = "")
+
+@Serializable
+data class MistakeType(val key: String, val desc: String = "")
+
+/** One tagged bullet: [sev] is "error" (❌) or "warn" (⚠️); [text] keeps its inline markdown. */
+@Serializable
+data class Mistake(
+    val sev: String,
+    val type: String,
+    val text: String,
+    /** The 我的原句 quote the bullet belongs to; empty when the entry has none. */
+    val original: String = "",
+)

@@ -37,6 +37,8 @@
   --tm-1:#ddd9f2; --tm-2:#cec9ea; --tm-3:#e9e6f7;
   --gr-1:#f2d5e4; --gr-2:#ebc2d7; --gr-3:#f7e4ee;
   --sn-1:#e8d7c3; --sn-2:#dfcaaf; --sn-3:#f1e5d7;
+
+  --err:#c2412d; --warn:#b7791f; --mk:#ffffff; --tag:#ece9e0; --tag-ink:#4a4944;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -65,6 +67,8 @@
     --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
     --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
     --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
+
+    --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
   }
 }
 :root[data-theme="dark"]{
@@ -93,6 +97,8 @@
   --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
   --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
   --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
+
+  --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
 }
 
 *{box-sizing:border-box}
@@ -268,6 +274,47 @@ h1{
   font-family:Newsreader,Georgia,serif;font-size:15px;line-height:1.5;
 }
 
+/* ── 错题本 ─────────────────────────────── */
+.mtag{
+  display:inline-block;font-size:.78em;font-weight:500;line-height:1.5;
+  background:var(--tag);color:var(--tag-ink);
+  border-radius:4px;padding:0 5px;margin:0 2px;vertical-align:.08em;
+}
+.pill.mk-pill{border-style:dashed}
+.pill.mk-pill[aria-pressed="true"]{border-style:solid}
+.mk-intro{color:var(--ink-3);font-size:13px;margin:22px 0 0;max-width:62ch}
+.mk-types{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.mk-types .pill .n{opacity:.6;font-variant-numeric:tabular-nums}
+.mk-head .badge{background:var(--mk);color:var(--ink)}
+.mk{
+  break-inside:avoid;-webkit-column-break-inside:avoid;
+  content-visibility:auto;contain-intrinsic-size:auto 150px;
+  background:var(--mk);color:var(--ink);
+  border:1px solid var(--rule);border-left:3px solid var(--sev);
+  border-radius:8px;padding:11px 14px 10px;margin-bottom:12px;
+  box-shadow:var(--shadow);cursor:pointer;text-align:left;width:100%;
+  font:inherit;display:block;
+  transition:box-shadow .16s ease, transform .16s ease;
+}
+.mk:hover{box-shadow:var(--shadow-lift);transform:translateY(-1px)}
+.mk:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.mk.error{--sev:var(--err)}
+.mk.warn{--sev:var(--warn)}
+.mk .what{font-size:13.5px;line-height:1.6;margin:0}
+.mk .what .sv{color:var(--sev);font-weight:700;margin-right:4px;font-size:12px}
+.mk .orig{
+  margin:8px 0 0;padding-left:10px;border-left:2px solid var(--rule);
+  font-family:Newsreader,Georgia,serif;font-size:14px;line-height:1.45;color:var(--ink-2);
+}
+.mk .src{
+  display:flex;justify-content:space-between;gap:8px;margin-top:9px;
+  font-size:11px;color:var(--ink-3);letter-spacing:.03em;
+}
+.mk .src .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mk .src .dt{font-variant-numeric:tabular-nums;white-space:nowrap}
+.mk code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;background:var(--tag);padding:0 4px;border-radius:3px}
+.mk del{opacity:.65}
+
 @media (max-width:640px){
   .grid{columns:2 150px;column-gap:10px}
   .card{margin-bottom:10px;padding:11px 13px}
@@ -293,11 +340,17 @@ h1{
     </div>
   </header>
   <main id="board"></main>
+  <section id="mistakes" hidden>
+    <p class="mk-intro">只收我自己写错的地方。<b style="color:var(--err)">❌</b> 是语法错误,<b style="color:var(--warn)">⚠️</b> 是能懂但不地道。点卡片打开原条目。</p>
+    <div class="mk-types" id="mtypes"></div>
+    <div id="mboard"></div>
+  </section>
   <p class="empty" id="empty" hidden>没有匹配的条目。</p>
 </div>
 
 <script>
 const DATA = /*__DATA__*/;
+const MISTAKES = /*__MISTAKES__*/;
 
 const LV = {
   A1:{nm:"入门",  sw:["--a1-1","--a1-2","--a1-3"]},
@@ -339,7 +392,8 @@ const filters = document.getElementById("filters");
 const q = document.getElementById("q");
 const empty = document.getElementById("empty");
 const total = DATA.reduce((n,g)=>n+g.items.length,0);
-document.getElementById("tally").textContent = total + " 条 · 按 CEFR 等级分组";
+const mkTotal = MISTAKES.reduce((n,g)=>n+g.items.length,0);
+document.getElementById("tally").textContent = total + " 条 · 按 CEFR 等级分组 · " + mkTotal + " 个错题";
 
 let active = "ALL";
 try { const s = localStorage.getItem("vk.level"); if (s) active = s; } catch(e){}
@@ -361,6 +415,8 @@ const mk = (key, text, sw) => {
 };
 filters.append(mk("ALL", "全部"));
 DATA.forEach(g => filters.append(mk(g.level, LABEL[g.level] || g.level, LV[g.level].sw[0])));
+if (mkTotal) { const b = mk("MISTAKES", "错题本 " + mkTotal); b.classList.add("mk-pill"); filters.append(b); }
+else if (active === "MISTAKES") active = "ALL";
 
 // anchor -> entry, so a cross-reference inside a note can open the note it points at
 const byAnchor = {};
@@ -405,8 +461,81 @@ const sections = DATA.map(g => {
   return { level: g.level, el: sec, cards };
 });
 
+// ── 错题本 view: every tagged mistake, grouped by type ──
+const mistakesEl = document.getElementById("mistakes");
+const mtypes = document.getElementById("mtypes");
+const mboard = document.getElementById("mboard");
+let mtype = "ALL";
+try { const s = localStorage.getItem("vk.mtype"); if (s) mtype = s; } catch(e){}
+if (mtype !== "ALL" && !MISTAKES.some(g => g.type === mtype)) mtype = "ALL";
+const esc = t => t.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const mkType = (key, text, n) => {
+  const b = document.createElement("button");
+  b.className = "pill"; b.type = "button"; b.dataset.k = key;
+  b.setAttribute("aria-pressed", String(mtype === key));
+  b.innerHTML = `${text} <span class="n">${n}</span>`;
+  b.addEventListener("click", () => {
+    mtype = key;
+    try { localStorage.setItem("vk.mtype", key); } catch(e){}
+    [...mtypes.children].forEach(c => c.setAttribute("aria-pressed", String(c.dataset.k === key)));
+    render();
+  });
+  return b;
+};
+mtypes.append(mkType("ALL", "全部", mkTotal));
+MISTAKES.forEach(g => mtypes.append(mkType(g.type, g.type, g.items.length)));
+
+const msections = MISTAKES.map(g => {
+  const sec = document.createElement("section");
+  sec.className = "sect";
+  const head = document.createElement("div");
+  head.className = "sect-head mk-head";
+  head.innerHTML = `<span class="badge">${g.type}</span><span class="nm">${g.desc}</span><span class="ct"></span>`;
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  const cards = g.items.map(m => {
+    const c = document.createElement("button");
+    c.className = "mk " + m.sev; c.type = "button";
+    c.innerHTML =
+      `<p class="what"><span class="sv">${m.sev === "error" ? "❌" : "⚠️"}</span>${m.html}</p>` +
+      (m.original ? `<p class="orig">${esc(m.original).replace(/\n/g, "<br>")}</p>` : "") +
+      `<div class="src"><span class="t">出自 ${m.title}</span><span class="dt">${m.date}</span></div>`;
+    c.addEventListener("click", () => {
+      const t = byAnchor[m.anchor];
+      if (t) open(t.it, t.level, t.i);
+    });
+    grid.append(c);
+    return { el: c, hay: (m.text + " " + m.original + " " + m.title).toLowerCase() };
+  });
+  sec.append(head, grid);
+  mboard.append(sec);
+  return { type: g.type, el: sec, cards };
+});
+
+function renderMistakes(term){
+  let shown = 0;
+  msections.forEach(s => {
+    if (mtype !== "ALL" && mtype !== s.type) { s.el.hidden = true; return; }
+    let n = 0;
+    s.cards.forEach(c => {
+      const hit = !term || c.hay.includes(term);
+      c.el.hidden = !hit;
+      if (hit) n++;
+    });
+    s.el.hidden = n === 0;
+    s.el.querySelector(".ct").textContent = n + " 处";
+    shown += n;
+  });
+  return shown;
+}
+
 function render(){
   const term = q.value.trim().toLowerCase();
+  const inMistakes = active === "MISTAKES";
+  mistakesEl.hidden = !inMistakes;
+  board.hidden = inMistakes;
+  if (inMistakes) { empty.hidden = renderMistakes(term) > 0; return; }
   let shown = 0;
   sections.forEach(s => {
     if (active !== "ALL" && active !== s.level) { s.el.hidden = true; return; }

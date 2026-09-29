@@ -87,6 +87,14 @@
 81. [句子:is off / has been turned off / take effect](#s-global-flag)
 82. [语法笔记:as / since / because 表原因的区别](#as-since-because)
 83. [句子:align X with Y's / the goal is](#s-align-ux)
+84. [翻译:Which test run ...? / lag behind](#which-test-run)
+85. [it never hurts to do sth / there's no harm in doing sth](#never-hurts)
+86. [句子:wrap onto multiple lines / fit(C1:省略已清楚的信息)](#s-title-wrap)
+87. [句子:be better at sth](#s-better-at)
+88. [句子:see sth as / a long-term project / it takes effort](#s-long-term-project)
+89. [句子:play it safe / go with / make a mistake](#s-play-it-safe)
+90. [on the team(团队成员用 on)](#on-the-team)
+91. [be considered sth vs be regarded / viewed as sth](#considered-vs-regarded-as)
 
 ---
 
@@ -564,15 +572,18 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 2. She had a solid alibi, so the police ruled her out quickly.
    她有确凿的不在场证明,所以警方很快就排除了她的嫌疑。
 
-**易错点笔记(来自真实错误案例):**
-- ❌ *The police has ruled out him from the suspects given the evidence he was not at the crime scene.*
-- ✅ *The police have ruled him out as a suspect, given the evidence that he was not at the crime scene.*
+**我的原句:**
 
-错误点拆解:
-1. police 是集合名词,谓语恒用复数 → have,不是 has
-2. 代词宾语必须拆开 → ruled him out,不是 ruled out him
-3. 不用 "rule out ... from the suspects" → 自然说法是 "rule sb out as a suspect" 或 "rule sb out of the suspect list"
-4. evidence 后接同位语从句需要 that → evidence that he was not at the crime scene
+> The police has ruled out him from the suspects given the evidence he was not at the crime scene.
+
+**问题:**
+
+- ❌ [动词] **The police has** —— police 是集合名词,谓语恒用复数 → **The police have**。
+- ❌ [结构] **ruled out him** —— 代词宾语必须夹在中间 → **ruled him out**。
+- ⚠️ [搭配] **rule out ... from the suspects** —— 能懂,但地道说法是 **rule sb out as a suspect** / rule sb out of the suspect list。
+- ⚠️ [结构] **the evidence he was** —— 口语里省略 that 也能接受,书面语里同位语从句要加 → **the evidence that he was**。
+
+**改正后:** ✅ *The police have ruled him out as a suspect, given the evidence that he was not at the crime scene.*
 
 ---
 
@@ -613,15 +624,19 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 **问题描述:** "if / when + 动名词(-ing)" 这种缩略状语结构,省略主语时,隐含的主语必须能从主句里清楚地推断出来。如果推不出来(比如主句主语是个物,而 -ing 动作的执行者其实是"人"),就会造成逻辑不清、悬垂修饰语的问题。
 
-**易错点笔记(来自真实错误案例):**
-- ❌ *What is the model name of Gemini 3.5 Flash Lite if using it in python code?*
+**我的原句:**
+
+> What is the model name of Gemini 3.5 Flash Lite if using it in python code?
+
+**问题:**
+
+- ⚠️ [逻辑] **if using it** —— 技术写作里这种省略主语的条件句很常见;更严谨的写法是补主语 **if you use it**,或用 **when used**。
+- ❌ [词形] **python** —— 编程语言名是专有名词 → **Python**。
+- ✅ **model name of X** —— 意思清楚,日常使用完全够用;技术语境也常说 **model name for X**。
+
+**改正后:**
 - ✅ *What is the model name for Gemini 3.5 Flash Lite when used in Python code?*
 - ✅ *What is the model name of Gemini 3.5 Flash Lite if you use it in Python code?*
-
-错误点拆解:
-1. **if using it** —— 悬垂修饰语,没有明确主语(是谁在 using?)。改法:补上主语(if you use it),或换成被动的 when used(不需要额外主语)。
-2. **python** → 应大写为 **Python**——编程语言名称是专有名词。
-3. **model name of X** 语法没错,但技术语境里 **model name for X** 更地道。
 
 ---
 
@@ -837,6 +852,12 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 **一句话记忆:** 独立提问用倒装(why does...);how come 天生不倒装;疑问句被"包"进另一句话里(间接疑问句)时,也变回陈述句语序(why it uses...)。
 
+**我的原句:**
+
+> Why it uses the word "would"?
+
+- ❌ [结构] **Why it uses** —— 直接疑问句要 do-support + 倒装 → **Why does it use**。
+
 **相关条目:** [句子:hit an error / under what circumstances](#s-rate-limit-error) —— 间接疑问句语序用对了的一个实例(in what situations users would hit...)。
 
 ---
@@ -854,7 +875,11 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - **antonym(s) for/of X** —— 同理,antonym 也搭配 for 或 of。
   *What's the antonym for "immense"?*
 
-❌ **synonym(s)/antonym(s) to X** —— 这个搭配不地道,英语里不这么说。
+**我的原句:**
+
+> synonyms to immense
+
+- ⚠️ [介词] **synonyms to** —— 有人这么用,但标准搭配是 **synonyms for / of**。
 
 **容易混的点:** 如果用的是形容词 **synonymous**(而不是名词 synonym),搭配的介词是 **with**,不是 for/of:
 
@@ -1111,6 +1136,12 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 **补充一点:** 后两句**没有显式出现 "me"**——英语里很多时候"是谁在经历这件事"由上下文/说话人身份自然带出,不需要每次都把 "to me / for me" 明确挂在句子上,硬要加反而不自然。
 
+**我的原句:**
+
+> These show up to me frequently.
+
+- ⚠️ [搭配] **show up to me** —— show up 不及物,不接 to me → **These phrases keep catching my eye** / **keep coming up**。
+
 ---
 
 <a id="better-way-to-say"></a>
@@ -1119,6 +1150,12 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 日期:2026-08-25
 
 **问题:** "a better one" 里的 **one** 指代不清——想代替"句子/说法",但单独看容易让人愣一下"better one 指的是哪个 one"。
+
+**我的原句:**
+
+> What is a better one for this sentence?
+
+- ⚠️ [逻辑] **a better one** —— one 指代不清 → **What's a better way to say this?**
 
 **更地道的问法:**
 1. What's a better way to say this?
@@ -1417,7 +1454,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 音标:/kənˈvɜːrsli/
 - CEFR:B2
 - 释义:相反地、反过来说——用来引出一个和前文相对/相反的观点,常用于书面/正式论述里承接对比关系。
-- ⚠️ 注意拼写:不是 "contravesly"(这不是一个真实存在的词),也别和 **controversially**(有争议地,来自 controversial)搞混。
+- ❌ [词形] **contravesly** —— 不是真实存在的词,正确拼写是 **conversely**;也别和 **controversially**(有争议地,来自 controversial)搞混。
 
 **on the contrary**(短语)
 - 释义:恰恰相反——用来直接反驳/否定前面的说法或预设,语气更强,常用于纠正一个错误的看法。
@@ -1576,8 +1613,12 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 - 日期:~2026-09-05
 
-**原句(有语病):**
+**我的原句:**
+
 > The user was using an iPhone, though the feature was built on shared-code, please help check it out.
+
+- ❌ [标点] **..., please help check it out** —— 陈述句 + 从句 + 祈使句只靠逗号硬连(逗号粘连)→ 句号断开:*...built on shared code. Could you help check it out?*
+- ❌ [词形] **shared-code** —— 作介词宾语的名词短语不加连字符 → **shared code**。
 
 **问题一:逗号粘连(comma splice / run-on sentence)**
 "The user was using an iPhone"(陈述句)+ "though the feature was built on shared code"(从句)+ "please help check it out"(祈使句)三段只靠逗号硬连在一起。祈使句不能直接用逗号接在前面的陈述/从句后面,需要用句号断开,或改写成疑问句形式的礼貌请求。
@@ -1657,8 +1698,11 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 - 日期:2026-09-14
 
-**原句(没有语法错误,但读起来像翻译腔):**
+**我的原句(没有语法错误,但读起来像翻译腔):**
+
 > Show me the report in the version for Teams chat.
+
+- ⚠️ [直译] **the report in the version for Teams chat** —— 叠两层介词短语修饰同一个名词 → **the Teams-chat version of the report**。
 
 **问题:** "the report **in** the version **for** Teams chat" 一口气叠了两层介词短语(in...for...)去修饰同一个名词 report,读者要绕两次弯才拼出"这是专为 Teams 聊天场景准备的版本"。
 
@@ -1683,8 +1727,12 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - ✅ **That** he lied is obvious.(主语从句,加 that,正确)
 - ❌ ~~He lied is obvious.~~(主语从句,省略 that,不合语法——读者会先把 "He lied" 当成一句完整的话,读到 "is obvious" 才发现要回头重新理解整个句子,这叫 **garden-path sentence(花园幽径句)**)
 
-**真实案例:**
-> Platform equals 10 means the request originated from the web, right?
+**我的原句:**
+
+> Platform equals 10 means the request originated from web, right?
+
+- ⚠️ [结构] **Platform equals 10 means...** —— 口语里常见;正式写作中完整从句做主语要用 that 引导 → **That platform equals 10 means...**
+- ❌ [冠词] **from web** —— → **from the web**。
 
 这句里 "Platform equals 10"(主谓宾结构完整)被当作了主语,严格来说应该加 that:
 
@@ -1993,9 +2041,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **问题:**
 
-- ❌ **make everything straight** —— 搭配错了。"把事情弄清楚"的固定搭配是 **get ... straight**,不用 make。
-- ⚠️ **rush 和 until 语义打架** —— "not ... until" 的含义是"到了那个时间点之后就该做了",套进来就变成"理清楚之后就可以急着写了",而 rush 在任何阶段都不是好事。
-- ⚠️ **rush to write** 更偏"赶紧去写";表达"仓促动手做某事"的地道说法是 **rush into (doing) sth**。
+- ❌ [搭配] **make everything straight** —— 搭配错了。"把事情弄清楚"的固定搭配是 **get ... straight**,不用 make。
+- ⚠️ [逻辑] **rush 和 until 语义打架** —— "not ... until" 的含义是"到了那个时间点之后就该做了",套进来就变成"理清楚之后就可以急着写了",而 rush 在任何阶段都不是好事。
+- ✅ **rush to write** —— 意思清楚,日常使用完全够用;另一种说法是 **rush into (doing) sth**(仓促动手做某事)。
 
 **更地道的说法:**
 
@@ -2102,6 +2150,12 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **⚠️ 易错点:** **make the most of** 后面**不加 use**;**make the best use of** 里的 best **不能换成 most**。混成 ~~make the most use of~~ 是这两个搭配串味的典型错误。
 
+**我的原句:**
+
+> That work doesn't make the most use of my time.
+
+- ❌ [搭配] **make the most use of** —— make the most of 和 make the best use of 串味 → **That work doesn't make the best use of my time.**
+
 **相关条目:** [make use of](#make-use-of) —— 这一族的基础搭配,以及 make good/full use of 等程度变体。
 
 ---
@@ -2117,8 +2171,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **问题:**
 
-- ❌ **chase for** —— chase 是及物动词,直接接宾语(chase a dream)或用 **chase after sth**。"chase for" 只在 **chase sb for sth**(催某人要某样东西)里成立,和"寻找"是两回事。
-- ⚠️ **chase 语气过重** —— chase 带有"追逐难以得到的东西"的意味,用来说"找个更简单的办法"有点用力过猛。
+- ❌ [搭配] **chase for** —— chase 是及物动词,直接接宾语(chase a dream)或用 **chase after sth**。"chase for" 只在 **chase sb for sth**(催某人要某样东西)里成立,和"寻找"是两回事。
+- ✅ **chase(去掉 for 之后)** —— *I'm chasing an easier approach* 本身意思清楚,日常使用完全够用;想更平实可以说 **look for / be after**。
 
 **更地道的说法:**
 
@@ -2183,7 +2237,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **chase sth up with sb** —— **催办**:事情拖着没结果,去找对方要个结论,带一点施压的意味。
 - **catch up with sb** —— **碰个头、聊一聊**(同步近况),语气轻松,不带催促。*I'll catch up with the vendor about this tomorrow.*(我明天和供应商聊聊这件事。)
-- ❌ ~~catch this up with the vendor~~ —— catch up 不接"事情"做宾语,要说 **catch up with sb (about sth)**。
+- ❌ [搭配] **catch this up with the vendor** —— catch up 不接"事情"做宾语 → **chase this up with the vendor**,或 **catch up with the vendor (about this)**。
 
 **怎么选:**
 
@@ -2210,9 +2264,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **问题:**
 
-- ❌ **is expected working** —— expect 的结构是 **expect sb/sth to do sth**,被动就是 **be expected to do sth**,不能接 -ing。同类的 be supposed to、be required to、be likely to 也都接 to do。
-- ⚠️ **well** —— 说软件"能正常运行",用 **correctly** 或 **as expected** 更准确;well 更偏"表现得好"。
-- ⚠️ **after refactoring** —— 没错,但工程师之间更常把 refactor 当名词用:**after the refactor**、a big refactor。
+- ❌ [动词] **is expected working** —— expect 的结构是 **expect sb/sth to do sth**,被动就是 **be expected to do sth**,不能接 -ing。同类的 be supposed to、be required to、be likely to 也都接 to do。
+- ✅ **well** —— *work well* 意思清楚,日常使用完全够用;想强调"行为符合预期"可以说 **correctly / as expected**。
+- ✅ **after refactoring** —— 意思清楚,日常使用完全够用;工程师之间也常把 refactor 当名词:**after the refactor**。
 
 **更地道的说法:**
 
@@ -2346,9 +2400,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 **问题:**
 
 - ✅ **语序正确** —— 间接疑问句用陈述语序(users would run into),没有写成 *would users run into*。
-- ❌ **at what situation** —— situation 搭配 **in**;问"哪些情况"用复数更自然 → **in what situations**。也可以用 **under what circumstances**(circumstances 用 under),或直接用 **when**。
-- ❌ **Rate limit reached error** —— 错误名前要加冠词,名称本身加引号 → **the "Rate limit reached" error**。不加引号,读者得自己分辨哪几个词是名称。
-- ⚠️ **run into** —— 没错,但技术语境里更常说 **hit** a rate limit / an error;问原因时用 **trigger**。
+- ❌ [介词] **at what situation** —— situation 搭配 **in**;问"哪些情况"用复数更自然 → **in what situations**。也可以用 **under what circumstances**(circumstances 用 under),或直接用 **when**。
+- ❌ [冠词] **Rate limit reached error** —— 错误名前要加冠词,名称本身加引号 → **the "Rate limit reached" error**。不加引号,读者得自己分辨哪几个词是名称。
+- ✅ **run into** —— 意思清楚,日常使用完全够用;技术语境也常说 **hit** a rate limit / an error,问原因时用 **trigger**。
 
 **更地道的说法:**
 
@@ -2387,9 +2441,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **问题:**
 
-- ❌ **to user** —— user 是可数名词,单数不能裸用 → **to the user**(文档里泛指使用者)或 **to users**(复数泛指,最自然)。
-- ⚠️ **such an error** —— 语法没错,但 such 偏书面,带"这类 / 如此"的意味,用在追问里显得重 → **this error**;想强调"这一类"时用 **this kind of error**。
-- ⚠️ **What text** —— 能懂,但母语者更常说 **message**(提示)或 **copy**(界面文案)。
+- ❌ [冠词] **to user** —— user 是可数名词,单数不能裸用 → **to the user**(文档里泛指使用者)或 **to users**(复数泛指,最自然)。
+- ✅ **such an error** —— 意思清楚,日常使用完全够用;更口语的追问可以说 **this error / this kind of error**。
+- ✅ **What text** —— 意思清楚,日常使用完全够用(UI 语境说 text 很常见);也可以说 **message**(提示)或 **copy**(界面文案)。
 
 **更地道的说法:**
 
@@ -2426,10 +2480,10 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **问题:**
 
-- ❌ **has turned off** —— 主动语态意思成了"flag 自己把自己关掉"。flag 是被人关的 → 说状态用 **is off**,强调动作用被动 **has been turned off**。
-- ⚠️ **As** —— 有歧义,读者可能理解成"当……时 / 随着……"而不是"因为"。这里讲的是规则 / 条件,用 **when / if** 最清楚;确实要表原因用 **since / because**。
-- ⚠️ **other flags** —— 指的是除全局开关外那一组特定的开关,要加定冠词 → **the other flags**。
-- ⚠️ **turned on / off** —— 能用,但技术语境里 **enabled / disabled** 更常见。
+- ⚠️ [动词] **has turned off** —— turn off 可以不及物(*the light turned off*),但 flag 是被人关的,说状态用 **is off**,强调动作用 **has been turned off** 更贴切。
+- ⚠️ [逻辑] **As** —— 有歧义,读者可能理解成"当……时 / 随着……"而不是"因为"。这里讲的是规则 / 条件,用 **when / if** 最清楚;确实要表原因用 **since / because**。
+- ⚠️ [冠词] **other flags** —— 指的是除全局开关外那一组特定的开关,要加定冠词 → **the other flags**。
+- ✅ **turned on / off** —— 意思清楚,日常使用完全够用;技术文档里 **enabled / disabled** 也很常见。
 
 **更地道的说法:**
 
@@ -2489,7 +2543,10 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 书面、原因无关紧要,且上下文不会误读成"当 / 随着" → **as**
 - 其实是在讲条件 / 规则 → 别用这三个,用 **when / if**
 
-**相关条目:** [句子:is off / has been turned off / take effect](#s-global-flag) —— 原句里 As 引起歧义的实例。
+**相关条目:**
+
+- [句子:is off / has been turned off / take effect](#s-global-flag) —— 原句里 As 引起歧义的实例。
+- [句子:see sth as / a long-term project / it takes effort](#s-long-term-project) —— since 表"已知原因"的实例。
 
 ---
 
@@ -2504,9 +2561,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **问题:**
 
-- ⚠️ **align with DeepSeek** —— 比较对象不对等(*faulty comparison*):想说的是"我们的 UX"和"DeepSeek 的 UX"一致,原句却拿 UX 和一个产品比。中文说"和 DeepSeek 对齐"没问题,英文写作要求对等 → **DeepSeek's UX**,或省略重复的名词只写 **DeepSeek's**。
-- ⚠️ **The target is** —— target 多指可量化的指标(a revenue target / a target of 95%);"目标是做成某事"用 **The goal is / The aim is** 更自然。
-- ⚠️ **make the UX align with** —— make + 宾语 + 动词原形没错,但绕;直接用 **align X with Y** 或 **match** 更简洁。
+- ⚠️ [逻辑] **align with DeepSeek** —— 比较对象不对等(*faulty comparison*):想说的是"我们的 UX"和"DeepSeek 的 UX"一致,原句却拿 UX 和一个产品比。中文说"和 DeepSeek 对齐"没问题,英文写作要求对等 → **DeepSeek's UX**,或省略重复的名词只写 **DeepSeek's**。
+- ✅ **The target is** —— 意思清楚,日常使用完全够用;target 多指可量化指标,泛指"目标是做某事"时 **The goal is / The aim is** 更常见。
+- ✅ **make the UX align with** —— 语法正确、意思清楚,日常使用完全够用;更简洁的说法是 **align X with Y** 或 **match**。
 
 **更地道的说法:**
 
@@ -2531,3 +2588,291 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **match sth** —— 和某物一致 / 相符。*The new design should match the brand guidelines.*(新设计要符合品牌规范。)
 - **use sth as a benchmark / reference** —— 以某物为标杆 / 参照。*We used the market leader as a benchmark.*(我们以市场领先者为标杆。)
 - **be on par with sth** —— 和某物水平相当。*Our onboarding should be on par with the top apps.*(我们的新手引导应该达到头部应用的水平。)
+
+---
+
+<a id="which-test-run"></a>
+## 翻译:Which test run ...? / lag behind
+
+- 日期:2026-09-28
+
+**含义:** 中译英练习——「告诉我是哪次测试列表移动的动画比键盘慢。」
+
+**译法:**
+
+1. Tell me which test run showed the list animating slower than the keyboard.
+   告诉我是哪次测试里列表动画比键盘慢。(直译版)
+2. Which test run was it where the list animation lagged behind the keyboard?
+   是哪次测试里列表动画比键盘慢?(对应"是哪次……"的强调语气,口语)
+3. Can you tell me which test showed the list moving slower than the keyboard?
+   能告诉我是哪次测试里列表比键盘移动得慢吗?(加 Can you,发给同事更客气)
+4. In which test run did the list animation fall behind the keyboard?
+   列表动画在哪次测试里落后于键盘?(更书面)
+
+**要点:**
+
+- **"是哪次……"** —— 中文用"是……的"做强调,英文不要硬译成 *It was which test that...*;直接用 **which test run** 引导宾语从句,或用 *Which ... was it where ...?*。
+- **test run** —— "某一次测试运行",比单说 test 更精确(test 也可以指测试用例本身)。
+- **"列表移动的动画"** —— the list animation / the list moving / animating 即可,不必逐字译成 *the animation of the list moving*。
+- **Tell me ...** —— 在即时消息里直接对同事这么写有点命令口吻,通常加 **Can you / Could you**,或直接问 *Which test run ...?*
+
+**常见搭配:**
+
+- **lag behind sth** —— 落后于、跟不上,很适合描述动画不同步。*The list lags behind the keyboard when it opens.*(键盘弹出时,列表跟不上。)
+- **fall behind sth** —— 落后于。*The UI thread fell behind and frames were dropped.*(UI 线程跟不上,掉帧了。)
+- **out of sync (with sth)** —— 不同步。*The two animations are slightly out of sync.*(两个动画有点不同步。)
+
+---
+
+<a id="never-hurts"></a>
+## it never hurts to do sth / there's no harm in doing sth
+
+- 词性:phrase
+- 日期:2026-09-29
+
+**English definition:** Used to say that doing something is a good idea, or at least won't cause any problems, even if it may not be necessary.
+
+**含义:** 做某事总没坏处 / 做了也无妨。语气轻松,是一种温和的建议或鼓励。
+
+**我的原句:**
+
+> Including some screenshots and code is never harmful.
+
+- ⚠️ [搭配] **is never harmful** —— 语法没错,但不是惯用说法:harmful 分量太重(harmful chemicals / harmful to health)→ **It never hurts to include some screenshots and code.**
+
+**句型一:it never hurts to do sth(最常用)**
+1. It never hurts to ask.
+   问一下总没坏处。
+2. It never hurts to double-check the config before a release.
+   发布前再检查一遍配置总没坏处。
+
+**句型二:there's no harm in doing sth(名词 harm + in doing)**
+1. There's no harm in adding a few screenshots.
+   加几张截图也无妨。
+2. There's no harm in asking — the worst they can say is no.
+   问问也无妨——大不了被拒绝。
+
+**同义变体:**
+
+- **it doesn't hurt to do sth** —— 意思同句型一,语气更平淡。*It doesn't hurt to have a backup plan.*(有个备用方案也没坏处。)
+- **it can't hurt to do sth** —— 更随意,常带"试试看"的意味。*It can't hurt to try.*(试试也无妨。)
+- **it wouldn't hurt (sb) to do sth** —— ⚠️ 常带委婉的批评:"你/他真该……"。*It wouldn't hurt you to say thank you.*(说声谢谢又不会少块肉。)
+
+**记法:** 表示"做了也无妨",**动词用 hurt,名词用 harm**,不要用形容词 harmful——harmful 只描述真正有害的东西。
+
+---
+
+<a id="s-title-wrap"></a>
+## 句子:wrap onto multiple lines / fit(C1:省略已清楚的信息)
+
+- 日期:2026-09-29
+
+**我的原句:**
+
+> I see that the bug is fixed. But the title is truncated. Can we show it in multi lines if it cannot fit into a single line?
+
+**问题:**
+
+- ❌ [词形] **in multi lines** —— multi 是前缀,不能单独当形容词 → **multiple lines**(复合词 **multi-line** 只能作前置定语:a multi-line title);介词用 **on**:**on multiple lines**。
+- ✅ **fit into a single line** —— 意思清楚,日常使用完全够用;更常见的说法是 **fit on one line**,条件句里用 **doesn't** 比 *cannot* 更轻。
+- ✅ **the bug is fixed** —— 意思清楚,日常使用完全够用;**has been fixed** 更强调结果,口语开头也可以用 **Looks like**。
+- ✅ **the title is truncated** —— truncated 用得准确,是"文字被截断"的标准说法。
+
+**更地道的说法:**
+
+1. Looks like the bug is fixed, but the title is truncated. Can we wrap it onto multiple lines when it doesn't fit?
+   看起来 bug 修好了,但标题被截断了。放不下的时候能换行显示吗?(wrap 是 UI 里"自动换行"的标准说法)
+2. The bug's fixed 👍 One more thing: the title gets truncated. Could we let it wrap instead of cutting it off?
+   bug 修好了 👍 还有一点:标题会被截断。能不能让它换行,而不是直接截掉?(即时消息,语气友好)
+3. The fix works, but long titles are still truncated. Can we allow the title to wrap to multiple lines?
+   修复生效了,但长标题还是会被截断。能让标题多行显示吗?(正式,适合 PR 评论 / 工单)
+
+**C1 写作要点:省略上下文已经清楚的信息**
+
+- **疑问:** 第 1 句的 *when it doesn't fit* 为什么没有 one line?fit 默认就是单行吗?
+- **答:** 不是。fit 的意思是"在现有空间里放得下",**放在哪里由上下文决定**。完整结构是 *fit (in / on / into) + 空间*,空间对双方都明显时就省掉:
+  - *The table is too big. It won't fit.*(桌子太大,放不下。)—— 省了 in the room。
+  - *Will this fit?*(这个放得下吗?)—— 双方都看着同一个箱子。
+- 这句里,前半句 *the title is truncated* 说明它现在是一行且被截断,后半句 *wrap it onto multiple lines* 已经点出"多行",*when it doesn't fit* 自然就是"一行放不下时"。
+- 写成 *...when it doesn't fit on one line* 也完全正确,只是 line 出现两次,略啰嗦,母语者一般省掉后一个。
+- **一句话:** 英文写作的一个特点是**避免重复已经清楚的信息**——这是 C1 写作显得简洁的原因之一。
+
+**涉及的搭配:**
+
+- **wrap (text) / text wrapping** —— 文字自动换行。*The label doesn't wrap, so long text gets cut off.*(这个标签不换行,所以长文本会被截掉。)
+- **on one line / on multiple lines** —— 在一行 / 多行上(介词用 on)。*The address is displayed on two lines.*(地址分两行显示。)
+- **fit on one line** —— 一行放得下。*The title is too long to fit on one line.*(标题太长,一行放不下。)
+- **truncate / be truncated** —— 截断。*Long file names are truncated with an ellipsis.*(过长的文件名会被截断并显示省略号。)
+- **cut off** —— 截掉(truncate 的口语说法)。
+
+**技术对照(Compose):** `maxLines` + `overflow = TextOverflow.Ellipsis` = truncated with an ellipsis;`softWrap = true` = wrap。
+
+---
+
+<a id="s-better-at"></a>
+## 句子:be better at sth
+
+- 日期:2026-09-29
+
+**我的原句:**
+
+> Does GPT-6 Astra do coding work better than Opus 5.5?
+
+**问题:**
+
+- ⚠️ [直译] **do coding work** —— coding 本身就是名词,不必加 do / work(中文"做编程工作"的直译)。
+- ⚠️ [结构] **do ... better than** —— 比较"谁更擅长",用 **be better at sth**。
+
+**更地道的说法:**
+
+1. Is GPT-6 Astra better at coding than Opus 5.5?
+   GPT-6 Astra 写代码比 Opus 5.5 强吗?
+
+**涉及的搭配:**
+
+- **be better at sth** —— 更擅长(比本事)。**be better for sth** —— 更适合用来做(比用途):*Which model is better for coding?*
+
+---
+
+<a id="s-long-term-project"></a>
+## 句子:see sth as / a long-term project / it takes effort
+
+- 日期:2026-09-29
+
+**我的原句:**
+
+> I take it as a long term project because I believe it requires huge effort to reach C1 level for my writing skills.
+
+**问题:**
+
+- ✅ **take it as** —— 意思清楚,日常使用完全够用(*I take it as a challenge*);**see / treat it as** 是更常见的"当作"。
+- ❌ [词形] **long term project** —— 前置定语加连字符 → **a long-term project**。
+- ⚠️ [冠词] **requires huge effort** —— effort 作不可数名词也成立,但"一番努力"更常见的说法是 **a huge effort**(或 a lot of effort)。
+- ⚠️ [直译] **to reach C1 level for my writing skills** —— 绕 → **get my writing to C1**。
+
+**更地道的说法:**
+
+1. I see it as a long-term project, since I know it'll take a huge effort to get my writing to C1.
+   我把它当作一个长期项目,因为我知道要把写作提升到 C1 需要付出很大的努力。(since:原因是自己已知的)
+
+**涉及的搭配:**
+
+- **see / treat sth as sth** —— 看作 / 当作;**take sth as sth** —— 理解为。
+- **it takes (a lot of) effort to do sth** —— 做某事要花很大功夫。
+
+**相关条目:**
+
+- [语法笔记:as / since / because 表原因的区别](#as-since-because) —— 这里用 since 的理由。
+- [be considered sth vs be regarded / viewed as sth](#considered-vs-regarded-as) —— see / regard / view 都要带 as,consider 不带。
+- [句子:play it safe / go with / make a mistake](#s-play-it-safe) —— 紧接着的一句:为什么当时没敢用 since。
+
+---
+
+<a id="s-play-it-safe"></a>
+## 句子:play it safe / go with / make a mistake
+
+- 日期:2026-09-29
+
+**我的原句:**
+
+> I intended to use since instead of because in the previous sentence. But it seemed like that I wasn't that confident to use since because of the previous mistakes I've hit. Therefore I took a more safe word: because.
+
+**问题:**
+
+- ❌ [结构] **it seemed like that** —— like 和 that 二选一;说自己的感受,直接 **I wasn't confident** 即可。
+- ⚠️ [结构] **confident to use** —— → **confident enough to use** / **confident about using**。
+- ❌ [搭配] **mistakes I've hit** —— 犯错用 **make**:**mistakes I'd made**(hit 搭配 bug / error / limit)。
+- ⚠️ [词形] **a more safe word** —— 有人这么用,但单音节词的标准比较级是 **safer**。
+- ⚠️ [语气] **Therefore / took a word** —— 聊天里 Therefore 太正式 → **so**;选用某词 → **went with** / **played it safe**。
+
+**更地道的说法:**
+
+1. I meant to use *since* instead of *because* in that sentence, but I wasn't confident enough after the mistakes I'd made with it, so I played it safe and went with *because*.
+   那句话我本来想用 since 而不是 because,但之前在它上面犯过错,我不太有把握,就求稳用了 because。
+
+**涉及的搭配:**
+
+- **play it safe** —— 求稳;**go with sth** —— 选用。
+- **make a mistake / hit an error** —— 犯错用 make,遇到报错用 hit。
+
+**相关条目:** [句子:see sth as / a long-term project / it takes effort](#s-long-term-project) —— 上一句,这里说的 since / because 就出自那句。
+
+---
+
+<a id="on-the-team"></a>
+## on the team(团队成员用 on)
+
+- 词性:phrase
+- 日期:2026-09-29
+
+**English definition:** Being a member of a team, group, or committee — *on* is the usual preposition, especially in American English and workplace talk.
+
+**含义:** 是某个团队的成员。我尝试过 at 和 in,就是没想到 on。
+
+**三个介词怎么选:**
+
+- ✅ **on the team** —— 最常用,美式标准说法,职场高频。
+- ✅ **in the team** —— 也正确,英式英语常见;在美式职场里听着略不习惯。
+- ❌ **at the team** —— 不这么说。at 用于地点 / 机构:*I work at Google.*(我在谷歌工作。)
+
+**语感:** 把团队想成一份"名单 / 平台",成员的名字写在上面,所以用 on。同一逻辑:
+
+1. She's on the backend team.
+   她在后端团队。
+2. He sits on the review committee.
+   他是评审委员会的成员。
+
+**同类搭配:** on a committee / board / panel(委员会、董事会、评审团成员)· on the list(在名单上)· on the call(在电话会议里)· on the project(参与这个项目)。
+
+**我的原句:**
+
+> Who is the owner of the template file in backend team?
+
+- ❌ [冠词] **in backend team** —— 特指"后端那个团队"要加定冠词 → **the backend team**。
+- ✅ **in the team** —— 意思清楚,日常使用完全够用;美式 / 职场更常说 **on the team**:*Who on the backend team owns the template file?*
+
+---
+
+<a id="considered-vs-regarded-as"></a>
+## be considered sth vs be regarded / viewed as sth
+
+- 词性:phrase
+- 日期:2026-09-29
+
+**English definition:** To be thought of by people as having a particular quality or being a particular thing. *Consider* takes the description directly; *regard*, *view* and *see* need *as*.
+
+**含义:** 被认为是……、被看作……。
+
+**句型一:be considered (to be) + 形容词 / 名词(不带 as)**
+1. Thirteen is considered an unlucky number in the West.
+   在西方,13 被认为是不吉利的数字。
+2. She is considered one of the best engineers on the team.
+   她被认为是团队里最优秀的工程师之一。
+
+**句型二:be regarded / viewed / seen as + 形容词 / 名词(必须带 as)**
+1. He is widely regarded as the father of modern computing.
+   他被普遍视为现代计算之父。
+2. The update was viewed as a step backwards by many users.
+   很多用户把这次更新看作是一种倒退。
+
+**记法:** **consider 不带 as;regard / view / see 要带 as。**
+
+**我的原句:**
+
+> Why is 13 considered as an unlucky number in Western culture?
+
+- ⚠️ [搭配] **considered as** —— 能用,也有人这么说,但标准写法去掉 as → **Why is 13 considered an unlucky number in Western culture?**
+
+**翻译练习:** 为什么 13 是西方忌讳的数字?
+1. Why is the number 13 considered unlucky in the West?
+   为什么 13 在西方被认为是不吉利的数字?
+2. Why do people in the West avoid the number 13?
+   为什么西方人忌讳数字 13?(从"人们回避它"的角度,更贴近"忌讳")
+
+**要点:**
+
+- "忌讳"别直译成 **taboo**:taboo 指社会 / 宗教上禁止谈论或做的事,分量很重;数字 13 只是"不吉利",用 **unlucky / superstition**。
+- "西方"作名词是 **the West**(大写,带 the),作形容词是 **Western**。
+- 冷知识:对 13 的恐惧叫 **triskaidekaphobia**。
+
+**相关条目:** [句子:see sth as / a long-term project / it takes effort](#s-long-term-project) —— see sth as 同属"要带 as"的一类。
