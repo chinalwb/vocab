@@ -101,7 +101,8 @@
 
 ```markdown
 - ❌ [介词] **at what situation** —— situation 搭配 in → **in what situations**。
-- ⚠️ [语气] **such an error** —— 偏书面,追问里显得重 → **this error**。
+- ⚠️ [介词] **synonyms to** —— 有人这么用,但标准搭配是 **synonyms for / of**。
+- ✅ **run into** —— 意思清楚,日常使用完全够用;技术语境也常说 **hit** an error。
 ```
 
 - ❌ = 语法错误,⚠️ = 能用但不是最常见的写法。**用户明确要求两种都收。**
