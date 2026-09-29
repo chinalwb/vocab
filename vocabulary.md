@@ -88,6 +88,7 @@
 82. [语法笔记:as / since / because 表原因的区别](#as-since-because)
 83. [句子:align X with Y's / the goal is](#s-align-ux)
 84. [翻译:Which test run ...? / lag behind](#which-test-run)
+85. [it never hurts to do sth / there's no harm in doing sth](#never-hurts)
 
 ---
 
@@ -2565,3 +2566,37 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **lag behind sth** —— 落后于、跟不上,很适合描述动画不同步。*The list lags behind the keyboard when it opens.*(键盘弹出时,列表跟不上。)
 - **fall behind sth** —— 落后于。*The UI thread fell behind and frames were dropped.*(UI 线程跟不上,掉帧了。)
 - **out of sync (with sth)** —— 不同步。*The two animations are slightly out of sync.*(两个动画有点不同步。)
+
+---
+
+<a id="never-hurts"></a>
+## it never hurts to do sth / there's no harm in doing sth
+
+- 词性:phrase
+- 日期:2026-09-29
+
+**English definition:** Used to say that doing something is a good idea, or at least won't cause any problems, even if it may not be necessary.
+
+**含义:** 做某事总没坏处 / 做了也无妨。语气轻松,是一种温和的建议或鼓励。
+
+**来源:** 我写的 *Including some screenshots and code is never harmful.* —— ❌ **is never harmful** 不是固定说法:harmful 分量太重(harmful chemicals / harmful to health),而且读起来像事实判断而不是建议 → ✅ *It never hurts to include some screenshots and code.*
+
+**句型一:it never hurts to do sth(最常用)**
+1. It never hurts to ask.
+   问一下总没坏处。
+2. It never hurts to double-check the config before a release.
+   发布前再检查一遍配置总没坏处。
+
+**句型二:there's no harm in doing sth(名词 harm + in doing)**
+1. There's no harm in adding a few screenshots.
+   加几张截图也无妨。
+2. There's no harm in asking — the worst they can say is no.
+   问问也无妨——大不了被拒绝。
+
+**同义变体:**
+
+- **it doesn't hurt to do sth** —— 意思同句型一,语气更平淡。*It doesn't hurt to have a backup plan.*(有个备用方案也没坏处。)
+- **it can't hurt to do sth** —— 更随意,常带"试试看"的意味。*It can't hurt to try.*(试试也无妨。)
+- **it wouldn't hurt (sb) to do sth** —— ⚠️ 常带委婉的批评:"你/他真该……"。*It wouldn't hurt you to say thank you.*(说声谢谢又不会少块肉。)
+
+**记法:** 表示"做了也无妨",**动词用 hurt,名词用 harm**,不要用形容词 harmful——harmful 只描述真正有害的东西。
