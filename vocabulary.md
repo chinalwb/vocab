@@ -92,6 +92,7 @@
 86. [句子:wrap onto multiple lines / fit(C1:省略已清楚的信息)](#s-title-wrap)
 87. [句子:be better at sth](#s-better-at)
 88. [句子:see sth as / a long-term project / it takes effort](#s-long-term-project)
+89. [句子:play it safe / go with / make a mistake](#s-play-it-safe)
 
 ---
 
@@ -2707,4 +2708,38 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **see / treat sth as sth** —— 看作 / 当作;**take sth as sth** —— 理解为。
 - **it takes (a lot of) effort to do sth** —— 做某事要花很大功夫。
 
-**相关条目:** [语法笔记:as / since / because 表原因的区别](#as-since-because) —— 这里用 since 的理由。
+**相关条目:**
+
+- [语法笔记:as / since / because 表原因的区别](#as-since-because) —— 这里用 since 的理由。
+- [句子:play it safe / go with / make a mistake](#s-play-it-safe) —— 紧接着的一句:为什么当时没敢用 since。
+
+---
+
+<a id="s-play-it-safe"></a>
+## 句子:play it safe / go with / make a mistake
+
+- 日期:2026-09-29
+
+**我的原句:**
+
+> I intended to use since instead of because in the previous sentence. But it seemed like that I wasn't that confident to use since because of the previous mistakes I've hit. Therefore I took a more safe word: because.
+
+**问题:**
+
+- ❌ **it seemed like that** —— like 和 that 二选一;说自己的感受,直接 **I wasn't confident** 即可。
+- ⚠️ **confident to use** —— → **confident enough to use** / **confident about using**。
+- ❌ **mistakes I've hit** —— 犯错用 **make**:**mistakes I'd made**(hit 搭配 bug / error / limit)。
+- ❌ **a more safe word** —— 单音节词比较级 → **safer**。
+- ⚠️ **Therefore / took a word** —— 聊天里 Therefore 太正式 → **so**;选用某词 → **went with** / **played it safe**。
+
+**更地道的说法:**
+
+1. I meant to use *since* instead of *because* in that sentence, but I wasn't confident enough after the mistakes I'd made with it, so I played it safe and went with *because*.
+   那句话我本来想用 since 而不是 because,但之前在它上面犯过错,我不太有把握,就求稳用了 because。
+
+**涉及的搭配:**
+
+- **play it safe** —— 求稳;**go with sth** —— 选用。
+- **make a mistake / hit an error** —— 犯错用 make,遇到报错用 hit。
+
+**相关条目:** [句子:see sth as / a long-term project / it takes effort](#s-long-term-project) —— 上一句,这里说的 since / because 就出自那句。
