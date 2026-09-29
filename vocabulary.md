@@ -89,6 +89,7 @@
 83. [句子:align X with Y's / the goal is](#s-align-ux)
 84. [翻译:Which test run ...? / lag behind](#which-test-run)
 85. [it never hurts to do sth / there's no harm in doing sth](#never-hurts)
+86. [句子:wrap onto multiple lines / fit(C1:省略已清楚的信息)](#s-title-wrap)
 
 ---
 
@@ -2600,3 +2601,50 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **it wouldn't hurt (sb) to do sth** —— ⚠️ 常带委婉的批评:"你/他真该……"。*It wouldn't hurt you to say thank you.*(说声谢谢又不会少块肉。)
 
 **记法:** 表示"做了也无妨",**动词用 hurt,名词用 harm**,不要用形容词 harmful——harmful 只描述真正有害的东西。
+
+---
+
+<a id="s-title-wrap"></a>
+## 句子:wrap onto multiple lines / fit(C1:省略已清楚的信息)
+
+- 日期:2026-09-29
+
+**我的原句:**
+
+> I see that the bug is fixed. But the title is truncated. Can we show it in multi lines if it cannot fit into a single line?
+
+**问题:**
+
+- ❌ **in multi lines** —— multi 是前缀,不能单独当形容词 → **multiple lines**(复合词 **multi-line** 只能作前置定语:a multi-line title);介词用 **on**:**on multiple lines**。
+- ⚠️ **fit into a single line** —— 母语者说 **fit on one line**(介词同样用 on);条件句里 *cannot* 偏重,用 **doesn't** 更自然。
+- ⚠️ **the bug is fixed** —— 没错;**has been fixed** 更强调结果。开头可换成更口语的 **Looks like**。
+- ✅ **the title is truncated** —— truncated 用得准确,是"文字被截断"的标准说法。
+
+**更地道的说法:**
+
+1. Looks like the bug is fixed, but the title is truncated. Can we wrap it onto multiple lines when it doesn't fit?
+   看起来 bug 修好了,但标题被截断了。放不下的时候能换行显示吗?(wrap 是 UI 里"自动换行"的标准说法)
+2. The bug's fixed 👍 One more thing: the title gets truncated. Could we let it wrap instead of cutting it off?
+   bug 修好了 👍 还有一点:标题会被截断。能不能让它换行,而不是直接截掉?(即时消息,语气友好)
+3. The fix works, but long titles are still truncated. Can we allow the title to wrap to multiple lines?
+   修复生效了,但长标题还是会被截断。能让标题多行显示吗?(正式,适合 PR 评论 / 工单)
+
+**C1 写作要点:省略上下文已经清楚的信息**
+
+- **疑问:** 第 1 句的 *when it doesn't fit* 为什么没有 one line?fit 默认就是单行吗?
+- **答:** 不是。fit 的意思是"在现有空间里放得下",**放在哪里由上下文决定**。完整结构是 *fit (in / on / into) + 空间*,空间对双方都明显时就省掉:
+  - *The table is too big. It won't fit.*(桌子太大,放不下。)—— 省了 in the room。
+  - *Will this fit?*(这个放得下吗?)—— 双方都看着同一个箱子。
+- 这句里,前半句 *the title is truncated* 说明它现在是一行且被截断,后半句 *wrap it onto multiple lines* 已经点出"多行",*when it doesn't fit* 自然就是"一行放不下时"。
+- 写成 *...when it doesn't fit on one line* 也完全正确,只是 line 出现两次,略啰嗦,母语者一般省掉后一个。
+- **一句话:** 英文写作的一个特点是**避免重复已经清楚的信息**——这是 C1 写作显得简洁的原因之一。
+
+**涉及的搭配:**
+
+- **wrap (text) / text wrapping** —— 文字自动换行。*The label doesn't wrap, so long text gets cut off.*(这个标签不换行,所以长文本会被截掉。)
+- **on one line / on multiple lines** —— 在一行 / 多行上(介词用 on)。*The address is displayed on two lines.*(地址分两行显示。)
+- **fit on one line** —— 一行放得下。*The title is too long to fit on one line.*(标题太长,一行放不下。)
+- **truncate / be truncated** —— 截断。*Long file names are truncated with an ellipsis.*(过长的文件名会被截断并显示省略号。)
+- **cut off** —— 截掉(truncate 的口语说法)。
+
+**技术对照(Compose):** `maxLines` + `overflow = TextOverflow.Ellipsis` = truncated with an ellipsis;`softWrap = true` = wrap。
