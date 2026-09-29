@@ -91,6 +91,7 @@
 85. [it never hurts to do sth / there's no harm in doing sth](#never-hurts)
 86. [句子:wrap onto multiple lines / fit(C1:省略已清楚的信息)](#s-title-wrap)
 87. [句子:be better at sth](#s-better-at)
+88. [句子:see sth as / a long-term project / it takes effort](#s-long-term-project)
 
 ---
 
@@ -2493,7 +2494,10 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 书面、原因无关紧要,且上下文不会误读成"当 / 随着" → **as**
 - 其实是在讲条件 / 规则 → 别用这三个,用 **when / if**
 
-**相关条目:** [句子:is off / has been turned off / take effect](#s-global-flag) —— 原句里 As 引起歧义的实例。
+**相关条目:**
+
+- [句子:is off / has been turned off / take effect](#s-global-flag) —— 原句里 As 引起歧义的实例。
+- [句子:see sth as / a long-term project / it takes effort](#s-long-term-project) —— since 表"已知原因"的实例。
 
 ---
 
@@ -2674,3 +2678,33 @@ platform 等于 10,就代表请求来自 web,对吧?
 **涉及的搭配:**
 
 - **be better at sth** —— 更擅长(比本事)。**be better for sth** —— 更适合用来做(比用途):*Which model is better for coding?*
+
+---
+
+<a id="s-long-term-project"></a>
+## 句子:see sth as / a long-term project / it takes effort
+
+- 日期:2026-09-29
+
+**我的原句:**
+
+> I take it as a long term project because I believe it requires huge effort to reach C1 level for my writing skills.
+
+**问题:**
+
+- ⚠️ **take it as** —— take sth as = "理解为"(I'll take that as a compliment);"当作"用 **see / treat it as**。
+- ❌ **long term project** —— 前置定语加连字符 → **a long-term project**。
+- ❌ **requires huge effort** —— "一番努力"可数,要加冠词 → **a huge effort**(或 a lot of effort)。
+- ⚠️ **to reach C1 level for my writing skills** —— 绕 → **get my writing to C1**。
+
+**更地道的说法:**
+
+1. I see it as a long-term project, since I know it'll take a huge effort to get my writing to C1.
+   我把它当作一个长期项目,因为我知道要把写作提升到 C1 需要付出很大的努力。(since:原因是自己已知的)
+
+**涉及的搭配:**
+
+- **see / treat sth as sth** —— 看作 / 当作;**take sth as sth** —— 理解为。
+- **it takes (a lot of) effort to do sth** —— 做某事要花很大功夫。
+
+**相关条目:** [语法笔记:as / since / because 表原因的区别](#as-since-because) —— 这里用 since 的理由。
