@@ -90,6 +90,7 @@
 84. [翻译:Which test run ...? / lag behind](#which-test-run)
 85. [it never hurts to do sth / there's no harm in doing sth](#never-hurts)
 86. [句子:wrap onto multiple lines / fit(C1:省略已清楚的信息)](#s-title-wrap)
+87. [句子:be better at sth](#s-better-at)
 
 ---
 
@@ -2648,3 +2649,28 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **cut off** —— 截掉(truncate 的口语说法)。
 
 **技术对照(Compose):** `maxLines` + `overflow = TextOverflow.Ellipsis` = truncated with an ellipsis;`softWrap = true` = wrap。
+
+---
+
+<a id="s-better-at"></a>
+## 句子:be better at sth
+
+- 日期:2026-09-29
+
+**我的原句:**
+
+> Does GPT-6 Astra do coding work better than Opus 5.5?
+
+**问题:**
+
+- ⚠️ **do coding work** —— coding 本身就是名词,不必加 do / work(中文"做编程工作"的直译)。
+- ⚠️ **do ... better than** —— 比较"谁更擅长",用 **be better at sth**。
+
+**更地道的说法:**
+
+1. Is GPT-6 Astra better at coding than Opus 5.5?
+   GPT-6 Astra 写代码比 Opus 5.5 强吗?
+
+**涉及的搭配:**
+
+- **be better at sth** —— 更擅长(比本事)。**be better for sth** —— 更适合用来做(比用途):*Which model is better for coding?*
