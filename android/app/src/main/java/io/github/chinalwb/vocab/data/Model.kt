@@ -42,6 +42,8 @@ data class Entry(
     val pos: String = "",
     val cefr: String = "",
     val date: String = "",
+    /** "write" (会写: practise producing it) or "read" (认识) — see mastery() in build.py. */
+    val mastery: String = "read",
     val gloss: String = "",
     val blocks: List<Block> = emptyList(),
     /** The user's own mistakes in this entry — the tagged ❌/⚠️ bullets. */
@@ -64,6 +66,8 @@ data class Entry(
     /** For 句子 entries: the user's original sentence, shown as the review prompt. */
     val originalSentence: String?
         get() = blocks.firstNotNullOfOrNull { (it as? Block.Quote)?.lines?.joinToString("\n") }
+
+    val writes: Boolean get() = mastery == "write"
 }
 
 /** Mirrors parse_blocks in build.py. Text fields keep their inline markdown. */
@@ -88,7 +92,7 @@ sealed interface Block {
 data class Example(val en: String, val zh: String = "")
 
 @Serializable
-data class MistakeType(val key: String, val desc: String = "")
+data class MistakeType(val key: String, val desc: String = "", /** 发送前自检 question */ val check: String = "")
 
 /** One tagged bullet: [sev] is "error" (❌) or "warn" (⚠️); [text] keeps its inline markdown. */
 @Serializable

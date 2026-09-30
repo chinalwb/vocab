@@ -77,6 +77,7 @@ fun MistakesScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifi
         (order + (rows.keys - order.toSet())).mapNotNull { k -> rows[k]?.let { k to it } }
     }
     val desc = remember(data) { data.mistakeTypes.associate { it.key to it.desc } }
+    val check = remember(data) { data.mistakeTypes.associate { it.key to it.check } }
     val total = groups.sumOf { it.second.size }
     if (type != null && groups.none { it.first == type }) type = null
 
@@ -96,11 +97,47 @@ fun MistakesScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifi
     ) {
         item {
             Text(
-                "只收自己写错的地方。❌ 是语法错误,⚠️ 是能懂但不地道。",
+                "只收自己写错的地方。❌ 是语法错误,⚠️ 是能用但不是最常见的写法。",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp),
             )
+        }
+        if (check.values.any { it.isNotEmpty() }) item {
+            // 发送前自检: most frequent mistake types first; a tap narrows the list to that type
+            Column(
+                Modifier
+                    .padding(top = 12.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+            ) {
+                Text("发消息前 30 秒自检", style = MaterialTheme.typography.titleSmall)
+                Text(
+                    "按我最常犯的错误排序,随错题本自动更新。点一行只看这类。",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 4.dp),
+                )
+                groups.sortedByDescending { it.second.size }.forEach { (k, list) ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { type = k }
+                            .padding(vertical = 7.dp),
+                        verticalAlignment = Alignment.Top,
+                    ) {
+                        Chip(k, MaterialTheme.colorScheme.surfaceContainer)
+                        Column(Modifier.weight(1f).padding(start = 10.dp)) {
+                            Text(check[k].orEmpty(), style = MaterialTheme.typography.bodyMedium)
+                            val ex = Regex("\\*\\*(.+?)\\*\\*").find(list.first().m.text)?.groupValues?.get(1)
+                            if (ex != null) Text("例:$ex", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        Text("${list.size} 处", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+            }
         }
         item {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(vertical = 8.dp)) {

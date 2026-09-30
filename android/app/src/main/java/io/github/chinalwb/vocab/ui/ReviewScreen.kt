@@ -19,6 +19,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -81,7 +82,8 @@ private fun Overview(lib: LibraryState, review: ReviewData, onStart: () -> Unit,
         HorizontalDivider()
         Text(
             "已学 $learned / 共 ${entries.size} 条 · 明天到期 $tomorrow 条\n" +
-                "每天最多引入 10 条新条目,最近收录的优先。句子条目会先给你看当时的原句,先在心里改一遍再翻看答案。",
+                "「会写」的条目反着考:先看中文或原句,自己写出英文再对答案;「认识」的条目看英文回想意思。" +
+                "每天最多引入 10 条新条目,会写的优先。",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -136,12 +138,39 @@ private fun Card(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp, vertical = 12.dp)
         ) {
-            Front(entry)
+            val kind = kindOf(entry)
+            // scratch space for the 中→英 / 先改后看 cards; never saved
+            var draft by remember(session.index) { mutableStateOf("") }
+            Front(entry, kind)
+            if (kind.writes && !session.revealed) {
+                Spacer(Modifier.height(16.dp))
+                OutlinedTextField(
+                    value = draft,
+                    onValueChange = { draft = it },
+                    placeholder = { Text("在这里写你的英文(可选,不会保存)") },
+                    minLines = 3,
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
             if (session.revealed) {
                 Spacer(Modifier.height(20.dp))
                 HorizontalDivider()
                 Spacer(Modifier.height(20.dp))
-                if (entry.level == "SENTENCE" || entry.level == "GRAMMAR") {
+                if (kind.writes && draft.isNotBlank()) {
+                    Text("你写的", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(
+                        draft.trim(),
+                        fontFamily = FontFamily.Serif,
+                        fontSize = 17.sp,
+                        modifier = Modifier
+                            .padding(top = 6.dp, bottom = 16.dp)
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))
+                            .padding(12.dp),
+                    )
+                }
+                if (kind != Kind.Recognize) {
                     Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
                     Spacer(Modifier.height(12.dp))
                 }
@@ -163,23 +192,55 @@ private fun Card(
     }
 }
 
-/** The prompt side: a 句子 entry shows the original sentence to fix, everything else its headword. */
+/** What a card asks — the same rules as kind() in template.html. */
+enum class Kind(val writes: Boolean) { Sentence(true), Translate(true), Grammar(false), Produce(true), Recognize(false) }
+
+fun kindOf(e: Entry): Kind = when {
+    e.level == "SENTENCE" && e.originalSentence != null -> Kind.Sentence
+    e.title.startsWith("翻译") -> Kind.Translate
+    e.level == "GRAMMAR" -> Kind.Grammar
+    e.writes -> Kind.Produce       // 会写: 中→英
+    else -> Kind.Recognize         // 认识: 英→中
+}
+
+/** A 中→英 prompt must not give the answer away: blank out the headword's English words. */
+fun maskTitle(text: String, title: String): String =
+    Regex("[A-Za-z]{3,}").findAll(title).map { it.value.lowercase() }.distinct()
+        .fold(text) { t, w -> t.replace(Regex("\\b$w\\w*", RegexOption.IGNORE_CASE), "＿＿") }
+
+/** The prompt side of a card. */
 @Composable
-private fun Front(entry: Entry) {
+private fun Front(entry: Entry, kind: Kind) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Chip(levelStyle(entry.level).short, levelColor(entry.level))
-        val original = entry.originalSentence
-        when {
-            entry.level == "SENTENCE" && original != null -> {
-                Text("我的原句", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Quote(original.lines(), MaterialTheme.colorScheme.primary) {}
-                Hint("哪里不对、哪里不地道?先在心里改成 C1 的说法。")
+        val label: @Composable (String) -> Unit = {
+            Text(it, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        val prompt: @Composable (String) -> Unit = { Text(it, style = MaterialTheme.typography.titleMedium, lineHeight = 26.sp) }
+        when (kind) {
+            Kind.Sentence -> {
+                label("我的原句")
+                Quote(entry.originalSentence.orEmpty().lines(), MaterialTheme.colorScheme.primary) {}
+                Hint("哪里不对、哪里不地道?先自己改一遍,再看答案。")
             }
-            else -> {
+            Kind.Translate -> {
+                label("中译英")
+                prompt(plain(entry.gloss).replace(Regex("^中译英练习[——-]*"), ""))
+                Hint("先写出你的英文,再和几种译法对照。")
+            }
+            Kind.Produce -> {
+                label("写出英文" + if (entry.pos.isNotEmpty()) " · ${entry.pos}" else "")
+                prompt(maskTitle(plain(entry.gloss), entry.title))
+                Hint("想出这个英文表达,再用它造一个句子。")
+            }
+            Kind.Grammar -> {
+                Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 26.sp, lineHeight = 32.sp)
+                Hint("回想这条规则,以及正反例句。")
+            }
+            Kind.Recognize -> {
                 Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 30.sp, lineHeight = 36.sp)
-                val sub = listOf(entry.ipa, entry.pos).filter { it.isNotEmpty() }.joinToString("  ")
-                if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.bodyLarge)
-                Hint(if (entry.level == "GRAMMAR") "回想这条规则,以及正反例句。" else "回想它的意思、语感,再试着造一个句子。")
+                if (entry.ipa.isNotEmpty()) Text(entry.ipa, style = MaterialTheme.typography.bodyLarge)
+                Hint("它是什么意思?什么语感?")
             }
         }
     }
