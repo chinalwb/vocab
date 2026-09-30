@@ -104,6 +104,7 @@
 98. [nebulous](#nebulous)
 99. [discern / discerning](#discern)
 100. [deserted(vs desert / dessert)](#deserted)
+101. [might be excused / could be forgiven for thinking(+ N after N)](#forgiven-for-thinking)
 
 ---
 
@@ -3308,3 +3309,63 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 荒岛的固定说法是 **a desert island**(名词作定语);*a deserted island* 也对,指"现在没人的岛"。
 
 **近义辨析:** **empty**(空的,最通用)· **deserted**(本该有人却没人,冷清)· **abandoned**(被遗弃、荒废,长期没人管)· **desolate**(荒凉凄凉,情绪最重)。
+
+---
+
+<a id="forgiven-for-thinking"></a>
+## might be excused / could be forgiven for thinking(+ N after N)
+
+- 词性:phrase
+- CEFR:C1
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** Used to say that a belief is understandable given how things look — while implying that it is actually wrong.
+
+**含义:** "这么想也情有可原 / 难怪会以为……"。字面是"可以被原谅",但并没有人犯错;它传达两层意思:**① 这个想法可以理解;② 但其实不对**(下文通常紧接着纠正)。
+
+**原文(摘自一本讲 AI 的书):**
+
+> …we might be excused for thinking that AI fell from the sky…
+
+= 近几年 AI 奇迹接连不断,我们要是以为 AI 是从天而降、生来完备、超出理解的,也情有可原。(言下之意:其实 AI 有很长的发展史。)
+
+**高级在哪:** 不在用词,而在**修辞结构**——先承认一个看似合理的误解,再推翻它(欲扬先抑)。高质量报刊和议论文常用。
+
+**我的原句:**
+
+> It is fine to think that …
+
+- ⚠️ [逻辑] **It is fine to think that …** —— "这么想没问题",是在**认可**这个想法,丢掉了"但其实不对"这层意思,论证方向就反了 → **It's understandable to think …, but …** / **You could be forgiven for thinking …**
+
+**从现有水平到目标表达的三步:**
+
+1. It's understandable to think the crash is caused by our code, but it's actually a system bug.
+   这么想可以理解,但……(现在就能写;关键是 understandable + but)
+2. It's easy to assume the crash is caused by our code, but it's actually a system bug.
+   很容易让人以为……,但……(母语者常用的铺垫)
+3. You could be forgiven for thinking the crash is caused by our code — the stack trace points right at it. It's actually a system bug.
+   你要是以为……也情有可原,毕竟……。其实……(目标表达:误解 → 误解的理由 → 真相)
+
+**同义说法(正式 → 口语):** might be excused for thinking · **could be forgiven for thinking**(最常见)· it's understandable that … · no wonder …
+
+**别混淆:** Excuse me.(劳驾)· be excused from sth(被免除:*She was excused from the meeting.*)
+
+**记忆钩子:** 想写"很多人会以为……,但其实……"的时候,就用它。
+
+---
+
+**同句里的另一个表达:N after N(一个接一个)**
+
+原文:*the parade of AI wonder after wonder* —— AI 奇迹一个接一个,像游行队伍一样。
+
+- **wonder** 在这里是可数名词"奇迹"(the Seven Wonders of the World),不是动词"想知道"。
+- **N after N** —— 名词单数、不加冠词、重复两次,表示"接连不断、多得惊人 / 没完没了"。
+- **the parade of …** —— 比喻"一长串接连出现的东西",偏书面。
+
+1. We sat through meeting after meeting without making a decision.
+   我们开了一个又一个会,却什么都没定下来。
+2. He made mistake after mistake in the demo.
+   演示时他一个错接一个错。
+
+同类:day after day · year after year · one after another。
