@@ -96,6 +96,9 @@
 90. [on the team(团队成员用 on)](#on-the-team)
 91. [be considered sth vs be regarded / viewed as sth](#considered-vs-regarded-as)
 92. [句子:newly created / don't show up(主语先行,去掉话题句)](#s-skills-refresh)
+93. [句子:separate A from B / when it comes to / live in](#s-testflight)
+94. [separate A from B](#separate-from)
+95. [when it comes to sth](#when-it-comes-to)
 
 ---
 
@@ -2912,3 +2915,98 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **说清楚"是什么"出了问题** —— 没刷新的是 **the skill list**,不是 the skills。
 
 **相关条目:** [句子:wrap onto multiple lines / fit](#s-title-wrap) —— 另一条"省略已清楚的信息"的实例。
+
+---
+
+<a id="s-testflight"></a>
+## 句子:separate A from B / when it comes to / live in
+
+- 日期:2026-09-30
+
+**我的原句:**
+
+> Regarding this UX of installing from the Play Store as normal, I would say iOS ecosystem provides a better flow by separating the "Open Testing" to the dedicated TestFlight app.
+
+(背景:Google 的 open testing 要先 join beta,再照常从 Play Store 下载测试版。)
+
+**问题:**
+
+- ❌ [介词] **separating … to** —— separate 搭配 from(*separate A from B*);"挪进专门的 App"用 **keep / move … in(to)**。
+- ❌ [冠词] **iOS ecosystem** —— 特指 → **the iOS ecosystem**。
+- ⚠️ [逻辑] **"Open Testing" 用在 iOS 上** —— 这是 Google Play 的术语,iOS 没有同名功能 → 用通用说法 **beta builds / beta testing**。
+- ⚠️ [直译] **this UX of installing … as normal** —— "UX of + 动名词"绕 → **installing betas through the regular Play Store**。
+- ✅ **I would say** —— 意思清楚,日常使用完全够用;委婉表达观点的好说法。
+
+**更地道的说法:**
+
+1. When it comes to installing betas through the regular Play Store, I'd say the iOS ecosystem offers a better flow by keeping beta builds in a dedicated app, TestFlight.
+   说到通过普通的 Play Store 安装测试版这一点,我觉得 iOS 生态的流程更好,它把测试版放在一个专门的 App(TestFlight)里。
+2. I'd say iOS handles this better: beta builds live in a dedicated app, TestFlight, so testers never confuse them with the production version from the App Store.
+   我觉得 iOS 在这点上做得更好:测试版放在专门的 TestFlight App 里,测试者不会把它和 App Store 上的正式版搞混。(C1:冒号后直接给理由,观点有支撑)
+
+**涉及的搭配:**
+
+- **live in (somewhere)** —— 存放在、待在某处,技术语境常用:*The config lives in the app module.*
+
+**相关条目:** [separate A from B](#separate-from) · [when it comes to sth](#when-it-comes-to) —— 这句里用到的两个搭配。
+
+---
+
+<a id="separate-from"></a>
+## separate A from B
+
+- 词性:phrase(separate 作动词)
+- 音标:/ˈsepəreɪt/(动词;形容词读 /ˈseprət/)
+- CEFR:B1
+- 日期:2026-09-30
+
+**English definition:** To keep two things apart, or to move one thing away from another, so they are no longer together or mixed.
+
+**含义:** 把 A 和 B 分开 / 区分开。介词固定用 **from**,不用 to。
+
+**义项一:物理上 / 结构上分开**
+1. TestFlight separates beta builds from production ones.
+   TestFlight 把测试版和正式版分开。
+2. We should separate the UI layer from the business logic.
+   我们应该把 UI 层和业务逻辑分开。
+
+**义项二:区分、辨别(抽象)**
+1. It's hard to separate fact from opinion in this article.
+   这篇文章里很难把事实和观点区分开。
+2. What separates a good engineer from a great one is judgment.
+   区分优秀工程师和卓越工程师的是判断力。
+
+**常见搭配:**
+
+- **keep A separate from B** —— 让 A 和 B 保持分开(separate 作形容词)。
+- **separate A and B** —— 也可以,把 A、B 都当宾语。
+- **separate … into …** —— 把……分成……:*Separate the list into three groups.*
+- ❌ **separate A to B** —— 不这么说。
+
+**相关条目:** [句子:separate A from B / when it comes to / live in](#s-testflight) —— 写错成 separating … to 的原句。
+
+---
+
+<a id="when-it-comes-to"></a>
+## when it comes to sth
+
+- 词性:phrase
+- CEFR:B2
+- 日期:2026-09-30
+
+**English definition:** Used to introduce a particular topic or aspect you are about to talk about — "as far as this is concerned".
+
+**含义:** 说到……、在……方面。用在句首引出话题,比 Regarding 更口语、更自然。
+
+1. When it comes to performance, the new version is much faster.
+   说到性能,新版本快多了。
+2. She's very patient when it comes to reviewing code.
+   在代码评审这件事上,她非常有耐心。
+
+**用法要点:**
+
+- **to 是介词**,后面接名词或动名词:*when it comes to **writing** tests*,不是 *to write*。
+- 可以放句首,也可以放句中(例 2)。
+- 近义:**as for**(至于,转换话题)、**in terms of**(就……而言,偏书面)、**regarding**(关于,偏正式)。
+
+**相关条目:** [句子:separate A from B / when it comes to / live in](#s-testflight) —— 用 when it comes to 改写 Regarding 的原句。
