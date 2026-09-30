@@ -103,6 +103,7 @@
 97. [X percent of the time(频率 / 概率)](#percent-of-the-time)
 98. [nebulous](#nebulous)
 99. [discern / discerning](#discern)
+100. [deserted(vs desert / dessert)](#deserted)
 
 ---
 
@@ -3269,3 +3270,41 @@ platform 等于 10,就代表请求来自 web,对吧?
 **常见搭配:** a discerning customer / eye / reader · discern a pattern / trend / difference · hard to discern · barely discern · discern A from B / between A and B。
 
 **近义辨析:** **notice / see**(通用)· **detect**(检测到,偏技术客观)· **make out**(口语,勉强看清听清)· **tell apart**(口语,分辨)· **distinguish**(正式区分)· **discern**(正式书面,强调要用心 / 洞察才看得出)。
+
+---
+
+<a id="deserted"></a>
+## deserted(vs desert / dessert)
+
+- 音标:/dɪˈzɜːrtɪd/
+- 词性:adj.(也是 v. desert 的过去式 / 过去分词)
+- CEFR:B2
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** (Of a place) empty, with no people in it; (of a person) left alone by someone who should have stayed and supported them.
+
+**含义:** 空无一人的、冷清的;被抛弃的。词族:desert(v. 抛弃、离开)· deserter(n. 逃兵)· desertion(n. 遗弃)。
+
+**义项一:地方空荡荡、没有人(最常用)**
+1. The streets were completely deserted at 3 a.m.
+   凌晨三点,街上一个人都没有。
+2. The office was deserted on Friday afternoon.
+   周五下午办公室空荡荡的。
+
+**义项二:被抛弃的(人)/ desert 离开**
+1. She felt deserted by her friends when she needed them most.
+   在她最需要的时候,她觉得被朋友们抛弃了。
+2. Many users deserted the platform after the price increase.
+   涨价后很多用户离开了这个平台。
+
+**常见搭配:** a deserted street / beach / village / building · completely / almost deserted · be deserted by sb。
+
+**⚠️ 易混的三个词:**
+
+- **desert**(n.)/ˈdezərt/ —— 沙漠,重音在前。
+- **desert**(v.)/dɪˈzɜːrt/ —— 抛弃,重音在后;deserted 来自它。
+- **dessert**(n.)/dɪˈzɜːrt/ —— 甜点,和动词同音,多一个 s(甜点让人想再来一份)。
+- 荒岛的固定说法是 **a desert island**(名词作定语);*a deserted island* 也对,指"现在没人的岛"。
+
+**近义辨析:** **empty**(空的,最通用)· **deserted**(本该有人却没人,冷清)· **abandoned**(被遗弃、荒废,长期没人管)· **desolate**(荒凉凄凉,情绪最重)。
