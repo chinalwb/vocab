@@ -102,6 +102,7 @@
 96. [empowering(+ 句型 I find it + adj + to do / doing)](#empowering)
 97. [X percent of the time(频率 / 概率)](#percent-of-the-time)
 98. [nebulous](#nebulous)
+99. [discern / discerning](#discern)
 
 ---
 
@@ -3233,3 +3234,38 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **fuzzy** —— 口语化:*fuzzy requirements*、*my memory is fuzzy*。
 
 **语感:** 设计文档 / 评审意见里说"需求不明确",*the requirements are still nebulous* 显得精准专业;聊天用 vague / fuzzy 就够。
+
+---
+
+<a id="discern"></a>
+## discern / discerning
+
+- 音标:/dɪˈsɜːrn/(s 也可读 /z/)· discerning /dɪˈsɜːrnɪŋ/
+- 词性:v. / adj.
+- CEFR:C1
+- 日期:2026-09-30
+- 掌握:认识
+
+**English definition:** *discern* — to notice, recognize, or understand something that is not obvious, often with effort; to see the difference between things. *discerning* — showing good judgment about quality; able to tell good from bad.
+
+**含义:** discern = 察觉、看出、辨别(**费点劲才看得清**);discerning = 有眼光的、有鉴别力的、识货的(**褒义**)。词族:discernible(可辨别的)· discernment(洞察力、辨别力)。
+
+**discerning(adj.)有眼光、识货的**
+1. The café is popular with discerning coffee drinkers.
+   这家咖啡馆很受懂咖啡的人欢迎。
+2. A discerning reader will notice the gaps in the argument.
+   有眼光的读者会注意到论证里的漏洞。
+
+**discern(v.)义项一:察觉、看出不明显的东西**
+1. It's hard to discern any pattern in these crash logs.
+   这些崩溃日志里很难看出什么规律。
+2. I could barely discern the outline of a building through the fog.
+   雾里我只能勉强看出一栋楼的轮廓。
+
+**discern(v.)义项二:辨别、区分**
+1. A good reviewer can discern real issues from mere style preferences.
+   好的评审能分清哪些是真正的问题,哪些只是风格偏好。
+
+**常见搭配:** a discerning customer / eye / reader · discern a pattern / trend / difference · hard to discern · barely discern · discern A from B / between A and B。
+
+**近义辨析:** **notice / see**(通用)· **detect**(检测到,偏技术客观)· **make out**(口语,勉强看清听清)· **tell apart**(口语,分辨)· **distinguish**(正式区分)· **discern**(正式书面,强调要用心 / 洞察才看得出)。
