@@ -99,6 +99,7 @@
 93. [句子:separate A from B / when it comes to / live in](#s-testflight)
 94. [separate A from B](#separate-from)
 95. [when it comes to sth](#when-it-comes-to)
+96. [empowering(+ 句型 I find it + adj + to do / doing)](#empowering)
 
 ---
 
@@ -3010,3 +3011,52 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 近义:**as for**(至于,转换话题)、**in terms of**(就……而言,偏书面)、**regarding**(关于,偏正式)。
 
 **相关条目:** [句子:separate A from B / when it comes to / live in](#s-testflight) —— 用 when it comes to 改写 Regarding 的原句。
+
+---
+
+<a id="empowering"></a>
+## empowering(+ 句型 I find it + adj + to do / doing)
+
+- 音标:/ɪmˈpaʊərɪŋ/
+- 词性:adj.(来自 v. empower)
+- CEFR:C1
+- 日期:2026-09-30
+
+**English definition:** Making you feel more confident, in control of your life, and able to do what you want.
+
+**含义:** 让人感到有力量、有底气、能自己做主——重点是**内心的掌控感**。词族:empower(v.)· empowerment(n.)· empowered(adj.)。
+
+**义项一:empowering(adj.)让人有力量 / 掌控感**
+1. Learning to code was an empowering experience for her.
+   学会写代码对她来说是一段让人很有底气的经历。
+2. It's empowering to realize you don't need anyone's permission to start.
+   意识到自己不需要任何人的许可就能开始,这让人觉得很有力量。
+
+**义项二:empower sb (to do sth)(v.)授权、使有能力(偏正式)**
+1. We want to empower engineers to make their own technical decisions.
+   我们希望让工程师能自己做技术决策。
+2. The new law empowers local governments to set their own tax rates.
+   新法律授权地方政府自行设定税率。
+
+**常见搭配:** an empowering experience / message · feel empowered · empower sb to do sth · employee / women's empowerment。
+
+**语感:** 中文职场的"赋能"就是 empower,英文企业用语里同样被用滥了(*empower our users*);写作时说清楚具体让人**能做什么**更有力。描述个人感受时 empowering 真诚常用,放心用。
+
+**近义对比:** **empowering**(我能做主)· **encouraging**(别人支持我)· **inspiring**(让我想去做)· **liberating**(摆脱了束缚)。
+
+**范例句型:I find it + 形容词 + to do / doing**
+
+> I find it very empowering knowing that I have the ability to choose my own fate and to create my own meaning.
+> (摘抄的好句,不是订正)
+
+- **it** 是形式宾语,真正的宾语是后面的 *to know / knowing that …*。
+- **to do vs doing** —— 描述感受的形容词(rewarding / motivating / empowering)两者都行:to do 更标准,正式写作首选;-ing 更口语,像在描述持续的感受。
+- **不是都能换:** *find it hard / difficult / easy* 基本只接 **to do**;*It's worth / It's no use* 只接 **-ing**。拿不准时用 to do。
+
+**仿写:**
+1. I find it very rewarding knowing that the tools I build help my teammates work faster.
+   知道自己做的工具能让队友效率更高,我觉得很有成就感。
+2. I find it motivating to know that I can improve my writing a little every day.
+   知道自己每天都能让写作进步一点,我觉得很有动力。
+3. I find it hard to master all of them with the current learning style.
+   用现在的学习方式,我觉得很难把它们全都掌握。(我自己写的,用对了这个句型)
