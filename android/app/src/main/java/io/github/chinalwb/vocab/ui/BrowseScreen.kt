@@ -78,14 +78,15 @@ fun BrowseScreen(
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var filter by rememberSaveable { mutableStateOf<String?>(null) }
+    var writeOnly by rememberSaveable { mutableStateOf(false) }
     val entries = lib.data?.entries.orEmpty()
     val changed = lib.newAnchors + lib.updatedAnchors
     if (filter == CHANGED && changed.isEmpty()) filter = null
 
-    val groups = remember(entries, query, filter, changed) {
+    val groups = remember(entries, query, filter, changed, writeOnly) {
         val q = query.trim().lowercase()
         val shown = entries.filter { e ->
-            (q.isEmpty() || q in e.searchText) && when (filter) {
+            (q.isEmpty() || q in e.searchText) && (!writeOnly || e.writes) && when (filter) {
                 null -> true
                 CHANGED -> e.anchor in changed
                 else -> e.level == filter
@@ -132,6 +133,8 @@ fun BrowseScreen(
             items(GROUP_ORDER.filter { it in present }) { lvl ->
                 FilterChip(filter == lvl, { filter = if (filter == lvl) null else lvl }, { Text(levelStyle(lvl).short) })
             }
+            // narrows whichever level is picked, like the page's 只看会写
+            item { FilterChip(writeOnly, { writeOnly = !writeOnly }, { Text("只看会写") }) }
         }
     }
     val status: @Composable () -> Unit = {
@@ -334,7 +337,7 @@ private fun EntryCard(e: Entry, badge: String?, onClick: () -> Unit) {
             }
             if (e.date.isNotEmpty()) {
                 Text(
-                    e.date,
+                    if (e.writes) "会写 · ${e.date}" else e.date,
                     style = MaterialTheme.typography.labelSmall,
                     modifier = Modifier.align(Alignment.End),
                 )
