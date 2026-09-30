@@ -100,6 +100,7 @@
 94. [separate A from B](#separate-from)
 95. [when it comes to sth](#when-it-comes-to)
 96. [empowering(+ 句型 I find it + adj + to do / doing)](#empowering)
+97. [X percent of the time(频率 / 概率)](#percent-of-the-time)
 
 ---
 
@@ -3156,3 +3157,42 @@ platform 等于 10,就代表请求来自 web,对吧?
    知道自己每天都能让写作进步一点,我觉得很有动力。
 3. I find it hard to master all of them with the current learning style.
    用现在的学习方式,我觉得很难把它们全都掌握。(我自己写的,用对了这个句型)
+
+---
+
+<a id="percent-of-the-time"></a>
+## X percent of the time(频率 / 概率)
+
+- 词性:phrase
+- CEFR:B1
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** Used to say how often something happens — in X out of every 100 cases or occasions.
+
+**含义:** "在 X% 的情况下"。这里的 **the time 不是"时间"**,而是"所有发生这件事的时刻 / 情况"的整体。
+
+**原文(摘自一本讲机器学习的书):**
+
+> …the model misclassifies fours and sevens less than 1 percent of the time.
+
+= 模型把 4 和 7 分错的情况不到 1%,即每 100 个 4 / 7 里分错的不到 1 个(错误率低于 1%)。
+
+**为什么读着难:** 不是因为它"高级"——most of the time 是 A2,X% of the time 是 B1 的日常说法——而是它和中文对不上:中文说"错误率 / 概率 / 情况",英语用 the time,直译成"时间"就说不通。这类**每个词都认识、组合起来不是字面意思**的表达,正是学习者和母语者拉开差距的地方。
+
+**例句:**
+1. It works 99% of the time.
+   它 99% 的情况下都没问题。
+2. Most of the time, I take the bus to work.
+   我大多数时候坐公交上班。
+3. Half the time, he doesn't even read the messages.
+   他一半的时候连消息都不看。(常带抱怨语气,of 可省)
+4. This crash happens about 1 in 20 launches, so roughly 5% of the time.
+   这个崩溃大约每 20 次启动出现一次,也就是约 5% 的概率。(bug 报告里描述"偶现")
+
+**同一段里的其他比例说法:**
+
+- **two-thirds of X** —— X 中的三分之二。
+- **one in four / one out of four** —— 四个里有一个(25%),口语常用。
+
+**记法:** 看到 **比例 + of the time** 就译成"……的情况下 / ……的概率",写 bug 报告时大胆用。
