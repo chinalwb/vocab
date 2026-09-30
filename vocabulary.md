@@ -95,6 +95,7 @@
 89. [句子:play it safe / go with / make a mistake](#s-play-it-safe)
 90. [on the team(团队成员用 on)](#on-the-team)
 91. [be considered sth vs be regarded / viewed as sth](#considered-vs-regarded-as)
+92. [句子:newly created / don't show up(主语先行,去掉话题句)](#s-skills-refresh)
 
 ---
 
@@ -2707,6 +2708,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **技术对照(Compose):** `maxLines` + `overflow = TextOverflow.Ellipsis` = truncated with an ellipsis;`softWrap = true` = wrap。
 
+**相关条目:** [句子:newly created / don't show up](#s-skills-refresh) —— 同样靠删掉重复信息让句子变简洁。
+
 ---
 
 <a id="s-better-at"></a>
@@ -2876,3 +2879,36 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 冷知识:对 13 的恐惧叫 **triskaidekaphobia**。
 
 **相关条目:** [句子:see sth as / a long-term project / it takes effort](#s-long-term-project) —— see sth as 同属"要带 as"的一类。
+
+---
+
+<a id="s-skills-refresh"></a>
+## 句子:newly created / don't show up(主语先行,去掉话题句)
+
+- 日期:2026-09-30
+
+**我的原句:**
+
+> In a Cowork chat session, typing a slash `/` will pop up the skills selector panel. This works well basically. But for the new created custom skills, they will not be shown in the skills selector panel if they are created on the fly. It seems like the skills are not refreshed in time.
+
+**问题:**
+
+- ❌ [词形] **new created** —— 修饰分词用副词 → **newly created**。
+- ⚠️ [直译] **for the … skills, they …** —— 中文"对于……,它们……"的话题句;英语直接让名词做主语 → **Custom skills … don't show up**。
+- ⚠️ [直译] **newly created … if they are created on the fly** —— 同一个意思说了两遍,留一个即可。
+- ⚠️ [结构] **works well basically** —— 副词放句尾是中文"基本上"的语序 → **This generally works fine.**
+- ⚠️ [搭配] **pop up the panel** —— pop up 多为不及物(*the panel pops up*)→ **opens / brings up the panel**。
+
+**更地道的说法:**
+
+1. In a Cowork chat session, typing / opens the skills selector. This generally works fine, but custom skills created on the fly don't show up in the selector. It looks like the skill list isn't being refreshed.
+   在 Cowork 聊天会话里输入 / 会打开技能选择面板。这通常没问题,但临时新建的自定义技能不会出现在面板里,看起来是技能列表没有刷新。
+
+**思维方式的改进方向:**
+
+- **主语先行,不用话题句** —— 中文习惯先亮话题("对于新建的技能"),再说它怎样;英语直接把那个名词放进主语位置。写完检查:句首的 *For X, …* / *As for X, …* 后面是不是又用代词指回了 X?是的话就删掉话题,让 X 做主语。
+- **一个信息只说一次** —— 修饰语(newly created)和条件从句(if created on the fly)在重复同一件事时,留更具体的那个。
+- **用现在时描述软件的固定行为** —— *typing / opens …*,而不是 *will pop up*。
+- **说清楚"是什么"出了问题** —— 没刷新的是 **the skill list**,不是 the skills。
+
+**相关条目:** [句子:wrap onto multiple lines / fit](#s-title-wrap) —— 另一条"省略已清楚的信息"的实例。
