@@ -101,6 +101,7 @@
 95. [when it comes to sth](#when-it-comes-to)
 96. [empowering(+ 句型 I find it + adj + to do / doing)](#empowering)
 97. [X percent of the time(频率 / 概率)](#percent-of-the-time)
+98. [nebulous](#nebulous)
 
 ---
 
@@ -3196,3 +3197,39 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **one in four / one out of four** —— 四个里有一个(25%),口语常用。
 
 **记法:** 看到 **比例 + of the time** 就译成"……的情况下 / ……的概率",写 bug 报告时大胆用。
+
+---
+
+<a id="nebulous"></a>
+## nebulous
+
+- 音标:/ˈnebjələs/
+- 词性:adj.
+- CEFR:C2
+- 日期:2026-09-30
+- 掌握:认识
+
+**English definition:** Not clear, detailed, or precise; vague and hard to define. (Literally: cloudy or hazy, like a nebula.)
+
+**含义:** 模糊的、含糊不清的、不明确的——从"星云"(nebula)那种一团雾气、没有清晰边界的样子引申而来。词族:nebula(n. 星云,复数 nebulae)· nebulously(adv.)。
+
+**义项一:概念 / 计划 / 目标模糊不清,难以界定(最常用)**
+1. The project goals are still pretty nebulous, so it's hard to estimate the work.
+   项目目标还很模糊,所以很难估算工作量。
+2. "Good user experience" is a nebulous concept unless you define what you're measuring.
+   除非你先定义好要衡量什么,否则"好的用户体验"就是一个很模糊的概念。
+
+**义项二:字面义,云雾状的、朦胧的(少见,偏文学 / 天文)**
+1. A nebulous glow appeared on the horizon.
+   地平线上出现了一片朦胧的光。
+
+**常见搭配:** a nebulous concept / idea / notion · nebulous goals / requirements / plans · remain / still nebulous。
+
+**近义辨析:**
+
+- **vague** —— 最通用的"模糊、含糊"(B2),日常首选。
+- **nebulous** —— 更正式书面,强调**本身没有清晰边界、难以界定**,像一团雾。
+- **ambiguous** —— **有多种可能的解释**(歧义),不是"模糊"。
+- **fuzzy** —— 口语化:*fuzzy requirements*、*my memory is fuzzy*。
+
+**语感:** 设计文档 / 评审意见里说"需求不明确",*the requirements are still nebulous* 显得精准专业;聊天用 vague / fuzzy 就够。
