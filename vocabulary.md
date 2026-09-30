@@ -105,6 +105,7 @@
 99. [discern / discerning](#discern)
 100. [deserted(vs desert / dessert)](#deserted)
 101. [might be excused / could be forgiven for thinking(+ N after N)](#forgiven-for-thinking)
+102. [proponent(vs opponent)](#proponent)
 
 ---
 
@@ -3369,3 +3370,38 @@ platform 等于 10,就代表请求来自 web,对吧?
    演示时他一个错接一个错。
 
 同类:day after day · year after year · one after another。
+
+---
+
+<a id="proponent"></a>
+## proponent(vs opponent)
+
+- 音标:英 /prəˈpəʊnənt/ 美 /prəˈpoʊnənt/
+- 词性:n.
+- CEFR:C1
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** A person who supports an idea, theory, or course of action and argues in favor of it publicly.
+
+**含义:** 支持者、拥护者、倡导者——多指**公开、有立场地**支持某种观点 / 理论 / 做法的人。词源:拉丁语 *proponere*"提出",与 propose 同源。
+
+1. She is a strong proponent of test-driven development.
+   她是测试驱动开发的坚定拥护者。
+2. Proponents of remote work argue that it improves focus and reduces commuting time.
+   远程办公的支持者认为,它能提高专注度、减少通勤时间。
+3. Early proponents of neural networks were largely ignored for decades.
+   神经网络的早期倡导者几十年来基本上都被忽视了。
+
+**常见搭配:** a proponent **of** sth · a strong / leading / vocal / early proponent · proponents and opponents。
+
+**反义:** **opponent**(反对者;pro-"支持" vs op-"反对",成对记)· critic(批评者)。
+
+**近义辨析:**
+
+- **supporter** —— 最通用(人、球队、政党都行),B1。
+- **advocate** —— 更强调积极奔走、代言;也作动词 *advocate for sth*。
+- **proponent** —— 正式书面,多用于**观点 / 理论 / 方法**。
+- **champion**(v.)—— 大力推动:*She championed the migration to Kotlin.*
+
+**实用句式:** 写技术观点或方案对比时 —— *Proponents argue that …, while critics point out that …*(支持者认为……,批评者则指出……)。
