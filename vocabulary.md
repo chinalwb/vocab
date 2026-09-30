@@ -106,6 +106,7 @@
 100. [deserted(vs desert / dessert)](#deserted)
 101. [might be excused / could be forgiven for thinking(+ N after N)](#forgiven-for-thinking)
 102. [proponent(vs opponent)](#proponent)
+103. [advent](#advent)
 
 ---
 
@@ -3405,3 +3406,40 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **champion**(v.)—— 大力推动:*She championed the migration to Kotlin.*
 
 **实用句式:** 写技术观点或方案对比时 —— *Proponents argue that …, while critics point out that …*(支持者认为……,批评者则指出……)。
+
+---
+
+<a id="advent"></a>
+## advent
+
+- 音标:/ˈædvent/
+- 词性:n.(通常 the advent of)
+- CEFR:C1
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** The arrival or first appearance of something important, such as an invention, a period, or a person.
+
+**含义:** (重要事物的)出现、到来、问世——多指**一项技术、一个时代或一种潮流的来临**,并带来重大改变。词源:拉丁语 *adventus*"到来",与 adventure、venue 同源。
+
+**义项一:重要事物的出现(最常用)**
+1. With the advent of smartphones, people stopped carrying separate cameras.
+   随着智能手机的出现,人们不再单独带相机了。
+2. The advent of large language models has changed how developers write code.
+   大语言模型的出现改变了开发者写代码的方式。
+
+**义项二:Advent(大写)基督教的"将临期"** —— 圣诞节前约四周。
+1. Many families use an Advent calendar to count down to Christmas.
+   很多家庭用将临期日历来倒数圣诞节。
+
+**常见搭配:** the advent of sth · **with the advent of …**(随着……的出现,常放句首)· before / since the advent of … · Advent calendar。
+
+**近义辨析:**
+
+- **arrival** —— 最通用的"到来"。
+- **emergence** —— 浮现、兴起,强调**逐渐冒出来**。
+- **rise** —— 崛起,强调**影响力增长**:*the rise of AI*。
+- **advent** —— 正式书面,强调**划时代的起点**,前后形成对比。
+- **dawn** —— 比喻"开端":*the dawn of the internet age*,文学色彩更浓。
+
+**现成句式:** *With the advent of LLMs, …* —— 写技术趋势文章的开头;聊天说 *since X came out* 就行。
