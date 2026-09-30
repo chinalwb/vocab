@@ -24,19 +24,20 @@ SCHEMA = 1  # bump when data.json changes shape in a way the app must know about
 # user made. Only the user's own mistakes get a tag; demo counter-examples stay
 # untagged. The order here is the order the mistakes view lists them in.
 # android/.../ui/Inline.kt renders the same tags — keep both lists in sync.
+# The third field is the question the 发送前自检 checklist asks for that type.
 MISTAKE_TYPES = [
-    ("冠词", "冠词、可数与单复数"),
-    ("介词", "介词搭配"),
-    ("搭配", "固定搭配与用词"),
-    ("动词", "时态、语态、主谓一致、非谓语"),
-    ("结构", "句型、从句与语序"),
-    ("词形", "拼写、连字符、大小写、比较级"),
-    ("标点", "逗号粘连等标点问题"),
-    ("逻辑", "指代、比较对象、歧义、悬垂修饰"),
-    ("直译", "中式直译与冗余"),
-    ("语气", "语域、正式度与语气轻重"),
+    ("冠词", "冠词、可数与单复数", "单数可数名词前有没有 a / the / my?特指的东西用了 the 吗?"),
+    ("介词", "介词搭配", "关键名词和动词后面的介词,我确定吗?(in situations · on the team · separate from)"),
+    ("搭配", "固定搭配与用词", "这个动词 + 名词的组合是固定搭配吗?拿不准就换成更常见的说法。"),
+    ("动词", "时态、语态、主谓一致、非谓语", "主语是自己做,还是被做?后面接 to do 还是 -ing?"),
+    ("结构", "句型、从句与语序", "疑问句语序、从句引导词对吗?有没有 like that 这类叠用?"),
+    ("词形", "拼写、连字符、大小写、比较级", "拼写、连字符(long-term)、副词修饰分词(newly created)、比较级对吗?"),
+    ("标点", "逗号粘连等标点问题", "两个完整的句子之间,是不是只放了一个逗号?"),
+    ("逻辑", "指代、比较对象、歧义、悬垂修饰", "比较的对象对等吗?代词和省略的主语指代清楚吗?"),
+    ("直译", "中式直译与冗余", "句首是不是 For X, … it / they 的话题句?同一个意思说了两遍吗?"),
+    ("语气", "语域、正式度与语气轻重", "这个词的正式程度和场合匹配吗?(聊天用 so,别用 therefore)"),
 ]
-TYPE_KEYS = [k for k, _ in MISTAKE_TYPES]
+TYPE_KEYS = [k for k, *_ in MISTAKE_TYPES]
 MISTAKE_RE = re.compile(r"^(❌|⚠️)\s*\[([^\]]+)\](?!\()\s*(.+)$")
 
 
@@ -103,8 +104,8 @@ def inline(t):
 
 
 def strip_meta(raw):
-    # the 音标/词性/CEFR/日期 bullets are rendered as chips, not body text
-    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
+    # the 音标/词性/CEFR/日期/掌握 bullets are rendered as chips, not body text
+    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
 
 
 def parse_blocks(raw):
@@ -174,6 +175,25 @@ def to_html(blocks):
     return "".join(out)
 
 
+def mastery(raw, level):
+    """会写 → "write" (practise producing it), 认识 → "read" (recognising is enough)."""
+    v = meta_field(raw, "掌握")
+    if v:
+        return "write" if v.startswith("会写") else "read"
+    return "write" if level in ("SENTENCE", "GRAMMAR") else "read"
+
+
+def original_sentence(blocks):
+    """The quote that follows **我的原句**, or ""."""
+    want = False
+    for b in blocks:
+        if b["t"] == "p" and b["text"].startswith("**我的原句"):
+            want = True
+        elif b["t"] == "quote" and want:
+            return "\n".join(b["lines"])
+    return ""
+
+
 def extract_mistakes(anchor, blocks):
     """Collect the tagged ❌/⚠️ bullets, each with the 我的原句 quote it follows."""
     out, original, want_quote = [], "", False
@@ -207,6 +227,7 @@ def build_entries(src):
             "pos": meta_field(e["raw"], "词性"),
             "cefr": meta_field(e["raw"], "CEFR"),
             "date": meta_field(e["raw"], "日期"),
+            "mastery": mastery(e["raw"], level),
             "gloss": re.sub(r"\*\*(.+?)\*\*", r"\1", gloss(e["raw"], level))[:150],
             "blocks": blocks,
             "mistakes": extract_mistakes(e["anchor"], blocks),
@@ -224,7 +245,8 @@ def digest(obj):
 def page_data(entries):
     grouped = {}
     for e in entries:
-        item = {k: e[k] for k in ("anchor", "title", "ipa", "pos", "cefr", "date", "gloss")}
+        item = {k: e[k] for k in ("anchor", "title", "ipa", "pos", "cefr", "date", "gloss", "mastery")}
+        item["original"] = original_sentence(e["blocks"])
         item["html"] = to_html(e["blocks"])
         item["level"] = e["level"]
         grouped.setdefault(e["level"], []).append(item)
@@ -240,7 +262,7 @@ def mistake_data(entries):
                 "sev": m["sev"], "html": inline(m["text"]), "text": m["text"],
                 "original": m["original"], "anchor": e["anchor"], "title": e["title"], "date": e["date"],
             })
-    return [{"type": k, "desc": d, "items": groups[k]} for k, d in MISTAKE_TYPES if groups[k]]
+    return [{"type": k, "desc": d, "check": c, "items": groups[k]} for k, d, c in MISTAKE_TYPES if groups[k]]
 
 
 # Matches the reset the Claude artifact host injects, so both targets render alike.
@@ -292,7 +314,7 @@ def main():
     }
     (ROOT / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
     (ROOT / "data.json").write_text(
-        json.dumps({**meta, "mistakeTypes": [{"key": k, "desc": d} for k, d in MISTAKE_TYPES],
+        json.dumps({**meta, "mistakeTypes": [{"key": k, "desc": d, "check": c} for k, d, c in MISTAKE_TYPES],
                     "entries": entries}, ensure_ascii=False), encoding="utf-8")
 
     if args.artifact:

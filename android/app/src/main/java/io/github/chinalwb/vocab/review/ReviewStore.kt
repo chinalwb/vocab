@@ -108,8 +108,8 @@ data class ReviewPlan(val due: List<Entry>, val fresh: List<Entry>) {
 
 /**
  * Today's queue: everything due, then up to the day's remaining quota of
- * never-seen entries, most recently 收录 first — so what just arrived in a
- * fetch is what gets introduced next.
+ * never-seen entries — 会写 ones first, then most recently 收录 — so what
+ * just arrived in a fetch is what gets introduced next. Same rule as the page.
  */
 fun planToday(entries: List<Entry>, review: ReviewData): ReviewPlan {
     val today = today()
@@ -117,7 +117,7 @@ fun planToday(entries: List<Entry>, review: ReviewData): ReviewPlan {
         .sortedBy { review.cards[it.anchor]!!.due }
     val quota = NEW_PER_DAY - if (review.newDay == today) review.newToday else 0
     val fresh = entries.filter { it.anchor !in review.cards }
-        .sortedByDescending { it.date.removePrefix("~") }
+        .sortedWith(compareByDescending<Entry> { it.writes }.thenByDescending { it.date.removePrefix("~") })
         .take(max(0, quota))
     return ReviewPlan(due, fresh)
 }
