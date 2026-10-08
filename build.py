@@ -188,15 +188,19 @@ def mastery(raw, level):
     return "write" if level in ("SENTENCE", "GRAMMAR", "SELFTEST") else "read"
 
 
-def original_sentence(blocks):
-    """The quote that follows **我的原句**, or ""."""
+def quote_after(blocks, label):
+    """The quote that follows a **label** paragraph (e.g. 我的原句, 答案), or ""."""
     want = False
     for b in blocks:
-        if b["t"] == "p" and b["text"].startswith("**我的原句"):
+        if b["t"] == "p" and b["text"].startswith("**" + label):
             want = True
         elif b["t"] == "quote" and want:
             return "\n".join(b["lines"])
     return ""
+
+
+def original_sentence(blocks):
+    return quote_after(blocks, "我的原句")
 
 
 def extract_mistakes(anchor, blocks):
@@ -252,6 +256,8 @@ def page_data(entries):
     for e in entries:
         item = {k: e[k] for k in ("anchor", "title", "ipa", "pos", "cefr", "date", "gloss", "mastery")}
         item["original"] = original_sentence(e["blocks"])
+        if e["level"] == "SELFTEST":
+            item["answer"] = quote_after(e["blocks"], "答案")
         item["html"] = to_html(e["blocks"])
         item["level"] = e["level"]
         grouped.setdefault(e["level"], []).append(item)

@@ -404,6 +404,20 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .chips button{font:inherit;font-size:13px;background:var(--chip);color:var(--ink);border:1px solid var(--rule);border-radius:999px;padding:3px 11px;cursor:pointer}
 .toast{font-size:12.5px;color:var(--ink-3)}
 
+/* ── 自测 ──────────────────────────────── */
+.st textarea.draft{background:var(--chip);margin-top:4px}
+.st .row{margin-top:10px}
+.st-res{margin:14px 0 16px;font-size:14px}
+.st-res .verdict{font-weight:700;margin:0 0 8px}
+.st-res .line{
+  margin:0 0 8px;padding:8px 12px;border-radius:8px;background:var(--card-edge);
+  font-family:Newsreader,Georgia,serif;font-size:16px;line-height:1.5;
+}
+.st-res .line b{font-family:"Noto Sans SC",system-ui,sans-serif;font-size:11.5px;font-weight:500;color:var(--card-ink-2);display:block}
+.st-res .x{color:var(--err);text-decoration:line-through;text-decoration-thickness:1.5px}
+.st-res .m{background:color-mix(in srgb, var(--warn) 30%, transparent);border-radius:3px;padding:0 2px}
+.st-res .fine{font-size:12px;color:var(--card-ink-2);margin:0}
+
 @media (max-width:640px){
   .grid{columns:2 150px;column-gap:10px}
   .card{margin-bottom:10px;padding:11px 13px}
@@ -694,6 +708,34 @@ function render(){
 }
 q.addEventListener("input", render);
 
+// ── 自测 compare: word-level diff of my sentence against the answer (same as ui/SelfTest.kt).
+// Case, punctuation and curly quotes are ignored; the diff is an LCS over the words.
+const normWord = w => w.toLowerCase().replace(/[’‘]/g, "'").replace(/[^a-z0-9']/g, "");
+function diffWords(mine, answer){
+  const a = mine.split(/\s+/).filter(Boolean), b = answer.split(/\s+/).filter(Boolean);
+  const na = a.map(normWord), nb = b.map(normWord);
+  const L = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+  for (let x = a.length - 1; x >= 0; x--) for (let y = b.length - 1; y >= 0; y--)
+    L[x][y] = na[x] && na[x] === nb[y] ? L[x + 1][y + 1] + 1 : Math.max(L[x + 1][y], L[x][y + 1]);
+  const keepA = new Set(), keepB = new Set();
+  for (let x = 0, y = 0; x < a.length && y < b.length;) {
+    if (na[x] && na[x] === nb[y]) { keepA.add(x++); keepB.add(y++); }
+    else if (L[x + 1][y] >= L[x][y + 1]) x++; else y++;
+  }
+  return { a, b, keepA, keepB, same: na.filter(Boolean).join(" ") === nb.filter(Boolean).join(" ") };
+}
+function compareHtml(mine, answer, retry = true){
+  const again = retry ? `<button class="linkish" type="button" id="st-again">再试一次</button>` : "";
+  if (!mine.trim()) return `<p class="verdict">没有写就看答案了 —— 下次先写再看。</p><p>${again}</p>`;
+  const d = diffWords(mine, answer);
+  if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)</p><p>${again}</p>`;
+  const show = (ws, keep, cls) => ws.map((w, k) => keep.has(k) ? esc(w) : `<span class="${cls}">${esc(w)}</span>`).join(" ");
+  return `<p class="verdict">对照一下差异</p>` +
+    `<p class="line"><b>我写的(删除线 = 多出来或写错的)</b>${show(d.a, d.keepA, "x")}</p>` +
+    `<p class="line"><b>答案(高亮 = 我漏掉或写错的)</b>${show(d.b, d.keepB, "m")}</p>` +
+    `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。 ${again}</p>`;
+}
+
 // modal. `trail` is the chain of notes walked through via cross-references;
 // show() only renders, so callers own the trail and it survives going back.
 let scrim = null, lastFocus = null, trail = [];
@@ -730,7 +772,12 @@ function show(it, level, i){
     (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
     `<h2>${it.title}</h2>` +
     (meta ? `<div class="meta">${meta}</div>` : "") +
-    `<div class="body">${it.html}</div>`;
+    (level === "SELFTEST"
+      ? `<div class="st"><textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
+        `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
+        `<div class="st-res" id="st-res" hidden></div>`
+      : "") +
+    `<div class="body"${level === "SELFTEST" ? " hidden" : ""}>${it.html}</div>`;
   scrim._entry = { it, level, i };
   scrim.append(sheet);
   document.body.append(scrim);
@@ -743,10 +790,23 @@ function show(it, level, i){
   });
   if (back) sheet.querySelector(".back").addEventListener("click", goBack);
 
+  if (level === "SELFTEST") {
+    const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
+    const reveal = () => {
+      res.innerHTML = compareHtml(input.value, it.answer || "");
+      res.hidden = false;
+      sheet.querySelector(".st").hidden = true;
+      sheet.querySelector(".body").hidden = false;
+      res.querySelector("#st-again").addEventListener("click", () => show(it, level, i));  // re-render, input cleared
+    };
+    sheet.querySelector("#st-show").addEventListener("click", reveal);
+    input.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) reveal(); });
+  }
+
   sheet.querySelector(".x").addEventListener("click", close);
   scrim.addEventListener("click", e => { if (e.target === scrim) close(); });
   sheet.scrollIntoView({ block: "nearest" });
-  sheet.querySelector(".x").focus();
+  (sheet.querySelector("#st-in") || sheet.querySelector(".x")).focus();
 }
 function close(){
   if (!scrim) return;
@@ -884,7 +944,8 @@ function renderCard(){
     `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ask}` +
     (writes && !s.revealed ? `<textarea class="draft" id="rv-draft" placeholder="在这里写你的英文(可选,不会保存)">${esc(s.draft)}</textarea>` : "") +
     (s.revealed
-      ? `<hr>${writes && s.draft.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(s.draft)}</div>` : ""}` +
+      ? `<hr>${k === "selftest" && s.draft.trim() ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>`
+          : writes && s.draft.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(s.draft)}</div>` : ""}` +
         (k === "recognize" ? "" : `<p class="big" style="font-size:21px">${it.title}</p>`) +
         `<div class="body">${it.html}</div>`
       : "") +
