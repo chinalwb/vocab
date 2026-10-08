@@ -109,6 +109,7 @@
 103. [advent](#advent)
 104. [语法笔记:This is the first time + 现在完成时](#first-time-perfect)
 105. [自测:用户用的是 iPhone 还是安卓?](#t-iphone-or-android)
+106. [自测:坚持等待最优解,而不是向诱惑屈服,远更有可能帮你取得更好的结果。](#t-hold-out-for)
 
 ---
 
@@ -3507,3 +3508,24 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [搭配] **model** —— 单说 model 在 AI 语境会被理解成"用的哪个模型" → **phone / device**。
 - ⚠️ [搭配] **client** —— 技术语境指客户端软件,商务语境指客户公司;"用 App 的人"→ **user**。
 - ❌ [词形] **Android Phone** —— phone 是普通名词,不大写 → **Android phone**。
+
+---
+
+<a id="t-hold-out-for"></a>
+## 自测:坚持等待最优解,而不是向诱惑屈服,远更有可能帮你取得更好的结果。
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Holding out for the optimal instead of caving in to the temptation is far more likely to help you achieve better outcomes.
+
+(摘自阅读材料的原句。)
+
+**要点:**
+
+- **hold out for sth** —— 坚持等待(更好的),不肯将就:*She's holding out for a better offer.*
+- **cave in (to sth)** —— 屈服、让步(本义"塌陷"):*The company caved in to public pressure.* 和 hold out for 一个坚持、一个屈服,形成对比。
+- **动名词短语作主语,不需要 That** —— *Holding out …* 里没有"主语 + 变时态的动词",本身就是名词性短语;只有完整从句作主语才要 That(*That we held out was wise.*)。见 [语法笔记:主语从句必须用 That 引导](#subject-clause-that)。
+- 更顺的写法:*Holding out for the optimal **choice** instead of caving in to temptation is far more likely to **lead to** better outcomes.*(the optimal 单独作名词略生硬;泛指"诱惑"不加 the。)
