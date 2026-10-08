@@ -92,8 +92,10 @@ fun BrowseScreen(
 
     val groups = remember(entries, query, filter, changed, writeOnly) {
         val q = query.trim().lowercase()
+        // "12" or "#12" jumps to entry #12, like the page's search
+        val numQ = Regex("^#?(\\d+)$").find(q)?.groupValues?.get(1)?.toInt()
         val shown = entries.filter { e ->
-            (q.isEmpty() || q in e.searchText) && (!writeOnly || e.writes) && when (filter) {
+            (if (numQ != null) e.no == numQ else q.isEmpty() || q in e.searchText) && (!writeOnly || e.writes) && when (filter) {
                 null -> true
                 CHANGED -> e.anchor in changed
                 else -> e.level == filter
@@ -117,7 +119,7 @@ fun BrowseScreen(
         OutlinedTextField(
             value = query,
             onValueChange = { query = it },
-            placeholder = { Text("搜索单词、释义、例句…") },
+            placeholder = { Text("搜索单词、释义,或编号 #12…") },
             leadingIcon = { Icon(Icons.Default.Search, null) },
             trailingIcon = {
                 if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Default.Clear, "清空") }
@@ -279,7 +281,7 @@ private fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Un
             Text(plain(e.gloss), style = MaterialTheme.typography.bodySmall, maxLines = 6, overflow = TextOverflow.Ellipsis)
         }
         Text(
-            levelStyle(e.level).short + (foot?.let { " · $it" } ?: ""),
+            listOfNotNull(e.no.takeIf { it > 0 }?.let { "#$it" }, levelStyle(e.level).short, foot).joinToString(" · "),
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier
                 .padding(top = 4.dp)
@@ -344,7 +346,7 @@ private fun EntryCard(e: Entry, badge: String?, foot: String?, onClick: () -> Un
             }
             if (e.date.isNotEmpty()) {
                 Text(
-                    listOfNotNull(foot, if (e.writes) "会写" else null, e.date).joinToString(" · "),
+                    listOfNotNull(e.no.takeIf { it > 0 }?.let { "#$it" }, foot, if (e.writes) "会写" else null, e.date).joinToString(" · "),
                     style = MaterialTheme.typography.labelSmall,
                     modifier = Modifier.align(Alignment.End),
                 )
