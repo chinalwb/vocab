@@ -17,7 +17,7 @@ import re
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
-GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE"]
+GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "SELFTEST"]
 SCHEMA = 1  # bump when data.json changes shape in a way the app must know about
 
 # 错题本: a bullet like `- ❌ [介词] **...** —— ...` (or ⚠️) marks a mistake the
@@ -60,6 +60,8 @@ def split_entries(src):
 def detect_level(title, raw):
     if title.startswith("句子"):
         return "SENTENCE"
+    if title.startswith("自测"):
+        return "SELFTEST"
     if title.startswith("语法笔记") or title.startswith("语域笔记"):
         return "GRAMMAR"
     m = re.search(r"CEFR[:：]\s*([^\n]+)", raw)
@@ -75,6 +77,9 @@ def meta_field(raw, label):
 
 
 def gloss(raw, level):
+    # a 自测 card must not give the answer away: its title is the Chinese prompt
+    if level == "SELFTEST":
+        return "先说出英文,再点开对答案。"
     # a 句子 entry previews best as the original sentence being corrected
     m = re.search(r"^>\s*(.+)$", raw, re.M)
     if m and level == "SENTENCE" and "**我的原句" in raw:
@@ -180,7 +185,7 @@ def mastery(raw, level):
     v = meta_field(raw, "掌握")
     if v:
         return "write" if v.startswith("会写") else "read"
-    return "write" if level in ("SENTENCE", "GRAMMAR") else "read"
+    return "write" if level in ("SENTENCE", "GRAMMAR", "SELFTEST") else "read"
 
 
 def original_sentence(blocks):

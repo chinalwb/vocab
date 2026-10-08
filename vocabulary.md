@@ -108,6 +108,7 @@
 102. [proponent(vs opponent)](#proponent)
 103. [advent](#advent)
 104. [语法笔记:This is the first time + 现在完成时](#first-time-perfect)
+105. [自测:用户用的是 iPhone 还是安卓?](#t-iphone-or-android)
 
 ---
 
@@ -3480,3 +3481,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ❌ [词形] **godness** —— 拼写 → **goodness**(Oh my goodness,Oh my God 的委婉说法)。
 - ❌ [动词] **the first time that I wrote** —— This is the first time 后接现在完成时 → **This is the first time I've written a completely correct sentence!**
+
+---
+
+<a id="t-iphone-or-android"></a>
+## 自测:用户用的是 iPhone 还是安卓?
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Was the user on iPhone or Android?
+
+**要点:**
+
+- **be on + 平台名**(不加冠词):*on iPhone / on Android / on iOS / on web*。
+- 选项已写出,前面不用再加 *What phone …*。
+- 同类:*Was the user on iOS or Android?* · *Which app version are they on?* · *She's on Android 14.*
+
+**我的原句:**
+
+> What model was the client using? / What phone was the user on, iPhone or Android Phone?
+
+- ⚠️ [搭配] **model** —— 单说 model 在 AI 语境会被理解成"用的哪个模型" → **phone / device**。
+- ⚠️ [搭配] **client** —— 技术语境指客户端软件,商务语境指客户公司;"用 App 的人"→ **user**。
+- ❌ [词形] **Android Phone** —— phone 是普通名词,不大写 → **Android phone**。
