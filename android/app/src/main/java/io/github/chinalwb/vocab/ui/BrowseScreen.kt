@@ -59,8 +59,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.data.LibraryState
+import io.github.chinalwb.vocab.review.Attempt
 
 private const val CHANGED = "CHANGED"
+
+/** "试 N · 对 M" for 自测 entries, null for everything else. */
+private fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
+    if (e.level == "SELFTEST") countsShort(this[e.anchor].orEmpty()) else null
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
@@ -75,6 +80,8 @@ fun BrowseScreen(
     contentPadding: PaddingValues,
     /** 1 = status bar showing, 0 = hidden; read at draw time to place pinned headers. */
     statusBarShown: () -> Float,
+    /** 自测 attempt history, shown as "试 N · 对 M" on 自测 cards. */
+    selfTests: Map<String, List<Attempt>> = emptyMap(),
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var filter by rememberSaveable { mutableStateOf<String?>(null) }
@@ -183,7 +190,7 @@ fun BrowseScreen(
                 item(span = StaggeredGridItemSpan.FullLine) { filters() }
                 item(span = StaggeredGridItemSpan.FullLine) { status() }
                 gridItems(groups.flatMap { it.second }, key = { it.anchor }) { e ->
-                    EntryTile(e, badgeOf(e)) { onOpen(e.anchor) }
+                    EntryTile(e, badgeOf(e), selfTests.stFoot(e)) { onOpen(e.anchor) }
                 }
             }
         } else {
@@ -206,7 +213,7 @@ fun BrowseScreen(
                         )
                     }
                     items(list, key = { it.anchor }) { e ->
-                        EntryCard(e, badgeOf(e)) { onOpen(e.anchor) }
+                        EntryCard(e, badgeOf(e), selfTests.stFoot(e)) { onOpen(e.anchor) }
                         Spacer(Modifier.padding(4.dp))
                     }
                 }
@@ -243,7 +250,7 @@ private fun Badge(text: String) {
 
 /** A compact note for the tile grid — the gloss is cut shorter than in the list. */
 @Composable
-private fun EntryTile(e: Entry, badge: String?, onClick: () -> Unit) {
+private fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -272,7 +279,7 @@ private fun EntryTile(e: Entry, badge: String?, onClick: () -> Unit) {
             Text(plain(e.gloss), style = MaterialTheme.typography.bodySmall, maxLines = 6, overflow = TextOverflow.Ellipsis)
         }
         Text(
-            levelStyle(e.level).short,
+            levelStyle(e.level).short + (foot?.let { " · $it" } ?: ""),
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier
                 .padding(top = 4.dp)
@@ -308,7 +315,7 @@ private fun ago(t: Long): String {
 }
 
 @Composable
-private fun EntryCard(e: Entry, badge: String?, onClick: () -> Unit) {
+private fun EntryCard(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
@@ -337,7 +344,7 @@ private fun EntryCard(e: Entry, badge: String?, onClick: () -> Unit) {
             }
             if (e.date.isNotEmpty()) {
                 Text(
-                    if (e.writes) "会写 · ${e.date}" else e.date,
+                    listOfNotNull(foot, if (e.writes) "会写" else null, e.date).joinToString(" · "),
                     style = MaterialTheme.typography.labelSmall,
                     modifier = Modifier.align(Alignment.End),
                 )

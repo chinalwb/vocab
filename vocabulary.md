@@ -109,6 +109,8 @@
 103. [advent](#advent)
 104. [语法笔记:This is the first time + 现在完成时](#first-time-perfect)
 105. [自测:用户用的是 iPhone 还是安卓?](#t-iphone-or-android)
+106. [自测:坚持等待最优解,而不是向诱惑屈服,远更有可能帮你取得更好的结果。](#t-hold-out-for)
+107. [自测:我们有两个 Mixpanel 项目,一个用于生产环境,一个用于开发环境。App 是怎么决定把事件发到哪个项目的?](#t-two-projects)
 
 ---
 
@@ -3507,3 +3509,50 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [搭配] **model** —— 单说 model 在 AI 语境会被理解成"用的哪个模型" → **phone / device**。
 - ⚠️ [搭配] **client** —— 技术语境指客户端软件,商务语境指客户公司;"用 App 的人"→ **user**。
 - ❌ [词形] **Android Phone** —— phone 是普通名词,不大写 → **Android phone**。
+
+---
+
+<a id="t-hold-out-for"></a>
+## 自测:坚持等待最优解,而不是向诱惑屈服,远更有可能帮你取得更好的结果。
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Holding out for the optimal instead of caving in to the temptation is far more likely to help you achieve better outcomes.
+
+(摘自阅读材料的原句。)
+
+**要点:**
+
+- **hold out for sth** —— 坚持等待(更好的),不肯将就:*She's holding out for a better offer.*
+- **cave in (to sth)** —— 屈服、让步(本义"塌陷"):*The company caved in to public pressure.* 和 hold out for 一个坚持、一个屈服,形成对比。
+- **动名词短语作主语,不需要 That** —— *Holding out …* 里没有"主语 + 变时态的动词",本身就是名词性短语;只有完整从句作主语才要 That(*That we held out was wise.*)。见 [语法笔记:主语从句必须用 That 引导](#subject-clause-that)。
+- 更顺的写法:*Holding out for the optimal **choice** instead of caving in to temptation is far more likely to **lead to** better outcomes.*(the optimal 单独作名词略生硬;泛指"诱惑"不加 the。)
+
+---
+
+<a id="t-two-projects"></a>
+## 自测:我们有两个 Mixpanel 项目,一个用于生产环境,一个用于开发环境。App 是怎么决定把事件发到哪个项目的?
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> We have two Mixpanel projects, one for production and one for development. How does the app decide which one to send events to?
+
+**要点:**
+
+- **one for … and one for …** —— 逗号后只是补充说明的短语(没有 is),所以不是逗号粘连;and 连接的也是两个短语,中间不加逗号。
+- **How does the app decide which one to …** —— 直接问"怎么决定",比 *How are they separated* 更容易问到点上。
+- **send events to a project** —— 埋点语境的常用说法。
+
+**我的原句:**
+
+> We have two Mixpanel projects, one is for production env, and the other is for development env. How is it separated from each other in this application?
+
+- ❌ [标点] **…projects, one is for …** —— *one is for …* 是完整句子,只用逗号接在前一句后面 → 去掉 is 变成短语,或用冒号 / 分号。
+- ❌ [结构] **How is it separated from each other** —— each other 需要复数主语 → **How are they kept separate**。
+- ⚠️ [逻辑] **问"怎么分开"** —— 真正想问的是 App 怎么选项目 → **How does the app decide which one to send events to?**
