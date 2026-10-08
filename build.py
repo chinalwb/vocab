@@ -90,8 +90,9 @@ def gloss(raw, level):
             return m.group(1).strip()
     for line in raw.split("\n"):
         s = line.strip()
-        if s and not s.startswith("-") and not s.startswith("**English definition"):
-            return re.sub(r"\*\*(.+?)\*\*", r"\1", s)
+        # a bare "**我的原句:**" label says nothing; the quote under it does
+        if s and not s.startswith("-") and not s.startswith("**English definition") and not s.startswith("**我的原句"):
+            return re.sub(r"\*\*(.+?)\*\*", r"\1", re.sub(r"^>\s*", "", s))
     return ""
 
 

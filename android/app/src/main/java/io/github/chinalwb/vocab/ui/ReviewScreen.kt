@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.data.LibraryState
+import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Grade
 import io.github.chinalwb.vocab.review.ReviewData
 import io.github.chinalwb.vocab.review.planToday
@@ -52,10 +53,12 @@ fun ReviewScreen(
     onReset: () -> Unit,
     onXref: (String) -> Unit,
     modifier: Modifier = Modifier,
+    selfTests: Map<String, List<Attempt>> = emptyMap(),
+    onSelfTest: (Entry, String) -> Unit = { _, _ -> },
 ) {
     val current = session?.current
     when {
-        session != null && current != null -> Card(session, current, onReveal, onGrade, onEnd, onXref, modifier)
+        session != null && current != null -> Card(session, current, onReveal, onGrade, onEnd, onXref, modifier, selfTests[current.anchor].orEmpty(), onSelfTest)
         session != null -> Finished(session.done, onEnd, modifier)
         else -> Overview(lib, review, onStart, onReset, modifier)
     }
@@ -120,7 +123,12 @@ private fun Card(
     onEnd: () -> Unit,
     onXref: (String) -> Unit,
     modifier: Modifier,
+    attempts: List<Attempt>,
+    onSelfTest: (Entry, String) -> Unit,
 ) {
+    val kind = kindOf(entry)
+    // scratch space for the 中→英 / 先改后看 cards; only 自测 reveals are logged
+    var draft by remember(session.index) { mutableStateOf("") }
     Column(modifier.fillMaxSize()) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
             LinearProgressIndicator(
@@ -138,16 +146,13 @@ private fun Card(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp, vertical = 12.dp)
         ) {
-            val kind = kindOf(entry)
-            // scratch space for the 中→英 / 先改后看 cards; never saved
-            var draft by remember(session.index) { mutableStateOf("") }
             Front(entry, kind)
             if (kind.writes && !session.revealed) {
                 Spacer(Modifier.height(16.dp))
                 OutlinedTextField(
                     value = draft,
                     onValueChange = { draft = it },
-                    placeholder = { Text("在这里写你的英文(可选,不会保存)") },
+                    placeholder = { Text(if (kind == Kind.SelfTest) "不看笔记,写出英文(揭晓时会记进自测历史)" else "在这里写你的英文(可选,不会保存)") },
                     minLines = 3,
                     textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
                     modifier = Modifier.fillMaxWidth(),
@@ -157,6 +162,10 @@ private fun Card(
                 Spacer(Modifier.height(20.dp))
                 HorizontalDivider()
                 Spacer(Modifier.height(20.dp))
+                if (kind == Kind.SelfTest) {
+                    SelfTestStats(attempts)
+                    Spacer(Modifier.height(8.dp))
+                }
                 if (kind == Kind.SelfTest && draft.isNotBlank()) {
                     SelfTestResult(draft, entry.selfTestAnswer)
                     Spacer(Modifier.height(16.dp))
@@ -183,7 +192,10 @@ private fun Card(
         }
         Box(Modifier.padding(16.dp)) {
             if (!session.revealed) {
-                Button(onClick = onReveal, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text("显示答案") }
+                Button(
+                    onClick = { if (kind == Kind.SelfTest) onSelfTest(entry, draft); onReveal() },
+                    modifier = Modifier.fillMaxWidth().height(52.dp),
+                ) { Text("显示答案") }
             } else {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Grade.entries.forEach { g ->
