@@ -116,6 +116,7 @@
 110. [自测:请把所有分支列在一个网页 artifact 上,每个分支配一个开关,用来标记它是否可以删除了。](#t-list-branches)
 111. [自测:如果这样做,文件会有多大?](#t-file-size)
 112. [自测:最重要的是,我们必须确保它在这台设备上不会像在模拟器上那样崩溃。](#t-not-crash-like-emulator)
+113. [factor in / factor sth in](#factor-in)
 
 ---
 
@@ -3718,3 +3719,41 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ⚠️ [逻辑] **like the test on the emulator** —— like 后接名词,比较对象不对等;否定句里还可能读成"像模拟器测试那样不崩" → **like / as it did on the emulator**。
 - ✅ **I think the most important thing is to confirm …** —— 意思清楚,日常使用完全够用;*Most importantly, we need to …* 更直接。
+
+---
+
+<a id="factor-in"></a>
+## factor in / factor sth in
+
+- 词性:phrasal verb
+- 日期:2026-10-08
+- 掌握:会写
+
+**含义:** 在计算、估算或做决定时,把某个因素**算进去 / 考虑进去**。语境里是做市场测算时"把中考、高考的学生也算进来"。
+
+**我的原句:**
+
+> Count in the students for 中考 and 高考
+
+- ⚠️ [搭配] **count in** —— count sb in 多指"把某人算进某个活动"(*Count me in!* 算我一个);把一类数字加进估算用 **factor in** 或 **include** → **Factor in 中考 and 高考 students.**
+- ⚠️ [介词] **the students for 中考** —— 表达"备考某考试的学生"要说清楚动作 → **students preparing for 中考**。
+
+**义项一:计算 / 估算时算进去**
+1. When you set the price, don't forget to factor in the payment fees.
+   定价时别忘了把支付手续费算进去。
+2. The estimate doesn't factor in the cost of free users.
+   这个估算没有把免费用户的成本算进去。
+
+**义项二:做决定 / 判断时考虑进去**
+1. We need to factor in the risk of delays when we plan the release.
+   规划发布时,我们得把延期的风险考虑进去。
+2. Once you factor in the commute, the cheaper apartment isn't really cheaper.
+   把通勤也考虑进去的话,便宜的那套公寓其实并不便宜。
+
+**常见搭配:**
+
+- **factor sth in / factor in sth** —— 宾语是代词时放中间:*factor it in*,不说 *factor in it*。
+- **factor into sth** —— 主语是"因素",表示它影响某个结果:*Price factors into every parent's decision.*(价格会影响每位家长的决定。)
+- **factor out** —— 排除掉某个因素(数学里是"提取公因式"):*after factoring out seasonal effects*(排除季节因素之后)。
+
+这几个搭配的共同语感:**factor 是"构成结果的一个因素"**,in 是放进去,into 是影响到,out 是拿出去。
