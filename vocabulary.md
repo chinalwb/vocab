@@ -113,6 +113,7 @@
 107. [自测:我们有两个 Mixpanel 项目,一个用于生产环境,一个用于开发环境。App 是怎么决定把事件发到哪个项目的?](#t-two-projects)
 108. [自测:合并 MR 之前,先确认一下为什么加了 is_emulator 这个 key。](#t-confirm-before-merge)
 109. [自测:这个先放一放吧。](#t-hold-off-for-now)
+110. [自测:请把所有分支列在一个网页 artifact 上,每个分支配一个开关,用来标记它是否可以删除了。](#t-list-branches)
 
 ---
 
@@ -3636,3 +3637,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **hold off on sth** —— 先不做、暂缓(见 [hold off](#hold-off),以及 [推迟/暂缓速查](#postpone-family-quickref))。
 - **that** 指代对方刚提的建议,比 it 更自然。
 - **for now** —— 强调"只是暂时不做"。
+
+---
+
+<a id="t-list-branches"></a>
+## 自测:请把所有分支列在一个网页 artifact 上,每个分支配一个开关,用来标记它是否可以删除了。
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Please list all the branches on a webpage artifact, with a toggle for each one to mark whether it's ready to be deleted.
+
+**要点:**
+
+- **list sth on / in a page** —— 列在页面"上",list 不接 to。
+- **with a toggle for each one** —— 用 with 把附加要求并进同一句,更紧凑。
+- **mark whether …** —— 开关有开 / 关两种状态,用 whether("是否");*mark sth as ready for deletion* 也很常用。
+
+**我的原句:**
+
+> please list all of the branches to a webpage artifact. Show a toggle for each of them to indicate that branch is ready to be deleted.
+
+- ❌ [介词] **list … to a webpage** —— 东西列在页面上 → **list … on / in a webpage**。
+- ❌ [冠词] **indicate that branch is ready** —— that 作连词时 branch 缺冠词(*that **the** branch*);作指示词又成了"那个分支已经可删"。
+- ⚠️ [逻辑] **indicate that …** —— 开关表示的是状态,用 **whether**:*mark whether it's ready to be deleted*。
