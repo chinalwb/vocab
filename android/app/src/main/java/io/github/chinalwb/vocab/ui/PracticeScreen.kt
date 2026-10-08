@@ -42,7 +42,7 @@ import java.time.format.DateTimeFormatter
 /**
  * 练习: a daily imitation task and a weekly paragraph, both sent to Claude for marking.
  * Picks the same tasks as renderPractice() in template.html: the pool is the 会写 entries
- * that aren't 句子, sorted by anchor; day = epoch day, week = floor((day + 3) / 7).
+ * that aren't 句子 or 自测, sorted by anchor; day = epoch day, week = floor((day + 3) / 7).
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -52,7 +52,7 @@ fun PracticeScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifi
         Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
     }
-    val pool = remember(data) { data.entries.filter { it.writes && it.level != "SENTENCE" }.sortedBy { it.anchor } }
+    val pool = remember(data) { data.entries.filter { it.writes && it.level != "SENTENCE" && it.level != "SELFTEST" }.sortedBy { it.anchor } }
     if (pool.isEmpty()) {
         Box(modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) { Text("还没有标「会写」的条目。") }
         return

@@ -100,6 +100,15 @@
 94. [separate A from B](#separate-from)
 95. [when it comes to sth](#when-it-comes-to)
 96. [empowering(+ 句型 I find it + adj + to do / doing)](#empowering)
+97. [X percent of the time(频率 / 概率)](#percent-of-the-time)
+98. [nebulous](#nebulous)
+99. [discern / discerning](#discern)
+100. [deserted(vs desert / dessert)](#deserted)
+101. [might be excused / could be forgiven for thinking(+ N after N)](#forgiven-for-thinking)
+102. [proponent(vs opponent)](#proponent)
+103. [advent](#advent)
+104. [语法笔记:This is the first time + 现在完成时](#first-time-perfect)
+105. [自测:用户用的是 iPhone 还是安卓?](#t-iphone-or-android)
 
 ---
 
@@ -3156,3 +3165,345 @@ platform 等于 10,就代表请求来自 web,对吧?
    知道自己每天都能让写作进步一点,我觉得很有动力。
 3. I find it hard to master all of them with the current learning style.
    用现在的学习方式,我觉得很难把它们全都掌握。(我自己写的,用对了这个句型)
+
+---
+
+<a id="percent-of-the-time"></a>
+## X percent of the time(频率 / 概率)
+
+- 词性:phrase
+- CEFR:B1
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** Used to say how often something happens — in X out of every 100 cases or occasions.
+
+**含义:** "在 X% 的情况下"。这里的 **the time 不是"时间"**,而是"所有发生这件事的时刻 / 情况"的整体。
+
+**原文(摘自一本讲机器学习的书):**
+
+> …the model misclassifies fours and sevens less than 1 percent of the time.
+
+= 模型把 4 和 7 分错的情况不到 1%,即每 100 个 4 / 7 里分错的不到 1 个(错误率低于 1%)。
+
+**为什么读着难:** 不是因为它"高级"——most of the time 是 A2,X% of the time 是 B1 的日常说法——而是它和中文对不上:中文说"错误率 / 概率 / 情况",英语用 the time,直译成"时间"就说不通。这类**每个词都认识、组合起来不是字面意思**的表达,正是学习者和母语者拉开差距的地方。
+
+**例句:**
+1. It works 99% of the time.
+   它 99% 的情况下都没问题。
+2. Most of the time, I take the bus to work.
+   我大多数时候坐公交上班。
+3. Half the time, he doesn't even read the messages.
+   他一半的时候连消息都不看。(常带抱怨语气,of 可省)
+4. This crash happens about 1 in 20 launches, so roughly 5% of the time.
+   这个崩溃大约每 20 次启动出现一次,也就是约 5% 的概率。(bug 报告里描述"偶现")
+
+**同一段里的其他比例说法:**
+
+- **two-thirds of X** —— X 中的三分之二。
+- **one in four / one out of four** —— 四个里有一个(25%),口语常用。
+
+**记法:** 看到 **比例 + of the time** 就译成"……的情况下 / ……的概率",写 bug 报告时大胆用。
+
+---
+
+<a id="nebulous"></a>
+## nebulous
+
+- 音标:/ˈnebjələs/
+- 词性:adj.
+- CEFR:C2
+- 日期:2026-09-30
+- 掌握:认识
+
+**English definition:** Not clear, detailed, or precise; vague and hard to define. (Literally: cloudy or hazy, like a nebula.)
+
+**含义:** 模糊的、含糊不清的、不明确的——从"星云"(nebula)那种一团雾气、没有清晰边界的样子引申而来。词族:nebula(n. 星云,复数 nebulae)· nebulously(adv.)。
+
+**义项一:概念 / 计划 / 目标模糊不清,难以界定(最常用)**
+1. The project goals are still pretty nebulous, so it's hard to estimate the work.
+   项目目标还很模糊,所以很难估算工作量。
+2. "Good user experience" is a nebulous concept unless you define what you're measuring.
+   除非你先定义好要衡量什么,否则"好的用户体验"就是一个很模糊的概念。
+
+**义项二:字面义,云雾状的、朦胧的(少见,偏文学 / 天文)**
+1. A nebulous glow appeared on the horizon.
+   地平线上出现了一片朦胧的光。
+
+**常见搭配:** a nebulous concept / idea / notion · nebulous goals / requirements / plans · remain / still nebulous。
+
+**近义辨析:**
+
+- **vague** —— 最通用的"模糊、含糊"(B2),日常首选。
+- **nebulous** —— 更正式书面,强调**本身没有清晰边界、难以界定**,像一团雾。
+- **ambiguous** —— **有多种可能的解释**(歧义),不是"模糊"。
+- **fuzzy** —— 口语化:*fuzzy requirements*、*my memory is fuzzy*。
+
+**语感:** 设计文档 / 评审意见里说"需求不明确",*the requirements are still nebulous* 显得精准专业;聊天用 vague / fuzzy 就够。
+
+---
+
+<a id="discern"></a>
+## discern / discerning
+
+- 音标:/dɪˈsɜːrn/(s 也可读 /z/)· discerning /dɪˈsɜːrnɪŋ/
+- 词性:v. / adj.
+- CEFR:C1
+- 日期:2026-09-30
+- 掌握:认识
+
+**English definition:** *discern* — to notice, recognize, or understand something that is not obvious, often with effort; to see the difference between things. *discerning* — showing good judgment about quality; able to tell good from bad.
+
+**含义:** discern = 察觉、看出、辨别(**费点劲才看得清**);discerning = 有眼光的、有鉴别力的、识货的(**褒义**)。词族:discernible(可辨别的)· discernment(洞察力、辨别力)。
+
+**discerning(adj.)有眼光、识货的**
+1. The café is popular with discerning coffee drinkers.
+   这家咖啡馆很受懂咖啡的人欢迎。
+2. A discerning reader will notice the gaps in the argument.
+   有眼光的读者会注意到论证里的漏洞。
+
+**discern(v.)义项一:察觉、看出不明显的东西**
+1. It's hard to discern any pattern in these crash logs.
+   这些崩溃日志里很难看出什么规律。
+2. I could barely discern the outline of a building through the fog.
+   雾里我只能勉强看出一栋楼的轮廓。
+
+**discern(v.)义项二:辨别、区分**
+1. A good reviewer can discern real issues from mere style preferences.
+   好的评审能分清哪些是真正的问题,哪些只是风格偏好。
+
+**常见搭配:** a discerning customer / eye / reader · discern a pattern / trend / difference · hard to discern · barely discern · discern A from B / between A and B。
+
+**近义辨析:** **notice / see**(通用)· **detect**(检测到,偏技术客观)· **make out**(口语,勉强看清听清)· **tell apart**(口语,分辨)· **distinguish**(正式区分)· **discern**(正式书面,强调要用心 / 洞察才看得出)。
+
+---
+
+<a id="deserted"></a>
+## deserted(vs desert / dessert)
+
+- 音标:/dɪˈzɜːrtɪd/
+- 词性:adj.(也是 v. desert 的过去式 / 过去分词)
+- CEFR:B2
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** (Of a place) empty, with no people in it; (of a person) left alone by someone who should have stayed and supported them.
+
+**含义:** 空无一人的、冷清的;被抛弃的。词族:desert(v. 抛弃、离开)· deserter(n. 逃兵)· desertion(n. 遗弃)。
+
+**义项一:地方空荡荡、没有人(最常用)**
+1. The streets were completely deserted at 3 a.m.
+   凌晨三点,街上一个人都没有。
+2. The office was deserted on Friday afternoon.
+   周五下午办公室空荡荡的。
+
+**义项二:被抛弃的(人)/ desert 离开**
+1. She felt deserted by her friends when she needed them most.
+   在她最需要的时候,她觉得被朋友们抛弃了。
+2. Many users deserted the platform after the price increase.
+   涨价后很多用户离开了这个平台。
+
+**常见搭配:** a deserted street / beach / village / building · completely / almost deserted · be deserted by sb。
+
+**⚠️ 易混的三个词:**
+
+- **desert**(n.)/ˈdezərt/ —— 沙漠,重音在前。
+- **desert**(v.)/dɪˈzɜːrt/ —— 抛弃,重音在后;deserted 来自它。
+- **dessert**(n.)/dɪˈzɜːrt/ —— 甜点,和动词同音,多一个 s(甜点让人想再来一份)。
+- 荒岛的固定说法是 **a desert island**(名词作定语);*a deserted island* 也对,指"现在没人的岛"。
+
+**近义辨析:** **empty**(空的,最通用)· **deserted**(本该有人却没人,冷清)· **abandoned**(被遗弃、荒废,长期没人管)· **desolate**(荒凉凄凉,情绪最重)。
+
+---
+
+<a id="forgiven-for-thinking"></a>
+## might be excused / could be forgiven for thinking(+ N after N)
+
+- 词性:phrase
+- CEFR:C1
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** Used to say that a belief is understandable given how things look — while implying that it is actually wrong.
+
+**含义:** "这么想也情有可原 / 难怪会以为……"。字面是"可以被原谅",但并没有人犯错;它传达两层意思:**① 这个想法可以理解;② 但其实不对**(下文通常紧接着纠正)。
+
+**原文(摘自一本讲 AI 的书):**
+
+> …we might be excused for thinking that AI fell from the sky…
+
+= 近几年 AI 奇迹接连不断,我们要是以为 AI 是从天而降、生来完备、超出理解的,也情有可原。(言下之意:其实 AI 有很长的发展史。)
+
+**高级在哪:** 不在用词,而在**修辞结构**——先承认一个看似合理的误解,再推翻它(欲扬先抑)。高质量报刊和议论文常用。
+
+**我的原句:**
+
+> It is fine to think that …
+
+- ⚠️ [逻辑] **It is fine to think that …** —— "这么想没问题",是在**认可**这个想法,丢掉了"但其实不对"这层意思,论证方向就反了 → **It's understandable to think …, but …** / **You could be forgiven for thinking …**
+
+**从现有水平到目标表达的三步:**
+
+1. It's understandable to think the crash is caused by our code, but it's actually a system bug.
+   这么想可以理解,但……(现在就能写;关键是 understandable + but)
+2. It's easy to assume the crash is caused by our code, but it's actually a system bug.
+   很容易让人以为……,但……(母语者常用的铺垫)
+3. You could be forgiven for thinking the crash is caused by our code — the stack trace points right at it. It's actually a system bug.
+   你要是以为……也情有可原,毕竟……。其实……(目标表达:误解 → 误解的理由 → 真相)
+
+**同义说法(正式 → 口语):** might be excused for thinking · **could be forgiven for thinking**(最常见)· it's understandable that … · no wonder …
+
+**别混淆:** Excuse me.(劳驾)· be excused from sth(被免除:*She was excused from the meeting.*)
+
+**记忆钩子:** 想写"很多人会以为……,但其实……"的时候,就用它。
+
+---
+
+**同句里的另一个表达:N after N(一个接一个)**
+
+原文:*the parade of AI wonder after wonder* —— AI 奇迹一个接一个,像游行队伍一样。
+
+- **wonder** 在这里是可数名词"奇迹"(the Seven Wonders of the World),不是动词"想知道"。
+- **N after N** —— 名词单数、不加冠词、重复两次,表示"接连不断、多得惊人 / 没完没了"。
+- **the parade of …** —— 比喻"一长串接连出现的东西",偏书面。
+
+1. We sat through meeting after meeting without making a decision.
+   我们开了一个又一个会,却什么都没定下来。
+2. He made mistake after mistake in the demo.
+   演示时他一个错接一个错。
+
+同类:day after day · year after year · one after another。
+
+---
+
+<a id="proponent"></a>
+## proponent(vs opponent)
+
+- 音标:英 /prəˈpəʊnənt/ 美 /prəˈpoʊnənt/
+- 词性:n.
+- CEFR:C1
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** A person who supports an idea, theory, or course of action and argues in favor of it publicly.
+
+**含义:** 支持者、拥护者、倡导者——多指**公开、有立场地**支持某种观点 / 理论 / 做法的人。词源:拉丁语 *proponere*"提出",与 propose 同源。
+
+1. She is a strong proponent of test-driven development.
+   她是测试驱动开发的坚定拥护者。
+2. Proponents of remote work argue that it improves focus and reduces commuting time.
+   远程办公的支持者认为,它能提高专注度、减少通勤时间。
+3. Early proponents of neural networks were largely ignored for decades.
+   神经网络的早期倡导者几十年来基本上都被忽视了。
+
+**常见搭配:** a proponent **of** sth · a strong / leading / vocal / early proponent · proponents and opponents。
+
+**反义:** **opponent**(反对者;pro-"支持" vs op-"反对",成对记)· critic(批评者)。
+
+**近义辨析:**
+
+- **supporter** —— 最通用(人、球队、政党都行),B1。
+- **advocate** —— 更强调积极奔走、代言;也作动词 *advocate for sth*。
+- **proponent** —— 正式书面,多用于**观点 / 理论 / 方法**。
+- **champion**(v.)—— 大力推动:*She championed the migration to Kotlin.*
+
+**实用句式:** 写技术观点或方案对比时 —— *Proponents argue that …, while critics point out that …*(支持者认为……,批评者则指出……)。
+
+---
+
+<a id="advent"></a>
+## advent
+
+- 音标:/ˈædvent/
+- 词性:n.(通常 the advent of)
+- CEFR:C1
+- 日期:2026-09-30
+- 掌握:会写
+
+**English definition:** The arrival or first appearance of something important, such as an invention, a period, or a person.
+
+**含义:** (重要事物的)出现、到来、问世——多指**一项技术、一个时代或一种潮流的来临**,并带来重大改变。词源:拉丁语 *adventus*"到来",与 adventure、venue 同源。
+
+**义项一:重要事物的出现(最常用)**
+1. With the advent of smartphones, people stopped carrying separate cameras.
+   随着智能手机的出现,人们不再单独带相机了。
+2. The advent of large language models has changed how developers write code.
+   大语言模型的出现改变了开发者写代码的方式。
+
+**义项二:Advent(大写)基督教的"将临期"** —— 圣诞节前约四周。
+1. Many families use an Advent calendar to count down to Christmas.
+   很多家庭用将临期日历来倒数圣诞节。
+
+**常见搭配:** the advent of sth · **with the advent of …**(随着……的出现,常放句首)· before / since the advent of … · Advent calendar。
+
+**近义辨析:**
+
+- **arrival** —— 最通用的"到来"。
+- **emergence** —— 浮现、兴起,强调**逐渐冒出来**。
+- **rise** —— 崛起,强调**影响力增长**:*the rise of AI*。
+- **advent** —— 正式书面,强调**划时代的起点**,前后形成对比。
+- **dawn** —— 比喻"开端":*the dawn of the internet age*,文学色彩更浓。
+
+**现成句式:** *With the advent of LLMs, …* —— 写技术趋势文章的开头;聊天说 *since X came out* 就行。
+
+---
+
+<a id="first-time-perfect"></a>
+## 语法笔记:This is the first time + 现在完成时
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**规则:** **This / It is the first (second, third…) time** 后面的从句必须用**现在完成时**——它说的是"从过去到现在为止,这是第一次"。换成过去,就整体后退一格:**That / It was the first time** + **过去完成时**。
+
+- ✅ This is the first time I've written a completely correct sentence.
+- ❌ This is the first time I wrote a completely correct sentence.
+- ✅ That was the first time I had seen snow.(过去的"第一次" → 过去完成时)
+
+**例句:**
+1. This is the first time I've used Compose in production.
+   这是我第一次在生产环境里用 Compose。
+2. It's the second time this bug has come back.
+   这是这个 bug 第二次复现了。
+3. It was the first time she had given a talk in English.
+   那是她第一次用英语做演讲。
+
+**同类句型(同样用完成时):**
+
+- **This is the best / worst … I've ever …** —— *This is the best coffee I've ever had.*
+- **This is the only … I've …** —— *This is the only book I've read twice.*
+
+**别混淆:** *The first time I met him, …*(我第一次见他的时候……)是**时间状语从句**,讲过去某个具体时刻,用一般过去时就对——它不是 *This is the first time* 句型。
+
+**我的原句:**
+
+> Oh my godness. This is the first time that I wrote a correct sentence.
+
+- ❌ [词形] **godness** —— 拼写 → **goodness**(Oh my goodness,Oh my God 的委婉说法)。
+- ❌ [动词] **the first time that I wrote** —— This is the first time 后接现在完成时 → **This is the first time I've written a completely correct sentence!**
+
+---
+
+<a id="t-iphone-or-android"></a>
+## 自测:用户用的是 iPhone 还是安卓?
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Was the user on iPhone or Android?
+
+**要点:**
+
+- **be on + 平台名**(不加冠词):*on iPhone / on Android / on iOS / on web*。
+- 选项已写出,前面不用再加 *What phone …*。
+- 同类:*Was the user on iOS or Android?* · *Which app version are they on?* · *She's on Android 14.*
+
+**我的原句:**
+
+> What model was the client using? / What phone was the user on, iPhone or Android Phone?
+
+- ⚠️ [搭配] **model** —— 单说 model 在 AI 语境会被理解成"用的哪个模型" → **phone / device**。
+- ⚠️ [搭配] **client** —— 技术语境指客户端软件,商务语境指客户公司;"用 App 的人"→ **user**。
+- ❌ [词形] **Android Phone** —— phone 是普通名词,不大写 → **Android phone**。
