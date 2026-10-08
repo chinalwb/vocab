@@ -36,6 +36,7 @@ fun EntryHeader(entry: Entry) {
         )
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Chip(levelStyle(entry.level).short, levelColor(entry.level))
+            if (entry.no > 0) Chip("#${entry.no}", MaterialTheme.colorScheme.surfaceContainerHigh)
             listOf(entry.ipa, entry.pos, if (entry.writes) "会写" else "认识", entry.date.takeIf { it.isNotEmpty() }?.let { "收录 $it" } ?: "")
                 .filter { it.isNotEmpty() }
                 .forEach { Chip(it, MaterialTheme.colorScheme.surfaceContainerHigh) }

@@ -216,6 +216,7 @@ h1{
   font-size:11px;color:var(--card-ink-2);letter-spacing:.05em;
 }
 .foot .lv{font-weight:700}
+.foot .no{font-variant-numeric:tabular-nums;opacity:.75;margin-right:6px}
 .foot .dt{font-variant-numeric:tabular-nums;white-space:nowrap;opacity:.8}
 
 .empty{color:var(--ink-3);font-size:14px;padding:48px 0;text-align:center}
@@ -449,7 +450,7 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
     </div>
     <nav class="tabs" id="tabs" aria-label="视图"></nav>
     <div class="tools" id="tools">
-      <input class="search" id="q" type="search" placeholder="搜索单词、释义、语法点…" autocomplete="off" aria-label="搜索">
+      <input class="search" id="q" type="search" placeholder="搜索单词、释义、语法点,或输入编号 #12…" autocomplete="off" aria-label="搜索">
       <div class="filters" id="filters"></div>
     </div>
   </header>
@@ -603,14 +604,14 @@ const sections = DATA.map(g => {
       (meta ? `<div class="meta">${meta}</div>` : "") +
       (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
       `<div class="foot">` +
-      `<span><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
+      `<span><span class="no">#${it.no}</span><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
       (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}`) + `</span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
       `</div>`;
     c.addEventListener("click", () => open(it, g.level, i));
     byAnchor[it.anchor] = { it, level: g.level, i };
     grid.append(c);
-    return { el: c, write: it.mastery === "write", hay: (it.title + " " + it.gloss + " " + it.html).toLowerCase() };
+    return { el: c, no: it.no, write: it.mastery === "write", hay: (it.title + " " + it.gloss + " " + it.html).toLowerCase() };
   });
   sec.append(head, grid);
   board.append(sec);
@@ -656,7 +657,7 @@ const msections = MISTAKES.map(g => {
     c.innerHTML =
       `<p class="what"><span class="sv">${m.sev === "error" ? "❌" : "⚠️"}</span>${m.html}</p>` +
       (m.original ? `<p class="orig">${esc(m.original).replace(/\n/g, "<br>")}</p>` : "") +
-      `<div class="src"><span class="t">出自 ${m.title}</span><span class="dt">${m.date}</span></div>`;
+      `<div class="src"><span class="t">出自 #${m.no} ${m.title}</span><span class="dt">${m.date}</span></div>`;
     c.addEventListener("click", () => {
       const t = byAnchor[m.anchor];
       if (t) open(t.it, t.level, t.i);
@@ -688,6 +689,8 @@ function renderMistakes(term){
 
 function render(){
   const term = q.value.trim().toLowerCase();
+  // "12" or "#12" jumps to entry #12
+  const numQ = (term.match(/^#?(\d+)$/) || [])[1];
   [...tabs.children].forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === view)));
   tools.hidden = view === "review" || view === "practice";
   filters.hidden = view !== "entries";
@@ -704,7 +707,7 @@ function render(){
     if (active !== "ALL" && active !== s.level) { s.el.hidden = true; return; }
     let n = 0;
     s.cards.forEach(c => {
-      const hit = (!term || c.hay.includes(term)) && (!writeOnly || c.write);
+      const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write);
       c.el.hidden = !hit;
       if (hit) n++;
     });
@@ -810,7 +813,7 @@ function show(it, level, i){
   sheet.setAttribute("aria-modal", "true");
   sheet.setAttribute("aria-label", it.title);
   sheet.style.setProperty("--sw", `var(${LV[level].sw[i % 3]})`);
-  const meta = [it.pos, it.ipa, it.cefr && ("CEFR " + it.cefr), it.mastery === "write" ? "会写" : "认识", it.date && ("收录 " + it.date)]
+  const meta = ["#" + it.no, it.pos, it.ipa, it.cefr && ("CEFR " + it.cefr), it.mastery === "write" ? "会写" : "认识", it.date && ("收录 " + it.date)]
     .filter(Boolean).map(x => `<span>${x}</span>`).join("");
   const back = trail[trail.length - 1];
   sheet.innerHTML =

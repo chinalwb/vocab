@@ -201,7 +201,7 @@ private fun MistakeCard(m: Mistake, entry: Entry, onClick: () -> Unit) {
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    "出自 ${entry.title}",
+                    "出自 " + (if (entry.no > 0) "#${entry.no} " else "") + entry.title,
                     style = MaterialTheme.typography.labelSmall,
                     color = muted,
                     maxLines = 1,
