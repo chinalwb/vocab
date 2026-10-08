@@ -120,6 +120,6 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     /** Records one reveal of a 自测 entry; ok = the words match the answer. */
     fun recordSelfTest(entry: Entry, text: String, via: String) = viewModelScope.launch {
         val t = text.trim()
-        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), t, t.isNotEmpty() && diffWords(t, entry.selfTestAnswer).same, via))
+        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), t, t.isNotEmpty() && bestDiff(t, entry.selfTestAnswer).same, via))
     }
 }
