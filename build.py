@@ -224,13 +224,22 @@ def extract_mistakes(anchor, blocks):
     return out
 
 
+def toc_numbers(src):
+    """anchor -> its number in the ## 目录 list; that number is the entry's index (#12)."""
+    return {a: int(n) for n, a in re.findall(r"^(\d+)\. \[.*?\]\(#([^)]+)\)\s*$", src, re.M)}
+
+
 def build_entries(src):
     out = []
+    numbers = toc_numbers(src)
     for e in split_entries(src):
+        if e["anchor"] not in numbers:
+            raise SystemExit(f"{e['anchor']}: missing from ## 目录 — add a 'N. [title](#{e['anchor']})' line")
         level = detect_level(e["title"], e["raw"])
         blocks = parse_blocks(e["raw"])
         entry = {
             "anchor": e["anchor"],
+            "no": numbers[e["anchor"]],
             "title": e["title"],
             "level": level,
             "ipa": meta_field(e["raw"], "音标"),
@@ -255,7 +264,7 @@ def digest(obj):
 def page_data(entries):
     grouped = {}
     for e in entries:
-        item = {k: e[k] for k in ("anchor", "title", "ipa", "pos", "cefr", "date", "gloss", "mastery")}
+        item = {k: e[k] for k in ("anchor", "no", "title", "ipa", "pos", "cefr", "date", "gloss", "mastery")}
         item["original"] = original_sentence(e["blocks"])
         if e["level"] == "SELFTEST":
             item["answer"] = quote_after(e["blocks"], "答案")
@@ -272,7 +281,7 @@ def mistake_data(entries):
         for m in e["mistakes"]:
             groups[m["type"]].append({
                 "sev": m["sev"], "html": inline(m["text"]), "text": m["text"],
-                "original": m["original"], "anchor": e["anchor"], "title": e["title"], "date": e["date"],
+                "original": m["original"], "anchor": e["anchor"], "no": e["no"], "title": e["title"], "date": e["date"],
             })
     return [{"type": k, "desc": d, "check": c, "items": groups[k]} for k, d, c in MISTAKE_TYPES if groups[k]]
 

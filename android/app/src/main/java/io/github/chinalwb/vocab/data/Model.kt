@@ -35,6 +35,8 @@ data class VocabData(
 @Serializable
 data class Entry(
     val anchor: String,
+    /** Its number in the ## 目录 list — shown as #12 and searchable. 0 in data from before it existed. */
+    val no: Int = 0,
     val title: String,
     /** A1–C2, TERM, GRAMMAR or SENTENCE — see detect_level in build.py. */
     val level: String,
