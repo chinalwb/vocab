@@ -111,6 +111,7 @@
 105. [自测:用户用的是 iPhone 还是安卓?](#t-iphone-or-android)
 106. [自测:坚持等待最优解,而不是向诱惑屈服,远更有可能帮你取得更好的结果。](#t-hold-out-for)
 107. [自测:我们有两个 Mixpanel 项目,一个用于生产环境,一个用于开发环境。App 是怎么决定把事件发到哪个项目的?](#t-two-projects)
+108. [自测:合并 MR 之前,先确认一下为什么加了 is_emulator 这个 key。](#t-confirm-before-merge)
 
 ---
 
@@ -3556,3 +3557,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [标点] **…projects, one is for …** —— *one is for …* 是完整句子,只用逗号接在前一句后面 → 去掉 is 变成短语,或用冒号 / 分号。
 - ❌ [结构] **How is it separated from each other** —— each other 需要复数主语 → **How are they kept separate**。
 - ⚠️ [逻辑] **问"怎么分开"** —— 真正想问的是 App 怎么选项目 → **How does the app decide which one to send events to?**
+
+---
+
+<a id="t-confirm-before-merge"></a>
+## 自测:合并 MR 之前,先确认一下为什么加了 is_emulator 这个 key。
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Before merging the MR, let's confirm why the is_emulator key was added.
+
+**要点:**
+
+- **Before + -ing** —— 省略的主语就是后面的"我们",不是悬垂修饰。
+- **why the key was added** —— 间接疑问句用陈述语序;被动语态把重点放在 key 上,不点名追究同事,语气更中性。
+- **let's confirm** —— 比祈使句 *double-check …* 更客气,适合发给队友。
+- 要直接问本人:*Can we **check with** sb **on** why …?*
+
+**我的原句:**
+
+> Before merging the MR, double check why a teammate added the is_emulator key.
+
+- ⚠️ [词形] **double check** —— 作动词时标准写法带连字符 → **double-check**。
+- ✅ **整句** —— 意思清楚,日常使用完全够用;发给队友时改成 *let's confirm* / *can we check* 语气更客气。
