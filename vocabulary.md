@@ -114,6 +114,7 @@
 108. [自测:合并 MR 之前,先确认一下为什么加了 is_emulator 这个 key。](#t-confirm-before-merge)
 109. [自测:这个先放一放吧。](#t-hold-off-for-now)
 110. [自测:请把所有分支列在一个网页 artifact 上,每个分支配一个开关,用来标记它是否可以删除了。](#t-list-branches)
+111. [自测:如果这样做,文件会有多大?](#t-file-size)
 
 ---
 
@@ -3663,3 +3664,28 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [介词] **list … to a webpage** —— 东西列在页面上 → **list … on / in a webpage**。
 - ❌ [冠词] **indicate that branch is ready** —— that 作连词时 branch 缺冠词(*that **the** branch*);作指示词又成了"那个分支已经可删"。
 - ⚠️ [逻辑] **indicate that …** —— 开关表示的是状态,用 **whether**:*mark whether it's ready to be deleted*。
+
+---
+
+<a id="t-file-size"></a>
+## 自测:如果这样做,文件会有多大?
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> How big will the file be if we do it this way?
+> What will the file size be if we do it this way?
+
+**要点:**
+
+- 两种都对:**How big** 更口语;*What … file size …* 稍正式。
+- **末端重量原则** —— 主语短(the file size)就把 will 和 be 分开,be 放句尾:*What will the file size be?*,不说 *What will be the file size?* 见 [语法笔记:末端重量原则](#end-weight)。
+- 条件句用一般现在时(*if we do*),主句用 will。
+
+**我的原句:**
+
+> What will be the file size if we do it this way?
+
+- ⚠️ [结构] **What will be the file size** —— 主语很短,习惯把 be 放句尾 → **What will the file size be …?**
