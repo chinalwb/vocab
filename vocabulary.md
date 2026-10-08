@@ -731,32 +731,32 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 **逐个看(每个配一句例句):**
 
-- **hold on** —— 等一下 / 坚持住(短暂等待)。
+- ① **hold on** —— 等一下 / 坚持住(短暂等待)。
   *Hold on, let me check the logs first.*(等一下,我先看看日志。)
-- **hold off (on)** —— 先别启动 / 先别做,等更合适的时机。
+- ② **hold off (on)** —— 先别启动 / 先别做,等更合适的时机。
   *Let's hold off on the release until the crash is fixed.*(崩溃修好之前,先别发版。)
-- **put off** —— 把一件事推到以后(最通用,常带拖延语感)。
+- ③ **put off** —— 把一件事推到以后(最通用,常带拖延语感)。
   *I keep putting off updating the documentation.*(我一直在拖着没更新文档。)
-- **postpone** —— 正式、中性的"推迟到另一个时间"(书面首选)。
+- ④ **postpone** —— 正式、中性的"推迟到另一个时间"(书面首选)。
   *The launch has been postponed until next month.*(发布已推迟到下个月。)
-- **defer** —— 制度化 / 官方场景的"推迟";另有 defer to = 听从,勿混淆。
+- ⑤ **defer** —— 制度化 / 官方场景的"推迟";另有 defer to = 听从,勿混淆。
   *She deferred her admission for a year.*(她把入学推迟了一年。)
-- **push back** —— 口语化的"推迟",常带新时间(商务场合高频)。
+- ⑥ **push back** —— 口语化的"推迟",常带新时间(商务场合高频)。
   *Can we push the demo back to Thursday?*(演示能推到周四吗?)
-- **put on hold** —— 暂停 / 搁置(多指已经开始的事)。
+- ⑦ **put on hold** —— 暂停 / 搁置(多指已经开始的事)。
   *The migration is on hold until we get more people.*(迁移先暂停,等有更多人手再说。)
-- **hold up** —— 耽搁(被动受阻)/ 打劫,两个不相关的意思。
+- ⑧ **hold up** —— 耽搁(被动受阻)/ 打劫,两个不相关的意思。
   *Sorry I'm late — I got held up in a meeting.*(抱歉迟到了,被一个会耽搁了。)
-- **table** —— 美:搁置议题;英:提出讨论。
+- ⑨ **table** —— 美:搁置议题;英:提出讨论。
   *(US) Let's table this discussion until next week.*(这个讨论下周再说。)
-- **shelve** —— 无限期搁置 / 雪藏,暗示可能不会再捡起来。
+- ⑩ **shelve** —— 无限期搁置 / 雪藏,暗示可能不会再捡起来。
   *The redesign was shelved after the budget cut.*(预算削减后,改版方案被搁置了。)
-- **stall** —— 故意拖延、拖时间(负面)。
+- ⑪ **stall** —— 故意拖延、拖时间(负面)。
   *The vendor keeps stalling instead of giving us a date.*(供应商一直在拖,不给我们一个日期。)
-- **put sth on the back burner** —— 降低优先级、以后再处理,语感比 shelve 轻。
+- ⑫ **put sth on the back burner** —— 降低优先级、以后再处理,语感比 shelve 轻。
   *Let's put the dark mode on the back burner for now.*(暗色模式先放一放。)
 
-**相关条目:** [hold on](#hold-on) · [hold off](#hold-off) · [put off](#put-off) · [postpone](#postpone) · [defer](#defer) · [push back](#push-back) · [put on hold](#put-on-hold) · [hold up](#hold-up) · [table](#table) · [shelve](#shelve) · [stall](#stall) · [back burner](#back-burner) · [deprioritize](#deprioritize) · [自测:这个先放一放吧](#t-hold-off-for-now)
+**相关条目:** ① [hold on](#hold-on) · ② [hold off](#hold-off) · ③ [put off](#put-off) · ④ [postpone](#postpone) · ⑤ [defer](#defer) · ⑥ [push back](#push-back) · ⑦ [put on hold](#put-on-hold) · ⑧ [hold up](#hold-up) · ⑨ [table](#table) · ⑩ [shelve](#shelve) · ⑪ [stall](#stall) · ⑫ [back burner](#back-burner) · [deprioritize](#deprioritize) · [自测:这个先放一放吧](#t-hold-off-for-now)
 
 ---
 
