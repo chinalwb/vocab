@@ -193,9 +193,10 @@ private fun Card(
 }
 
 /** What a card asks — the same rules as kind() in template.html. */
-enum class Kind(val writes: Boolean) { Sentence(true), Translate(true), Grammar(false), Produce(true), Recognize(false) }
+enum class Kind(val writes: Boolean) { SelfTest(true), Sentence(true), Translate(true), Grammar(false), Produce(true), Recognize(false) }
 
 fun kindOf(e: Entry): Kind = when {
+    e.level == "SELFTEST" -> Kind.SelfTest   // title is the Chinese prompt, the quote is the answer
     e.level == "SENTENCE" && e.originalSentence != null -> Kind.Sentence
     e.title.startsWith("翻译") -> Kind.Translate
     e.level == "GRAMMAR" -> Kind.Grammar
@@ -218,6 +219,11 @@ private fun Front(entry: Entry, kind: Kind) {
         }
         val prompt: @Composable (String) -> Unit = { Text(it, style = MaterialTheme.typography.titleMedium, lineHeight = 26.sp) }
         when (kind) {
+            Kind.SelfTest -> {
+                label("自测 · 中译英")
+                prompt(entry.title.replace(Regex("^自测[::]\\s*"), ""))
+                Hint("不看笔记,直接写出英文。")
+            }
             Kind.Sentence -> {
                 label("我的原句")
                 Quote(entry.originalSentence.orEmpty().lines(), MaterialTheme.colorScheme.primary) {}
