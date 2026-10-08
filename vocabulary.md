@@ -711,18 +711,52 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 日期:2026-08-21
 - 掌握:会写
 
-- **hold on** = 等一下 / 坚持住(短暂等待,不是搁置计划)
-- **hold off (on)** = 先别启动/先别做,等更合适的时机
-- **put off** = 明确把一件事推迟到以后(最通用,常带拖延语感)
-- **postpone** = 正式且中性的"推迟"(书面首选)
-- **defer** = 制度化/官方场景的"推迟"(税、入学、判决);另有 defer to = 听从,勿混淆
-- **push back** = 口语化的"推迟"(商务场合高频)
-- **put on hold** = 暂停/搁置,接近 hold off
-- **hold up** = 耽搁 / 打劫(两个不相关意思,勿与 hold on/off 混淆)
-- **table** = 英美意思相反的坑(美:搁置;英:提出讨论)
-- **shelve** = 无限期搁置/雪藏,暗示可能不会再捡起来
-- **stall** = 故意拖延、拖时间,常带负面语感
-- **put sth on the back burner** = 降低优先级但打算以后再处理,语感比 shelve 轻
+**含义:** 一组"推迟 / 暂缓 / 搁置"的说法,按**要不要定新时间、做没做到一半、还打不打算做、场合正式程度**来选。
+
+**怎么选(先问自己这几个问题):**
+
+- **只是等一会儿?** → **hold on**(几秒到几分钟,不是搁置计划)
+- **有明确的新时间?**
+  - 口语 / 工作沟通 → **push back (to …)**
+  - 书面 / 正式通知 → **postpone (until …)**
+  - 制度化流程(税、入学、判决)→ **defer**
+- **还没开始,先不做,时间待定?** → **hold off (on)**
+- **已经开始了,先停下?** → **put on hold**
+- **还要做,只是不急?**
+  - 降低优先级 → **put on the back burner**(口语)/ **deprioritize**(工作)
+  - 可能不会再捡起来 → **shelve**(无限期搁置)
+- **带"拖延、不想做"的意味?** → **put off**(偏自己拖)/ **stall**(故意拖时间,负面)
+- **被别的事耽搁了(被动)?** → **hold up**
+- **会议上"先不议"?** → **table** —— ⚠️ 美式是"搁置",英式是"提出讨论",跨国团队慎用
+
+**逐个看(每个配一句例句):**
+
+- **hold on** —— 等一下 / 坚持住(短暂等待)。
+  *Hold on, let me check the logs first.*(等一下,我先看看日志。)
+- **hold off (on)** —— 先别启动 / 先别做,等更合适的时机。
+  *Let's hold off on the release until the crash is fixed.*(崩溃修好之前,先别发版。)
+- **put off** —— 把一件事推到以后(最通用,常带拖延语感)。
+  *I keep putting off updating the documentation.*(我一直在拖着没更新文档。)
+- **postpone** —— 正式、中性的"推迟到另一个时间"(书面首选)。
+  *The launch has been postponed until next month.*(发布已推迟到下个月。)
+- **defer** —— 制度化 / 官方场景的"推迟";另有 defer to = 听从,勿混淆。
+  *She deferred her admission for a year.*(她把入学推迟了一年。)
+- **push back** —— 口语化的"推迟",常带新时间(商务场合高频)。
+  *Can we push the demo back to Thursday?*(演示能推到周四吗?)
+- **put on hold** —— 暂停 / 搁置(多指已经开始的事)。
+  *The migration is on hold until we get more people.*(迁移先暂停,等有更多人手再说。)
+- **hold up** —— 耽搁(被动受阻)/ 打劫,两个不相关的意思。
+  *Sorry I'm late — I got held up in a meeting.*(抱歉迟到了,被一个会耽搁了。)
+- **table** —— 美:搁置议题;英:提出讨论。
+  *(US) Let's table this discussion until next week.*(这个讨论下周再说。)
+- **shelve** —— 无限期搁置 / 雪藏,暗示可能不会再捡起来。
+  *The redesign was shelved after the budget cut.*(预算削减后,改版方案被搁置了。)
+- **stall** —— 故意拖延、拖时间(负面)。
+  *The vendor keeps stalling instead of giving us a date.*(供应商一直在拖,不给我们一个日期。)
+- **put sth on the back burner** —— 降低优先级、以后再处理,语感比 shelve 轻。
+  *Let's put the dark mode on the back burner for now.*(暗色模式先放一放。)
+
+**相关条目:** [hold on](#hold-on) · [hold off](#hold-off) · [put off](#put-off) · [postpone](#postpone) · [defer](#defer) · [push back](#push-back) · [put on hold](#put-on-hold) · [hold up](#hold-up) · [table](#table) · [shelve](#shelve) · [stall](#stall) · [back burner](#back-burner) · [deprioritize](#deprioritize) · [自测:这个先放一放吧](#t-hold-off-for-now)
 
 ---
 
@@ -3599,6 +3633,6 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **要点:**
 
-- **hold off on sth** —— 先不做、暂缓(见 [hold off](#hold-off))。
+- **hold off on sth** —— 先不做、暂缓(见 [hold off](#hold-off),以及 [推迟/暂缓速查](#postpone-family-quickref))。
 - **that** 指代对方刚提的建议,比 it 更自然。
 - **for now** —— 强调"只是暂时不做"。
