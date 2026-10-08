@@ -96,6 +96,7 @@ private fun VocabNav() {
     val nav = rememberNavController()
     val vm: VocabViewModel = viewModel()
     val lib by vm.library.collectAsStateWithLifecycle()
+    val selfTests by vm.selfTests.collectAsStateWithLifecycle()
 
     // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
     // the plain fades match the container transform's length so both sides finish together.
@@ -113,11 +114,14 @@ private fun VocabNav() {
                 composable("entry/{anchor}") { back ->
                     val anchor = back.arguments?.getString("anchor").orEmpty()
                     CompositionLocalProvider(LocalNavAnimatedScope provides this) {
+                        val entry = lib.data?.byAnchor?.get(anchor)
                         EntryScreen(
-                            entry = lib.data?.byAnchor?.get(anchor),
+                            entry = entry,
                             onBack = { nav.popBackStack() },
                             onXref = { nav.navigate("entry/$it") },
                             onSeen = vm::markSeen,
+                            attempts = selfTests[anchor].orEmpty(),
+                            onAttempt = { text -> if (entry != null) vm.recordSelfTest(entry, text, "entry") },
                         )
                     }
                 }
@@ -134,6 +138,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val review by vm.review.collectAsStateWithLifecycle()
     val session by vm.session.collectAsStateWithLifecycle()
     val tiles by vm.tiles.collectAsStateWithLifecycle()
+    val selfTests by vm.selfTests.collectAsStateWithLifecycle()
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val snackbar = remember { SnackbarHostState() }
 
@@ -222,6 +227,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 lib, checking, { vm.check() }, open, { vm.markAllSeen() }, tiles,
                 contentPadding = pad,
                 statusBarShown = { 1 - bars.state.collapsedFraction },
+                selfTests = selfTests,
             )
         } else if (tab == 2) {
             MistakesScreen(lib, onOpen = open, modifier = Modifier.padding(pad))
@@ -236,7 +242,9 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onEnd = vm::endReview,
                 onReset = { vm.resetReview() },
                 onXref = open,
-                modifier = Modifier.padding(pad),
+                modifier = Modifier.padding(pad).imePadding(),
+                selfTests = selfTests,
+                onSelfTest = { e, text -> vm.recordSelfTest(e, text, "review") },
             )
         }
     }
