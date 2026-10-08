@@ -417,6 +417,14 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .st-res .st-x{color:var(--err);text-decoration:line-through;text-decoration-thickness:1.5px}
 .st-res .st-m{background:color-mix(in srgb, var(--warn) 30%, transparent);border-radius:3px;padding:0 2px}
 .st-res .fine{font-size:12px;color:var(--card-ink-2);margin:0}
+.st-stats{font-size:12.5px;color:var(--card-ink-2);margin:-6px 0 12px}
+.st-hist{margin:0 0 16px;font-size:13px}
+.st-hist summary{cursor:pointer;color:var(--card-ink-2);font-size:12.5px}
+.st-hist ol{list-style:none;margin:8px 0 0;padding:0}
+.st-hist li{display:grid;grid-template-columns:auto auto 1fr;gap:8px;padding:5px 0;border-top:1px solid var(--card-edge);align-items:baseline}
+.st-hist .when{font-variant-numeric:tabular-nums;color:var(--card-ink-2);font-size:12px;white-space:nowrap}
+.st-hist .txt{font-family:Newsreader,Georgia,serif;font-size:14.5px;overflow-wrap:anywhere}
+.foot .stc{font-weight:500}
 
 @media (max-width:640px){
   .grid{columns:2 150px;column-gap:10px}
@@ -596,7 +604,7 @@ const sections = DATA.map(g => {
       (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
       `<div class="foot">` +
       `<span><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
-      `${n ? " · " + n + " 例句" : ""}${wtag}</span>` +
+      (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}`) + `</span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
       `</div>`;
     c.addEventListener("click", () => open(it, g.level, i));
@@ -736,6 +744,44 @@ function compareHtml(mine, answer, retry = true){
     `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。 ${again}</p>`;
 }
 
+// ── 自测 attempt log: every reveal is recorded here (this browser only, like the review
+// progress). {anchor: [{t, text, ok, via}]}; a blank reveal is a 偷看 (text "").
+const ST_MAX = 50;
+let stLog = {};
+try { stLog = JSON.parse(store.get("vk.selftest", "{}")) || {}; } catch(e){}
+function recordAttempt(anchor, text, answer, via){
+  const list = stLog[anchor] = stLog[anchor] || [];
+  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && diffWords(text, answer).same, via });
+  if (list.length > ST_MAX) list.splice(0, list.length - ST_MAX);
+  store.set("vk.selftest", JSON.stringify(stLog));
+  refreshStCounts();
+}
+function stSummary(anchor){
+  const list = stLog[anchor] || [], tries = list.filter(a => a.text);
+  return { tries: tries.length, ok: tries.filter(a => a.ok).length, peeks: list.length - tries.length, last: list[list.length - 1] };
+}
+const fmtWhen = t => { const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
+function stStatsLine(anchor){
+  const s = stSummary(anchor);
+  if (!s.tries && !s.peeks) return "还没自测过";
+  return `已尝试 ${s.tries} 次 · 答对 ${s.ok} 次` + (s.peeks ? ` · 偷看 ${s.peeks} 次` : "") +
+    ` · 上次 ${fmtWhen(s.last.t)} ${!s.last.text ? "偷看" : s.last.ok ? "✅" : "❌"}`;
+}
+function stHistoryHtml(anchor){
+  const list = (stLog[anchor] || []).slice().reverse();
+  if (!list.length) return "";
+  return `<details class="st-hist"><summary>历史记录(${list.length})</summary><ol>` +
+    list.map(a => `<li><span class="when">${fmtWhen(a.t)}</span><span>${!a.text ? "👀" : a.ok ? "✅" : "❌"}</span>` +
+      `<span class="txt">${a.text ? esc(a.text) : "(没写就看了答案)"}${a.via === "review" ? ' <span class="when">· 复习</span>' : ""}</span></li>`).join("") +
+    `</ol></details>`;
+}
+function refreshStCounts(){
+  document.querySelectorAll(".stc[data-anchor]").forEach(el => {
+    const s = stSummary(el.dataset.anchor);
+    el.textContent = s.tries ? `试 ${s.tries} · 对 ${s.ok}` : "未自测";
+  });
+}
+
 // modal. `trail` is the chain of notes walked through via cross-references;
 // show() only renders, so callers own the trail and it survives going back.
 let scrim = null, lastFocus = null, trail = [];
@@ -773,7 +819,8 @@ function show(it, level, i){
     `<h2>${it.title}</h2>` +
     (meta ? `<div class="meta">${meta}</div>` : "") +
     (level === "SELFTEST"
-      ? `<div class="st"><textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
+      ? `<p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
+        `<div class="st"><textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
         `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
         `<div class="st-res" id="st-res" hidden></div>`
       : "") +
@@ -793,7 +840,9 @@ function show(it, level, i){
   if (level === "SELFTEST") {
     const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
     const reveal = () => {
-      res.innerHTML = compareHtml(input.value, it.answer || "");
+      recordAttempt(it.anchor, input.value, it.answer || "", "entry");
+      res.innerHTML = compareHtml(input.value, it.answer || "") + stHistoryHtml(it.anchor);
+      sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor);
       res.hidden = false;
       sheet.querySelector(".st").hidden = true;
       sheet.querySelector(".body").hidden = false;
@@ -944,7 +993,7 @@ function renderCard(){
     `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ask}` +
     (writes && !s.revealed ? `<textarea class="draft" id="rv-draft" placeholder="在这里写你的英文(可选,不会保存)">${esc(s.draft)}</textarea>` : "") +
     (s.revealed
-      ? `<hr>${k === "selftest" && s.draft.trim() ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>`
+      ? `<hr>${k === "selftest" ? `<p class="st-stats">${stStatsLine(it.anchor)}</p>` : ""}${k === "selftest" && s.draft.trim() ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>`
           : writes && s.draft.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(s.draft)}</div>` : ""}` +
         (k === "recognize" ? "" : `<p class="big" style="font-size:21px">${it.title}</p>`) +
         `<div class="body">${it.html}</div>`
@@ -957,7 +1006,10 @@ function renderCard(){
   if (d) { d.addEventListener("input", () => { s.draft = d.value; }); d.focus(); }
   reviewEl.querySelector("#rv-stop").addEventListener("click", () => { session = null; renderReview(); });
   const rv = reviewEl.querySelector("#rv-reveal");
-  if (rv) rv.addEventListener("click", () => { s.revealed = true; renderCard(); });
+  if (rv) rv.addEventListener("click", () => {
+    if (k === "selftest") recordAttempt(it.anchor, s.draft, it.answer || "", "review");
+    s.revealed = true; renderCard();
+  });
   reviewEl.querySelectorAll(".rcard .xref").forEach(a => {
     const x = byAnchor[a.dataset.ref];
     if (!x) { a.dataset.missing = "1"; return; }
@@ -1025,5 +1077,6 @@ function renderPractice(){
   }));
 }
 
+refreshStCounts();
 render();
 </script>

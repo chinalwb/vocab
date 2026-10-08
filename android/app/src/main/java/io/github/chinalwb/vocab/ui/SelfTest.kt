@@ -13,6 +13,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -25,6 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Block
 import io.github.chinalwb.vocab.data.Entry
+import io.github.chinalwb.vocab.review.Attempt
+import io.github.chinalwb.vocab.review.summary
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 /** A 自测 entry's answer: the quote under **答案**. */
 val Entry.selfTestAnswer: String
@@ -122,5 +129,48 @@ fun SelfTestInput(value: String, onChange: (String) -> Unit, onReveal: () -> Uni
             modifier = Modifier.fillMaxWidth(),
         )
         Button(onClick = onReveal) { Text("显示答案") }
+    }
+}
+
+private val WHEN = DateTimeFormatter.ofPattern("M/d HH:mm").withZone(ZoneId.systemDefault())
+private fun whenOf(t: Long) = WHEN.format(Instant.ofEpochMilli(t))
+
+/** "已尝试 N 次 · 答对 M 次 · …" — the same line the page shows (stStatsLine). */
+fun statsLine(attempts: List<Attempt>): String {
+    val s = attempts.summary()
+    val last = s.last ?: return "还没自测过"
+    return "已尝试 ${s.tries} 次 · 答对 ${s.ok} 次" + (if (s.peeks > 0) " · 偷看 ${s.peeks} 次" else "") +
+        " · 上次 ${whenOf(last.t)} " + when { last.text.isEmpty() -> "偷看"; last.ok -> "✅"; else -> "❌" }
+}
+
+/** Short form for cards: "试 2 · 对 1" / "未自测". */
+fun countsShort(attempts: List<Attempt>): String =
+    attempts.summary().let { if (it.tries == 0) "未自测" else "试 ${it.tries} · 对 ${it.ok}" }
+
+@Composable
+fun SelfTestStats(attempts: List<Attempt>) {
+    Text(statsLine(attempts), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+}
+
+/** Newest first, collapsed until tapped. */
+@Composable
+fun SelfTestHistory(attempts: List<Attempt>) {
+    if (attempts.isEmpty()) return
+    var open by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        TextButton(onClick = { open = !open }, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) {
+            Text((if (open) "▾ " else "▸ ") + "历史记录(${attempts.size})")
+        }
+        if (open) attempts.asReversed().forEach { a ->
+            androidx.compose.foundation.layout.Row {
+                Text(whenOf(a.t), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 3.dp, end = 8.dp))
+                Text(when { a.text.isEmpty() -> "👀"; a.ok -> "✅"; else -> "❌" }, modifier = Modifier.padding(end = 8.dp))
+                Text(
+                    (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + if (a.via == "review") " · 复习" else "",
+                    fontFamily = FontFamily.Serif, fontSize = 15.sp,
+                )
+            }
+        }
     }
 }

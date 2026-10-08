@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import io.github.chinalwb.vocab.VocabApp
 import io.github.chinalwb.vocab.data.CheckResult
 import io.github.chinalwb.vocab.data.Entry
+import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Grade
 import io.github.chinalwb.vocab.review.planToday
 import io.github.chinalwb.vocab.sync.describe
@@ -29,6 +30,9 @@ data class Session(
 class VocabViewModel(app: Application) : AndroidViewModel(app) {
     private val repo = (app as VocabApp).repository
     private val reviews = (app as VocabApp).reviews
+    private val selfTestLog = (app as VocabApp).selfTests
+    /** 自测 attempt history by anchor. */
+    val selfTests = selfTestLog.state
 
     val library = repo.state
     val review = reviews.state
@@ -58,6 +62,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             repo.load()
             reviews.load()
+            selfTestLog.load()
             check(quiet = true)
         }
     }
@@ -111,4 +116,10 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun resetReview() = viewModelScope.launch { reviews.reset() }
+
+    /** Records one reveal of a 自测 entry; ok = the words match the answer. */
+    fun recordSelfTest(entry: Entry, text: String, via: String) = viewModelScope.launch {
+        val t = text.trim()
+        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), t, t.isNotEmpty() && diffWords(t, entry.selfTestAnswer).same, via))
+    }
 }

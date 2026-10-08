@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.chinalwb.vocab.data.Entry
+import io.github.chinalwb.vocab.review.Attempt
 
 /**
  * One entry. Cross-references push another EntryScreen on the nav back stack,
@@ -37,7 +38,14 @@ import io.github.chinalwb.vocab.data.Entry
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun EntryScreen(entry: Entry?, onBack: () -> Unit, onXref: (String) -> Unit, onSeen: (String) -> Unit) {
+fun EntryScreen(
+    entry: Entry?,
+    onBack: () -> Unit,
+    onXref: (String) -> Unit,
+    onSeen: (String) -> Unit,
+    attempts: List<Attempt> = emptyList(),
+    onAttempt: (String) -> Unit = {},
+) {
     if (entry != null) LaunchedEffect(entry.anchor) { onSeen(entry.anchor) }
     Scaffold(
         topBar = {
@@ -73,11 +81,14 @@ fun EntryScreen(entry: Entry?, onBack: () -> Unit, onXref: (String) -> Unit, onS
                 // 自测: the answer stays hidden until I've written my own attempt
                 var draft by rememberSaveable(entry.anchor) { mutableStateOf("") }
                 var revealed by rememberSaveable(entry.anchor) { mutableStateOf(false) }
+                SelfTestStats(attempts)
+                Spacer(Modifier.height(12.dp))
                 if (!revealed) {
-                    SelfTestInput(draft, { draft = it }) { revealed = true }
+                    SelfTestInput(draft, { draft = it }) { onAttempt(draft); revealed = true }
                     return@Column
                 }
                 SelfTestResult(draft, entry.selfTestAnswer) { draft = ""; revealed = false }
+                SelfTestHistory(attempts)
                 Spacer(Modifier.height(16.dp))
             }
             EntryBody(entry, onXref)
