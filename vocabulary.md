@@ -115,6 +115,7 @@
 109. [自测:这个先放一放吧。](#t-hold-off-for-now)
 110. [自测:请把所有分支列在一个网页 artifact 上,每个分支配一个开关,用来标记它是否可以删除了。](#t-list-branches)
 111. [自测:如果这样做,文件会有多大?](#t-file-size)
+112. [自测:最重要的是,我们必须确保它在这台设备上不会像在模拟器上那样崩溃。](#t-not-crash-like-emulator)
 
 ---
 
@@ -3689,3 +3690,31 @@ platform 等于 10,就代表请求来自 web,对吧?
 > What will be the file size if we do it this way?
 
 - ⚠️ [结构] **What will be the file size** —— 主语很短,习惯把 be 放句尾 → **What will the file size be …?**
+
+---
+
+<a id="t-not-crash-like-emulator"></a>
+## 自测:最重要的是,我们必须确保它在这台设备上不会像在模拟器上那样崩溃。
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Above all, we need to ensure that it won't crash on this device as it did on the emulator.
+> Above all, we need to ensure that it doesn't crash on this device as it did on the emulator.
+> Most importantly, we need to make sure it doesn't crash on this device like it did on the emulator.
+
+**要点:**
+
+- **按场合选一套说法** —— 书面:*above all · ensure that · as*;口语:*most importantly · make sure · like*。能在两套之间切换就是 C1 的语域控制。
+- **like / as 后面接从句(it did)** —— 拿"崩溃"和"崩溃"比;接名词(*like the test*)就成了拿动作和名词比,容易读偏。
+- **ensure / make sure 后多用一般现在时** —— *ensure that it doesn't crash*;won't 也对。
+- 想彻底没有歧义:先说事实,再用 too —— *It crashed on the emulator, so let's make sure it doesn't crash on this device too.*
+
+**我的原句:**
+
+> I think the most important thing is to confirm it won't crash on this device like the test on the emulator.
+
+- ⚠️ [逻辑] **like the test on the emulator** —— like 后接名词,比较对象不对等;否定句里还可能读成"像模拟器测试那样不崩" → **like / as it did on the emulator**。
+- ✅ **I think the most important thing is to confirm …** —— 意思清楚,日常使用完全够用;*Most importantly, we need to …* 更直接。
