@@ -73,6 +73,15 @@ fun diffWords(mine: String, answer: String): WordDiff {
     return WordDiff(a, b, keepA, keepB, same)
 }
 
+/**
+ * The 答案 quote may hold several acceptable answers, one per line (same as bestDiff() in
+ * template.html): any match wins, otherwise diff against the one with the most words in common.
+ */
+fun bestDiff(mine: String, answer: String): WordDiff {
+    val ds = answer.lines().filter { it.isNotBlank() }.map { diffWords(mine, it) }
+    return ds.firstOrNull { it.same } ?: ds.maxByOrNull { it.keepAnswer.size } ?: diffWords(mine, "")
+}
+
 private fun marked(words: List<String>, keep: Set<Int>, style: SpanStyle): AnnotatedString = buildAnnotatedString {
     words.forEachIndexed { i, w ->
         if (i > 0) append(' ')
@@ -88,7 +97,7 @@ fun SelfTestResult(mine: String, answer: String, onRetry: (() -> Unit)? = null) 
     val warn = (if (dark) Color(0xFFE6B35C) else Color(0xFFB7791F)).copy(alpha = 0.3f)
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        val d = diffWords(mine, answer)
+        val d = bestDiff(mine, answer)
         when {
             mine.isBlank() -> Text("没有写就看答案了 —— 下次先写再看。", style = MaterialTheme.typography.titleSmall)
             d.same -> Text("✅ 和答案一致(大小写、标点不计)", style = MaterialTheme.typography.titleSmall)

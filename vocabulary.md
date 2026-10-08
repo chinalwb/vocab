@@ -113,6 +113,10 @@
 107. [自测:我们有两个 Mixpanel 项目,一个用于生产环境,一个用于开发环境。App 是怎么决定把事件发到哪个项目的?](#t-two-projects)
 108. [自测:合并 MR 之前,先确认一下为什么加了 is_emulator 这个 key。](#t-confirm-before-merge)
 109. [自测:这个先放一放吧。](#t-hold-off-for-now)
+110. [自测:请把所有分支列在一个网页 artifact 上,每个分支配一个开关,用来标记它是否可以删除了。](#t-list-branches)
+111. [自测:如果这样做,文件会有多大?](#t-file-size)
+112. [自测:最重要的是,我们必须确保它在这台设备上不会像在模拟器上那样崩溃。](#t-not-crash-like-emulator)
+113. [factor in / factor sth in](#factor-in)
 
 ---
 
@@ -3636,3 +3640,120 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **hold off on sth** —— 先不做、暂缓(见 [hold off](#hold-off),以及 [推迟/暂缓速查](#postpone-family-quickref))。
 - **that** 指代对方刚提的建议,比 it 更自然。
 - **for now** —— 强调"只是暂时不做"。
+
+---
+
+<a id="t-list-branches"></a>
+## 自测:请把所有分支列在一个网页 artifact 上,每个分支配一个开关,用来标记它是否可以删除了。
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Please list all the branches on a webpage artifact, with a toggle for each one to mark whether it's ready to be deleted.
+
+**要点:**
+
+- **list sth on / in a page** —— 列在页面"上",list 不接 to。
+- **with a toggle for each one** —— 用 with 把附加要求并进同一句,更紧凑。
+- **mark whether …** —— 开关有开 / 关两种状态,用 whether("是否");*mark sth as ready for deletion* 也很常用。
+
+**我的原句:**
+
+> please list all of the branches to a webpage artifact. Show a toggle for each of them to indicate that branch is ready to be deleted.
+
+- ❌ [介词] **list … to a webpage** —— 东西列在页面上 → **list … on / in a webpage**。
+- ❌ [冠词] **indicate that branch is ready** —— that 作连词时 branch 缺冠词(*that **the** branch*);作指示词又成了"那个分支已经可删"。
+- ⚠️ [逻辑] **indicate that …** —— 开关表示的是状态,用 **whether**:*mark whether it's ready to be deleted*。
+
+---
+
+<a id="t-file-size"></a>
+## 自测:如果这样做,文件会有多大?
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> How big will the file be if we do it this way?
+> What will the file size be if we do it this way?
+
+**要点:**
+
+- 两种都对:**How big** 更口语;*What … file size …* 稍正式。
+- **末端重量原则** —— 主语短(the file size)就把 will 和 be 分开,be 放句尾:*What will the file size be?*,不说 *What will be the file size?* 见 [语法笔记:末端重量原则](#end-weight)。
+- 条件句用一般现在时(*if we do*),主句用 will。
+
+**我的原句:**
+
+> What will be the file size if we do it this way?
+
+- ⚠️ [结构] **What will be the file size** —— 主语很短,习惯把 be 放句尾 → **What will the file size be …?**
+
+---
+
+<a id="t-not-crash-like-emulator"></a>
+## 自测:最重要的是,我们必须确保它在这台设备上不会像在模拟器上那样崩溃。
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Above all, we need to ensure that it won't crash on this device as it did on the emulator.
+> Above all, we need to ensure that it doesn't crash on this device as it did on the emulator.
+> Most importantly, we need to make sure it doesn't crash on this device like it did on the emulator.
+
+**要点:**
+
+- **按场合选一套说法** —— 书面:*above all · ensure that · as*;口语:*most importantly · make sure · like*。能在两套之间切换就是 C1 的语域控制。
+- **like / as 后面接从句(it did)** —— 拿"崩溃"和"崩溃"比;接名词(*like the test*)就成了拿动作和名词比,容易读偏。
+- **ensure / make sure 后多用一般现在时** —— *ensure that it doesn't crash*;won't 也对。
+- 想彻底没有歧义:先说事实,再用 too —— *It crashed on the emulator, so let's make sure it doesn't crash on this device too.*
+
+**我的原句:**
+
+> I think the most important thing is to confirm it won't crash on this device like the test on the emulator.
+
+- ⚠️ [逻辑] **like the test on the emulator** —— like 后接名词,比较对象不对等;否定句里还可能读成"像模拟器测试那样不崩" → **like / as it did on the emulator**。
+- ✅ **I think the most important thing is to confirm …** —— 意思清楚,日常使用完全够用;*Most importantly, we need to …* 更直接。
+
+---
+
+<a id="factor-in"></a>
+## factor in / factor sth in
+
+- 词性:phrasal verb
+- 日期:2026-10-08
+- 掌握:会写
+
+**含义:** 在计算、估算或做决定时,把某个因素**算进去 / 考虑进去**。语境里是做市场测算时"把中考、高考的学生也算进来"。
+
+**我的原句:**
+
+> Count in the students for 中考 and 高考
+
+- ⚠️ [搭配] **count in** —— count sb in 多指"把某人算进某个活动"(*Count me in!* 算我一个);把一类数字加进估算用 **factor in** 或 **include** → **Factor in 中考 and 高考 students.**
+- ⚠️ [介词] **the students for 中考** —— 表达"备考某考试的学生"要说清楚动作 → **students preparing for 中考**。
+
+**义项一:计算 / 估算时算进去**
+1. When you set the price, don't forget to factor in the payment fees.
+   定价时别忘了把支付手续费算进去。
+2. The estimate doesn't factor in the cost of free users.
+   这个估算没有把免费用户的成本算进去。
+
+**义项二:做决定 / 判断时考虑进去**
+1. We need to factor in the risk of delays when we plan the release.
+   规划发布时,我们得把延期的风险考虑进去。
+2. Once you factor in the commute, the cheaper apartment isn't really cheaper.
+   把通勤也考虑进去的话,便宜的那套公寓其实并不便宜。
+
+**常见搭配:**
+
+- **factor sth in / factor in sth** —— 宾语是代词时放中间:*factor it in*,不说 *factor in it*。
+- **factor into sth** —— 主语是"因素",表示它影响某个结果:*Price factors into every parent's decision.*(价格会影响每位家长的决定。)
+- **factor out** —— 排除掉某个因素(数学里是"提取公因式"):*after factoring out seasonal effects*(排除季节因素之后)。
+
+这几个搭配的共同语感:**factor 是"构成结果的一个因素"**,in 是放进去,into 是影响到,out 是拿出去。

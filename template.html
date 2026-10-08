@@ -735,10 +735,16 @@ function diffWords(mine, answer){
   }
   return { a, b, keepA, keepB, same: na.filter(Boolean).join(" ") === nb.filter(Boolean).join(" ") };
 }
+// A 答案 quote may hold several acceptable answers, one per line: any match is ✅,
+// otherwise diff against the closest one (most words in common).
+function bestDiff(mine, answer){
+  const ds = answer.split("\n").filter(a => a.trim()).map(a => diffWords(mine, a));
+  return ds.find(d => d.same) || ds.sort((x, y) => y.keepB.size - x.keepB.size)[0] || diffWords(mine, "");
+}
 function compareHtml(mine, answer, retry = true){
   const again = retry ? `<button class="linkish" type="button" id="st-again">再试一次</button>` : "";
   if (!mine.trim()) return `<p class="verdict">没有写就看答案了 —— 下次先写再看。</p><p>${again}</p>`;
-  const d = diffWords(mine, answer);
+  const d = bestDiff(mine, answer);
   if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)</p><p>${again}</p>`;
   const show = (ws, keep, cls) => ws.map((w, k) => keep.has(k) ? esc(w) : `<span class="${cls}">${esc(w)}</span>`).join(" ");
   return `<p class="verdict">对照一下差异</p>` +
@@ -754,7 +760,7 @@ let stLog = {};
 try { stLog = JSON.parse(store.get("vk.selftest", "{}")) || {}; } catch(e){}
 function recordAttempt(anchor, text, answer, via){
   const list = stLog[anchor] = stLog[anchor] || [];
-  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && diffWords(text, answer).same, via });
+  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && bestDiff(text, answer).same, via });
   if (list.length > ST_MAX) list.splice(0, list.length - ST_MAX);
   store.set("vk.selftest", JSON.stringify(stLog));
   refreshStCounts();
