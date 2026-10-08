@@ -107,6 +107,7 @@
 101. [might be excused / could be forgiven for thinking(+ N after N)](#forgiven-for-thinking)
 102. [proponent(vs opponent)](#proponent)
 103. [advent](#advent)
+104. [语法笔记:This is the first time + 现在完成时](#first-time-perfect)
 
 ---
 
@@ -3443,3 +3444,39 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **dawn** —— 比喻"开端":*the dawn of the internet age*,文学色彩更浓。
 
 **现成句式:** *With the advent of LLMs, …* —— 写技术趋势文章的开头;聊天说 *since X came out* 就行。
+
+---
+
+<a id="first-time-perfect"></a>
+## 语法笔记:This is the first time + 现在完成时
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**规则:** **This / It is the first (second, third…) time** 后面的从句必须用**现在完成时**——它说的是"从过去到现在为止,这是第一次"。换成过去,就整体后退一格:**That / It was the first time** + **过去完成时**。
+
+- ✅ This is the first time I've written a completely correct sentence.
+- ❌ This is the first time I wrote a completely correct sentence.
+- ✅ That was the first time I had seen snow.(过去的"第一次" → 过去完成时)
+
+**例句:**
+1. This is the first time I've used Compose in production.
+   这是我第一次在生产环境里用 Compose。
+2. It's the second time this bug has come back.
+   这是这个 bug 第二次复现了。
+3. It was the first time she had given a talk in English.
+   那是她第一次用英语做演讲。
+
+**同类句型(同样用完成时):**
+
+- **This is the best / worst … I've ever …** —— *This is the best coffee I've ever had.*
+- **This is the only … I've …** —— *This is the only book I've read twice.*
+
+**别混淆:** *The first time I met him, …*(我第一次见他的时候……)是**时间状语从句**,讲过去某个具体时刻,用一般过去时就对——它不是 *This is the first time* 句型。
+
+**我的原句:**
+
+> Oh my godness. This is the first time that I wrote a correct sentence.
+
+- ❌ [词形] **godness** —— 拼写 → **goodness**(Oh my goodness,Oh my God 的委婉说法)。
+- ❌ [动词] **the first time that I wrote** —— This is the first time 后接现在完成时 → **This is the first time I've written a completely correct sentence!**
