@@ -112,6 +112,7 @@
 106. [自测:坚持等待最优解,而不是向诱惑屈服,远更有可能帮你取得更好的结果。](#t-hold-out-for)
 107. [自测:我们有两个 Mixpanel 项目,一个用于生产环境,一个用于开发环境。App 是怎么决定把事件发到哪个项目的?](#t-two-projects)
 108. [自测:合并 MR 之前,先确认一下为什么加了 is_emulator 这个 key。](#t-confirm-before-merge)
+109. [自测:这个先放一放吧。](#t-hold-off-for-now)
 
 ---
 
@@ -3583,3 +3584,21 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ⚠️ [词形] **double check** —— 作动词时标准写法带连字符 → **double-check**。
 - ✅ **整句** —— 意思清楚,日常使用完全够用;发给队友时改成 *let's confirm* / *can we check* 语气更客气。
+
+---
+
+<a id="t-hold-off-for-now"></a>
+## 自测:这个先放一放吧。
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> Let's hold off on that for now.
+
+**要点:**
+
+- **hold off on sth** —— 先不做、暂缓(见 [hold off](#hold-off))。
+- **that** 指代对方刚提的建议,比 it 更自然。
+- **for now** —— 强调"只是暂时不做"。
