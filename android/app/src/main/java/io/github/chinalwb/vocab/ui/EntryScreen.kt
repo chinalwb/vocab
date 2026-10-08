@@ -23,6 +23,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.chinalwb.vocab.data.Entry
@@ -65,6 +69,17 @@ fun EntryScreen(entry: Entry?, onBack: () -> Unit, onXref: (String) -> Unit, onS
             }
             EntryHeader(entry)
             Spacer(Modifier.height(20.dp))
+            if (entry.level == "SELFTEST") {
+                // 自测: the answer stays hidden until I've written my own attempt
+                var draft by rememberSaveable(entry.anchor) { mutableStateOf("") }
+                var revealed by rememberSaveable(entry.anchor) { mutableStateOf(false) }
+                if (!revealed) {
+                    SelfTestInput(draft, { draft = it }) { revealed = true }
+                    return@Column
+                }
+                SelfTestResult(draft, entry.selfTestAnswer) { draft = ""; revealed = false }
+                Spacer(Modifier.height(16.dp))
+            }
             EntryBody(entry, onXref)
             Spacer(Modifier.height(32.dp))
         }

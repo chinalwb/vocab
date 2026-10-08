@@ -157,7 +157,10 @@ private fun Card(
                 Spacer(Modifier.height(20.dp))
                 HorizontalDivider()
                 Spacer(Modifier.height(20.dp))
-                if (kind.writes && draft.isNotBlank()) {
+                if (kind == Kind.SelfTest && draft.isNotBlank()) {
+                    SelfTestResult(draft, entry.selfTestAnswer)
+                    Spacer(Modifier.height(16.dp))
+                } else if (kind.writes && draft.isNotBlank()) {
                     Text("你写的", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(
                         draft.trim(),
