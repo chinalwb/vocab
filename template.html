@@ -37,6 +37,7 @@
   --tm-1:#ddd9f2; --tm-2:#cec9ea; --tm-3:#e9e6f7;
   --gr-1:#f2d5e4; --gr-2:#ebc2d7; --gr-3:#f7e4ee;
   --sn-1:#e8d7c3; --sn-2:#dfcaaf; --sn-3:#f1e5d7;
+  --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
 
   --err:#c2412d; --warn:#b7791f; --mk:#ffffff; --tag:#ece9e0; --tag-ink:#4a4944;
 }
@@ -67,6 +68,7 @@
     --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
     --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
     --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
+    --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
     --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
   }
@@ -97,6 +99,7 @@
   --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
   --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
   --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
+  --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
   --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
 }
@@ -453,9 +456,10 @@ const LV = {
   C2:{nm:"精通",  sw:["--c2-1","--c2-2","--c2-3"]},
   TERM:{nm:"术语与固定搭配(无 CEFR 分级)", sw:["--tm-1","--tm-2","--tm-3"]},
   GRAMMAR:{nm:"语法与语域笔记", sw:["--gr-1","--gr-2","--gr-3"]},
-  SENTENCE:{nm:"整句订正:我的原句 → 更地道的说法", sw:["--sn-1","--sn-2","--sn-3"]}
+  SENTENCE:{nm:"整句订正:我的原句 → 更地道的说法", sw:["--sn-1","--sn-2","--sn-3"]},
+  SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子"};
+const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", SELFTEST:"自测"};
 
 // ── theme toggle ─────────────────────────
 const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.4M12 19v2.4M21.4 12H19M5 12H2.6M18.6 5.4l-1.7 1.7M7.1 16.9l-1.7 1.7M18.6 18.6l-1.7-1.7M7.1 7.1L5.4 5.4"/></svg>';
@@ -818,6 +822,7 @@ function planToday(){
 }
 // What the front of a card asks: 会写 entries are produced (中→英), 认识 entries recognised (英→中).
 function kind(t){
+  if (t.level === "SELFTEST") return "selftest";
   if (t.level === "SENTENCE" && t.it.original) return "sentence";
   if (t.it.title.startsWith("翻译")) return "translate";
   if (t.level === "GRAMMAR") return "grammar";
@@ -865,6 +870,7 @@ function renderCard(){
   const s = session, t = s.queue[s.index], it = t.it, k = kind(t);
   const ask = {
     sentence: `<p class="lab">我的原句</p><blockquote class="prompt" style="margin:0;font-family:Newsreader,Georgia,serif;font-size:18px">${esc(it.original).replace(/\n/g, "<br>")}</blockquote><p class="hint">哪里不对、哪里不地道?先自己改一遍,再看答案。</p>`,
+    selftest: `<p class="lab">自测 · 中译英</p><p class="prompt" style="font-size:19px">${esc(it.title.replace(/^自测[::]\s*/, ""))}</p><p class="hint">不看笔记,直接写出英文。</p>`,
     translate: `<p class="lab">中译英</p><p class="prompt">${esc(plainMd(it.gloss).replace(/^中译英练习[——-]*/, ""))}</p><p class="hint">先写出你的英文,再和几种译法对照。</p>`,
     grammar: `<p class="lab">语法规则</p><p class="big">${it.title}</p><p class="hint">回想这条规则,以及正反例句。</p>`,
     produce: `<p class="lab">写出英文${it.pos ? " · " + esc(it.pos) : ""}</p><p class="prompt">${esc(maskTitle(plainMd(it.gloss), it.title))}</p><p class="hint">想出这个英文表达,再用它造一个句子。</p>`,
@@ -914,8 +920,8 @@ function grade(q){
 }
 
 // ── 练习: a daily imitation task and a weekly paragraph. The app picks the same ones
-// (ui/PracticeScreen.kt): pool = 会写 entries that aren't 句子, sorted by anchor. ──
-const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE")
+// (ui/PracticeScreen.kt): pool = 会写 entries that aren't 句子 / 自测, sorted by anchor. ──
+const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST")
   .sort((a, b) => a.it.anchor < b.it.anchor ? -1 : a.it.anchor > b.it.anchor ? 1 : 0);
 let skip = 0;                                             // 换一题 within this visit
 const words = t => (t.match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g) || []).length;
