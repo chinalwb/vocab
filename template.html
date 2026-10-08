@@ -414,8 +414,8 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
   font-family:Newsreader,Georgia,serif;font-size:16px;line-height:1.5;
 }
 .st-res .line b{font-family:"Noto Sans SC",system-ui,sans-serif;font-size:11.5px;font-weight:500;color:var(--card-ink-2);display:block}
-.st-res .x{color:var(--err);text-decoration:line-through;text-decoration-thickness:1.5px}
-.st-res .m{background:color-mix(in srgb, var(--warn) 30%, transparent);border-radius:3px;padding:0 2px}
+.st-res .st-x{color:var(--err);text-decoration:line-through;text-decoration-thickness:1.5px}
+.st-res .st-m{background:color-mix(in srgb, var(--warn) 30%, transparent);border-radius:3px;padding:0 2px}
 .st-res .fine{font-size:12px;color:var(--card-ink-2);margin:0}
 
 @media (max-width:640px){
@@ -731,8 +731,8 @@ function compareHtml(mine, answer, retry = true){
   if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)</p><p>${again}</p>`;
   const show = (ws, keep, cls) => ws.map((w, k) => keep.has(k) ? esc(w) : `<span class="${cls}">${esc(w)}</span>`).join(" ");
   return `<p class="verdict">对照一下差异</p>` +
-    `<p class="line"><b>我写的(删除线 = 多出来或写错的)</b>${show(d.a, d.keepA, "x")}</p>` +
-    `<p class="line"><b>答案(高亮 = 我漏掉或写错的)</b>${show(d.b, d.keepB, "m")}</p>` +
+    `<p class="line"><b>我写的(删除线 = 多出来或写错的)</b>${show(d.a, d.keepA, "st-x")}</p>` +
+    `<p class="line"><b>答案(高亮 = 我漏掉或写错的)</b>${show(d.b, d.keepB, "st-m")}</p>` +
     `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。 ${again}</p>`;
 }
 
