@@ -13,8 +13,8 @@ android {
         applicationId = "io.github.chinalwb.vocab"
         minSdk = 26
         targetSdk = 36
-        versionCode = 7
-        versionName = "1.6"
+        versionCode = 8
+        versionName = "1.7"
         // Where updates are fetched from. Override for local testing, e.g.
         // ./gradlew installDebug -PvocabUrl=http://localhost:8000/  (with adb reverse)
         val vocabUrl = (project.findProperty("vocabUrl") as String?) ?: "https://chinalwb.github.io/vocab/"
