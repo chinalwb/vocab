@@ -119,6 +119,7 @@
 113. [factor in / factor sth in](#factor-in)
 114. [自测:如果我要向潜在投资人介绍这个想法,什么样的电梯演讲比较好?](#t-elevator-pitch)
 115. [自测:完全不要缩放,直接淡出就行。](#t-no-scale-just-fade)
+116. [自测:如果今天就上线,之后产品团队又说 Meta Ads 还在用,回滚起来容易吗?](#t-ship-then-roll-back)
 
 ---
 
@@ -3813,3 +3814,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ⚠️ [逻辑] **shrink and expand** —— 否定句里连接两个动作用 **or**;而且这里实际只有缩小,说 **Don't scale it** 更准确。
 - ✅ **Do not** —— 意思清楚,日常使用完全够用;口语里 **Don't** 更自然,Do not 偏正式、语气更硬。
+
+<a id="t-ship-then-roll-back"></a>
+## 自测:如果今天就上线,之后产品团队又说 Meta Ads 还在用,回滚起来容易吗?
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> If we ship this today and the product team later tells us Meta Ads is still in use, how easy would it be to roll back?
+> If we make this change today, would it be easy to roll back if the product team says Meta Ads is still in use?
+
+**要点:**
+
+- 用 **If A and B, how easy would it be to …?** 把两个条件并进一个 if,避免一句两个 if。
+- **ship this** / **make this change** —— 比 update it like this 更具体;**roll back** —— 撤回改动,比 revert 更通用。
+- 假设的事用 **would it be**;**still in use** —— 仍在使用;产品名 **Meta Ads** 不加 the,**the product team** 要加。
+
+**我的原句:**
+
+> if we update it like this today, is it easy to revert if product team says the Meta Ads is in use?
+
+- ❌ [冠词] **product team** → **the product team**;**the Meta Ads** → **Meta Ads**(产品名不加 the)。
+- ⚠️ [结构] 一句里两个 if,读着绕 —— 合成 *If A and B, …?*
+- ⚠️ [语气] **is it easy** → **would it be easy**,假设情况用 would 更自然、更委婉。
+- ✅ **update it like this** —— 意思清楚,日常使用完全够用;**make this change** / **ship this** 更具体。
