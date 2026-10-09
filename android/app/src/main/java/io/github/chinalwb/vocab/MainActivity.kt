@@ -79,6 +79,8 @@ import io.github.chinalwb.vocab.ui.PracticeScreen
 import io.github.chinalwb.vocab.ui.ReviewScreen
 import io.github.chinalwb.vocab.ui.VocabTheme
 import io.github.chinalwb.vocab.ui.VocabViewModel
+import io.github.chinalwb.vocab.review.Stage
+import io.github.chinalwb.vocab.review.stageOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +99,7 @@ private fun VocabNav() {
     val vm: VocabViewModel = viewModel()
     val lib by vm.library.collectAsStateWithLifecycle()
     val selfTests by vm.selfTests.collectAsStateWithLifecycle()
+    val stages by vm.stages.collectAsStateWithLifecycle()
 
     // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
     // the plain fades match the container transform's length so both sides finish together.
@@ -122,6 +125,8 @@ private fun VocabNav() {
                             onSeen = vm::markSeen,
                             attempts = selfTests[anchor].orEmpty(),
                             onAttempt = { text -> if (entry != null) vm.recordSelfTest(entry, text, "entry") },
+                            stage = entry?.let { stages.stageOf(it) } ?: Stage.Learn,
+                            onStage = { vm.setStage(anchor, it) },
                         )
                     }
                 }
@@ -139,6 +144,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val session by vm.session.collectAsStateWithLifecycle()
     val tiles by vm.tiles.collectAsStateWithLifecycle()
     val selfTests by vm.selfTests.collectAsStateWithLifecycle()
+    val stages by vm.stages.collectAsStateWithLifecycle()
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val snackbar = remember { SnackbarHostState() }
 
@@ -228,6 +234,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 contentPadding = pad,
                 statusBarShown = { 1 - bars.state.collapsedFraction },
                 selfTests = selfTests,
+                stages = stages,
             )
         } else if (tab == 2) {
             MistakesScreen(lib, onOpen = open, modifier = Modifier.padding(pad))
@@ -245,6 +252,8 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 modifier = Modifier.padding(pad).imePadding(),
                 selfTests = selfTests,
                 onSelfTest = { e, text -> vm.recordSelfTest(e, text, "review") },
+                stages = stages,
+                onMastered = vm::markMastered,
             )
         }
     }

@@ -8,7 +8,9 @@ import io.github.chinalwb.vocab.data.CheckResult
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Grade
+import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.planToday
+import io.github.chinalwb.vocab.review.stageOf
 import io.github.chinalwb.vocab.sync.describe
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,6 +35,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     private val selfTestLog = (app as VocabApp).selfTests
     /** 自测 attempt history by anchor. */
     val selfTests = selfTestLog.state
+    private val stageStore = (app as VocabApp).stages
+    /** 进度 moves by anchor — read through stageOf(). */
+    val stages = stageStore.state
 
     val library = repo.state
     val review = reviews.state
@@ -63,6 +68,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             repo.load()
             reviews.load()
             selfTestLog.load()
+            stageStore.load()
             check(quiet = true)
         }
     }
@@ -89,7 +95,8 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun startReview() {
         val lib = library.value
         val entries = lib.data?.entries ?: return
-        val plan = planToday(entries, review.value)
+        // 已掌握 never comes back on its own
+        val plan = planToday(entries.filter { stages.value.stageOf(it) != Stage.Done }, review.value)
         _session.value = if (plan.all.isEmpty()) null else Session(plan.all)
     }
 
@@ -105,6 +112,22 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         _session.value = s.copy(
             queue = if (again) s.queue + entry else s.queue,
             requeued = if (again) s.requeued + entry.anchor else s.requeued,
+            index = s.index + 1,
+            revealed = false,
+            done = s.done + 1,
+        )
+    }
+
+    fun setStage(anchor: String, stage: Stage) = viewModelScope.launch { stageStore.set(anchor, stage) }
+
+    /** 已掌握 on a review card: out of review for good, and on to the next card. */
+    fun markMastered() {
+        val s = _session.value ?: return
+        val entry = s.current ?: return
+        setStage(entry.anchor, Stage.Done)
+        _session.value = s.copy(
+            // drop a 忘了 repeat still waiting later in the queue
+            queue = s.queue.filterIndexed { i, e -> i <= s.index || e.anchor != entry.anchor },
             index = s.index + 1,
             revealed = false,
             done = s.done + 1,
