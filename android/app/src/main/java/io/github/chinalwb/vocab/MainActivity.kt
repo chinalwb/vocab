@@ -90,6 +90,18 @@ class MainActivity : ComponentActivity() {
             VocabTheme { VocabNav() }
         }
     }
+
+    // 同步: pull what the page did when I come back, push what's waiting when I leave
+    override fun onStart() {
+        super.onStart()
+        val p = (application as VocabApp).progress
+        if (p.ready.isCompleted) p.now()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (application as VocabApp).progress.flush()
+    }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -145,6 +157,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val tiles by vm.tiles.collectAsStateWithLifecycle()
     val selfTests by vm.selfTests.collectAsStateWithLifecycle()
     val stages by vm.stages.collectAsStateWithLifecycle()
+    val sync by vm.syncStatus.collectAsStateWithLifecycle()
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val snackbar = remember { SnackbarHostState() }
 
@@ -254,6 +267,10 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onSelfTest = { e, text -> vm.recordSelfTest(e, text, "review") },
                 stages = stages,
                 onMastered = vm::markMastered,
+                sync = sync,
+                onConnect = { vm.connectSync(it) },
+                onDisconnect = vm::disconnectSync,
+                onSyncNow = vm::syncNow,
             )
         }
     }

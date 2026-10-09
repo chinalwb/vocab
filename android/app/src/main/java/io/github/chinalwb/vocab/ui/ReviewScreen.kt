@@ -42,6 +42,12 @@ import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.stageOf
 import io.github.chinalwb.vocab.review.planToday
 import io.github.chinalwb.vocab.review.today
+import io.github.chinalwb.vocab.sync.SyncStatus
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.platform.LocalUriHandler
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ReviewScreen(
@@ -59,6 +65,10 @@ fun ReviewScreen(
     onSelfTest: (Entry, String) -> Unit = { _, _ -> },
     stages: Map<String, String> = emptyMap(),
     onMastered: () -> Unit = {},
+    sync: SyncStatus = SyncStatus(),
+    onConnect: (String) -> Unit = {},
+    onDisconnect: () -> Unit = {},
+    onSyncNow: () -> Unit = {},
 ) {
     val current = session?.current
     when {
@@ -67,12 +77,17 @@ fun ReviewScreen(
             inTest = stages.stageOf(current) == Stage.Test, onMastered = onMastered,
         )
         session != null -> Finished(session.done, onEnd, modifier)
-        else -> Overview(lib, review, stages, onStart, onReset, modifier)
+        else -> Overview(lib, review, stages, onStart, onReset, modifier) {
+            SyncPanel(sync, onConnect, onDisconnect, onSyncNow)
+        }
     }
 }
 
 @Composable
-private fun Overview(lib: LibraryState, review: ReviewData, stages: Map<String, String>, onStart: () -> Unit, onReset: () -> Unit, modifier: Modifier) {
+private fun Overview(
+    lib: LibraryState, review: ReviewData, stages: Map<String, String>, onStart: () -> Unit, onReset: () -> Unit, modifier: Modifier,
+    extra: @Composable () -> Unit,
+) {
     val entries = lib.data?.entries.orEmpty()
     val mastered = entries.count { stages.stageOf(it) == Stage.Done }
     val plan = planToday(entries.filter { stages.stageOf(it) != Stage.Done }, review)
@@ -81,7 +96,7 @@ private fun Overview(lib: LibraryState, review: ReviewData, stages: Map<String, 
     val tomorrow = entries.count { e -> review.cards[e.anchor]?.due == today + 1 }
     var confirmReset by remember { mutableStateOf(false) }
 
-    Column(modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("今天", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Stat("待复习", plan.due.size, Modifier.weight(1f))
@@ -98,7 +113,7 @@ private fun Overview(lib: LibraryState, review: ReviewData, stages: Map<String, 
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(Modifier.weight(1f))
+        extra()
         TextButton(onClick = { confirmReset = true }, modifier = Modifier.align(Alignment.End)) { Text("重置复习进度") }
     }
     if (confirmReset) AlertDialog(
@@ -297,5 +312,57 @@ private fun Finished(done: Int, onEnd: () -> Unit, modifier: Modifier) {
         Text("这一轮复习了 $done 次", color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(24.dp))
         Button(onClick = onEnd) { Text("返回") }
+    }
+}
+
+private val SYNCED_AT = DateTimeFormatter.ofPattern("M/d HH:mm").withZone(ZoneId.systemDefault())
+
+/** 同步到 GitHub — the same panel as the page's #sync. The token stays on this phone. */
+@Composable
+private fun SyncPanel(sync: SyncStatus, onConnect: (String) -> Unit, onDisconnect: () -> Unit, onSyncNow: () -> Unit) {
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(12.dp))
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Text("同步到 GitHub", style = MaterialTheme.typography.titleSmall)
+        if (!sync.connected) {
+            var token by remember { mutableStateOf("") }
+            val uri = LocalUriHandler.current
+            Text(
+                "进度、复习记录和自测结果存进本仓库的 progress 分支,网页和 App 共用一份。自测里写的句子原文不上传。" +
+                    "需要一个 fine-grained token:Repository access 只选 chinalwb/vocab,Contents 设为 Read and write。token 只存在这台手机上。",
+                style = MaterialTheme.typography.bodySmall, color = muted,
+            )
+            TextButton(onClick = { uri.openUri("https://github.com/settings/personal-access-tokens/new") }, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) {
+                Text("去 GitHub 生成 token")
+            }
+            OutlinedTextField(
+                value = token, onValueChange = { token = it },
+                placeholder = { Text("github_pat_…") }, singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Button(onClick = { onConnect(token) }, enabled = token.isNotBlank()) { Text("连接") }
+        } else {
+            Text("chinalwb/vocab · progress 分支。改动攒 15 秒提交一次,离开 App 时立即提交。", style = MaterialTheme.typography.bodySmall, color = muted)
+            Text(
+                when {
+                    sync.busy -> "同步中…"
+                    sync.error != null -> "同步失败:${sync.error}"
+                    sync.ok > 0 -> "已同步 · ${SYNCED_AT.format(Instant.ofEpochMilli(sync.ok))}"
+                    else -> "还没同步过"
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (sync.error != null && !sync.busy) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                OutlinedButton(onClick = onSyncNow, enabled = !sync.busy) { Text("立即同步") }
+                TextButton(onClick = onDisconnect) { Text("断开") }
+            }
+        }
     }
 }

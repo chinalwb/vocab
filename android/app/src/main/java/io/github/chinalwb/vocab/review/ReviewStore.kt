@@ -26,6 +26,8 @@ data class Card(
     val reps: Int = 0,
     val lapses: Int = 0,
     val due: Long = 0,
+    /** When it was last graded (ms) — newest wins when 同步 merges devices. */
+    val t: Long = 0,
 )
 
 @Serializable
@@ -34,6 +36,8 @@ data class ReviewData(
     /** How many never-seen entries were introduced on [newDay]. */
     val newDay: Long = 0,
     val newToday: Int = 0,
+    /** When 重置复习进度 was last pressed (ms): 同步 drops cards graded before it on every device. */
+    val resetAt: Long = 0,
 )
 
 enum class Grade(val q: Int, val label: String) {
@@ -68,7 +72,7 @@ class ReviewStore(context: Context) {
             val existing = s.cards[anchor]
             val newCount = if (s.newDay == today) s.newToday else 0
             _state.value = s.copy(
-                cards = s.cards + (anchor to schedule(existing ?: Card(), grade, today)),
+                cards = s.cards + (anchor to schedule(existing ?: Card(), grade, today).copy(t = System.currentTimeMillis())),
                 newDay = today,
                 newToday = if (existing == null) newCount + 1 else newCount,
             )
@@ -78,8 +82,16 @@ class ReviewStore(context: Context) {
 
     suspend fun reset() = withContext(Dispatchers.IO) {
         mutex.withLock {
-            _state.value = ReviewData()
-            file.delete()
+            _state.value = ReviewData(resetAt = System.currentTimeMillis())
+            file.writeText(json.encodeToString(_state.value))
+        }
+    }
+
+    /** 同步: swap in the merged state. [merge] runs under the lock so a grade can't slip in between. */
+    suspend fun replace(merge: (ReviewData) -> ReviewData) = withContext(Dispatchers.IO) {
+        mutex.withLock {
+            _state.value = merge(_state.value)
+            file.writeText(json.encodeToString(_state.value))
         }
     }
 }

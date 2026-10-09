@@ -174,7 +174,17 @@
 - 自测条目(SELFTEST)默认就在「自测」阶段;其余条目一律从「学习中」开始,由用户自己逐条决定要不要移(用户明确要求不要批量移)。
 - 移到自测的普通条目:点开先按复习卡的方式出题(中→英,认识的条目也改成中→英),写完再看笔记;没有标准答案,所以不做逐词对照、不记自测历史。
 - **已掌握的条目不进复习**(到期的和新条目都跳过),直到用户把它移回自测。浏览页仍显示,卡片底部标「✓ 已掌握」,有「学习中 / 自测 / 已掌握」筛选。
-- 只存「移动过的」条目:网页 localStorage `vk.stage`,App `filesDir/stage.json`,都是 `{anchor: "learn"|"test"|"done"}`。两边规则一致(`stageOf()` 在 template.html 和 `review/StageStore.kt`)。
+- 只存「移动过的」条目:网页 localStorage `vk.stage`,App `filesDir/stage.json`,记 `{anchor: "learn"|"test"|"done"}` 和每次移动的时间。两边规则一致(`stageOf()` 在 template.html 和 `review/StageStore.kt`)。
+
+### 同步到 GitHub(用户 2026-10-09 要求)
+
+进度、SM-2 复习卡、自测结果在网页和 App 之间同步,存在本仓库的**孤立分支 `progress`** 的 `progress.json` 里(和 main / dev 没有共同历史,不触发构建,也不进 dev → main 的 MR)。
+
+- 读写走 GitHub Contents API,用户自己的 fine-grained token(只给 chinalwb/vocab 的 Contents 读写),在「复习」页底部「同步到 GitHub」里填;网页存 localStorage `vk.gh`,App 存 SharedPreferences `sync`。**token 由用户自己填,我不经手。**
+- **自测里写的句子原文不上传**(公开仓库,原文没经过我脱敏):只同步时间、对错、是否偷看、来源;别的设备上显示为「(在另一台设备上写的)」。
+- 合并规则(两边一致,见 template.html 的 `applyRemote()` 和 `sync/ProgressSync.kt`):进度和复习卡按时间戳新者胜;「重置复习进度」记 `resetAt`,早于它的卡在所有设备上都丢掉;自测记录按时间戳取并集。合并后和远端一样就不提交。
+- 时机:打开时拉一次;改动后攒 15 秒提交一次;切走页面 / 离开 App 时立即提交;回到页面 / App 时再拉一次。写冲突(409/422)时重新拉取合并,最多 3 次。
+- **不要手动改 `progress` 分支**,也不要把它合进 dev / main。
 
 ### 所有条目通用的写入规则
 
