@@ -5,6 +5,7 @@ import io.github.chinalwb.vocab.data.VocabRepository
 import io.github.chinalwb.vocab.review.ReviewStore
 import io.github.chinalwb.vocab.review.SelfTestLog
 import io.github.chinalwb.vocab.review.StageStore
+import io.github.chinalwb.vocab.sync.ProgressSync
 import io.github.chinalwb.vocab.sync.UpdateWorker
 
 class VocabApp : Application() {
@@ -12,6 +13,7 @@ class VocabApp : Application() {
     val reviews by lazy { ReviewStore(this) }
     val selfTests by lazy { SelfTestLog(this) }
     val stages by lazy { StageStore(this) }
+    val progress by lazy { ProgressSync(this, reviews, selfTests, stages) }
 
     override fun onCreate() {
         super.onCreate()

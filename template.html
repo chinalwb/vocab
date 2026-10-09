@@ -357,6 +357,13 @@ h1{
 .pane{max-width:720px;margin:26px auto 0}
 .pane h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:22px;margin:0 0 4px}
 .pane .note{color:var(--ink-3);font-size:13px;margin:0 0 16px;max-width:62ch}
+.sync{margin:28px 0 0;padding:14px 16px;border:1px solid var(--rule);border-radius:12px;background:var(--mk);max-width:62ch}
+.sync h3{font-size:14px;margin:0 0 4px}
+.sync p{font-size:12.5px;color:var(--ink-3);margin:0 0 10px;line-height:1.6}
+.sync .st{font-size:13px;color:var(--ink-2)}
+.sync .st.err{color:var(--err)}
+.sync input{flex:1 1 220px;min-width:0;font:inherit;font-size:13px;background:var(--chip);color:var(--ink);border:1px solid var(--rule);border-radius:999px;padding:7px 14px}
+.sync a{color:inherit}
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
 .stat{background:var(--mk);border:1px solid var(--rule);border-radius:10px;padding:12px 14px}
 .stat b{display:block;font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
@@ -540,13 +547,17 @@ const store = {
 // stored: a 自测 entry starts in 自测, everything else in 学习中. 已掌握 is left out of 复习.
 const STAGES = [["learn", "学习中"], ["test", "自测"], ["done", "已掌握"]];
 const STAGE_NAME = Object.fromEntries(STAGES);
-let stages = {};
+let stages = {}, stageT = {};               // stageT: when each move was made, for 同步
 try { stages = JSON.parse(store.get("vk.stage", "{}")) || {}; } catch(e){}
+try { stageT = JSON.parse(store.get("vk.stage.t", "{}")) || {}; } catch(e){}
 const stageOf = (it, level) => stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
 function setStage(it, stage){
   stages[it.anchor] = stage;
+  stageT[it.anchor] = Date.now();
   store.set("vk.stage", JSON.stringify(stages));
+  store.set("vk.stage.t", JSON.stringify(stageT));
   refreshStages();
+  syncSoon();
 }
 let stageF = store.get("vk.stagef", "");
 if (!STAGE_NAME[stageF]) stageF = "";
@@ -812,6 +823,7 @@ function recordAttempt(anchor, text, answer, via){
   if (list.length > ST_MAX) list.splice(0, list.length - ST_MAX);
   store.set("vk.selftest", JSON.stringify(stLog));
   refreshStCounts();
+  syncSoon();
 }
 function stSummary(anchor){
   const list = stLog[anchor] || [], tries = list.filter(a => a.text);
@@ -1072,15 +1084,18 @@ function renderReview(){
     (mastered ? `<p class="toast" style="margin:-6px 0 16px">已掌握 ${mastered} 条,不进复习</p>` : "") +
     `<div class="row"><button class="btn" type="button" id="rv-start"${n ? "" : " disabled"}>${n ? "开始复习 " + n + " 张" : "今天没有要复习的了"}</button>` +
     `<span class="toast">明天到期 ${tomorrow} 张</span></div>` +
+    `<div class="sync" id="sync"></div>` +
     `<p style="margin-top:28px"><button class="linkish" type="button" id="rv-reset">${resetArmed ? "确定清空全部复习记录?再点一次确认" : "重置复习进度"}</button></p>`;
   reviewEl.querySelector("#rv-start").addEventListener("click", () => {
     const p = planToday();
     session = { queue: [...p.due, ...p.fresh], index: 0, revealed: false, requeued: new Set(), done: 0, draft: "" };
     renderReview();
   });
+  paintSync();
   reviewEl.querySelector("#rv-reset").addEventListener("click", () => {
     if (!resetArmed) { resetArmed = true; renderReview(); return; }
-    resetArmed = false; rev = { cards: {}, newDay: 0, newToday: 0 }; saveRev(); renderReview();
+    // resetAt tells the other devices to drop their older cards too
+    resetArmed = false; rev = { cards: {}, newDay: 0, newToday: 0, resetAt: Date.now() }; saveRev(); syncSoon(); renderReview();
   });
 }
 
@@ -1144,14 +1159,135 @@ function grade(q){
   const s = session, t = s.queue[s.index], a = t.it.anchor, today = dayNo();
   const existing = rev.cards[a];
   const newCount = rev.newDay === today ? rev.newToday : 0;
-  rev.cards[a] = schedule(existing || { ease: 2.5, interval: 0, reps: 0, lapses: 0, due: 0 }, q, today);
+  rev.cards[a] = { ...schedule(existing || { ease: 2.5, interval: 0, reps: 0, lapses: 0, due: 0 }, q, today), t: Date.now() };
   rev.newDay = today;
   rev.newToday = existing ? newCount : newCount + 1;
   saveRev();
+  syncSoon();
   if (q === 1 && !s.requeued.has(a)) { s.queue.push(t); s.requeued.add(a); }  // 忘了 comes back once
   s.index++; s.done++; s.revealed = false; s.draft = "";
   renderReview();
   window.scrollTo(0, 0);
+}
+
+// ── 同步: progress.json on the repo's orphan `progress` branch, read and written through the
+// GitHub API with my own token — same format and merge rules as sync/ProgressSync.kt.
+// Moves, review cards and 自测 results sync; what I typed in a 自测 never leaves the device.
+const GH = "https://api.github.com/repos/chinalwb/vocab/contents/progress.json";
+const ELSEWHERE = "(在另一台设备上写的)";               // a synced 自测 attempt: result only, no text
+const ghToken = () => store.get("vk.gh", "");
+let syncState = {}, syncing = null, syncAgain = false, syncTimer = 0;
+try { syncState = JSON.parse(store.get("vk.sync", "{}")) || {}; } catch(e){}
+
+// key order doesn't matter when comparing with what's on GitHub
+const stable = v => JSON.stringify(v, (k, x) => x && typeof x === "object" && !Array.isArray(x)
+  ? Object.fromEntries(Object.keys(x).sort().map(k2 => [k2, x[k2]])) : x);
+const normProgress = r => ({ v: 1, stages: r.stages || {}, cards: r.cards || {}, newDay: r.newDay || 0,
+  newToday: r.newToday || 0, resetAt: r.resetAt || 0, attempts: r.attempts || {} });
+function progressOut(){
+  const st = {}, at = {};
+  for (const a in stages) st[a] = { s: stages[a], t: stageT[a] || 0 };
+  for (const a in stLog) at[a] = stLog[a].map(x => ({ t: x.t, ok: x.ok, peek: !x.text, via: x.via }));
+  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at });
+}
+// Newest wins per entry; a reset drops every card graded before it; 自测 attempts are a union.
+function applyRemote(r){
+  r = normProgress(r);
+  const resetAt = Math.max(rev.resetAt || 0, r.resetAt);
+  const cards = {};
+  for (const a of new Set([...Object.keys(rev.cards), ...Object.keys(r.cards)])) {
+    const l = rev.cards[a], o = r.cards[a];
+    const c = !o || (l && (l.t || 0) >= (o.t || 0)) ? l : o;
+    if ((c.t || 0) >= resetAt) cards[a] = c;
+  }
+  const day = r.newDay > rev.newDay ? r : rev.newDay > r.newDay ? rev : { newDay: rev.newDay, newToday: Math.max(rev.newToday, r.newToday) };
+  rev = { cards, newDay: day.newDay, newToday: day.newToday, resetAt };
+  saveRev();
+  for (const a in r.stages) {
+    const o = r.stages[a];
+    if (STAGE_NAME[o.s] && o.t > (stageT[a] || 0)) { stages[a] = o.s; stageT[a] = o.t; }
+  }
+  store.set("vk.stage", JSON.stringify(stages));
+  store.set("vk.stage.t", JSON.stringify(stageT));
+  for (const a in r.attempts) {
+    const list = stLog[a] || [], seen = new Set(list.map(x => x.t));
+    r.attempts[a].forEach(x => { if (!seen.has(x.t)) list.push({ t: x.t, text: x.peek ? "" : ELSEWHERE, ok: x.ok, via: x.via }); });
+    list.sort((x, y) => x.t - y.t);
+    stLog[a] = list.slice(-ST_MAX);
+  }
+  store.set("vk.selftest", JSON.stringify(stLog));
+}
+const b64 = t => btoa(unescape(encodeURIComponent(t)));
+const unb64 = t => decodeURIComponent(escape(atob(t.replace(/\s/g, ""))));
+async function gh(method, body){
+  const r = await fetch(GH + (method === "GET" ? "?ref=progress" : ""), {
+    method, cache: "no-store", body: body && JSON.stringify(body),
+    headers: { Authorization: "Bearer " + ghToken(), Accept: "application/vnd.github+json" },
+  });
+  if (r.status === 409 || r.status === 422) return null;    // someone wrote first: pull again
+  if (!r.ok) throw new Error(r.status === 401 ? "token 无效或已过期" :
+    r.status === 403 || r.status === 404 ? "token 没有 chinalwb/vocab 的读写权限" : "GitHub 返回 " + r.status);
+  return r.json();
+}
+function syncNow(){
+  if (!ghToken()) return Promise.resolve();
+  if (syncing) { syncAgain = true; return syncing; }
+  clearTimeout(syncTimer); syncTimer = 0;
+  syncState.busy = true; paintSync();
+  syncing = (async () => {
+    for (let k = 0; k < 3; k++) {
+      const got = await gh("GET");
+      const remote = JSON.parse(unb64(got.content));
+      applyRemote(remote);
+      const out = progressOut();
+      if (stable(out) === stable(normProgress(remote))) return;
+      if (await gh("PUT", { message: "sync: progress from web", branch: "progress", sha: got.sha,
+        content: b64(JSON.stringify(out, null, 1) + "\n") })) return;
+    }
+    throw new Error("连续冲突,稍后再试");
+  })().then(() => { syncState = { ok: Date.now() }; }, e => { syncState = { ok: syncState.ok, err: e.message || String(e) }; })
+    .finally(() => {
+      syncing = null;
+      store.set("vk.sync", JSON.stringify(syncState));
+      refreshStages(); refreshStCounts();
+      if (view !== "review" || !session) render();   // never yank a card I'm answering
+      if (syncAgain) { syncAgain = false; syncNow(); }
+    });
+  return syncing;
+}
+// changes are batched: one commit per burst of activity, not per tap
+function syncSoon(){ if (!ghToken()) return; clearTimeout(syncTimer); syncTimer = setTimeout(syncNow, 15000); }
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") { if (syncTimer) syncNow(); }
+  else syncNow();                                         // back on the page: pull what the app did
+});
+
+function paintSync(){
+  const el = document.getElementById("sync");
+  if (!el) return;
+  if (!ghToken()) {
+    el.innerHTML = `<h3>同步到 GitHub</h3>` +
+      `<p>进度、复习记录和自测结果存进本仓库的 <code>progress</code> 分支,网页和 App 共用一份。自测里写的句子原文不上传。` +
+      `需要一个 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a>:` +
+      `Repository access 只选 chinalwb/vocab,Permissions 里 Contents 设为 Read and write。token 只存在这个浏览器里。</p>` +
+      `<div class="row"><input type="password" id="gh-token" placeholder="github_pat_…" autocomplete="off"><button class="btn" type="button" id="gh-save">连接</button></div>`;
+    el.querySelector("#gh-save").addEventListener("click", () => {
+      const v = el.querySelector("#gh-token").value.trim();
+      if (!v) return;
+      store.set("vk.gh", v); syncState = {}; syncNow();
+    });
+    return;
+  }
+  const st = syncState.busy ? "同步中…" : syncState.err ? "同步失败:" + syncState.err
+    : syncState.ok ? "已同步 · " + fmtWhen(syncState.ok) : "还没同步过";
+  el.innerHTML = `<h3>同步到 GitHub</h3><p>chinalwb/vocab · progress 分支。改动攒 15 秒提交一次,切走页面时立即提交。</p>` +
+    `<div class="row"><span class="st${syncState.err ? " err" : ""}">${esc(st)}</span>` +
+    `<button class="btn ghost" type="button" id="gh-now"${syncState.busy ? " disabled" : ""}>立即同步</button>` +
+    `<button class="linkish" type="button" id="gh-off">断开</button></div>`;
+  el.querySelector("#gh-now").addEventListener("click", () => syncNow());
+  el.querySelector("#gh-off").addEventListener("click", () => {
+    store.set("vk.gh", ""); store.set("vk.sync", "{}"); syncState = {}; paintSync();
+  });
 }
 
 // ── 练习: a daily imitation task and a weekly paragraph. The app picks the same ones
@@ -1202,4 +1338,5 @@ function renderPractice(){
 refreshStCounts();
 refreshStages();
 render();
+syncNow();
 </script>

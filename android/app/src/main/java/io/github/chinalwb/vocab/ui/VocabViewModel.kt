@@ -38,6 +38,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     private val stageStore = (app as VocabApp).stages
     /** 进度 moves by anchor — read through stageOf(). */
     val stages = stageStore.state
+    private val progress = (app as VocabApp).progress
+    /** 同步 to GitHub: connected / last success / error. */
+    val syncStatus = progress.status
 
     val library = repo.state
     val review = reviews.state
@@ -69,6 +72,8 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             reviews.load()
             selfTestLog.load()
             stageStore.load()
+            progress.ready.complete(Unit)
+            progress.now()
             check(quiet = true)
         }
     }
@@ -107,7 +112,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun grade(g: Grade) {
         val s = _session.value ?: return
         val entry = s.current ?: return
-        viewModelScope.launch { reviews.grade(entry.anchor, g) }
+        viewModelScope.launch { reviews.grade(entry.anchor, g); progress.soon() }
         val again = g == Grade.Again && entry.anchor !in s.requeued
         _session.value = s.copy(
             queue = if (again) s.queue + entry else s.queue,
@@ -118,7 +123,11 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         )
     }
 
-    fun setStage(anchor: String, stage: Stage) = viewModelScope.launch { stageStore.set(anchor, stage) }
+    fun setStage(anchor: String, stage: Stage) = viewModelScope.launch { stageStore.set(anchor, stage); progress.soon() }
+
+    fun connectSync(token: String) = progress.connect(token)
+    fun disconnectSync() = progress.disconnect()
+    fun syncNow() = progress.now()
 
     /** 已掌握 on a review card: out of review for good, and on to the next card. */
     fun markMastered() {
@@ -138,11 +147,12 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         _session.value = null
     }
 
-    fun resetReview() = viewModelScope.launch { reviews.reset() }
+    fun resetReview() = viewModelScope.launch { reviews.reset(); progress.soon() }
 
     /** Records one reveal of a 自测 entry; ok = the words match the answer. */
     fun recordSelfTest(entry: Entry, text: String, via: String) = viewModelScope.launch {
         val t = text.trim()
         selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), t, t.isNotEmpty() && bestDiff(t, entry.selfTestAnswer).same, via))
+        progress.soon()
     }
 }
