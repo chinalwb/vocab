@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.graphics.GraphicsLayerScope
-import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -189,13 +188,8 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     // The strip behind the status bar stays solid while the clock is showing, so cards never
     // scroll up under it; it fades only once the status bar itself has gone.
     val stripAlpha by animateFloatAsState(if (statusHidden && tab == 0) 0f else 1f, tween(220), label = "strip")
-    // The bars' own content fades a little ahead of the collapse instead of being pushed off.
-    val barFade: GraphicsLayerScope.() -> Unit = {
-        val f = bars.state.collapsedFraction
-        alpha = (1 - f * 1.6f).coerceIn(0f, 1f)
-        scaleX = 1 - 0.06f * f
-        scaleY = 1 - 0.06f * f
-    }
+    // The bars' own content fades a little ahead of the collapse (no scaling) instead of being pushed off.
+    val barFade: GraphicsLayerScope.() -> Unit = { alpha = (1 - bars.state.collapsedFraction * 1.6f).coerceIn(0f, 1f) }
 
     // Background update checks notify; ask once on Android 13+.
     val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {}
@@ -219,13 +213,10 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 scrollBehavior = if (tab == 0) bars else null,
                 title = {
                     val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; 2 -> "错题本"; else -> "练习" }
-                    Text(name, fontFamily = FontFamily.Serif, modifier = Modifier.graphicsLayer {
-                        barFade()
-                        transformOrigin = TransformOrigin(0f, 0.5f)
-                    })
+                    Text(name, fontFamily = FontFamily.Serif, modifier = Modifier.graphicsLayer(barFade))
                 },
                 actions = {
-                    if (tab == 0) Row(Modifier.graphicsLayer { barFade(); transformOrigin = TransformOrigin(1f, 0.5f) }) {
+                    if (tab == 0) Row(Modifier.graphicsLayer(barFade)) {
                         // Shows the layout you'd switch to, like Keep does.
                         IconButton(onClick = vm::toggleTiles) {
                             if (tiles) Icon(Icons.AutoMirrored.Filled.List, "切换到列表视图")
