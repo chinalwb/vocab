@@ -118,6 +118,7 @@
 112. [自测:最重要的是,我们必须确保它在这台设备上不会像在模拟器上那样崩溃。](#t-not-crash-like-emulator)
 113. [factor in / factor sth in](#factor-in)
 114. [自测:如果我要向潜在投资人介绍这个想法,什么样的电梯演讲比较好?](#t-elevator-pitch)
+115. [自测:完全不要缩放,直接淡出就行。](#t-no-scale-just-fade)
 
 ---
 
@@ -3786,3 +3787,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [搭配] **demonstrating this idea** —— demonstrate 接产品或原型,介绍想法用 **pitch** → **pitching this idea to investors**。
 - ⚠️ [动词] **If I am demonstrating** —— 假设情景用 **If I were pitching …** 更自然。
 - ✅ **what would be a good brief introduction** —— 意思清楚,日常使用完全够用;更地道的说法是 **what would be a good elevator pitch**。
+
+---
+
+<a id="t-no-scale-just-fade"></a>
+## 自测:完全不要缩放,直接淡出就行。
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> Don't scale it at all — just fade it out.
+> No scaling at all — just fade it out.
+
+**要点:**
+
+- **not … at all** —— 放在否定句末尾,表示"完全不、一点都不"。
+- **scale** —— 界面动画里的"缩放"(放大缩小都算);**fade it out** —— 淡出,代词放在 fade 和 out 中间。
+- 否定两个动作用 **or**:*Don't shrink or expand it.* 用 and 会像在说"不要先缩再放"这个组合。
+
+**我的原句:**
+
+> Do not shrink and expand.
+
+- ⚠️ [逻辑] **shrink and expand** —— 否定句里连接两个动作用 **or**;而且这里实际只有缩小,说 **Don't scale it** 更准确。
+- ✅ **Do not** —— 意思清楚,日常使用完全够用;口语里 **Don't** 更自然,Do not 偏正式、语气更硬。
