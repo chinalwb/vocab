@@ -13,12 +13,15 @@ android {
         applicationId = "io.github.chinalwb.vocab"
         minSdk = 26
         targetSdk = 36
-        versionCode = 9
-        versionName = "1.8"
+        versionCode = 13
+        versionName = "1.12"
         // Where updates are fetched from. Override for local testing, e.g.
         // ./gradlew installDebug -PvocabUrl=http://localhost:8000/  (with adb reverse)
         val vocabUrl = (project.findProperty("vocabUrl") as String?) ?: "https://chinalwb.github.io/vocab/"
         buildConfigField("String", "VOCAB_URL", "\"$vocabUrl\"")
+        // 同步's GitHub contents URL; -PprogressApi=http://localhost:8766/progress.json for a local mock
+        val progressApi = (project.findProperty("progressApi") as String?) ?: "https://api.github.com/repos/chinalwb/vocab/contents/progress.json"
+        buildConfigField("String", "PROGRESS_API", "\"$progressApi\"")
     }
 
     buildTypes {

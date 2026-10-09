@@ -31,6 +31,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.review.Attempt
+import io.github.chinalwb.vocab.review.Stage
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.sp
 
 /**
  * One entry. Cross-references push another EntryScreen on the nav back stack,
@@ -45,6 +56,8 @@ fun EntryScreen(
     onSeen: (String) -> Unit,
     attempts: List<Attempt> = emptyList(),
     onAttempt: (String) -> Unit = {},
+    stage: Stage = Stage.Learn,
+    onStage: (Stage) -> Unit = {},
 ) {
     if (entry != null) LaunchedEffect(entry.anchor) { onSeen(entry.anchor) }
     Scaffold(
@@ -76,7 +89,35 @@ fun EntryScreen(
                 return@Column
             }
             EntryHeader(entry)
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(12.dp))
+            StageBar(stage, selfTest = entry.level == "SELFTEST", onStage)
+            Spacer(Modifier.height(16.dp))
+            if (entry.level != "SELFTEST" && stage == Stage.Test) {
+                // moved to 自测: asked like a review card before the notes open
+                var draft by rememberSaveable(entry.anchor, stage) { mutableStateOf("") }
+                var revealed by rememberSaveable(entry.anchor, stage) { mutableStateOf(false) }
+                if (!revealed) {
+                    ReviewFront(entry, kindOf(entry, inTest = true))
+                    Spacer(Modifier.height(16.dp))
+                    SelfTestInput(draft, { draft = it }) { revealed = true }
+                    return@Column
+                }
+                if (draft.isNotBlank()) {
+                    Text("你写的", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(
+                        draft.trim(),
+                        fontFamily = FontFamily.Serif,
+                        fontSize = 17.sp,
+                        modifier = Modifier
+                            .padding(top = 6.dp, bottom = 8.dp)
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))
+                            .padding(12.dp),
+                    )
+                }
+                Text("对照下面的笔记,自己判断写得对不对。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Spacer(Modifier.height(16.dp))
+            }
             if (entry.level == "SELFTEST") {
                 // 自测: the answer stays hidden until I've written my own attempt
                 var draft by rememberSaveable(entry.anchor) { mutableStateOf("") }
@@ -93,6 +134,28 @@ fun EntryScreen(
             }
             EntryBody(entry, onXref)
             Spacer(Modifier.height(32.dp))
+        }
+    }
+}
+
+/** 进度 and the moves out of it — the same buttons as the page's .stage row. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun StageBar(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
+    val moves = when (stage) {
+        Stage.Learn -> listOf(Stage.Test to "移到自测")
+        Stage.Test -> listOf(Stage.Done to "已掌握") + if (selfTest) emptyList() else listOf(Stage.Learn to "移回学习中")
+        Stage.Done -> listOf(Stage.Test to "移回自测")
+    }
+    androidx.compose.foundation.layout.FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.Center,
+        itemVerticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text("进度 · ${stage.label}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        moves.forEachIndexed { i, (to, label) ->
+            if (i == 0) Button(onClick = { onStage(to) }) { Text(label) }
+            else OutlinedButton(onClick = { onStage(to) }) { Text(label) }
         }
     }
 }

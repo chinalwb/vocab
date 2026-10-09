@@ -60,12 +60,21 @@ import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.data.LibraryState
 import io.github.chinalwb.vocab.review.Attempt
+import io.github.chinalwb.vocab.review.Stage
+import io.github.chinalwb.vocab.review.stageOf
 
 private const val CHANGED = "CHANGED"
 
 /** "试 N · 对 M" for 自测 entries, null for everything else. */
 private fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
     if (e.level == "SELFTEST") countsShort(this[e.anchor].orEmpty()) else null
+
+/** The card's 进度 note: nothing for where an entry starts, like the page's .stg. */
+private fun stageFoot(e: Entry, s: Stage): String? = when {
+    s == Stage.Done -> "✓ 已掌握"
+    s == Stage.Test && e.level != "SELFTEST" -> "自测中"
+    else -> null
+}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
@@ -82,7 +91,11 @@ fun BrowseScreen(
     statusBarShown: () -> Float,
     /** 自测 attempt history, shown as "试 N · 对 M" on 自测 cards. */
     selfTests: Map<String, List<Attempt>> = emptyMap(),
+    /** 进度 moves by anchor (StageStore). */
+    stages: Map<String, String> = emptyMap(),
 ) {
+    var stageF by rememberSaveable { mutableStateOf<Stage?>(null) }
+    val foot = { e: Entry -> listOfNotNull(selfTests.stFoot(e), stageFoot(e, stages.stageOf(e))).joinToString(" · ").ifEmpty { null } }
     var query by rememberSaveable { mutableStateOf("") }
     var filter by rememberSaveable { mutableStateOf<String?>(null) }
     var writeOnly by rememberSaveable { mutableStateOf(false) }
@@ -90,12 +103,13 @@ fun BrowseScreen(
     val changed = lib.newAnchors + lib.updatedAnchors
     if (filter == CHANGED && changed.isEmpty()) filter = null
 
-    val groups = remember(entries, query, filter, changed, writeOnly) {
+    val groups = remember(entries, query, filter, changed, writeOnly, stageF, stages) {
         val q = query.trim().lowercase()
         // "12" or "#12" jumps to entry #12, like the page's search
         val numQ = Regex("^#?(\\d+)$").find(q)?.groupValues?.get(1)?.toInt()
         val shown = entries.filter { e ->
-            (if (numQ != null) e.no == numQ else q.isEmpty() || q in e.searchText) && (!writeOnly || e.writes) && when (filter) {
+            (if (numQ != null) e.no == numQ else q.isEmpty() || q in e.searchText) && (!writeOnly || e.writes) &&
+                (stageF == null || stages.stageOf(e) == stageF) && when (filter) {
                 null -> true
                 CHANGED -> e.anchor in changed
                 else -> e.level == filter
@@ -144,6 +158,10 @@ fun BrowseScreen(
             }
             // narrows whichever level is picked, like the page's 只看会写
             item { FilterChip(writeOnly, { writeOnly = !writeOnly }, { Text("只看会写") }) }
+            // 进度: one at a time, a second tap clears it
+            items(Stage.entries) { s ->
+                FilterChip(stageF == s, { stageF = if (stageF == s) null else s }, { Text("${s.label} ${entries.count { stages.stageOf(it) == s }}") })
+            }
         }
     }
     val status: @Composable () -> Unit = {
@@ -192,7 +210,7 @@ fun BrowseScreen(
                 item(span = StaggeredGridItemSpan.FullLine) { filters() }
                 item(span = StaggeredGridItemSpan.FullLine) { status() }
                 gridItems(groups.flatMap { it.second }, key = { it.anchor }) { e ->
-                    EntryTile(e, badgeOf(e), selfTests.stFoot(e)) { onOpen(e.anchor) }
+                    EntryTile(e, badgeOf(e), foot(e)) { onOpen(e.anchor) }
                 }
             }
         } else {
@@ -215,7 +233,7 @@ fun BrowseScreen(
                         )
                     }
                     items(list, key = { it.anchor }) { e ->
-                        EntryCard(e, badgeOf(e), selfTests.stFoot(e)) { onOpen(e.anchor) }
+                        EntryCard(e, badgeOf(e), foot(e)) { onOpen(e.anchor) }
                         Spacer(Modifier.padding(4.dp))
                     }
                 }

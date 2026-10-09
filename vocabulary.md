@@ -117,6 +117,8 @@
 111. [自测:如果这样做,文件会有多大?](#t-file-size)
 112. [自测:最重要的是,我们必须确保它在这台设备上不会像在模拟器上那样崩溃。](#t-not-crash-like-emulator)
 113. [factor in / factor sth in](#factor-in)
+114. [自测:如果我要向潜在投资人介绍这个想法,什么样的电梯演讲比较好?](#t-elevator-pitch)
+115. [自测:完全不要缩放,直接淡出就行。](#t-no-scale-just-fade)
 
 ---
 
@@ -3757,3 +3759,57 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **factor out** —— 排除掉某个因素(数学里是"提取公因式"):*after factoring out seasonal effects*(排除季节因素之后)。
 
 这几个搭配的共同语感:**factor 是"构成结果的一个因素"**,in 是放进去,into 是影响到,out 是拿出去。
+
+---
+
+<a id="t-elevator-pitch"></a>
+## 自测:如果我要向潜在投资人介绍这个想法,什么样的电梯演讲比较好?
+
+- 日期:2026-10-08
+- 掌握:会写
+
+**答案:**
+
+> If I were pitching this idea to potential investors, what would be a good elevator pitch?
+> If I'm pitching this idea to potential investors, what would be a good elevator pitch?
+> If I were pitching this idea to potential investors, how should I introduce it in under a minute?
+
+**要点:**
+
+- **pitch an idea to investors** —— 向投资人介绍想法的固定搭配;demonstrate 接能演示的东西(a product、a prototype、a feature)。
+- **If I were pitching …** —— 假设情景用虚拟语气更自然;*If I'm pitching …* 也对,语气更随意。
+- **elevator pitch** —— 电梯演讲:30 秒到 1 分钟的简短介绍,创业圈高频词。
+
+**我的原句:**
+
+> If I am demonstrating this idea to potential investors, what would be a good brief introduction?
+
+- ⚠️ [搭配] **demonstrating this idea** —— demonstrate 接产品或原型,介绍想法用 **pitch** → **pitching this idea to investors**。
+- ⚠️ [动词] **If I am demonstrating** —— 假设情景用 **If I were pitching …** 更自然。
+- ✅ **what would be a good brief introduction** —— 意思清楚,日常使用完全够用;更地道的说法是 **what would be a good elevator pitch**。
+
+---
+
+<a id="t-no-scale-just-fade"></a>
+## 自测:完全不要缩放,直接淡出就行。
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> Don't scale it at all — just fade it out.
+> No scaling at all — just fade it out.
+
+**要点:**
+
+- **not … at all** —— 放在否定句末尾,表示"完全不、一点都不"。
+- **scale** —— 界面动画里的"缩放"(放大缩小都算);**fade it out** —— 淡出,代词放在 fade 和 out 中间。
+- 否定两个动作用 **or**:*Don't shrink or expand it.* 用 and 会像在说"不要先缩再放"这个组合。
+
+**我的原句:**
+
+> Do not shrink and expand.
+
+- ⚠️ [逻辑] **shrink and expand** —— 否定句里连接两个动作用 **or**;而且这里实际只有缩小,说 **Don't scale it** 更准确。
+- ✅ **Do not** —— 意思清楚,日常使用完全够用;口语里 **Don't** 更自然,Do not 偏正式、语气更硬。

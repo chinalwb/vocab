@@ -38,8 +38,16 @@ import io.github.chinalwb.vocab.data.LibraryState
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Grade
 import io.github.chinalwb.vocab.review.ReviewData
+import io.github.chinalwb.vocab.review.Stage
+import io.github.chinalwb.vocab.review.stageOf
 import io.github.chinalwb.vocab.review.planToday
 import io.github.chinalwb.vocab.review.today
+import io.github.chinalwb.vocab.sync.SyncStatus
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.platform.LocalUriHandler
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ReviewScreen(
@@ -55,25 +63,40 @@ fun ReviewScreen(
     modifier: Modifier = Modifier,
     selfTests: Map<String, List<Attempt>> = emptyMap(),
     onSelfTest: (Entry, String) -> Unit = { _, _ -> },
+    stages: Map<String, String> = emptyMap(),
+    onMastered: () -> Unit = {},
+    sync: SyncStatus = SyncStatus(),
+    onConnect: (String) -> Unit = {},
+    onDisconnect: () -> Unit = {},
+    onSyncNow: () -> Unit = {},
 ) {
     val current = session?.current
     when {
-        session != null && current != null -> Card(session, current, onReveal, onGrade, onEnd, onXref, modifier, selfTests[current.anchor].orEmpty(), onSelfTest)
+        session != null && current != null -> Card(
+            session, current, onReveal, onGrade, onEnd, onXref, modifier, selfTests[current.anchor].orEmpty(), onSelfTest,
+            inTest = stages.stageOf(current) == Stage.Test, onMastered = onMastered,
+        )
         session != null -> Finished(session.done, onEnd, modifier)
-        else -> Overview(lib, review, onStart, onReset, modifier)
+        else -> Overview(lib, review, stages, onStart, onReset, modifier) {
+            SyncPanel(sync, onConnect, onDisconnect, onSyncNow)
+        }
     }
 }
 
 @Composable
-private fun Overview(lib: LibraryState, review: ReviewData, onStart: () -> Unit, onReset: () -> Unit, modifier: Modifier) {
+private fun Overview(
+    lib: LibraryState, review: ReviewData, stages: Map<String, String>, onStart: () -> Unit, onReset: () -> Unit, modifier: Modifier,
+    extra: @Composable () -> Unit,
+) {
     val entries = lib.data?.entries.orEmpty()
-    val plan = planToday(entries, review)
+    val mastered = entries.count { stages.stageOf(it) == Stage.Done }
+    val plan = planToday(entries.filter { stages.stageOf(it) != Stage.Done }, review)
     val learned = entries.count { it.anchor in review.cards }
     val today = today()
     val tomorrow = entries.count { e -> review.cards[e.anchor]?.due == today + 1 }
     var confirmReset by remember { mutableStateOf(false) }
 
-    Column(modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("今天", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Stat("待复习", plan.due.size, Modifier.weight(1f))
@@ -84,13 +107,13 @@ private fun Overview(lib: LibraryState, review: ReviewData, onStart: () -> Unit,
         }
         HorizontalDivider()
         Text(
-            "已学 $learned / 共 ${entries.size} 条 · 明天到期 $tomorrow 条\n" +
+            "已学 $learned / 共 ${entries.size} 条 · 明天到期 $tomorrow 条" + (if (mastered > 0) " · 已掌握 $mastered 条不进复习" else "") + "\n" +
                 "「会写」的条目反着考:先看中文或原句,自己写出英文再对答案;「认识」的条目看英文回想意思。" +
-                "每天最多引入 10 条新条目,会写的优先。",
+                "每天最多引入 10 条新条目,会写的优先。标了「已掌握」的不再出现,在条目里点「移回自测」就会回来。",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(Modifier.weight(1f))
+        extra()
         TextButton(onClick = { confirmReset = true }, modifier = Modifier.align(Alignment.End)) { Text("重置复习进度") }
     }
     if (confirmReset) AlertDialog(
@@ -125,8 +148,10 @@ private fun Card(
     modifier: Modifier,
     attempts: List<Attempt>,
     onSelfTest: (Entry, String) -> Unit,
+    inTest: Boolean,
+    onMastered: () -> Unit,
 ) {
-    val kind = kindOf(entry)
+    val kind = kindOf(entry, inTest)
     // scratch space for the 中→英 / 先改后看 cards; only 自测 reveals are logged
     var draft by remember(session.index) { mutableStateOf("") }
     Column(modifier.fillMaxSize()) {
@@ -138,6 +163,8 @@ private fun Card(
                 drawStopIndicator = {},
             )
             Text("  ${session.index + 1} / ${session.queue.size}", style = MaterialTheme.typography.labelMedium)
+            // 斩: out of review until I move it back from the entry page
+            TextButton(onClick = onMastered) { Text("已掌握") }
             TextButton(onClick = onEnd) { Text("结束") }
         }
         Column(
@@ -146,7 +173,7 @@ private fun Card(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp, vertical = 12.dp)
         ) {
-            Front(entry, kind)
+            ReviewFront(entry, kind)
             if (kind.writes && !session.revealed) {
                 Spacer(Modifier.height(16.dp))
                 OutlinedTextField(
@@ -210,12 +237,13 @@ private fun Card(
 /** What a card asks — the same rules as kind() in template.html. */
 enum class Kind(val writes: Boolean) { SelfTest(true), Sentence(true), Translate(true), Grammar(false), Produce(true), Recognize(false) }
 
-fun kindOf(e: Entry): Kind = when {
+/** [inTest]: I moved it to 自测, so a 认识 entry is produced too. */
+fun kindOf(e: Entry, inTest: Boolean = false): Kind = when {
     e.level == "SELFTEST" -> Kind.SelfTest   // title is the Chinese prompt, the quote is the answer
     e.level == "SENTENCE" && e.originalSentence != null -> Kind.Sentence
     e.title.startsWith("翻译") -> Kind.Translate
     e.level == "GRAMMAR" -> Kind.Grammar
-    e.writes -> Kind.Produce       // 会写: 中→英
+    e.writes || inTest -> Kind.Produce   // 会写 or moved to 自测: 中→英
     else -> Kind.Recognize         // 认识: 英→中
 }
 
@@ -224,9 +252,9 @@ fun maskTitle(text: String, title: String): String =
     Regex("[A-Za-z]{3,}").findAll(title).map { it.value.lowercase() }.distinct()
         .fold(text) { t, w -> t.replace(Regex("\\b$w\\w*", RegexOption.IGNORE_CASE), "＿＿") }
 
-/** The prompt side of a card. */
+/** The prompt side of a card; an entry moved to 自测 asks the same way on its own page. */
 @Composable
-private fun Front(entry: Entry, kind: Kind) {
+fun ReviewFront(entry: Entry, kind: Kind) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Chip(levelStyle(entry.level).short, levelColor(entry.level))
         val label: @Composable (String) -> Unit = {
@@ -284,5 +312,57 @@ private fun Finished(done: Int, onEnd: () -> Unit, modifier: Modifier) {
         Text("这一轮复习了 $done 次", color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(24.dp))
         Button(onClick = onEnd) { Text("返回") }
+    }
+}
+
+private val SYNCED_AT = DateTimeFormatter.ofPattern("M/d HH:mm").withZone(ZoneId.systemDefault())
+
+/** 同步到 GitHub — the same panel as the page's #sync. The token stays on this phone. */
+@Composable
+private fun SyncPanel(sync: SyncStatus, onConnect: (String) -> Unit, onDisconnect: () -> Unit, onSyncNow: () -> Unit) {
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(12.dp))
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Text("同步到 GitHub", style = MaterialTheme.typography.titleSmall)
+        if (!sync.connected) {
+            var token by remember { mutableStateOf("") }
+            val uri = LocalUriHandler.current
+            Text(
+                "进度、复习记录和自测结果存进本仓库的 progress 分支,网页和 App 共用一份。自测里写的句子原文不上传。" +
+                    "需要一个 fine-grained token:Repository access 只选 chinalwb/vocab,Contents 设为 Read and write。token 只存在这台手机上。",
+                style = MaterialTheme.typography.bodySmall, color = muted,
+            )
+            TextButton(onClick = { uri.openUri("https://github.com/settings/personal-access-tokens/new") }, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) {
+                Text("去 GitHub 生成 token")
+            }
+            OutlinedTextField(
+                value = token, onValueChange = { token = it },
+                placeholder = { Text("github_pat_…") }, singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Button(onClick = { onConnect(token) }, enabled = token.isNotBlank()) { Text("连接") }
+        } else {
+            Text("chinalwb/vocab · progress 分支。改动攒 15 秒提交一次,离开 App 时立即提交。", style = MaterialTheme.typography.bodySmall, color = muted)
+            Text(
+                when {
+                    sync.busy -> "同步中…"
+                    sync.error != null -> "同步失败:${sync.error}"
+                    sync.ok > 0 -> "已同步 · ${SYNCED_AT.format(Instant.ofEpochMilli(sync.ok))}"
+                    else -> "还没同步过"
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (sync.error != null && !sync.busy) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                OutlinedButton(onClick = onSyncNow, enabled = !sync.busy) { Text("立即同步") }
+                TextButton(onClick = onDisconnect) { Text("断开") }
+            }
+        }
     }
 }
