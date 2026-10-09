@@ -120,6 +120,7 @@
 114. [自测:如果我要向潜在投资人介绍这个想法,什么样的电梯演讲比较好?](#t-elevator-pitch)
 115. [自测:完全不要缩放,直接淡出就行。](#t-no-scale-just-fade)
 116. [自测:如果今天就上线,之后产品团队又说 Meta Ads 还在用,回滚起来容易吗?](#t-ship-then-roll-back)
+117. [自测:这个文件为什么放在 business-lib,而不是 common-lib?](#t-live-in-module)
 
 ---
 
@@ -3840,3 +3841,28 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [结构] 一句里两个 if,读着绕 —— 合成 *If A and B, …?*
 - ⚠️ [语气] **is it easy** → **would it be easy**,假设情况用 would 更自然、更委婉。
 - ✅ **update it like this** —— 意思清楚,日常使用完全够用;**make this change** / **ship this** 更具体。
+
+<a id="t-live-in-module"></a>
+## 自测:这个文件为什么放在 business-lib,而不是 common-lib?
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> Why does this file live in business-lib rather than common-lib?
+> What's the reason for putting this in business-lib instead of common-lib?
+
+**要点:**
+
+- **live in** a module —— 工程师常说文件/类"住在"某个模块里,比 put 更像 code review 的说法。
+- **put sth in** —— 放进某处用 in,不用 to。
+- **A rather than B** / **instead of B** —— 选 A 不选 B;but not 多用于陈述句 *A, but not B*。
+
+**我的原句:**
+
+> Why do we put the file to business-lib but not common-lib?
+
+- ❌ [介词] **put the file to** → **put the file in**。
+- ⚠️ [结构] **but not common-lib** → **rather than / instead of common-lib**。
+- ✅ **Why do we put** —— 意思清楚,日常使用完全够用;问当初为什么这样放,用 **Why did we put** 更准确。
