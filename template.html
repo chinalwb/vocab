@@ -427,6 +427,22 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .st-hist .txt{font-family:Newsreader,Georgia,serif;font-size:14.5px;overflow-wrap:anywhere}
 .foot .stc{font-weight:500}
 
+/* ── 进度:学习中 → 自测 → 已掌握 ─────────── */
+.foot .stg{font-weight:700;letter-spacing:.04em}
+.pill.stg-pill{border-style:dashed}
+.pill.stg-pill[aria-pressed="true"]{border-style:solid}
+.pill .n{opacity:.6;font-variant-numeric:tabular-nums}
+.stage{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-6px 0 16px;font-size:12.5px;color:var(--card-ink-2)}
+.stage b{color:var(--card-ink)}
+.stage .btn{font-size:12.5px;padding:5px 13px}
+/* the 自测 quiz inside an entry borrows the review card's prompt styles */
+.sheet .st .lab{font-size:12px;letter-spacing:.06em;color:var(--card-ink-2);margin:0 0 6px;font-weight:500}
+.sheet .st .big{font-family:Newsreader,Georgia,"Songti SC",serif;font-weight:600;font-size:22px;line-height:1.2;margin:0 0 6px}
+.sheet .st .prompt{font-size:16px;line-height:1.6;margin:0 0 6px}
+.sheet .st .hint{font-size:13px;color:var(--card-ink-2);margin:6px 0 10px}
+.st-res .lab{font-size:12px;color:var(--card-ink-2);margin:0 0 6px}
+.st-res .mine{margin:0 0 8px;padding:9px 12px;border-radius:8px;background:var(--card-edge);font-family:Newsreader,Georgia,serif;font-size:15px;white-space:pre-wrap}
+
 @media (max-width:640px){
   .grid{columns:2 150px;column-gap:10px}
   .card{margin-bottom:10px;padding:11px 13px}
@@ -519,6 +535,22 @@ const store = {
   set(k, v){ try { localStorage.setItem(k, v); } catch(e){} },
 };
 
+// ── 进度: 学习中 → 自测 → 已掌握, like 百词斩's 斩. I move entries along with the buttons;
+// it stays in this browser (vk.stage), like the app's filesDir/stage.json. Only moves are
+// stored: a 自测 entry starts in 自测, everything else in 学习中. 已掌握 is left out of 复习.
+const STAGES = [["learn", "学习中"], ["test", "自测"], ["done", "已掌握"]];
+const STAGE_NAME = Object.fromEntries(STAGES);
+let stages = {};
+try { stages = JSON.parse(store.get("vk.stage", "{}")) || {}; } catch(e){}
+const stageOf = (it, level) => stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
+function setStage(it, stage){
+  stages[it.anchor] = stage;
+  store.set("vk.stage", JSON.stringify(stages));
+  refreshStages();
+}
+let stageF = store.get("vk.stagef", "");
+if (!STAGE_NAME[stageF]) stageF = "";
+
 let active = store.get("vk.level", "ALL");
 // the 错题本 used to be a level pill; it is a tab now
 let view = store.get("vk.view", active === "MISTAKES" ? "mistakes" : "entries");
@@ -535,7 +567,7 @@ const mk = (key, text, sw) => {
   b.addEventListener("click", () => {
     active = key;
     try { localStorage.setItem("vk.level", key); } catch(e){}
-    [...filters.children].forEach(c => c.setAttribute("aria-pressed", String(c.dataset.k === key)));
+    [...filters.children].forEach(c => { if (c.dataset.k) c.setAttribute("aria-pressed", String(c.dataset.k === key)); });
     render();
   });
   return b;
@@ -555,6 +587,20 @@ wr.addEventListener("click", () => {
   render();
 });
 filters.append(wr);
+// 进度 pills: one at a time, a second tap clears it
+STAGES.forEach(([key, text]) => {
+  const b = document.createElement("button");
+  b.className = "pill stg-pill"; b.type = "button"; b.dataset.s = key;
+  b.innerHTML = `${text} <span class="n"></span>`;
+  b.setAttribute("aria-pressed", String(stageF === key));
+  b.addEventListener("click", () => {
+    stageF = stageF === key ? "" : key;
+    store.set("vk.stagef", stageF);
+    filters.querySelectorAll("[data-s]").forEach(c => c.setAttribute("aria-pressed", String(c.dataset.s === stageF)));
+    render();
+  });
+  filters.append(b);
+});
 
 // view tabs
 const tabs = document.getElementById("tabs");
@@ -605,13 +651,14 @@ const sections = DATA.map(g => {
       (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
       `<div class="foot">` +
       `<span><span class="no">#${it.no}</span><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
-      (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}`) + `</span>` +
+      (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}`) +
+      `<span class="stg" data-anchor="${it.anchor}" data-level="${g.level}"></span></span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
       `</div>`;
     c.addEventListener("click", () => open(it, g.level, i));
     byAnchor[it.anchor] = { it, level: g.level, i };
     grid.append(c);
-    return { el: c, no: it.no, write: it.mastery === "write", hay: (it.title + " " + it.gloss + " " + it.html).toLowerCase() };
+    return { el: c, it, no: it.no, write: it.mastery === "write", hay: (it.title + " " + it.gloss + " " + it.html).toLowerCase() };
   });
   sec.append(head, grid);
   board.append(sec);
@@ -707,7 +754,8 @@ function render(){
     if (active !== "ALL" && active !== s.level) { s.el.hidden = true; return; }
     let n = 0;
     s.cards.forEach(c => {
-      const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write);
+      const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write) &&
+        (!stageF || stageOf(c.it, s.level) === stageF);
       c.el.hidden = !hit;
       if (hit) n++;
     });
@@ -791,6 +839,19 @@ function refreshStCounts(){
   });
 }
 
+// card badges, the 进度 pill counts and the tally all follow vk.stage
+function refreshStages(){
+  document.querySelectorAll(".stg[data-anchor]").forEach(el => {
+    const st = stageOf({ anchor: el.dataset.anchor }, el.dataset.level);
+    // a 自测 entry sitting in 自测 is the default — nothing to say
+    el.textContent = st === "done" ? " · ✓ 已掌握" : st === "test" && el.dataset.level !== "SELFTEST" ? " · 自测中" : "";
+  });
+  const n = { learn: 0, test: 0, done: 0 };
+  DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));
+  filters.querySelectorAll("[data-s]").forEach(b => { b.querySelector(".n").textContent = n[b.dataset.s]; });
+  document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 已掌握 " + n.done + " · 错题 " + mkTotal;
+}
+
 // modal. `trail` is the chain of notes walked through via cross-references;
 // show() only renders, so callers own the trail and it survives going back.
 let scrim = null, lastFocus = null, trail = [];
@@ -822,18 +883,35 @@ function show(it, level, i){
   const meta = ["#" + it.no, it.pos, it.ipa, it.cefr && ("CEFR " + it.cefr), it.mastery === "write" ? "会写" : "认识", it.date && ("收录 " + it.date)]
     .filter(Boolean).map(x => `<span>${x}</span>`).join("");
   const back = trail[trail.length - 1];
+  const stage = stageOf(it, level);
+  // an entry I moved to 自测 is quizzed like a review card before its notes open
+  const quiz = level !== "SELFTEST" && stage === "test";
+  const moves = {
+    learn: [["test", "移到自测", "我觉得会了,来考考我"]],
+    test: [["done", "已掌握", "不再出现在复习里"], ...(level === "SELFTEST" ? [] : [["learn", "移回学习中", ""]])],
+    done: [["test", "移回自测", "重新回到复习里"]],
+  }[stage];
   sheet.innerHTML =
     `<button class="x" type="button" aria-label="关闭">✕</button>` +
     (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
     `<h2>${it.title}</h2>` +
     (meta ? `<div class="meta">${meta}</div>` : "") +
+    `<div class="stage">进度 <b>${STAGE_NAME[stage]}</b>` +
+    moves.map(([to, label, tip], k) => `<button class="btn${k ? " ghost" : ""}" type="button" data-to="${to}"${tip ? ` title="${tip}"` : ""}>${label}</button>`).join("") +
+    `</div>` +
+    (quiz
+      ? `<div class="st">${askHtml({ it, level, i }, kind({ it, level, i }))}` +
+        `<textarea class="draft" id="st-in" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
+        `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
+        `<div class="st-res" id="st-res" hidden></div>`
+      : "") +
     (level === "SELFTEST"
       ? `<p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
         `<div class="st"><textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
         `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
         `<div class="st-res" id="st-res" hidden></div>`
       : "") +
-    `<div class="body"${level === "SELFTEST" ? " hidden" : ""}>${it.html}</div>`;
+    `<div class="body"${level === "SELFTEST" || quiz ? " hidden" : ""}>${it.html}</div>`;
   scrim._entry = { it, level, i };
   scrim.append(sheet);
   document.body.append(scrim);
@@ -845,6 +923,24 @@ function show(it, level, i){
     a.addEventListener("click", e => { e.preventDefault(); follow(t); });
   });
   if (back) sheet.querySelector(".back").addEventListener("click", goBack);
+  // moving re-renders the sheet: the quiz comes or goes with 自测
+  sheet.querySelectorAll(".stage [data-to]").forEach(b => b.addEventListener("click", () => {
+    setStage(it, b.dataset.to);
+    render();
+    show(it, level, i);
+  }));
+  if (quiz) {
+    const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
+    const reveal = () => {
+      res.innerHTML = (input.value.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(input.value.trim())}</div>` : "") +
+        `<p class="fine">对照下面的笔记,自己判断写得对不对。</p>`;
+      res.hidden = false;
+      sheet.querySelector(".st").hidden = true;
+      sheet.querySelector(".body").hidden = false;
+    };
+    sheet.querySelector("#st-show").addEventListener("click", reveal);
+    input.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) reveal(); });
+  }
 
   if (level === "SELFTEST") {
     const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
@@ -929,22 +1025,24 @@ function schedule(c, q, today){
 }
 function planToday(){
   const today = dayNo();
-  const due = ALL.filter(t => rev.cards[t.it.anchor] && rev.cards[t.it.anchor].due <= today)
+  const live = ALL.filter(t => stageOf(t.it, t.level) !== "done");   // 已掌握 never comes back on its own
+  const due = live.filter(t => rev.cards[t.it.anchor] && rev.cards[t.it.anchor].due <= today)
     .sort((a, b) => rev.cards[a.it.anchor].due - rev.cards[b.it.anchor].due);
   const quota = NEW_PER_DAY - (rev.newDay === today ? rev.newToday : 0);
   // new entries: 会写 first, then most recently 收录
-  const fresh = ALL.filter(t => !rev.cards[t.it.anchor])
+  const fresh = live.filter(t => !rev.cards[t.it.anchor])
     .sort((a, b) => (b.it.mastery === "write") - (a.it.mastery === "write") || b.it.date.replace("~", "").localeCompare(a.it.date.replace("~", "")))
     .slice(0, Math.max(0, quota));
   return { due, fresh };
 }
-// What the front of a card asks: 会写 entries are produced (中→英), 认识 entries recognised (英→中).
+// What the front of a card asks: 会写 entries — and anything I moved to 自测 — are produced
+// (中→英); the other 认识 entries are recognised (英→中).
 function kind(t){
   if (t.level === "SELFTEST") return "selftest";
   if (t.level === "SENTENCE" && t.it.original) return "sentence";
   if (t.it.title.startsWith("翻译")) return "translate";
   if (t.level === "GRAMMAR") return "grammar";
-  return t.it.mastery === "write" ? "produce" : "recognize";
+  return t.it.mastery === "write" || stageOf(t.it, t.level) === "test" ? "produce" : "recognize";
 }
 // A 中→英 prompt must not give the answer away: blank out the headword's English words.
 function maskTitle(text, title){
@@ -963,13 +1061,15 @@ function renderReview(){
   }
   const today = dayNo(), plan = planToday(), n = plan.due.length + plan.fresh.length;
   const learned = ALL.filter(t => rev.cards[t.it.anchor]).length;
+  const mastered = ALL.filter(t => stageOf(t.it, t.level) === "done").length;
   const tomorrow = ALL.filter(t => rev.cards[t.it.anchor] && rev.cards[t.it.anchor].due === today + 1).length;
   reviewEl.innerHTML =
     `<h2>今天的复习</h2>` +
-    `<p class="note">「会写」的条目反着考:先看中文或原句,自己写出英文再对答案;「认识」的条目看英文回想意思。每天最多引入 ${NEW_PER_DAY} 条新条目,会写的优先。进度只存在这个浏览器里,和手机 App 各记各的。</p>` +
+    `<p class="note">「会写」的条目反着考:先看中文或原句,自己写出英文再对答案;「认识」的条目看英文回想意思。每天最多引入 ${NEW_PER_DAY} 条新条目,会写的优先。标了「已掌握」的不再出现,在条目里点「移回自测」就会回来。进度只存在这个浏览器里,和手机 App 各记各的。</p>` +
     `<div class="stats"><div class="stat"><b>${plan.due.length}</b><span>待复习</span></div>` +
     `<div class="stat"><b>${plan.fresh.length}</b><span>新条目</span></div>` +
     `<div class="stat"><b>${learned}</b><span>已学 / ${total}</span></div></div>` +
+    (mastered ? `<p class="toast" style="margin:-6px 0 16px">已掌握 ${mastered} 条,不进复习</p>` : "") +
     `<div class="row"><button class="btn" type="button" id="rv-start"${n ? "" : " disabled"}>${n ? "开始复习 " + n + " 张" : "今天没有要复习的了"}</button>` +
     `<span class="toast">明天到期 ${tomorrow} 张</span></div>` +
     `<p style="margin-top:28px"><button class="linkish" type="button" id="rv-reset">${resetArmed ? "确定清空全部复习记录?再点一次确认" : "重置复习进度"}</button></p>`;
@@ -984,9 +1084,10 @@ function renderReview(){
   });
 }
 
-function renderCard(){
-  const s = session, t = s.queue[s.index], it = t.it, k = kind(t);
-  const ask = {
+// The prompt side of a card; the 自测 quiz in an entry asks the same way.
+function askHtml(t, k){
+  const it = t.it;
+  return {
     sentence: `<p class="lab">我的原句</p><blockquote class="prompt" style="margin:0;font-family:Newsreader,Georgia,serif;font-size:18px">${esc(it.original).replace(/\n/g, "<br>")}</blockquote><p class="hint">哪里不对、哪里不地道?先自己改一遍,再看答案。</p>`,
     selftest: `<p class="lab">自测 · 中译英</p><p class="prompt" style="font-size:19px">${esc(it.title.replace(/^自测[::]\s*/, ""))}</p><p class="hint">不看笔记,直接写出英文。</p>`,
     translate: `<p class="lab">中译英</p><p class="prompt">${esc(plainMd(it.gloss).replace(/^中译英练习[——-]*/, ""))}</p><p class="hint">先写出你的英文,再和几种译法对照。</p>`,
@@ -994,10 +1095,16 @@ function renderCard(){
     produce: `<p class="lab">写出英文${it.pos ? " · " + esc(it.pos) : ""}</p><p class="prompt">${esc(maskTitle(plainMd(it.gloss), it.title))}</p><p class="hint">想出这个英文表达,再用它造一个句子。</p>`,
     recognize: `<p class="lab">回想意思</p><p class="big">${it.title}</p>${it.ipa ? `<p class="hint">${esc(it.ipa)}</p>` : ""}<p class="hint">它是什么意思?什么语感?</p>`,
   }[k];
+}
+
+function renderCard(){
+  const s = session, t = s.queue[s.index], it = t.it, k = kind(t);
+  const ask = askHtml(t, k);
   const writes = k !== "grammar" && k !== "recognize";
   const pct = Math.round(s.index / s.queue.length * 100);
   reviewEl.innerHTML =
     `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
+    `<button class="linkish" type="button" id="rv-done" title="斩:以后不再出现在复习里">已掌握</button>` +
     `<button class="linkish" type="button" id="rv-stop">结束</button></div>` +
     `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ask}` +
     (writes && !s.revealed ? `<textarea class="draft" id="rv-draft" placeholder="在这里写你的英文(可选,不会保存)">${esc(s.draft)}</textarea>` : "") +
@@ -1014,6 +1121,12 @@ function renderCard(){
   const d = reviewEl.querySelector("#rv-draft");
   if (d) { d.addEventListener("input", () => { s.draft = d.value; }); d.focus(); }
   reviewEl.querySelector("#rv-stop").addEventListener("click", () => { session = null; renderReview(); });
+  reviewEl.querySelector("#rv-done").addEventListener("click", () => {
+    setStage(it, "done");
+    s.queue = s.queue.filter((x, j) => j <= s.index || x.it.anchor !== it.anchor);   // drop a 忘了 repeat
+    s.index++; s.done++; s.revealed = false; s.draft = "";
+    render();
+  });
   const rv = reviewEl.querySelector("#rv-reveal");
   if (rv) rv.addEventListener("click", () => {
     if (k === "selftest") recordAttempt(it.anchor, s.draft, it.answer || "", "review");
@@ -1087,5 +1200,6 @@ function renderPractice(){
 }
 
 refreshStCounts();
+refreshStages();
 render();
 </script>
