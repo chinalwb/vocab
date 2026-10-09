@@ -122,6 +122,7 @@
 116. [自测:如果今天就上线,之后产品团队又说 Meta Ads 还在用,回滚起来容易吗?](#t-ship-then-roll-back)
 117. [自测:这个文件为什么放在 business-lib,而不是 common-lib?](#t-live-in-module)
 118. [自测:加一个表格,列出所有识别出的风险和它们的当前状态,让读者一眼看清进展。](#t-at-a-glance)
+119. [自测:看起来你转去做别的事了——你还在做原来那个任务吗?](#t-still-on-track)
 
 ---
 
@@ -3893,3 +3894,28 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [结构] **a table for listing** → **a table listing / that lists**。
 - ⚠️ [逻辑] **give readers a clear report** 表达不出"一目了然" —— 用 **see … at a glance**。
 - ✅ **detected risks** —— 意思清楚,日常使用完全够用;报告里 **identified risks** 更常见。
+
+<a id="t-still-on-track"></a>
+## 自测:看起来你转去做别的事了——你还在做原来那个任务吗?
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> It looks like you've moved on to something else — can you confirm you're still on track?
+> Just checking: are you still on the original task, or have you switched to something else?
+
+**要点:**
+
+- **on track** —— 固定习语,不加 the,侧重"进度按计划走";问"还在做原来那件事"用 **still on the original task / still working on X** 更贴切。
+- **move on to / switch to** sth —— 转去做别的事;反义 **go off track** —— 跑偏。
+- 刚发生、影响现在的事用现在完成时:**you've switched**。
+
+**我的原句:**
+
+> It seems like you switched to another task. Can you confirm you are still on the track?
+
+- ❌ [冠词] **on the track** → **on track**。
+- ⚠️ [动词] **you switched** → **you've switched**。
+- ✅ **It seems like / another task** —— 意思清楚,日常使用完全够用;**It looks like / a different task** 更口语、更明确。
