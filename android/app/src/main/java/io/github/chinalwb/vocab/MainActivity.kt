@@ -17,6 +17,10 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.graphics.GraphicsLayerScope
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -79,6 +83,8 @@ import io.github.chinalwb.vocab.ui.PracticeScreen
 import io.github.chinalwb.vocab.ui.ReviewScreen
 import io.github.chinalwb.vocab.ui.VocabTheme
 import io.github.chinalwb.vocab.ui.VocabViewModel
+import io.github.chinalwb.vocab.review.Stage
+import io.github.chinalwb.vocab.review.stageOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +93,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             VocabTheme { VocabNav() }
         }
+    }
+
+    // 同步: pull what the page did when I come back, push what's waiting when I leave
+    override fun onStart() {
+        super.onStart()
+        val p = (application as VocabApp).progress
+        if (p.ready.isCompleted) p.now()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (application as VocabApp).progress.flush()
     }
 }
 
@@ -97,6 +115,7 @@ private fun VocabNav() {
     val vm: VocabViewModel = viewModel()
     val lib by vm.library.collectAsStateWithLifecycle()
     val selfTests by vm.selfTests.collectAsStateWithLifecycle()
+    val stages by vm.stages.collectAsStateWithLifecycle()
 
     // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
     // the plain fades match the container transform's length so both sides finish together.
@@ -122,6 +141,8 @@ private fun VocabNav() {
                             onSeen = vm::markSeen,
                             attempts = selfTests[anchor].orEmpty(),
                             onAttempt = { text -> if (entry != null) vm.recordSelfTest(entry, text, "entry") },
+                            stage = entry?.let { stages.stageOf(it) } ?: Stage.Learn,
+                            onStage = { vm.setStage(anchor, it) },
                         )
                     }
                 }
@@ -139,6 +160,8 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val session by vm.session.collectAsStateWithLifecycle()
     val tiles by vm.tiles.collectAsStateWithLifecycle()
     val selfTests by vm.selfTests.collectAsStateWithLifecycle()
+    val stages by vm.stages.collectAsStateWithLifecycle()
+    val sync by vm.syncStatus.collectAsStateWithLifecycle()
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val snackbar = remember { SnackbarHostState() }
 
@@ -162,6 +185,11 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
         else insets.show(WindowInsetsCompat.Type.statusBars())
     }
     DisposableEffect(Unit) { onDispose { insets.show(WindowInsetsCompat.Type.statusBars()) } }
+    // The strip behind the status bar stays solid while the clock is showing, so cards never
+    // scroll up under it; it fades only once the status bar itself has gone.
+    val stripAlpha by animateFloatAsState(if (statusHidden && tab == 0) 0f else 1f, tween(220), label = "strip")
+    // The bars' own content fades a little ahead of the collapse (no scaling) instead of being pushed off.
+    val barFade: GraphicsLayerScope.() -> Unit = { alpha = (1 - bars.state.collapsedFraction * 1.6f).coerceIn(0f, 1f) }
 
     // Background update checks notify; ask once on Android 13+.
     val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {}
@@ -172,23 +200,23 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     Scaffold(
         modifier = if (tab == 0) Modifier.nestedScroll(bars.nestedScrollConnection) else Modifier,
         topBar = {
-            // The status-bar strip is a translucent scrim, not part of the bar: as the bar
-            // collapses the scrim fades out and the list scrolls up into that space.
+            // The status-bar strip isn't part of the bar: it stays solid until the status bar
+            // hides, then fades and the list scrolls up into that space.
             // Padding ignores visibility so hiding the status bar doesn't shift the layout.
             val ground = MaterialTheme.colorScheme.background
             TopAppBar(
                 modifier = Modifier
-                    .drawBehind { drawRect(ground.copy(alpha = 0.82f * (1 - bars.state.collapsedFraction))) }
+                    .drawBehind { drawRect(ground.copy(alpha = stripAlpha)) }
                     .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility),
                 windowInsets = WindowInsets(0),
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = ground, scrolledContainerColor = ground),
                 scrollBehavior = if (tab == 0) bars else null,
                 title = {
                     val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; 2 -> "错题本"; else -> "练习" }
-                    Text(name, fontFamily = FontFamily.Serif)
+                    Text(name, fontFamily = FontFamily.Serif, modifier = Modifier.graphicsLayer(barFade))
                 },
                 actions = {
-                    if (tab == 0) {
+                    if (tab == 0) Row(Modifier.graphicsLayer(barFade)) {
                         // Shows the layout you'd switch to, like Keep does.
                         IconButton(onClick = vm::toggleTiles) {
                             if (tiles) Icon(Icons.AutoMirrored.Filled.List, "切换到列表视图")
@@ -209,11 +237,13 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                     layout(bar.width, shown) { bar.place(0, 0) }
                 }
             ) {
-                NavigationBarItem(tab == 0, { tab = 0 }, { Icon(Icons.AutoMirrored.Filled.List, null) }, label = { Text("浏览") })
+                // the bar's ground stays opaque and slides off; only its items fade, like the top bar's
+                val fade = Modifier.graphicsLayer { alpha = (1 - bars.state.collapsedFraction * 1.6f).coerceIn(0f, 1f) }
+                NavigationBarItem(tab == 0, { tab = 0 }, { Icon(Icons.AutoMirrored.Filled.List, null) }, label = { Text("浏览") }, modifier = fade)
                 // same order as the page's tabs; the indices predate 练习, so they aren't sequential
-                NavigationBarItem(tab == 2, { tab = 2 }, { Icon(Icons.Default.Warning, null) }, label = { Text("错题") })
-                NavigationBarItem(tab == 1, { tab = 1 }, { Icon(Icons.Default.Star, null) }, label = { Text("复习") })
-                NavigationBarItem(tab == 3, { tab = 3 }, { Icon(Icons.Default.Edit, null) }, label = { Text("练习") })
+                NavigationBarItem(tab == 2, { tab = 2 }, { Icon(Icons.Default.Warning, null) }, label = { Text("错题") }, modifier = fade)
+                NavigationBarItem(tab == 1, { tab = 1 }, { Icon(Icons.Default.Star, null) }, label = { Text("复习") }, modifier = fade)
+                NavigationBarItem(tab == 3, { tab = 3 }, { Icon(Icons.Default.Edit, null) }, label = { Text("练习") }, modifier = fade)
             }
         },
         snackbarHost = { SnackbarHost(snackbar) },
@@ -226,8 +256,9 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
             BrowseScreen(
                 lib, checking, { vm.check() }, open, { vm.markAllSeen() }, tiles,
                 contentPadding = pad,
-                statusBarShown = { 1 - bars.state.collapsedFraction },
+                statusBarShown = { stripAlpha },
                 selfTests = selfTests,
+                stages = stages,
             )
         } else if (tab == 2) {
             MistakesScreen(lib, onOpen = open, modifier = Modifier.padding(pad))
@@ -245,6 +276,12 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 modifier = Modifier.padding(pad).imePadding(),
                 selfTests = selfTests,
                 onSelfTest = { e, text -> vm.recordSelfTest(e, text, "review") },
+                stages = stages,
+                onMastered = vm::markMastered,
+                sync = sync,
+                onConnect = { vm.connectSync(it) },
+                onDisconnect = vm::disconnectSync,
+                onSyncNow = vm::syncNow,
             )
         }
     }

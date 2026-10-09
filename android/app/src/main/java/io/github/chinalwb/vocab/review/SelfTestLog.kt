@@ -23,7 +23,7 @@ fun List<Attempt>.summary(): AttemptSummary {
     return AttemptSummary(tries.size, tries.count { it.ok }, size - tries.size, lastOrNull())
 }
 
-private const val MAX_PER_ENTRY = 50
+const val MAX_PER_ENTRY = 50
 
 /**
  * 自测 attempt history, keyed by anchor — the same record the page keeps in localStorage
@@ -40,6 +40,14 @@ class SelfTestLog(context: Context) {
         mutex.withLock {
             _state.value = runCatching { json.decodeFromString<Map<String, List<Attempt>>>(file.readText()) }
                 .getOrDefault(emptyMap())
+        }
+    }
+
+    /** 同步: swap in the merged log. */
+    suspend fun replace(merge: (Map<String, List<Attempt>>) -> Map<String, List<Attempt>>) = withContext(Dispatchers.IO) {
+        mutex.withLock {
+            _state.value = merge(_state.value)
+            file.writeText(json.encodeToString(_state.value))
         }
     }
 
