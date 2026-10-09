@@ -121,6 +121,7 @@
 115. [自测:完全不要缩放,直接淡出就行。](#t-no-scale-just-fade)
 116. [自测:如果今天就上线,之后产品团队又说 Meta Ads 还在用,回滚起来容易吗?](#t-ship-then-roll-back)
 117. [自测:这个文件为什么放在 business-lib,而不是 common-lib?](#t-live-in-module)
+118. [自测:加一个表格,列出所有识别出的风险和它们的当前状态,让读者一眼看清进展。](#t-at-a-glance)
 
 ---
 
@@ -3866,3 +3867,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [介词] **put the file to** → **put the file in**。
 - ⚠️ [结构] **but not common-lib** → **rather than / instead of common-lib**。
 - ✅ **Why do we put** —— 意思清楚,日常使用完全够用;问当初为什么这样放,用 **Why did we put** 更准确。
+
+<a id="t-at-a-glance"></a>
+## 自测:加一个表格,列出所有识别出的风险和它们的当前状态,让读者一眼看清进展。
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> Let's add a table that lists every identified risk and its current status, so readers can see at a glance where things stand.
+> A table of all the identified risks and their status would give readers an at-a-glance view of where things stand.
+
+**要点:**
+
+- **at a glance** —— 一目了然;形容词用法 **an at-a-glance view / summary**。
+- **where things stand** —— 目前进展到哪一步,比 status 更地道。
+- **a table that lists / listing …** —— 直接修饰,不用 for listing;报告里说 **identified risks**。
+
+**我的原句:**
+
+> Lets have a table for listing all of the detected risks and their status. That will give readers a clear report.
+
+- ❌ [标点] **Lets** → **Let's**。
+- ⚠️ [结构] **a table for listing** → **a table listing / that lists**。
+- ⚠️ [逻辑] **give readers a clear report** 表达不出"一目了然" —— 用 **see … at a glance**。
+- ✅ **detected risks** —— 意思清楚,日常使用完全够用;报告里 **identified risks** 更常见。
