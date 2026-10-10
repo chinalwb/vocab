@@ -129,10 +129,7 @@ fun EntryScreen(
                         }
                     } else {
                         MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it) }
-                        androidx.compose.material3.TextButton(
-                            onClick = { tryNo = attempts.size },
-                            contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
-                        ) { Text("再试一次") }
+                        RetryButton { tryNo = attempts.size }
                         SelfTestHistory(attempts)
                     }
                 }
