@@ -79,6 +79,7 @@ fun ReviewScreen(
         session != null -> Finished(session.done, onEnd, modifier)
         else -> Overview(lib, review, stages, onStart, onReset, modifier) {
             SyncPanel(sync, onConnect, onDisconnect, onSyncNow)
+            PracticeDrawer(lib, onXref)
         }
     }
 }
@@ -125,8 +126,22 @@ private fun Overview(
     )
 }
 
+/** 练习 moved here when 自测 took its tab: folded away under the review overview. */
 @Composable
-private fun Stat(label: String, value: Int, modifier: Modifier) {
+private fun PracticeDrawer(lib: LibraryState, onOpen: (String) -> Unit) {
+    val prefs = androidx.compose.ui.platform.LocalContext.current.getSharedPreferences("practice", android.content.Context.MODE_PRIVATE)
+    var open by remember { mutableStateOf(prefs.getBoolean("open", false)) }
+    Column {
+        HorizontalDivider()
+        TextButton(onClick = { open = !open; prefs.edit().putBoolean("open", open).apply() }, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) {
+            Text((if (open) "▾ " else "▸ ") + "练习 · 今日仿写 / 本周段落", style = MaterialTheme.typography.titleSmall)
+        }
+        if (open) PracticeScreen(lib, onOpen, embedded = true)
+    }
+}
+
+@Composable
+internal fun Stat(label: String, value: Int, modifier: Modifier) {
     Column(
         modifier
             .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))

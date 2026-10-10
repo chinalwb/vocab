@@ -516,6 +516,9 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
   .rcard{padding:16px 16px}
   .grades{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+.prac{margin-top:28px;border-top:1px solid var(--rule);padding-top:14px}
+.prac>summary{cursor:pointer;font-weight:600;font-size:15px;list-style-position:outside;padding:4px 0}
+.prac[open]>summary{margin-bottom:12px}
 /* phones: the view tabs become a floating glass capsule at the bottom, like the app's */
 .tabs.float{
   position:fixed;z-index:30;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));
@@ -558,7 +561,8 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
     <div id="mboard"></div>
   </section>
   <section id="review" class="pane" hidden></section>
-  <section id="practice" class="pane" hidden></section>
+  <section id="selftest" class="pane" hidden></section>
+  <div id="practice"></div>
   <p class="empty" id="empty" hidden>没有匹配的条目。</p>
   <div class="fback" id="fback" hidden></div>
   <div class="fsheet" id="fsheet" role="dialog" aria-modal="true" aria-labelledby="fsh-t" hidden>
@@ -656,6 +660,7 @@ if (!CEFR.includes(cefrF)) cefrF = "";
 const levelShown = lv => typeF === "ALL" || typeF === lv || (typeF === "WORD" && CEFR.includes(lv) && (!cefrF || cefrF === lv));
 // the 错题本 used to be a level pill; it is a tab now
 let view = store.get("vk.view", store.get("vk.level", "") === "MISTAKES" ? "mistakes" : "entries");
+if (view === "practice") view = "review";
 let writeOnly = store.get("vk.write", "0") === "1";
 
 const pill = (text, on, click, cls = "") => {
@@ -770,7 +775,8 @@ const placeTabs = () => {
 };
 phoneMQ.addEventListener("change", placeTabs);
 placeTabs();
-const TABS = [["entries", "词条", total], ["mistakes", "错题本", mkTotal], ["review", "复习"], ["practice", "练习"]];
+// 自测 took 练习's place (used far more); 练习 lives at the bottom of 复习 now
+const TABS = [["entries", "词条", total], ["mistakes", "错题本", mkTotal], ["review", "复习"], ["selftest", "自测"]];
 TABS.forEach(([key, text, n]) => {
   const b = document.createElement("button");
   b.className = "tab"; b.type = "button"; b.dataset.k = key; b.setAttribute("role", "tab");
@@ -904,17 +910,17 @@ function render(){
   // "12" or "#12" jumps to entry #12
   const numQ = (term.match(/^#?(\d+)$/) || [])[1];
   [...tabs.children].forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === view)));
-  tools.hidden = view === "review" || view === "practice";
+  tools.hidden = view === "review" || view === "selftest";
   fbtn.hidden = fsum.hidden = view !== "entries";
   if (view !== "entries") closeFilters();
   board.hidden = view !== "entries";
   mistakesEl.hidden = view !== "mistakes";
   reviewEl.hidden = view !== "review";
-  practiceEl.hidden = view !== "practice";
+  selftestEl.hidden = view !== "selftest";
   empty.hidden = true;
   if (view === "mistakes") { empty.hidden = renderMistakes(term) > 0; return; }
   if (view === "review") { renderReview(); return; }
-  if (view === "practice") { renderPractice(); return; }
+  if (view === "selftest") { renderSelfTest(); return; }
   let shown = 0;
   // pill counts: each row counts what its pills would show with every other filter kept
   const nType = { ALL: 0, WORD: 0 }, nCefr = { "": 0 }, nStage = { learn: 0, test: 0, done: 0 };
@@ -1012,7 +1018,7 @@ function stHistoryHtml(anchor){
   if (!list.length) return "";
   return `<details class="st-hist"><summary>历史记录(${list.length})</summary><ol>` +
     list.map(a => `<li><span class="when">${fmtWhen(a.t)}</span><span>${!a.text ? "👀" : a.ok ? "✅" : "❌"}</span>` +
-      `<span class="txt">${a.text ? esc(a.text) : "(没写就看了答案)"}${a.via === "review" ? ' <span class="when">· 复习</span>' : ""}</span></li>`).join("") +
+      `<span class="txt">${a.text ? esc(a.text) : "(没写就看了答案)"}${a.via === "review" ? ' <span class="when">· 复习</span>' : a.via === "selftest" ? ' <span class="when">· 自测</span>' : ""}</span></li>`).join("") +
     `</ol></details>`;
 }
 function refreshStCounts(){
@@ -1174,6 +1180,7 @@ document.addEventListener("keydown", e => {
 // ── shared by 复习 and 练习 ──
 const reviewEl = document.getElementById("review");
 const practiceEl = document.getElementById("practice");
+const selftestEl = document.getElementById("selftest");
 const ALL = Object.values(byAnchor);                       // {it, level, i}
 const dayNo = () => { const d = new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); };
 const plainMd = t => t.replace(/\*\*(.+?)\*\*/g, "$1").replace(/`(.+?)`/g, "$1");
@@ -1255,6 +1262,7 @@ function renderReview(){
     `<div class="row"><button class="btn" type="button" id="rv-start"${n ? "" : " disabled"}>${n ? "开始复习 " + n + " 张" : "今天没有要复习的了"}</button>` +
     `<span class="toast">明天到期 ${tomorrow} 张</span></div>` +
     `<div class="sync" id="sync"></div>` +
+    `<details class="prac" id="prac"${store.get("vk.prac", "0") === "1" ? " open" : ""}><summary>练习 · 今日仿写 / 本周段落</summary></details>` +
     `<p style="margin-top:28px"><button class="linkish" type="button" id="rv-reset">${resetArmed ? "确定清空全部复习记录?再点一次确认" : "重置复习进度"}</button></p>`;
   reviewEl.querySelector("#rv-start").addEventListener("click", () => {
     const p = planToday();
@@ -1262,6 +1270,10 @@ function renderReview(){
     renderReview();
   });
   paintSync();
+  const prac = reviewEl.querySelector("#prac");
+  prac.append(practiceEl);
+  renderPractice();
+  prac.addEventListener("toggle", () => store.set("vk.prac", prac.open ? "1" : "0"));
   reviewEl.querySelector("#rv-reset").addEventListener("click", () => {
     if (!resetArmed) { resetArmed = true; renderReview(); return; }
     // resetAt tells the other devices to drop their older cards too
@@ -1460,6 +1472,92 @@ function paintSync(){
   });
 }
 
+// ── 自测 tab: everything in 自测中, one at a time. 自测题 are checked word by word against their
+// 答案 (and logged, via "selftest"); other entries I moved here are checked against their notes.
+// Never tried first, then the ones I got wrong or peeked at last time, then oldest attempt first.
+// Same order and rules as ui/SelfTestScreen.kt. ──
+let stSession = null;
+function stQueue(){
+  const rank = t => {
+    const last = stSummary(t.it.anchor).last;
+    return [!last ? 0 : !last.text || !last.ok ? 1 : 2, last ? last.t : t.it.no];
+  };
+  return ALL.filter(t => stageOf(t.it, t.level) === "test")
+    .map(t => [rank(t), t]).sort((a, b) => a[0][0] - b[0][0] || a[0][1] - b[0][1]).map(x => x[1]);
+}
+function renderSelfTest(){
+  const s = stSession;
+  if (s && s.index < s.queue.length) return renderStCard();
+  if (s) {
+    selftestEl.innerHTML = `<h2>完成 🎉</h2><p class="note">这一轮做了 ${s.done} 题` +
+      (s.checked ? `,自测题答对 ${s.ok} / ${s.checked}` : "") + (s.mastered ? `,${s.mastered} 条标了已掌握` : "") + `。</p>` +
+      `<button class="btn" type="button" id="st-end">返回</button>`;
+    selftestEl.querySelector("#st-end").addEventListener("click", () => { stSession = null; renderSelfTest(); });
+    return;
+  }
+  const q = stQueue(), never = q.filter(t => !stSummary(t.it.anchor).last).length;
+  const missed = q.filter(t => { const l = stSummary(t.it.anchor).last; return l && (!l.text || !l.ok); }).length;
+  selftestEl.innerHTML =
+    `<h2>自测</h2>` +
+    `<p class="note">「自测中」的条目都在这里,一题一题做:看中文写英文,再看答案。自测题逐词对照标准答案,其他条目对照笔记自己判断。` +
+    `做熟了点「已掌握」,它就不再出现;在条目里点「移到自测」可以加进来。没做过的和上次没做对的排在前面。</p>` +
+    `<div class="stats"><div class="stat"><b>${q.length}</b><span>自测中</span></div>` +
+    `<div class="stat"><b>${never}</b><span>没做过</span></div>` +
+    `<div class="stat"><b>${missed}</b><span>上次没对</span></div></div>` +
+    `<div class="row"><button class="btn" type="button" id="st-start"${q.length ? "" : " disabled"}>${q.length ? "开始自测 " + q.length + " 题" : "还没有自测中的条目"}</button></div>`;
+  selftestEl.querySelector("#st-start").addEventListener("click", () => {
+    stSession = { queue: stQueue(), index: 0, revealed: false, draft: "", done: 0, ok: 0, checked: 0, mastered: 0 };
+    renderSelfTest();
+  });
+}
+function renderStCard(){
+  const s = stSession, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST";
+  const pct = Math.round(s.index / s.queue.length * 100);
+  selftestEl.innerHTML =
+    `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
+    `<button class="linkish" type="button" id="st-stop">结束</button></div>` +
+    `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${askHtml(t, k)}` +
+    (exam ? `<p class="st-stats">${stStatsLine(it.anchor)}</p>` : "") +
+    (s.revealed
+      ? `<hr>` + (exam
+          ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>` + stHistoryHtml(it.anchor)
+          : (s.draft.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(s.draft)}</div>` : "") +
+            `<p class="fine">对照下面的笔记,自己判断写得对不对。</p>`) +
+        `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${it.html}</div>`
+      : `<textarea class="draft" id="st-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)">${esc(s.draft)}</textarea>`) +
+    `</div>` +
+    (s.revealed
+      ? `<div class="grades" style="grid-template-columns:1fr 1fr"><button class="btn ghost" type="button" id="st-done" title="不再出现在自测和复习里">已掌握</button>` +
+        `<button class="btn" type="button" id="st-next">${s.index + 1 < s.queue.length ? "下一题" : "完成"}</button></div>`
+      : `<button class="btn" type="button" id="st-reveal" style="width:100%">显示答案</button>`);
+  const next = () => { s.index++; s.done++; s.revealed = false; s.draft = ""; renderSelfTest(); window.scrollTo(0, 0); };
+  selftestEl.querySelector("#st-stop").addEventListener("click", () => { stSession = null; renderSelfTest(); });
+  const d = selftestEl.querySelector("#st-draft");
+  const reveal = () => {
+    if (exam) {
+      recordAttempt(it.anchor, s.draft, it.answer || "", "selftest");
+      if (s.draft.trim()) { s.checked++; if (bestDiff(s.draft, it.answer || "").same) s.ok++; }
+    }
+    s.revealed = true; renderStCard();
+  };
+  if (d) {
+    d.addEventListener("input", () => { s.draft = d.value; });
+    d.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) reveal(); });
+    d.focus();
+  }
+  const rv = selftestEl.querySelector("#st-reveal");
+  if (rv) rv.addEventListener("click", reveal);
+  const nx = selftestEl.querySelector("#st-next");
+  if (nx) { nx.addEventListener("click", next); nx.focus(); }
+  const dn = selftestEl.querySelector("#st-done");
+  if (dn) dn.addEventListener("click", () => { setStage(it, "done"); s.mastered++; next(); });
+  selftestEl.querySelectorAll(".rcard .xref").forEach(a => {
+    const x = byAnchor[a.dataset.ref];
+    if (!x) { a.dataset.missing = "1"; return; }
+    a.addEventListener("click", e => { e.preventDefault(); open(x.it, x.level, x.i); });
+  });
+}
+
 // ── 练习: a daily imitation task and a weekly paragraph. The app picks the same ones
 // (ui/PracticeScreen.kt): pool = 会写 entries that aren't 句子 / 自测, sorted by anchor. ──
 const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST")
@@ -1477,7 +1575,7 @@ function renderPractice(){
   const link = t => `<a class="xref" href="#${t.it.anchor}" data-ref="${t.it.anchor}">${t.it.title}</a>`;
   const dateStr = new Date().toLocaleDateString("zh-CN");
   practiceEl.innerHTML =
-    `<h2>练习</h2><p class="note">写完点「复制」,发到和 Claude 的对话里,按 ❌ / ⚠️ / ✅ 批改。草稿存在这个浏览器里。</p>` +
+    `<p class="note">写完点「复制」,发到和 Claude 的对话里,按 ❌ / ⚠️ / ✅ 批改。草稿存在这个浏览器里。</p>` +
     `<div class="task"><h3>今日仿写</h3><p class="meta2">${dateStr} · 每天一题,从「会写」的条目里轮换</p>` +
     `<p class="ask">${daily.level === "GRAMMAR" ? "按 " + link(daily) + " 这条规则" : "用 " + link(daily) + " 里的表达"},写 3 句关于你自己工作或生活的<b>真实</b>句子。</p>` +
     `<textarea class="draft" id="pr-d" placeholder="1. …&#10;2. …&#10;3. …">${esc(store.get(dKey, ""))}</textarea>` +

@@ -18,6 +18,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+data class TestSession(
+    val queue: List<Entry>,
+    val index: Int = 0,
+    val revealed: Boolean = false,
+    val done: Int = 0,
+    /** 自测题 answered (not peeked) this run, and how many of those matched */
+    val checked: Int = 0,
+    val ok: Int = 0,
+    val mastered: Int = 0,
+) {
+    val current get() = queue.getOrNull(index)
+}
+
 data class Session(
     val queue: List<Entry>,
     val index: Int = 0,
@@ -65,6 +78,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
 
     private val _session = MutableStateFlow<Session?>(null)
     val session = _session.asStateFlow()
+    private val _test = MutableStateFlow<TestSession?>(null)
+    /** The 自测 tab's run through everything in 自测中. */
+    val test = _test.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -148,6 +164,38 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun resetReview() = viewModelScope.launch { reviews.reset(); progress.soon() }
+
+    fun startTest() {
+        val entries = library.value.data?.entries ?: return
+        val q = testQueue(entries, stages.value, selfTests.value)
+        _test.value = if (q.isEmpty()) null else TestSession(q)
+    }
+
+    /** 显示答案 in the 自测 tab: a 自测题 is logged and checked against its 答案. */
+    fun revealTest(draft: String) {
+        val s = _test.value ?: return
+        val e = s.current ?: return
+        if (e.level == "SELFTEST") {
+            recordSelfTest(e, draft, "selftest")
+            val tried = draft.isNotBlank()
+            _test.value = s.copy(
+                revealed = true,
+                checked = s.checked + if (tried) 1 else 0,
+                ok = s.ok + if (tried && bestDiff(draft.trim(), e.selfTestAnswer).same) 1 else 0,
+            )
+        } else _test.value = s.copy(revealed = true)
+    }
+
+    /** 下一题, or 已掌握 then 下一题. */
+    fun nextTest(mastered: Boolean) {
+        val s = _test.value ?: return
+        if (mastered) s.current?.let { setStage(it.anchor, Stage.Done) }
+        _test.value = s.copy(index = s.index + 1, revealed = false, done = s.done + 1, mastered = s.mastered + if (mastered) 1 else 0)
+    }
+
+    fun endTest() {
+        _test.value = null
+    }
 
     /** Records one reveal of a 自测 entry; ok = the words match the answer. */
     fun recordSelfTest(entry: Entry, text: String, via: String) = viewModelScope.launch {
