@@ -6,6 +6,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -63,7 +66,36 @@ import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.stageOf
 
-private const val CHANGED = "CHANGED"
+private const val ALL = "ALL"
+private const val WORD = "WORD"
+private val CEFR = listOf("A1", "A2", "B1", "B2", "C1", "C2")
+private val TYPES = listOf(ALL to "全部", WORD to "单词", "TERM" to "术语", "GRAMMAR" to "语法", "SENTENCE" to "句子", "SELFTEST" to "自测题")
+
+/** A labelled, horizontally scrolling row of chips; the label keeps its own column. */
+@Composable
+private fun FilterRow(label: String, content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit) {
+    androidx.compose.foundation.layout.Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.width(40.dp))
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically, content = content)
+    }
+}
+
+@Composable
+private fun Dot(color: androidx.compose.ui.graphics.Color) {
+    Box(Modifier.size(8.dp).background(color, androidx.compose.foundation.shape.CircleShape))
+}
+
+@Composable
+private fun CheckToggle(label: String, checked: Boolean, onToggle: () -> Unit) {
+    androidx.compose.foundation.layout.Row(
+        Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onToggle).padding(end = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        androidx.compose.material3.Checkbox(checked, { onToggle() })
+        Text(label, style = MaterialTheme.typography.labelLarge)
+    }
+}
 
 /** "试 N · 对 M" for 自测 entries, null for everything else. */
 private fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
@@ -97,23 +129,26 @@ fun BrowseScreen(
     var stageF by rememberSaveable { mutableStateOf<Stage?>(null) }
     val foot = { e: Entry -> listOfNotNull(selfTests.stFoot(e), stageFoot(e, stages.stageOf(e))).joinToString(" · ").ifEmpty { null } }
     var query by rememberSaveable { mutableStateOf("") }
-    var filter by rememberSaveable { mutableStateOf<String?>(null) }
+    // 筛选, same as the page: 类型 (ALL / WORD / TERM …, with a CEFR sub-row under WORD) and
+    // 进度, each single-choice; 只看会写 and 有更新 are toggles that narrow the rest.
+    var typeF by rememberSaveable { mutableStateOf(ALL) }
+    var cefrF by rememberSaveable { mutableStateOf<String?>(null) }
     var writeOnly by rememberSaveable { mutableStateOf(false) }
+    var changedOnly by rememberSaveable { mutableStateOf(false) }
     val entries = lib.data?.entries.orEmpty()
     val changed = lib.newAnchors + lib.updatedAnchors
-    if (filter == CHANGED && changed.isEmpty()) filter = null
+    if (changedOnly && changed.isEmpty()) changedOnly = false
+    val levelShown = { lvl: String ->
+        typeF == ALL || typeF == lvl || (typeF == WORD && lvl in CEFR && (cefrF == null || cefrF == lvl))
+    }
 
-    val groups = remember(entries, query, filter, changed, writeOnly, stageF, stages) {
+    val groups = remember(entries, query, typeF, cefrF, changed, changedOnly, writeOnly, stageF, stages) {
         val q = query.trim().lowercase()
         // "12" or "#12" jumps to entry #12, like the page's search
         val numQ = Regex("^#?(\\d+)$").find(q)?.groupValues?.get(1)?.toInt()
         val shown = entries.filter { e ->
             (if (numQ != null) e.no == numQ else q.isEmpty() || q in e.searchText) && (!writeOnly || e.writes) &&
-                (stageF == null || stages.stageOf(e) == stageF) && when (filter) {
-                null -> true
-                CHANGED -> e.anchor in changed
-                else -> e.level == filter
-            }
+                (stageF == null || stages.stageOf(e) == stageF) && (!changedOnly || e.anchor in changed) && levelShown(e.level)
         }.groupBy { it.level }
         GROUP_ORDER.mapNotNull { lvl -> shown[lvl]?.let { lvl to it } }
     }
@@ -145,23 +180,34 @@ fun BrowseScreen(
     }
     val filters: @Composable () -> Unit = {
         val present = entries.map { it.level }.toSet()
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(vertical = 8.dp),
-        ) {
-            item { FilterChip(filter == null, { filter = null }, { Text("全部 ${entries.size}") }) }
-            if (changed.isNotEmpty()) item {
-                FilterChip(filter == CHANGED, { filter = if (filter == CHANGED) null else CHANGED }, { Text("有更新 ${changed.size}") })
+        val anyFilter = typeF != ALL || stageF != null || writeOnly || changedOnly
+        Column(Modifier.padding(vertical = 6.dp)) {
+            FilterRow("类型") {
+                items(TYPES.filter { (k, _) -> k == ALL || k == WORD && CEFR.any { it in present } || k in present }) { (k, label) ->
+                    FilterChip(typeF == k, { typeF = k; if (k != WORD) cefrF = null }, { Text(label) },
+                        leadingIcon = if (k in LEVELS) ({ Dot(levelColor(k)) }) else null)
+                }
             }
-            items(GROUP_ORDER.filter { it in present }) { lvl ->
-                FilterChip(filter == lvl, { filter = if (filter == lvl) null else lvl }, { Text(levelStyle(lvl).short) })
+            if (typeF == WORD) FilterRow("") {
+                item { FilterChip(cefrF == null, { cefrF = null }, { Text("全部") }) }
+                items(CEFR.filter { it in present }) { c ->
+                    FilterChip(cefrF == c, { cefrF = c }, { Text(c) }, leadingIcon = { Dot(levelColor(c)) })
+                }
             }
-            // narrows whichever level is picked, like the page's 只看会写
-            item { FilterChip(writeOnly, { writeOnly = !writeOnly }, { Text("只看会写") }) }
-            // 进度: one at a time, a second tap clears it
-            items(Stage.entries) { s ->
-                FilterChip(stageF == s, { stageF = if (stageF == s) null else s }, { Text("${s.label} ${entries.count { stages.stageOf(it) == s }}") })
+            FilterRow("进度") {
+                item { FilterChip(stageF == null, { stageF = null }, { Text("全部") }) }
+                items(Stage.entries) { s ->
+                    FilterChip(stageF == s, { stageF = s }, { Text("${s.label} ${entries.count { stages.stageOf(it) == s }}") })
+                }
+                // toggles, drawn as checkboxes so they don't read as another choice in the row
+                item { CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly } }
+                if (changed.isNotEmpty()) item { CheckToggle("有更新 ${changed.size}", changedOnly) { changedOnly = !changedOnly } }
             }
+            if (anyFilter) TextButton(
+                onClick = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false },
+                contentPadding = PaddingValues(horizontal = 8.dp),
+                modifier = Modifier.align(Alignment.End).height(32.dp),
+            ) { Text("清除筛选", style = MaterialTheme.typography.labelMedium) }
         }
     }
     val status: @Composable () -> Unit = {
