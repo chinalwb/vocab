@@ -1,5 +1,10 @@
 package io.github.chinalwb.vocab.ui
 
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -78,6 +83,10 @@ fun EntryScreen(
         Column(
             Modifier
                 .padding(pad)
+                // the keyboard takes room from the page instead of panning the whole window
+                // (which pushed the top bar under the status bar and left nothing to scroll)
+                .consumeWindowInsets(pad)
+                .imePadding()
                 .fillMaxSize()
                 .then(if (entry != null) Modifier.sharedEntryContainer(entry.anchor) else Modifier)
                 .background(MaterialTheme.colorScheme.background)
@@ -142,20 +151,36 @@ fun EntryScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun StageBar(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
+    // Where it is and what I can do are kept apart: the stepper only shows the stage, and the
+    // moves are verb-labelled outlined / text buttons, so the page's one filled button stays
+    // the real next step (显示答案). A filled "已掌握" read as a status, not an action.
     val moves = when (stage) {
         Stage.Learn -> listOf(Stage.Test to "移到自测")
-        Stage.Test -> listOf(Stage.Done to "已掌握") + if (selfTest) emptyList() else listOf(Stage.Learn to "移回学习中")
+        Stage.Test -> listOf(Stage.Done to "标为已掌握") + if (selfTest) emptyList() else listOf(Stage.Learn to "移回学习中")
         Stage.Done -> listOf(Stage.Test to "移回自测")
     }
-    androidx.compose.foundation.layout.FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.Center,
-        itemVerticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text("进度 · ${stage.label}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        moves.forEachIndexed { i, (to, label) ->
-            if (i == 0) Button(onClick = { onStage(to) }) { Text(label) }
-            else OutlinedButton(onClick = { onStage(to) }) { Text(label) }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("进度  ", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Stage.entries.forEachIndexed { i, s ->
+                if (i > 0) Text("  →  ", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.outline)
+                val here = s == stage
+                Text(
+                    s.label,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = if (here) FontWeight.SemiBold else FontWeight.Normal,
+                    color = if (here) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    modifier = if (here) Modifier
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest, RoundedCornerShape(8.dp))
+                        .padding(horizontal = 8.dp, vertical = 3.dp) else Modifier,
+                )
+            }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            moves.forEachIndexed { i, (to, label) ->
+                if (i == 0) OutlinedButton(onClick = { onStage(to) }, contentPadding = PaddingValues(horizontal = 16.dp)) { Text(label) }
+                else TextButton(onClick = { onStage(to) }) { Text(label) }
+            }
         }
     }
 }
