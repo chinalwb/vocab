@@ -72,6 +72,9 @@ import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.stageOf
 
+/** Between the card's label pills; not " · ", which "试 2 · 对 1" itself contains. */
+internal const val LABEL_SEP = "\n"
+
 private const val SORT_LEVEL = "LEVEL"
 private const val SORT_NEW = "NEW"
 private const val SORT_OLD = "OLD"
@@ -206,7 +209,7 @@ fun BrowseScreen(
     onActiveCount: (Int) -> Unit = {},
 ) {
     var stageF by rememberSaveable { mutableStateOf<Stage?>(null) }
-    val foot = { e: Entry -> listOfNotNull(selfTests.stFoot(e), stageFoot(e, stages.stageOf(e))).joinToString(" · ").ifEmpty { null } }
+    val foot = { e: Entry -> listOfNotNull(selfTests.stFoot(e), stageFoot(e, stages.stageOf(e))).joinToString(LABEL_SEP).ifEmpty { null } }
     // 排序: by level (grouped, the default) or by 收录 date, newest / oldest first, grouped by month
     var sortF by rememberSaveable { mutableStateOf(SORT_LEVEL) }
     // 筛选, same as the page: 类型 (ALL / WORD / TERM …, with a CEFR sub-row under WORD) and
@@ -490,7 +493,7 @@ private fun Labels(e: Entry, badge: String?, foot: String?, modifier: Modifier =
     val pill = if (dark) Color.White.copy(alpha = 0.1f) else Color.White.copy(alpha = 0.6f)
     FlowRow(modifier, horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         if (badge != null) Badge(badge)
-        (listOf(levelStyle(e.level).short) + foot.orEmpty().split(" · ").filter { it.isNotBlank() }).forEach {
+        (listOf(levelStyle(e.level).short) + foot.orEmpty().split(LABEL_SEP).filter { it.isNotBlank() }).forEach {
             Text(it, style = MaterialTheme.typography.labelMedium, color = LocalContentColor.current.copy(alpha = 0.8f),
                 modifier = Modifier.background(pill, RoundedCornerShape(8.dp)).padding(horizontal = 9.dp, vertical = 3.dp))
         }
@@ -556,7 +559,7 @@ internal fun EntryCard(e: Entry, badge: String?, foot: String?, shared: Boolean 
         if (sub.isNotEmpty()) Text(sub, fontSize = 14.sp, color = ink.copy(alpha = 0.7f))
         if (e.gloss.isNotEmpty()) Text(cardGloss(e.gloss), fontSize = 15.sp, lineHeight = 21.sp, color = ink.copy(alpha = 0.8f), maxLines = 3, overflow = TextOverflow.Ellipsis)
         Row(Modifier.padding(top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-            Labels(e, badge, listOfNotNull(foot, if (e.writes) "会写" else null).joinToString(" · ").ifEmpty { null }, Modifier.weight(1f))
+            Labels(e, badge, listOfNotNull(foot, if (e.writes) "会写" else null).joinToString(LABEL_SEP).ifEmpty { null }, Modifier.weight(1f))
             if (e.date.isNotEmpty()) Text(e.date, style = MaterialTheme.typography.labelSmall, color = ink.copy(alpha = 0.55f))
         }
     }
