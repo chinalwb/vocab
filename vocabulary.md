@@ -129,6 +129,7 @@
 123. [自测:每个选择都要耗我一点精力,结果事情还没开始做,人已经累了。](#t-exhausted-before-start)
 124. [自测:我得别再为小决定纠结了,不值得花这份心力。](#t-agonize-over)
 125. [agonize over sth](#agonize-over)
+126. [自测:这个任务我们完成百分之多少了?](#t-what-percentage)
 
 ---
 
@@ -4071,3 +4072,32 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **an agonizing decision / wait / choice** —— 煎熬的决定 / 等待 / 选择。
 
 **近义对比:** **go back and forth**(来回犹豫,口语,最轻)→ **overthink**(想太多)→ **agonize over**(痛苦地纠结,最重);**dither** 略带批评,"磨蹭不决",英式常用。
+
+---
+
+<a id="t-what-percentage"></a>
+## 自测:这个任务我们完成百分之多少了?
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> What percentage of this task have we completed?
+> How far along are we on this task?
+> How much of this task is done so far?
+> Roughly what percentage of the work is done?
+
+**要点:**
+
+- 问百分比用 **what percentage of** sth;**percent** 只跟在数字后面(*30 percent*),不加 s。
+- **how far along** are we (on sth) —— 问进度最常用,比问百分比更口语;加 **roughly** 更委婉。
+- 正式(邮件 / 报告 / 问 AI)用 what percentage;和同事随口聊用 how far along。
+
+**我的原句:**
+
+> How many percents have we done on this task?
+
+- ❌ [词形] **percents** → **percent**(数字后不加 s)。
+- ❌ [搭配] **How many percent** → **What percentage**。
+- ⚠️ [结构] **on this task** → **of this task**(这个任务的百分之多少)。
