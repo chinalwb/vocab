@@ -4046,9 +4046,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 日期:2026-10-10
 - 掌握:会写
 
-**English definition:** To spend a long time worrying and trying to make a decision about something.
+**English definition:** If you agonize over/about something, you spend time worrying and trying to make a decision about it.
 
-**含义:** 为某事**反复纠结、痛苦地犹豫**,多用在做决定时。比 overthink、go back and forth 程度更重,偏书面。
+**含义:** 为…伤脑筋;对…犹疑不定;因…痛苦彷徨 —— 为某事**反复纠结、痛苦地犹豫**,多用在做决定时。比 overthink、go back and forth 程度更重,偏书面。
 
 **义项一:纠结、苦恼(做决定时)**
 1. I agonized for weeks over whether to accept the offer.
