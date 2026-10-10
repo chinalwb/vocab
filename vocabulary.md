@@ -131,6 +131,7 @@
 125. [agonize over sth](#agonize-over)
 126. [自测:这个任务我们完成百分之多少了?](#t-what-percentage)
 127. [自测:把它存下来,连同其他几种说法一起。](#t-along-with-alternatives)
+128. [自测:我们重新看一下这个任务。它起因于我们在另一个 iOS App 里发现的 IDFV 问题,所以目标是查清我们的 App 是否也有同样的问题。](#t-came-out-of)
 
 ---
 
@@ -4130,3 +4131,30 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [搭配] **sayings** → **phrasings / expressions**。
 - ⚠️ [冠词] **other alternative sayings** → **the other alternatives**。
 - ✅ **together with** —— 意思清楚,日常使用完全够用;口语里 **along with** 更常见。
+
+---
+
+<a id="t-came-out-of"></a>
+## 自测:我们重新看一下这个任务。它起因于我们在另一个 iOS App 里发现的 IDFV 问题,所以目标是查清我们的 App 是否也有同样的问题。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> Let's revisit this task. It came out of the IDFV issue we found in another iOS app, so the goal is to check whether our app has the same problem.
+
+**要点:**
+
+- **come out of** sth —— 起因于某事,说一个任务的来由时很地道。
+- **be affected (by sth)** —— 受到影响;查"是否也有这个问题"也可以说 *whether our app is affected too*。
+- **check whether** —— 核查是否;**check out** 是"看看、逛逛"。App 里的问题用 **in** another app。
+
+**我的原句:**
+
+> let's revisit this task. we started it because of the IDFV issue on some other iOS app. So what we want to do is to check out if similar issues apply on our app too.
+
+- ❌ [介词] **on some other iOS app** → **in another iOS app**。
+- ⚠️ [搭配] **check out if** → **check whether**。
+- ⚠️ [搭配] **similar issues apply on** → **similar issues exist in / the app is affected**。
+- ✅ **what we want to do is to check** —— 意思清楚,日常使用完全够用;口语里常省 to,或说 **the goal is to check**。
