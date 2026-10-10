@@ -134,6 +134,7 @@
 128. [自测:我们重新看一下这个任务。它起因于我们在另一个 iOS App 里发现的 IDFV 问题,所以目标是查清我们的 App 是否也有同样的问题。](#t-came-out-of)
 129. [vice versa](#vice-versa)
 130. [自测:我们想把元信息部分和答案部分(在界面上)区分开。](#t-set-apart)
+131. [自测:我们还想让「再试一次」按钮更醒目。](#t-more-prominent)
 
 ---
 
@@ -4214,3 +4215,28 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **separate A from B** —— 把 A 和 B 分开,最直接;加 **visually** 说明是界面上的区分。
 - **set sth apart (from sth)** —— 让某部分和其他部分区分开、更显眼,偏书面。
 - **make sth stand out (from sth)** —— 让某物突出、显眼,更口语。
+
+---
+
+<a id="t-more-prominent"></a>
+## 自测:我们还想让「再试一次」按钮更醒目。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> We'd also like to make the "Try again" button more prominent.
+
+**要点:**
+
+- **make sth more prominent** —— 让某物更醒目,说 UI 时最常用;**eye-catching** 也对,但偏宣传口吻。
+- **the X button** —— 按钮名放在 button 前面:*the Submit button*、*the "Try again" button*。
+- **We'd also like to …** —— 比句首 *And we want …* 更礼貌、更书面。
+
+**我的原句:**
+
+> and we want to make the button 再试一次 more eye-catching.
+
+- ⚠️ [结构] **the button 再试一次** → **the "Try again" button**(按钮名放在 button 前)。
+- ✅ **eye-catching** —— 意思清楚,日常使用完全够用;说界面时 **more prominent** 更常见、更专业。
