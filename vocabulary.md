@@ -123,6 +123,7 @@
 117. [自测:这个文件为什么放在 business-lib,而不是 common-lib?](#t-live-in-module)
 118. [自测:加一个表格,列出所有识别出的风险和它们的当前状态,让读者一眼看清进展。](#t-at-a-glance)
 119. [自测:看起来你转去做别的事了——你还在做原来那个任务吗?](#t-still-on-track)
+120. [自测:这些链接几乎看不见——好像用错了颜色,跟背景混在一起了。](#t-wrong-color-blend)
 
 ---
 
@@ -3919,3 +3920,27 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [冠词] **on the track** → **on track**。
 - ⚠️ [动词] **you switched** → **you've switched**。
 - ✅ **It seems like / another task** —— 意思清楚,日常使用完全够用;**It looks like / a different task** 更口语、更明确。
+
+<a id="t-wrong-color-blend"></a>
+## 自测:这些链接几乎看不见——好像用错了颜色,跟背景混在一起了。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> The links are almost invisible — they seem to be rendered in the wrong color and blend into the background.
+
+**要点:**
+
+- **the wrong + 名词** —— "错误的…"固定带 the:*the wrong color / file / bus*。
+- **blend into the background** —— 和背景融为一体,描述对比度问题很常用。
+- **almost invisible / hard to see** —— 比 not visible 准确(链接还在,只是看不清)。
+
+**我的原句:**
+
+> The links are not visible. It seems like they are rendered in wrong colors.
+
+- ❌ [冠词] **in wrong colors** → **in the wrong color(s)**。
+- ⚠️ [逻辑] **not visible** = 完全看不见;颜色太淡用 **hard to see / almost invisible**。
+- ✅ **It seems like** —— 意思清楚,日常使用完全够用;报 bug 时 **It looks like** 更口语。
