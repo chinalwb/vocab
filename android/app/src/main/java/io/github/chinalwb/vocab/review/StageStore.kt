@@ -17,7 +17,7 @@ import java.io.File
 /** 进度: 学习中 → 自测 → 已掌握, like 百词斩's 斩. [key] is what stage.json / vk.stage store. */
 enum class Stage(val key: String, val label: String) {
     Learn("learn", "学习中"),
-    Test("test", "自测"),
+    Test("test", "自测中"),
     Done("done", "已掌握"),
 }
 

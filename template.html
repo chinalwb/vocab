@@ -148,7 +148,22 @@ h1{
 }
 .search::placeholder{color:var(--ink-3)}
 .search:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
-.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters{display:flex;flex-direction:column;gap:6px;flex:1 1 100%}
+.frow{display:flex;gap:6px;align-items:flex-start}
+.fp{flex:1;min-width:0;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.frow.sub .pill{padding:3px 10px;font-size:11.5px}
+.flab{flex:0 0 38px;padding-top:6px;font-size:11.5px;font-weight:600;letter-spacing:.08em;color:var(--ink-3)}
+.frow.sub .flab{visibility:hidden}
+.wr-box{
+  font:inherit;font-size:12px;font-weight:500;letter-spacing:.03em;color:var(--ink-2);
+  background:none;border:0;padding:5px 4px;margin-left:6px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.wr-box .box{width:14px;height:14px;border:1.5px solid var(--ink-3);border-radius:4px;display:inline-grid;place-items:center}
+.wr-box[aria-checked="true"] .box{background:var(--chip-on);border-color:var(--chip-on)}
+.wr-box[aria-checked="true"] .box::after{content:"";width:7px;height:4px;border:2px solid var(--chip-on-ink);border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg)}
+.wr-box:focus-visible,.fclear:focus-visible{outline:2px solid var(--ink);outline-offset:1px;border-radius:6px}
+.fclear{font:inherit;font-size:12px;color:var(--ink-3);background:none;border:0;padding:5px 4px;margin-left:auto;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .pill{
   font:inherit;font-size:12px;font-weight:500;letter-spacing:.03em;
   background:var(--chip);color:var(--ink-2);
@@ -331,7 +346,6 @@ h1{
 
 /* ── 会写 marker / filter ─────────────── */
 .foot .wr{font-weight:700;letter-spacing:.08em}
-.pill.wr-pill[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
 
 /* ── 发送前自检 ─────────────────────────── */
 .check{
@@ -436,8 +450,6 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 
 /* ── 进度:学习中 → 自测 → 已掌握 ─────────── */
 .foot .stg{font-weight:700;letter-spacing:.04em}
-.pill.stg-pill{border-style:dashed}
-.pill.stg-pill[aria-pressed="true"]{border-style:solid}
 .pill .n{opacity:.6;font-variant-numeric:tabular-nums}
 .stage{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-6px 0 16px;font-size:12.5px;color:var(--card-ink-2)}
 .stage b{color:var(--card-ink)}
@@ -505,7 +517,7 @@ const LV = {
   SENTENCE:{nm:"整句订正:我的原句 → 更地道的说法", sw:["--sn-1","--sn-2","--sn-3"]},
   SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", SELFTEST:"自测"};
+const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", SELFTEST:"自测题"};
 
 // ── theme toggle ─────────────────────────
 const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.4M12 19v2.4M21.4 12H19M5 12H2.6M18.6 5.4l-1.7 1.7M7.1 16.9l-1.7 1.7M18.6 18.6l-1.7-1.7M7.1 7.1L5.4 5.4"/></svg>';
@@ -545,7 +557,7 @@ const store = {
 // ── 进度: 学习中 → 自测 → 已掌握, like 百词斩's 斩. I move entries along with the buttons;
 // it stays in this browser (vk.stage), like the app's filesDir/stage.json. Only moves are
 // stored: a 自测 entry starts in 自测, everything else in 学习中. 已掌握 is left out of 复习.
-const STAGES = [["learn", "学习中"], ["test", "自测"], ["done", "已掌握"]];
+const STAGES = [["learn", "学习中"], ["test", "自测中"], ["done", "已掌握"]];
 const STAGE_NAME = Object.fromEntries(STAGES);
 let stages = {}, stageT = {};               // stageT: when each move was made, for 同步
 try { stages = JSON.parse(store.get("vk.stage", "{}")) || {}; } catch(e){}
@@ -562,56 +574,82 @@ function setStage(it, stage){
 let stageF = store.get("vk.stagef", "");
 if (!STAGE_NAME[stageF]) stageF = "";
 
-let active = store.get("vk.level", "ALL");
+// 筛选: two labelled rows — 类型 (with a CEFR sub-row under 单词) and 进度 + 只看会写.
+// Each row is single-choice and starts at 全部; the rows narrow each other.
+const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
+const TYPES = [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"], ["SELFTEST", "自测题"]];
+let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
+if (typeF === null) {                       // from the old single row (vk.level)
+  const old = store.get("vk.level", "ALL");
+  typeF = CEFR.includes(old) ? "WORD" : TYPES.some(t => t[0] === old) ? old : "ALL";
+  cefrF = CEFR.includes(old) ? old : "";
+}
+if (!TYPES.some(t => t[0] === typeF)) typeF = "ALL";
+if (!CEFR.includes(cefrF)) cefrF = "";
+const levelShown = lv => typeF === "ALL" || typeF === lv || (typeF === "WORD" && CEFR.includes(lv) && (!cefrF || cefrF === lv));
 // the 错题本 used to be a level pill; it is a tab now
-let view = store.get("vk.view", active === "MISTAKES" ? "mistakes" : "entries");
-if (active === "MISTAKES") active = "ALL";
+let view = store.get("vk.view", store.get("vk.level", "") === "MISTAKES" ? "mistakes" : "entries");
 let writeOnly = store.get("vk.write", "0") === "1";
 
-// filter pills
-const mk = (key, text, sw) => {
+const pill = (text, on, click, cls = "") => {
   const b = document.createElement("button");
-  b.className = "pill"; b.type = "button"; b.dataset.k = key;
-  b.setAttribute("aria-pressed", String(active === key));
-  if (sw) { b.style.setProperty("--sw", `var(${sw})`); b.innerHTML = '<span class="dot"></span>'; }
-  b.append(text);
-  b.addEventListener("click", () => {
-    active = key;
-    try { localStorage.setItem("vk.level", key); } catch(e){}
-    [...filters.children].forEach(c => { if (c.dataset.k) c.setAttribute("aria-pressed", String(c.dataset.k === key)); });
-    render();
-  });
+  b.className = "pill " + cls; b.type = "button";
+  b.setAttribute("aria-pressed", String(on));
+  b.innerHTML = text;
+  b.addEventListener("click", click);
   return b;
 };
-filters.append(mk("ALL", "全部"));
-DATA.forEach(g => filters.append(mk(g.level, LABEL[g.level] || g.level, LV[g.level].sw[0])));
-// 会写 is a toggle that narrows whichever level is picked
+const row = (label, cls = "") => {
+  const r = document.createElement("div");
+  r.className = "frow " + cls;
+  r.innerHTML = `<span class="flab">${label}</span><div class="fp"></div>`;
+  filters.append(r);
+  return r.lastChild;                       // the pills go in here; the label keeps its own column
+};
+const typeRow = row("类型"), cefrRow = row("级别", "sub"), stageRow = row("进度");
+const clearBtn = document.createElement("button");
+clearBtn.className = "fclear"; clearBtn.type = "button"; clearBtn.textContent = "清除筛选";
+clearBtn.addEventListener("click", () => { typeF = "ALL"; cefrF = ""; stageF = ""; writeOnly = false; saveFilters(); });
+
+function saveFilters(){
+  store.set("vk.type", typeF); store.set("vk.cefr", cefrF);
+  store.set("vk.stagef", stageF); store.set("vk.write", writeOnly ? "1" : "0");
+  paintFilters(); render();
+}
+function paintFilters(){
+  typeRow.querySelectorAll(".pill").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.t === typeF)));
+  cefrRow.parentNode.hidden = typeF !== "WORD";
+  cefrRow.querySelectorAll(".pill").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.c === cefrF)));
+  stageRow.querySelectorAll("[data-s]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === stageF)));
+  wr.setAttribute("aria-checked", String(writeOnly));
+  clearBtn.hidden = typeF === "ALL" && !stageF && !writeOnly;
+}
+TYPES.forEach(([key, text]) => {
+  const sw = LV[key] && LV[key].sw[0];
+  const b = pill((sw ? `<span class="dot" style="--sw:var(${sw})"></span>` : "") + text, false,
+    () => { typeF = key; if (key !== "WORD") cefrF = ""; saveFilters(); });
+  b.dataset.t = key;
+  typeRow.append(b);
+});
+[["", "全部"], ...CEFR.map(c => [c, c])].forEach(([key, text]) => {
+  const b = pill((key ? `<span class="dot" style="--sw:var(${LV[key].sw[0]})"></span>` : "") + text, false,
+    () => { cefrF = key; saveFilters(); });
+  b.dataset.c = key;
+  cefrRow.append(b);
+});
+[["", "全部"], ...STAGES].forEach(([key, text]) => {
+  const b = pill(key ? `${text} <span class="n"></span>` : text, false, () => { stageF = key; saveFilters(); });
+  b.dataset.s = key;
+  stageRow.append(b);
+});
+// 会写 narrows whatever else is picked, so it looks like a checkbox, not another choice
 const wr = document.createElement("button");
-wr.className = "pill wr-pill"; wr.type = "button";
+wr.className = "wr-box"; wr.type = "button"; wr.setAttribute("role", "checkbox");
 wr.title = "只看标了「会写」的条目:这些要练到能自己写出来";
-wr.textContent = "只看会写";
-wr.setAttribute("aria-pressed", String(writeOnly));
-wr.addEventListener("click", () => {
-  writeOnly = !writeOnly;
-  store.set("vk.write", writeOnly ? "1" : "0");
-  wr.setAttribute("aria-pressed", String(writeOnly));
-  render();
-});
-filters.append(wr);
-// 进度 pills: one at a time, a second tap clears it
-STAGES.forEach(([key, text]) => {
-  const b = document.createElement("button");
-  b.className = "pill stg-pill"; b.type = "button"; b.dataset.s = key;
-  b.innerHTML = `${text} <span class="n"></span>`;
-  b.setAttribute("aria-pressed", String(stageF === key));
-  b.addEventListener("click", () => {
-    stageF = stageF === key ? "" : key;
-    store.set("vk.stagef", stageF);
-    filters.querySelectorAll("[data-s]").forEach(c => c.setAttribute("aria-pressed", String(c.dataset.s === stageF)));
-    render();
-  });
-  filters.append(b);
-});
+wr.innerHTML = '<span class="box" aria-hidden="true"></span>只看会写';
+wr.addEventListener("click", () => { writeOnly = !writeOnly; saveFilters(); });
+stageRow.append(wr, clearBtn);
+paintFilters();
 
 // view tabs
 const tabs = document.getElementById("tabs");
@@ -762,7 +800,7 @@ function render(){
   if (view === "practice") { renderPractice(); return; }
   let shown = 0;
   sections.forEach(s => {
-    if (active !== "ALL" && active !== s.level) { s.el.hidden = true; return; }
+    if (!levelShown(s.level)) { s.el.hidden = true; return; }
     let n = 0;
     s.cards.forEach(c => {
       const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write) &&
@@ -860,7 +898,7 @@ function refreshStages(){
   });
   const n = { learn: 0, test: 0, done: 0 };
   DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));
-  filters.querySelectorAll("[data-s]").forEach(b => { b.querySelector(".n").textContent = n[b.dataset.s]; });
+  filters.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = n[el.parentNode.dataset.s]; });
   document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 已掌握 " + n.done + " · 错题 " + mkTotal;
 }
 
