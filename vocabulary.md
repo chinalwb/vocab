@@ -136,6 +136,7 @@
 130. [自测:我们想把元信息部分和答案部分(在界面上)区分开。](#t-set-apart)
 131. [自测:我们还想让「再试一次」按钮更醒目。](#t-more-prominent)
 132. [自测:你觉得如果我把这里的词汇一条条都练完,这个 App 真能提高我的写作吗?](#t-work-through)
+133. [自测:不试一试,你永远不知道自己能走多远。就算 Opus 说你做不到,也值得一试。](#t-worth-a-shot)
 
 ---
 
@@ -4267,3 +4268,30 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [词形] **vocabs** → **vocabulary**。
 - ⚠️ [搭配] **get better writing skills** → **improve my writing / write better**。
 - ✅ **keep working to master** —— 意思清楚,日常使用完全够用;**keep working through** 更自然。
+
+---
+
+<a id="t-worth-a-shot"></a>
+## 自测:不试一试,你永远不知道自己能走多远。就算 Opus 说你做不到,也值得一试。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> You never know how far you can go until you try. Even if Opus says you can't, it's still worth a shot.
+> There's no way to know how far you can get unless you give it a go yourself — even if Opus says otherwise, it's worth a try.
+
+**要点:**
+
+- **it's worth a try / a shot** —— 值得一试;worth 前面要有 be 动词,不加 s。
+- **even if** —— 让步"即使……也……";只用 even 连不起两个分句。
+- **you never know until you try** —— 不试永远不知道;**give it a go** —— 试一试。
+
+**我的原句:**
+
+> BTW, you never know how far you can get without doing it yourself. Even Opus says you can't, it worths a try anyway.
+
+- ❌ [词形] **it worths** → **it's worth**。
+- ❌ [结构] **Even Opus says you can't** → **Even if Opus says you can't**。
+- ⚠️ [逻辑] **without doing it yourself** 反着说有点绕 → **until you try**。
