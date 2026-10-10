@@ -119,6 +119,16 @@
 113. [factor in / factor sth in](#factor-in)
 114. [自测:如果我要向潜在投资人介绍这个想法,什么样的电梯演讲比较好?](#t-elevator-pitch)
 115. [自测:完全不要缩放,直接淡出就行。](#t-no-scale-just-fade)
+116. [自测:如果今天就上线,之后产品团队又说 Meta Ads 还在用,回滚起来容易吗?](#t-ship-then-roll-back)
+117. [自测:这个文件为什么放在 business-lib,而不是 common-lib?](#t-live-in-module)
+118. [自测:加一个表格,列出所有识别出的风险和它们的当前状态,让读者一眼看清进展。](#t-at-a-glance)
+119. [自测:看起来你转去做别的事了——你还在做原来那个任务吗?](#t-still-on-track)
+120. [自测:这些链接几乎看不见——好像用错了颜色,跟背景混在一起了。](#t-wrong-color-blend)
+121. [自测:每个选择都会消耗一点心力。](#t-every-choice-energy)
+122. [自测:我连小事都会想太多,最后弄得自己很心累。](#t-overthink-drained)
+123. [自测:每个选择都要耗我一点精力,结果事情还没开始做,人已经累了。](#t-exhausted-before-start)
+124. [自测:我得别再为小决定纠结了,不值得花这份心力。](#t-agonize-over)
+125. [agonize over sth](#agonize-over)
 
 ---
 
@@ -3813,3 +3823,251 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ⚠️ [逻辑] **shrink and expand** —— 否定句里连接两个动作用 **or**;而且这里实际只有缩小,说 **Don't scale it** 更准确。
 - ✅ **Do not** —— 意思清楚,日常使用完全够用;口语里 **Don't** 更自然,Do not 偏正式、语气更硬。
+
+---
+
+<a id="t-ship-then-roll-back"></a>
+## 自测:如果今天就上线,之后产品团队又说 Meta Ads 还在用,回滚起来容易吗?
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> If we ship this today and the product team later tells us Meta Ads is still in use, how easy would it be to roll back?
+> If we make this change today, would it be easy to roll back if the product team says Meta Ads is still in use?
+
+**要点:**
+
+- 用 **If A and B, how easy would it be to …?** 把两个条件并进一个 if,避免一句两个 if。
+- **ship this** / **make this change** —— 比 update it like this 更具体;**roll back** —— 撤回改动,比 revert 更通用。
+- 假设的事用 **would it be**;**still in use** —— 仍在使用;产品名 **Meta Ads** 不加 the,**the product team** 要加。
+
+**我的原句:**
+
+> if we update it like this today, is it easy to revert if product team says the Meta Ads is in use?
+
+- ❌ [冠词] **product team** → **the product team**;**the Meta Ads** → **Meta Ads**(产品名不加 the)。
+- ⚠️ [结构] 一句里两个 if,读着绕 —— 合成 *If A and B, …?*
+- ⚠️ [语气] **is it easy** → **would it be easy**,假设情况用 would 更自然、更委婉。
+- ✅ **update it like this** —— 意思清楚,日常使用完全够用;**make this change** / **ship this** 更具体。
+
+---
+
+<a id="t-live-in-module"></a>
+## 自测:这个文件为什么放在 business-lib,而不是 common-lib?
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> Why does this file live in business-lib rather than common-lib?
+> What's the reason for putting this in business-lib instead of common-lib?
+
+**要点:**
+
+- **live in** a module —— 工程师常说文件/类"住在"某个模块里,比 put 更像 code review 的说法。
+- **put sth in** —— 放进某处用 in,不用 to。
+- **A rather than B** / **instead of B** —— 选 A 不选 B;but not 多用于陈述句 *A, but not B*。
+
+**我的原句:**
+
+> Why do we put the file to business-lib but not common-lib?
+
+- ❌ [介词] **put the file to** → **put the file in**。
+- ⚠️ [结构] **but not common-lib** → **rather than / instead of common-lib**。
+- ✅ **Why do we put** —— 意思清楚,日常使用完全够用;问当初为什么这样放,用 **Why did we put** 更准确。
+
+---
+
+<a id="t-at-a-glance"></a>
+## 自测:加一个表格,列出所有识别出的风险和它们的当前状态,让读者一眼看清进展。
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> Let's add a table that lists every identified risk and its current status, so readers can see at a glance where things stand.
+> A table of all the identified risks and their status would give readers an at-a-glance view of where things stand.
+
+**要点:**
+
+- **at a glance** —— 一目了然;形容词用法 **an at-a-glance view / summary**。
+- **where things stand** —— 目前进展到哪一步,比 status 更地道。
+- **a table that lists / listing …** —— 直接修饰,不用 for listing;报告里说 **identified risks**。
+
+**我的原句:**
+
+> Lets have a table for listing all of the detected risks and their status. That will give readers a clear report.
+
+- ❌ [标点] **Lets** → **Let's**。
+- ⚠️ [结构] **a table for listing** → **a table listing / that lists**。
+- ⚠️ [逻辑] **give readers a clear report** 表达不出"一目了然" —— 用 **see … at a glance**。
+- ✅ **detected risks** —— 意思清楚,日常使用完全够用;报告里 **identified risks** 更常见。
+
+---
+
+<a id="t-still-on-track"></a>
+## 自测:看起来你转去做别的事了——你还在做原来那个任务吗?
+
+- 日期:2026-10-09
+- 掌握:会写
+
+**答案:**
+
+> It looks like you've moved on to something else — can you confirm you're still on track?
+> Just checking: are you still on the original task, or have you switched to something else?
+
+**要点:**
+
+- **on track** —— 固定习语,不加 the,侧重"进度按计划走";问"还在做原来那件事"用 **still on the original task / still working on X** 更贴切。
+- **move on to / switch to** sth —— 转去做别的事;反义 **go off track** —— 跑偏。
+- 刚发生、影响现在的事用现在完成时:**you've switched**。
+
+**我的原句:**
+
+> It seems like you switched to another task. Can you confirm you are still on the track?
+
+- ❌ [冠词] **on the track** → **on track**。
+- ⚠️ [动词] **you switched** → **you've switched**。
+- ✅ **It seems like / another task** —— 意思清楚,日常使用完全够用;**It looks like / a different task** 更口语、更明确。
+
+---
+
+<a id="t-wrong-color-blend"></a>
+## 自测:这些链接几乎看不见——好像用错了颜色,跟背景混在一起了。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> The links are almost invisible — they seem to be rendered in the wrong color and blend into the background.
+
+**要点:**
+
+- **the wrong + 名词** —— "错误的…"固定带 the:*the wrong color / file / bus*。
+- **blend into the background** —— 和背景融为一体,描述对比度问题很常用。
+- **almost invisible / hard to see** —— 比 not visible 准确(链接还在,只是看不清)。
+
+**我的原句:**
+
+> The links are not visible. It seems like they are rendered in wrong colors.
+
+- ❌ [冠词] **in wrong colors** → **in the wrong color(s)**。
+- ⚠️ [逻辑] **not visible** = 完全看不见;颜色太淡用 **hard to see / almost invisible**。
+- ✅ **It seems like** —— 意思清楚,日常使用完全够用;报 bug 时 **It looks like** 更口语。
+
+---
+
+<a id="t-every-choice-energy"></a>
+## 自测:每个选择都会消耗一点心力。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> Every choice takes a tiny bit of mental power.
+> Every decision takes a little mental energy.
+
+**要点:**
+
+- 骨架 **Every X takes a (tiny) bit of Y.** —— 每个 X 都要耗一点 Y;Y 可换 energy / willpower / focus。
+- 锚点词 **decision fatigue** —— 决策疲劳。
+- 不必逐字背,写出意思对的一句就算会。
+
+
+---
+
+<a id="t-overthink-drained"></a>
+## 自测:我连小事都会想太多,最后弄得自己很心累。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> I tend to overthink even small decisions, and it leaves me mentally drained.
+
+**要点:**
+
+- **overthink** sth —— 想太多;**even small decisions** —— even 放在被强调的词前。
+- **leave sb + 形容词** —— 使某人处于某种状态:*leaves me mentally drained*。
+- **心累** → **mentally drained / mentally exhausted**。
+
+
+---
+
+<a id="t-exhausted-before-start"></a>
+## 自测:每个选择都要耗我一点精力,结果事情还没开始做,人已经累了。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> Every choice costs me a bit of energy, so I'm exhausted before I've actually done anything.
+
+**要点:**
+
+- **cost sb sth** —— 让某人付出(精力、时间):*costs me a bit of energy*。
+- **before I've (actually) done anything** —— before 后用现在完成时,强调"还一件事都没做成"。
+- **犹豫不决** → **be indecisive / go back and forth (on sth)**。
+
+
+---
+
+<a id="t-agonize-over"></a>
+## 自测:我得别再为小决定纠结了,不值得花这份心力。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> I need to stop agonizing over small decisions — they're not worth the mental energy.
+
+**要点:**
+
+- **agonize over** sth —— 为某事纠结、苦恼;**stop doing** —— 停止做(不是 stop to do)。
+- **not worth the mental energy** —— 不值得花这份心力;**worth + 名词**,不加 of。
+
+---
+
+<a id="agonize-over"></a>
+## agonize over sth
+
+- 音标:/ˈæɡ.ə.naɪz/(英式拼写 agonise)
+- 词性:v.(常接 over / about)
+- CEFR:C1–C2(名词 agony 约 B2–C1)
+- 日期:2026-10-10
+- 掌握:会写
+
+**English definition:** If you agonize over/about something, you spend time worrying and trying to make a decision about it.
+
+**含义:** 为…伤脑筋;对…犹疑不定;因…痛苦彷徨 —— 为某事**反复纠结、痛苦地犹豫**,多用在做决定时。比 overthink、go back and forth 程度更重,偏书面。
+
+**义项一:纠结、苦恼(做决定时)**
+1. I agonized for weeks over whether to accept the offer.
+   要不要接受那个 offer,我纠结了好几个星期。
+2. Don't agonize over the wording — just send it.
+   别在措辞上纠结了,直接发吧。
+3. She agonized for days about whether she should take the job.
+   几天来她为是否该接受这份工作大伤脑筋。
+   (for days 紧跟 agonized;放句末会被读成 take the job for days —— 去做几天这份工作。accept the offer 这种瞬间动作就没有这个歧义。)
+
+**义项二:agonizing(形容词)—— 令人痛苦、煎熬的**
+1. It was an agonizing decision.
+   那是个让人很煎熬的决定。
+2. There was an agonizing wait for the test results.
+   等检查结果的过程很煎熬。
+
+**常见搭配:**
+
+- **agonize over / about** sth —— 为某事纠结(over 更常用);**agonize over whether / how to** do sth。
+- **an agonizing decision / wait / choice** —— 煎熬的决定 / 等待 / 选择。
+
+**近义对比:** **go back and forth**(来回犹豫,口语,最轻)→ **overthink**(想太多)→ **agonize over**(痛苦地纠结,最重);**dither** 略带批评,"磨蹭不决",英式常用。
