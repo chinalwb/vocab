@@ -142,15 +142,33 @@ fun BrowseScreen(
         typeF == ALL || typeF == lvl || (typeF == WORD && lvl in CEFR && (cefrF == null || cefrF == lvl))
     }
 
-    val groups = remember(entries, query, typeF, cefrF, changed, changedOnly, writeOnly, stageF, stages) {
+    // what the search and the toggles leave; the chip rows and the list narrow it further
+    val base = remember(entries, query, changed, changedOnly, writeOnly) {
         val q = query.trim().lowercase()
         // "12" or "#12" jumps to entry #12, like the page's search
         val numQ = Regex("^#?(\\d+)$").find(q)?.groupValues?.get(1)?.toInt()
-        val shown = entries.filter { e ->
+        entries.filter { e ->
             (if (numQ != null) e.no == numQ else q.isEmpty() || q in e.searchText) && (!writeOnly || e.writes) &&
-                (stageF == null || stages.stageOf(e) == stageF) && (!changedOnly || e.anchor in changed) && levelShown(e.level)
-        }.groupBy { it.level }
+                (!changedOnly || e.anchor in changed)
+        }
+    }
+    val groups = remember(base, typeF, cefrF, stageF, stages) {
+        val shown = base.filter { e -> (stageF == null || stages.stageOf(e) == stageF) && levelShown(e.level) }.groupBy { it.level }
         GROUP_ORDER.mapNotNull { lvl -> shown[lvl]?.let { lvl to it } }
+    }
+    // chip counts: each row counts what its chips would show with every other filter kept, like the page
+    val levelCounts = remember(base, stageF, stages) {
+        base.filter { stageF == null || stages.stageOf(it) == stageF }.groupingBy { it.level }.eachCount()
+    }
+    val stageCounts = remember(base, typeF, cefrF, stages) {
+        base.filter { levelShown(it.level) }.groupingBy { stages.stageOf(it) }.eachCount()
+    }
+    val typeCount = { k: String ->
+        when (k) {
+            ALL -> levelCounts.values.sum()
+            WORD -> CEFR.sumOf { levelCounts[it] ?: 0 }
+            else -> levelCounts[k] ?: 0
+        }
     }
 
     if (lib.data == null && lib.loadError == null) {
@@ -184,20 +202,20 @@ fun BrowseScreen(
         Column(Modifier.padding(vertical = 6.dp)) {
             FilterRow("类型") {
                 items(TYPES.filter { (k, _) -> k == ALL || k == WORD && CEFR.any { it in present } || k in present }) { (k, label) ->
-                    FilterChip(typeF == k, { typeF = k; if (k != WORD) cefrF = null }, { Text(label) },
+                    FilterChip(typeF == k, { typeF = k; if (k != WORD) cefrF = null }, { Text("$label ${typeCount(k)}") },
                         leadingIcon = if (k in LEVELS) ({ Dot(levelColor(k)) }) else null)
                 }
             }
             if (typeF == WORD) FilterRow("") {
-                item { FilterChip(cefrF == null, { cefrF = null }, { Text("全部") }) }
+                item { FilterChip(cefrF == null, { cefrF = null }, { Text("全部 ${typeCount(WORD)}") }) }
                 items(CEFR.filter { it in present }) { c ->
-                    FilterChip(cefrF == c, { cefrF = c }, { Text(c) }, leadingIcon = { Dot(levelColor(c)) })
+                    FilterChip(cefrF == c, { cefrF = c }, { Text("$c ${levelCounts[c] ?: 0}") }, leadingIcon = { Dot(levelColor(c)) })
                 }
             }
             FilterRow("进度") {
-                item { FilterChip(stageF == null, { stageF = null }, { Text("全部") }) }
+                item { FilterChip(stageF == null, { stageF = null }, { Text("全部 ${stageCounts.values.sum()}") }) }
                 items(Stage.entries) { s ->
-                    FilterChip(stageF == s, { stageF = s }, { Text("${s.label} ${entries.count { stages.stageOf(it) == s }}") })
+                    FilterChip(stageF == s, { stageF = s }, { Text("${s.label} ${stageCounts[s] ?: 0}") })
                 }
                 // toggles, drawn as checkboxes so they don't read as another choice in the row
                 item { CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly } }

@@ -626,19 +626,19 @@ function paintFilters(){
 }
 TYPES.forEach(([key, text]) => {
   const sw = LV[key] && LV[key].sw[0];
-  const b = pill((sw ? `<span class="dot" style="--sw:var(${sw})"></span>` : "") + text, false,
+  const b = pill((sw ? `<span class="dot" style="--sw:var(${sw})"></span>` : "") + text + ' <span class="n"></span>', false,
     () => { typeF = key; if (key !== "WORD") cefrF = ""; saveFilters(); });
   b.dataset.t = key;
   typeRow.append(b);
 });
 [["", "全部"], ...CEFR.map(c => [c, c])].forEach(([key, text]) => {
-  const b = pill((key ? `<span class="dot" style="--sw:var(${LV[key].sw[0]})"></span>` : "") + text, false,
+  const b = pill((key ? `<span class="dot" style="--sw:var(${LV[key].sw[0]})"></span>` : "") + text + ' <span class="n"></span>', false,
     () => { cefrF = key; saveFilters(); });
   b.dataset.c = key;
   cefrRow.append(b);
 });
 [["", "全部"], ...STAGES].forEach(([key, text]) => {
-  const b = pill(key ? `${text} <span class="n"></span>` : text, false, () => { stageF = key; saveFilters(); });
+  const b = pill(`${text} <span class="n"></span>`, false, () => { stageF = key; saveFilters(); });
   b.dataset.s = key;
   stageRow.append(b);
 });
@@ -799,6 +799,20 @@ function render(){
   if (view === "review") { renderReview(); return; }
   if (view === "practice") { renderPractice(); return; }
   let shown = 0;
+  // pill counts: each row counts what its pills would show with every other filter kept
+  const nType = { ALL: 0, WORD: 0 }, nCefr = { "": 0 }, nStage = { learn: 0, test: 0, done: 0 };
+  sections.forEach(s => s.cards.forEach(c => {
+    if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write))) return;
+    const st = stageOf(c.it, s.level), word = CEFR.includes(s.level);
+    if (!stageF || st === stageF) {
+      nType.ALL++; nType[s.level] = (nType[s.level] || 0) + 1;
+      if (word) { nType.WORD++; nCefr[""]++; nCefr[s.level] = (nCefr[s.level] || 0) + 1; }
+    }
+    if (levelShown(s.level)) nStage[st]++;
+  }));
+  typeRow.querySelectorAll("[data-t] .n").forEach(el => { el.textContent = nType[el.parentNode.dataset.t] || 0; });
+  cefrRow.querySelectorAll("[data-c] .n").forEach(el => { el.textContent = nCefr[el.parentNode.dataset.c] || 0; });
+  stageRow.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = el.parentNode.dataset.s ? nStage[el.parentNode.dataset.s] : nStage.learn + nStage.test + nStage.done; });
   sections.forEach(s => {
     if (!levelShown(s.level)) { s.el.hidden = true; return; }
     let n = 0;
@@ -897,8 +911,7 @@ function refreshStages(){
     el.textContent = st === "done" ? " · ✓ 已掌握" : st === "test" && el.dataset.level !== "SELFTEST" ? " · 自测中" : "";
   });
   const n = { learn: 0, test: 0, done: 0 };
-  DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));
-  filters.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = n[el.parentNode.dataset.s]; });
+  DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));   // pill counts come from render()
   document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 已掌握 " + n.done + " · 错题 " + mkTotal;
 }
 
