@@ -16,6 +16,13 @@ private val Light = lightColorScheme(
     primary = Color(0xFF1F1F1E), onPrimary = Color(0xFFF7F6F2),
     secondaryContainer = Color(0xFF1F1F1E), onSecondaryContainer = Color(0xFFF7F6F2),
     surfaceContainer = Color(0xFFEFEDE7), surfaceContainerHigh = Color(0xFFFFFFFF),
+    // sheets, dialogs, menus and badges use these; left unset they fall back to Material's lavender
+    surfaceContainerLowest = Color(0xFFFFFFFF), surfaceContainerLow = Color(0xFFFBFAF7),
+    surfaceContainerHighest = Color(0xFFE8E6DF), surfaceBright = Color(0xFFFBFAF7), surfaceDim = Color(0xFFE8E6DF),
+    surfaceTint = Color(0xFFF7F6F2),
+    primaryContainer = Color(0xFFE8E6DF), onPrimaryContainer = Color(0xFF1F1F1E),
+    secondary = Color(0xFF77756C), onSecondary = Color(0xFFF7F6F2),
+    tertiary = Color(0xFF77756C), onTertiary = Color(0xFFF7F6F2),
     inverseSurface = Color(0xFF1F1F1E), inverseOnSurface = Color(0xFFF7F6F2),
 )
 private val Dark = darkColorScheme(
@@ -26,6 +33,12 @@ private val Dark = darkColorScheme(
     primary = Color(0xFFECEAE2), onPrimary = Color(0xFF1B1B19),
     secondaryContainer = Color(0xFFECEAE2), onSecondaryContainer = Color(0xFF1B1B19),
     surfaceContainer = Color(0xFF232320), surfaceContainerHigh = Color(0xFF2A2926),
+    surfaceContainerLowest = Color(0xFF151513), surfaceContainerLow = Color(0xFF20201D),
+    surfaceContainerHighest = Color(0xFF312F2C), surfaceBright = Color(0xFF2A2926), surfaceDim = Color(0xFF151513),
+    surfaceTint = Color(0xFF1B1B19),
+    primaryContainer = Color(0xFF312F2C), onPrimaryContainer = Color(0xFFECEAE2),
+    secondary = Color(0xFF928F84), onSecondary = Color(0xFF1B1B19),
+    tertiary = Color(0xFF928F84), onTertiary = Color(0xFF1B1B19),
     inverseSurface = Color(0xFFECEAE2), inverseOnSurface = Color(0xFF1B1B19),
 )
 

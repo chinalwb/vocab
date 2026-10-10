@@ -76,6 +76,43 @@ private const val WORD = "WORD"
 private val CEFR = listOf("A1", "A2", "B1", "B2", "C1", "C2")
 private val TYPES = listOf(ALL to "全部", WORD to "单词", "TERM" to "术语", "GRAMMAR" to "语法", "SENTENCE" to "句子", "SELFTEST" to "自测题")
 
+/**
+ * "name(动词,"指定"义)" → "name" + "动词,"指定"义": the headword stays big, the trailing
+ * parenthetical becomes a small note. Titles without one come back whole.
+ */
+private fun splitTitle(t: String): Pair<String, String?> {
+    val m = Regex("""^(.+?)\s*[((](.+)[))]$""").find(t.trim()) ?: return t to null
+    return m.groupValues[1] to m.groupValues[2]
+}
+
+/** 48dp filled search box; Material's text fields have a 56dp minimum. */
+@Composable
+private fun SearchField(value: String, onChange: (String) -> Unit, modifier: Modifier = Modifier) {
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    androidx.compose.foundation.text.BasicTextField(
+        value = value,
+        onValueChange = onChange,
+        singleLine = true,
+        textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
+        cursorBrush = androidx.compose.ui.graphics.SolidColor(MaterialTheme.colorScheme.onSurface),
+        modifier = modifier.height(48.dp),
+        decorationBox = { field ->
+            androidx.compose.foundation.layout.Row(
+                Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(50)).padding(start = 14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(Icons.Default.Search, null, tint = muted, modifier = Modifier.size(20.dp))
+                Box(Modifier.weight(1f).padding(horizontal = 10.dp)) {
+                    if (value.isEmpty()) Text("搜索单词、释义,或编号 #12…", color = muted, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.bodyLarge)
+                    field()
+                }
+                if (value.isNotEmpty()) IconButton(onClick = { onChange("") }) { Icon(Icons.Default.Clear, "清空", tint = muted) }
+            }
+        },
+    )
+}
+
 /** A titled group of chips in the 筛选 sheet; the chips wrap. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -219,22 +256,15 @@ fun BrowseScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            OutlinedTextField(
-                value = query,
-                onValueChange = { query = it },
-                placeholder = { Text("搜索单词、释义,或编号 #12…", maxLines = 1) },
-                leadingIcon = { Icon(Icons.Default.Search, null) },
-                trailingIcon = {
-                    if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Default.Clear, "清空") }
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(50),
-                modifier = Modifier.weight(1f),
-            )
-            androidx.compose.material3.OutlinedButton(
+            SearchField(query, { query = it }, Modifier.weight(1f))
+            androidx.compose.material3.FilledTonalButton(
                 onClick = { sheetOpen = true },
                 contentPadding = PaddingValues(horizontal = 14.dp),
-                modifier = Modifier.height(56.dp),
+                colors = androidx.compose.material3.ButtonDefaults.filledTonalButtonColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
+                modifier = Modifier.height(48.dp),
             ) {
                 Icon(FilterIcon, null, Modifier.size(18.dp))
                 Text("筛选", Modifier.padding(start = 6.dp))
@@ -309,8 +339,8 @@ fun BrowseScreen(
         }
     }
     val padding = PaddingValues(
-        start = 16.dp,
-        end = 16.dp,
+        start = 10.dp,
+        end = 10.dp,
         top = contentPadding.calculateTopPadding(),
         bottom = contentPadding.calculateBottomPadding() + 24.dp,
     )
@@ -417,8 +447,9 @@ private fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Un
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         if (badge != null) Badge(badge)
+        val (head, note) = splitTitle(e.title)
         Text(
-            e.title,
+            head,
             fontFamily = FontFamily.Serif,
             fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp,
@@ -427,6 +458,8 @@ private fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Un
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.sharedEntryTitle(e.anchor),
         )
+        if (note != null) Text(note, style = MaterialTheme.typography.labelSmall, color = LocalContentColor.current.copy(alpha = 0.6f),
+            maxLines = 2, overflow = TextOverflow.Ellipsis)
         if (e.ipa.isNotEmpty()) {
             Text(e.ipa, style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
@@ -436,21 +469,24 @@ private fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Un
         Text(
             listOfNotNull(e.no.takeIf { it > 0 }?.let { "#$it" }, levelStyle(e.level).short, foot).joinToString(" · "),
             style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier
-                .padding(top = 4.dp)
-                .border(1.dp, LocalContentColor.current.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
-                .padding(horizontal = 6.dp, vertical = 1.dp),
+            color = LocalContentColor.current.copy(alpha = 0.6f),
+            modifier = Modifier.padding(top = 4.dp),
         )
     }
 }
 
 @Composable
 private fun SyncStatus(lib: LibraryState, changed: Int, onMarkAllSeen: () -> Unit) {
-    val data = lib.data ?: return
-    val checked = lib.lastChecked?.let { "上次检查 ${ago(it)}" } ?: "尚未联网检查(使用内置词库)"
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+    lib.data ?: return
+    // pull-to-refresh already says "checked just now"; only speak up when there is news
+    val text = when {
+        changed > 0 -> "有 $changed 条新增或更新"
+        lib.lastChecked == null -> "尚未联网检查(使用内置词库)"
+        else -> return
+    }
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
         Text(
-            "$checked · 词库生成于 ${data.generated.take(10)}",
+            text,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f),
@@ -480,9 +516,10 @@ private fun EntryCard(e: Entry, badge: String?, foot: String?, onClick: () -> Un
             .padding(14.dp)
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            val (head, note) = splitTitle(e.title)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    e.title,
+                    head,
                     fontFamily = FontFamily.Serif,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 19.sp,
@@ -492,6 +529,7 @@ private fun EntryCard(e: Entry, badge: String?, foot: String?, onClick: () -> Un
                 )
                 if (badge != null) Badge(badge)
             }
+            if (note != null) Text(note, style = MaterialTheme.typography.labelMedium, color = LocalContentColor.current.copy(alpha = 0.6f))
             val sub = listOf(e.ipa, e.pos).filter { it.isNotEmpty() }.joinToString("  ")
             if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.bodySmall)
             if (e.gloss.isNotEmpty()) {
@@ -501,6 +539,7 @@ private fun EntryCard(e: Entry, badge: String?, foot: String?, onClick: () -> Un
                 Text(
                     listOfNotNull(e.no.takeIf { it > 0 }?.let { "#$it" }, foot, if (e.writes) "会写" else null, e.date).joinToString(" · "),
                     style = MaterialTheme.typography.labelSmall,
+                    color = LocalContentColor.current.copy(alpha = 0.6f),
                     modifier = Modifier.align(Alignment.End),
                 )
             }
