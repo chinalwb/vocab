@@ -2,6 +2,7 @@ package io.github.chinalwb.vocab.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -98,7 +99,7 @@ private fun SearchField(value: String, onChange: (String) -> Unit, modifier: Mod
         modifier = modifier.height(48.dp),
         decorationBox = { field ->
             androidx.compose.foundation.layout.Row(
-                Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(50)).padding(start = 14.dp),
+                Modifier.fillMaxSize().glassFlat(RoundedCornerShape(50)).padding(start = 14.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(Icons.Default.Search, null, tint = muted, modifier = Modifier.size(20.dp))
@@ -257,14 +258,13 @@ fun BrowseScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             SearchField(query, { query = it }, Modifier.weight(1f))
-            androidx.compose.material3.FilledTonalButton(
-                onClick = { sheetOpen = true },
-                contentPadding = PaddingValues(horizontal = 14.dp),
-                colors = androidx.compose.material3.ButtonDefaults.filledTonalButtonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    contentColor = MaterialTheme.colorScheme.onSurface,
-                ),
-                modifier = Modifier.height(48.dp),
+            androidx.compose.foundation.layout.Row(
+                Modifier
+                    .height(48.dp)
+                    .glassFlat(RoundedCornerShape(50))
+                    .clickable(role = androidx.compose.ui.semantics.Role.Button) { sheetOpen = true }
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(FilterIcon, null, Modifier.size(18.dp))
                 Text("筛选", Modifier.padding(start = 6.dp))
@@ -290,6 +290,11 @@ fun BrowseScreen(
         if (sheetOpen) androidx.compose.material3.ModalBottomSheet(
             onDismissRequest = { sheetOpen = false },
             sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            // the sheet lives in its own window, out of reach of the haze; translucent glass with a rim instead
+            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
+            scrimColor = Color.Black.copy(alpha = 0.18f),
+            tonalElevation = 0.dp,
+            modifier = Modifier.border(1.dp, glassRim(), RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)),
         ) {
             val present = entries.map { it.level }.toSet()
             Column(

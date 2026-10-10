@@ -1,5 +1,30 @@
 package io.github.chinalwb.vocab
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
+import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.rememberHazeState
+import io.github.chinalwb.vocab.ui.LocalHaze
+import io.github.chinalwb.vocab.ui.glass
+import io.github.chinalwb.vocab.ui.glassStyle
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
@@ -197,19 +222,26 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
         if (Build.VERSION.SDK_INT >= 33) permission.launch(Manifest.permission.POST_NOTIFICATIONS)
     }
 
+    // Liquid glass: the content is the haze source; the top bar and the floating tab bar blur it.
+    val haze = rememberHazeState()
+    CompositionLocalProvider(LocalHaze provides haze) {
     Scaffold(
         modifier = if (tab == 0) Modifier.nestedScroll(bars.nestedScrollConnection) else Modifier,
         topBar = {
             // The status-bar strip isn't part of the bar: it stays solid until the status bar
             // hides, then fades and the list scrolls up into that space.
             // Padding ignores visibility so hiding the status bar doesn't shift the layout.
-            val ground = MaterialTheme.colorScheme.background
+            val hairline = MaterialTheme.colorScheme.outline
             TopAppBar(
                 modifier = Modifier
-                    .drawBehind { drawRect(ground.copy(alpha = stripAlpha)) }
+                    .hazeEffect(haze, glassStyle()) { alpha = stripAlpha }
+                    .drawBehind {
+                        val y = size.height - 1f
+                        drawLine(hairline.copy(alpha = stripAlpha * 0.6f), Offset(0f, y), Offset(size.width, y))
+                    }
                     .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility),
                 windowInsets = WindowInsets(0),
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = ground, scrolledContainerColor = ground),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent, scrolledContainerColor = Color.Transparent),
                 scrollBehavior = if (tab == 0) bars else null,
                 title = {
                     val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; 2 -> "错题本"; else -> "练习" }
@@ -229,25 +261,39 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
             )
         },
         bottomBar = {
-            NavigationBar(
-                Modifier.layout { measurable, constraints ->
-                    val bar = measurable.measure(constraints)
-                    val shown = (bar.height * (1 - bars.state.collapsedFraction)).roundToInt()
-                    // Shrinking the slot while drawing the bar at its top pushes it off the bottom edge.
-                    layout(bar.width, shown) { bar.place(0, 0) }
-                }
+            // A floating glass capsule; the cards scroll on underneath it. It slides off the
+            // bottom edge with the top bar, the slot shrinking as it goes.
+            Box(
+                Modifier
+                    .layout { measurable, constraints ->
+                        val bar = measurable.measure(constraints)
+                        val shown = (bar.height * (1 - bars.state.collapsedFraction)).roundToInt()
+                        layout(bar.width, shown) { bar.place(0, 0) }
+                    }
+                    .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
             ) {
-                // the bar's ground stays opaque and slides off; only its items fade, like the top bar's
-                val fade = Modifier.graphicsLayer { alpha = (1 - bars.state.collapsedFraction * 1.6f).coerceIn(0f, 1f) }
-                NavigationBarItem(tab == 0, { tab = 0 }, { Icon(Icons.AutoMirrored.Filled.List, null) }, label = { Text("浏览") }, modifier = fade)
-                // same order as the page's tabs; the indices predate 练习, so they aren't sequential
-                NavigationBarItem(tab == 2, { tab = 2 }, { Icon(Icons.Default.Warning, null) }, label = { Text("错题") }, modifier = fade)
-                NavigationBarItem(tab == 1, { tab = 1 }, { Icon(Icons.Default.Star, null) }, label = { Text("复习") }, modifier = fade)
-                NavigationBarItem(tab == 3, { tab = 3 }, { Icon(Icons.Default.Edit, null) }, label = { Text("练习") }, modifier = fade)
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(64.dp)
+                        .glass(RoundedCornerShape(50))
+                        .padding(6.dp)
+                        .graphicsLayer { alpha = (1 - bars.state.collapsedFraction * 1.6f).coerceIn(0f, 1f) },
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    // same order as the page's tabs; the indices predate 练习, so they aren't sequential
+                    GlassTab(tab == 0, { tab = 0 }, Icons.AutoMirrored.Filled.List, "浏览")
+                    GlassTab(tab == 2, { tab = 2 }, Icons.Default.Warning, "错题")
+                    GlassTab(tab == 1, { tab = 1 }, Icons.Default.Star, "复习")
+                    GlassTab(tab == 3, { tab = 3 }, Icons.Default.Edit, "练习")
+                }
             }
         },
         snackbarHost = { SnackbarHost(snackbar) },
     ) { pad ->
+        Box(Modifier.fillMaxSize().hazeSource(haze).background(MaterialTheme.colorScheme.background)) {
         val open: (String) -> Unit = {
             insets.show(WindowInsetsCompat.Type.statusBars())
             nav.navigate("entry/$it")
@@ -284,5 +330,27 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onSyncNow = vm::syncNow,
             )
         }
+        }
+    }
+    }
+}
+
+/** One slot of the glass tab bar: the selected one sits in a soft pill. */
+@Composable
+private fun RowScope.GlassTab(selected: Boolean, onClick: () -> Unit, icon: ImageVector, label: String) {
+    val ink = MaterialTheme.colorScheme.onSurface
+    Column(
+        Modifier
+            .weight(1f)
+            .fillMaxHeight()
+            .clip(RoundedCornerShape(50))
+            .background(if (selected) ink.copy(alpha = 0.09f) else Color.Transparent)
+            .selectable(selected, onClick = onClick, role = Role.Tab),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Icon(icon, null, Modifier.size(22.dp), tint = if (selected) ink else ink.copy(alpha = 0.6f))
+        Text(label, style = MaterialTheme.typography.labelSmall, color = if (selected) ink else ink.copy(alpha = 0.6f),
+            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal)
     }
 }
