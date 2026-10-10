@@ -40,6 +40,10 @@
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
 
   --err:#c2412d; --warn:#b7791f; --mk:#ffffff; --tag:#ece9e0; --tag-ink:#4a4944;
+  /* liquid glass (after iOS 26): frosted controls floating over the cards */
+  --glass:rgba(247,246,242,.55); --glass-strong:rgba(247,246,242,.78);
+  --glass-fill:rgba(255,255,255,.66); --glass-rim:rgba(255,255,255,.9); --glass-edge:rgba(31,31,30,.09);
+  --glass-shadow:0 8px 28px rgba(31,31,30,.12), 0 1px 2px rgba(31,31,30,.06);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -71,6 +75,9 @@
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
     --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
+  --glass:rgba(27,27,25,.55); --glass-strong:rgba(27,27,25,.8);
+  --glass-fill:rgba(255,255,255,.06); --glass-rim:rgba(255,255,255,.14); --glass-edge:rgba(255,255,255,.08);
+  --glass-shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.3);
   }
 }
 :root[data-theme="dark"]{
@@ -102,6 +109,9 @@
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
   --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
+  --glass:rgba(27,27,25,.55); --glass-strong:rgba(27,27,25,.8);
+  --glass-fill:rgba(255,255,255,.06); --glass-rim:rgba(255,255,255,.14); --glass-edge:rgba(255,255,255,.08);
+  --glass-shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.3);
 }
 
 *{box-sizing:border-box}
@@ -118,9 +128,9 @@ body{
 /* ── header ─────────────────────────────── */
 .top{
   position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
-  background:color-mix(in srgb, var(--ground) 92%, transparent);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--rule);
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+  border-bottom:1px solid var(--glass-edge);
   margin-inline:-16px;padding:14px 16px 12px;
 }
 .brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
@@ -142,15 +152,15 @@ h1{
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .search{
   flex:1 1 200px;min-width:0;max-width:320px;
-  background:var(--chip);color:var(--ink);
-  border:1px solid var(--rule);border-radius:999px;
+  background:var(--glass-fill);color:var(--ink);
+  border:1px solid var(--glass-edge);border-radius:999px;box-shadow:inset 0 1px 0 var(--glass-rim);
   padding:7px 14px;font:inherit;font-size:13.5px;
 }
 .search::placeholder{color:var(--ink-3)}
 .search:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .fbtn{
   font:inherit;font-size:13px;font-weight:500;color:var(--ink-2);
-  background:var(--chip);border:1px solid var(--rule);border-radius:999px;
+  background:var(--glass-fill);border:1px solid var(--glass-edge);border-radius:999px;box-shadow:inset 0 1px 0 var(--glass-rim);
   padding:6px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
 }
 .fbtn[aria-expanded="true"],.fbtn.on{border-color:var(--ink-3);color:var(--ink)}
@@ -164,26 +174,28 @@ h1{
 .fchip:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .fsum .cnt{margin-left:auto;color:var(--ink-3);font-variant-numeric:tabular-nums}
 /* the panel: a bottom sheet on phones, a dropdown under 筛选 on wider screens */
-.fback{position:fixed;inset:0;z-index:40;background:rgb(0 0 0 / .35)}
+.fback{position:fixed;inset:0;z-index:40;background:rgb(0 0 0 / .18)}
 .fsheet{
   position:fixed;z-index:41;left:0;right:0;bottom:0;max-height:85vh;overflow:auto;
-  background:var(--ground);color:var(--ink);border-radius:16px 16px 0 0;
-  box-shadow:0 -8px 30px rgb(0 0 0 / .25);
+  background:var(--glass-strong);color:var(--ink);border-radius:20px 20px 0 0;
+  -webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);
+  border-top:1px solid var(--glass-edge);
+  box-shadow:inset 0 1px 0 var(--glass-rim), 0 -8px 30px rgb(0 0 0 / .18);
   padding:0 16px calc(12px + env(safe-area-inset-bottom,0px));
 }
-.fsh-head{position:sticky;top:0;background:var(--ground);display:flex;align-items:center;padding:14px 0 10px;font-size:15px}
+.fsh-head{position:sticky;top:0;display:flex;align-items:center;padding:14px 0 10px;font-size:15px}
 .fsh-grab{position:absolute;top:6px;left:50%;width:36px;height:4px;margin-left:-18px;border-radius:2px;background:var(--rule)}
 .fsh-head .fclear{margin-left:auto}
 .filters{display:flex;flex-direction:column;gap:14px}
 .frow{display:flex;flex-direction:column;gap:7px}
 .fp{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .flab{font-size:11.5px;font-weight:600;letter-spacing:.08em;color:var(--ink-3)}
-.fsh-foot{position:sticky;bottom:0;background:var(--ground);padding:14px 0 2px}
+.fsh-foot{position:sticky;bottom:0;padding:14px 0 2px}
 .fgo{width:100%;font:inherit;font-size:14px;font-weight:600;padding:10px;border-radius:999px;border:0;cursor:pointer;background:var(--chip-on);color:var(--chip-on-ink)}
 .fgo:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 @media (min-width:640px){
   .fback{background:transparent}
-  .fsheet{left:auto;right:auto;bottom:auto;width:440px;max-height:75vh;border-radius:12px;border:1px solid var(--rule);box-shadow:0 12px 32px rgb(0 0 0 / .18);padding-bottom:12px}
+  .fsheet{left:auto;right:auto;bottom:auto;width:440px;max-height:75vh;border-radius:18px;border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-rim), var(--glass-shadow);padding-bottom:12px}
   .fsh-grab{display:none}
   .fsh-foot{display:none}
 }
@@ -272,6 +284,7 @@ h1{
 /* ── modal ──────────────────────────────── */
 .scrim{
   position:fixed;inset:0;z-index:50;background:var(--scrim);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
   display:flex;align-items:flex-start;justify-content:center;
   padding:max(24px,env(safe-area-inset-top,0px)) 16px 40px;overflow-y:auto;
 }
@@ -503,6 +516,18 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
   .rcard{padding:16px 16px}
   .grades{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* phones: the view tabs become a floating glass capsule at the bottom, like the app's */
+.tabs.float{
+  position:fixed;z-index:30;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));
+  margin:0;padding:5px;gap:4px;border:1px solid var(--glass-edge);border-radius:999px;overflow:visible;
+  background:var(--glass);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+  box-shadow:inset 0 1px 0 var(--glass-rim), var(--glass-shadow);
+}
+.tabs.float .tab{flex:1;margin:0;border:0;border-radius:999px;padding:9px 4px;font-size:13.5px}
+.tabs.float .tab[aria-selected="true"]{background:color-mix(in srgb, var(--ink) 9%, transparent);font-weight:600}
+.tabs.float .tab .n{display:none}
+.tabs.float .tab:focus-visible{outline-offset:-3px;border-radius:999px}
+@media (max-width:639px){ .wrap{padding-block-end:110px} }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
@@ -736,6 +761,15 @@ paintFilters();
 // view tabs
 const tabs = document.getElementById("tabs");
 const tools = document.getElementById("tools");
+// On phones they float at the bottom. They have to leave the header for that: its backdrop-filter
+// makes it the containing block for anything position:fixed inside it.
+const phoneMQ = matchMedia("(max-width:639px)");
+const placeTabs = () => {
+  if (phoneMQ.matches) { document.querySelector(".wrap").append(tabs); tabs.classList.add("float"); }
+  else { tools.before(tabs); tabs.classList.remove("float"); }
+};
+phoneMQ.addEventListener("change", placeTabs);
+placeTabs();
 const TABS = [["entries", "词条", total], ["mistakes", "错题本", mkTotal], ["review", "复习"], ["practice", "练习"]];
 TABS.forEach(([key, text, n]) => {
   const b = document.createElement("button");
