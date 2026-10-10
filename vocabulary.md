@@ -135,6 +135,7 @@
 129. [vice versa](#vice-versa)
 130. [自测:我们想把元信息部分和答案部分(在界面上)区分开。](#t-set-apart)
 131. [自测:我们还想让「再试一次」按钮更醒目。](#t-more-prominent)
+132. [自测:你觉得如果我把这里的词汇一条条都练完,这个 App 真能提高我的写作吗?](#t-work-through)
 
 ---
 
@@ -4240,3 +4241,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ⚠️ [结构] **the button 再试一次** → **the "Try again" button**(按钮名放在 button 前)。
 - ✅ **eye-catching** —— 意思清楚,日常使用完全够用;说界面时 **more prominent** 更常见、更专业。
+
+---
+
+<a id="t-work-through"></a>
+## 自测:你觉得如果我把这里的词汇一条条都练完,这个 App 真能提高我的写作吗?
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> Do you think this app will actually improve my writing if I keep working through all the vocabulary?
+
+**要点:**
+
+- **vocabulary** —— 一般不可数,不说 *vocabs*。
+- **improve my writing** —— 比 *get better writing skills* 简洁地道;**actually** 加强"真的能吗"的语气。
+- **work through** sth —— 一条条做完、过一遍;**keep at it** —— 坚持下去。
+
+**我的原句:**
+
+> Do you think this app will help me get better writing skills if I keep working to master all of the vocabs?
+
+- ⚠️ [词形] **vocabs** → **vocabulary**。
+- ⚠️ [搭配] **get better writing skills** → **improve my writing / write better**。
+- ✅ **keep working to master** —— 意思清楚,日常使用完全够用;**keep working through** 更自然。
