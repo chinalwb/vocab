@@ -349,8 +349,8 @@ fun BrowseScreen(
         }
     }
     val padding = PaddingValues(
-        start = 10.dp,
-        end = 10.dp,
+        start = 8.dp,
+        end = 8.dp,
         top = contentPadding.calculateTopPadding(),
         bottom = contentPadding.calculateBottomPadding() + 24.dp,
     )
@@ -432,53 +432,68 @@ private fun GroupHeader(label: String, modifier: Modifier = Modifier) {
 private fun Badge(text: String) {
     Text(
         text,
-        style = MaterialTheme.typography.labelSmall,
+        style = MaterialTheme.typography.labelMedium,
         color = MaterialTheme.colorScheme.onPrimary,
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50))
-            .padding(horizontal = 8.dp, vertical = 2.dp),
+            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(8.dp))
+            .padding(horizontal = 9.dp, vertical = 3.dp),
     )
 }
 
-/** A compact note for the tile grid — the gloss is cut shorter than in the list. */
+/**
+ * A note on the wall, after Google Keep: plain sans-serif text in a soft hierarchy (title,
+ * then IPA and gloss a step lighter), roomy padding, large corners, and the facts that used
+ * to be a "#49 · A1 · 自测中" line as small label pills at the bottom.
+ */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .sharedEntryContainer(e.anchor, RoundedCornerShape(8.dp))
-            .clip(RoundedCornerShape(8.dp))
+            .sharedEntryContainer(e.anchor, RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(levelColor(e.level))
             .clickable(onClick = onClick)
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        if (badge != null) Badge(badge)
         val (head, note) = splitTitle(e.title)
+        val ink = LocalContentColor.current
         Text(
             head,
-            fontFamily = FontFamily.Serif,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
-            lineHeight = 21.sp,
+            fontSize = 17.sp,
+            lineHeight = 23.sp,
+            fontWeight = FontWeight.Medium,
             maxLines = 4,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.sharedEntryTitle(e.anchor),
         )
-        if (note != null) Text(note, style = MaterialTheme.typography.labelSmall, color = LocalContentColor.current.copy(alpha = 0.6f),
-            maxLines = 2, overflow = TextOverflow.Ellipsis)
-        if (e.ipa.isNotEmpty()) {
-            Text(e.ipa, style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        }
-        if (e.gloss.isNotEmpty()) {
-            Text(plain(e.gloss), style = MaterialTheme.typography.bodySmall, maxLines = 6, overflow = TextOverflow.Ellipsis)
-        }
-        Text(
-            listOfNotNull(e.no.takeIf { it > 0 }?.let { "#$it" }, levelStyle(e.level).short, foot).joinToString(" · "),
-            style = MaterialTheme.typography.labelSmall,
-            color = LocalContentColor.current.copy(alpha = 0.6f),
-            modifier = Modifier.padding(top = 4.dp),
+        if (note != null) Text(note, fontSize = 13.sp, lineHeight = 18.sp, color = ink.copy(alpha = 0.6f), maxLines = 2, overflow = TextOverflow.Ellipsis)
+        if (e.ipa.isNotEmpty()) Text(e.ipa, fontSize = 14.sp, color = ink.copy(alpha = 0.7f), maxLines = 2, overflow = TextOverflow.Ellipsis)
+        if (e.gloss.isNotEmpty()) Text(
+            cardGloss(e.gloss), fontSize = 14.sp, lineHeight = 20.sp, color = ink.copy(alpha = 0.8f),
+            maxLines = 5, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp),
         )
+        Labels(e, badge, foot, Modifier.padding(top = 6.dp))
+    }
+}
+
+/** The gloss as a card shows it: a leading "释义:" says nothing on a card. */
+private fun cardGloss(g: String) = plain(g).replaceFirst(Regex("^释义\\s*[::]\\s*"), "")
+
+/** The bottom pills: 新 / 已更新 first (filled), then the level, then 自测中 / 已掌握 / 试 N · 对 M. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun Labels(e: Entry, badge: String?, foot: String?, modifier: Modifier = Modifier) {
+    val dark = androidx.compose.foundation.isSystemInDarkTheme()
+    val pill = if (dark) Color.White.copy(alpha = 0.1f) else Color.White.copy(alpha = 0.6f)
+    FlowRow(modifier, horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        if (badge != null) Badge(badge)
+        (listOf(levelStyle(e.level).short) + foot.orEmpty().split(" · ").filter { it.isNotBlank() }).forEach {
+            Text(it, style = MaterialTheme.typography.labelMedium, color = LocalContentColor.current.copy(alpha = 0.8f),
+                modifier = Modifier.background(pill, RoundedCornerShape(8.dp)).padding(horizontal = 9.dp, vertical = 3.dp))
+        }
     }
 }
 
@@ -487,7 +502,7 @@ private fun SyncStatus(lib: LibraryState, changed: Int, onMarkAllSeen: () -> Uni
     lib.data ?: return
     // pull-to-refresh already says "checked just now"; only speak up when there is news
     val text = when {
-        changed > 0 -> "有 $changed 条新增或更新"
+        // news shows as 新 / 已更新 pills on the cards and 全部标为已读 in the ⋮ menu
         lib.lastChecked == null -> "尚未联网检查(使用内置词库)"
         else -> return
     }
@@ -498,7 +513,6 @@ private fun SyncStatus(lib: LibraryState, changed: Int, onMarkAllSeen: () -> Uni
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f),
         )
-        if (changed > 0) TextButton(onClick = onMarkAllSeen) { Text("全部标为已读") }
     }
 }
 
@@ -514,42 +528,36 @@ private fun ago(t: Long): String {
 
 @Composable
 internal fun EntryCard(e: Entry, badge: String?, foot: String?, shared: Boolean = true, onClick: () -> Unit) {
-    Box(
+    // the list's wider version of the wall's note: same type, same pills, the date at the end
+    val shape = RoundedCornerShape(16.dp)
+    Column(
         Modifier
             .fillMaxWidth()
-            .then(if (shared) Modifier.sharedEntryContainer(e.anchor, RoundedCornerShape(4.dp)) else Modifier)
-            .background(levelColor(e.level), RoundedCornerShape(4.dp))
+            .then(if (shared) Modifier.sharedEntryContainer(e.anchor, shape) else Modifier)
+            .clip(shape)
+            .background(levelColor(e.level))
             .clickable(onClick = onClick)
-            .padding(14.dp)
+            .padding(horizontal = 18.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            val (head, note) = splitTitle(e.title)
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    head,
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 19.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f).then(if (shared) Modifier.sharedEntryTitle(e.anchor) else Modifier),
-                )
-                if (badge != null) Badge(badge)
-            }
-            if (note != null) Text(note, style = MaterialTheme.typography.labelMedium, color = LocalContentColor.current.copy(alpha = 0.6f))
-            val sub = listOf(e.ipa, e.pos).filter { it.isNotEmpty() }.joinToString("  ")
-            if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.bodySmall)
-            if (e.gloss.isNotEmpty()) {
-                Text(plain(e.gloss), style = MaterialTheme.typography.bodyMedium, maxLines = 3, overflow = TextOverflow.Ellipsis)
-            }
-            if (e.date.isNotEmpty()) {
-                Text(
-                    listOfNotNull(e.no.takeIf { it > 0 }?.let { "#$it" }, foot, if (e.writes) "会写" else null, e.date).joinToString(" · "),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = LocalContentColor.current.copy(alpha = 0.6f),
-                    modifier = Modifier.align(Alignment.End),
-                )
-            }
+        val (head, note) = splitTitle(e.title)
+        val ink = LocalContentColor.current
+        Text(
+            head,
+            fontSize = 19.sp,
+            lineHeight = 25.sp,
+            fontWeight = FontWeight.Medium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = if (shared) Modifier.sharedEntryTitle(e.anchor) else Modifier,
+        )
+        if (note != null) Text(note, fontSize = 13.sp, color = ink.copy(alpha = 0.6f))
+        val sub = listOf(e.ipa, e.pos).filter { it.isNotEmpty() }.joinToString("  ")
+        if (sub.isNotEmpty()) Text(sub, fontSize = 14.sp, color = ink.copy(alpha = 0.7f))
+        if (e.gloss.isNotEmpty()) Text(cardGloss(e.gloss), fontSize = 15.sp, lineHeight = 21.sp, color = ink.copy(alpha = 0.8f), maxLines = 3, overflow = TextOverflow.Ellipsis)
+        Row(Modifier.padding(top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+            Labels(e, badge, listOfNotNull(foot, if (e.writes) "会写" else null).joinToString(" · ").ifEmpty { null }, Modifier.weight(1f))
+            if (e.date.isNotEmpty()) Text(e.date, style = MaterialTheme.typography.labelSmall, color = ink.copy(alpha = 0.55f))
         }
     }
 }
