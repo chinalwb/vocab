@@ -4051,7 +4051,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 **含义:** 为某事**反复纠结、痛苦地犹豫**,多用在做决定时。比 overthink、go back and forth 程度更重,偏书面。
 
 **义项一:纠结、苦恼(做决定时)**
-1. I agonized over whether to accept the offer for weeks.
+1. I agonized for weeks over whether to accept the offer.
    要不要接受那个 offer,我纠结了好几个星期。
 2. Don't agonize over the wording — just send it.
    别在措辞上纠结了,直接发吧。
