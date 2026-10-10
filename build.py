@@ -257,6 +257,17 @@ def build_entries(src):
     return out
 
 
+def quiz_examples(blocks):
+    """Numbered examples that have both an English sentence and a Chinese translation."""
+    out = []
+    for b in blocks:
+        if b["t"] == "ol":
+            for it in b["items"]:
+                if it["zh"] and re.search(r"[A-Za-z]", it["en"]) and re.search(r"[\u4e00-\u9fff]", it["zh"]):
+                    out.append({"en": it["en"], "zh": it["zh"]})
+    return out
+
+
 def digest(obj):
     return hashlib.sha256(json.dumps(obj, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
 
@@ -268,6 +279,9 @@ def page_data(entries):
         item["original"] = original_sentence(e["blocks"])
         if e["level"] == "SELFTEST":
             item["answer"] = quote_after(e["blocks"], "答案")
+        else:
+            # an entry moved to 自测 is quizzed on its example sentences: Chinese → English
+            item["examples"] = quiz_examples(e["blocks"])
         item["html"] = to_html(e["blocks"])
         item["level"] = e["level"]
         grouped.setdefault(e["level"], []).append(item)

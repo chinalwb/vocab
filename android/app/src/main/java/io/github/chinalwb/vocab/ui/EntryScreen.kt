@@ -1,5 +1,6 @@
 package io.github.chinalwb.vocab.ui
 
+import androidx.compose.runtime.remember
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.PaddingValues
@@ -61,6 +62,8 @@ fun EntryScreen(
     onSeen: (String) -> Unit,
     attempts: List<Attempt> = emptyList(),
     onAttempt: (String) -> Unit = {},
+    /** an attempt on an entry moved to 自测, with its verdict */
+    onGrade: (String, Boolean) -> Unit = { _, _ -> },
     stage: Stage = Stage.Learn,
     onStage: (Stage) -> Unit = {},
 ) {
@@ -102,29 +105,34 @@ fun EntryScreen(
             StageBar(stage, selfTest = entry.level == "SELFTEST", onStage)
             Spacer(Modifier.height(16.dp))
             if (entry.level != "SELFTEST" && stage == Stage.Test) {
-                // moved to 自测: asked like a review card before the notes open
-                var draft by rememberSaveable(entry.anchor, stage) { mutableStateOf("") }
-                var revealed by rememberSaveable(entry.anchor, stage) { mutableStateOf(false) }
+                // moved to 自测: quizzed on one of its example sentences like a 自测题 (Chinese → English,
+                // compared word by word and logged); with no example, asked like a review card and
+                // graded by me. The example is fixed for this try; 再试一次 moves to the next one.
+                var tryNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
+                val ex = remember(entry.anchor, tryNo) { entry.quizExample(tryNo) }
+                var draft by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf("") }
+                var revealed by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
+                var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
+                SelfTestStats(attempts)
+                Spacer(Modifier.height(12.dp))
                 if (!revealed) {
-                    ReviewFront(entry, kindOf(entry, inTest = true))
+                    if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
                     Spacer(Modifier.height(16.dp))
-                    SelfTestInput(draft, { draft = it }) { revealed = true }
+                    SelfTestInput(draft, { draft = it }) {
+                        when {
+                            ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same)
+                            draft.isBlank() -> onGrade("", false)
+                        }
+                        revealed = true
+                    }
                     return@Column
                 }
-                if (draft.isNotBlank()) {
-                    Text("你写的", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Text(
-                        draft.trim(),
-                        fontFamily = FontFamily.Serif,
-                        fontSize = 17.sp,
-                        modifier = Modifier
-                            .padding(top = 6.dp, bottom = 8.dp)
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))
-                            .padding(12.dp),
-                    )
-                }
-                Text("对照下面的笔记,自己判断写得对不对。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it) }
+                androidx.compose.material3.TextButton(
+                    onClick = { tryNo = attempts.size },
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
+                ) { Text("再试一次") }
+                SelfTestHistory(attempts)
                 Spacer(Modifier.height(16.dp))
             }
             if (entry.level == "SELFTEST") {
