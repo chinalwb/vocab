@@ -132,6 +132,7 @@
 126. [自测:这个任务我们完成百分之多少了?](#t-what-percentage)
 127. [自测:把它存下来,连同其他几种说法一起。](#t-along-with-alternatives)
 128. [自测:我们重新看一下这个任务。它起因于我们在另一个 iOS App 里发现的 IDFV 问题,所以目标是查清我们的 App 是否也有同样的问题。](#t-came-out-of)
+129. [vice versa](#vice-versa)
 
 ---
 
@@ -4158,3 +4159,37 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [搭配] **check out if** → **check whether**。
 - ⚠️ [搭配] **similar issues apply on** → **similar issues exist in / the app is affected**。
 - ✅ **what we want to do is to check** —— 意思清楚,日常使用完全够用;口语里常省 to,或说 **the goal is to check**。
+
+---
+
+<a id="vice-versa"></a>
+## vice versa
+
+- 音标:/ˌvaɪs ˈvɜː.sə/(也读 /ˌvaɪ.sə ˈvɜː.sə/;美 /ˌvaɪs ˈvɝː.sə/)
+- 词性:adv.(拉丁语,字面意思是"位置调换")
+- CEFR:B2–C1
+- 日期:2026-10-10
+- 掌握:会写
+
+**English definition:** Used to say that the opposite of what you have just said is also true.
+
+**含义:** 反之亦然、反过来也一样 —— 把刚才那句话里的两方对调,意思同样成立。
+
+**义项一:两方对调,关系同样成立**
+1. If I use "counterpart", you change it to "equivalent", and vice versa.
+   我用 counterpart 你就改成 equivalent,反过来也一样。
+2. Android users can message iOS users, and vice versa.
+   Android 用户可以给 iOS 用户发消息,反之亦然。
+
+**义项二:用在 or 后面,表示"或者反过来"**
+1. Should the client call the server, or vice versa?
+   是客户端调服务端,还是反过来?
+2. Some people work better in the morning, others vice versa.
+   有的人上午效率高,有的人正好相反。
+
+**常见搭配:**
+
+- **and vice versa** —— ……反之亦然(最常用,放句末);**or vice versa** —— ……或者反过来。
+- 不要再加 too / also:不说 *and vice versa too*,vice versa 本身已有"也"的意思。
+
+**辨析:** **vice versa** 强调两方对调后关系仍成立;**the other way around / round** 意思接近、更口语,常用来纠正"其实是反过来的":*It's actually the other way around.*
