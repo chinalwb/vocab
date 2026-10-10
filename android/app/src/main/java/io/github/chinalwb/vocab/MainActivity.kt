@@ -1,5 +1,10 @@
 package io.github.chinalwb.vocab
 
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.TextButton
+import io.github.chinalwb.vocab.update.AppUpdateState
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -208,6 +213,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val stages by vm.stages.collectAsStateWithLifecycle()
     val sync by vm.syncStatus.collectAsStateWithLifecycle()
     val test by vm.test.collectAsStateWithLifecycle()
+    val appUpdate by vm.appUpdate.collectAsStateWithLifecycle()
     // the browse page's 筛选与排序 sheet opens from the top bar
     var filterOpen by rememberSaveable { mutableStateOf(false) }
     var activeFilters by remember { mutableIntStateOf(0) }
@@ -240,6 +246,26 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val stripAlpha by animateFloatAsState(if (statusHidden && tab == 0) 0f else 1f, tween(220), label = "strip")
     // The bars' own content fades a little ahead of the collapse (no scaling) instead of being pushed off.
     val barFade: GraphicsLayerScope.() -> Unit = { alpha = (1 - bars.state.collapsedFraction * 1.6f).coerceIn(0f, 1f) }
+
+    // 检查 App 更新 found a newer APK on main: offer it, then show the download's progress
+    val upd = appUpdate
+    val offered = (upd as? AppUpdateState.Available)?.remote ?: (upd as? AppUpdateState.Downloading)?.remote
+    if (offered != null) AlertDialog(
+        onDismissRequest = vm::dismissAppUpdate,
+        title = { Text("发现新版本 v${offered.versionName}") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("当前是 v${BuildConfig.VERSION_NAME}。下载完会打开系统安装界面;第一次需要在系统设置里允许 VoCab「安装未知应用」。")
+                if (upd is AppUpdateState.Downloading) LinearProgressIndicator(progress = { upd.progress }, modifier = Modifier.fillMaxWidth())
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = vm::installAppUpdate, enabled = upd is AppUpdateState.Available) {
+                Text(if (upd is AppUpdateState.Downloading) "下载中 ${(upd.progress * 100).roundToInt()}%" else "下载并安装")
+            }
+        },
+        dismissButton = { if (upd is AppUpdateState.Available) TextButton(onClick = vm::dismissAppUpdate) { Text("以后再说") } },
+    )
 
     // Background update checks notify; ask once on Android 13+.
     val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {}
@@ -295,10 +321,16 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                                     onClick = { menuOpen = false; vm.toggleTiles() },
                                 )
                                 DropdownMenuItem(
-                                    text = { Text(if (checking) "正在检查…" else "检查更新") },
+                                    text = { Text(if (checking) "正在检查…" else "检查词库更新") },
                                     leadingIcon = { Icon(Icons.Default.Refresh, null) },
                                     enabled = !checking,
                                     onClick = { menuOpen = false; vm.check() },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(if (appUpdate is AppUpdateState.Checking) "正在检查 App…" else "检查 App 更新") },
+                                    leadingIcon = { Icon(Icons.Default.Info, null) },
+                                    enabled = appUpdate is AppUpdateState.Idle,
+                                    onClick = { menuOpen = false; vm.checkAppUpdate() },
                                 )
                                 val changed = lib.newAnchors.size + lib.updatedAnchors.size
                                 if (changed > 0) DropdownMenuItem(

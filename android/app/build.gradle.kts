@@ -13,8 +13,8 @@ android {
         applicationId = "io.github.chinalwb.vocab"
         minSdk = 26
         targetSdk = 36
-        versionCode = 27
-        versionName = "1.26"
+        versionCode = 28
+        versionName = "1.27"
         // Where updates are fetched from. Override for local testing, e.g.
         // ./gradlew installDebug -PvocabUrl=http://localhost:8000/  (with adb reverse)
         val vocabUrl = (project.findProperty("vocabUrl") as String?) ?: "https://chinalwb.github.io/vocab/"
@@ -62,6 +62,21 @@ val bundleVocab by tasks.registering(Exec::class) {
     }
 }
 tasks.named("preBuild") { dependsOn(bundleVocab) }
+
+// The APK committed to the repo, plus version.json for the app's 检查 App 更新:
+//   ./gradlew clean publishApk
+val apkVersionCode = android.defaultConfig.versionCode
+val apkVersionName = android.defaultConfig.versionName
+tasks.register("publishApk") {
+    dependsOn("assembleRelease")
+    val apk = layout.buildDirectory.file("outputs/apk/release/app-release.apk")
+    val dir = rootProject.layout.projectDirectory.dir("apk")
+    doLast {
+        val out = dir.asFile.apply { mkdirs() }
+        apk.get().asFile.copyTo(out.resolve("VoCab.apk"), overwrite = true)
+        out.resolve("version.json").writeText("{\"versionCode\": $apkVersionCode, \"versionName\": \"$apkVersionName\"}\n")
+    }
+}
 
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2025.09.01")

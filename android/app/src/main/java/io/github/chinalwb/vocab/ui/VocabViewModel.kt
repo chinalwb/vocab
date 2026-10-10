@@ -80,6 +80,44 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     /** Only true for checks the user asked for — the launch-time check runs without a spinner. */
     val checking = _checking.asStateFlow()
 
+    private val updater = (app as VocabApp).updater
+    private val _appUpdate = MutableStateFlow<io.github.chinalwb.vocab.update.AppUpdateState>(io.github.chinalwb.vocab.update.AppUpdateState.Idle)
+    val appUpdate = _appUpdate.asStateFlow()
+
+    /** ⋮ → 检查 App 更新: compare with the APK on main. */
+    fun checkAppUpdate() = viewModelScope.launch {
+        _appUpdate.value = io.github.chinalwb.vocab.update.AppUpdateState.Checking
+        try {
+            val remote = updater.latest()
+            if (remote.versionCode > io.github.chinalwb.vocab.BuildConfig.VERSION_CODE) {
+                _appUpdate.value = io.github.chinalwb.vocab.update.AppUpdateState.Available(remote)
+            } else {
+                _appUpdate.value = io.github.chinalwb.vocab.update.AppUpdateState.Idle
+                _messages.send("已是最新版本 v${io.github.chinalwb.vocab.BuildConfig.VERSION_NAME}")
+            }
+        } catch (e: Exception) {
+            _appUpdate.value = io.github.chinalwb.vocab.update.AppUpdateState.Idle
+            _messages.send("检查 App 更新失败:${e.message ?: e.javaClass.simpleName}")
+        }
+    }
+
+    fun installAppUpdate() = viewModelScope.launch {
+        val s = _appUpdate.value as? io.github.chinalwb.vocab.update.AppUpdateState.Available ?: return@launch
+        try {
+            _appUpdate.value = io.github.chinalwb.vocab.update.AppUpdateState.Downloading(s.remote, 0f)
+            val file = updater.download { p -> _appUpdate.value = io.github.chinalwb.vocab.update.AppUpdateState.Downloading(s.remote, p) }
+            _appUpdate.value = io.github.chinalwb.vocab.update.AppUpdateState.Idle
+            updater.install(file)
+        } catch (e: Exception) {
+            _appUpdate.value = s
+            _messages.send("下载失败:${e.message ?: e.javaClass.simpleName}")
+        }
+    }
+
+    fun dismissAppUpdate() {
+        if (_appUpdate.value is io.github.chinalwb.vocab.update.AppUpdateState.Available) _appUpdate.value = io.github.chinalwb.vocab.update.AppUpdateState.Idle
+    }
+
     private val _messages = Channel<String>(Channel.BUFFERED)
     val messages = _messages.receiveAsFlow()
 
