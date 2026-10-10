@@ -46,7 +46,7 @@ import java.time.format.DateTimeFormatter
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PracticeScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifier = Modifier) {
+fun PracticeScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifier = Modifier, embedded: Boolean = false) {
     val data = lib.data
     if (data == null) {
         Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
@@ -69,7 +69,9 @@ fun PracticeScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifi
     val verb = if (daily.level == "GRAMMAR") "按" else "用"
 
     Column(
-        modifier
+        // embedded in the 复习 overview, which already scrolls
+        if (embedded) modifier.fillMaxWidth()
+        else modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 8.dp),

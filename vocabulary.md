@@ -129,6 +129,12 @@
 123. [自测:每个选择都要耗我一点精力,结果事情还没开始做,人已经累了。](#t-exhausted-before-start)
 124. [自测:我得别再为小决定纠结了,不值得花这份心力。](#t-agonize-over)
 125. [agonize over sth](#agonize-over)
+126. [自测:这个任务我们完成百分之多少了?](#t-what-percentage)
+127. [自测:把它存下来,连同其他几种说法一起。](#t-along-with-alternatives)
+128. [自测:我们重新看一下这个任务。它起因于我们在另一个 iOS App 里发现的 IDFV 问题,所以目标是查清我们的 App 是否也有同样的问题。](#t-came-out-of)
+129. [vice versa](#vice-versa)
+130. [自测:我们想把元信息部分和答案部分(在界面上)区分开。](#t-set-apart)
+131. [自测:我们还想让「再试一次」按钮更醒目。](#t-more-prominent)
 
 ---
 
@@ -4071,3 +4077,166 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **an agonizing decision / wait / choice** —— 煎熬的决定 / 等待 / 选择。
 
 **近义对比:** **go back and forth**(来回犹豫,口语,最轻)→ **overthink**(想太多)→ **agonize over**(痛苦地纠结,最重);**dither** 略带批评,"磨蹭不决",英式常用。
+
+---
+
+<a id="t-what-percentage"></a>
+## 自测:这个任务我们完成百分之多少了?
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> What percentage of this task have we completed?
+> How far along are we on this task?
+> How much of this task is done so far?
+> Roughly what percentage of the work is done?
+
+**要点:**
+
+- 问百分比用 **what percentage of** sth;**percent** 只跟在数字后面(*30 percent*),不加 s。
+- **how far along** are we (on sth) —— 问进度最常用,比问百分比更口语;加 **roughly** 更委婉。
+- 正式(邮件 / 报告 / 问 AI)用 what percentage;和同事随口聊用 how far along。
+
+**我的原句:**
+
+> How many percents have we done on this task?
+
+- ❌ [词形] **percents** → **percent**(数字后不加 s)。
+- ❌ [搭配] **How many percent** → **What percentage**。
+- ⚠️ [结构] **on this task** → **of this task**(这个任务的百分之多少)。
+
+---
+
+<a id="t-along-with-alternatives"></a>
+## 自测:把它存下来,连同其他几种说法一起。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> Save it along with the alternatives.
+> Save it, together with the other alternative phrasings.
+> Save it, and include the other ways of saying it too.
+
+**要点:**
+
+- **saying** = 谚语、俗话(*as the saying goes*);"其他说法"用 **phrasings / expressions / ways of saying it**。
+- 指上面列出的那几句,用 **the** alternatives;alternative 和 other 意思重复,说 **the alternatives** 就够。
+- **along with** —— 连同…一起,口语里比 together with 常见。
+
+**我的原句:**
+
+> save it - together with other alternative sayings.
+
+- ⚠️ [搭配] **sayings** → **phrasings / expressions**。
+- ⚠️ [冠词] **other alternative sayings** → **the other alternatives**。
+- ✅ **together with** —— 意思清楚,日常使用完全够用;口语里 **along with** 更常见。
+
+---
+
+<a id="t-came-out-of"></a>
+## 自测:我们重新看一下这个任务。它起因于我们在另一个 iOS App 里发现的 IDFV 问题,所以目标是查清我们的 App 是否也有同样的问题。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> Let's revisit this task. It came out of the IDFV issue we found in another iOS app, so the goal is to check whether our app has the same problem.
+
+**要点:**
+
+- **come out of** sth —— 起因于某事,说一个任务的来由时很地道。
+- **be affected (by sth)** —— 受到影响;查"是否也有这个问题"也可以说 *whether our app is affected too*。
+- **check whether** —— 核查是否;**check out** 是"看看、逛逛"。App 里的问题用 **in** another app。
+
+**我的原句:**
+
+> let's revisit this task. we started it because of the IDFV issue on some other iOS app. So what we want to do is to check out if similar issues apply on our app too.
+
+- ❌ [介词] **on some other iOS app** → **in another iOS app**。
+- ⚠️ [搭配] **check out if** → **check whether**。
+- ⚠️ [搭配] **similar issues apply on** → **similar issues exist in / the app is affected**。
+- ✅ **what we want to do is to check** —— 意思清楚,日常使用完全够用;口语里常省 to,或说 **the goal is to check**。
+
+---
+
+<a id="vice-versa"></a>
+## vice versa
+
+- 音标:/ˌvaɪs ˈvɜː.sə/(也读 /ˌvaɪ.sə ˈvɜː.sə/;美 /ˌvaɪs ˈvɝː.sə/)
+- 词性:adv.(拉丁语,字面意思是"位置调换")
+- CEFR:B2–C1
+- 日期:2026-10-10
+- 掌握:会写
+
+**English definition:** Used to say that the opposite of what you have just said is also true.
+
+**含义:** 反之亦然、反过来也一样 —— 把刚才那句话里的两方对调,意思同样成立。
+
+**义项一:两方对调,关系同样成立**
+1. If I use "counterpart", you change it to "equivalent", and vice versa.
+   我用 counterpart 你就改成 equivalent,反过来也一样。
+2. Android users can message iOS users, and vice versa.
+   Android 用户可以给 iOS 用户发消息,反之亦然。
+
+**义项二:用在 or 后面,表示"或者反过来"**
+1. Should the client call the server, or vice versa?
+   是客户端调服务端,还是反过来?
+2. Some people work better in the morning, others vice versa.
+   有的人上午效率高,有的人正好相反。
+
+**常见搭配:**
+
+- **and vice versa** —— ……反之亦然(最常用,放句末);**or vice versa** —— ……或者反过来。
+- 不要再加 too / also:不说 *and vice versa too*,vice versa 本身已有"也"的意思。
+
+**辨析:** **vice versa** 强调两方对调后关系仍成立;**the other way around / round** 意思接近、更口语,常用来纠正"其实是反过来的":*It's actually the other way around.*
+
+---
+
+<a id="t-set-apart"></a>
+## 自测:我们想把元信息部分和答案部分(在界面上)区分开。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> We want to visually separate the metadata from the answer.
+> We want to set the answer apart from the meta section.
+> We want to make the answer stand out from the metadata.
+
+**要点:**
+
+- **separate A from B** —— 把 A 和 B 分开,最直接;加 **visually** 说明是界面上的区分。
+- **set sth apart (from sth)** —— 让某部分和其他部分区分开、更显眼,偏书面。
+- **make sth stand out (from sth)** —— 让某物突出、显眼,更口语。
+
+---
+
+<a id="t-more-prominent"></a>
+## 自测:我们还想让「再试一次」按钮更醒目。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> We'd also like to make the "Try again" button more prominent.
+
+**要点:**
+
+- **make sth more prominent** —— 让某物更醒目,说 UI 时最常用;**eye-catching** 也对,但偏宣传口吻。
+- **the X button** —— 按钮名放在 button 前面:*the Submit button*、*the "Try again" button*。
+- **We'd also like to …** —— 比句首 *And we want …* 更礼貌、更书面。
+
+**我的原句:**
+
+> and we want to make the button 再试一次 more eye-catching.
+
+- ⚠️ [结构] **the button 再试一次** → **the "Try again" button**(按钮名放在 button 前)。
+- ✅ **eye-catching** —— 意思清楚,日常使用完全够用;说界面时 **more prominent** 更常见、更专业。

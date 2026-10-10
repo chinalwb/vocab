@@ -2,10 +2,16 @@ package io.github.chinalwb.vocab.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -66,19 +72,83 @@ import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.stageOf
 
+private const val SORT_LEVEL = "LEVEL"
+private const val SORT_NEW = "NEW"
+private const val SORT_OLD = "OLD"
+private val SORTS = listOf(SORT_LEVEL to "按级别", SORT_NEW to "最新收录", SORT_OLD to "最早收录")
+
+private fun levelHeader(level: String) = levelStyle(level).let { "${it.short} · ${it.name}" }
+
+/** "2026-10-09" (a leading ~ marks a guessed date); undated entries sort as oldest. */
+private fun dateKey(e: Entry) = e.date.removePrefix("~").trim()
+
+private fun monthHeader(key: String): String =
+    Regex("^(\\d{4})-(\\d{2})").find(key)?.destructured?.let { (y, m) -> "$y 年 ${m.toInt()} 月" } ?: "没有日期"
+
 private const val ALL = "ALL"
 private const val WORD = "WORD"
 private val CEFR = listOf("A1", "A2", "B1", "B2", "C1", "C2")
 private val TYPES = listOf(ALL to "全部", WORD to "单词", "TERM" to "术语", "GRAMMAR" to "语法", "SENTENCE" to "句子", "SELFTEST" to "自测题")
 
-/** A labelled, horizontally scrolling row of chips; the label keeps its own column. */
+/**
+ * "name(动词,"指定"义)" → "name" + "动词,"指定"义": the headword stays big, the trailing
+ * parenthetical becomes a small note. Titles without one come back whole.
+ */
+private fun splitTitle(t: String): Pair<String, String?> {
+    val m = Regex("""^(.+?)\s*[((](.+)[))]$""").find(t.trim()) ?: return t to null
+    return m.groupValues[1] to m.groupValues[2]
+}
+
+/** 48dp filled search box; Material's text fields have a 56dp minimum. */
 @Composable
-private fun FilterRow(label: String, content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit) {
-    androidx.compose.foundation.layout.Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.width(40.dp))
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically, content = content)
+internal fun SearchField(value: String, onChange: (String) -> Unit, modifier: Modifier = Modifier, onSearch: () -> Unit = {}) {
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    androidx.compose.foundation.text.BasicTextField(
+        value = value,
+        onValueChange = onChange,
+        singleLine = true,
+        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Search),
+        keyboardActions = androidx.compose.foundation.text.KeyboardActions(onSearch = { onSearch() }),
+        textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
+        cursorBrush = androidx.compose.ui.graphics.SolidColor(MaterialTheme.colorScheme.onSurface),
+        modifier = modifier.height(48.dp),
+        decorationBox = { field ->
+            androidx.compose.foundation.layout.Row(
+                Modifier.fillMaxSize().glassFlat(RoundedCornerShape(50)).padding(start = 14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(Icons.Default.Search, null, tint = muted, modifier = Modifier.size(20.dp))
+                Box(Modifier.weight(1f).padding(horizontal = 10.dp)) {
+                    if (value.isEmpty()) Text("搜索单词、释义,或编号 #12…", color = muted, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.bodyLarge)
+                    field()
+                }
+                if (value.isNotEmpty()) IconButton(onClick = { onChange("") }) { Icon(Icons.Default.Clear, "清空", tint = muted) }
+            }
+        },
+    )
+}
+
+/** A titled group of chips in the 筛选 sheet; the chips wrap. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun FilterSection(label: String, content: @Composable () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), itemVerticalAlignment = Alignment.CenterVertically) { content() }
     }
+}
+
+/** Three narrowing lines, the page's 筛选 icon (icons-core has no FilterList). */
+internal val FilterIcon: androidx.compose.ui.graphics.vector.ImageVector by lazy {
+    androidx.compose.ui.graphics.vector.ImageVector.Builder("filter", 24.dp, 24.dp, 24f, 24f).apply {
+        addPath(
+            androidx.compose.ui.graphics.vector.PathParser().parsePathString("M4 6h16M7 12h10M10 18h4").toNodes(),
+            stroke = androidx.compose.ui.graphics.SolidColor(androidx.compose.ui.graphics.Color.Black),
+            strokeLineWidth = 1.8f,
+            strokeLineCap = androidx.compose.ui.graphics.StrokeCap.Round,
+        )
+    }.build()
 }
 
 @Composable
@@ -88,21 +158,25 @@ private fun Dot(color: androidx.compose.ui.graphics.Color) {
 
 @Composable
 private fun CheckToggle(label: String, checked: Boolean, onToggle: () -> Unit) {
+    // the whole row is the touch target, so the box itself can line up with the chips above
     androidx.compose.foundation.layout.Row(
-        Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onToggle).padding(end = 8.dp),
+        Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onToggle).heightIn(min = 40.dp).padding(end = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        androidx.compose.material3.Checkbox(checked, { onToggle() })
+        androidx.compose.runtime.CompositionLocalProvider(
+            androidx.compose.material3.LocalMinimumInteractiveComponentSize provides androidx.compose.ui.unit.Dp.Unspecified,
+        ) { androidx.compose.material3.Checkbox(checked, null) }
         Text(label, style = MaterialTheme.typography.labelLarge)
     }
 }
 
-/** "试 N · 对 M" for 自测 entries, null for everything else. */
-private fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
-    if (e.level == "SELFTEST") countsShort(this[e.anchor].orEmpty()) else null
+/** "试 N · 对 M" for 自测题 and anything I've tried in 自测, null for everything else. */
+internal fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
+    if (e.level == "SELFTEST" || !this[e.anchor].isNullOrEmpty()) countsShort(this[e.anchor].orEmpty()) else null
 
 /** The card's 进度 note: nothing for where an entry starts, like the page's .stg. */
-private fun stageFoot(e: Entry, s: Stage): String? = when {
+internal fun stageFoot(e: Entry, s: Stage): String? = when {
     s == Stage.Done -> "✓ 已掌握"
     s == Stage.Test && e.level != "SELFTEST" -> "自测中"
     else -> null
@@ -125,10 +199,16 @@ fun BrowseScreen(
     selfTests: Map<String, List<Attempt>> = emptyMap(),
     /** 进度 moves by anchor (StageStore). */
     stages: Map<String, String> = emptyMap(),
+    /** The 筛选与排序 sheet; the 筛选 icon lives in the top bar now. */
+    sheetOpen: Boolean = false,
+    onSheetOpen: (Boolean) -> Unit = {},
+    /** How many filters / a non-default sort are on, for the icon's dot. */
+    onActiveCount: (Int) -> Unit = {},
 ) {
     var stageF by rememberSaveable { mutableStateOf<Stage?>(null) }
     val foot = { e: Entry -> listOfNotNull(selfTests.stFoot(e), stageFoot(e, stages.stageOf(e))).joinToString(" · ").ifEmpty { null } }
-    var query by rememberSaveable { mutableStateOf("") }
+    // 排序: by level (grouped, the default) or by 收录 date, newest / oldest first, grouped by month
+    var sortF by rememberSaveable { mutableStateOf(SORT_LEVEL) }
     // 筛选, same as the page: 类型 (ALL / WORD / TERM …, with a CEFR sub-row under WORD) and
     // 进度, each single-choice; 只看会写 and 有更新 are toggles that narrow the rest.
     var typeF by rememberSaveable { mutableStateOf(ALL) }
@@ -142,15 +222,33 @@ fun BrowseScreen(
         typeF == ALL || typeF == lvl || (typeF == WORD && lvl in CEFR && (cefrF == null || cefrF == lvl))
     }
 
-    val groups = remember(entries, query, typeF, cefrF, changed, changedOnly, writeOnly, stageF, stages) {
-        val q = query.trim().lowercase()
-        // "12" or "#12" jumps to entry #12, like the page's search
-        val numQ = Regex("^#?(\\d+)$").find(q)?.groupValues?.get(1)?.toInt()
-        val shown = entries.filter { e ->
-            (if (numQ != null) e.no == numQ else q.isEmpty() || q in e.searchText) && (!writeOnly || e.writes) &&
-                (stageF == null || stages.stageOf(e) == stageF) && (!changedOnly || e.anchor in changed) && levelShown(e.level)
-        }.groupBy { it.level }
-        GROUP_ORDER.mapNotNull { lvl -> shown[lvl]?.let { lvl to it } }
+    // what the toggles leave; the chip rows and the list narrow it further (search has its own page)
+    val base = remember(entries, changed, changedOnly, writeOnly) {
+        entries.filter { e -> (!writeOnly || e.writes) && (!changedOnly || e.anchor in changed) }
+    }
+    // (header label, entries): level groups, or month groups when sorted by date
+    val groups = remember(base, typeF, cefrF, stageF, stages, sortF) {
+        val shown = base.filter { e -> (stageF == null || stages.stageOf(e) == stageF) && levelShown(e.level) }
+        if (sortF == SORT_LEVEL) shown.groupBy { it.level }.let { g -> GROUP_ORDER.mapNotNull { lvl -> g[lvl]?.let { levelHeader(lvl) to it } } }
+        else {
+            val newest = compareByDescending<Entry> { dateKey(it) }.thenByDescending { it.no }
+            shown.sortedWith(if (sortF == SORT_NEW) newest else newest.reversed())
+                .groupBy { monthHeader(dateKey(it)) }.toList()
+        }
+    }
+    // chip counts: each row counts what its chips would show with every other filter kept, like the page
+    val levelCounts = remember(base, stageF, stages) {
+        base.filter { stageF == null || stages.stageOf(it) == stageF }.groupingBy { it.level }.eachCount()
+    }
+    val stageCounts = remember(base, typeF, cefrF, stages) {
+        base.filter { levelShown(it.level) }.groupingBy { stages.stageOf(it) }.eachCount()
+    }
+    val typeCount = { k: String ->
+        when (k) {
+            ALL -> levelCounts.values.sum()
+            WORD -> CEFR.sumOf { levelCounts[it] ?: 0 }
+            else -> levelCounts[k] ?: 0
+        }
     }
 
     if (lib.data == null && lib.loadError == null) {
@@ -164,50 +262,81 @@ fun BrowseScreen(
             else -> null
         }
     }
-    val search: @Composable () -> Unit = {
-        OutlinedTextField(
-            value = query,
-            onValueChange = { query = it },
-            placeholder = { Text("搜索单词、释义,或编号 #12…") },
-            leadingIcon = { Icon(Icons.Default.Search, null) },
-            trailingIcon = {
-                if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Default.Clear, "清空") }
-            },
-            singleLine = true,
-            shape = RoundedCornerShape(50),
-            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-        )
+    val shownCount = groups.sumOf { it.second.size }
+    val clearAll = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false; sortF = SORT_LEVEL }
+    // what's on, as removable chips under the search; the same list drives the button's badge
+    val active = buildList {
+        if (typeF != ALL) add((TYPES.first { it.first == typeF }.second + (cefrF?.let { " · $it" } ?: "")) to { typeF = ALL; cefrF = null })
+        stageF?.let { add(it.label to { stageF = null }) }
+        if (writeOnly) add("只看会写" to { writeOnly = false })
+        if (changedOnly) add("有更新" to { changedOnly = false })
+        if (sortF != SORT_LEVEL) add(SORTS.first { it.first == sortF }.second to { sortF = SORT_LEVEL })
     }
+    androidx.compose.runtime.LaunchedEffect(active.size) { onActiveCount(active.size) }
     val filters: @Composable () -> Unit = {
-        val present = entries.map { it.level }.toSet()
-        val anyFilter = typeF != ALL || stageF != null || writeOnly || changedOnly
-        Column(Modifier.padding(vertical = 6.dp)) {
-            FilterRow("类型") {
-                items(TYPES.filter { (k, _) -> k == ALL || k == WORD && CEFR.any { it in present } || k in present }) { (k, label) ->
-                    FilterChip(typeF == k, { typeF = k; if (k != WORD) cefrF = null }, { Text(label) },
-                        leadingIcon = if (k in LEVELS) ({ Dot(levelColor(k)) }) else null)
+        if (active.isNotEmpty()) FlowRow(
+            Modifier.fillMaxWidth().padding(top = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            itemVerticalAlignment = Alignment.CenterVertically,
+        ) {
+            active.forEach { (label, off) ->
+                androidx.compose.material3.InputChip(
+                    selected = false, onClick = off, label = { Text(label) },
+                    trailingIcon = { Icon(Icons.Default.Clear, "去掉筛选:$label", Modifier.size(16.dp)) },
+                )
+            }
+            Text("共 $shownCount 条", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f).wrapContentWidth(Alignment.End))
+        }
+        if (sheetOpen) androidx.compose.material3.ModalBottomSheet(
+            onDismissRequest = { onSheetOpen(false) },
+            sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            // the sheet lives in its own window, out of reach of the haze, so no blur: nearly opaque
+            // with a glass rim (at 90% the cards' text showed through and fought with the chips)
+            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.97f),
+            scrimColor = Color.Black.copy(alpha = 0.25f),
+            tonalElevation = 0.dp,
+            modifier = Modifier.border(1.dp, glassRim(), RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)),
+        ) {
+            val present = entries.map { it.level }.toSet()
+            Column(
+                Modifier.padding(horizontal = 20.dp).padding(bottom = 16.dp).verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                androidx.compose.foundation.layout.Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("筛选与排序", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                    if (active.isNotEmpty()) TextButton(onClick = clearAll) { Text("重置") }
+                }
+                FilterSection("排序") {
+                    SORTS.forEach { (k, label) -> FilterChip(sortF == k, { sortF = k }, { Text(label) }) }
+                }
+                FilterSection("类型") {
+                    TYPES.filter { (k, _) -> k == ALL || k == WORD && CEFR.any { it in present } || k in present }.forEach { (k, label) ->
+                        FilterChip(typeF == k, { typeF = k; if (k != WORD) cefrF = null }, { Text("$label ${typeCount(k)}") },
+                            leadingIcon = if (k in LEVELS) ({ Dot(levelColor(k)) }) else null)
+                    }
+                }
+                if (typeF == WORD) FilterSection("级别") {
+                    FilterChip(cefrF == null, { cefrF = null }, { Text("全部 ${typeCount(WORD)}") })
+                    CEFR.filter { it in present }.forEach { c ->
+                        FilterChip(cefrF == c, { cefrF = c }, { Text("$c ${levelCounts[c] ?: 0}") }, leadingIcon = { Dot(levelColor(c)) })
+                    }
+                }
+                FilterSection("进度") {
+                    FilterChip(stageF == null, { stageF = null }, { Text("全部 ${stageCounts.values.sum()}") })
+                    Stage.entries.forEach { s ->
+                        FilterChip(stageF == s, { stageF = s }, { Text("${s.label} ${stageCounts[s] ?: 0}") })
+                    }
+                }
+                // toggles narrow everything else, so they are checkboxes rather than another chip
+                FilterSection("选项") {
+                    CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly }
+                    if (changed.isNotEmpty()) CheckToggle("有更新 ${changed.size}", changedOnly) { changedOnly = !changedOnly }
+                }
+                androidx.compose.material3.Button(onClick = { onSheetOpen(false) }, modifier = Modifier.fillMaxWidth().height(48.dp)) {
+                    Text(if (shownCount > 0) "显示 $shownCount 条" else "没有匹配的条目")
                 }
             }
-            if (typeF == WORD) FilterRow("") {
-                item { FilterChip(cefrF == null, { cefrF = null }, { Text("全部") }) }
-                items(CEFR.filter { it in present }) { c ->
-                    FilterChip(cefrF == c, { cefrF = c }, { Text(c) }, leadingIcon = { Dot(levelColor(c)) })
-                }
-            }
-            FilterRow("进度") {
-                item { FilterChip(stageF == null, { stageF = null }, { Text("全部") }) }
-                items(Stage.entries) { s ->
-                    FilterChip(stageF == s, { stageF = s }, { Text("${s.label} ${entries.count { stages.stageOf(it) == s }}") })
-                }
-                // toggles, drawn as checkboxes so they don't read as another choice in the row
-                item { CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly } }
-                if (changed.isNotEmpty()) item { CheckToggle("有更新 ${changed.size}", changedOnly) { changedOnly = !changedOnly } }
-            }
-            if (anyFilter) TextButton(
-                onClick = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false },
-                contentPadding = PaddingValues(horizontal = 8.dp),
-                modifier = Modifier.align(Alignment.End).height(32.dp),
-            ) { Text("清除筛选", style = MaterialTheme.typography.labelMedium) }
         }
     }
     val status: @Composable () -> Unit = {
@@ -220,8 +349,8 @@ fun BrowseScreen(
         }
     }
     val padding = PaddingValues(
-        start = 16.dp,
-        end = 16.dp,
+        start = 8.dp,
+        end = 8.dp,
         top = contentPadding.calculateTopPadding(),
         bottom = contentPadding.calculateBottomPadding() + 24.dp,
     )
@@ -252,7 +381,6 @@ fun BrowseScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalItemSpacing = 8.dp,
             ) {
-                item(span = StaggeredGridItemSpan.FullLine) { search() }
                 item(span = StaggeredGridItemSpan.FullLine) { filters() }
                 item(span = StaggeredGridItemSpan.FullLine) { status() }
                 gridItems(groups.flatMap { it.second }, key = { it.anchor }) { e ->
@@ -261,13 +389,12 @@ fun BrowseScreen(
             }
         } else {
             LazyColumn(state = listState, contentPadding = padding) {
-                item { search() }
                 item { filters() }
                 item { status() }
                 groups.forEach { (lvl, list) ->
                     stickyHeader(key = "h-$lvl") {
                         GroupHeader(
-                            lvl, list.size,
+                            "$lvl · ${list.size}",
                             // The list runs under the status bar now; nudge a header that is
                             // pinned (or about to be) down so it never sits behind the clock.
                             Modifier.graphicsLayer {
@@ -289,10 +416,9 @@ fun BrowseScreen(
 }
 
 @Composable
-private fun GroupHeader(level: String, count: Int, modifier: Modifier = Modifier) {
-    val s = levelStyle(level)
+private fun GroupHeader(label: String, modifier: Modifier = Modifier) {
     Text(
-        "${s.short} · ${s.name} · $count",
+        label,
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier
@@ -306,67 +432,87 @@ private fun GroupHeader(level: String, count: Int, modifier: Modifier = Modifier
 private fun Badge(text: String) {
     Text(
         text,
-        style = MaterialTheme.typography.labelSmall,
+        style = MaterialTheme.typography.labelMedium,
         color = MaterialTheme.colorScheme.onPrimary,
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50))
-            .padding(horizontal = 8.dp, vertical = 2.dp),
+            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(8.dp))
+            .padding(horizontal = 9.dp, vertical = 3.dp),
     )
 }
 
-/** A compact note for the tile grid — the gloss is cut shorter than in the list. */
+/**
+ * A note on the wall, after Google Keep: plain sans-serif text in a soft hierarchy (title,
+ * then IPA and gloss a step lighter), roomy padding, large corners, and the facts that used
+ * to be a "#49 · A1 · 自测中" line as small label pills at the bottom.
+ */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .sharedEntryContainer(e.anchor, RoundedCornerShape(8.dp))
-            .clip(RoundedCornerShape(8.dp))
+            .sharedEntryContainer(e.anchor, RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(levelColor(e.level))
             .clickable(onClick = onClick)
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        if (badge != null) Badge(badge)
+        val (head, note) = splitTitle(e.title)
+        val ink = LocalContentColor.current
         Text(
-            e.title,
-            fontFamily = FontFamily.Serif,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
-            lineHeight = 21.sp,
+            head,
+            fontSize = 17.sp,
+            lineHeight = 23.sp,
+            fontWeight = FontWeight.Medium,
             maxLines = 4,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.sharedEntryTitle(e.anchor),
         )
-        if (e.ipa.isNotEmpty()) {
-            Text(e.ipa, style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        }
-        if (e.gloss.isNotEmpty()) {
-            Text(plain(e.gloss), style = MaterialTheme.typography.bodySmall, maxLines = 6, overflow = TextOverflow.Ellipsis)
-        }
-        Text(
-            listOfNotNull(e.no.takeIf { it > 0 }?.let { "#$it" }, levelStyle(e.level).short, foot).joinToString(" · "),
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier
-                .padding(top = 4.dp)
-                .border(1.dp, LocalContentColor.current.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
-                .padding(horizontal = 6.dp, vertical = 1.dp),
+        if (note != null) Text(note, fontSize = 13.sp, lineHeight = 18.sp, color = ink.copy(alpha = 0.6f), maxLines = 2, overflow = TextOverflow.Ellipsis)
+        if (e.ipa.isNotEmpty()) Text(e.ipa, fontSize = 14.sp, color = ink.copy(alpha = 0.7f), maxLines = 2, overflow = TextOverflow.Ellipsis)
+        if (e.gloss.isNotEmpty()) Text(
+            cardGloss(e.gloss), fontSize = 14.sp, lineHeight = 20.sp, color = ink.copy(alpha = 0.8f),
+            maxLines = 5, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 2.dp),
         )
+        Labels(e, badge, foot, Modifier.padding(top = 6.dp))
+    }
+}
+
+/** The gloss as a card shows it: a leading "释义:" says nothing on a card. */
+private fun cardGloss(g: String) = plain(g).replaceFirst(Regex("^释义\\s*[::]\\s*"), "")
+
+/** The bottom pills: 新 / 已更新 first (filled), then the level, then 自测中 / 已掌握 / 试 N · 对 M. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun Labels(e: Entry, badge: String?, foot: String?, modifier: Modifier = Modifier) {
+    val dark = androidx.compose.foundation.isSystemInDarkTheme()
+    val pill = if (dark) Color.White.copy(alpha = 0.1f) else Color.White.copy(alpha = 0.6f)
+    FlowRow(modifier, horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        if (badge != null) Badge(badge)
+        (listOf(levelStyle(e.level).short) + foot.orEmpty().split(" · ").filter { it.isNotBlank() }).forEach {
+            Text(it, style = MaterialTheme.typography.labelMedium, color = LocalContentColor.current.copy(alpha = 0.8f),
+                modifier = Modifier.background(pill, RoundedCornerShape(8.dp)).padding(horizontal = 9.dp, vertical = 3.dp))
+        }
     }
 }
 
 @Composable
 private fun SyncStatus(lib: LibraryState, changed: Int, onMarkAllSeen: () -> Unit) {
-    val data = lib.data ?: return
-    val checked = lib.lastChecked?.let { "上次检查 ${ago(it)}" } ?: "尚未联网检查(使用内置词库)"
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+    lib.data ?: return
+    // pull-to-refresh already says "checked just now"; only speak up when there is news
+    val text = when {
+        // news shows as 新 / 已更新 pills on the cards and 全部标为已读 in the ⋮ menu
+        lib.lastChecked == null -> "尚未联网检查(使用内置词库)"
+        else -> return
+    }
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
         Text(
-            "$checked · 词库生成于 ${data.generated.take(10)}",
+            text,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f),
         )
-        if (changed > 0) TextButton(onClick = onMarkAllSeen) { Text("全部标为已读") }
     }
 }
 
@@ -381,40 +527,37 @@ private fun ago(t: Long): String {
 }
 
 @Composable
-private fun EntryCard(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
-    Box(
+internal fun EntryCard(e: Entry, badge: String?, foot: String?, shared: Boolean = true, onClick: () -> Unit) {
+    // the list's wider version of the wall's note: same type, same pills, the date at the end
+    val shape = RoundedCornerShape(16.dp)
+    Column(
         Modifier
             .fillMaxWidth()
-            .sharedEntryContainer(e.anchor, RoundedCornerShape(4.dp))
-            .background(levelColor(e.level), RoundedCornerShape(4.dp))
+            .then(if (shared) Modifier.sharedEntryContainer(e.anchor, shape) else Modifier)
+            .clip(shape)
+            .background(levelColor(e.level))
             .clickable(onClick = onClick)
-            .padding(14.dp)
+            .padding(horizontal = 18.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    e.title,
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 19.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f).sharedEntryTitle(e.anchor),
-                )
-                if (badge != null) Badge(badge)
-            }
-            val sub = listOf(e.ipa, e.pos).filter { it.isNotEmpty() }.joinToString("  ")
-            if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.bodySmall)
-            if (e.gloss.isNotEmpty()) {
-                Text(plain(e.gloss), style = MaterialTheme.typography.bodyMedium, maxLines = 3, overflow = TextOverflow.Ellipsis)
-            }
-            if (e.date.isNotEmpty()) {
-                Text(
-                    listOfNotNull(e.no.takeIf { it > 0 }?.let { "#$it" }, foot, if (e.writes) "会写" else null, e.date).joinToString(" · "),
-                    style = MaterialTheme.typography.labelSmall,
-                    modifier = Modifier.align(Alignment.End),
-                )
-            }
+        val (head, note) = splitTitle(e.title)
+        val ink = LocalContentColor.current
+        Text(
+            head,
+            fontSize = 19.sp,
+            lineHeight = 25.sp,
+            fontWeight = FontWeight.Medium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = if (shared) Modifier.sharedEntryTitle(e.anchor) else Modifier,
+        )
+        if (note != null) Text(note, fontSize = 13.sp, color = ink.copy(alpha = 0.6f))
+        val sub = listOf(e.ipa, e.pos).filter { it.isNotEmpty() }.joinToString("  ")
+        if (sub.isNotEmpty()) Text(sub, fontSize = 14.sp, color = ink.copy(alpha = 0.7f))
+        if (e.gloss.isNotEmpty()) Text(cardGloss(e.gloss), fontSize = 15.sp, lineHeight = 21.sp, color = ink.copy(alpha = 0.8f), maxLines = 3, overflow = TextOverflow.Ellipsis)
+        Row(Modifier.padding(top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+            Labels(e, badge, listOfNotNull(foot, if (e.writes) "会写" else null).joinToString(" · ").ifEmpty { null }, Modifier.weight(1f))
+            if (e.date.isNotEmpty()) Text(e.date, style = MaterialTheme.typography.labelSmall, color = ink.copy(alpha = 0.55f))
         }
     }
 }

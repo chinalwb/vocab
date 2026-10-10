@@ -14,7 +14,7 @@ import java.io.File
 
 /** One reveal of a 自测 entry. A blank [text] is a 偷看 (looked at the answer without writing). */
 @Serializable
-data class Attempt(val t: Long, val text: String, val ok: Boolean, /** "entry" or "review" */ val via: String)
+data class Attempt(val t: Long, val text: String, val ok: Boolean, /** "entry", "review" or "selftest" (the 自测 tab) */ val via: String)
 
 data class AttemptSummary(val tries: Int, val ok: Int, val peeks: Int, val last: Attempt?)
 

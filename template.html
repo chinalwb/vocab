@@ -40,6 +40,10 @@
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
 
   --err:#c2412d; --warn:#b7791f; --mk:#ffffff; --tag:#ece9e0; --tag-ink:#4a4944;
+  /* liquid glass (after iOS 26): frosted controls floating over the cards */
+  --glass:rgba(247,246,242,.55); --glass-strong:rgba(247,246,242,.78);
+  --glass-fill:rgba(255,255,255,.66); --glass-rim:rgba(255,255,255,.9); --glass-edge:rgba(31,31,30,.09);
+  --glass-shadow:0 8px 28px rgba(31,31,30,.12), 0 1px 2px rgba(31,31,30,.06);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -71,6 +75,9 @@
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
     --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
+  --glass:rgba(27,27,25,.55); --glass-strong:rgba(27,27,25,.8);
+  --glass-fill:rgba(255,255,255,.06); --glass-rim:rgba(255,255,255,.14); --glass-edge:rgba(255,255,255,.08);
+  --glass-shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.3);
   }
 }
 :root[data-theme="dark"]{
@@ -102,6 +109,9 @@
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
   --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
+  --glass:rgba(27,27,25,.55); --glass-strong:rgba(27,27,25,.8);
+  --glass-fill:rgba(255,255,255,.06); --glass-rim:rgba(255,255,255,.14); --glass-edge:rgba(255,255,255,.08);
+  --glass-shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.3);
 }
 
 *{box-sizing:border-box}
@@ -118,9 +128,9 @@ body{
 /* ── header ─────────────────────────────── */
 .top{
   position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
-  background:color-mix(in srgb, var(--ground) 92%, transparent);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--rule);
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+  border-bottom:1px solid var(--glass-edge);
   margin-inline:-16px;padding:14px 16px 12px;
 }
 .brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
@@ -142,28 +152,63 @@ h1{
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .search{
   flex:1 1 200px;min-width:0;max-width:320px;
-  background:var(--chip);color:var(--ink);
-  border:1px solid var(--rule);border-radius:999px;
+  background:var(--glass-fill);color:var(--ink);
+  border:1px solid var(--glass-edge);border-radius:999px;box-shadow:inset 0 1px 0 var(--glass-rim);
   padding:7px 14px;font:inherit;font-size:13.5px;
 }
 .search::placeholder{color:var(--ink-3)}
 .search:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
-.filters{display:flex;flex-direction:column;gap:6px;flex:1 1 100%}
-.frow{display:flex;gap:6px;align-items:flex-start}
-.fp{flex:1;min-width:0;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.frow.sub .pill{padding:3px 10px;font-size:11.5px}
-.flab{flex:0 0 38px;padding-top:6px;font-size:11.5px;font-weight:600;letter-spacing:.08em;color:var(--ink-3)}
-.frow.sub .flab{visibility:hidden}
-.wr-box{
-  font:inherit;font-size:12px;font-weight:500;letter-spacing:.03em;color:var(--ink-2);
-  background:none;border:0;padding:5px 4px;margin-left:6px;cursor:pointer;
-  display:inline-flex;align-items:center;gap:6px;
+.fbtn{
+  font:inherit;font-size:13px;font-weight:500;color:var(--ink-2);
+  background:var(--glass-fill);border:1px solid var(--glass-edge);border-radius:999px;box-shadow:inset 0 1px 0 var(--glass-rim);
+  padding:6px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
 }
-.wr-box .box{width:14px;height:14px;border:1.5px solid var(--ink-3);border-radius:4px;display:inline-grid;place-items:center}
+.fbtn[aria-expanded="true"],.fbtn.on{border-color:var(--ink-3);color:var(--ink)}
+.fbtn:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.fb-n{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--chip-on);color:var(--chip-on-ink);font-size:11px;font-weight:600;display:inline-grid;place-items:center;font-variant-numeric:tabular-nums}
+.fsum{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:12px}
+.fsum:empty{display:none}
+.fchip{font:inherit;font-size:12px;color:var(--ink);background:var(--chip);border:1px solid var(--rule);border-radius:999px;padding:3px 6px 3px 11px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.fchip span{opacity:.55;font-size:13px;line-height:1;padding:0 3px}
+.fchip:hover span{opacity:1}
+.fchip:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.fsum .cnt{margin-left:auto;color:var(--ink-3);font-variant-numeric:tabular-nums}
+/* the panel: a bottom sheet on phones, a dropdown under 筛选 on wider screens */
+.fback{position:fixed;inset:0;z-index:40;background:rgb(0 0 0 / .18)}
+.fsheet{
+  position:fixed;z-index:41;left:0;right:0;bottom:0;max-height:85vh;overflow:auto;
+  background:var(--glass-strong);color:var(--ink);border-radius:20px 20px 0 0;
+  -webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);
+  border-top:1px solid var(--glass-edge);
+  box-shadow:inset 0 1px 0 var(--glass-rim), 0 -8px 30px rgb(0 0 0 / .18);
+  padding:0 16px calc(12px + env(safe-area-inset-bottom,0px));
+}
+.fsh-head{position:sticky;top:0;display:flex;align-items:center;padding:14px 0 10px;font-size:15px}
+.fsh-grab{position:absolute;top:6px;left:50%;width:36px;height:4px;margin-left:-18px;border-radius:2px;background:var(--rule)}
+.fsh-head .fclear{margin-left:auto}
+.filters{display:flex;flex-direction:column;gap:14px}
+.frow{display:flex;flex-direction:column;gap:7px}
+.fp{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.flab{font-size:11.5px;font-weight:600;letter-spacing:.08em;color:var(--ink-3)}
+.fsh-foot{position:sticky;bottom:0;padding:14px 0 2px}
+.fgo{width:100%;font:inherit;font-size:14px;font-weight:600;padding:10px;border-radius:999px;border:0;cursor:pointer;background:var(--chip-on);color:var(--chip-on-ink)}
+.fgo:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (min-width:640px){
+  .fback{background:transparent}
+  .fsheet{left:auto;right:auto;bottom:auto;width:440px;max-height:75vh;border-radius:18px;border:1px solid var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-rim), var(--glass-shadow);padding-bottom:12px}
+  .fsh-grab{display:none}
+  .fsh-foot{display:none}
+}
+.wr-box{
+  font:inherit;font-size:12.5px;font-weight:500;letter-spacing:.03em;color:var(--ink-2);
+  background:none;border:0;padding:4px 2px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.wr-box .box{width:15px;height:15px;border:1.5px solid var(--ink-3);border-radius:4px;display:inline-grid;place-items:center}
 .wr-box[aria-checked="true"] .box{background:var(--chip-on);border-color:var(--chip-on)}
 .wr-box[aria-checked="true"] .box::after{content:"";width:7px;height:4px;border:2px solid var(--chip-on-ink);border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg)}
 .wr-box:focus-visible,.fclear:focus-visible{outline:2px solid var(--ink);outline-offset:1px;border-radius:6px}
-.fclear{font:inherit;font-size:12px;color:var(--ink-3);background:none;border:0;padding:5px 4px;margin-left:auto;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.fclear{font:inherit;font-size:13px;color:var(--ink-3);background:none;border:0;padding:4px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .pill{
   font:inherit;font-size:12px;font-weight:500;letter-spacing:.03em;
   background:var(--chip);color:var(--ink-2);
@@ -239,6 +284,7 @@ h1{
 /* ── modal ──────────────────────────────── */
 .scrim{
   position:fixed;inset:0;z-index:50;background:var(--scrim);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
   display:flex;align-items:flex-start;justify-content:center;
   padding:max(24px,env(safe-area-inset-top,0px)) 16px 40px;overflow-y:auto;
 }
@@ -451,7 +497,18 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 /* ── 进度:学习中 → 自测 → 已掌握 ─────────── */
 .foot .stg{font-weight:700;letter-spacing:.04em}
 .pill .n{opacity:.6;font-variant-numeric:tabular-nums}
-.stage{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-6px 0 16px;font-size:12.5px;color:var(--card-ink-2)}
+.stage{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;margin:-6px 0 16px;font-size:12.5px;color:var(--card-ink-2)}
+.stage .steps{display:inline-flex;align-items:center;gap:6px}
+.stage .step{opacity:.7}
+.stage .step.on{opacity:1;font-weight:600;color:var(--card-ink);background:color-mix(in srgb, var(--card-ink) 9%, transparent);border-radius:7px;padding:2px 8px}
+.stage .arr{opacity:.4}
+.stage .moves{display:inline-flex;align-items:center;gap:10px}
+.sheet .quiz{background:color-mix(in srgb, var(--card-ink) 6%, transparent);border-radius:14px;padding:14px 16px;margin:0 0 22px}
+.sheet .quiz>:first-child{margin-top:0}
+.sheet .quiz>:last-child,.sheet .quiz .st-res>:last-child{margin-bottom:0}
+.btn.retry{margin-top:4px}
+.notes-h{display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--card-ink-2);margin:0 0 12px}
+.notes-h::after{content:"";flex:1;border-top:1px solid var(--card-edge)}
 .stage b{color:var(--card-ink)}
 .stage .btn{font-size:12.5px;padding:5px 13px}
 /* the 自测 quiz inside an entry borrows the review card's prompt styles */
@@ -470,6 +527,21 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
   .rcard{padding:16px 16px}
   .grades{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+.prac{margin-top:28px;border-top:1px solid var(--rule);padding-top:14px}
+.prac>summary{cursor:pointer;font-weight:600;font-size:15px;list-style-position:outside;padding:4px 0}
+.prac[open]>summary{margin-bottom:12px}
+/* phones: the view tabs become a floating glass capsule at the bottom, like the app's */
+.tabs.float{
+  position:fixed;z-index:30;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));
+  margin:0;padding:5px;gap:4px;border:1px solid var(--glass-edge);border-radius:999px;overflow:visible;
+  background:var(--glass);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+  box-shadow:inset 0 1px 0 var(--glass-rim), var(--glass-shadow);
+}
+.tabs.float .tab{flex:1;margin:0;border:0;border-radius:999px;padding:9px 4px;font-size:13.5px}
+.tabs.float .tab[aria-selected="true"]{background:color-mix(in srgb, var(--ink) 9%, transparent);font-weight:600}
+.tabs.float .tab .n{display:none}
+.tabs.float .tab:focus-visible{outline-offset:-3px;border-radius:999px}
+@media (max-width:639px){ .wrap{padding-block-end:110px} }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
@@ -486,8 +558,11 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
     <nav class="tabs" id="tabs" aria-label="视图"></nav>
     <div class="tools" id="tools">
       <input class="search" id="q" type="search" placeholder="搜索单词、释义、语法点,或输入编号 #12…" autocomplete="off" aria-label="搜索">
-      <div class="filters" id="filters"></div>
+      <button class="fbtn" id="fbtn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="fsheet">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>筛选<span class="fb-n" id="fbn" hidden></span>
+      </button>
     </div>
+    <div class="fsum" id="fsum"></div>
   </header>
   <main id="board"></main>
   <section id="mistakes" hidden>
@@ -497,8 +572,15 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
     <div id="mboard"></div>
   </section>
   <section id="review" class="pane" hidden></section>
-  <section id="practice" class="pane" hidden></section>
+  <section id="selftest" class="pane" hidden></section>
+  <div id="practice"></div>
   <p class="empty" id="empty" hidden>没有匹配的条目。</p>
+  <div class="fback" id="fback" hidden></div>
+  <div class="fsheet" id="fsheet" role="dialog" aria-modal="true" aria-labelledby="fsh-t" hidden>
+    <div class="fsh-head"><span class="fsh-grab" aria-hidden="true"></span><b id="fsh-t">筛选</b><button class="fclear" id="freset" type="button">重置</button></div>
+    <div class="filters" id="filters"></div>
+    <div class="fsh-foot"><button class="fgo" id="fgo" type="button">显示</button></div>
+  </div>
 </div>
 
 <script>
@@ -589,6 +671,7 @@ if (!CEFR.includes(cefrF)) cefrF = "";
 const levelShown = lv => typeF === "ALL" || typeF === lv || (typeF === "WORD" && CEFR.includes(lv) && (!cefrF || cefrF === lv));
 // the 错题本 used to be a level pill; it is a tab now
 let view = store.get("vk.view", store.get("vk.level", "") === "MISTAKES" ? "mistakes" : "entries");
+if (view === "practice") view = "review";
 let writeOnly = store.get("vk.write", "0") === "1";
 
 const pill = (text, on, click, cls = "") => {
@@ -606,10 +689,33 @@ const row = (label, cls = "") => {
   filters.append(r);
   return r.lastChild;                       // the pills go in here; the label keeps its own column
 };
-const typeRow = row("类型"), cefrRow = row("级别", "sub"), stageRow = row("进度");
-const clearBtn = document.createElement("button");
-clearBtn.className = "fclear"; clearBtn.type = "button"; clearBtn.textContent = "清除筛选";
-clearBtn.addEventListener("click", () => { typeF = "ALL"; cefrF = ""; stageF = ""; writeOnly = false; saveFilters(); });
+const typeRow = row("类型"), cefrRow = row("级别", "sub"), stageRow = row("进度"), optRow = row("选项");
+const clearAll = () => { typeF = "ALL"; cefrF = ""; stageF = ""; writeOnly = false; saveFilters(); };
+const clearBtn = document.getElementById("freset");
+clearBtn.addEventListener("click", clearAll);
+const fbtn = document.getElementById("fbtn"), fbn = document.getElementById("fbn"), fsum = document.getElementById("fsum");
+const fsheet = document.getElementById("fsheet"), fback = document.getElementById("fback"), fgo = document.getElementById("fgo");
+function openFilters(){
+  fsheet.hidden = fback.hidden = false;
+  fbtn.setAttribute("aria-expanded", "true");
+  if (matchMedia("(min-width:640px)").matches) {     // dropdown: hang it under the button, kept on screen
+    const r = fbtn.getBoundingClientRect();
+    fsheet.style.top = (r.bottom + 6) + "px";
+    fsheet.style.left = Math.max(16, Math.min(r.left, innerWidth - fsheet.offsetWidth - 16)) + "px";
+  } else fsheet.style.top = fsheet.style.left = "";
+  (fsheet.querySelector('.pill[aria-pressed="true"]') || fsheet.querySelector(".pill")).focus();
+}
+function closeFilters(){
+  if (fsheet.hidden) return;
+  fsheet.hidden = fback.hidden = true;
+  fbtn.setAttribute("aria-expanded", "false");
+  fbtn.focus();
+}
+fbtn.addEventListener("click", () => fsheet.hidden ? openFilters() : closeFilters());
+fback.addEventListener("click", closeFilters);
+fgo.addEventListener("click", closeFilters);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !fsheet.hidden) { e.stopPropagation(); closeFilters(); } }, true);
+addEventListener("resize", () => { if (!fsheet.hidden) openFilters(); });
 
 function saveFilters(){
   store.set("vk.type", typeF); store.set("vk.cefr", cefrF);
@@ -622,23 +728,40 @@ function paintFilters(){
   cefrRow.querySelectorAll(".pill").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.c === cefrF)));
   stageRow.querySelectorAll("[data-s]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === stageF)));
   wr.setAttribute("aria-checked", String(writeOnly));
-  clearBtn.hidden = typeF === "ALL" && !stageF && !writeOnly;
+  // what's on stays visible after the panel closes: a removable chip per filter, a count on the button
+  const on = [];
+  if (typeF !== "ALL") on.push([TYPES.find(t => t[0] === typeF)[1] + (cefrF ? " · " + cefrF : ""), () => { typeF = "ALL"; cefrF = ""; }]);
+  if (stageF) on.push([STAGE_NAME[stageF], () => { stageF = ""; }]);
+  if (writeOnly) on.push(["只看会写", () => { writeOnly = false; }]);
+  fbn.hidden = !on.length; fbn.textContent = on.length;
+  fbtn.classList.toggle("on", on.length > 0);
+  clearBtn.hidden = !on.length;
+  fsum.replaceChildren(...on.map(([text, off]) => {
+    const c = document.createElement("button");
+    c.className = "fchip"; c.type = "button"; c.setAttribute("aria-label", "去掉筛选:" + text);
+    c.innerHTML = `${text}<span aria-hidden="true">✕</span>`;
+    c.addEventListener("click", () => { off(); saveFilters(); });
+    return c;
+  }));
+  if (on.length) { fsumCount = document.createElement("span"); fsumCount.className = "cnt"; fsum.append(fsumCount); }
+  else fsumCount = null;
 }
+let fsumCount = null;
 TYPES.forEach(([key, text]) => {
   const sw = LV[key] && LV[key].sw[0];
-  const b = pill((sw ? `<span class="dot" style="--sw:var(${sw})"></span>` : "") + text, false,
+  const b = pill((sw ? `<span class="dot" style="--sw:var(${sw})"></span>` : "") + text + ' <span class="n"></span>', false,
     () => { typeF = key; if (key !== "WORD") cefrF = ""; saveFilters(); });
   b.dataset.t = key;
   typeRow.append(b);
 });
 [["", "全部"], ...CEFR.map(c => [c, c])].forEach(([key, text]) => {
-  const b = pill((key ? `<span class="dot" style="--sw:var(${LV[key].sw[0]})"></span>` : "") + text, false,
+  const b = pill((key ? `<span class="dot" style="--sw:var(${LV[key].sw[0]})"></span>` : "") + text + ' <span class="n"></span>', false,
     () => { cefrF = key; saveFilters(); });
   b.dataset.c = key;
   cefrRow.append(b);
 });
 [["", "全部"], ...STAGES].forEach(([key, text]) => {
-  const b = pill(key ? `${text} <span class="n"></span>` : text, false, () => { stageF = key; saveFilters(); });
+  const b = pill(`${text} <span class="n"></span>`, false, () => { stageF = key; saveFilters(); });
   b.dataset.s = key;
   stageRow.append(b);
 });
@@ -648,13 +771,23 @@ wr.className = "wr-box"; wr.type = "button"; wr.setAttribute("role", "checkbox")
 wr.title = "只看标了「会写」的条目:这些要练到能自己写出来";
 wr.innerHTML = '<span class="box" aria-hidden="true"></span>只看会写';
 wr.addEventListener("click", () => { writeOnly = !writeOnly; saveFilters(); });
-stageRow.append(wr, clearBtn);
+optRow.append(wr);
 paintFilters();
 
 // view tabs
 const tabs = document.getElementById("tabs");
 const tools = document.getElementById("tools");
-const TABS = [["entries", "词条", total], ["mistakes", "错题本", mkTotal], ["review", "复习"], ["practice", "练习"]];
+// On phones they float at the bottom. They have to leave the header for that: its backdrop-filter
+// makes it the containing block for anything position:fixed inside it.
+const phoneMQ = matchMedia("(max-width:639px)");
+const placeTabs = () => {
+  if (phoneMQ.matches) { document.querySelector(".wrap").append(tabs); tabs.classList.add("float"); }
+  else { tools.before(tabs); tabs.classList.remove("float"); }
+};
+phoneMQ.addEventListener("change", placeTabs);
+placeTabs();
+// 自测 took 练习's place (used far more); 练习 lives at the bottom of 复习 now
+const TABS = [["entries", "词条", total], ["mistakes", "错题本", mkTotal], ["review", "复习"], ["selftest", "自测"]];
 TABS.forEach(([key, text, n]) => {
   const b = document.createElement("button");
   b.className = "tab"; b.type = "button"; b.dataset.k = key; b.setAttribute("role", "tab");
@@ -700,7 +833,7 @@ const sections = DATA.map(g => {
       (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
       `<div class="foot">` +
       `<span><span class="no">#${it.no}</span><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
-      (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}`) +
+      (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}<span class="stc" data-opt="1" data-anchor="${it.anchor}"></span>`) +
       `<span class="stg" data-anchor="${it.anchor}" data-level="${g.level}"></span></span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
       `</div>`;
@@ -788,17 +921,32 @@ function render(){
   // "12" or "#12" jumps to entry #12
   const numQ = (term.match(/^#?(\d+)$/) || [])[1];
   [...tabs.children].forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === view)));
-  tools.hidden = view === "review" || view === "practice";
-  filters.hidden = view !== "entries";
+  tools.hidden = view === "review" || view === "selftest";
+  fbtn.hidden = fsum.hidden = view !== "entries";
+  if (view !== "entries") closeFilters();
   board.hidden = view !== "entries";
   mistakesEl.hidden = view !== "mistakes";
   reviewEl.hidden = view !== "review";
-  practiceEl.hidden = view !== "practice";
+  selftestEl.hidden = view !== "selftest";
   empty.hidden = true;
   if (view === "mistakes") { empty.hidden = renderMistakes(term) > 0; return; }
   if (view === "review") { renderReview(); return; }
-  if (view === "practice") { renderPractice(); return; }
+  if (view === "selftest") { renderSelfTest(); return; }
   let shown = 0;
+  // pill counts: each row counts what its pills would show with every other filter kept
+  const nType = { ALL: 0, WORD: 0 }, nCefr = { "": 0 }, nStage = { learn: 0, test: 0, done: 0 };
+  sections.forEach(s => s.cards.forEach(c => {
+    if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write))) return;
+    const st = stageOf(c.it, s.level), word = CEFR.includes(s.level);
+    if (!stageF || st === stageF) {
+      nType.ALL++; nType[s.level] = (nType[s.level] || 0) + 1;
+      if (word) { nType.WORD++; nCefr[""]++; nCefr[s.level] = (nCefr[s.level] || 0) + 1; }
+    }
+    if (levelShown(s.level)) nStage[st]++;
+  }));
+  typeRow.querySelectorAll("[data-t] .n").forEach(el => { el.textContent = nType[el.parentNode.dataset.t] || 0; });
+  cefrRow.querySelectorAll("[data-c] .n").forEach(el => { el.textContent = nCefr[el.parentNode.dataset.c] || 0; });
+  stageRow.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = el.parentNode.dataset.s ? nStage[el.parentNode.dataset.s] : nStage.learn + nStage.test + nStage.done; });
   sections.forEach(s => {
     if (!levelShown(s.level)) { s.el.hidden = true; return; }
     let n = 0;
@@ -813,6 +961,8 @@ function render(){
     shown += n;
   });
   empty.hidden = shown > 0;
+  fgo.textContent = shown ? `显示 ${shown} 条` : "没有匹配的条目";
+  if (fsumCount) fsumCount.textContent = `共 ${shown} 条`;
 }
 q.addEventListener("input", render);
 
@@ -839,7 +989,8 @@ function bestDiff(mine, answer){
   return ds.find(d => d.same) || ds.sort((x, y) => y.keepB.size - x.keepB.size)[0] || diffWords(mine, "");
 }
 function compareHtml(mine, answer, retry = true){
-  const again = retry ? `<button class="linkish" type="button" id="st-again">再试一次</button>` : "";
+  // after a reveal, trying again is the next step: the sheet's filled button
+  const again = retry ? `<button class="btn retry" type="button" id="st-again">↻ 再试一次</button>` : "";
   if (!mine.trim()) return `<p class="verdict">没有写就看答案了 —— 下次先写再看。</p><p>${again}</p>`;
   const d = bestDiff(mine, answer);
   if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)</p><p>${again}</p>`;
@@ -847,7 +998,7 @@ function compareHtml(mine, answer, retry = true){
   return `<p class="verdict">对照一下差异</p>` +
     `<p class="line"><b>我写的(删除线 = 多出来或写错的)</b>${show(d.a, d.keepA, "st-x")}</p>` +
     `<p class="line"><b>答案(高亮 = 我漏掉或写错的)</b>${show(d.b, d.keepB, "st-m")}</p>` +
-    `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。 ${again}</p>`;
+    `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。</p>` + (again ? `<p>${again}</p>` : "");
 }
 
 // ── 自测 attempt log: every reveal is recorded here (this browser only, like the review
@@ -862,6 +1013,29 @@ function recordAttempt(anchor, text, answer, via){
   store.set("vk.selftest", JSON.stringify(stLog));
   refreshStCounts();
   syncSoon();
+}
+// Entries moved to 自测 are quizzed like 自测题 (same rules as ui/SelfTest.kt): the Chinese of one
+// of their example sentences is the prompt and the English sentence is the answer, compared word
+// by word. Each try takes the next example in turn (attempt count % examples). Entries without a
+// translated example (grammar notes, quick references) I grade myself.
+const quizEx = (it, n = (stLog[it.anchor] || []).length) => { const xs = it.examples || []; return xs.length ? { ...xs[n % xs.length], k: n % xs.length, of: xs.length } : null; };
+const exPrompt = ex => `<p class="lab">例句 ${ex.k + 1} / ${ex.of} · 中译英</p><p class="prompt" style="font-size:19px">${esc(plainMd(ex.zh))}</p><p class="hint">把这句写成英文,写完和例句原文逐词对照。</p>`;
+function logAttempt(anchor, text, ok, via){             // the verdict is already known
+  const list = stLog[anchor] = stLog[anchor] || [];
+  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && ok, via });
+  if (list.length > ST_MAX) list.splice(0, list.length - ST_MAX);
+  store.set("vk.selftest", JSON.stringify(stLog));
+  refreshStCounts();
+  syncSoon();
+}
+// After 显示答案 on a moved entry: the word-by-word compare with the example, or — with no
+// example to compare against — 我写对了 / 没写对 until I've graded it.
+function movedHtml(ex, mine, graded){
+  if (ex) return compareHtml(mine, plainMd(ex.en), false);
+  if (!mine.trim()) return `<p class="verdict">没有写就看答案了 —— 下次先写再看。</p>`;
+  return `<p class="line"><b>我写的</b>${esc(mine.trim())}</p>` + (graded === undefined
+    ? `<p class="fine">这条没有例句可以对照,看下面的笔记自己判断:</p><div class="row"><button class="btn ghost" type="button" data-ok="1">我写对了</button><button class="btn ghost" type="button" data-ok="0">没写对</button></div>`
+    : `<p class="verdict">已记为 ${graded ? "✅" : "❌"}</p>`);
 }
 function stSummary(anchor){
   const list = stLog[anchor] || [], tries = list.filter(a => a.text);
@@ -879,13 +1053,14 @@ function stHistoryHtml(anchor){
   if (!list.length) return "";
   return `<details class="st-hist"><summary>历史记录(${list.length})</summary><ol>` +
     list.map(a => `<li><span class="when">${fmtWhen(a.t)}</span><span>${!a.text ? "👀" : a.ok ? "✅" : "❌"}</span>` +
-      `<span class="txt">${a.text ? esc(a.text) : "(没写就看了答案)"}${a.via === "review" ? ' <span class="when">· 复习</span>' : ""}</span></li>`).join("") +
+      `<span class="txt">${a.text ? esc(a.text) : "(没写就看了答案)"}${a.via === "review" ? ' <span class="when">· 复习</span>' : a.via === "selftest" ? ' <span class="when">· 自测</span>' : ""}</span></li>`).join("") +
     `</ol></details>`;
 }
 function refreshStCounts(){
   document.querySelectorAll(".stc[data-anchor]").forEach(el => {
     const s = stSummary(el.dataset.anchor);
-    el.textContent = s.tries ? `试 ${s.tries} · 对 ${s.ok}` : "未自测";
+    // other entries only show it once I've tried them in 自测
+    el.textContent = el.dataset.opt ? (s.tries ? ` · 试 ${s.tries} · 对 ${s.ok}` : "") : s.tries ? `试 ${s.tries} · 对 ${s.ok}` : "未自测";
   });
 }
 
@@ -897,8 +1072,7 @@ function refreshStages(){
     el.textContent = st === "done" ? " · ✓ 已掌握" : st === "test" && el.dataset.level !== "SELFTEST" ? " · 自测中" : "";
   });
   const n = { learn: 0, test: 0, done: 0 };
-  DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));
-  filters.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = n[el.parentNode.dataset.s]; });
+  DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));   // pill counts come from render()
   document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 已掌握 " + n.done + " · 错题 " + mkTotal;
 }
 
@@ -938,7 +1112,7 @@ function show(it, level, i){
   const quiz = level !== "SELFTEST" && stage === "test";
   const moves = {
     learn: [["test", "移到自测", "我觉得会了,来考考我"]],
-    test: [["done", "已掌握", "不再出现在复习里"], ...(level === "SELFTEST" ? [] : [["learn", "移回学习中", ""]])],
+    test: [["done", "标为已掌握", "不再出现在复习和自测里"], ...(level === "SELFTEST" ? [] : [["learn", "移回学习中", ""]])],
     done: [["test", "移回自测", "重新回到复习里"]],
   }[stage];
   sheet.innerHTML =
@@ -946,22 +1120,27 @@ function show(it, level, i){
     (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
     `<h2>${it.title}</h2>` +
     (meta ? `<div class="meta">${meta}</div>` : "") +
-    `<div class="stage">进度 <b>${STAGE_NAME[stage]}</b>` +
-    moves.map(([to, label, tip], k) => `<button class="btn${k ? " ghost" : ""}" type="button" data-to="${to}"${tip ? ` title="${tip}"` : ""}>${label}</button>`).join("") +
-    `</div>` +
+    // where it is (a stepper, display only) apart from what I can do (verb buttons, never filled):
+    // a filled 已掌握 read like a status and competed with 显示答案
+    `<div class="stage"><span class="lab">进度</span><span class="steps">` +
+    STAGES.map(([k, name]) => `<span class="step${k === stage ? " on" : ""}">${name}</span>`).join('<span class="arr">→</span>') +
+    `</span><span class="moves">` +
+    moves.map(([to, label, tip], k) => `<button class="${k ? "linkish" : "btn ghost"}" type="button" data-to="${to}"${tip ? ` title="${tip}"` : ""}>${label}</button>`).join("") +
+    `</span></div>` +
+    // three zones kept visibly apart: the facts above, my attempt in a card, the notes under 笔记
     (quiz
-      ? `<div class="st">${askHtml({ it, level, i }, kind({ it, level, i }))}` +
+      ? `<div class="quiz"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p><div class="st">${quizEx(it) ? exPrompt(quizEx(it)) : askHtml({ it, level, i }, kind({ it, level, i }))}` +
         `<textarea class="draft" id="st-in" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
         `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
-        `<div class="st-res" id="st-res" hidden></div>`
+        `<div class="st-res" id="st-res" hidden></div></div>`
       : "") +
     (level === "SELFTEST"
-      ? `<p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
+      ? `<div class="quiz"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
         `<div class="st"><textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
         `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
-        `<div class="st-res" id="st-res" hidden></div>`
+        `<div class="st-res" id="st-res" hidden></div></div>`
       : "") +
-    `<div class="body"${level === "SELFTEST" || quiz ? " hidden" : ""}>${it.html}</div>`;
+    `<div class="body"${level === "SELFTEST" || quiz ? " hidden" : ""}><div class="notes-h">笔记</div>${it.html}</div>`;
   scrim._entry = { it, level, i };
   scrim.append(sheet);
   document.body.append(scrim);
@@ -981,9 +1160,23 @@ function show(it, level, i){
   }));
   if (quiz) {
     const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
+    const ex = quizEx(it);                                // fixed before this try is logged
+    const paint = graded => {
+      res.innerHTML = movedHtml(ex, input.value, graded) + stHistoryHtml(it.anchor) +
+        `<p><button class="btn retry" type="button" id="st-again">↻ 再试一次</button></p>`;
+      sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor);
+      res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {
+        const ok = b.dataset.ok === "1";
+        logAttempt(it.anchor, input.value, ok, "entry");
+        paint(ok);
+      }));
+      res.querySelector("#st-again").addEventListener("click", () => show(it, level, i));
+    };
     const reveal = () => {
-      res.innerHTML = (input.value.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(input.value.trim())}</div>` : "") +
-        `<p class="fine">对照下面的笔记,自己判断写得对不对。</p>`;
+      const v = input.value;
+      if (ex) recordAttempt(it.anchor, v, plainMd(ex.en), "entry");
+      else if (!v.trim()) logAttempt(it.anchor, "", false, "entry");
+      paint();
       res.hidden = false;
       sheet.querySelector(".st").hidden = true;
       sheet.querySelector(".body").hidden = false;
@@ -1042,6 +1235,7 @@ document.addEventListener("keydown", e => {
 // ── shared by 复习 and 练习 ──
 const reviewEl = document.getElementById("review");
 const practiceEl = document.getElementById("practice");
+const selftestEl = document.getElementById("selftest");
 const ALL = Object.values(byAnchor);                       // {it, level, i}
 const dayNo = () => { const d = new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); };
 const plainMd = t => t.replace(/\*\*(.+?)\*\*/g, "$1").replace(/`(.+?)`/g, "$1");
@@ -1123,6 +1317,7 @@ function renderReview(){
     `<div class="row"><button class="btn" type="button" id="rv-start"${n ? "" : " disabled"}>${n ? "开始复习 " + n + " 张" : "今天没有要复习的了"}</button>` +
     `<span class="toast">明天到期 ${tomorrow} 张</span></div>` +
     `<div class="sync" id="sync"></div>` +
+    `<details class="prac" id="prac"${store.get("vk.prac", "0") === "1" ? " open" : ""}><summary>练习 · 今日仿写 / 本周段落</summary></details>` +
     `<p style="margin-top:28px"><button class="linkish" type="button" id="rv-reset">${resetArmed ? "确定清空全部复习记录?再点一次确认" : "重置复习进度"}</button></p>`;
   reviewEl.querySelector("#rv-start").addEventListener("click", () => {
     const p = planToday();
@@ -1130,6 +1325,10 @@ function renderReview(){
     renderReview();
   });
   paintSync();
+  const prac = reviewEl.querySelector("#prac");
+  prac.append(practiceEl);
+  renderPractice();
+  prac.addEventListener("toggle", () => store.set("vk.prac", prac.open ? "1" : "0"));
   reviewEl.querySelector("#rv-reset").addEventListener("click", () => {
     if (!resetArmed) { resetArmed = true; renderReview(); return; }
     // resetAt tells the other devices to drop their older cards too
@@ -1157,7 +1356,7 @@ function renderCard(){
   const pct = Math.round(s.index / s.queue.length * 100);
   reviewEl.innerHTML =
     `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
-    `<button class="linkish" type="button" id="rv-done" title="斩:以后不再出现在复习里">已掌握</button>` +
+    `<button class="linkish" type="button" id="rv-done" title="斩:以后不再出现在复习里">标为已掌握</button>` +
     `<button class="linkish" type="button" id="rv-stop">结束</button></div>` +
     `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ask}` +
     (writes && !s.revealed ? `<textarea class="draft" id="rv-draft" placeholder="在这里写你的英文(可选,不会保存)">${esc(s.draft)}</textarea>` : "") +
@@ -1328,6 +1527,102 @@ function paintSync(){
   });
 }
 
+// ── 自测 tab: everything in 自测中, one at a time. 自测题 are checked word by word against their
+// 答案 (and logged, via "selftest"); other entries I moved here are checked against their notes.
+// Never tried first, then the ones I got wrong or peeked at last time, then oldest attempt first.
+// Same order and rules as ui/SelfTestScreen.kt. ──
+let stSession = null;
+function stQueue(){
+  const rank = t => {
+    const last = stSummary(t.it.anchor).last;
+    return [!last ? 0 : !last.text || !last.ok ? 1 : 2, last ? last.t : t.it.no];
+  };
+  return ALL.filter(t => stageOf(t.it, t.level) === "test")
+    .map(t => [rank(t), t]).sort((a, b) => a[0][0] - b[0][0] || a[0][1] - b[0][1]).map(x => x[1]);
+}
+function renderSelfTest(){
+  const s = stSession;
+  if (s && s.index < s.queue.length) return renderStCard();
+  if (s) {
+    selftestEl.innerHTML = `<h2>完成 🎉</h2><p class="note">这一轮做了 ${s.done} 题` +
+      (s.checked ? `,自测题答对 ${s.ok} / ${s.checked}` : "") + (s.mastered ? `,${s.mastered} 条标了已掌握` : "") + `。</p>` +
+      `<button class="btn" type="button" id="st-end">返回</button>`;
+    selftestEl.querySelector("#st-end").addEventListener("click", () => { stSession = null; renderSelfTest(); });
+    return;
+  }
+  const q = stQueue(), never = q.filter(t => !stSummary(t.it.anchor).last).length;
+  const missed = q.filter(t => { const l = stSummary(t.it.anchor).last; return l && (!l.text || !l.ok); }).length;
+  selftestEl.innerHTML =
+    `<h2>自测</h2>` +
+    `<p class="note">「自测中」的条目都在这里,一题一题做:看中文写英文,再看答案。自测题逐词对照标准答案,其他条目对照笔记自己判断。` +
+    `做熟了点「已掌握」,它就不再出现;在条目里点「移到自测」可以加进来。没做过的和上次没做对的排在前面。</p>` +
+    `<div class="stats"><div class="stat"><b>${q.length}</b><span>自测中</span></div>` +
+    `<div class="stat"><b>${never}</b><span>没做过</span></div>` +
+    `<div class="stat"><b>${missed}</b><span>上次没对</span></div></div>` +
+    `<div class="row"><button class="btn" type="button" id="st-start"${q.length ? "" : " disabled"}>${q.length ? "开始自测 " + q.length + " 题" : "还没有自测中的条目"}</button></div>`;
+  selftestEl.querySelector("#st-start").addEventListener("click", () => {
+    stSession = { queue: stQueue(), index: 0, revealed: false, draft: "", done: 0, ok: 0, checked: 0, mastered: 0 };
+    renderSelfTest();
+  });
+}
+function renderStCard(){
+  const s = stSession, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST";
+  if (!exam && s.ex === undefined) s.ex = quizEx(it);     // this card's example, fixed for the card
+  const ex = exam ? null : s.ex;
+  const pct = Math.round(s.index / s.queue.length * 100);
+  selftestEl.innerHTML =
+    `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
+    `<button class="linkish" type="button" id="st-stop">结束</button></div>` +
+    `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ex ? exPrompt(ex) : askHtml(t, k)}` +
+    `<p class="st-stats">${stStatsLine(it.anchor)}</p>` +
+    (s.revealed
+      ? `<hr>` + (exam
+          ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>` + stHistoryHtml(it.anchor)
+          : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>` + stHistoryHtml(it.anchor)) +
+        `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${it.html}</div>`
+      : `<textarea class="draft" id="st-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)">${esc(s.draft)}</textarea>`) +
+    `</div>` +
+    (s.revealed
+      ? `<div class="grades" style="grid-template-columns:1fr 1fr"><button class="btn ghost" type="button" id="st-done" title="不再出现在自测和复习里">标为已掌握</button>` +
+        `<button class="btn" type="button" id="st-next">${s.index + 1 < s.queue.length ? "下一题" : "完成"}</button></div>`
+      : `<button class="btn" type="button" id="st-reveal" style="width:100%">显示答案</button>`);
+  const next = () => { s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; renderSelfTest(); window.scrollTo(0, 0); };
+  selftestEl.querySelectorAll(".st-res [data-ok]").forEach(b => b.addEventListener("click", () => {
+    s.graded = b.dataset.ok === "1";
+    logAttempt(it.anchor, s.draft, s.graded, "selftest");
+    s.checked++; if (s.graded) s.ok++;
+    renderStCard();
+  }));
+  selftestEl.querySelector("#st-stop").addEventListener("click", () => { stSession = null; renderSelfTest(); });
+  const d = selftestEl.querySelector("#st-draft");
+  const reveal = () => {
+    if (exam) {
+      recordAttempt(it.anchor, s.draft, it.answer || "", "selftest");
+      if (s.draft.trim()) { s.checked++; if (bestDiff(s.draft, it.answer || "").same) s.ok++; }
+    } else if (ex) {
+      recordAttempt(it.anchor, s.draft, plainMd(ex.en), "selftest");
+      if (s.draft.trim()) { s.checked++; if (bestDiff(s.draft, plainMd(ex.en)).same) s.ok++; }
+    } else if (!s.draft.trim()) logAttempt(it.anchor, "", false, "selftest");
+    s.revealed = true; renderStCard();
+  };
+  if (d) {
+    d.addEventListener("input", () => { s.draft = d.value; });
+    d.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) reveal(); });
+    d.focus();
+  }
+  const rv = selftestEl.querySelector("#st-reveal");
+  if (rv) rv.addEventListener("click", reveal);
+  const nx = selftestEl.querySelector("#st-next");
+  if (nx) { nx.addEventListener("click", next); nx.focus(); }
+  const dn = selftestEl.querySelector("#st-done");
+  if (dn) dn.addEventListener("click", () => { setStage(it, "done"); s.mastered++; next(); });
+  selftestEl.querySelectorAll(".rcard .xref").forEach(a => {
+    const x = byAnchor[a.dataset.ref];
+    if (!x) { a.dataset.missing = "1"; return; }
+    a.addEventListener("click", e => { e.preventDefault(); open(x.it, x.level, x.i); });
+  });
+}
+
 // ── 练习: a daily imitation task and a weekly paragraph. The app picks the same ones
 // (ui/PracticeScreen.kt): pool = 会写 entries that aren't 句子 / 自测, sorted by anchor. ──
 const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST")
@@ -1345,7 +1640,7 @@ function renderPractice(){
   const link = t => `<a class="xref" href="#${t.it.anchor}" data-ref="${t.it.anchor}">${t.it.title}</a>`;
   const dateStr = new Date().toLocaleDateString("zh-CN");
   practiceEl.innerHTML =
-    `<h2>练习</h2><p class="note">写完点「复制」,发到和 Claude 的对话里,按 ❌ / ⚠️ / ✅ 批改。草稿存在这个浏览器里。</p>` +
+    `<p class="note">写完点「复制」,发到和 Claude 的对话里,按 ❌ / ⚠️ / ✅ 批改。草稿存在这个浏览器里。</p>` +
     `<div class="task"><h3>今日仿写</h3><p class="meta2">${dateStr} · 每天一题,从「会写」的条目里轮换</p>` +
     `<p class="ask">${daily.level === "GRAMMAR" ? "按 " + link(daily) + " 这条规则" : "用 " + link(daily) + " 里的表达"},写 3 句关于你自己工作或生活的<b>真实</b>句子。</p>` +
     `<textarea class="draft" id="pr-d" placeholder="1. …&#10;2. …&#10;3. …">${esc(store.get(dKey, ""))}</textarea>` +
