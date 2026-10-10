@@ -124,6 +124,10 @@
 118. [自测:加一个表格,列出所有识别出的风险和它们的当前状态,让读者一眼看清进展。](#t-at-a-glance)
 119. [自测:看起来你转去做别的事了——你还在做原来那个任务吗?](#t-still-on-track)
 120. [自测:这些链接几乎看不见——好像用错了颜色,跟背景混在一起了。](#t-wrong-color-blend)
+121. [自测:每个选择都会消耗一点心力。](#t-every-choice-energy)
+122. [自测:我连小事都会想太多,最后弄得自己很心累。](#t-overthink-drained)
+123. [自测:每个选择都要耗我一点精力,结果事情还没开始做,人已经累了。](#t-exhausted-before-start)
+124. [自测:我得别再为小决定纠结了,不值得花这份心力。](#t-agonize-over)
 
 ---
 
@@ -3944,3 +3948,70 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [冠词] **in wrong colors** → **in the wrong color(s)**。
 - ⚠️ [逻辑] **not visible** = 完全看不见;颜色太淡用 **hard to see / almost invisible**。
 - ✅ **It seems like** —— 意思清楚,日常使用完全够用;报 bug 时 **It looks like** 更口语。
+
+<a id="t-every-choice-energy"></a>
+## 自测:每个选择都会消耗一点心力。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> Every choice takes a tiny bit of mental power.
+> Every decision takes a little mental energy.
+
+**要点:**
+
+- 骨架 **Every X takes a (tiny) bit of Y.** —— 每个 X 都要耗一点 Y;Y 可换 energy / willpower / focus。
+- 锚点词 **decision fatigue** —— 决策疲劳。
+- 不必逐字背,写出意思对的一句就算会。
+
+
+<a id="t-overthink-drained"></a>
+## 自测:我连小事都会想太多,最后弄得自己很心累。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> I tend to overthink even small decisions, and it leaves me mentally drained.
+
+**要点:**
+
+- **overthink** sth —— 想太多;**even small decisions** —— even 放在被强调的词前。
+- **leave sb + 形容词** —— 使某人处于某种状态:*leaves me mentally drained*。
+- **心累** → **mentally drained / mentally exhausted**。
+
+
+<a id="t-exhausted-before-start"></a>
+## 自测:每个选择都要耗我一点精力,结果事情还没开始做,人已经累了。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> Every choice costs me a bit of energy, so I'm exhausted before I've actually done anything.
+
+**要点:**
+
+- **cost sb sth** —— 让某人付出(精力、时间):*costs me a bit of energy*。
+- **before I've (actually) done anything** —— before 后用现在完成时,强调"还一件事都没做成"。
+- **犹豫不决** → **be indecisive / go back and forth (on sth)**。
+
+
+<a id="t-agonize-over"></a>
+## 自测:我得别再为小决定纠结了,不值得花这份心力。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> I need to stop agonizing over small decisions — they're not worth the mental energy.
+
+**要点:**
+
+- **agonize over** sth —— 为某事纠结、苦恼;**stop doing** —— 停止做(不是 stop to do)。
+- **not worth the mental energy** —— 不值得花这份心力;**worth + 名词**,不加 of。
