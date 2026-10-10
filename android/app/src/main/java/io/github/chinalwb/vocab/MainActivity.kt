@@ -1,5 +1,15 @@
 package io.github.chinalwb.vocab
 
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.runtime.mutableStateOf
+import io.github.chinalwb.vocab.ui.FilterIcon
+import io.github.chinalwb.vocab.ui.SearchScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -155,6 +165,15 @@ private fun VocabNav() {
                 composable("home") {
                     CompositionLocalProvider(LocalNavAnimatedScope provides this) { Home(vm, nav) }
                 }
+                composable("search") {
+                    SearchScreen(
+                        lib,
+                        onOpen = { nav.navigate("entry/$it") },
+                        onBack = { nav.popBackStack() },
+                        selfTests = selfTests,
+                        stages = stages,
+                    )
+                }
                 composable("entry/{anchor}") { back ->
                     val anchor = back.arguments?.getString("anchor").orEmpty()
                     CompositionLocalProvider(LocalNavAnimatedScope provides this) {
@@ -188,6 +207,10 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val stages by vm.stages.collectAsStateWithLifecycle()
     val sync by vm.syncStatus.collectAsStateWithLifecycle()
     val test by vm.test.collectAsStateWithLifecycle()
+    // the browse page's 筛选与排序 sheet opens from the top bar
+    var filterOpen by rememberSaveable { mutableStateOf(false) }
+    var activeFilters by remember { mutableIntStateOf(0) }
+    var menuOpen by remember { mutableStateOf(false) }
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val snackbar = remember { SnackbarHostState() }
 
@@ -250,13 +273,40 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 },
                 actions = {
                     if (tab == 0) Row(Modifier.graphicsLayer(barFade)) {
-                        // Shows the layout you'd switch to, like Keep does.
-                        IconButton(onClick = vm::toggleTiles) {
-                            if (tiles) Icon(Icons.AutoMirrored.Filled.List, "切换到列表视图")
-                            else Icon(GridViewIcon, "切换到卡片视图")
+                        IconButton(onClick = { insets.show(WindowInsetsCompat.Type.statusBars()); nav.navigate("search") }) {
+                            Icon(Icons.Default.Search, "搜索")
                         }
-                        if (checking) CircularProgressIndicator(Modifier.padding(12.dp).size(24.dp), strokeWidth = 2.dp)
-                        else IconButton(onClick = { vm.check() }) { Icon(Icons.Default.Refresh, "检查更新") }
+                        IconButton(onClick = { filterOpen = true }) {
+                            BadgedBox(badge = { if (activeFilters > 0) Badge(containerColor = MaterialTheme.colorScheme.primary) }) {
+                                Icon(FilterIcon, "筛选与排序")
+                            }
+                        }
+                        Box {
+                            IconButton(onClick = { menuOpen = true }) {
+                                if (checking) CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp)
+                                else Icon(Icons.Default.MoreVert, "更多")
+                            }
+                            DropdownMenu(menuOpen, { menuOpen = false }) {
+                                // shows the layout you'd switch to, like Keep does
+                                DropdownMenuItem(
+                                    text = { Text(if (tiles) "列表视图" else "卡片视图") },
+                                    leadingIcon = { if (tiles) Icon(Icons.AutoMirrored.Filled.List, null) else Icon(GridViewIcon, null) },
+                                    onClick = { menuOpen = false; vm.toggleTiles() },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(if (checking) "正在检查…" else "检查更新") },
+                                    leadingIcon = { Icon(Icons.Default.Refresh, null) },
+                                    enabled = !checking,
+                                    onClick = { menuOpen = false; vm.check() },
+                                )
+                                val changed = lib.newAnchors.size + lib.updatedAnchors.size
+                                if (changed > 0) DropdownMenuItem(
+                                    text = { Text("全部标为已读($changed)") },
+                                    leadingIcon = { Icon(Icons.Default.Done, null) },
+                                    onClick = { menuOpen = false; vm.markAllSeen() },
+                                )
+                            }
+                        }
                     }
                 },
             )
@@ -306,6 +356,9 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 statusBarShown = { stripAlpha },
                 selfTests = selfTests,
                 stages = stages,
+                sheetOpen = filterOpen,
+                onSheetOpen = { filterOpen = it },
+                onActiveCount = { activeFilters = it },
             )
         } else if (tab == 2) {
             MistakesScreen(lib, onOpen = open, modifier = Modifier.padding(pad))

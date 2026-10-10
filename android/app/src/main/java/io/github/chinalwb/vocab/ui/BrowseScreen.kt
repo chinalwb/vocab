@@ -72,6 +72,19 @@ import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.stageOf
 
+private const val SORT_LEVEL = "LEVEL"
+private const val SORT_NEW = "NEW"
+private const val SORT_OLD = "OLD"
+private val SORTS = listOf(SORT_LEVEL to "按级别", SORT_NEW to "最新收录", SORT_OLD to "最早收录")
+
+private fun levelHeader(level: String) = levelStyle(level).let { "${it.short} · ${it.name}" }
+
+/** "2026-10-09" (a leading ~ marks a guessed date); undated entries sort as oldest. */
+private fun dateKey(e: Entry) = e.date.removePrefix("~").trim()
+
+private fun monthHeader(key: String): String =
+    Regex("^(\\d{4})-(\\d{2})").find(key)?.destructured?.let { (y, m) -> "$y 年 ${m.toInt()} 月" } ?: "没有日期"
+
 private const val ALL = "ALL"
 private const val WORD = "WORD"
 private val CEFR = listOf("A1", "A2", "B1", "B2", "C1", "C2")
@@ -88,12 +101,14 @@ private fun splitTitle(t: String): Pair<String, String?> {
 
 /** 48dp filled search box; Material's text fields have a 56dp minimum. */
 @Composable
-private fun SearchField(value: String, onChange: (String) -> Unit, modifier: Modifier = Modifier) {
+internal fun SearchField(value: String, onChange: (String) -> Unit, modifier: Modifier = Modifier, onSearch: () -> Unit = {}) {
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     androidx.compose.foundation.text.BasicTextField(
         value = value,
         onValueChange = onChange,
         singleLine = true,
+        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Search),
+        keyboardActions = androidx.compose.foundation.text.KeyboardActions(onSearch = { onSearch() }),
         textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
         cursorBrush = androidx.compose.ui.graphics.SolidColor(MaterialTheme.colorScheme.onSurface),
         modifier = modifier.height(48.dp),
@@ -125,7 +140,7 @@ private fun FilterSection(label: String, content: @Composable () -> Unit) {
 }
 
 /** Three narrowing lines, the page's 筛选 icon (icons-core has no FilterList). */
-private val FilterIcon: androidx.compose.ui.graphics.vector.ImageVector by lazy {
+internal val FilterIcon: androidx.compose.ui.graphics.vector.ImageVector by lazy {
     androidx.compose.ui.graphics.vector.ImageVector.Builder("filter", 24.dp, 24.dp, 24f, 24f).apply {
         addPath(
             androidx.compose.ui.graphics.vector.PathParser().parsePathString("M4 6h16M7 12h10M10 18h4").toNodes(),
@@ -157,11 +172,11 @@ private fun CheckToggle(label: String, checked: Boolean, onToggle: () -> Unit) {
 }
 
 /** "试 N · 对 M" for 自测 entries, null for everything else. */
-private fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
+internal fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
     if (e.level == "SELFTEST") countsShort(this[e.anchor].orEmpty()) else null
 
 /** The card's 进度 note: nothing for where an entry starts, like the page's .stg. */
-private fun stageFoot(e: Entry, s: Stage): String? = when {
+internal fun stageFoot(e: Entry, s: Stage): String? = when {
     s == Stage.Done -> "✓ 已掌握"
     s == Stage.Test && e.level != "SELFTEST" -> "自测中"
     else -> null
@@ -184,10 +199,16 @@ fun BrowseScreen(
     selfTests: Map<String, List<Attempt>> = emptyMap(),
     /** 进度 moves by anchor (StageStore). */
     stages: Map<String, String> = emptyMap(),
+    /** The 筛选与排序 sheet; the 筛选 icon lives in the top bar now. */
+    sheetOpen: Boolean = false,
+    onSheetOpen: (Boolean) -> Unit = {},
+    /** How many filters / a non-default sort are on, for the icon's dot. */
+    onActiveCount: (Int) -> Unit = {},
 ) {
     var stageF by rememberSaveable { mutableStateOf<Stage?>(null) }
     val foot = { e: Entry -> listOfNotNull(selfTests.stFoot(e), stageFoot(e, stages.stageOf(e))).joinToString(" · ").ifEmpty { null } }
-    var query by rememberSaveable { mutableStateOf("") }
+    // 排序: by level (grouped, the default) or by 收录 date, newest / oldest first, grouped by month
+    var sortF by rememberSaveable { mutableStateOf(SORT_LEVEL) }
     // 筛选, same as the page: 类型 (ALL / WORD / TERM …, with a CEFR sub-row under WORD) and
     // 进度, each single-choice; 只看会写 and 有更新 are toggles that narrow the rest.
     var typeF by rememberSaveable { mutableStateOf(ALL) }
@@ -201,19 +222,19 @@ fun BrowseScreen(
         typeF == ALL || typeF == lvl || (typeF == WORD && lvl in CEFR && (cefrF == null || cefrF == lvl))
     }
 
-    // what the search and the toggles leave; the chip rows and the list narrow it further
-    val base = remember(entries, query, changed, changedOnly, writeOnly) {
-        val q = query.trim().lowercase()
-        // "12" or "#12" jumps to entry #12, like the page's search
-        val numQ = Regex("^#?(\\d+)$").find(q)?.groupValues?.get(1)?.toInt()
-        entries.filter { e ->
-            (if (numQ != null) e.no == numQ else q.isEmpty() || q in e.searchText) && (!writeOnly || e.writes) &&
-                (!changedOnly || e.anchor in changed)
-        }
+    // what the toggles leave; the chip rows and the list narrow it further (search has its own page)
+    val base = remember(entries, changed, changedOnly, writeOnly) {
+        entries.filter { e -> (!writeOnly || e.writes) && (!changedOnly || e.anchor in changed) }
     }
-    val groups = remember(base, typeF, cefrF, stageF, stages) {
-        val shown = base.filter { e -> (stageF == null || stages.stageOf(e) == stageF) && levelShown(e.level) }.groupBy { it.level }
-        GROUP_ORDER.mapNotNull { lvl -> shown[lvl]?.let { lvl to it } }
+    // (header label, entries): level groups, or month groups when sorted by date
+    val groups = remember(base, typeF, cefrF, stageF, stages, sortF) {
+        val shown = base.filter { e -> (stageF == null || stages.stageOf(e) == stageF) && levelShown(e.level) }
+        if (sortF == SORT_LEVEL) shown.groupBy { it.level }.let { g -> GROUP_ORDER.mapNotNull { lvl -> g[lvl]?.let { levelHeader(lvl) to it } } }
+        else {
+            val newest = compareByDescending<Entry> { dateKey(it) }.thenByDescending { it.no }
+            shown.sortedWith(if (sortF == SORT_NEW) newest else newest.reversed())
+                .groupBy { monthHeader(dateKey(it)) }.toList()
+        }
     }
     // chip counts: each row counts what its chips would show with every other filter kept, like the page
     val levelCounts = remember(base, stageF, stages) {
@@ -241,40 +262,20 @@ fun BrowseScreen(
             else -> null
         }
     }
-    var sheetOpen by rememberSaveable { mutableStateOf(false) }
     val shownCount = groups.sumOf { it.second.size }
-    val clearAll = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false }
+    val clearAll = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false; sortF = SORT_LEVEL }
     // what's on, as removable chips under the search; the same list drives the button's badge
     val active = buildList {
         if (typeF != ALL) add((TYPES.first { it.first == typeF }.second + (cefrF?.let { " · $it" } ?: "")) to { typeF = ALL; cefrF = null })
         stageF?.let { add(it.label to { stageF = null }) }
         if (writeOnly) add("只看会写" to { writeOnly = false })
         if (changedOnly) add("有更新" to { changedOnly = false })
+        if (sortF != SORT_LEVEL) add(SORTS.first { it.first == sortF }.second to { sortF = SORT_LEVEL })
     }
-    val search: @Composable () -> Unit = {
-        androidx.compose.foundation.layout.Row(
-            Modifier.fillMaxWidth().padding(top = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            SearchField(query, { query = it }, Modifier.weight(1f))
-            androidx.compose.foundation.layout.Row(
-                Modifier
-                    .height(48.dp)
-                    .glassFlat(RoundedCornerShape(50))
-                    .clickable(role = androidx.compose.ui.semantics.Role.Button) { sheetOpen = true }
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(FilterIcon, null, Modifier.size(18.dp))
-                Text("筛选", Modifier.padding(start = 6.dp))
-                if (active.isNotEmpty()) androidx.compose.material3.Badge(Modifier.padding(start = 6.dp), containerColor = MaterialTheme.colorScheme.primary) { Text("${active.size}") }
-            }
-        }
-    }
+    androidx.compose.runtime.LaunchedEffect(active.size) { onActiveCount(active.size) }
     val filters: @Composable () -> Unit = {
         if (active.isNotEmpty()) FlowRow(
-            Modifier.fillMaxWidth().padding(top = 8.dp),
+            Modifier.fillMaxWidth().padding(top = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             itemVerticalAlignment = Alignment.CenterVertically,
         ) {
@@ -288,11 +289,12 @@ fun BrowseScreen(
                 modifier = Modifier.weight(1f).wrapContentWidth(Alignment.End))
         }
         if (sheetOpen) androidx.compose.material3.ModalBottomSheet(
-            onDismissRequest = { sheetOpen = false },
+            onDismissRequest = { onSheetOpen(false) },
             sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true),
-            // the sheet lives in its own window, out of reach of the haze; translucent glass with a rim instead
-            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
-            scrimColor = Color.Black.copy(alpha = 0.18f),
+            // the sheet lives in its own window, out of reach of the haze, so no blur: nearly opaque
+            // with a glass rim (at 90% the cards' text showed through and fought with the chips)
+            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.97f),
+            scrimColor = Color.Black.copy(alpha = 0.25f),
             tonalElevation = 0.dp,
             modifier = Modifier.border(1.dp, glassRim(), RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)),
         ) {
@@ -302,8 +304,11 @@ fun BrowseScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 androidx.compose.foundation.layout.Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("筛选", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                    Text("筛选与排序", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
                     if (active.isNotEmpty()) TextButton(onClick = clearAll) { Text("重置") }
+                }
+                FilterSection("排序") {
+                    SORTS.forEach { (k, label) -> FilterChip(sortF == k, { sortF = k }, { Text(label) }) }
                 }
                 FilterSection("类型") {
                     TYPES.filter { (k, _) -> k == ALL || k == WORD && CEFR.any { it in present } || k in present }.forEach { (k, label) ->
@@ -328,7 +333,7 @@ fun BrowseScreen(
                     CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly }
                     if (changed.isNotEmpty()) CheckToggle("有更新 ${changed.size}", changedOnly) { changedOnly = !changedOnly }
                 }
-                androidx.compose.material3.Button(onClick = { sheetOpen = false }, modifier = Modifier.fillMaxWidth().height(48.dp)) {
+                androidx.compose.material3.Button(onClick = { onSheetOpen(false) }, modifier = Modifier.fillMaxWidth().height(48.dp)) {
                     Text(if (shownCount > 0) "显示 $shownCount 条" else "没有匹配的条目")
                 }
             }
@@ -376,7 +381,6 @@ fun BrowseScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalItemSpacing = 8.dp,
             ) {
-                item(span = StaggeredGridItemSpan.FullLine) { search() }
                 item(span = StaggeredGridItemSpan.FullLine) { filters() }
                 item(span = StaggeredGridItemSpan.FullLine) { status() }
                 gridItems(groups.flatMap { it.second }, key = { it.anchor }) { e ->
@@ -385,13 +389,12 @@ fun BrowseScreen(
             }
         } else {
             LazyColumn(state = listState, contentPadding = padding) {
-                item { search() }
                 item { filters() }
                 item { status() }
                 groups.forEach { (lvl, list) ->
                     stickyHeader(key = "h-$lvl") {
                         GroupHeader(
-                            lvl, list.size,
+                            "$lvl · ${list.size}",
                             // The list runs under the status bar now; nudge a header that is
                             // pinned (or about to be) down so it never sits behind the clock.
                             Modifier.graphicsLayer {
@@ -413,10 +416,9 @@ fun BrowseScreen(
 }
 
 @Composable
-private fun GroupHeader(level: String, count: Int, modifier: Modifier = Modifier) {
-    val s = levelStyle(level)
+private fun GroupHeader(label: String, modifier: Modifier = Modifier) {
     Text(
-        "${s.short} · ${s.name} · $count",
+        label,
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier
@@ -511,11 +513,11 @@ private fun ago(t: Long): String {
 }
 
 @Composable
-private fun EntryCard(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
+internal fun EntryCard(e: Entry, badge: String?, foot: String?, shared: Boolean = true, onClick: () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
-            .sharedEntryContainer(e.anchor, RoundedCornerShape(4.dp))
+            .then(if (shared) Modifier.sharedEntryContainer(e.anchor, RoundedCornerShape(4.dp)) else Modifier)
             .background(levelColor(e.level), RoundedCornerShape(4.dp))
             .clickable(onClick = onClick)
             .padding(14.dp)
@@ -530,7 +532,7 @@ private fun EntryCard(e: Entry, badge: String?, foot: String?, onClick: () -> Un
                     fontSize = 19.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f).sharedEntryTitle(e.anchor),
+                    modifier = Modifier.weight(1f).then(if (shared) Modifier.sharedEntryTitle(e.anchor) else Modifier),
                 )
                 if (badge != null) Badge(badge)
             }
