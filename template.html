@@ -827,7 +827,7 @@ const sections = DATA.map(g => {
       (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
       `<div class="foot">` +
       `<span><span class="no">#${it.no}</span><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
-      (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}`) +
+      (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}<span class="stc" data-opt="1" data-anchor="${it.anchor}"></span>`) +
       `<span class="stg" data-anchor="${it.anchor}" data-level="${g.level}"></span></span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
       `</div>`;
@@ -1007,6 +1007,29 @@ function recordAttempt(anchor, text, answer, via){
   refreshStCounts();
   syncSoon();
 }
+// Entries moved to 自测 are quizzed like 自测题 (same rules as ui/SelfTest.kt): the Chinese of one
+// of their example sentences is the prompt and the English sentence is the answer, compared word
+// by word. Each try takes the next example in turn (attempt count % examples). Entries without a
+// translated example (grammar notes, quick references) I grade myself.
+const quizEx = (it, n = (stLog[it.anchor] || []).length) => { const xs = it.examples || []; return xs.length ? { ...xs[n % xs.length], k: n % xs.length, of: xs.length } : null; };
+const exPrompt = ex => `<p class="lab">例句 ${ex.k + 1} / ${ex.of} · 中译英</p><p class="prompt" style="font-size:19px">${esc(plainMd(ex.zh))}</p><p class="hint">把这句写成英文,写完和例句原文逐词对照。</p>`;
+function logAttempt(anchor, text, ok, via){             // the verdict is already known
+  const list = stLog[anchor] = stLog[anchor] || [];
+  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && ok, via });
+  if (list.length > ST_MAX) list.splice(0, list.length - ST_MAX);
+  store.set("vk.selftest", JSON.stringify(stLog));
+  refreshStCounts();
+  syncSoon();
+}
+// After 显示答案 on a moved entry: the word-by-word compare with the example, or — with no
+// example to compare against — 我写对了 / 没写对 until I've graded it.
+function movedHtml(ex, mine, graded){
+  if (ex) return compareHtml(mine, plainMd(ex.en), false);
+  if (!mine.trim()) return `<p class="verdict">没有写就看答案了 —— 下次先写再看。</p>`;
+  return `<p class="line"><b>我写的</b>${esc(mine.trim())}</p>` + (graded === undefined
+    ? `<p class="fine">这条没有例句可以对照,看下面的笔记自己判断:</p><div class="row"><button class="btn ghost" type="button" data-ok="1">我写对了</button><button class="btn ghost" type="button" data-ok="0">没写对</button></div>`
+    : `<p class="verdict">已记为 ${graded ? "✅" : "❌"}</p>`);
+}
 function stSummary(anchor){
   const list = stLog[anchor] || [], tries = list.filter(a => a.text);
   return { tries: tries.length, ok: tries.filter(a => a.ok).length, peeks: list.length - tries.length, last: list[list.length - 1] };
@@ -1029,7 +1052,8 @@ function stHistoryHtml(anchor){
 function refreshStCounts(){
   document.querySelectorAll(".stc[data-anchor]").forEach(el => {
     const s = stSummary(el.dataset.anchor);
-    el.textContent = s.tries ? `试 ${s.tries} · 对 ${s.ok}` : "未自测";
+    // other entries only show it once I've tried them in 自测
+    el.textContent = el.dataset.opt ? (s.tries ? ` · 试 ${s.tries} · 对 ${s.ok}` : "") : s.tries ? `试 ${s.tries} · 对 ${s.ok}` : "未自测";
   });
 }
 
@@ -1097,7 +1121,7 @@ function show(it, level, i){
     moves.map(([to, label, tip], k) => `<button class="${k ? "linkish" : "btn ghost"}" type="button" data-to="${to}"${tip ? ` title="${tip}"` : ""}>${label}</button>`).join("") +
     `</span></div>` +
     (quiz
-      ? `<div class="st">${askHtml({ it, level, i }, kind({ it, level, i }))}` +
+      ? `<p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p><div class="st">${quizEx(it) ? exPrompt(quizEx(it)) : askHtml({ it, level, i }, kind({ it, level, i }))}` +
         `<textarea class="draft" id="st-in" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
         `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
         `<div class="st-res" id="st-res" hidden></div>`
@@ -1128,9 +1152,23 @@ function show(it, level, i){
   }));
   if (quiz) {
     const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
+    const ex = quizEx(it);                                // fixed before this try is logged
+    const paint = graded => {
+      res.innerHTML = movedHtml(ex, input.value, graded) + stHistoryHtml(it.anchor) +
+        `<p><button class="linkish" type="button" id="st-again">再试一次</button></p>`;
+      sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor);
+      res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {
+        const ok = b.dataset.ok === "1";
+        logAttempt(it.anchor, input.value, ok, "entry");
+        paint(ok);
+      }));
+      res.querySelector("#st-again").addEventListener("click", () => show(it, level, i));
+    };
     const reveal = () => {
-      res.innerHTML = (input.value.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(input.value.trim())}</div>` : "") +
-        `<p class="fine">对照下面的笔记,自己判断写得对不对。</p>`;
+      const v = input.value;
+      if (ex) recordAttempt(it.anchor, v, plainMd(ex.en), "entry");
+      else if (!v.trim()) logAttempt(it.anchor, "", false, "entry");
+      paint();
       res.hidden = false;
       sheet.querySelector(".st").hidden = true;
       sheet.querySelector(".body").hidden = false;
@@ -1521,17 +1559,18 @@ function renderSelfTest(){
 }
 function renderStCard(){
   const s = stSession, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST";
+  if (!exam && s.ex === undefined) s.ex = quizEx(it);     // this card's example, fixed for the card
+  const ex = exam ? null : s.ex;
   const pct = Math.round(s.index / s.queue.length * 100);
   selftestEl.innerHTML =
     `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
     `<button class="linkish" type="button" id="st-stop">结束</button></div>` +
-    `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${askHtml(t, k)}` +
-    (exam ? `<p class="st-stats">${stStatsLine(it.anchor)}</p>` : "") +
+    `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ex ? exPrompt(ex) : askHtml(t, k)}` +
+    `<p class="st-stats">${stStatsLine(it.anchor)}</p>` +
     (s.revealed
       ? `<hr>` + (exam
           ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>` + stHistoryHtml(it.anchor)
-          : (s.draft.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(s.draft)}</div>` : "") +
-            `<p class="fine">对照下面的笔记,自己判断写得对不对。</p>`) +
+          : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>` + stHistoryHtml(it.anchor)) +
         `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${it.html}</div>`
       : `<textarea class="draft" id="st-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)">${esc(s.draft)}</textarea>`) +
     `</div>` +
@@ -1539,14 +1578,23 @@ function renderStCard(){
       ? `<div class="grades" style="grid-template-columns:1fr 1fr"><button class="btn ghost" type="button" id="st-done" title="不再出现在自测和复习里">标为已掌握</button>` +
         `<button class="btn" type="button" id="st-next">${s.index + 1 < s.queue.length ? "下一题" : "完成"}</button></div>`
       : `<button class="btn" type="button" id="st-reveal" style="width:100%">显示答案</button>`);
-  const next = () => { s.index++; s.done++; s.revealed = false; s.draft = ""; renderSelfTest(); window.scrollTo(0, 0); };
+  const next = () => { s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; renderSelfTest(); window.scrollTo(0, 0); };
+  selftestEl.querySelectorAll(".st-res [data-ok]").forEach(b => b.addEventListener("click", () => {
+    s.graded = b.dataset.ok === "1";
+    logAttempt(it.anchor, s.draft, s.graded, "selftest");
+    s.checked++; if (s.graded) s.ok++;
+    renderStCard();
+  }));
   selftestEl.querySelector("#st-stop").addEventListener("click", () => { stSession = null; renderSelfTest(); });
   const d = selftestEl.querySelector("#st-draft");
   const reveal = () => {
     if (exam) {
       recordAttempt(it.anchor, s.draft, it.answer || "", "selftest");
       if (s.draft.trim()) { s.checked++; if (bestDiff(s.draft, it.answer || "").same) s.ok++; }
-    }
+    } else if (ex) {
+      recordAttempt(it.anchor, s.draft, plainMd(ex.en), "selftest");
+      if (s.draft.trim()) { s.checked++; if (bestDiff(s.draft, plainMd(ex.en)).same) s.ok++; }
+    } else if (!s.draft.trim()) logAttempt(it.anchor, "", false, "selftest");
     s.revealed = true; renderStCard();
   };
   if (d) {

@@ -63,10 +63,11 @@ fun SelfTestScreen(
     onEnd: () -> Unit,
     onXref: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onGrade: (String, Boolean) -> Unit = { _, _ -> },
 ) {
     val current = session?.current
     when {
-        session != null && current != null -> TestCard(session, current, selfTests[current.anchor].orEmpty(), onReveal, onNext, onEnd, onXref, modifier)
+        session != null && current != null -> TestCard(session, current, selfTests[current.anchor].orEmpty(), onReveal, onNext, onEnd, onXref, modifier, onGrade)
         session != null -> Column(modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text("完成 🎉", style = MaterialTheme.typography.headlineSmall)
             Text(
@@ -112,6 +113,7 @@ private fun TestCard(
     onEnd: () -> Unit,
     onXref: (String) -> Unit,
     modifier: Modifier,
+    onGrade: (String, Boolean) -> Unit,
 ) {
     val exam = entry.level == "SELFTEST"
     var draft by rememberSaveable(session.index) { mutableStateOf("") }
@@ -132,12 +134,11 @@ private fun TestCard(
                 .verticalScroll(rememberScrollState(), reverseScrolling = false)
                 .padding(horizontal = 20.dp, vertical = 12.dp)
         ) {
-            // an entry I moved to 自测 is produced (中→英) even if it's only 认识
-            ReviewFront(entry, kindOf(entry, inTest = true))
-            if (exam) {
-                Spacer(Modifier.height(8.dp))
-                SelfTestStats(attempts)
-            }
+            // an entry I moved to 自测 asks one of its examples (中→英); without one, like a review card
+            val ex = session.example
+            if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
+            Spacer(Modifier.height(8.dp))
+            SelfTestStats(attempts)
             if (!session.revealed) {
                 Spacer(Modifier.height(16.dp))
                 OutlinedTextField(
@@ -158,21 +159,10 @@ private fun TestCard(
                     SelfTestHistory(attempts)
                     Spacer(Modifier.height(16.dp))
                 } else {
-                    if (draft.isNotBlank()) {
-                        Text("你写的", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(
-                            draft.trim(),
-                            fontFamily = FontFamily.Serif,
-                            fontSize = 17.sp,
-                            modifier = Modifier
-                                .padding(top = 6.dp, bottom = 8.dp)
-                                .fillMaxWidth()
-                                .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))
-                                .padding(12.dp),
-                        )
-                    }
-                    Text("对照下面的笔记,自己判断写得对不对。", style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 16.dp))
+                    MovedResult(ex, draft, session.graded) { onGrade(draft, it) }
+                    Spacer(Modifier.height(8.dp))
+                    SelfTestHistory(attempts)
+                    Spacer(Modifier.height(16.dp))
                 }
                 Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
                 Spacer(Modifier.height(12.dp))

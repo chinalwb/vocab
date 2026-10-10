@@ -171,9 +171,9 @@ private fun CheckToggle(label: String, checked: Boolean, onToggle: () -> Unit) {
     }
 }
 
-/** "试 N · 对 M" for 自测 entries, null for everything else. */
+/** "试 N · 对 M" for 自测题 and anything I've tried in 自测, null for everything else. */
 internal fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
-    if (e.level == "SELFTEST") countsShort(this[e.anchor].orEmpty()) else null
+    if (e.level == "SELFTEST" || !this[e.anchor].isNullOrEmpty()) countsShort(this[e.anchor].orEmpty()) else null
 
 /** The card's 进度 note: nothing for where an entry starts, like the page's .stg. */
 internal fun stageFoot(e: Entry, s: Stage): String? = when {

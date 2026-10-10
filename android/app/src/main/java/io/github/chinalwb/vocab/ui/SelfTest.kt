@@ -141,6 +141,58 @@ fun SelfTestInput(value: String, onChange: (String) -> Unit, onReveal: () -> Uni
     }
 }
 
+/*
+ * Entries moved to 自测 are quizzed like 自测题 (same rules as quizEx() in template.html): the
+ * Chinese of one of their example sentences is the prompt, the English sentence the answer,
+ * compared word by word. Each try takes the next example in turn (attempt count % examples).
+ * Entries without a translated example (grammar notes, quick references) I grade myself.
+ */
+data class QuizExample(val en: String, val zh: String, val k: Int, val of: Int)
+
+private val CJK = Regex("[\\u4e00-\\u9fff]")
+
+fun Entry.quizExample(tries: Int): QuizExample? {
+    val xs = blocks.filterIsInstance<Block.Examples>().flatMap { it.items }
+        .filter { it.zh.isNotBlank() && Regex("[A-Za-z]").containsMatchIn(it.en) && CJK.containsMatchIn(it.zh) }
+    if (xs.isEmpty()) return null
+    val k = tries % xs.size
+    return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size)
+}
+
+/** The prompt side for a moved entry with an example: 例句 k / n · 中译英. */
+@Composable
+fun ExamplePrompt(ex: QuizExample) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text("例句 ${ex.k + 1} / ${ex.of} · 中译英", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(ex.zh, style = MaterialTheme.typography.titleLarge)
+        Text("把这句写成英文,写完和例句原文逐词对照。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+/**
+ * The verdict for a moved entry after 显示答案: the word-by-word compare with its example, or —
+ * with none to compare against — 我写对了 / 没写对 buttons until I've graded it.
+ */
+@Composable
+fun MovedResult(ex: QuizExample?, draft: String, graded: Boolean?, onGrade: (Boolean) -> Unit) {
+    if (ex != null) return SelfTestResult(draft, ex.en)
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (draft.isBlank()) {
+            Text("没有写就看答案了 —— 下次先写再看。", style = MaterialTheme.typography.titleSmall)
+            return@Column
+        }
+        Line("我写的", AnnotatedString(draft.trim()))
+        if (graded == null) {
+            Text("这条没有例句可以对照,看下面的笔记自己判断:", style = MaterialTheme.typography.bodySmall, color = muted)
+            androidx.compose.foundation.layout.Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                androidx.compose.material3.OutlinedButton(onClick = { onGrade(true) }) { Text("我写对了") }
+                androidx.compose.material3.OutlinedButton(onClick = { onGrade(false) }) { Text("没写对") }
+            }
+        } else Text(if (graded) "已记为 ✅" else "已记为 ❌", style = MaterialTheme.typography.titleSmall)
+    }
+}
+
 private val WHEN = DateTimeFormatter.ofPattern("M/d HH:mm").withZone(ZoneId.systemDefault())
 private fun whenOf(t: Long) = WHEN.format(Instant.ofEpochMilli(t))
 

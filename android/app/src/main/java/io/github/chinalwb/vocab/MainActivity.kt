@@ -185,6 +185,7 @@ private fun VocabNav() {
                             onSeen = vm::markSeen,
                             attempts = selfTests[anchor].orEmpty(),
                             onAttempt = { text -> if (entry != null) vm.recordSelfTest(entry, text, "entry") },
+                            onGrade = { text, ok -> if (entry != null) vm.recordAttempt(entry, text, ok, "entry") },
                             stage = entry?.let { stages.stageOf(it) } ?: Stage.Learn,
                             onStage = { vm.setStage(anchor, it) },
                         )
@@ -370,6 +371,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onNext = vm::nextTest,
                 onEnd = vm::endTest,
                 onXref = open,
+                onGrade = vm::gradeTest,
                 modifier = Modifier.padding(pad).imePadding(),
             )
         } else {
