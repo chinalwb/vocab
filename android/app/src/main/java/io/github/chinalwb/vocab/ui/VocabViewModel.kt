@@ -18,6 +18,26 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+data class TestSession(
+    val queue: List<Entry>,
+    val index: Int = 0,
+    val revealed: Boolean = false,
+    val done: Int = 0,
+    /** 自测题 answered (not peeked) this run, and how many of those matched */
+    val checked: Int = 0,
+    val ok: Int = 0,
+    val mastered: Int = 0,
+    /** my own verdict on a moved entry that can't be checked automatically */
+    val graded: Boolean? = null,
+    /** the example sentence this card asks (moved entries), fixed when the card comes up */
+    val example: QuizExample? = null,
+) {
+    val current get() = queue.getOrNull(index)
+
+    fun withExample(log: Map<String, List<Attempt>>) =
+        copy(example = current?.takeIf { it.level != "SELFTEST" }?.let { it.quizExample(log[it.anchor]?.size ?: 0) })
+}
+
 data class Session(
     val queue: List<Entry>,
     val index: Int = 0,
@@ -65,6 +85,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
 
     private val _session = MutableStateFlow<Session?>(null)
     val session = _session.asStateFlow()
+    private val _test = MutableStateFlow<TestSession?>(null)
+    /** The 自测 tab's run through everything in 自测中. */
+    val test = _test.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -148,6 +171,66 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun resetReview() = viewModelScope.launch { reviews.reset(); progress.soon() }
+
+    fun startTest() {
+        val entries = library.value.data?.entries ?: return
+        val q = testQueue(entries, stages.value, selfTests.value)
+        _test.value = if (q.isEmpty()) null else TestSession(q).withExample(selfTests.value)
+    }
+
+    /** 显示答案 in the 自测 tab: a 自测题 is logged and checked against its 答案. */
+    fun revealTest(draft: String) {
+        val s = _test.value ?: return
+        val e = s.current ?: return
+        if (e.level == "SELFTEST") {
+            recordSelfTest(e, draft, "selftest")
+            val tried = draft.isNotBlank()
+            _test.value = s.copy(
+                revealed = true,
+                checked = s.checked + if (tried) 1 else 0,
+                ok = s.ok + if (tried && bestDiff(draft.trim(), e.selfTestAnswer).same) 1 else 0,
+            )
+        } else {
+            // moved to 自测: checked against this card's example sentence; with none, I grade it myself
+            val ex = s.example
+            when {
+                ex != null -> {
+                    val tried = draft.isNotBlank()
+                    val ok = tried && bestDiff(draft.trim(), ex.en).same
+                    recordAttempt(e, draft, ok, "selftest")
+                    _test.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0)
+                }
+                draft.isBlank() -> { recordAttempt(e, "", false, "selftest"); _test.value = s.copy(revealed = true) }
+                else -> _test.value = s.copy(revealed = true)
+            }
+        }
+    }
+
+    /** 我写对了 / 没写对 on a moved entry that has no answer to check against. */
+    fun gradeTest(draft: String, ok: Boolean) {
+        val s = _test.value ?: return
+        val e = s.current ?: return
+        recordAttempt(e, draft, ok, "selftest")
+        _test.value = s.copy(graded = ok, checked = s.checked + 1, ok = s.ok + if (ok) 1 else 0)
+    }
+
+    /** 下一题, or 已掌握 then 下一题. */
+    fun nextTest(mastered: Boolean) {
+        val s = _test.value ?: return
+        if (mastered) s.current?.let { setStage(it.anchor, Stage.Done) }
+        _test.value = s.copy(index = s.index + 1, revealed = false, graded = null, done = s.done + 1, mastered = s.mastered + if (mastered) 1 else 0)
+            .withExample(selfTests.value)
+    }
+
+    fun endTest() {
+        _test.value = null
+    }
+
+    /** One attempt with the verdict already known (an entry moved to 自测). */
+    fun recordAttempt(entry: Entry, text: String, ok: Boolean, via: String) = viewModelScope.launch {
+        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), text.trim(), ok && text.isNotBlank(), via))
+        progress.soon()
+    }
 
     /** Records one reveal of a 自测 entry; ok = the words match the answer. */
     fun recordSelfTest(entry: Entry, text: String, via: String) = viewModelScope.launch {

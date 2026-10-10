@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -108,7 +109,16 @@ fun SelfTestResult(mine: String, answer: String, onRetry: (() -> Unit)? = null) 
                 Text("逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。", style = MaterialTheme.typography.bodySmall, color = muted)
             }
         }
-        if (onRetry != null) TextButton(onClick = onRetry, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) { Text("再试一次") }
+        if (onRetry != null) RetryButton(onRetry)
+    }
+}
+
+/** After a reveal, trying again is the next step, so it's the page's filled button. */
+@Composable
+fun RetryButton(onClick: () -> Unit) {
+    Button(onClick = onClick, contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp)) {
+        androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Default.Refresh, null, Modifier.padding(end = 6.dp))
+        Text("再试一次")
     }
 }
 
@@ -138,6 +148,58 @@ fun SelfTestInput(value: String, onChange: (String) -> Unit, onReveal: () -> Uni
             modifier = Modifier.fillMaxWidth(),
         )
         Button(onClick = onReveal) { Text("显示答案") }
+    }
+}
+
+/*
+ * Entries moved to 自测 are quizzed like 自测题 (same rules as quizEx() in template.html): the
+ * Chinese of one of their example sentences is the prompt, the English sentence the answer,
+ * compared word by word. Each try takes the next example in turn (attempt count % examples).
+ * Entries without a translated example (grammar notes, quick references) I grade myself.
+ */
+data class QuizExample(val en: String, val zh: String, val k: Int, val of: Int)
+
+private val CJK = Regex("[\\u4e00-\\u9fff]")
+
+fun Entry.quizExample(tries: Int): QuizExample? {
+    val xs = blocks.filterIsInstance<Block.Examples>().flatMap { it.items }
+        .filter { it.zh.isNotBlank() && Regex("[A-Za-z]").containsMatchIn(it.en) && CJK.containsMatchIn(it.zh) }
+    if (xs.isEmpty()) return null
+    val k = tries % xs.size
+    return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size)
+}
+
+/** The prompt side for a moved entry with an example: 例句 k / n · 中译英. */
+@Composable
+fun ExamplePrompt(ex: QuizExample) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text("例句 ${ex.k + 1} / ${ex.of} · 中译英", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(ex.zh, style = MaterialTheme.typography.titleLarge)
+        Text("把这句写成英文,写完和例句原文逐词对照。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+/**
+ * The verdict for a moved entry after 显示答案: the word-by-word compare with its example, or —
+ * with none to compare against — 我写对了 / 没写对 buttons until I've graded it.
+ */
+@Composable
+fun MovedResult(ex: QuizExample?, draft: String, graded: Boolean?, onGrade: (Boolean) -> Unit) {
+    if (ex != null) return SelfTestResult(draft, ex.en)
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (draft.isBlank()) {
+            Text("没有写就看答案了 —— 下次先写再看。", style = MaterialTheme.typography.titleSmall)
+            return@Column
+        }
+        Line("我写的", AnnotatedString(draft.trim()))
+        if (graded == null) {
+            Text("这条没有例句可以对照,看下面的笔记自己判断:", style = MaterialTheme.typography.bodySmall, color = muted)
+            androidx.compose.foundation.layout.Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                androidx.compose.material3.OutlinedButton(onClick = { onGrade(true) }) { Text("我写对了") }
+                androidx.compose.material3.OutlinedButton(onClick = { onGrade(false) }) { Text("没写对") }
+            }
+        } else Text(if (graded) "已记为 ✅" else "已记为 ❌", style = MaterialTheme.typography.titleSmall)
     }
 }
 
@@ -176,7 +238,7 @@ fun SelfTestHistory(attempts: List<Attempt>) {
                     modifier = Modifier.padding(top = 3.dp, end = 8.dp))
                 Text(when { a.text.isEmpty() -> "👀"; a.ok -> "✅"; else -> "❌" }, modifier = Modifier.padding(end = 8.dp))
                 Text(
-                    (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + if (a.via == "review") " · 复习" else "",
+                    (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + when (a.via) { "review" -> " · 复习"; "selftest" -> " · 自测"; else -> "" },
                     fontFamily = FontFamily.Serif, fontSize = 15.sp,
                 )
             }
