@@ -128,6 +128,7 @@
 122. [自测:我连小事都会想太多,最后弄得自己很心累。](#t-overthink-drained)
 123. [自测:每个选择都要耗我一点精力,结果事情还没开始做,人已经累了。](#t-exhausted-before-start)
 124. [自测:我得别再为小决定纠结了,不值得花这份心力。](#t-agonize-over)
+125. [agonize over sth](#agonize-over)
 
 ---
 
@@ -3823,6 +3824,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [逻辑] **shrink and expand** —— 否定句里连接两个动作用 **or**;而且这里实际只有缩小,说 **Don't scale it** 更准确。
 - ✅ **Do not** —— 意思清楚,日常使用完全够用;口语里 **Don't** 更自然,Do not 偏正式、语气更硬。
 
+---
+
 <a id="t-ship-then-roll-back"></a>
 ## 自测:如果今天就上线,之后产品团队又说 Meta Ads 还在用,回滚起来容易吗?
 
@@ -3849,6 +3852,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [语气] **is it easy** → **would it be easy**,假设情况用 would 更自然、更委婉。
 - ✅ **update it like this** —— 意思清楚,日常使用完全够用;**make this change** / **ship this** 更具体。
 
+---
+
 <a id="t-live-in-module"></a>
 ## 自测:这个文件为什么放在 business-lib,而不是 common-lib?
 
@@ -3873,6 +3878,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [介词] **put the file to** → **put the file in**。
 - ⚠️ [结构] **but not common-lib** → **rather than / instead of common-lib**。
 - ✅ **Why do we put** —— 意思清楚,日常使用完全够用;问当初为什么这样放,用 **Why did we put** 更准确。
+
+---
 
 <a id="t-at-a-glance"></a>
 ## 自测:加一个表格,列出所有识别出的风险和它们的当前状态,让读者一眼看清进展。
@@ -3900,6 +3907,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [逻辑] **give readers a clear report** 表达不出"一目了然" —— 用 **see … at a glance**。
 - ✅ **detected risks** —— 意思清楚,日常使用完全够用;报告里 **identified risks** 更常见。
 
+---
+
 <a id="t-still-on-track"></a>
 ## 自测:看起来你转去做别的事了——你还在做原来那个任务吗?
 
@@ -3925,6 +3934,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [动词] **you switched** → **you've switched**。
 - ✅ **It seems like / another task** —— 意思清楚,日常使用完全够用;**It looks like / a different task** 更口语、更明确。
 
+---
+
 <a id="t-wrong-color-blend"></a>
 ## 自测:这些链接几乎看不见——好像用错了颜色,跟背景混在一起了。
 
@@ -3949,6 +3960,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [逻辑] **not visible** = 完全看不见;颜色太淡用 **hard to see / almost invisible**。
 - ✅ **It seems like** —— 意思清楚,日常使用完全够用;报 bug 时 **It looks like** 更口语。
 
+---
+
 <a id="t-every-choice-energy"></a>
 ## 自测:每个选择都会消耗一点心力。
 
@@ -3967,6 +3980,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 不必逐字背,写出意思对的一句就算会。
 
 
+---
+
 <a id="t-overthink-drained"></a>
 ## 自测:我连小事都会想太多,最后弄得自己很心累。
 
@@ -3983,6 +3998,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **leave sb + 形容词** —— 使某人处于某种状态:*leaves me mentally drained*。
 - **心累** → **mentally drained / mentally exhausted**。
 
+
+---
 
 <a id="t-exhausted-before-start"></a>
 ## 自测:每个选择都要耗我一点精力,结果事情还没开始做,人已经累了。
@@ -4001,6 +4018,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **犹豫不决** → **be indecisive / go back and forth (on sth)**。
 
 
+---
+
 <a id="t-agonize-over"></a>
 ## 自测:我得别再为小决定纠结了,不值得花这份心力。
 
@@ -4015,3 +4034,37 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **agonize over** sth —— 为某事纠结、苦恼;**stop doing** —— 停止做(不是 stop to do)。
 - **not worth the mental energy** —— 不值得花这份心力;**worth + 名词**,不加 of。
+
+---
+
+<a id="agonize-over"></a>
+## agonize over sth
+
+- 音标:/ˈæɡ.ə.naɪz/(英式拼写 agonise)
+- 词性:v.(常接 over / about)
+- CEFR:C1–C2(名词 agony 约 B2–C1)
+- 日期:2026-10-10
+- 掌握:会写
+
+**English definition:** To spend a long time worrying and trying to make a decision about something.
+
+**含义:** 为某事**反复纠结、痛苦地犹豫**,多用在做决定时。比 overthink、go back and forth 程度更重,偏书面。
+
+**义项一:纠结、苦恼(做决定时)**
+1. I agonized over whether to accept the offer for weeks.
+   要不要接受那个 offer,我纠结了好几个星期。
+2. Don't agonize over the wording — just send it.
+   别在措辞上纠结了,直接发吧。
+
+**义项二:agonizing(形容词)—— 令人痛苦、煎熬的**
+1. It was an agonizing decision.
+   那是个让人很煎熬的决定。
+2. There was an agonizing wait for the test results.
+   等检查结果的过程很煎熬。
+
+**常见搭配:**
+
+- **agonize over / about** sth —— 为某事纠结(over 更常用);**agonize over whether / how to** do sth。
+- **an agonizing decision / wait / choice** —— 煎熬的决定 / 等待 / 选择。
+
+**近义对比:** **go back and forth**(来回犹豫,口语,最轻)→ **overthink**(想太多)→ **agonize over**(痛苦地纠结,最重);**dither** 略带批评,"磨蹭不决",英式常用。
