@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -108,7 +109,16 @@ fun SelfTestResult(mine: String, answer: String, onRetry: (() -> Unit)? = null) 
                 Text("逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。", style = MaterialTheme.typography.bodySmall, color = muted)
             }
         }
-        if (onRetry != null) TextButton(onClick = onRetry, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) { Text("再试一次") }
+        if (onRetry != null) RetryButton(onRetry)
+    }
+}
+
+/** After a reveal, trying again is the next step, so it's the page's filled button. */
+@Composable
+fun RetryButton(onClick: () -> Unit) {
+    Button(onClick = onClick, contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp)) {
+        androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Default.Refresh, null, Modifier.padding(end = 6.dp))
+        Text("再试一次")
     }
 }
 

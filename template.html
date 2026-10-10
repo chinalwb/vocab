@@ -506,6 +506,7 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .sheet .quiz{background:color-mix(in srgb, var(--card-ink) 6%, transparent);border-radius:14px;padding:14px 16px;margin:0 0 22px}
 .sheet .quiz>:first-child{margin-top:0}
 .sheet .quiz>:last-child,.sheet .quiz .st-res>:last-child{margin-bottom:0}
+.btn.retry{margin-top:4px}
 .notes-h{display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--card-ink-2);margin:0 0 12px}
 .notes-h::after{content:"";flex:1;border-top:1px solid var(--card-edge)}
 .stage b{color:var(--card-ink)}
@@ -988,7 +989,8 @@ function bestDiff(mine, answer){
   return ds.find(d => d.same) || ds.sort((x, y) => y.keepB.size - x.keepB.size)[0] || diffWords(mine, "");
 }
 function compareHtml(mine, answer, retry = true){
-  const again = retry ? `<button class="linkish" type="button" id="st-again">再试一次</button>` : "";
+  // after a reveal, trying again is the next step: the sheet's filled button
+  const again = retry ? `<button class="btn retry" type="button" id="st-again">↻ 再试一次</button>` : "";
   if (!mine.trim()) return `<p class="verdict">没有写就看答案了 —— 下次先写再看。</p><p>${again}</p>`;
   const d = bestDiff(mine, answer);
   if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)</p><p>${again}</p>`;
@@ -996,7 +998,7 @@ function compareHtml(mine, answer, retry = true){
   return `<p class="verdict">对照一下差异</p>` +
     `<p class="line"><b>我写的(删除线 = 多出来或写错的)</b>${show(d.a, d.keepA, "st-x")}</p>` +
     `<p class="line"><b>答案(高亮 = 我漏掉或写错的)</b>${show(d.b, d.keepB, "st-m")}</p>` +
-    `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。 ${again}</p>`;
+    `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。</p>` + (again ? `<p>${again}</p>` : "");
 }
 
 // ── 自测 attempt log: every reveal is recorded here (this browser only, like the review
@@ -1161,7 +1163,7 @@ function show(it, level, i){
     const ex = quizEx(it);                                // fixed before this try is logged
     const paint = graded => {
       res.innerHTML = movedHtml(ex, input.value, graded) + stHistoryHtml(it.anchor) +
-        `<p><button class="linkish" type="button" id="st-again">再试一次</button></p>`;
+        `<p><button class="btn retry" type="button" id="st-again">↻ 再试一次</button></p>`;
       sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor);
       res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {
         const ok = b.dataset.ok === "1";
