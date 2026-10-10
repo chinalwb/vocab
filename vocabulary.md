@@ -133,6 +133,7 @@
 127. [自测:把它存下来,连同其他几种说法一起。](#t-along-with-alternatives)
 128. [自测:我们重新看一下这个任务。它起因于我们在另一个 iOS App 里发现的 IDFV 问题,所以目标是查清我们的 App 是否也有同样的问题。](#t-came-out-of)
 129. [vice versa](#vice-versa)
+130. [自测:我们想把元信息部分和答案部分(在界面上)区分开。](#t-set-apart)
 
 ---
 
@@ -4193,3 +4194,23 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 不要再加 too / also:不说 *and vice versa too*,vice versa 本身已有"也"的意思。
 
 **辨析:** **vice versa** 强调两方对调后关系仍成立;**the other way around / round** 意思接近、更口语,常用来纠正"其实是反过来的":*It's actually the other way around.*
+
+---
+
+<a id="t-set-apart"></a>
+## 自测:我们想把元信息部分和答案部分(在界面上)区分开。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> We want to visually separate the metadata from the answer.
+> We want to set the answer apart from the meta section.
+> We want to make the answer stand out from the metadata.
+
+**要点:**
+
+- **separate A from B** —— 把 A 和 B 分开,最直接;加 **visually** 说明是界面上的区分。
+- **set sth apart (from sth)** —— 让某部分和其他部分区分开、更显眼,偏书面。
+- **make sth stand out (from sth)** —— 让某物突出、显眼,更口语。
