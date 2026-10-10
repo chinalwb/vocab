@@ -497,7 +497,12 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 /* ── 进度:学习中 → 自测 → 已掌握 ─────────── */
 .foot .stg{font-weight:700;letter-spacing:.04em}
 .pill .n{opacity:.6;font-variant-numeric:tabular-nums}
-.stage{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-6px 0 16px;font-size:12.5px;color:var(--card-ink-2)}
+.stage{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;margin:-6px 0 16px;font-size:12.5px;color:var(--card-ink-2)}
+.stage .steps{display:inline-flex;align-items:center;gap:6px}
+.stage .step{opacity:.7}
+.stage .step.on{opacity:1;font-weight:600;color:var(--card-ink);background:color-mix(in srgb, var(--card-ink) 9%, transparent);border-radius:7px;padding:2px 8px}
+.stage .arr{opacity:.4}
+.stage .moves{display:inline-flex;align-items:center;gap:10px}
 .stage b{color:var(--card-ink)}
 .stage .btn{font-size:12.5px;padding:5px 13px}
 /* the 自测 quiz inside an entry borrows the review card's prompt styles */
@@ -1076,7 +1081,7 @@ function show(it, level, i){
   const quiz = level !== "SELFTEST" && stage === "test";
   const moves = {
     learn: [["test", "移到自测", "我觉得会了,来考考我"]],
-    test: [["done", "已掌握", "不再出现在复习里"], ...(level === "SELFTEST" ? [] : [["learn", "移回学习中", ""]])],
+    test: [["done", "标为已掌握", "不再出现在复习和自测里"], ...(level === "SELFTEST" ? [] : [["learn", "移回学习中", ""]])],
     done: [["test", "移回自测", "重新回到复习里"]],
   }[stage];
   sheet.innerHTML =
@@ -1084,9 +1089,13 @@ function show(it, level, i){
     (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
     `<h2>${it.title}</h2>` +
     (meta ? `<div class="meta">${meta}</div>` : "") +
-    `<div class="stage">进度 <b>${STAGE_NAME[stage]}</b>` +
-    moves.map(([to, label, tip], k) => `<button class="btn${k ? " ghost" : ""}" type="button" data-to="${to}"${tip ? ` title="${tip}"` : ""}>${label}</button>`).join("") +
-    `</div>` +
+    // where it is (a stepper, display only) apart from what I can do (verb buttons, never filled):
+    // a filled 已掌握 read like a status and competed with 显示答案
+    `<div class="stage"><span class="lab">进度</span><span class="steps">` +
+    STAGES.map(([k, name]) => `<span class="step${k === stage ? " on" : ""}">${name}</span>`).join('<span class="arr">→</span>') +
+    `</span><span class="moves">` +
+    moves.map(([to, label, tip], k) => `<button class="${k ? "linkish" : "btn ghost"}" type="button" data-to="${to}"${tip ? ` title="${tip}"` : ""}>${label}</button>`).join("") +
+    `</span></div>` +
     (quiz
       ? `<div class="st">${askHtml({ it, level, i }, kind({ it, level, i }))}` +
         `<textarea class="draft" id="st-in" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
@@ -1301,7 +1310,7 @@ function renderCard(){
   const pct = Math.round(s.index / s.queue.length * 100);
   reviewEl.innerHTML =
     `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
-    `<button class="linkish" type="button" id="rv-done" title="斩:以后不再出现在复习里">已掌握</button>` +
+    `<button class="linkish" type="button" id="rv-done" title="斩:以后不再出现在复习里">标为已掌握</button>` +
     `<button class="linkish" type="button" id="rv-stop">结束</button></div>` +
     `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ask}` +
     (writes && !s.revealed ? `<textarea class="draft" id="rv-draft" placeholder="在这里写你的英文(可选,不会保存)">${esc(s.draft)}</textarea>` : "") +
@@ -1527,7 +1536,7 @@ function renderStCard(){
       : `<textarea class="draft" id="st-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)">${esc(s.draft)}</textarea>`) +
     `</div>` +
     (s.revealed
-      ? `<div class="grades" style="grid-template-columns:1fr 1fr"><button class="btn ghost" type="button" id="st-done" title="不再出现在自测和复习里">已掌握</button>` +
+      ? `<div class="grades" style="grid-template-columns:1fr 1fr"><button class="btn ghost" type="button" id="st-done" title="不再出现在自测和复习里">标为已掌握</button>` +
         `<button class="btn" type="button" id="st-next">${s.index + 1 < s.queue.length ? "下一题" : "完成"}</button></div>`
       : `<button class="btn" type="button" id="st-reveal" style="width:100%">显示答案</button>`);
   const next = () => { s.index++; s.done++; s.revealed = false; s.draft = ""; renderSelfTest(); window.scrollTo(0, 0); };

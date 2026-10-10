@@ -186,7 +186,7 @@ private fun TestCard(
             } else {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     // 已掌握: out of 自测 and 复习 until I move it back from the entry page
-                    OutlinedButton(onClick = { onNext(true) }, modifier = Modifier.weight(1f).height(52.dp)) { Text("已掌握") }
+                    OutlinedButton(onClick = { onNext(true) }, modifier = Modifier.weight(1f).height(52.dp)) { Text("标为已掌握") }
                     Button(onClick = { onNext(false) }, modifier = Modifier.weight(1f).height(52.dp)) {
                         Text(if (session.index + 1 < session.queue.size) "下一题" else "完成")
                     }

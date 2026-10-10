@@ -179,7 +179,7 @@ private fun Card(
             )
             Text("  ${session.index + 1} / ${session.queue.size}", style = MaterialTheme.typography.labelMedium)
             // 斩: out of review until I move it back from the entry page
-            TextButton(onClick = onMastered) { Text("已掌握") }
+            TextButton(onClick = onMastered) { Text("标为已掌握") }
             TextButton(onClick = onEnd) { Text("结束") }
         }
         Column(
