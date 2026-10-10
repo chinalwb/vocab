@@ -176,7 +176,7 @@ fun SelfTestHistory(attempts: List<Attempt>) {
                     modifier = Modifier.padding(top = 3.dp, end = 8.dp))
                 Text(when { a.text.isEmpty() -> "👀"; a.ok -> "✅"; else -> "❌" }, modifier = Modifier.padding(end = 8.dp))
                 Text(
-                    (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + if (a.via == "review") " · 复习" else "",
+                    (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + when (a.via) { "review" -> " · 复习"; "selftest" -> " · 自测"; else -> "" },
                     fontFamily = FontFamily.Serif, fontSize = 15.sp,
                 )
             }

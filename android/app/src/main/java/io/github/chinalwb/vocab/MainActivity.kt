@@ -104,7 +104,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.CompositionLocalProvider
 import io.github.chinalwb.vocab.ui.GridViewIcon
 import io.github.chinalwb.vocab.ui.MistakesScreen
-import io.github.chinalwb.vocab.ui.PracticeScreen
+import io.github.chinalwb.vocab.ui.SelfTestScreen
 import io.github.chinalwb.vocab.ui.ReviewScreen
 import io.github.chinalwb.vocab.ui.VocabTheme
 import io.github.chinalwb.vocab.ui.VocabViewModel
@@ -187,6 +187,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val selfTests by vm.selfTests.collectAsStateWithLifecycle()
     val stages by vm.stages.collectAsStateWithLifecycle()
     val sync by vm.syncStatus.collectAsStateWithLifecycle()
+    val test by vm.test.collectAsStateWithLifecycle()
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val snackbar = remember { SnackbarHostState() }
 
@@ -244,7 +245,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent, scrolledContainerColor = Color.Transparent),
                 scrollBehavior = if (tab == 0) bars else null,
                 title = {
-                    val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; 2 -> "错题本"; else -> "练习" }
+                    val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; 2 -> "错题本"; else -> "自测" }
                     Text(name, fontFamily = FontFamily.Serif, modifier = Modifier.graphicsLayer(barFade))
                 },
                 actions = {
@@ -283,11 +284,11 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                         .graphicsLayer { alpha = (1 - bars.state.collapsedFraction * 1.6f).coerceIn(0f, 1f) },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    // same order as the page's tabs; the indices predate 练习, so they aren't sequential
+                    // same order as the page's tabs; the indices aren't sequential (3 was 练习, now 自测)
                     GlassTab(tab == 0, { tab = 0 }, Icons.AutoMirrored.Filled.List, "浏览")
                     GlassTab(tab == 2, { tab = 2 }, Icons.Default.Warning, "错题")
                     GlassTab(tab == 1, { tab = 1 }, Icons.Default.Star, "复习")
-                    GlassTab(tab == 3, { tab = 3 }, Icons.Default.Edit, "练习")
+                    GlassTab(tab == 3, { tab = 3 }, Icons.Default.Edit, "自测")
                 }
             }
         },
@@ -309,7 +310,15 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
         } else if (tab == 2) {
             MistakesScreen(lib, onOpen = open, modifier = Modifier.padding(pad))
         } else if (tab == 3) {
-            PracticeScreen(lib, onOpen = open, modifier = Modifier.padding(pad).imePadding())
+            SelfTestScreen(
+                lib, test, stages, selfTests,
+                onStart = vm::startTest,
+                onReveal = vm::revealTest,
+                onNext = vm::nextTest,
+                onEnd = vm::endTest,
+                onXref = open,
+                modifier = Modifier.padding(pad).imePadding(),
+            )
         } else {
             ReviewScreen(
                 lib, review, session,
