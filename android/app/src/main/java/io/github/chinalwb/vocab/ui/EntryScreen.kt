@@ -104,6 +104,9 @@ fun EntryScreen(
             Spacer(Modifier.height(12.dp))
             StageBar(stage, selfTest = entry.level == "SELFTEST", onStage)
             Spacer(Modifier.height(16.dp))
+            // Three zones, kept visibly apart: what the entry is (title, labels, 进度 — above), my
+            // attempt (a card), and the answer (the notes, under their own 笔记 heading).
+            var notesShown = true
             if (entry.level != "SELFTEST" && stage == Stage.Test) {
                 // moved to 自测: quizzed on one of its example sentences like a 自测题 (Chinese → English,
                 // compared word by word and logged); with no example, asked like a review card and
@@ -113,45 +116,70 @@ fun EntryScreen(
                 var draft by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf("") }
                 var revealed by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
                 var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
-                SelfTestStats(attempts)
-                Spacer(Modifier.height(12.dp))
-                if (!revealed) {
-                    if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
-                    Spacer(Modifier.height(16.dp))
-                    SelfTestInput(draft, { draft = it }) {
-                        when {
-                            ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same)
-                            draft.isBlank() -> onGrade("", false)
+                QuizCard {
+                    SelfTestStats(attempts)
+                    if (!revealed) {
+                        if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
+                        SelfTestInput(draft, { draft = it }) {
+                            when {
+                                ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same)
+                                draft.isBlank() -> onGrade("", false)
+                            }
+                            revealed = true
                         }
-                        revealed = true
+                    } else {
+                        MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it) }
+                        androidx.compose.material3.TextButton(
+                            onClick = { tryNo = attempts.size },
+                            contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
+                        ) { Text("再试一次") }
+                        SelfTestHistory(attempts)
                     }
-                    return@Column
                 }
-                MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it) }
-                androidx.compose.material3.TextButton(
-                    onClick = { tryNo = attempts.size },
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
-                ) { Text("再试一次") }
-                SelfTestHistory(attempts)
-                Spacer(Modifier.height(16.dp))
+                notesShown = revealed
             }
             if (entry.level == "SELFTEST") {
                 // 自测: the answer stays hidden until I've written my own attempt
                 var draft by rememberSaveable(entry.anchor) { mutableStateOf("") }
                 var revealed by rememberSaveable(entry.anchor) { mutableStateOf(false) }
-                SelfTestStats(attempts)
-                Spacer(Modifier.height(12.dp))
-                if (!revealed) {
-                    SelfTestInput(draft, { draft = it }) { onAttempt(draft); revealed = true }
-                    return@Column
+                QuizCard {
+                    SelfTestStats(attempts)
+                    if (!revealed) SelfTestInput(draft, { draft = it }) { onAttempt(draft); revealed = true }
+                    else {
+                        SelfTestResult(draft, entry.selfTestAnswer) { draft = ""; revealed = false }
+                        SelfTestHistory(attempts)
+                    }
                 }
-                SelfTestResult(draft, entry.selfTestAnswer) { draft = ""; revealed = false }
-                SelfTestHistory(attempts)
-                Spacer(Modifier.height(16.dp))
+                notesShown = revealed
             }
+            if (!notesShown) return@Column
+            NotesHeading()
             EntryBody(entry, onXref)
             Spacer(Modifier.height(32.dp))
         }
+    }
+}
+
+/** My attempt, on a card of its own between the entry's facts and its notes. */
+@Composable
+private fun QuizCard(content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(16.dp))
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        content = content,
+    )
+    Spacer(Modifier.height(24.dp))
+}
+
+/** "笔记 ———": where the answer starts. */
+@Composable
+private fun NotesHeading() {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 4.dp, bottom = 12.dp)) {
+        Text("笔记", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        androidx.compose.material3.HorizontalDivider(Modifier.padding(start = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
     }
 }
 

@@ -503,6 +503,11 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .stage .step.on{opacity:1;font-weight:600;color:var(--card-ink);background:color-mix(in srgb, var(--card-ink) 9%, transparent);border-radius:7px;padding:2px 8px}
 .stage .arr{opacity:.4}
 .stage .moves{display:inline-flex;align-items:center;gap:10px}
+.sheet .quiz{background:color-mix(in srgb, var(--card-ink) 6%, transparent);border-radius:14px;padding:14px 16px;margin:0 0 22px}
+.sheet .quiz>:first-child{margin-top:0}
+.sheet .quiz>:last-child,.sheet .quiz .st-res>:last-child{margin-bottom:0}
+.notes-h{display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--card-ink-2);margin:0 0 12px}
+.notes-h::after{content:"";flex:1;border-top:1px solid var(--card-edge)}
 .stage b{color:var(--card-ink)}
 .stage .btn{font-size:12.5px;padding:5px 13px}
 /* the 自测 quiz inside an entry borrows the review card's prompt styles */
@@ -1120,19 +1125,20 @@ function show(it, level, i){
     `</span><span class="moves">` +
     moves.map(([to, label, tip], k) => `<button class="${k ? "linkish" : "btn ghost"}" type="button" data-to="${to}"${tip ? ` title="${tip}"` : ""}>${label}</button>`).join("") +
     `</span></div>` +
+    // three zones kept visibly apart: the facts above, my attempt in a card, the notes under 笔记
     (quiz
-      ? `<p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p><div class="st">${quizEx(it) ? exPrompt(quizEx(it)) : askHtml({ it, level, i }, kind({ it, level, i }))}` +
+      ? `<div class="quiz"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p><div class="st">${quizEx(it) ? exPrompt(quizEx(it)) : askHtml({ it, level, i }, kind({ it, level, i }))}` +
         `<textarea class="draft" id="st-in" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
         `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
-        `<div class="st-res" id="st-res" hidden></div>`
+        `<div class="st-res" id="st-res" hidden></div></div>`
       : "") +
     (level === "SELFTEST"
-      ? `<p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
+      ? `<div class="quiz"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
         `<div class="st"><textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea>` +
         `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
-        `<div class="st-res" id="st-res" hidden></div>`
+        `<div class="st-res" id="st-res" hidden></div></div>`
       : "") +
-    `<div class="body"${level === "SELFTEST" || quiz ? " hidden" : ""}>${it.html}</div>`;
+    `<div class="body"${level === "SELFTEST" || quiz ? " hidden" : ""}><div class="notes-h">笔记</div>${it.html}</div>`;
   scrim._entry = { it, level, i };
   scrim.append(sheet);
   document.body.append(scrim);
