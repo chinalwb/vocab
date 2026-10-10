@@ -6,6 +6,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -71,14 +76,26 @@ private const val WORD = "WORD"
 private val CEFR = listOf("A1", "A2", "B1", "B2", "C1", "C2")
 private val TYPES = listOf(ALL to "全部", WORD to "单词", "TERM" to "术语", "GRAMMAR" to "语法", "SENTENCE" to "句子", "SELFTEST" to "自测题")
 
-/** A labelled, horizontally scrolling row of chips; the label keeps its own column. */
+/** A titled group of chips in the 筛选 sheet; the chips wrap. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun FilterRow(label: String, content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit) {
-    androidx.compose.foundation.layout.Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.width(40.dp))
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically, content = content)
+private fun FilterSection(label: String, content: @Composable () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), itemVerticalAlignment = Alignment.CenterVertically) { content() }
     }
+}
+
+/** Three narrowing lines, the page's 筛选 icon (icons-core has no FilterList). */
+private val FilterIcon: androidx.compose.ui.graphics.vector.ImageVector by lazy {
+    androidx.compose.ui.graphics.vector.ImageVector.Builder("filter", 24.dp, 24.dp, 24f, 24f).apply {
+        addPath(
+            androidx.compose.ui.graphics.vector.PathParser().parsePathString("M4 6h16M7 12h10M10 18h4").toNodes(),
+            stroke = androidx.compose.ui.graphics.SolidColor(androidx.compose.ui.graphics.Color.Black),
+            strokeLineWidth = 1.8f,
+            strokeLineCap = androidx.compose.ui.graphics.StrokeCap.Round,
+        )
+    }.build()
 }
 
 @Composable
@@ -88,11 +105,15 @@ private fun Dot(color: androidx.compose.ui.graphics.Color) {
 
 @Composable
 private fun CheckToggle(label: String, checked: Boolean, onToggle: () -> Unit) {
+    // the whole row is the touch target, so the box itself can line up with the chips above
     androidx.compose.foundation.layout.Row(
-        Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onToggle).padding(end = 8.dp),
+        Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onToggle).heightIn(min = 40.dp).padding(end = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        androidx.compose.material3.Checkbox(checked, { onToggle() })
+        androidx.compose.runtime.CompositionLocalProvider(
+            androidx.compose.material3.LocalMinimumInteractiveComponentSize provides androidx.compose.ui.unit.Dp.Unspecified,
+        ) { androidx.compose.material3.Checkbox(checked, null) }
         Text(label, style = MaterialTheme.typography.labelLarge)
     }
 }
@@ -182,50 +203,100 @@ fun BrowseScreen(
             else -> null
         }
     }
+    var sheetOpen by rememberSaveable { mutableStateOf(false) }
+    val shownCount = groups.sumOf { it.second.size }
+    val clearAll = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false }
+    // what's on, as removable chips under the search; the same list drives the button's badge
+    val active = buildList {
+        if (typeF != ALL) add((TYPES.first { it.first == typeF }.second + (cefrF?.let { " · $it" } ?: "")) to { typeF = ALL; cefrF = null })
+        stageF?.let { add(it.label to { stageF = null }) }
+        if (writeOnly) add("只看会写" to { writeOnly = false })
+        if (changedOnly) add("有更新" to { changedOnly = false })
+    }
     val search: @Composable () -> Unit = {
-        OutlinedTextField(
-            value = query,
-            onValueChange = { query = it },
-            placeholder = { Text("搜索单词、释义,或编号 #12…") },
-            leadingIcon = { Icon(Icons.Default.Search, null) },
-            trailingIcon = {
-                if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Default.Clear, "清空") }
-            },
-            singleLine = true,
-            shape = RoundedCornerShape(50),
-            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-        )
+        androidx.compose.foundation.layout.Row(
+            Modifier.fillMaxWidth().padding(top = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                placeholder = { Text("搜索单词、释义,或编号 #12…", maxLines = 1) },
+                leadingIcon = { Icon(Icons.Default.Search, null) },
+                trailingIcon = {
+                    if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Default.Clear, "清空") }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(50),
+                modifier = Modifier.weight(1f),
+            )
+            androidx.compose.material3.OutlinedButton(
+                onClick = { sheetOpen = true },
+                contentPadding = PaddingValues(horizontal = 14.dp),
+                modifier = Modifier.height(56.dp),
+            ) {
+                Icon(FilterIcon, null, Modifier.size(18.dp))
+                Text("筛选", Modifier.padding(start = 6.dp))
+                if (active.isNotEmpty()) androidx.compose.material3.Badge(Modifier.padding(start = 6.dp), containerColor = MaterialTheme.colorScheme.primary) { Text("${active.size}") }
+            }
+        }
     }
     val filters: @Composable () -> Unit = {
-        val present = entries.map { it.level }.toSet()
-        val anyFilter = typeF != ALL || stageF != null || writeOnly || changedOnly
-        Column(Modifier.padding(vertical = 6.dp)) {
-            FilterRow("类型") {
-                items(TYPES.filter { (k, _) -> k == ALL || k == WORD && CEFR.any { it in present } || k in present }) { (k, label) ->
-                    FilterChip(typeF == k, { typeF = k; if (k != WORD) cefrF = null }, { Text("$label ${typeCount(k)}") },
-                        leadingIcon = if (k in LEVELS) ({ Dot(levelColor(k)) }) else null)
+        if (active.isNotEmpty()) FlowRow(
+            Modifier.fillMaxWidth().padding(top = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            itemVerticalAlignment = Alignment.CenterVertically,
+        ) {
+            active.forEach { (label, off) ->
+                androidx.compose.material3.InputChip(
+                    selected = false, onClick = off, label = { Text(label) },
+                    trailingIcon = { Icon(Icons.Default.Clear, "去掉筛选:$label", Modifier.size(16.dp)) },
+                )
+            }
+            Text("共 $shownCount 条", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f).wrapContentWidth(Alignment.End))
+        }
+        if (sheetOpen) androidx.compose.material3.ModalBottomSheet(
+            onDismissRequest = { sheetOpen = false },
+            sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        ) {
+            val present = entries.map { it.level }.toSet()
+            Column(
+                Modifier.padding(horizontal = 20.dp).padding(bottom = 16.dp).verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                androidx.compose.foundation.layout.Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("筛选", style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                    if (active.isNotEmpty()) TextButton(onClick = clearAll) { Text("重置") }
+                }
+                FilterSection("类型") {
+                    TYPES.filter { (k, _) -> k == ALL || k == WORD && CEFR.any { it in present } || k in present }.forEach { (k, label) ->
+                        FilterChip(typeF == k, { typeF = k; if (k != WORD) cefrF = null }, { Text("$label ${typeCount(k)}") },
+                            leadingIcon = if (k in LEVELS) ({ Dot(levelColor(k)) }) else null)
+                    }
+                }
+                if (typeF == WORD) FilterSection("级别") {
+                    FilterChip(cefrF == null, { cefrF = null }, { Text("全部 ${typeCount(WORD)}") })
+                    CEFR.filter { it in present }.forEach { c ->
+                        FilterChip(cefrF == c, { cefrF = c }, { Text("$c ${levelCounts[c] ?: 0}") }, leadingIcon = { Dot(levelColor(c)) })
+                    }
+                }
+                FilterSection("进度") {
+                    FilterChip(stageF == null, { stageF = null }, { Text("全部 ${stageCounts.values.sum()}") })
+                    Stage.entries.forEach { s ->
+                        FilterChip(stageF == s, { stageF = s }, { Text("${s.label} ${stageCounts[s] ?: 0}") })
+                    }
+                }
+                // toggles narrow everything else, so they are checkboxes rather than another chip
+                FilterSection("选项") {
+                    CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly }
+                    if (changed.isNotEmpty()) CheckToggle("有更新 ${changed.size}", changedOnly) { changedOnly = !changedOnly }
+                }
+                androidx.compose.material3.Button(onClick = { sheetOpen = false }, modifier = Modifier.fillMaxWidth().height(48.dp)) {
+                    Text(if (shownCount > 0) "显示 $shownCount 条" else "没有匹配的条目")
                 }
             }
-            if (typeF == WORD) FilterRow("") {
-                item { FilterChip(cefrF == null, { cefrF = null }, { Text("全部 ${typeCount(WORD)}") }) }
-                items(CEFR.filter { it in present }) { c ->
-                    FilterChip(cefrF == c, { cefrF = c }, { Text("$c ${levelCounts[c] ?: 0}") }, leadingIcon = { Dot(levelColor(c)) })
-                }
-            }
-            FilterRow("进度") {
-                item { FilterChip(stageF == null, { stageF = null }, { Text("全部 ${stageCounts.values.sum()}") }) }
-                items(Stage.entries) { s ->
-                    FilterChip(stageF == s, { stageF = s }, { Text("${s.label} ${stageCounts[s] ?: 0}") })
-                }
-                // toggles, drawn as checkboxes so they don't read as another choice in the row
-                item { CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly } }
-                if (changed.isNotEmpty()) item { CheckToggle("有更新 ${changed.size}", changedOnly) { changedOnly = !changedOnly } }
-            }
-            if (anyFilter) TextButton(
-                onClick = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false },
-                contentPadding = PaddingValues(horizontal = 8.dp),
-                modifier = Modifier.align(Alignment.End).height(32.dp),
-            ) { Text("清除筛选", style = MaterialTheme.typography.labelMedium) }
         }
     }
     val status: @Composable () -> Unit = {
