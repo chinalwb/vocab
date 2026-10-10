@@ -130,6 +130,7 @@
 124. [自测:我得别再为小决定纠结了,不值得花这份心力。](#t-agonize-over)
 125. [agonize over sth](#agonize-over)
 126. [自测:这个任务我们完成百分之多少了?](#t-what-percentage)
+127. [自测:把它存下来,连同其他几种说法一起。](#t-along-with-alternatives)
 
 ---
 
@@ -4101,3 +4102,31 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [词形] **percents** → **percent**(数字后不加 s)。
 - ❌ [搭配] **How many percent** → **What percentage**。
 - ⚠️ [结构] **on this task** → **of this task**(这个任务的百分之多少)。
+
+---
+
+<a id="t-along-with-alternatives"></a>
+## 自测:把它存下来,连同其他几种说法一起。
+
+- 日期:2026-10-10
+- 掌握:会写
+
+**答案:**
+
+> Save it along with the alternatives.
+> Save it, together with the other alternative phrasings.
+> Save it, and include the other ways of saying it too.
+
+**要点:**
+
+- **saying** = 谚语、俗话(*as the saying goes*);"其他说法"用 **phrasings / expressions / ways of saying it**。
+- 指上面列出的那几句,用 **the** alternatives;alternative 和 other 意思重复,说 **the alternatives** 就够。
+- **along with** —— 连同…一起,口语里比 together with 常见。
+
+**我的原句:**
+
+> save it - together with other alternative sayings.
+
+- ⚠️ [搭配] **sayings** → **phrasings / expressions**。
+- ⚠️ [冠词] **other alternative sayings** → **the other alternatives**。
+- ✅ **together with** —— 意思清楚,日常使用完全够用;口语里 **along with** 更常见。
