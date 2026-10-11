@@ -72,6 +72,10 @@
   "race-out-of-control": {
    "s": "test",
    "t": 1791685253963
+  },
+  "independent": {
+   "s": "test",
+   "t": 1791687262689
   }
  },
  "cards": {
@@ -793,6 +797,14 @@
     "t": 1791686302117,
     "ok": true,
     "peek": false,
+    "via": "entry"
+   }
+  ],
+  "independent": [
+   {
+    "t": 1791687266135,
+    "ok": false,
+    "peek": true,
     "via": "entry"
    }
   ]
