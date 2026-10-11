@@ -74,8 +74,8 @@
    "t": 1791685253963
   },
   "independent": {
-   "s": "test",
-   "t": 1791687262689
+   "s": "done",
+   "t": 1791697023810
   }
  },
  "cards": {
@@ -936,6 +936,12 @@
    {
     "t": 1791696974222,
     "ok": true,
+    "peek": false,
+    "via": "entry"
+   },
+   {
+    "t": 1791697017472,
+    "ok": false,
     "peek": false,
     "via": "entry"
    }
