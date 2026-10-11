@@ -56,6 +56,10 @@
   "agonize-over": {
    "s": "test",
    "t": 1791630952866
+  },
+  "bakery": {
+   "s": "test",
+   "t": 1791684408647
   }
  },
  "cards": {
@@ -614,6 +618,14 @@
    {
     "t": 1791631162907,
     "ok": true,
+    "peek": false,
+    "via": "entry"
+   }
+  ],
+  "bakery": [
+   {
+    "t": 1791684421484,
+    "ok": false,
     "peek": false,
     "via": "entry"
    }
