@@ -64,6 +64,10 @@
   "check-out": {
    "s": "test",
    "t": 1791684542162
+  },
+  "for-now": {
+   "s": "test",
+   "t": 1791684562907
   }
  },
  "cards": {
@@ -649,6 +653,14 @@
     "t": 1791684498648,
     "ok": true,
     "peek": false,
+    "via": "entry"
+   }
+  ],
+  "for-now": [
+   {
+    "t": 1791684570491,
+    "ok": false,
+    "peek": true,
     "via": "entry"
    }
   ]
