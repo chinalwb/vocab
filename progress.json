@@ -965,6 +965,20 @@
     "peek": true,
     "via": "entry",
     "ex": "We don't expect to see any performance impact."
+   },
+   {
+    "t": 1791800584930,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": "We expect the migration to take about an hour."
+   },
+   {
+    "t": 1791800593046,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": "That function is expected to work correctly after the refactor."
    }
   ],
   "t-wrong-color-blend": [
