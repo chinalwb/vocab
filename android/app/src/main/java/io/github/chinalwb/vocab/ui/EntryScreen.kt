@@ -56,6 +56,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -66,6 +67,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -309,17 +312,21 @@ private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
     val track = MaterialTheme.colorScheme.outline
     val node = 30.dp
     val cur = stage.ordinal
+    // the levels sit at the two edges and the middle, so the track spans the page; its ends are
+    // the first and last node's centres, which the columns report once laid out
+    val centres = remember { mutableStateListOf(0f, 0f, 0f) }
     Row(
         Modifier
             .fillMaxWidth()
             .drawBehind {
-                // the track runs between the node centres, under the nodes
-                val w = size.width / Stage.entries.size
                 val y = (node / 2).toPx()
                 val stroke = 3.dp.toPx()
-                drawLine(track, Offset(w / 2, y), Offset(size.width - w / 2, y), stroke)
-                drawLine(ink, Offset(w / 2, y), Offset(w * (cur + 0.5f), y), stroke)
+                if (centres[2] > centres[0]) {
+                    drawLine(track, Offset(centres[0], y), Offset(centres[2], y), stroke)
+                    drawLine(ink, Offset(centres[0], y), Offset(centres[cur], y), stroke)
+                }
             },
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Stage.entries.forEachIndexed { i, s ->
             val here = i == cur
@@ -327,9 +334,10 @@ private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
             val allowed = !(selfTest && s == Stage.Learn)
             Column(
                 Modifier
-                    .weight(1f)
+                    .onGloballyPositioned { centres[i] = it.positionInParent().x + it.size.width / 2f }
                     .clip(RoundedCornerShape(12.dp))
                     .clickable(enabled = allowed && !here) { onStage(s) }
+                    .padding(horizontal = 6.dp)
                     .padding(bottom = 4.dp)
                     .alpha(if (allowed) 1f else 0.35f),
                 horizontalAlignment = Alignment.CenterHorizontally,
