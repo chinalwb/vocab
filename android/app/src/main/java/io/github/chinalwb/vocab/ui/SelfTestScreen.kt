@@ -18,11 +18,12 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -117,6 +118,17 @@ private fun TestCard(
 ) {
     val exam = entry.level == "SELFTEST"
     var draft by rememberSaveable(session.index) { mutableStateOf("") }
+    // 选词 when there's an answer to check against (a 自测题's 答案, a moved entry's example):
+    // the answer box scrolls with the question, the chips sit above 显示答案 at the bottom
+    val ex = session.example
+    val answer = if (exam) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
+    val (chips, setChips) = rememberChipsMode()
+    val bank = if (answer != null && chips && !session.revealed) {
+        val seed = entry.anchor.hashCode() + session.index
+        val others = remember(entry.anchor) { entry.quizExamples().map { plain(it.en) } + entry.selfTestAnswer.lines() }
+            .filter { it.isNotBlank() && it != answer }
+        rememberWordBank(answer, strayWords(answer, others, seed), seed).also { st -> LaunchedEffect(st.pickedText) { draft = st.draft } }
+    } else null
     Column(modifier.fillMaxSize()) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
             LinearProgressIndicator(
@@ -135,20 +147,14 @@ private fun TestCard(
                 .padding(horizontal = 20.dp, vertical = 12.dp)
         ) {
             // an entry I moved to 自测 asks one of its examples (中→英); without one, like a review card
-            val ex = session.example
             if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
             Spacer(Modifier.height(8.dp))
             SelfTestStats(attempts)
             if (!session.revealed) {
-                Spacer(Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = draft,
-                    onValueChange = { draft = it },
-                    placeholder = { Text("不看笔记,写出英文…") },
-                    minLines = 3,
-                    textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                Spacer(Modifier.height(12.dp))
+                if (answer != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { AnswerModeToggle(chips, setChips) }
+                Spacer(Modifier.height(8.dp))
+                if (bank == null) DraftField(draft, { draft = it })
             } else {
                 Spacer(Modifier.height(20.dp))
                 HorizontalDivider()
@@ -170,8 +176,9 @@ private fun TestCard(
                 Spacer(Modifier.height(24.dp))
             }
         }
-        Box(Modifier.padding(16.dp)) {
+        Column(Modifier.padding(16.dp)) {
             if (!session.revealed) {
+                if (bank != null) { WordBankAnswer(bank); Spacer(Modifier.height(10.dp)); WordBankChips(bank); Spacer(Modifier.height(12.dp)) }
                 Button(onClick = { onReveal(draft) }, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text("显示答案") }
             } else {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

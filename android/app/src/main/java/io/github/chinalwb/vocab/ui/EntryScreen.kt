@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -184,24 +185,40 @@ fun EntryScreen(
                     if (quiz) FlipButton("回到自测") { notesUp = false }
                 },
                 backSide = {
-                    SideHeading("自测") { ExpandButton(expanded) { expanded = !expanded } }
+                    // With an answer to check against, the words can be tapped together (选词)
+                    // instead of typed; the strays come from the entry's other sentences.
+                    val answer = if (selfTest) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
+                    val (chips, setChips) = rememberChipsMode()
+                    SideHeading("自测") {
+                        if (answer != null && !revealed) { AnswerModeToggle(chips, setChips); Spacer(Modifier.width(6.dp)) }
+                        ExpandButton(expanded) { expanded = !expanded }
+                    }
                     if (!revealed) {
-                        // The question with the input right under it, scrolling together in what's
-                        // left; 显示答案 stays put at the bottom of the card, in thumb's reach.
+                        val bank = if (answer != null && chips) {
+                            val seed = entry.anchor.hashCode() + tryNo
+                            val others = remember(entry.anchor, excluded) {
+                                entry.quizExamples(excluded).map { plain(it.en) } + entry.selfTestAnswer.lines()
+                            }.filter { it.isNotBlank() && it != answer }
+                            rememberWordBank(answer, strayWords(answer, others, seed), seed).also { st -> LaunchedEffect(st.pickedText) { draft = st.draft } }
+                        } else null
+                        // Typing: the question with the text box right under it, scrolling together.
+                        // 选词: the question scrolls on its own (compact, like with the keyboard up)
+                        // and the sentence box, the chips and 显示答案 stay put at the bottom, in thumb's reach.
                         Column(
                             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
                             verticalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
-                            if (!imeVisible) SelfTestStats(attempts)
+                            if (!imeVisible && bank == null) SelfTestStats(attempts)
                             when {
                                 // a 自测题's question is its title — off the page while full screen
                                 selfTest -> if (fullscreen) Text(entry.title, style = MaterialTheme.typography.titleMedium)
                                 // a moved entry asks one of its examples (中→英); with none, like a review card
-                                ex != null -> ExamplePrompt(ex, compact = imeVisible)
+                                ex != null -> ExamplePrompt(ex, compact = imeVisible || bank != null)
                                 else -> ReviewFront(entry, kindOf(entry, inTest = true))
                             }
-                            DraftField(draft, { draft = it }, maxLines = 6)
+                            if (bank == null) DraftField(draft, { draft = it }, maxLines = 6)
                         }
+                        if (bank != null) { WordBankAnswer(bank); WordBankChips(bank) }
                         Button(onClick = reveal, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("显示答案") }
                     } else Scrolling {
                         SelfTestStats(attempts)
@@ -412,7 +429,7 @@ private fun ColumnScope.Scrolling(content: @Composable ColumnScope.() -> Unit) {
 
 /** "自测 ——— ⤢", matching the notes side's 笔记 heading. */
 @Composable
-private fun SideHeading(label: String, trailing: @Composable () -> Unit) {
+private fun SideHeading(label: String, trailing: @Composable RowScope.() -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         HorizontalDivider(Modifier.padding(horizontal = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
