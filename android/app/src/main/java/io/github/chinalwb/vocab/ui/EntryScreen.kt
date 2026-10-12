@@ -1,36 +1,43 @@
 package io.github.chinalwb.vocab.ui
 
-import androidx.compose.runtime.remember
-import androidx.compose.animation.animateContentSize
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.TextButton
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -39,27 +46,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Stage
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.sp
 
 /**
  * One entry. Cross-references push another EntryScreen on the nav back stack,
  * so the system back gesture walks back through the chain like the page's ← 返回.
+ *
+ * Three bands, top to bottom: the title (meta: a tap opens the details sheet), the progress
+ * stepper, and the card, which takes whatever height is left and scrolls inside.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -76,6 +86,7 @@ fun EntryScreen(
     onStage: (Stage) -> Unit = {},
 ) {
     if (entry != null) LaunchedEffect(entry.anchor) { onSeen(entry.anchor) }
+    var details by rememberSaveable { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -85,7 +96,7 @@ fun EntryScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = entry?.let { levelColor(it.level) } ?: androidx.compose.ui.graphics.Color.Unspecified),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = entry?.let { levelColor(it.level) } ?: Color.Unspecified),
             )
         }
     ) { pad ->
@@ -94,27 +105,27 @@ fun EntryScreen(
         Column(
             Modifier
                 .padding(pad)
-                // the keyboard takes room from the page instead of panning the whole window
-                // (which pushed the top bar under the status bar and left nothing to scroll)
+                // the keyboard takes room from the page (the card shrinks) instead of panning
+                // the whole window, which pushed the top bar under the status bar
                 .consumeWindowInsets(pad)
                 .imePadding()
                 .fillMaxSize()
                 .then(if (entry != null) Modifier.sharedEntryContainer(entry.anchor) else Modifier)
                 .background(MaterialTheme.colorScheme.background)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 16.dp)
+                .padding(horizontal = 20.dp)
         ) {
             if (entry == null) {
-                Text("找不到这个条目,可能已在词库里改名或删除。")
+                Text("找不到这个条目,可能已在词库里改名或删除。", Modifier.padding(vertical = 16.dp))
                 return@Column
             }
-            EntryHeader(entry)
-            Spacer(Modifier.height(12.dp))
-            StageBar(stage, selfTest = entry.level == "SELFTEST", onStage)
-            Spacer(Modifier.height(16.dp))
-            // The facts sit on the page; the entry itself is a card with two sides, like a coin:
-            // the notes (a carousel) and, while it's in 自测, the quiz. Moving it into or out of
-            // 自测 flips the card; once I've answered I can flip over to the notes and back.
+            Spacer(Modifier.height(14.dp))
+            Meta(entry) { details = true }
+            Spacer(Modifier.height(14.dp))
+            Stepper(stage, selfTest = entry.level == "SELFTEST", onStage)
+            Spacer(Modifier.height(14.dp))
+            // The entry itself is a card with two sides, like a coin: the notes (a carousel)
+            // and, while it's in 自测, the quiz. Moving it into or out of 自测 flips the card;
+            // once I've answered I can flip over to the notes and back.
             val selfTest = entry.level == "SELFTEST"
             val quiz = stage == Stage.Test
             // kept out here so flipping to the notes and back doesn't lose my attempt; a new try
@@ -129,53 +140,157 @@ fun EntryScreen(
             FlipCard(
                 back = quiz && !notesUp,
                 color = levelColor(entry.level),
+                modifier = Modifier.weight(1f).fillMaxWidth(),
                 front = {
-                    EntryNotes(entry, onXref, inCard = true)
+                    EntryNotes(entry, onXref, inCard = true, modifier = Modifier.weight(1f))
                     if (quiz) FlipButton("回到自测") { notesUp = false }
                 },
                 backSide = {
                     SideHeading("自测")
-                    SelfTestStats(attempts)
-                    if (!revealed) {
-                        // a moved entry asks one of its examples (中→英); with none, like a review card
-                        if (!selfTest) {
-                            if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
-                        }
-                        SelfTestInput(draft, { draft = it }) {
-                            when {
-                                selfTest -> onAttempt(draft)
-                                ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same)
-                                draft.isBlank() -> onGrade("", false)
+                    Scrolling {
+                        SelfTestStats(attempts)
+                        if (!revealed) {
+                            // a moved entry asks one of its examples (中→英); with none, like a review card
+                            if (!selfTest) {
+                                if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
                             }
-                            revealed = true
+                            SelfTestInput(draft, { draft = it }) {
+                                when {
+                                    selfTest -> onAttempt(draft)
+                                    ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same)
+                                    draft.isBlank() -> onGrade("", false)
+                                }
+                                revealed = true
+                            }
+                        } else {
+                            if (selfTest) SelfTestResult(draft, entry.selfTestAnswer)
+                            else MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it) }
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                RetryButton(retry)
+                                FlipButton("翻面看笔记") { notesUp = true }
+                            }
+                            SelfTestHistory(attempts)
                         }
-                    } else {
-                        if (selfTest) SelfTestResult(draft, entry.selfTestAnswer)
-                        else MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it) }
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                            RetryButton(retry)
-                            FlipButton("翻面看笔记") { notesUp = true }
-                        }
-                        SelfTestHistory(attempts)
                     }
                 },
             )
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(16.dp))
+            if (details) ModalBottomSheet(onDismissRequest = { details = false }) { Details(entry) }
+        }
+    }
+}
+
+/**
+ * The meta band, kept to the headword: the title and one muted line (type · 词性 · 音标 ›).
+ * Everything else about the entry is a tap away in the details sheet — it rarely matters
+ * while reading.
+ */
+@Composable
+private fun Meta(entry: Entry, onDetails: () -> Unit) {
+    val line = listOf(levelStyle(entry.level).short, entry.pos, entry.ipa).filter { it.isNotEmpty() }.joinToString(" · ")
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .clickable(onClick = onDetails)
+            .padding(horizontal = 4.dp, vertical = 2.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            entry.title,
+            fontFamily = FontFamily.Serif,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 26.sp,
+            lineHeight = 32.sp,
+            modifier = Modifier.sharedEntryTitle(entry.anchor),
+        )
+        Text("$line  ›", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+/** The details sheet: what the chips used to show, as label / value rows. */
+@Composable
+private fun Details(entry: Entry) {
+    val rows = listOf(
+        "类型" to "${levelStyle(entry.level).name} ${levelStyle(entry.level).short}",
+        "编号" to (if (entry.no > 0) "#${entry.no}" else ""),
+        "音标" to entry.ipa,
+        "词性" to entry.pos,
+        "CEFR" to entry.cefr,
+        "掌握" to if (entry.writes) "会写" else "认识",
+        "收录" to entry.date,
+    ).filter { it.second.isNotBlank() }
+    Column(Modifier.padding(start = 24.dp, end = 24.dp, bottom = 36.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 26.sp)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        rows.forEach { (label, value) ->
+            Row {
+                Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.width(64.dp))
+                Text(value, style = MaterialTheme.typography.bodyLarge)
+            }
+        }
+    }
+}
+
+/**
+ * The progress band: a segmented stepper, 学习中 → 自测中 → 已掌握. The filled segment is where
+ * the entry is; tapping another segment moves it there (the ✓ marks the stages behind it).
+ * A 自测题 can't go back to 学习中, so that segment is dimmed for it.
+ */
+@Composable
+private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
+    val ink = MaterialTheme.colorScheme.onSurface
+    val shape = RoundedCornerShape(50)
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .height(44.dp)
+            .clip(shape)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .border(1.dp, MaterialTheme.colorScheme.outline, shape),
+    ) {
+        Stage.entries.forEachIndexed { i, s ->
+            val here = s == stage
+            val passed = i < stage.ordinal
+            val allowed = !(selfTest && s == Stage.Learn)
+            Box(
+                Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .then(if (here) Modifier.background(ink, shape) else Modifier)
+                    .clickable(enabled = allowed && !here) { onStage(s) },
+                contentAlignment = Alignment.Center,
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    if (passed) Icon(Icons.Default.Check, null, Modifier.height(14.dp).width(14.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(
+                        s.label,
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = if (here) FontWeight.SemiBold else FontWeight.Normal,
+                        color = when {
+                            here -> MaterialTheme.colorScheme.surface
+                            !allowed -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f)
+                            else -> MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                    )
+                }
+            }
         }
     }
 }
 
 /**
  * A card with two sides that turns over in 3D when [back] changes: rotates about its vertical
- * axis, dips a little at the half-way point (where the side shown swaps), and eases its height
- * to the new side.
+ * axis and dips a little at the half-way point, where the side shown swaps. It is as tall as
+ * [modifier] makes it; each side scrolls inside.
  */
 @Composable
 private fun FlipCard(
     back: Boolean,
-    color: androidx.compose.ui.graphics.Color,
-    front: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit,
-    backSide: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit,
+    color: Color,
+    modifier: Modifier,
+    front: @Composable ColumnScope.() -> Unit,
+    backSide: @Composable ColumnScope.() -> Unit,
 ) {
     val angle by animateFloatAsState(
         if (back) 180f else 0f,
@@ -185,8 +300,7 @@ private fun FlipCard(
     val density = LocalDensity.current.density
     val shape = RoundedCornerShape(24.dp)
     Column(
-        Modifier
-            .fillMaxWidth()
+        modifier
             .graphicsLayer {
                 rotationY = angle
                 cameraDistance = 16f * density
@@ -195,11 +309,10 @@ private fun FlipCard(
             }
             .shadow(2.dp, shape)
             .background(color, shape)
-            .animateContentSize(tween(350))
     ) {
         Column(
             Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 // the far side is drawn mirrored back, so it reads the right way round
                 .graphicsLayer { if (angle > 90f) rotationY = 180f }
                 .padding(18.dp),
@@ -209,12 +322,22 @@ private fun FlipCard(
     }
 }
 
+/** The rest of a card side, scrolling inside the card. */
+@Composable
+private fun ColumnScope.Scrolling(content: @Composable ColumnScope.() -> Unit) {
+    Column(
+        Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        content = content,
+    )
+}
+
 /** "自测 ———", matching the notes side's 笔记 heading. */
 @Composable
 private fun SideHeading(label: String) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 4.dp)) {
         Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        androidx.compose.material3.HorizontalDivider(Modifier.padding(start = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
+        HorizontalDivider(Modifier.padding(start = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
     }
 }
 
@@ -222,45 +345,7 @@ private fun SideHeading(label: String) {
 @Composable
 private fun FlipButton(label: String, onClick: () -> Unit) {
     OutlinedButton(onClick = onClick, contentPadding = PaddingValues(horizontal = 16.dp)) {
-        Icon(androidx.compose.material.icons.Icons.Default.Refresh, null, Modifier.padding(end = 6.dp))
+        Icon(Icons.Default.Refresh, null, Modifier.padding(end = 6.dp))
         Text(label)
-    }
-}
-
-/** 进度 and the moves out of it — the same buttons as the page's .stage row. */
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun StageBar(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
-    // Where it is and what I can do are kept apart: the stepper only shows the stage, and the
-    // moves are verb-labelled outlined / text buttons, so the page's one filled button stays
-    // the real next step (显示答案). A filled "已掌握" read as a status, not an action.
-    val moves = when (stage) {
-        Stage.Learn -> listOf(Stage.Test to "移到自测")
-        Stage.Test -> listOf(Stage.Done to "标为已掌握") + if (selfTest) emptyList() else listOf(Stage.Learn to "移回学习中")
-        Stage.Done -> listOf(Stage.Test to "移回自测")
-    }
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("进度  ", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Stage.entries.forEachIndexed { i, s ->
-                if (i > 0) Text("  →  ", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.outline)
-                val here = s == stage
-                Text(
-                    s.label,
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = if (here) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (here) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                    modifier = if (here) Modifier
-                        .background(MaterialTheme.colorScheme.surfaceContainerHighest, RoundedCornerShape(8.dp))
-                        .padding(horizontal = 8.dp, vertical = 3.dp) else Modifier,
-                )
-            }
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            moves.forEachIndexed { i, (to, label) ->
-                if (i == 0) OutlinedButton(onClick = { onStage(to) }, contentPadding = PaddingValues(horizontal = 16.dp)) { Text(label) }
-                else TextButton(onClick = { onStage(to) }) { Text(label) }
-            }
-        }
     }
 }
