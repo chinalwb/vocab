@@ -124,20 +124,20 @@ fun SelfTestResult(mine: String, answer: String, onRetry: (() -> Unit)? = null) 
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         val d = bestDiff(mine, answer)
-        // the verdict line, with 🔊 reading the answer it was checked against
-        val verdict: @Composable (String) -> Unit = { text ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-                SpeakButton(d.answer.joinToString(" ").ifBlank { answer.lines().firstOrNull { it.isNotBlank() }.orEmpty() })
-            }
-        }
         when {
-            mine.isBlank() -> verdict("没有写就看答案了 —— 下次先写再看。")
-            d.same -> verdict("✅ 和答案一致(大小写、标点不计)")
+            // a peek still gets the answer — that's what the button promised — with 🔊 on it
+            mine.isBlank() -> {
+                Text("没有写就看答案了 —— 下次先写再看。", style = MaterialTheme.typography.titleSmall)
+                answer.lines().filter { it.isNotBlank() }.forEach { Line("答案", AnnotatedString(it), say = it) }
+            }
+            d.same -> Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("✅ 和答案一致(大小写、标点不计)", style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+                SpeakButton(d.answer.joinToString(" "))
+            }
             else -> {
-                verdict("对照一下差异")
+                Text("对照一下差异", style = MaterialTheme.typography.titleSmall)
                 Line("我写的(删除线 = 多出来或写错的)", marked(d.mine, d.keepMine, SpanStyle(color = err, textDecoration = TextDecoration.LineThrough)))
-                Line("答案(高亮 = 我漏掉或写错的)", marked(d.answer, d.keepAnswer, SpanStyle(background = warn)))
+                Line("答案(高亮 = 我漏掉或写错的)", marked(d.answer, d.keepAnswer, SpanStyle(background = warn)), say = d.answer.joinToString(" "))
                 Text("逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。", style = MaterialTheme.typography.bodySmall, color = muted)
             }
         }
@@ -155,15 +155,20 @@ fun RetryButton(onClick: () -> Unit) {
 }
 
 @Composable
-private fun Line(label: String, text: AnnotatedString) {
-    Column(
+/** A labelled line of the verdict; [say] puts a 🔊 at its end that reads that text. */
+private fun Line(label: String, text: AnnotatedString, say: String? = null) {
+    Row(
         Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))
-            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .padding(start = 12.dp, end = 6.dp, top = 8.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(text, fontFamily = FontFamily.Serif, fontSize = 17.sp, lineHeight = 24.sp)
+        Column(Modifier.weight(1f)) {
+            Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(text, fontFamily = FontFamily.Serif, fontSize = 17.sp, lineHeight = 24.sp)
+        }
+        if (say != null) SpeakButton(say)
     }
 }
 
