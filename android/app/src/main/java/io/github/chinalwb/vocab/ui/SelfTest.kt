@@ -136,18 +136,36 @@ private fun Line(label: String, text: AnnotatedString) {
     }
 }
 
+/**
+ * The box I write my answer in. The default outline is too faint on a tinted card — unfocused
+ * it vanished, and the card gave no hint of where to type — so the border is ink-coloured and
+ * the box sits on a lighter ground.
+ */
+@Composable
+fun DraftField(value: String, onChange: (String) -> Unit, modifier: Modifier = Modifier, maxLines: Int = Int.MAX_VALUE) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onChange,
+        placeholder = { Text("不看答案,写出英文…") },
+        minLines = 3,
+        maxLines = maxLines,
+        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
+        shape = RoundedCornerShape(12.dp),
+        colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
+            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedBorderColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+            focusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+        ),
+        modifier = modifier.fillMaxWidth(),
+    )
+}
+
 /** Input + 显示答案, shown on a 自测 entry before its body is revealed. */
 @Composable
 fun SelfTestInput(value: String, onChange: (String) -> Unit, onReveal: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onChange,
-            placeholder = { Text("不看答案,写出英文…") },
-            minLines = 3,
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
-            modifier = Modifier.fillMaxWidth(),
-        )
+        DraftField(value, onChange)
         Button(onClick = onReveal) { Text("显示答案") }
     }
 }
