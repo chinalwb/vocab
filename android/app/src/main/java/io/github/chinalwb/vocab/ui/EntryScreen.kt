@@ -51,6 +51,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -102,6 +103,9 @@ fun EntryScreen(
     /** examples opted out of 自测 (their plain English), and the tap that toggles one */
     excluded: Set<String> = emptySet(),
     onToggleExample: (String) -> Unit = {},
+    /** 下一个 in the list this was opened from ("6 / 20"), when there is one */
+    nextLabel: String? = null,
+    onNext: (() -> Unit)? = null,
 ) {
     if (entry != null) LaunchedEffect(entry.anchor) { onSeen(entry.anchor) }
     var details by rememberSaveable { mutableStateOf(false) }
@@ -131,6 +135,12 @@ fun EntryScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") }
+                },
+                actions = {
+                    if (onNext != null) TextButton(onClick = onNext) {
+                        Text("${nextLabel.orEmpty()} · 下一个", color = MaterialTheme.colorScheme.onSurface)
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null, tint = MaterialTheme.colorScheme.onSurface)
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = entry?.let { levelColor(it.level) } ?: Color.Unspecified),
             )
@@ -249,7 +259,8 @@ fun EntryScreen(
                         SelfTestStats(attempts)
                         if (selfTest) SelfTestResult(draft, entry.selfTestAnswer)
                         else MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it, "") }
-                        if (ready) AdvanceBanner(stage) { stage.next?.let(onStage) }
+                        // 移到 X moves and goes on to the next one in the list; a move on the stepper stays put
+                        if (ready) AdvanceBanner(stage) { stage.next?.let(onStage); onNext?.invoke() }
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                             RetryButton(retry)
                             FlipButton("翻面看笔记") { quizUp = false }

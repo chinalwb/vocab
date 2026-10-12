@@ -191,7 +191,8 @@ fun BrowseScreen(
     lib: LibraryState,
     checking: Boolean,
     onRefresh: () -> Unit,
-    onOpen: (String) -> Unit,
+    /** an entry tapped, with the anchors shown (in order) for 下一个 */
+    onOpen: (String, List<String>) -> Unit,
     onMarkAllSeen: () -> Unit,
     tiles: Boolean,
     /** The Scaffold's padding — applied inside the list so content can scroll under the bars. */
@@ -266,6 +267,7 @@ fun BrowseScreen(
         }
     }
     val shownCount = groups.sumOf { it.second.size }
+    val shownAnchors = remember(groups) { groups.flatMap { g -> g.second.map { it.anchor } } }
     val clearAll = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false; sortF = SORT_LEVEL }
     // what's on, as removable chips under the search; the same list drives the button's badge
     val active = buildList {
@@ -392,7 +394,7 @@ fun BrowseScreen(
                 item(span = StaggeredGridItemSpan.FullLine) { filters() }
                 item(span = StaggeredGridItemSpan.FullLine) { status() }
                 gridItems(groups.flatMap { it.second }, key = { it.anchor }) { e ->
-                    EntryTile(e, badgeOf(e), foot(e)) { onOpen(e.anchor) }
+                    EntryTile(e, badgeOf(e), foot(e)) { onOpen(e.anchor, shownAnchors) }
                 }
             }
         } else {
@@ -414,7 +416,7 @@ fun BrowseScreen(
                         )
                     }
                     items(list, key = { it.anchor }) { e ->
-                        EntryCard(e, badgeOf(e), foot(e)) { onOpen(e.anchor) }
+                        EntryCard(e, badgeOf(e), foot(e)) { onOpen(e.anchor, shownAnchors) }
                         Spacer(Modifier.padding(4.dp))
                     }
                 }
