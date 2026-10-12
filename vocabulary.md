@@ -139,6 +139,7 @@
 133. [自测:不试一试,你永远不知道自己能走多远。就算 Opus 说你做不到,也值得一试。](#t-worth-a-shot)
 134. [自测:这个 App 会自动检查更新吗?](#t-check-for-updates)
 135. [自测:给单词、短语和句子加朗读功能,有什么可行的办法?有免费的方案吗?](#t-text-to-speech)
+136. [stray](#stray)
 
 ---
 
@@ -4349,3 +4350,51 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [介词] **a feature on the words** → **for the words**。
 - ⚠️ [搭配] **read-out-loud feature** → **text-to-speech** / **read-aloud feature**。
 - ⚠️ [语气] **Is there any free approach?** → **Is there a free option?**
+
+---
+
+<a id="stray"></a>
+## stray
+
+- 音标:/streɪ/
+- 词性:adj. / v.
+- CEFR:C1
+- 日期:2026-10-12
+- 掌握:会写
+
+**English definition:** (adj.) appearing somewhere on its own, apart from the group it belongs to, or somewhere it isn't meant to be.
+
+**含义:** 零散的、多余的、不该出现在那儿的——强调"从别处跑来、不属于这里"。描述界面或代码里莫名多出来的东西时比 extra 更地道:extra 只说"多了一个",stray 还暗示"它是误入的"。
+
+**我的原句:**
+
+> There is an extra underline to the right of the level tag "B2".
+
+- ✅ **an extra underline** —— 意思清楚,日常使用完全够用;那条线并不在文字下面,说 **a stray line** 更贴切:*there's a stray line to the right of the "B2" tag.*
+
+**义项一:形容词 —— 零散的、多余的、不该出现的(技术和写作里最常用)**
+1. There's a stray comma at the end of the line.
+   这一行末尾多了一个逗号。
+2. A stray `console.log` slipped into the commit.
+   提交里混进了一个没删掉的 `console.log`。
+
+**义项二:形容词 —— 走失的、流浪的(动物)**
+1. She took in a stray cat.
+   她收养了一只流浪猫。
+2. Stray dogs roam the streets at night.
+   夜里街上有流浪狗游荡。
+
+**义项三:动词 —— 偏离、走散(stray from)**
+1. Let's not stray too far from the topic.
+   别离题太远。
+2. The kids strayed from the path.
+   孩子们走出了小路。
+
+**常见搭配:**
+
+- **a stray bullet** —— 流弹
+- **stray hairs** —— 几根乱发 / 碎发
+- **a stray thought** —— 一闪而过的念头
+- **stray from the point / topic** —— 跑题
+
+**共同的语感:** 都是"脱离了本该在的地方或群体":流浪猫离开了家,流弹离开了目标,多余的逗号离开了该在的位置。
