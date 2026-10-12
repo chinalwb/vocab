@@ -1117,7 +1117,9 @@ function compareHtml(mine, answer, retry = true){
   }
   const d = bestDiff(mine, answer);
   const say = spkBtn(d.b.join(" "));
-  if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)${say}</p><p>${again}</p>`;
+  // right or wrong, both sentences are shown side by side: what I wrote, and the answer
+  if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)</p>` +
+    `<p class="line"><b>我写的</b>${esc(mine.trim())}</p><p class="line"><b>答案</b>${esc(d.b.join(" "))}${say}</p><p>${again}</p>`;
   const show = (ws, keep, cls) => ws.map((w, k) => keep.has(k) ? esc(w) : `<span class="${cls}">${esc(w)}</span>`).join(" ");
   return `<p class="verdict">对照一下差异</p>` +
     `<p class="line"><b>我写的(删除线 = 多出来或写错的)</b>${show(d.a, d.keepA, "st-x")}</p>` +
