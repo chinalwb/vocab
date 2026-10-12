@@ -124,6 +124,18 @@
   "orthogonal": {
    "s": "test",
    "t": 1791792844005
+  },
+  "vice-versa": {
+   "s": "review",
+   "t": 1791803663477
+  },
+  "factor-in": {
+   "s": "review",
+   "t": 1791804174480
+  },
+  "first-time-perfect": {
+   "s": "review",
+   "t": 1791811599675
   }
  },
  "cards": {
@@ -225,19 +237,22 @@
     "t": 1791504422860,
     "ok": false,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    },
    {
     "t": 1791552120106,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791683789209,
     "ok": true,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "t-not-crash-like-emulator": [
@@ -245,43 +260,50 @@
     "t": 1791465970944,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791466077988,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791504932248,
     "ok": false,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    },
    {
     "t": 1791592908616,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791592986935,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791593031855,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791593074672,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-no-scale-just-fade": [
@@ -289,19 +311,22 @@
     "t": 1791544863222,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791544892507,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791593109106,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-elevator-pitch": [
@@ -309,49 +334,57 @@
     "t": 1791533792955,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791533835560,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791533886340,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791533895113,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791534007252,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791544938907,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791593159268,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791593200653,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-hold-out-for": [
@@ -359,55 +392,64 @@
     "t": 1791504500512,
     "ok": false,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    },
    {
     "t": 1791552194558,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791552248080,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791552301632,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791552352974,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791552386439,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791552417838,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791552443118,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791552472755,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-two-projects": [
@@ -415,19 +457,22 @@
     "t": 1791504601076,
     "ok": false,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    },
    {
     "t": 1791552599998,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791592318024,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-confirm-before-merge": [
@@ -435,19 +480,22 @@
     "t": 1791504709844,
     "ok": false,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    },
    {
     "t": 1791592426505,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791592482872,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-hold-off-for-now": [
@@ -455,25 +503,29 @@
     "t": 1791504739611,
     "ok": false,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    },
    {
     "t": 1791592502237,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791592518528,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791592531697,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-list-branches": [
@@ -481,37 +533,43 @@
     "t": 1791504835817,
     "ok": false,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    },
    {
     "t": 1791505322591,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791505392614,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791592617049,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791592689334,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791592760473,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-file-size": [
@@ -519,19 +577,22 @@
     "t": 1791504873906,
     "ok": true,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    },
    {
     "t": 1791592787884,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791592855458,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-ship-then-roll-back": [
@@ -539,13 +600,15 @@
     "t": 1791626294473,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791632149889,
     "ok": false,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "name-verb": [
@@ -553,133 +616,155 @@
     "t": 1791626481695,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791626522256,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791626904174,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791627078207,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791627272472,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791632288174,
     "ok": false,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    },
    {
     "t": 1791632969098,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633047518,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633093697,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633179462,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633230354,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633281919,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633326948,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633387007,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684019035,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684106569,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684134788,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684153092,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684362433,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684379141,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791786327174,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791792736576,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-live-in-module": [
@@ -687,25 +772,29 @@
     "t": 1791630258796,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791630324401,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791630375603,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791631390165,
     "ok": true,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "t-at-a-glance": [
@@ -713,37 +802,43 @@
     "t": 1791630403039,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791630518937,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791630611050,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791630771161,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791630847418,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791631480849,
     "ok": true,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "t-still-on-track": [
@@ -751,37 +846,43 @@
     "t": 1791630982927,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791631044205,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791631093855,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791631120375,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791631162907,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791631531519,
     "ok": true,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "bakery": [
@@ -789,31 +890,36 @@
     "t": 1791684421484,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684452906,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684481637,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684498648,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791802672094,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "for-now": [
@@ -821,91 +927,106 @@
     "t": 1791684570491,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684591832,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684613490,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684647767,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684669041,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684689182,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684728113,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684741962,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684763890,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684783082,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684800722,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791684818891,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791799984980,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791800011822,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791800028044,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "race-out-of-control": [
@@ -913,61 +1034,71 @@
     "t": 1791685276318,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791685340185,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791685388045,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791686087455,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791686154096,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791686186904,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791686224750,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791686247655,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791686270324,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791686302117,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "independent": [
@@ -975,145 +1106,169 @@
     "t": 1791687266135,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791687660624,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791687696714,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791687738303,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791687775499,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791687836272,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791688202611,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791688441006,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791688468035,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791688492916,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791688526987,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791689063719,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791689093124,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791689126551,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791689333937,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791689350456,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791689370850,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791689493994,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791696889445,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791696911936,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791696935288,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791696953171,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791696974222,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791697017472,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "pastry": [
@@ -1121,91 +1276,106 @@
     "t": 1791710595540,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710618162,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710637571,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710778144,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710796971,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710834370,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710851810,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710866278,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710876699,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710891991,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710905049,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710916137,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710925673,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710939825,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791710949877,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "alibi": [
@@ -1213,73 +1383,85 @@
     "t": 1791631268183,
     "ok": false,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    },
    {
     "t": 1791633485875,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633626559,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633686317,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633714240,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633738049,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633769583,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633796963,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633823168,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633851993,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633884198,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791633906616,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "expect": [
@@ -1287,25 +1469,29 @@
     "t": 1791631337855,
     "ok": false,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    },
    {
     "t": 1791800537816,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791800584930,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791800593046,
     "ok": false,
     "peek": true,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-wrong-color-blend": [
@@ -1313,7 +1499,8 @@
     "t": 1791631611612,
     "ok": false,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "t-every-choice-energy": [
@@ -1321,7 +1508,8 @@
     "t": 1791631939223,
     "ok": true,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "t-overthink-drained": [
@@ -1329,7 +1517,8 @@
     "t": 1791631957902,
     "ok": false,
     "peek": true,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "t-exhausted-before-start": [
@@ -1337,7 +1526,8 @@
     "t": 1791632054501,
     "ok": false,
     "peek": false,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "t-agonize-over": [
@@ -1345,7 +1535,8 @@
     "t": 1791632071835,
     "ok": false,
     "peek": true,
-    "via": "selftest"
+    "via": "selftest",
+    "ex": ""
    }
   ],
   "on-a-basis": [
@@ -1353,73 +1544,85 @@
     "t": 1791711042839,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711060392,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711073565,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711093910,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711139662,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711171601,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711183430,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711198277,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711206640,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711215747,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711225703,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711243798,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "chase": [
@@ -1427,73 +1630,85 @@
     "t": 1791711350190,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711365477,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711381660,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711395968,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711405165,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711436067,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711459919,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711469953,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711494090,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711503797,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711512497,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711521838,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "separate-from": [
@@ -1501,73 +1716,85 @@
     "t": 1791711582148,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711594271,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711615060,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711634642,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711659988,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711668118,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711678822,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711695257,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711708222,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711720881,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711735132,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711746386,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "percent-of-the-time": [
@@ -1575,49 +1802,57 @@
     "t": 1791711820927,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711833057,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711849918,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711880330,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711895125,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711902878,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711910405,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711927061,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "canary": [
@@ -1625,169 +1860,197 @@
     "t": 1791711950605,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791711978491,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712045027,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712079492,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712108697,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712131357,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712161190,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712174600,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712204024,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712221203,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712246870,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712277076,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712289923,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712317208,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712333381,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712360751,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712378737,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712392523,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712414163,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712433071,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712442698,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712461121,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712475054,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712486944,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712494164,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712508048,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712517950,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791712534428,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "spent": [
@@ -1795,13 +2058,15 @@
     "t": 1791715888621,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791715964226,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "loath": [
@@ -1809,37 +2074,43 @@
     "t": 1791763901285,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791763928427,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791763964613,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791764016868,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791764032579,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791764067017,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "nebulous": [
@@ -1847,55 +2118,64 @@
     "t": 1791770847186,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791770904193,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791770942125,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791771463070,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791771484759,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791771499859,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791779033699,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791779051167,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791779065512,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "held-out": [
@@ -1903,37 +2183,43 @@
     "t": 1791779181251,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791779201826,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791779230192,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791779310573,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791779336549,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791779355501,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "t-check-for-updates": [
@@ -1941,31 +2227,36 @@
     "t": 1791801164934,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791801206484,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791801224748,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791801241452,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791801591294,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ],
   "vice-versa": [
@@ -1973,31 +2264,36 @@
     "t": 1791803319653,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791803616539,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791803637958,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791803662094,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791810798116,
     "ok": true,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    }
   ],
   "factor-in": [
@@ -2005,55 +2301,64 @@
     "t": 1791803835933,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791803854800,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791803924148,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791803965341,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791804055482,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791804081649,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791804139907,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791804168296,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791810744095,
     "ok": true,
     "peek": false,
-    "via": "review"
+    "via": "review",
+    "ex": ""
    }
   ],
   "first-time-perfect": [
@@ -2061,43 +2366,50 @@
     "t": 1791810372560,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791810897707,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791810930961,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791810966794,
     "ok": false,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791811563795,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791811584235,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    },
    {
     "t": 1791811598453,
     "ok": true,
     "peek": false,
-    "via": "entry"
+    "via": "entry",
+    "ex": ""
    }
   ]
  }
