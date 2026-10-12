@@ -107,13 +107,16 @@ fun EntryScreen(
     // then carries the headword.
     var expanded by rememberSaveable { mutableStateOf(false) }
     val imeVisible = WindowInsets.isImeVisible
-    // 选词 needs the room too (its chips stand in for the keyboard): the body reports whether
-    // it's answering that way, and ⤡ can still shrink the card back until that try is over
+    // 选词 needs the room too (its chips stand in for the keyboard). Either one turns the card
+    // full screen for the rest of that try — switching 选词 → 打字 keeps it — and ⤡ shrinks it
+    // back; it lets go on its own once the answer is shown. The body reports where it is.
+    var answering by remember { mutableStateOf(false) }
     var chipsAnswering by remember { mutableStateOf(false) }
-    var autoOff by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(chipsAnswering, imeVisible) { if (!chipsAnswering && !imeVisible) autoOff = false }
-    val fullscreen = expanded || (!autoOff && (imeVisible || chipsAnswering))
-    val toggleFull = { if (fullscreen && !expanded) autoOff = true else { expanded = !expanded; autoOff = false } }
+    var autoOn by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(chipsAnswering, imeVisible) { if (chipsAnswering || imeVisible) autoOn = true }
+    LaunchedEffect(answering) { if (!answering) autoOn = false }
+    val fullscreen = expanded || autoOn
+    val toggleFull = { if (fullscreen) { expanded = false; autoOn = false } else expanded = true }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -171,6 +174,14 @@ fun EntryScreen(
             var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
             var notesUp by rememberSaveable(entry.anchor, stage) { mutableStateOf(false) }
             val retry = { tryNo = maxOf(tryNo + 1, attempts.size); notesUp = false }
+            // With an answer to check against, the words can be tapped together (选词) instead
+            // of typed; the strays come from the entry's other sentences.
+            val answer = if (selfTest) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
+            val (chips, setChips) = rememberChipsMode()
+            SideEffect {
+                answering = quiz && !notesUp && !revealed
+                chipsAnswering = answering && chips && answer != null
+            }
             val reveal = {
                 when {
                     selfTest -> onAttempt(draft)
@@ -192,11 +203,6 @@ fun EntryScreen(
                     if (quiz) FlipButton("回到自测") { notesUp = false }
                 },
                 backSide = {
-                    // With an answer to check against, the words can be tapped together (选词)
-                    // instead of typed; the strays come from the entry's other sentences.
-                    val answer = if (selfTest) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
-                    val (chips, setChips) = rememberChipsMode()
-                    SideEffect { chipsAnswering = !revealed && chips && answer != null }
                     SideHeading("自测") {
                         if (answer != null && !revealed) { AnswerModeToggle(chips, setChips); Spacer(Modifier.width(6.dp)) }
                         ExpandButton(fullscreen, toggleFull)
