@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -171,6 +172,12 @@ fun DraftField(value: String, onChange: (String) -> Unit, modifier: Modifier = M
         maxLines = maxLines,
         textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
         shape = RoundedCornerShape(12.dp),
+        // ✕ to start over, once there's something to clear
+        trailingIcon = if (value.isEmpty()) null else ({
+            androidx.compose.material3.IconButton(onClick = { onChange("") }) {
+                androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Default.Close, "清空", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }),
         colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
             focusedBorderColor = MaterialTheme.colorScheme.onSurface,
@@ -358,6 +365,7 @@ class WordBankState(val bank: List<String>, picked: String) {
     val draft: String get() = picked.joinToString(" ") { bank[it] }
     fun pick(i: Int) { pickedText = (picked + i).joinToString(",") }
     fun unpick(i: Int) { pickedText = (picked - i).joinToString(",") }
+    fun clear() { pickedText = "" }
 }
 
 @Composable
@@ -370,36 +378,52 @@ fun rememberWordBank(answer: String, strays: List<String>, seed: Int): WordBankS
     return st
 }
 
-/** The sentence being built, in a box styled like the text field; a tap on a chip puts it back. */
+/**
+ * The sentence being built, in a box styled like the text field; a tap on a chip puts it back,
+ * 清空 (in the corner, once there's something) puts them all back.
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WordBankAnswer(st: WordBankState) {
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    FlowRow(
+    val picked = st.picked
+    Box(
         Modifier
             .fillMaxWidth()
             .defaultMinSize(minHeight = 72.dp)
             .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
-            .border(1.5.dp, muted, RoundedCornerShape(12.dp))
-            .padding(10.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+            .border(1.5.dp, muted, RoundedCornerShape(12.dp)),
     ) {
-        val picked = st.picked
-        if (picked.isEmpty()) Text("点下面的词,拼出英文…", color = muted, modifier = Modifier.padding(4.dp))
-        picked.forEach { i ->
-            Text(
-                st.bank[i],
-                fontFamily = FontFamily.Serif,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.surface,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colorScheme.onSurface)
-                    .clickable { st.unpick(i) }
-                    .padding(horizontal = 10.dp, vertical = 5.dp),
-            )
+        FlowRow(
+            Modifier.fillMaxWidth().padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = if (picked.isEmpty()) 10.dp else 56.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            if (picked.isEmpty()) Text("点下面的词,拼出英文…", color = muted, modifier = Modifier.padding(4.dp))
+            picked.forEach { i ->
+                Text(
+                    st.bank[i],
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.surface,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.onSurface)
+                        .clickable { st.unpick(i) }
+                        .padding(horizontal = 10.dp, vertical = 5.dp),
+                )
+            }
         }
+        if (picked.isNotEmpty()) Text(
+            "清空",
+            style = MaterialTheme.typography.labelMedium,
+            color = muted,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .clip(RoundedCornerShape(8.dp))
+                .clickable { st.clear() }
+                .padding(horizontal = 10.dp, vertical = 10.dp),
+        )
     }
 }
 
