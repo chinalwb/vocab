@@ -124,11 +124,18 @@ fun SelfTestResult(mine: String, answer: String, onRetry: (() -> Unit)? = null) 
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         val d = bestDiff(mine, answer)
+        // the verdict line, with 🔊 reading the answer it was checked against
+        val verdict: @Composable (String) -> Unit = { text ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+                SpeakButton(d.answer.joinToString(" ").ifBlank { answer.lines().firstOrNull { it.isNotBlank() }.orEmpty() })
+            }
+        }
         when {
-            mine.isBlank() -> Text("没有写就看答案了 —— 下次先写再看。", style = MaterialTheme.typography.titleSmall)
-            d.same -> Text("✅ 和答案一致(大小写、标点不计)", style = MaterialTheme.typography.titleSmall)
+            mine.isBlank() -> verdict("没有写就看答案了 —— 下次先写再看。")
+            d.same -> verdict("✅ 和答案一致(大小写、标点不计)")
             else -> {
-                Text("对照一下差异", style = MaterialTheme.typography.titleSmall)
+                verdict("对照一下差异")
                 Line("我写的(删除线 = 多出来或写错的)", marked(d.mine, d.keepMine, SpanStyle(color = err, textDecoration = TextDecoration.LineThrough)))
                 Line("答案(高亮 = 我漏掉或写错的)", marked(d.answer, d.keepAnswer, SpanStyle(background = warn)))
                 Text("逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。", style = MaterialTheme.typography.bodySmall, color = muted)

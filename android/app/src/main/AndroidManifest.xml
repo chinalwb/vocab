@@ -6,6 +6,13 @@
     <!-- 检查 App 更新 hands the downloaded APK to the system installer -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <!-- 朗读 uses whichever text-to-speech engine the phone has; Android 11+ needs this to find it -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <application
         android:name=".VocabApp"
         android:allowBackup="true"

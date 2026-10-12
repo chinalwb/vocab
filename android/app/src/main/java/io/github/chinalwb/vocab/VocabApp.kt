@@ -15,6 +15,7 @@ class VocabApp : Application() {
     val stages by lazy { StageStore(this) }
     val progress by lazy { ProgressSync(this, reviews, selfTests, stages) }
     val updater by lazy { io.github.chinalwb.vocab.update.AppUpdater(this) }
+    val speaker by lazy { io.github.chinalwb.vocab.ui.Speaker(this) }
 
     override fun onCreate() {
         super.onCreate()

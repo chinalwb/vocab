@@ -224,12 +224,13 @@ private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQ
                             ) { Text("${i + 1}", style = MaterialTheme.typography.labelSmall, color = if (out) muted else MaterialTheme.colorScheme.surface) }
                             else Text("${i + 1}", style = body, color = muted)
                         }
-                        Column {
+                        Column(Modifier.weight(1f)) {
                             Text(inline(ex.en, link, onXref), style = body.copy(fontFamily = FontFamily.Serif, fontSize = 17.sp))
                             if (ex.zh.isNotEmpty()) {
                                 Text(inline(ex.zh, link, onXref), style = MaterialTheme.typography.bodyMedium, color = muted)
                             }
                         }
+                        SpeakButton(plain(ex.en), Modifier.padding(start = 4.dp), size = 18.dp)
                     }
                 }
                 if (quiz != null && block.items.any { it.quizable }) Text(
