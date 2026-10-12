@@ -179,11 +179,11 @@ fun Entry.quizExample(tries: Int, excluded: Set<String> = emptySet()): QuizExamp
 
 /** The prompt side for a moved entry with an example: 例句 k / n · 中译英. */
 @Composable
-fun ExamplePrompt(ex: QuizExample) {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+fun ExamplePrompt(ex: QuizExample, /** while the keyboard is up: smaller, no hint */ compact: Boolean = false) {
+    Column(verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 10.dp)) {
         Text("例句 ${ex.k + 1} / ${ex.of} · 中译英", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(ex.zh, style = MaterialTheme.typography.titleLarge)
-        Text("把这句写成英文,写完和例句原文逐词对照。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(ex.zh, style = if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge)
+        if (!compact) Text("把这句写成英文,写完和例句原文逐词对照。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
