@@ -140,12 +140,13 @@ private fun StageList(
     val mine = remember(data, stages, stage) { stageEntries(stage, data.entries, stages) }
     val queue = remember(mine, selfTests, review, stage) { quizQueue(stage, mine, stages, selfTests, review) }
     val today = today()
-    // the card's note: "试 N · 对 M", and for 复习 when it's next due
+    // the card's pills, the same as 浏览's: "试 N · 对 M", the stage (so a 自测题's type pill
+    // isn't read as its stage), and for 复习 when it's next due
     val foot = { e: Entry ->
         val due = if (stage == Stage.Review) review.cards[e.anchor]?.due?.let { d ->
             when { d <= today -> "今天到期"; d == today + 1 -> "明天到期"; else -> "${d - today} 天后" }
         } else null
-        listOfNotNull(selfTests.stFoot(e), due).joinToString(LABEL_SEP).ifEmpty { null }
+        listOfNotNull(selfTests.stFoot(e), stageFoot(e, stage), due).joinToString(LABEL_SEP).ifEmpty { null }
     }
     val header: @Composable () -> Unit = {
         Column(Modifier.padding(horizontal = 8.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
