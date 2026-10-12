@@ -34,8 +34,8 @@ data class TestSession(
 ) {
     val current get() = queue.getOrNull(index)
 
-    fun withExample(log: Map<String, List<Attempt>>) =
-        copy(example = current?.takeIf { it.level != "SELFTEST" }?.let { it.quizExample(log[it.anchor]?.size ?: 0) })
+    fun withExample(log: Map<String, List<Attempt>>, optOut: Map<String, Set<String>>) =
+        copy(example = current?.takeIf { it.level != "SELFTEST" }?.let { it.quizExample(log[it.anchor]?.size ?: 0, optOut[it.anchor].orEmpty()) })
 }
 
 data class Session(
@@ -73,6 +73,24 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun toggleTiles() {
         _tiles.value = !_tiles.value
         prefs.edit().putBoolean("tiles", _tiles.value).apply()
+    }
+
+    // Example sentences I've opted out of 自测, by anchor: the plain English of each. Lives on this
+    // device only (SharedPreferences "quizopt"); at least one example per entry always stays in.
+    private val optPrefs = app.getSharedPreferences("quizopt", android.content.Context.MODE_PRIVATE)
+    private val _quizOptOut = MutableStateFlow(optPrefs.all.mapValues { (_, v) -> (v as? Set<*>)?.filterIsInstance<String>()?.toSet().orEmpty() })
+    val quizOptOut = _quizOptOut.asStateFlow()
+
+    /** Tap on an example in the notes: toggles whether 自测 may ask it. Refused when it is the last one in. */
+    fun toggleQuizExample(entry: Entry, en: String) {
+        val cur = _quizOptOut.value[entry.anchor].orEmpty()
+        val next = if (en in cur) cur - en else {
+            // a toast, not _messages: the snackbar host is on Home and this happens on the entry page
+            if (entry.quizExamples(cur).size <= 1) { android.widget.Toast.makeText(getApplication(), "至少要留一句例句用于自测", android.widget.Toast.LENGTH_SHORT).show(); return }
+            cur + en
+        }
+        _quizOptOut.value = _quizOptOut.value + (entry.anchor to next)
+        optPrefs.edit().apply { if (next.isEmpty()) remove(entry.anchor) else putStringSet(entry.anchor, next) }.apply()
     }
 
     private var busy = false
@@ -213,7 +231,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun startTest() {
         val entries = library.value.data?.entries ?: return
         val q = testQueue(entries, stages.value, selfTests.value)
-        _test.value = if (q.isEmpty()) null else TestSession(q).withExample(selfTests.value)
+        _test.value = if (q.isEmpty()) null else TestSession(q).withExample(selfTests.value, quizOptOut.value)
     }
 
     /** 显示答案 in the 自测 tab: a 自测题 is logged and checked against its 答案. */
@@ -257,7 +275,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         val s = _test.value ?: return
         if (mastered) s.current?.let { setStage(it.anchor, Stage.Done) }
         _test.value = s.copy(index = s.index + 1, revealed = false, graded = null, done = s.done + 1, mastered = s.mastered + if (mastered) 1 else 0)
-            .withExample(selfTests.value)
+            .withExample(selfTests.value, quizOptOut.value)
     }
 
     fun endTest() {
