@@ -1,12 +1,33 @@
 package io.github.chinalwb.vocab.ui
 
+import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import kotlin.random.Random
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +51,9 @@ import io.github.chinalwb.vocab.data.Block
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.data.Example
 import io.github.chinalwb.vocab.review.Attempt
+import io.github.chinalwb.vocab.review.Stage
+import io.github.chinalwb.vocab.review.allCorrectSince
+import io.github.chinalwb.vocab.review.next
 import io.github.chinalwb.vocab.review.summary
 import java.time.Instant
 import java.time.ZoneId
@@ -151,6 +175,12 @@ fun DraftField(value: String, onChange: (String) -> Unit, modifier: Modifier = M
         maxLines = maxLines,
         textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
         shape = RoundedCornerShape(12.dp),
+        // ✕ to start over, once there's something to clear
+        trailingIcon = if (value.isEmpty()) null else ({
+            androidx.compose.material3.IconButton(onClick = { onChange("") }) {
+                androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Default.Close, "清空", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }),
         colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
             focusedBorderColor = MaterialTheme.colorScheme.onSurface,
@@ -264,10 +294,190 @@ fun SelfTestHistory(attempts: List<Attempt>) {
                     modifier = Modifier.padding(top = 3.dp, end = 8.dp))
                 Text(when { a.text.isEmpty() -> "👀"; a.ok -> "✅"; else -> "❌" }, modifier = Modifier.padding(end = 8.dp))
                 Text(
-                    (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + when (a.via) { "review" -> " · 复习"; "selftest" -> " · 自测"; else -> "" },
+                    (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + when (a.via) { "review" -> " · 复习"; "test", "selftest" -> " · 考核"; else -> "" },
                     fontFamily = FontFamily.Serif, fontSize = 15.sp,
                 )
             }
         }
+    }
+}
+
+/*
+ * 选词 — the quick way to answer, after Duolingo: the answer's words, shuffled with a few strays,
+ * are chips; tapping them in order builds the sentence, which 显示答案 then checks exactly like
+ * typed text. For something I already know, this beats typing it out on a phone. 打字 stays a
+ * toggle away, remembered.
+ */
+
+private val EDGE_PUNCT = Regex("^[^\\p{L}\\p{N}]+|[^\\p{L}\\p{N}]+$")
+
+/** A sentence as chips: punctuation off the ends of each word, pure punctuation dropped. */
+fun chipWords(sentence: String): List<String> =
+    sentence.split(Regex("\\s+")).map { it.replace(EDGE_PUNCT, "") }.filter { it.isNotEmpty() }
+
+private val STRAY_POOL = listOf("the", "a", "an", "to", "of", "in", "on", "at", "for", "with", "is", "are", "was", "has", "that", "it", "and", "but")
+
+/** A few words that aren't in [answer]: from [others] (the entry's other sentences) first, then stock function words. */
+fun strayWords(answer: String, others: List<String>, seed: Int, n: Int = 3): List<String> {
+    val have = chipWords(answer).map { it.lowercase() }.toSet()
+    val own = others.flatMap { chipWords(it) }.filter { it.lowercase() !in have }.distinctBy { it.lowercase() }.shuffled(Random(seed))
+    val stock = STRAY_POOL.filter { it !in have }.shuffled(Random(seed))
+    return (own + stock).distinctBy { it.lowercase() }.take(n)
+}
+
+/** 选词 or 打字, remembered across launches (SharedPreferences "ui"/"chips"). */
+@Composable
+fun rememberChipsMode(): Pair<Boolean, (Boolean) -> Unit> {
+    val ctx = LocalContext.current
+    val prefs = remember { ctx.getSharedPreferences("ui", Context.MODE_PRIVATE) }
+    var chips by remember { mutableStateOf(prefs.getBoolean("chips", true)) }
+    return chips to { v: Boolean -> chips = v; prefs.edit().putBoolean("chips", v).apply() }
+}
+
+/** The 选词 | 打字 switch, a small pill at the end of its row. */
+@Composable
+fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit) {
+    val shape = RoundedCornerShape(50)
+    Row(
+        Modifier.clip(shape).border(1.dp, MaterialTheme.colorScheme.outline, shape).padding(2.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        listOf(true to "选词", false to "打字").forEach { (v, label) ->
+            val on = v == chips
+            Text(
+                label,
+                style = MaterialTheme.typography.labelMedium,
+                color = if (on) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier
+                    .clip(shape)
+                    .then(if (on) Modifier.background(MaterialTheme.colorScheme.onSurface) else Modifier)
+                    .clickable { onChips(v) }
+                    .padding(horizontal = 10.dp, vertical = 3.dp),
+            )
+        }
+    }
+}
+
+/**
+ * The chips: [answer]'s words plus [strays], shuffled by [seed] (fixed for one try). [picked] are
+ * bank indices in order; [draft] is the sentence they make, which 显示答案 checks like typed text.
+ */
+class WordBankState(val bank: List<String>, picked: String) {
+    var pickedText by mutableStateOf(picked)
+    val picked: List<Int> get() = pickedText.split(",").filter { it.isNotEmpty() }.map { it.toInt() }
+    val draft: String get() = picked.joinToString(" ") { bank[it] }
+    fun pick(i: Int) { pickedText = (picked + i).joinToString(",") }
+    fun unpick(i: Int) { pickedText = (picked - i).joinToString(",") }
+    fun clear() { pickedText = "" }
+}
+
+@Composable
+fun rememberWordBank(answer: String, strays: List<String>, seed: Int): WordBankState {
+    val bank = remember(answer, strays, seed) { (chipWords(answer) + strays).shuffled(Random(seed)) }
+    // the picks are saved as text so a rotation keeps them
+    var pickedText by rememberSaveable(answer, seed) { mutableStateOf("") }
+    val st = remember(bank) { WordBankState(bank, pickedText) }
+    LaunchedEffect(st.pickedText) { pickedText = st.pickedText }
+    return st
+}
+
+/**
+ * The sentence being built, in a box styled like the text field; a tap on a chip puts it back,
+ * 清空 (in the corner, once there's something) puts them all back.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun WordBankAnswer(st: WordBankState) {
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    val picked = st.picked
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 72.dp)
+            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
+            .border(1.5.dp, muted, RoundedCornerShape(12.dp)),
+    ) {
+        FlowRow(
+            Modifier.fillMaxWidth().padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = if (picked.isEmpty()) 10.dp else 56.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            if (picked.isEmpty()) Text("点下面的词,拼出英文…", color = muted, modifier = Modifier.padding(4.dp))
+            picked.forEach { i ->
+                Text(
+                    st.bank[i],
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.surface,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.onSurface)
+                        .clickable { st.unpick(i) }
+                        .padding(horizontal = 10.dp, vertical = 5.dp),
+                )
+            }
+        }
+        if (picked.isNotEmpty()) Text(
+            "清空",
+            style = MaterialTheme.typography.labelMedium,
+            color = muted,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .clip(RoundedCornerShape(8.dp))
+                .clickable { st.clear() }
+                .padding(horizontal = 10.dp, vertical = 10.dp),
+        )
+    }
+}
+
+/** The bank, kept near the thumb: a used chip leaves an empty slot, so the rest don't jump about. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun WordBankChips(st: WordBankState) {
+    val ink = MaterialTheme.colorScheme.onSurface
+    val shape = RoundedCornerShape(10.dp)
+    val picked = st.picked
+    FlowRow(
+        Modifier.fillMaxWidth().heightIn(max = 200.dp).verticalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        st.bank.forEachIndexed { i, w ->
+            val used = i in picked
+            Box(
+                Modifier
+                    .clip(shape)
+                    .then(if (used) Modifier.background(ink.copy(alpha = 0.08f)) else Modifier.background(MaterialTheme.colorScheme.surface).border(1.dp, MaterialTheme.colorScheme.outline, shape))
+                    .clickable(enabled = !used) { st.pick(i) }
+                    .padding(horizontal = 10.dp, vertical = 5.dp),
+            ) { Text(w, fontFamily = FontFamily.Serif, fontSize = 16.sp, modifier = Modifier.alpha(if (used) 0f else 1f)) }
+        }
+    }
+}
+
+/*
+ * Moving on: once every question of an entry has been answered right since it entered its
+ * stage — each example still in 自测, or a 自测题's one answer — the app offers the next stage.
+ * Entries with nothing to check against (graded by me) move only by hand.
+ */
+fun advanceReady(entry: Entry, stage: Stage, attempts: List<Attempt>, since: Long, excluded: Set<String>): Boolean {
+    if (stage.next == null) return false
+    val questions = if (entry.level == "SELFTEST") listOf("") else entry.quizExamples(excluded).map { plain(it.en) }
+    return attempts.allCorrectSince(since, questions)
+}
+
+/** "例句都答对过了 → 移到复习": the offer, with the move as its button. */
+@Composable
+fun AdvanceBanner(stage: Stage, onAdvance: () -> Unit) {
+    val next = stage.next ?: return
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.6f), RoundedCornerShape(12.dp))
+            .padding(start = 14.dp, end = 8.dp, top = 6.dp, bottom = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text("这一阶段的题都答对过了", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+        TextButton(onClick = onAdvance) { Text("移到${next.tab}") }
     }
 }

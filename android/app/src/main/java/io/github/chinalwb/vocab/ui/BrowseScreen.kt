@@ -181,7 +181,8 @@ internal fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
 /** The card's 进度 note: nothing for where an entry starts, like the page's .stg. */
 internal fun stageFoot(e: Entry, s: Stage): String? = when {
     s == Stage.Done -> "✓ 已掌握"
-    s == Stage.Test && e.level != "SELFTEST" -> "自测中"
+    s == Stage.Test && e.level != "SELFTEST" -> "考核中"
+    s == Stage.Review -> "复习中"
     else -> null
 }
 
@@ -450,7 +451,7 @@ private fun Badge(text: String) {
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
+internal fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -491,11 +492,18 @@ private fun cardGloss(g: String) = plain(g).replaceFirst(Regex("^释义\\s*[::]\
 private fun Labels(e: Entry, badge: String?, foot: String?, modifier: Modifier = Modifier) {
     val dark = androidx.compose.foundation.isSystemInDarkTheme()
     val pill = if (dark) Color.White.copy(alpha = 0.1f) else Color.White.copy(alpha = 0.6f)
+    // 已掌握 gets a green pill, so the stage reads at a glance (the type pill is the same colour on every card)
+    val done = if (dark) Color(0xFF2E6B3A) else Color(0xFFBFE5C4)
+    val doneInk = if (dark) Color(0xFFD7F0DB) else Color(0xFF1E4D27)
     FlowRow(modifier, horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         if (badge != null) Badge(badge)
         (listOf(levelStyle(e.level).short) + foot.orEmpty().split(LABEL_SEP).filter { it.isNotBlank() }).forEach {
-            Text(it, style = MaterialTheme.typography.labelMedium, color = LocalContentColor.current.copy(alpha = 0.8f),
-                modifier = Modifier.background(pill, RoundedCornerShape(8.dp)).padding(horizontal = 9.dp, vertical = 3.dp))
+            val mastered = it.startsWith("✓")
+            Text(
+                it, style = MaterialTheme.typography.labelMedium,
+                color = if (mastered) doneInk else LocalContentColor.current.copy(alpha = 0.8f),
+                modifier = Modifier.background(if (mastered) done else pill, RoundedCornerShape(8.dp)).padding(horizontal = 9.dp, vertical = 3.dp),
+            )
         }
     }
 }

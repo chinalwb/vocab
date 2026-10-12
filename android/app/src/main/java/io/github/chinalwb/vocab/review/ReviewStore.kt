@@ -16,8 +16,6 @@ import java.time.LocalDate
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-const val NEW_PER_DAY = 10
-
 /** SM-2 scheduling state for one entry. Days are LocalDate epoch days. */
 @Serializable
 data class Card(
@@ -40,6 +38,10 @@ data class ReviewData(
     val resetAt: Long = 0,
 )
 
+/**
+ * How a 复习 went. The quiz grades now — a sentence answered right is Good, wrong is Again —
+ * so there are no buttons for these any more; the SM-2 maths underneath is unchanged.
+ */
 enum class Grade(val q: Int, val label: String) {
     Again(1, "忘了"),
     Hard(3, "模糊"),
@@ -119,17 +121,15 @@ data class ReviewPlan(val due: List<Entry>, val fresh: List<Entry>) {
 }
 
 /**
- * Today's queue: everything due, then up to the day's remaining quota of
- * never-seen entries — 会写 ones first, then most recently 收录 — so what
- * just arrived in a fetch is what gets introduced next. Same rule as the page.
+ * Today's 复习 queue from [entries] (the ones in 复习): everything due, then the ones never
+ * scheduled — 会写 first, then most recently 收录. What's in 复习 is my own choice, so there is
+ * no daily quota any more. Same rule as the page.
  */
 fun planToday(entries: List<Entry>, review: ReviewData): ReviewPlan {
     val today = today()
     val due = entries.filter { e -> review.cards[e.anchor]?.let { it.due <= today } == true }
         .sortedBy { review.cards[it.anchor]!!.due }
-    val quota = NEW_PER_DAY - if (review.newDay == today) review.newToday else 0
     val fresh = entries.filter { it.anchor !in review.cards }
         .sortedWith(compareByDescending<Entry> { it.writes }.thenByDescending { it.date.removePrefix("~") })
-        .take(max(0, quota))
     return ReviewPlan(due, fresh)
 }

@@ -9,7 +9,7 @@ import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Grade
 import io.github.chinalwb.vocab.review.Stage
-import io.github.chinalwb.vocab.review.planToday
+import io.github.chinalwb.vocab.review.next
 import io.github.chinalwb.vocab.review.stageOf
 import io.github.chinalwb.vocab.sync.describe
 import kotlinx.coroutines.channels.Channel
@@ -18,35 +18,33 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-data class TestSession(
+/**
+ * A run through one stage's entries: 复习 (the notes first, then a question) or 考核 (the
+ * question, the notes only after). Each card asks one of the entry's examples (中→英), or a
+ * 自测题's own question; an entry with nothing to check against is graded by me.
+ */
+data class QuizSession(
+    val stage: Stage,
     val queue: List<Entry>,
     val index: Int = 0,
+    /** 复习 only: the notes have been read, on to the question */
+    val studied: Boolean = false,
     val revealed: Boolean = false,
     val done: Int = 0,
-    /** 自测题 answered (not peeked) this run, and how many of those matched */
+    /** answered (not peeked) this run, and how many of those were right */
     val checked: Int = 0,
     val ok: Int = 0,
-    val mastered: Int = 0,
-    /** my own verdict on a moved entry that can't be checked automatically */
+    /** moved on to the next stage this run */
+    val advanced: Int = 0,
+    /** my own verdict on an entry that can't be checked automatically */
     val graded: Boolean? = null,
-    /** the example sentence this card asks (moved entries), fixed when the card comes up */
+    /** the example sentence this card asks, fixed when the card comes up */
     val example: QuizExample? = null,
 ) {
     val current get() = queue.getOrNull(index)
 
     fun withExample(log: Map<String, List<Attempt>>, optOut: Map<String, Set<String>>) =
         copy(example = current?.takeIf { it.level != "SELFTEST" }?.let { it.quizExample(log[it.anchor]?.size ?: 0, optOut[it.anchor].orEmpty()) })
-}
-
-data class Session(
-    val queue: List<Entry>,
-    val index: Int = 0,
-    val revealed: Boolean = false,
-    /** Entries graded 忘了 once already this session — they come back only once. */
-    val requeued: Set<String> = emptySet(),
-    val done: Int = 0,
-) {
-    val current get() = queue.getOrNull(index)
 }
 
 class VocabViewModel(app: Application) : AndroidViewModel(app) {
@@ -139,11 +137,11 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     private val _messages = Channel<String>(Channel.BUFFERED)
     val messages = _messages.receiveAsFlow()
 
-    private val _session = MutableStateFlow<Session?>(null)
-    val session = _session.asStateFlow()
-    private val _test = MutableStateFlow<TestSession?>(null)
-    /** The 自测 tab's run through everything in 自测中. */
-    val test = _test.asStateFlow()
+    private val _quiz = MutableStateFlow<QuizSession?>(null)
+    /** The run going on in the 复习 or 考核 tab, if any. */
+    val quiz = _quiz.asStateFlow()
+    /** When each entry was last moved (ms): attempts before that don't count towards the next stage. */
+    val stageTimes = stageStore.data
 
     init {
         viewModelScope.launch {
@@ -176,115 +174,81 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun markSeen(anchor: String) = viewModelScope.launch { repo.markSeen(anchor) }
     fun markAllSeen() = viewModelScope.launch { repo.markAllSeen() }
 
-    fun startReview() {
-        val lib = library.value
-        val entries = lib.data?.entries ?: return
-        // 已掌握 never comes back on its own
-        val plan = planToday(entries.filter { stages.value.stageOf(it) != Stage.Done }, review.value)
-        _session.value = if (plan.all.isEmpty()) null else Session(plan.all)
-    }
-
-    fun reveal() {
-        _session.value = _session.value?.copy(revealed = true)
-    }
-
-    fun grade(g: Grade) {
-        val s = _session.value ?: return
-        val entry = s.current ?: return
-        viewModelScope.launch { reviews.grade(entry.anchor, g); progress.soon() }
-        val again = g == Grade.Again && entry.anchor !in s.requeued
-        _session.value = s.copy(
-            queue = if (again) s.queue + entry else s.queue,
-            requeued = if (again) s.requeued + entry.anchor else s.requeued,
-            index = s.index + 1,
-            revealed = false,
-            done = s.done + 1,
-        )
-    }
-
     fun setStage(anchor: String, stage: Stage) = viewModelScope.launch { stageStore.set(anchor, stage); progress.soon() }
 
     fun connectSync(token: String) = progress.connect(token)
     fun disconnectSync() = progress.disconnect()
     fun syncNow() = progress.now()
 
-    /** 已掌握 on a review card: out of review for good, and on to the next card. */
-    fun markMastered() {
-        val s = _session.value ?: return
-        val entry = s.current ?: return
-        setStage(entry.anchor, Stage.Done)
-        _session.value = s.copy(
-            // drop a 忘了 repeat still waiting later in the queue
-            queue = s.queue.filterIndexed { i, e -> i <= s.index || e.anchor != entry.anchor },
-            index = s.index + 1,
-            revealed = false,
-            done = s.done + 1,
-        )
-    }
-
-    fun endReview() {
-        _session.value = null
-    }
-
     fun resetReview() = viewModelScope.launch { reviews.reset(); progress.soon() }
 
-    fun startTest() {
+    /** 开始复习 / 开始考核: the stage's entries, in the order the tab lists them. */
+    fun startQuiz(stage: Stage) {
         val entries = library.value.data?.entries ?: return
-        val q = testQueue(entries, stages.value, selfTests.value)
-        _test.value = if (q.isEmpty()) null else TestSession(q).withExample(selfTests.value, quizOptOut.value)
+        val q = quizQueue(stage, entries, stages.value, selfTests.value, review.value)
+        _quiz.value = if (q.isEmpty()) null else QuizSession(stage, q).withExample(selfTests.value, quizOptOut.value)
     }
 
-    /** 显示答案 in the 自测 tab: a 自测题 is logged and checked against its 答案. */
-    fun revealTest(draft: String) {
-        val s = _test.value ?: return
+    /** 复习: the notes are read, on to the question. */
+    fun studiedQuiz() {
+        _quiz.value = _quiz.value?.copy(studied = true)
+    }
+
+    /** 显示答案: a 自测题 is checked against its 答案, an example against its English; both are logged. */
+    fun revealQuiz(draft: String) {
+        val s = _quiz.value ?: return
         val e = s.current ?: return
-        if (e.level == "SELFTEST") {
-            recordSelfTest(e, draft, "selftest")
-            val tried = draft.isNotBlank()
-            _test.value = s.copy(
-                revealed = true,
-                checked = s.checked + if (tried) 1 else 0,
-                ok = s.ok + if (tried && bestDiff(draft.trim(), e.selfTestAnswer).same) 1 else 0,
-            )
-        } else {
-            // moved to 自测: checked against this card's example sentence; with none, I grade it myself
-            val ex = s.example
-            when {
-                ex != null -> {
-                    val tried = draft.isNotBlank()
-                    val ok = tried && bestDiff(draft.trim(), ex.en).same
-                    recordAttempt(e, draft, ok, "selftest")
-                    _test.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0)
-                }
-                draft.isBlank() -> { recordAttempt(e, "", false, "selftest"); _test.value = s.copy(revealed = true) }
-                else -> _test.value = s.copy(revealed = true)
+        val via = s.stage.key
+        val tried = draft.isNotBlank()
+        val ex = s.example
+        when {
+            e.level == "SELFTEST" -> {
+                val ok = tried && bestDiff(draft.trim(), e.selfTestAnswer).same
+                recordSelfTest(e, draft, via)
+                schedule(s, e, ok)
+                _quiz.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0)
             }
+            ex != null -> {
+                val ok = tried && bestDiff(draft.trim(), ex.en).same
+                recordAttempt(e, draft, ok, via, ex.en)
+                schedule(s, e, ok)
+                _quiz.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0)
+            }
+            // nothing to check against: a blank reveal is a peek, anything else waits for my verdict
+            !tried -> { recordAttempt(e, "", false, via); schedule(s, e, false); _quiz.value = s.copy(revealed = true) }
+            else -> _quiz.value = s.copy(revealed = true)
         }
     }
 
-    /** 我写对了 / 没写对 on a moved entry that has no answer to check against. */
-    fun gradeTest(draft: String, ok: Boolean) {
-        val s = _test.value ?: return
+    /** 我写对了 / 没写对 on an entry that has no answer to check against. */
+    fun gradeQuiz(draft: String, ok: Boolean) {
+        val s = _quiz.value ?: return
         val e = s.current ?: return
-        recordAttempt(e, draft, ok, "selftest")
-        _test.value = s.copy(graded = ok, checked = s.checked + 1, ok = s.ok + if (ok) 1 else 0)
+        recordAttempt(e, draft, ok, s.stage.key)
+        schedule(s, e, ok)
+        _quiz.value = s.copy(graded = ok, checked = s.checked + 1, ok = s.ok + if (ok) 1 else 0)
     }
 
-    /** 下一题, or 已掌握 then 下一题. */
-    fun nextTest(mastered: Boolean) {
-        val s = _test.value ?: return
-        if (mastered) s.current?.let { setStage(it.anchor, Stage.Done) }
-        _test.value = s.copy(index = s.index + 1, revealed = false, graded = null, done = s.done + 1, mastered = s.mastered + if (mastered) 1 else 0)
+    // 复习 keeps its spaced schedule, graded by the quiz: right → Good (the interval grows), wrong → Again (tomorrow)
+    private fun schedule(s: QuizSession, e: Entry, ok: Boolean) {
+        if (s.stage == Stage.Review) viewModelScope.launch { reviews.grade(e.anchor, if (ok) Grade.Good else Grade.Again); progress.soon() }
+    }
+
+    /** 下一题 — [advance]: move this entry on to the next stage first (offered once all its questions are right). */
+    fun nextQuiz(advance: Boolean) {
+        val s = _quiz.value ?: return
+        if (advance) s.current?.let { e -> s.stage.next?.let { setStage(e.anchor, it) } }
+        _quiz.value = s.copy(index = s.index + 1, studied = false, revealed = false, graded = null, done = s.done + 1, advanced = s.advanced + if (advance) 1 else 0)
             .withExample(selfTests.value, quizOptOut.value)
     }
 
-    fun endTest() {
-        _test.value = null
+    fun endQuiz() {
+        _quiz.value = null
     }
 
-    /** One attempt with the verdict already known (an entry moved to 自测). */
-    fun recordAttempt(entry: Entry, text: String, ok: Boolean, via: String) = viewModelScope.launch {
-        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), text.trim(), ok && text.isNotBlank(), via))
+    /** One attempt with the verdict already known; [ex] is the example it answered (plain English). */
+    fun recordAttempt(entry: Entry, text: String, ok: Boolean, via: String, ex: String = "") = viewModelScope.launch {
+        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), text.trim(), ok && text.isNotBlank(), via, ex))
         progress.soon()
     }
 
