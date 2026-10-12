@@ -84,7 +84,7 @@ fun Chip(text: String, color: androidx.compose.ui.graphics.Color) {
  * page and is remembered. Entries without sections show as before.
  */
 @Composable
-fun EntryNotes(entry: Entry, onXref: (String) -> Unit) {
+fun EntryNotes(entry: Entry, onXref: (String) -> Unit, /** on the entry page's card: no card per page */ inCard: Boolean = false) {
     val ctx = LocalContext.current
     val prefs = remember { ctx.getSharedPreferences("notes", Context.MODE_PRIVATE) }
     var all by remember { mutableStateOf(prefs.getBoolean("all", false)) }
@@ -94,7 +94,7 @@ fun EntryNotes(entry: Entry, onXref: (String) -> Unit) {
         NotesHeading(
             if (sections.size > 1) (if (all) "分卡显示" else "全部展开") else null,
         ) { all = !all; prefs.edit().putBoolean("all", all).apply() }
-        if (carousel) NotesCarousel(entry.anchor, sections, onXref) else EntryBody(entry, onXref)
+        if (carousel) NotesCarousel(entry.anchor, sections, onXref, inCard) else EntryBody(entry, onXref)
     }
 }
 
@@ -118,7 +118,7 @@ private fun NotesHeading(action: String?, onAction: () -> Unit) {
 private val LABEL_ONLY = Regex("""^\*\*[^*]+[:：]\s*\*\*$""")
 
 @Composable
-private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (String) -> Unit) {
+private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (String) -> Unit, inCard: Boolean) {
     val pager = rememberPagerState { sections.size }
     val tabs = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -157,8 +157,10 @@ private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (Stri
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(16.dp))
-                    .padding(16.dp)
+                    .then(
+                        if (inCard) Modifier.padding(top = 4.dp)
+                        else Modifier.background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(16.dp)).padding(16.dp)
+                    )
             ) { Blocks(blocks, onXref, fold = true) }
         }
         if (sections.size > 1) Row(
