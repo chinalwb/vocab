@@ -208,6 +208,13 @@
 - 切分规则有两份:`build.py` 的 `sections()`(网页,`item["slides"]`)和 `Model.kt` 的 `splitSections()`(App,从 blocks 现算)——**改一处必须同步改另一处**。
 - 所以写条目时:每个义项、搭配、辨析都用加粗小标题开头;例句下的补充说明不要缩进成第三行(会被解析成独立段落),单独写一段并注明「例 N 注意:…」。
 
+### 朗读(用户 2026-10-12 要求,网页和 App 一致)
+
+- 用设备自带的语音合成,免费、离线、不用密钥:App 是 Android `TextToSpeech`(`ui/Speech.kt` 的 `Speaker`,全 App 一个实例挂在 `VocabApp.speaker`;Manifest 里有 `<queries>` 声明 TTS_SERVICE,Android 11+ 找引擎要用),网页是 `speechSynthesis`(`speak()`,优先挑名字带 natural / neural / Google US English / Samantha 的英美音色)。en-US,语速 0.95。
+- 🔊 放在三处:条目页标题旁(读词条;自测题标题是中文,读它的第一行答案,见 `Entry.speakText()` / `speakText()`)、笔记里每句例句后面(网页由 `addSpeakButtons()` 在 MutationObserver 里统一补,所以复习 / 考核的做题页也有)、揭晓答案后的判定行(读对照用的那句答案)。
+- 网页的 🔊 点击在 capture 阶段拦截并 stopPropagation,所以放在可点的例句(排除出自测的那个点击)里也只朗读。
+- 没做的:预生成音频文件(edge-tts / Kokoro 在 build.py 里生成 MP3 提交进仓库),两边音色才能一致。用户先用方案一,不够再加。
+
 ### 筛选栏(用户 2026-10-10 要求重做,网页和 App 一致)
 
 **App 顶栏**(用户 2026-10-10 要求):浏览页顶栏只有三个图标——🔍 搜索(进独立搜索页)、筛选与排序(有筛选或非默认排序时带小圆点)、⋮ 更多(列表 / 卡片视图切换、检查更新、有更新时「全部标为已读」)。浏览页不再有搜索框。

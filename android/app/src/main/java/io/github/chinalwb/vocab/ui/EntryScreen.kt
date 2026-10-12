@@ -275,8 +275,6 @@ private fun Meta(entry: Entry, onDetails: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .clickable(onClick = onDetails)
             .padding(horizontal = 4.dp, vertical = 2.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -288,9 +286,12 @@ private fun Meta(entry: Entry, onDetails: () -> Unit) {
             lineHeight = 32.sp,
             modifier = Modifier.sharedEntryTitle(entry.anchor),
         )
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(
             Modifier
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(50))
+                .clip(RoundedCornerShape(50))
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .clickable(onClick = onDetails)
                 .padding(start = 12.dp, end = 6.dp, top = 5.dp, bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -303,6 +304,9 @@ private fun Meta(entry: Entry, onDetails: () -> Unit) {
                 modifier = Modifier.weight(1f, fill = false),
             )
             Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "详情", Modifier.padding(start = 2.dp).size(20.dp), tint = MaterialTheme.colorScheme.onSurface)
+        }
+        val say = entry.speakText()
+        if (say.isNotEmpty()) SpeakButton(say)
         }
     }
 }

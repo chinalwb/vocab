@@ -28,3 +28,12 @@ val CloseFullscreenIcon: ImageVector = ImageVector.Builder("CloseFullscreen", 24
     ),
     fill = SolidColor(Color.Black),
 ).build()
+
+// Material's "volume_up": 朗读.
+val VolumeUpIcon: ImageVector = ImageVector.Builder("VolumeUp", 24.dp, 24.dp, 24f, 24f).addPath(
+    pathData = addPathNodes(
+        "M3,9v6h4l5,5V4L7,9H3zM16.5,12c0,-1.77 -1.02,-3.29 -2.5,-4.03v8.05c1.48,-0.73 2.5,-2.25 2.5,-4.02z" +
+            "M14,3.23v2.06c2.89,0.86 5,3.54 5,6.71s-2.11,5.85 -5,6.71v2.06c4.01,-0.91 7,-4.49 7,-8.77s-2.99,-7.86 -7,-8.77z"
+    ),
+    fill = SolidColor(Color.Black),
+).build()
