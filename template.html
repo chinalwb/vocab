@@ -397,6 +397,13 @@ h1{
   color:var(--card-ink-2);font:inherit;font-size:15px;line-height:1;cursor:pointer;
 }
 .x:hover{background:var(--card-edge)}
+.nx{
+  position:absolute;top:14px;right:52px;height:30px;padding:0 12px;border-radius:999px;
+  background:var(--card-ink);color:var(--sw);border:0;font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap;
+}
+.nx:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px}
+.sheet.has-nx h2{padding-right:150px}
+.sheet.has-nx .back{max-width:calc(100% - 190px)}
 .x:focus-visible{outline:2px solid var(--card-ink);outline-offset:1px}
 .back{
   display:inline-block;margin:0 0 10px;padding:3px 10px 3px 8px;
@@ -953,7 +960,7 @@ const sections = DATA.map(g => {
   grid.className = "grid";
   const cards = g.items.map((it, i) => {
     const c = document.createElement("button");
-    c.className = "card"; c.type = "button";
+    c.className = "card"; c.type = "button"; c.dataset.anchor = it.anchor;
     c.style.setProperty("--sw", `var(${LV[g.level].sw[i % 3]})`);
     const n = (it.html.match(/<li><span class="en">/g) || []).length;
     const meta = [it.pos && `<span class="pos">${it.pos}</span>`, it.ipa && `<span class="ipa">${it.ipa}</span>`]
@@ -970,7 +977,7 @@ const sections = DATA.map(g => {
       `<span class="stg" data-anchor="${it.anchor}" data-level="${g.level}"></span></span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
       `</div>`;
-    c.addEventListener("click", () => open(it, g.level, i));
+    c.addEventListener("click", () => open(it, g.level, i, listOf(c)));
     byAnchor[it.anchor] = { it, level: g.level, i };
     grid.append(c);
     return { el: c, it, no: it.no, write: it.mastery === "write", hay: (it.title + " " + it.gloss + " " + it.html).toLowerCase() };
@@ -1317,10 +1324,23 @@ function refreshStages(){
 let scrim = null, lastFocus = null, trail = [];
 
 let cardFull = false;                 // the card over the whole sheet; forgotten when the sheet closes
-function open(it, level, i){          // opened from a card — starts a fresh chain
+// 下一个: the list a card was opened from, as it stood then (moving an entry out of the filter
+// doesn't lose its place), walked from the entry opened from it (openAt), not from cross-references.
+let openList = [], openAt = "";
+const listOf = card => [...(card.closest("#board") || card.parentElement).querySelectorAll(".card[data-anchor]")]
+  .filter(c => c.checkVisibility ? c.checkVisibility() : c.offsetParent).map(c => c.dataset.anchor);
+const nextInList = () => { const k = openList.indexOf(openAt); return k >= 0 && k + 1 < openList.length ? byAnchor[openList[k + 1]] : null; };
+function goNext(){
+  const t = nextInList();
+  if (!t) return;
+  openAt = t.it.anchor; trail = [];
+  show(t.it, t.level, t.i);
+}
+function open(it, level, i, list = []){   // opened from a card — starts a fresh chain
   lastFocus = document.activeElement;
   trail = [];
   cardFull = false;
+  openList = list; openAt = it.anchor;
   show(it, level, i);
 }
 function follow(t){                   // opened from a cross-reference
@@ -1494,8 +1514,11 @@ function show(it, level, i, o = {}){
       `<div class="cta" id="st-cta"><div class="wb-bank" id="wb-bank" hidden></div><button class="btn" type="button" id="st-show">显示答案</button></div></div>`
     : "";
   const startBack = o.from !== undefined ? o.from : o.face ? o.face === "back" : wantBack;
+  const nextT = nextInList(), pos = openList.indexOf(openAt);
+  if (nextT) sheet.classList.add("has-nx");
   sheet.innerHTML =
     `<button class="x" type="button" aria-label="关闭">✕</button>` +
+    (nextT ? `<button class="nx" type="button" title="下一个:${esc(plainMd(nextT.it.title))}">${pos + 1} / ${openList.length} · 下一个 ›</button>` : "") +
     (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
     `<div class="mband"><h2>${it.title}${spkBtn(speakText(it, level))}</h2>` +
     `<button type="button" class="mpill" aria-expanded="false"><span>${esc(pill)}</span>${ICON_CHEV}</button>` +
@@ -1553,7 +1576,8 @@ function show(it, level, i, o = {}){
       res.querySelector("#st-again").addEventListener("click", () => show(it, level, i, { face: "back" }));   // re-render, input cleared
       res.querySelector("#to-notes").addEventListener("click", () => card.classList.remove("flipped"));
       const ab = res.querySelector("#adv");
-      if (ab) ab.addEventListener("click", () => { setStage(it, nextStage(stage)); render(); show(it, level, i, { from: true }); });
+      // 移到 X moves and goes on to the next one in the list; a move on the track stays put
+      if (ab) ab.addEventListener("click", () => { setStage(it, nextStage(stage)); render(); if (nextInList()) goNext(); else show(it, level, i, { from: true }); });
     };
     const paint = graded => {                           // compared with its example, or graded by me
       res.innerHTML = movedHtml(ex, input.value, graded) + adv() + flipRow + stHistoryHtml(it.anchor);
@@ -1601,12 +1625,13 @@ function show(it, level, i, o = {}){
   }
 
   sheet.querySelector(".x").addEventListener("click", close);
+  if (nextT) sheet.querySelector(".nx").addEventListener("click", goNext);
   scrim.addEventListener("click", e => { if (e.target === scrim) close(); });
   (startBack && sheet.querySelector("#st-in") || sheet.querySelector(".x")).focus();
 }
 function close(){
   if (!scrim) return;
-  scrim.remove(); scrim = null; trail = [];
+  scrim.remove(); scrim = null; trail = []; openList = [];
   if (lastFocus) lastFocus.focus();
 }
 document.addEventListener("keydown", e => {
@@ -1848,7 +1873,7 @@ function stageListEl(stage){
   inStage(stage).forEach(t => {
     const c = sections.find(x => x.level === t.level).cards[t.i].el.cloneNode(true);
     c.hidden = false;
-    c.addEventListener("click", () => open(t.it, t.level, t.i));
+    c.addEventListener("click", () => open(t.it, t.level, t.i, listOf(c)));
     grid.append(c);
   });
   return grid;

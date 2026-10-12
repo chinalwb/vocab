@@ -88,7 +88,8 @@ fun QuizScreen(
     review: ReviewData,
     excluded: Map<String, Set<String>>,
     tiles: Boolean,
-    onOpen: (String) -> Unit,
+    /** an entry tapped, with the list's anchors (in order) for 下一个; empty from a quiz card */
+    onOpen: (String, List<String>) -> Unit,
     onStart: () -> Unit,
     onStudied: () -> Unit,
     onReveal: (String) -> Unit,
@@ -102,7 +103,7 @@ fun QuizScreen(
     when {
         session != null && session.stage == stage && current != null -> QuizCard(
             session, current, selfTests[current.anchor].orEmpty(), stageTimes[current.anchor] ?: 0L, excluded[current.anchor].orEmpty(),
-            onStudied, onReveal, onGrade, onNext, onEnd, onOpen, modifier,
+            onStudied, onReveal, onGrade, onNext, onEnd, { onOpen(it, emptyList()) }, modifier,
         )
         session != null && session.stage == stage -> Column(modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text("完成 🎉", style = MaterialTheme.typography.headlineSmall)
@@ -127,7 +128,7 @@ private fun StageList(
     selfTests: Map<String, List<Attempt>>,
     review: ReviewData,
     tiles: Boolean,
-    onOpen: (String) -> Unit,
+    onOpen: (String, List<String>) -> Unit,
     onStart: () -> Unit,
     modifier: Modifier,
     contentPadding: PaddingValues,
@@ -211,11 +212,11 @@ private fun StageList(
         modifier = modifier,
     ) {
         item(span = StaggeredGridItemSpan.FullLine) { header() }
-        gridItems(mine, key = { it.anchor }) { e -> EntryTile(e, null, foot(e)) { onOpen(e.anchor) } }
+        gridItems(mine, key = { it.anchor }) { e -> EntryTile(e, null, foot(e)) { onOpen(e.anchor, mine.map { it.anchor }) } }
     } else LazyColumn(contentPadding = padding, modifier = modifier) {
         item { header() }
         items(mine, key = { it.anchor }) { e ->
-            EntryCard(e, null, foot(e), shared = false) { onOpen(e.anchor) }
+            EntryCard(e, null, foot(e), shared = false) { onOpen(e.anchor, mine.map { it.anchor }) }
             Spacer(Modifier.padding(4.dp))
         }
     }

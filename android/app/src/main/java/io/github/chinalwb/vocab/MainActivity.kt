@@ -162,6 +162,10 @@ private fun VocabNav() {
     val stages by vm.stages.collectAsStateWithLifecycle()
     val quizOptOut by vm.quizOptOut.collectAsStateWithLifecycle()
     val stageData by vm.stageTimes.collectAsStateWithLifecycle()
+    val openList by vm.openList.collectAsStateWithLifecycle()
+    // from a list: remember it for 下一个; from anywhere else: no list
+    val openIn = { anchor: String, list: List<String> -> vm.openedFrom(list, anchor); nav.navigate("entry/$anchor") }
+    val openAlone = { anchor: String -> openIn(anchor, emptyList()) }
 
     // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
     // the plain fades match the container transform's length so both sides finish together.
@@ -179,14 +183,14 @@ private fun VocabNav() {
                 composable("search") {
                     SearchScreen(
                         lib,
-                        onOpen = { nav.navigate("entry/$it") },
+                        onOpen = openIn,
                         onBack = { nav.popBackStack() },
                         selfTests = selfTests,
                         stages = stages,
                     )
                 }
-                composable("mistakes") { SubPage("错题本", onBack = { nav.popBackStack() }) { pad -> MistakesScreen(lib, onOpen = { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) } }
-                composable("practice") { SubPage("练习", onBack = { nav.popBackStack() }) { pad -> PracticeScreen(lib, { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) } }
+                composable("mistakes") { SubPage("错题本", onBack = { nav.popBackStack() }) { pad -> MistakesScreen(lib, onOpen = openAlone, modifier = Modifier.padding(pad)) } }
+                composable("practice") { SubPage("练习", onBack = { nav.popBackStack() }) { pad -> PracticeScreen(lib, openAlone, modifier = Modifier.padding(pad)) } }
                 composable("sync") {
                     val sync by vm.syncStatus.collectAsStateWithLifecycle()
                     SubPage("同步与数据", onBack = { nav.popBackStack() }) { pad ->
@@ -197,6 +201,11 @@ private fun VocabNav() {
                     val anchor = back.arguments?.getString("anchor").orEmpty()
                     CompositionLocalProvider(LocalNavAnimatedScope provides this) {
                         val entry = lib.data?.byAnchor?.get(anchor)
+                        // 下一个 walks the list from the entry opened from it; it replaces this page
+                        // (and any cross-references walked from it), so ← still goes back to the list
+                        val (list, at) = openList
+                        val pos = list.indexOf(at)
+                        val next = if (pos >= 0) list.getOrNull(pos + 1) else null
                         EntryScreen(
                             entry = entry,
                             onBack = { nav.popBackStack() },
@@ -210,6 +219,13 @@ private fun VocabNav() {
                             onStage = { vm.setStage(anchor, it) },
                             excluded = quizOptOut[anchor].orEmpty(),
                             onToggleExample = { en -> if (entry != null) vm.toggleQuizExample(entry, en) },
+                            nextLabel = if (next != null) "${pos + 1} / ${list.size}" else null,
+                            onNext = next?.let { n ->
+                                {
+                                    while (nav.currentBackStackEntry?.destination?.route == "entry/{anchor}") nav.popBackStack()
+                                    openIn(n, list)
+                                }
+                            },
                         )
                     }
                 }
@@ -411,9 +427,10 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
         snackbarHost = { SnackbarHost(snackbar) },
     ) { pad ->
         Box(Modifier.fillMaxSize().hazeSource(haze).background(MaterialTheme.colorScheme.background)) {
-        val open: (String) -> Unit = {
+        val open: (String, List<String>) -> Unit = { anchor, list ->
             insets.show(WindowInsetsCompat.Type.statusBars())
-            nav.navigate("entry/$it")
+            vm.openedFrom(list, anchor)
+            nav.navigate("entry/$anchor")
         }
         if (tab == 0) {
             BrowseScreen(

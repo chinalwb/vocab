@@ -52,7 +52,8 @@ private const val RECENT_MAX = 8
 @Composable
 fun SearchScreen(
     lib: LibraryState,
-    onOpen: (String) -> Unit,
+    /** a result tapped, with the results' anchors (in order) for 下一个 */
+    onOpen: (String, List<String>) -> Unit,
     onBack: () -> Unit,
     selfTests: Map<String, List<Attempt>> = emptyMap(),
     stages: Map<String, String> = emptyMap(),
@@ -109,7 +110,7 @@ fun SearchScreen(
             LazyColumn(contentPadding = PaddingValues(start = 10.dp, end = 10.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(results, key = { it.anchor }) { e ->
                     // no shared bounds here: the browse page's cards carry the same keys
-                    EntryCard(e, null, foot(e), shared = false) { saveRecent(query); onOpen(e.anchor) }
+                    EntryCard(e, null, foot(e), shared = false) { saveRecent(query); onOpen(e.anchor, results.map { it.anchor }) }
                 }
             }
         }
