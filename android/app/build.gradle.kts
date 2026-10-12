@@ -1,8 +1,17 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.kotlin.plugin.serialization")
+}
+
+// Release signing credentials live in keystore.properties (git-ignored, same format as backdrop's).
+// When it's absent (another machine), release builds fall back to the debug key.
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) keystorePropertiesFile.inputStream().use { load(it) }
 }
 
 android {
@@ -13,8 +22,8 @@ android {
         applicationId = "io.github.chinalwb.vocab"
         minSdk = 26
         targetSdk = 36
-        versionCode = 50
-        versionName = "1.49"
+        versionCode = 53
+        versionName = "1.52"
         // Where updates are fetched from. Override for local testing, e.g.
         // ./gradlew installDebug -PvocabUrl=http://localhost:8000/  (with adb reverse)
         val vocabUrl = (project.findProperty("vocabUrl") as String?) ?: "https://chinalwb.github.io/vocab/"
@@ -24,12 +33,21 @@ android {
         buildConfigField("String", "PROGRESS_API", "\"$progressApi\"")
     }
 
+    signingConfigs {
+        if (keystorePropertiesFile.exists()) create("release") {
+            storeFile = file(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+        }
+    }
     buildTypes {
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            // Sideloaded only, so the debug key is good enough to sign release builds too.
-            signingConfig = signingConfigs.getByName("debug")
+            // Sideloaded only; the committed APK should be signed with the release key so phones
+            // can update in place from any machine. The debug key is only a fallback.
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         }
     }
     compileOptions {

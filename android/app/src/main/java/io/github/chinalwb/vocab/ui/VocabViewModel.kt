@@ -174,6 +174,15 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun markSeen(anchor: String) = viewModelScope.launch { repo.markSeen(anchor) }
     fun markAllSeen() = viewModelScope.launch { repo.markAllSeen() }
 
+    /**
+     * 下一个 on the entry page: the list an entry was opened from, as it stood then (moving the
+     * entry out of the filter doesn't lose its place), and the entry opened from it — cross-
+     * references don't move it. Opened from anywhere else (错题本, 练习), there's no list.
+     */
+    private val _openList = MutableStateFlow(emptyList<String>() to "")
+    val openList = _openList.asStateFlow()
+    fun openedFrom(list: List<String>, anchor: String) { _openList.value = list to anchor }
+
     fun setStage(anchor: String, stage: Stage) = viewModelScope.launch { stageStore.set(anchor, stage); progress.soon() }
 
     fun connectSync(token: String) = progress.connect(token)

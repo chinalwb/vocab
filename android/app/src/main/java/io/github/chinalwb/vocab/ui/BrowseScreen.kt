@@ -3,7 +3,6 @@ package io.github.chinalwb.vocab.ui
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.Color
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -192,7 +191,8 @@ fun BrowseScreen(
     lib: LibraryState,
     checking: Boolean,
     onRefresh: () -> Unit,
-    onOpen: (String) -> Unit,
+    /** an entry tapped, with the anchors shown (in order) for 下一个 */
+    onOpen: (String, List<String>) -> Unit,
     onMarkAllSeen: () -> Unit,
     tiles: Boolean,
     /** The Scaffold's padding — applied inside the list so content can scroll under the bars. */
@@ -267,6 +267,7 @@ fun BrowseScreen(
         }
     }
     val shownCount = groups.sumOf { it.second.size }
+    val shownAnchors = remember(groups) { groups.flatMap { g -> g.second.map { it.anchor } } }
     val clearAll = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false; sortF = SORT_LEVEL }
     // what's on, as removable chips under the search; the same list drives the button's badge
     val active = buildList {
@@ -292,15 +293,19 @@ fun BrowseScreen(
             Text("共 $shownCount 条", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.weight(1f).wrapContentWidth(Alignment.End))
         }
+    }
+    // outside the list: as part of its first item the sheet was disposed (and never opened)
+    // once that item scrolled off screen
+    val sheet: @Composable () -> Unit = {
         if (sheetOpen) androidx.compose.material3.ModalBottomSheet(
             onDismissRequest = { onSheetOpen(false) },
             sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true),
             // the sheet lives in its own window, out of reach of the haze, so no blur: nearly opaque
-            // with a glass rim (at 90% the cards' text showed through and fought with the chips)
+            // (at 90% the cards' text showed through and fought with the chips). No border: the
+            // modifier lands on the full-window container, so it drew white lines across the screen.
             containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.97f),
             scrimColor = Color.Black.copy(alpha = 0.25f),
             tonalElevation = 0.dp,
-            modifier = Modifier.border(1.dp, glassRim(), RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)),
         ) {
             val present = entries.map { it.level }.toSet()
             Column(
@@ -362,6 +367,7 @@ fun BrowseScreen(
     val listState = rememberLazyListState()
     val statusBar = WindowInsets.statusBarsIgnoringVisibility.getTop(LocalDensity.current)
 
+    sheet()
     PullToRefreshBox(
         isRefreshing = checking,
         onRefresh = onRefresh,
@@ -388,7 +394,7 @@ fun BrowseScreen(
                 item(span = StaggeredGridItemSpan.FullLine) { filters() }
                 item(span = StaggeredGridItemSpan.FullLine) { status() }
                 gridItems(groups.flatMap { it.second }, key = { it.anchor }) { e ->
-                    EntryTile(e, badgeOf(e), foot(e)) { onOpen(e.anchor) }
+                    EntryTile(e, badgeOf(e), foot(e)) { onOpen(e.anchor, shownAnchors) }
                 }
             }
         } else {
@@ -410,7 +416,7 @@ fun BrowseScreen(
                         )
                     }
                     items(list, key = { it.anchor }) { e ->
-                        EntryCard(e, badgeOf(e), foot(e)) { onOpen(e.anchor) }
+                        EntryCard(e, badgeOf(e), foot(e)) { onOpen(e.anchor, shownAnchors) }
                         Spacer(Modifier.padding(4.dp))
                     }
                 }
