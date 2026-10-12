@@ -55,6 +55,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -106,7 +107,13 @@ fun EntryScreen(
     // then carries the headword.
     var expanded by rememberSaveable { mutableStateOf(false) }
     val imeVisible = WindowInsets.isImeVisible
-    val fullscreen = expanded || imeVisible
+    // 选词 needs the room too (its chips stand in for the keyboard): the body reports whether
+    // it's answering that way, and ⤡ can still shrink the card back until that try is over
+    var chipsAnswering by remember { mutableStateOf(false) }
+    var autoOff by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(chipsAnswering, imeVisible) { if (!chipsAnswering && !imeVisible) autoOff = false }
+    val fullscreen = expanded || (!autoOff && (imeVisible || chipsAnswering))
+    val toggleFull = { if (fullscreen && !expanded) autoOff = true else { expanded = !expanded; autoOff = false } }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -180,7 +187,7 @@ fun EntryScreen(
                     EntryNotes(
                         entry, onXref, inCard = true, modifier = Modifier.weight(1f),
                         quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample),
-                        trailing = { ExpandButton(expanded) { expanded = !expanded } },
+                        trailing = { ExpandButton(fullscreen, toggleFull) },
                     )
                     if (quiz) FlipButton("回到自测") { notesUp = false }
                 },
@@ -189,9 +196,10 @@ fun EntryScreen(
                     // instead of typed; the strays come from the entry's other sentences.
                     val answer = if (selfTest) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
                     val (chips, setChips) = rememberChipsMode()
+                    SideEffect { chipsAnswering = !revealed && chips && answer != null }
                     SideHeading("自测") {
                         if (answer != null && !revealed) { AnswerModeToggle(chips, setChips); Spacer(Modifier.width(6.dp)) }
-                        ExpandButton(expanded) { expanded = !expanded }
+                        ExpandButton(fullscreen, toggleFull)
                     }
                     if (!revealed) {
                         val bank = if (answer != null && chips) {
@@ -201,9 +209,8 @@ fun EntryScreen(
                             }.filter { it.isNotBlank() && it != answer }
                             rememberWordBank(answer, strayWords(answer, others, seed), seed).also { st -> LaunchedEffect(st.pickedText) { draft = st.draft } }
                         } else null
-                        // Typing: the question with the text box right under it, scrolling together.
-                        // 选词: the question scrolls on its own (compact, like with the keyboard up)
-                        // and the sentence box, the chips and 显示答案 stay put at the bottom, in thumb's reach.
+                        // The question with the answer right under it (the text box, or the sentence
+                        // being built), scrolling together; the chips and 显示答案 stay put at the bottom.
                         Column(
                             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
                             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -213,12 +220,12 @@ fun EntryScreen(
                                 // a 自测题's question is its title — off the page while full screen
                                 selfTest -> if (fullscreen) Text(entry.title, style = MaterialTheme.typography.titleMedium)
                                 // a moved entry asks one of its examples (中→英); with none, like a review card
-                                ex != null -> ExamplePrompt(ex, compact = imeVisible || bank != null)
+                                ex != null -> ExamplePrompt(ex, compact = imeVisible || (bank != null && !fullscreen))
                                 else -> ReviewFront(entry, kindOf(entry, inTest = true))
                             }
-                            if (bank == null) DraftField(draft, { draft = it }, maxLines = 6)
+                            if (bank != null) WordBankAnswer(bank) else DraftField(draft, { draft = it }, maxLines = 6)
                         }
-                        if (bank != null) { WordBankAnswer(bank); WordBankChips(bank) }
+                        if (bank != null) WordBankChips(bank)
                         Button(onClick = reveal, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("显示答案") }
                     } else Scrolling {
                         SelfTestStats(attempts)
