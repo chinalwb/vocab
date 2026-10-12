@@ -14,3 +14,17 @@ val GridViewIcon: ImageVector = ImageVector.Builder("GridView", 24.dp, 24.dp, 24
     ),
     fill = SolidColor(Color.Black),
 ).build()
+
+// Material's "open_in_full" / "close_fullscreen": the entry card grows to the whole page and back.
+val OpenInFullIcon: ImageVector = ImageVector.Builder("OpenInFull", 24.dp, 24.dp, 24f, 24f).addPath(
+    pathData = addPathNodes("M21,11V3h-8l3.29,3.29l-10,10L3,13v8h8l-3.29,-3.29l10,-10z"),
+    fill = SolidColor(Color.Black),
+).build()
+
+val CloseFullscreenIcon: ImageVector = ImageVector.Builder("CloseFullscreen", 24.dp, 24.dp, 24f, 24f).addPath(
+    pathData = addPathNodes(
+        "M22,3.41L16.71,8.7L20,12h-8V4l3.29,3.29L20.59,2L22,3.41z" +
+            "M3.41,22l5.29,-5.29L12,20v-8H4l3.29,3.29L2,20.59L3.41,22z"
+    ),
+    fill = SolidColor(Color.Black),
+).build()

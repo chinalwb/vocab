@@ -1,6 +1,10 @@
 package io.github.chinalwb.vocab.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.foundation.layout.isImeVisible
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -97,12 +101,21 @@ fun EntryScreen(
 ) {
     if (entry != null) LaunchedEffect(entry.anchor) { onSeen(entry.anchor) }
     var details by rememberSaveable { mutableStateOf(false) }
+    // The card can take the whole page: by its ⤢ button, or on its own while the keyboard is up
+    // (the meta and progress bands would only crowd the little room that's left). The top bar
+    // then carries the headword.
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    val imeVisible = WindowInsets.isImeVisible
+    val fullscreen = expanded || imeVisible
     Scaffold(
         topBar = {
             TopAppBar(
                 // Stable padding: the status bar may be re-showing while this page flies in.
                 windowInsets = WindowInsets.statusBarsIgnoringVisibility,
-                title = { Text(entry?.let { levelStyle(it.level).name } ?: "") },
+                title = {
+                    if (fullscreen && entry != null) Text(entry.title, fontFamily = FontFamily.Serif, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    else Text(entry?.let { levelStyle(it.level).name } ?: "")
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") }
                 },
@@ -128,10 +141,14 @@ fun EntryScreen(
                 Text("找不到这个条目,可能已在词库里改名或删除。", Modifier.padding(vertical = 16.dp))
                 return@Column
             }
-            Spacer(Modifier.height(14.dp))
-            Meta(entry) { details = true }
-            Spacer(Modifier.height(14.dp))
-            Stepper(stage, selfTest = entry.level == "SELFTEST", onStage)
+            AnimatedVisibility(visible = !fullscreen) {
+                Column {
+                    Spacer(Modifier.height(14.dp))
+                    Meta(entry) { details = true }
+                    Spacer(Modifier.height(14.dp))
+                    Stepper(stage, selfTest = entry.level == "SELFTEST", onStage)
+                }
+            }
             Spacer(Modifier.height(14.dp))
             // The entry itself is a card with two sides, like a coin: the notes (a carousel)
             // and, while it's in 自测, the quiz. Moving it into or out of 自测 flips the card;
@@ -147,40 +164,63 @@ fun EntryScreen(
             var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
             var notesUp by rememberSaveable(entry.anchor, stage) { mutableStateOf(false) }
             val retry = { tryNo = maxOf(tryNo + 1, attempts.size); notesUp = false }
+            val reveal = {
+                when {
+                    selfTest -> onAttempt(draft)
+                    ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same)
+                    draft.isBlank() -> onGrade("", false)
+                }
+                revealed = true
+            }
             FlipCard(
                 back = quiz && !notesUp,
                 color = levelColor(entry.level),
                 modifier = Modifier.weight(1f).fillMaxWidth(),
                 front = {
-                    EntryNotes(entry, onXref, inCard = true, modifier = Modifier.weight(1f), quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample))
+                    EntryNotes(
+                        entry, onXref, inCard = true, modifier = Modifier.weight(1f),
+                        quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample),
+                        trailing = { ExpandButton(expanded) { expanded = !expanded } },
+                    )
                     if (quiz) FlipButton("回到自测") { notesUp = false }
                 },
                 backSide = {
-                    SideHeading("自测")
-                    Scrolling {
-                        SelfTestStats(attempts)
-                        if (!revealed) {
-                            // a moved entry asks one of its examples (中→英); with none, like a review card
-                            if (!selfTest) {
-                                if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
+                    SideHeading("自测") { ExpandButton(expanded) { expanded = !expanded } }
+                    if (!revealed) {
+                        // The question scrolls in what's left; the input and 显示答案 stay put at the
+                        // bottom, so typing never pushes them (or the question) out of view.
+                        Column(
+                            Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            if (!imeVisible) SelfTestStats(attempts)
+                            when {
+                                // a 自测题's question is its title — off the page while full screen
+                                selfTest -> if (fullscreen) Text(entry.title, style = MaterialTheme.typography.titleMedium)
+                                // a moved entry asks one of its examples (中→英); with none, like a review card
+                                ex != null -> ExamplePrompt(ex, compact = imeVisible)
+                                else -> ReviewFront(entry, kindOf(entry, inTest = true))
                             }
-                            SelfTestInput(draft, { draft = it }) {
-                                when {
-                                    selfTest -> onAttempt(draft)
-                                    ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same)
-                                    draft.isBlank() -> onGrade("", false)
-                                }
-                                revealed = true
-                            }
-                        } else {
-                            if (selfTest) SelfTestResult(draft, entry.selfTestAnswer)
-                            else MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it) }
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                                RetryButton(retry)
-                                FlipButton("翻面看笔记") { notesUp = true }
-                            }
-                            SelfTestHistory(attempts)
                         }
+                        OutlinedTextField(
+                            value = draft,
+                            onValueChange = { draft = it },
+                            placeholder = { Text("不看答案,写出英文…") },
+                            minLines = 3,
+                            maxLines = 6,
+                            textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        Button(onClick = reveal, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("显示答案") }
+                    } else Scrolling {
+                        SelfTestStats(attempts)
+                        if (selfTest) SelfTestResult(draft, entry.selfTestAnswer)
+                        else MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it) }
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                            RetryButton(retry)
+                            FlipButton("翻面看笔记") { notesUp = true }
+                        }
+                        SelfTestHistory(attempts)
                     }
                 },
             )
@@ -379,12 +419,26 @@ private fun ColumnScope.Scrolling(content: @Composable ColumnScope.() -> Unit) {
     )
 }
 
-/** "自测 ———", matching the notes side's 笔记 heading. */
+/** "自测 ——— ⤢", matching the notes side's 笔记 heading. */
 @Composable
-private fun SideHeading(label: String) {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 4.dp)) {
+private fun SideHeading(label: String, trailing: @Composable () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        HorizontalDivider(Modifier.padding(start = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
+        HorizontalDivider(Modifier.padding(horizontal = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
+        trailing()
+    }
+}
+
+/** ⤢ / ⤡ at the end of a card heading: the card to the whole page, and back. */
+@Composable
+private fun ExpandButton(expanded: Boolean, onClick: () -> Unit) {
+    IconButton(onClick = onClick, modifier = Modifier.size(28.dp)) {
+        Icon(
+            if (expanded) CloseFullscreenIcon else OpenInFullIcon,
+            if (expanded) "退出全屏" else "全屏",
+            Modifier.size(18.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 

@@ -74,6 +74,8 @@ fun EntryNotes(
     modifier: Modifier = Modifier,
     /** on the entry page: which examples 自测 may ask, and the tap that toggles one */
     quiz: ExampleQuiz? = null,
+    /** on the entry page: the card's expand button, at the end of the 笔记 heading */
+    trailing: @Composable () -> Unit = {},
 ) {
     val ctx = LocalContext.current
     val prefs = remember { ctx.getSharedPreferences("notes", Context.MODE_PRIVATE) }
@@ -83,6 +85,7 @@ fun EntryNotes(
     Column(modifier) {
         NotesHeading(
             if (sections.size > 1) (if (all) "分卡显示" else "全部展开") else null,
+            trailing,
         ) { all = !all; prefs.edit().putBoolean("all", all).apply() }
         when {
             carousel -> NotesCarousel(entry.anchor, sections, onXref, inCard, if (inCard) Modifier.weight(1f) else Modifier, quiz)
@@ -94,9 +97,9 @@ fun EntryNotes(
 
 /** "笔记 ——— 全部展开": where the answer starts. */
 @Composable
-private fun NotesHeading(action: String?, onAction: () -> Unit) {
+private fun NotesHeading(action: String?, trailing: @Composable () -> Unit, onAction: () -> Unit) {
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 4.dp)) {
         Text("笔记", style = MaterialTheme.typography.labelLarge, color = muted)
         HorizontalDivider(Modifier.padding(horizontal = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
         if (action != null) Text(
@@ -105,6 +108,7 @@ private fun NotesHeading(action: String?, onAction: () -> Unit) {
             color = muted,
             modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable(onClick = onAction).padding(horizontal = 4.dp, vertical = 6.dp),
         )
+        trailing()
     }
 }
 
