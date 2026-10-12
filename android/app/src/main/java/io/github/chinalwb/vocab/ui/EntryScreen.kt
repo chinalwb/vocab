@@ -260,7 +260,7 @@ private fun Details(entry: Entry) {
 /**
  * The progress band, drawn as levels: three nodes on a track, 学习中 → 自测中 → 已掌握. The track
  * is filled up to the node the entry is at; the nodes behind it are ticked, the ones ahead are
- * hollow. Tapping another node moves the entry there. A 自测题 can't go back to 学习中, so that
+ * empty rings. Tapping another node moves the entry there. A 自测题 can't go back to 学习中, so that
  * node is dimmed for it.
  */
 @Composable
@@ -311,7 +311,8 @@ private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
                     when {
                         passed -> Icon(Icons.Default.Check, null, Modifier.size(16.dp), tint = MaterialTheme.colorScheme.surface)
                         here -> Box(Modifier.size(8.dp).background(MaterialTheme.colorScheme.surface, CircleShape))
-                        else -> Text("${i + 1}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        // the levels ahead stay empty: a number in them read as a count
+                        else -> {}
                     }
                 }
                 Text(
