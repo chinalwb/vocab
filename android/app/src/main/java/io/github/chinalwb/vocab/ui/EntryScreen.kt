@@ -334,8 +334,8 @@ private fun Details(entry: Entry) {
 /**
  * The progress band, drawn as levels: the stages as nodes on a track. The track
  * is filled up to the node the entry is at; the nodes behind it are ticked, the ones ahead are
- * empty rings. Tapping another node moves the entry there. A 自测题 can't go back to 学习中, so that
- * node is dimmed for it.
+ * empty rings. Tapping another node moves the entry there (a 自测题 starts at 考核, but may be
+ * moved anywhere like the rest — the greyed-out ticks it used to get read as a glitch).
  */
 @Composable
 private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
@@ -358,14 +358,12 @@ private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
         Stage.entries.forEachIndexed { i, s ->
             val here = i == cur
             val passed = i < cur
-            val allowed = !(selfTest && s.ordinal < Stage.Test.ordinal)   // a 自测题 starts at 考核
             Column(
                 Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(12.dp))
-                    .clickable(enabled = allowed && !here) { onStage(s) }
-                    .padding(bottom = 4.dp)
-                    .alpha(if (allowed) 1f else 0.35f),
+                    .clickable(enabled = !here) { onStage(s) }
+                    .padding(bottom = 4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
