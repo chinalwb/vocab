@@ -343,6 +343,22 @@ h1{
 .fh .full{text-decoration:none;display:grid;place-items:center;width:26px;height:26px;border-radius:7px;padding:0;margin-left:-4px}
 .fh .full svg{width:16px;height:16px}
 .fh button:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px;border-radius:4px}
+/* 选词: the 选词 | 打字 switch, the sentence being built, and the chips (ui/SelfTest.kt) */
+.amode{display:inline-flex;gap:2px;padding:2px;border:1px solid var(--card-edge);border-radius:999px;flex:none}
+.amode button,.fh .amode button{font:inherit;font-size:12px;line-height:1;padding:4px 10px;border-radius:999px;border:0;background:none;color:var(--card-ink-2);cursor:pointer;text-decoration:none}
+.amode button[aria-pressed="true"]{background:var(--card-ink);color:var(--sw)}
+.amode-row{display:flex;justify-content:flex-end;margin:8px 0 0}
+.wb-ans{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:72px;box-sizing:border-box;padding:10px;margin-top:10px;border:1.5px solid var(--card-ink-2);border-radius:12px;background:color-mix(in srgb, var(--chip) 55%, transparent);position:relative}
+.wb-ans:has(.wb-clear){padding-right:60px}
+.wb-ph{color:var(--card-ink-2);font-size:14px;padding:4px}
+.wchip{font-family:Newsreader,Georgia,serif;font-size:16px;line-height:1.2;padding:5px 10px;border-radius:10px;border:1px solid var(--card-edge);background:var(--chip);color:var(--card-ink);cursor:pointer}
+.wb-ans .wchip{background:var(--card-ink);border-color:var(--card-ink);color:var(--sw)}
+.wchip.used{background:color-mix(in srgb, var(--card-ink) 8%, transparent);border-color:transparent;color:transparent;cursor:default}
+.wb-clear{position:absolute;top:6px;right:6px;font:inherit;font-size:12.5px;color:var(--card-ink-2);background:none;border:0;padding:6px 8px;cursor:pointer;border-radius:8px}
+.wb-bank{display:flex;flex-wrap:wrap;gap:6px;max-height:200px;overflow-y:auto;margin:12px 0 0}
+.face .cta .wb-bank{margin:0 0 10px}
+.wchip:focus-visible,.wb-clear:focus-visible,.amode button:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px}
+.wb-ans[hidden],.wb-bank[hidden],textarea.draft[hidden]{display:none}
 .face .body.fillb{display:flex;flex-direction:column;flex:1;min-height:0}
 .face .scrollq{flex:1;min-height:0;overflow-y:auto;padding-top:2px}
 .face .st-stats{margin-top:0}
@@ -1127,6 +1143,59 @@ function compareHtml(mine, answer, retry = true){
     `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。</p>` + (again ? `<p>${again}</p>` : "");
 }
 
+// ── 选词: the quick way to answer, after Duolingo (same rules as ui/SelfTest.kt): the answer's
+// words, shuffled with a few strays, are chips; tapping them in order builds the sentence, which
+// goes into the (hidden) text box, so 显示答案 checks it exactly like typed text. 打字 is a
+// toggle away, remembered in vk.chips (default 选词). Only for questions with an answer to check.
+const chipWords = t => t.split(/\s+/).map(w => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "")).filter(Boolean);
+const STRAY_POOL = ["the", "a", "an", "to", "of", "in", "on", "at", "for", "with", "is", "are", "was", "has", "that", "it", "and", "but"];
+function shuffled(xs, seed){                              // seeded (mulberry32): fixed for one try
+  let st = seed >>> 0;
+  const rnd = () => { st = st + 0x6D2B79F5 | 0; let t = Math.imul(st ^ st >>> 15, 1 | st); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const a = xs.slice();
+  for (let k = a.length - 1; k > 0; k--) { const j = Math.floor(rnd() * (k + 1)); [a[k], a[j]] = [a[j], a[k]]; }
+  return a;
+}
+const uniqCI = xs => xs.filter((w, k) => xs.findIndex(v => v.toLowerCase() === w.toLowerCase()) === k);
+// a few words that aren't in the answer: the entry's other sentences first, then stock function words
+function strayWords(answer, others, seed, n = 3){
+  const have = new Set(chipWords(answer).map(w => w.toLowerCase()));
+  const own = shuffled(uniqCI(others.flatMap(chipWords).filter(w => !have.has(w.toLowerCase()))), seed);
+  const stock = shuffled(STRAY_POOL.filter(w => !have.has(w)), seed);
+  return uniqCI([...own, ...stock]).slice(0, n);
+}
+const hashStr = t => { let h = 0; for (const c of t) h = Math.imul(h, 31) + c.codePointAt(0) | 0; return h; };
+let chipsMode = store.get("vk.chips", "1") === "1";
+const modeToggleHtml = () => `<span class="amode" role="group" aria-label="作答方式">` +
+  [["1", "选词"], ["0", "打字"]].map(([v, l]) => `<button type="button" data-chips="${v}" aria-pressed="${(v === "1") === chipsMode}">${l}</button>`).join("") + `</span>`;
+// what a question checks against: a 自测题's first 答案 line, a moved entry's example; else none
+const answerOf = (it, level, ex) => level === "SELFTEST" ? ((it.answer || "").split("\n").find(l => l.trim()) || null) : ex ? plainMd(ex.en) : null;
+const othersOf = (it, answer) => [...quizExamples(it).map(x => plainMd(x.en)), ...(it.answer || "").split("\n")].filter(l => l.trim() && l !== answer);
+// [picks]: bank indices in order, kept by the caller (mutated in place) so a re-render keeps them
+function mountBank(ansEl, bankEl, input, answer, others, seed, picks){
+  const bank = shuffled([...chipWords(answer), ...strayWords(answer, others, seed)], seed);
+  const paint = focusK => {
+    input.value = picks.map(k => bank[k]).join(" ");
+    input.dispatchEvent(new Event("input"));
+    ansEl.innerHTML = picks.length
+      ? picks.map(k => `<button type="button" class="wchip" data-k="${k}" aria-label="放回 ${esc(bank[k])}">${esc(bank[k])}</button>`).join("") + `<button type="button" class="wb-clear">清空</button>`
+      : `<span class="wb-ph">点下面的词,拼出英文…</span>`;
+    // a used chip leaves an empty slot, so the rest don't jump about
+    bankEl.innerHTML = bank.map((w, k) => picks.includes(k)
+      ? `<button type="button" class="wchip used" disabled aria-hidden="true">${esc(w)}</button>`
+      : `<button type="button" class="wchip" data-k="${k}">${esc(w)}</button>`).join("");
+    if (focusK !== undefined) (bankEl.querySelector(".wchip:not(.used)") || ansEl.querySelector(".wchip"))?.focus();
+  };
+  ansEl.onclick = e => {
+    if (e.target.closest(".wb-clear")) picks.length = 0;
+    else { const b = e.target.closest(".wchip"); if (!b) return; picks.splice(picks.indexOf(+b.dataset.k), 1); }
+    paint();
+  };
+  bankEl.onclick = e => { const b = e.target.closest(".wchip[data-k]"); if (!b) return; picks.push(+b.dataset.k); paint(true); };
+  paint();
+}
+function setChipsMode(v){ chipsMode = v; store.set("vk.chips", v ? "1" : "0"); }
+
 // ── 自测 attempt log: every reveal is recorded here (this browser only, like the review
 // progress). {anchor: [{t, text, ok, via}]}; a blank reveal is a 偷看 (text "").
 const ST_MAX = 50;
@@ -1417,12 +1486,12 @@ function show(it, level, i, o = {}){
   // the question with the input right under it, scrolling together; 显示答案 stays put at the bottom.
   // 学习中 / 复习 may look at the notes first; 考核 only after answering.
   const backFace = true
-    ? `<div class="face bk"><div class="fh"><span>自测</span><span class="ln"></span>${stage !== "test" ? `<button type="button" id="to-notes-pre">看笔记</button>` : ""}${fullBtn}</div>` +
+    ? `<div class="face bk"><div class="fh"><span>自测</span><span class="ln"></span>${answerOf(it, level, ex) ? modeToggleHtml() : ""}${stage !== "test" ? `<button type="button" id="to-notes-pre">看笔记</button>` : ""}${fullBtn}</div>` +
       `<div class="scrollq" id="st-q"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
       `<div class="st"><div class="st-prompt">${promptHtml()}</div>` +
-      `<textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea></div>` +
+      `<textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea><div class="wb-ans" id="wb-ans" hidden></div></div>` +
       `<div class="st-res" id="st-res" hidden></div></div>` +
-      `<div class="cta" id="st-cta"><button class="btn" type="button" id="st-show">显示答案</button></div></div>`
+      `<div class="cta" id="st-cta"><div class="wb-bank" id="wb-bank" hidden></div><button class="btn" type="button" id="st-show">显示答案</button></div></div>`
     : "";
   const startBack = o.from !== undefined ? o.from : o.face ? o.face === "back" : wantBack;
   sheet.innerHTML =
@@ -1468,7 +1537,7 @@ function show(it, level, i, o = {}){
     if (!toggleQuizEx(it, li.dataset.en)) return;
     li.classList.toggle("out");
     const input = sheet.querySelector("#st-in");
-    if (input && !input.value) { ex = quizEx(it); sheet.querySelector(".st-prompt").innerHTML = promptHtml(); }
+    if (input && !input.value) { ex = quizEx(it); sheet.querySelector(".st-prompt").innerHTML = promptHtml(); sheet._applyMode(); }
   });
   sheet.querySelector("#to-quiz").addEventListener("click", () => card.classList.add("flipped"));
   const pre = sheet.querySelector("#to-notes-pre");
@@ -1512,6 +1581,23 @@ function show(it, level, i, o = {}){
     };
     sheet.querySelector("#st-show").addEventListener("click", reveal);
     input.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) reveal(); });
+    // 选词 or 打字: the chips write into the input, so reveal() above doesn't care which
+    const ansEl = sheet.querySelector("#wb-ans"), bankEl = sheet.querySelector("#wb-bank"), mode = sheet.querySelector(".fh .amode");
+    sheet._applyMode = () => {
+      const a = answerOf(it, level, ex), on = chipsMode && !!a;
+      input.hidden = on; ansEl.hidden = bankEl.hidden = !on;
+      if (mode) mode.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", (b.dataset.chips === "1") === chipsMode));
+      if (on) mountBank(ansEl, bankEl, input, a, othersOf(it, a), hashStr(it.anchor) + (stLog[it.anchor] || []).length, []);
+    };
+    if (mode) mode.addEventListener("click", e => {
+      const b = e.target.closest("button[data-chips]");
+      if (!b || (b.dataset.chips === "1") === chipsMode) return;
+      setChipsMode(b.dataset.chips === "1");
+      sheet._applyMode();                                 // to 打字 keeps the sentence built so far
+      if (!chipsMode) input.focus();
+    });
+    sheet._applyMode();
+    sheet.querySelector("#st-show").addEventListener("click", () => { if (mode) mode.hidden = true; });
   }
 
   sheet.querySelector(".x").addEventListener("click", close);
@@ -1838,6 +1924,7 @@ function renderQuizCard(el){
     return;
   }
   const ready = s.revealed && advanceReady(it, t.level, stage);
+  const qAns = s.revealed ? null : answerOf(it, t.level, ex), bankOn = chipsMode && !!qAns;   // 选词
   el.innerHTML = top +
     `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ex ? exPrompt(ex) : askHtml(t, k)}` +
     `<p class="st-stats">${stStatsLine(it.anchor)}</p>` +
@@ -1847,7 +1934,9 @@ function renderQuizCard(el){
           : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>`) + stHistoryHtml(it.anchor) +
         (ready ? advanceHtml(stage) : "") +
         `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${notesHtml(it)}</div>`
-      : `<textarea class="draft" id="qz-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)">${esc(s.draft)}</textarea>`) +
+      : (qAns ? `<div class="amode-row">${modeToggleHtml()}</div>` : "") +
+        `<textarea class="draft" id="qz-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)"${bankOn ? " hidden" : ""}>${esc(s.draft)}</textarea>` +
+        (bankOn ? `<div class="wb-ans" id="wb-ans"></div><div class="wb-bank" id="wb-bank"></div>` : "")) +
     `</div>` +
     (s.revealed
       ? `<div class="grades" style="grid-template-columns:${ready ? "1fr 1fr" : "1fr"}">` +
@@ -1856,7 +1945,7 @@ function renderQuizCard(el){
       : `<button class="btn" type="button" id="qz-reveal" style="width:100%">显示答案</button>`);
   const next = adv => {
     if (adv) { setStage(it, nextStage(stage)); s.advanced++; }
-    s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; s.studied = false;
+    s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; s.studied = false; s.picks = undefined;
     render(); window.scrollTo(0, 0);
   };
   const via = stage;                                        // "review" / "test" in the history
@@ -1881,8 +1970,17 @@ function renderQuizCard(el){
   if (d) {
     d.addEventListener("input", () => { s.draft = d.value; });
     d.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) reveal(); });
-    d.focus();
+    if (bankOn) mountBank(el.querySelector("#wb-ans"), el.querySelector("#wb-bank"), d, qAns, othersOf(it, qAns), hashStr(it.anchor) + s.index, s.picks = s.picks || []);
+    else d.focus();
   }
+  const am = el.querySelector(".amode");
+  if (am) am.addEventListener("click", e => {
+    const b = e.target.closest("button[data-chips]");
+    if (!b || (b.dataset.chips === "1") === chipsMode) return;
+    setChipsMode(b.dataset.chips === "1");
+    if (chipsMode) s.picks = [];                            // to 打字 keeps the sentence built so far
+    renderQuizCard(el);
+  });
   const rv = el.querySelector("#qz-reveal"); if (rv) rv.addEventListener("click", reveal);
   const nx = el.querySelector("#qz-next"); if (nx) { nx.addEventListener("click", () => next(false)); nx.focus(); }
   const ad = el.querySelector("#qz-adv"); if (ad) ad.addEventListener("click", () => next(true));
