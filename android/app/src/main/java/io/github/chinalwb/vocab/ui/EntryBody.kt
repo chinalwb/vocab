@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,6 +27,8 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -47,27 +48,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import kotlinx.coroutines.launch
 
 @Composable
-fun EntryHeader(entry: Entry) {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text(
-            entry.title,
-            fontFamily = FontFamily.Serif,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 26.sp,
-            lineHeight = 32.sp,
-            modifier = Modifier.sharedEntryTitle(entry.anchor),
-        )
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Chip(levelStyle(entry.level).short, levelColor(entry.level))
-            if (entry.no > 0) Chip("#${entry.no}", MaterialTheme.colorScheme.surfaceContainerHigh)
-            listOf(entry.ipa, entry.pos, if (entry.writes) "会写" else "认识", entry.date.takeIf { it.isNotEmpty() }?.let { "收录 $it" } ?: "")
-                .filter { it.isNotEmpty() }
-                .forEach { Chip(it, MaterialTheme.colorScheme.surfaceContainerHigh) }
-        }
-    }
-}
-
-@Composable
 fun Chip(text: String, color: androidx.compose.ui.graphics.Color) {
     Text(
         text,
@@ -84,17 +64,27 @@ fun Chip(text: String, color: androidx.compose.ui.graphics.Color) {
  * page and is remembered. Entries without sections show as before.
  */
 @Composable
-fun EntryNotes(entry: Entry, onXref: (String) -> Unit, /** on the entry page's card: no card per page */ inCard: Boolean = false) {
+fun EntryNotes(
+    entry: Entry,
+    onXref: (String) -> Unit,
+    /** on the entry page's card: no card per page, and the notes fill [modifier]'s height, scrolling inside */
+    inCard: Boolean = false,
+    modifier: Modifier = Modifier,
+) {
     val ctx = LocalContext.current
     val prefs = remember { ctx.getSharedPreferences("notes", Context.MODE_PRIVATE) }
     var all by remember { mutableStateOf(prefs.getBoolean("all", false)) }
     val sections = entry.sections
     val carousel = sections.size > 1 && !all
-    Column {
+    Column(modifier) {
         NotesHeading(
             if (sections.size > 1) (if (all) "分卡显示" else "全部展开") else null,
         ) { all = !all; prefs.edit().putBoolean("all", all).apply() }
-        if (carousel) NotesCarousel(entry.anchor, sections, onXref, inCard) else EntryBody(entry, onXref)
+        when {
+            carousel -> NotesCarousel(entry.anchor, sections, onXref, inCard, if (inCard) Modifier.weight(1f) else Modifier)
+            inCard -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) { EntryBody(entry, onXref) }
+            else -> EntryBody(entry, onXref)
+        }
     }
 }
 
@@ -118,13 +108,13 @@ private fun NotesHeading(action: String?, onAction: () -> Unit) {
 private val LABEL_ONLY = Regex("""^\*\*[^*]+[:：]\s*\*\*$""")
 
 @Composable
-private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (String) -> Unit, inCard: Boolean) {
+private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (String) -> Unit, inCard: Boolean, modifier: Modifier) {
     val pager = rememberPagerState { sections.size }
     val tabs = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val ink = MaterialTheme.colorScheme.onSurface
     LaunchedEffect(pager.currentPage) { tabs.animateScrollToItem((pager.currentPage - 1).coerceAtLeast(0)) }
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         LazyRow(state = tabs, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             itemsIndexed(sections) { i, s ->
                 val on = i == pager.currentPage
@@ -148,8 +138,9 @@ private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (Stri
             pageSpacing = 12.dp,
             verticalAlignment = Alignment.Top,
             key = { "$anchor/$it" },
-            // the pager is as tall as the card in view, so a short card leaves no gap below
-            modifier = Modifier.animateContentSize(),
+            // on the entry card the pager takes the card's remaining height and each page scrolls;
+            // elsewhere it is as tall as the page in view, so a short one leaves no gap below
+            modifier = if (inCard) Modifier.weight(1f).fillMaxWidth() else Modifier.animateContentSize(),
         ) { page ->
             val blocks = sections[page].blocks.let { b ->
                 if ((b.firstOrNull() as? Block.Para)?.text?.let(LABEL_ONLY::matches) == true) b.drop(1) else b
@@ -158,7 +149,7 @@ private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (Stri
                 Modifier
                     .fillMaxWidth()
                     .then(
-                        if (inCard) Modifier.padding(top = 4.dp)
+                        if (inCard) Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).padding(top = 4.dp, bottom = 8.dp)
                         else Modifier.background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(16.dp)).padding(16.dp)
                     )
             ) { Blocks(blocks, onXref, fold = true) }
