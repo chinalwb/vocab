@@ -70,6 +70,42 @@ data class Entry(
         get() = blocks.firstNotNullOfOrNull { (it as? Block.Quote)?.lines?.joinToString("\n") }
 
     val writes: Boolean get() = mastery == "write"
+
+    /** The notes split at their bold labels, one card each — see [splitSections]. */
+    @Transient
+    val sections: List<Section> = splitSections(blocks)
+}
+
+/** One card of the notes carousel: [label] is its tab ("释义", "义项一", "常见搭配"). */
+data class Section(val label: String, val blocks: List<Block>)
+
+// A bold label opens a section: "**常见搭配:**", "**含义:** text", "**义项一:…**", "**race**(动词)".
+private val SECTION_RE = Regex("""^\*\*([^*]+?)[:：]\s*\*\*|^\*\*([^*]+?)\*\*\s*(?:[(（][^)）]*[)）])?$""")
+// consecutive definition sections share one card
+private val DEFINITION = setOf("English definition", "含义", "释义", "整体释义")
+
+private fun sectionLabel(text: String): String? {
+    val m = SECTION_RE.find(text) ?: return null
+    val label = (m.groups[1] ?: m.groups[2])!!.value.replace("⚠️", "").trim()
+    return label.split(Regex("[:：(（—]"))[0].trim()
+}
+
+/**
+ * Mirrors sections() in build.py — keep the two in step. Whatever comes before the first label
+ * is 概要; English definition + 含义 become one 释义 card; long labels are cut to 10 characters.
+ */
+fun splitSections(blocks: List<Block>): List<Section> {
+    val out = mutableListOf<Pair<String, MutableList<Block>>>()
+    for (b in blocks) {
+        var label = (b as? Block.Para)?.let { sectionLabel(it.text) }
+        if (label != null && label in DEFINITION) label = if (out.lastOrNull()?.first == "释义") null else "释义"
+        if (label != null || out.isEmpty()) {
+            val l = label ?: "概要"
+            out += (if (l.length > 11) l.take(10) + "…" else l) to mutableListOf()
+        }
+        out.last().second += b
+    }
+    return out.map { Section(it.first, it.second) }
 }
 
 /** Mirrors parse_blocks in build.py. Text fields keep their inline markdown. */

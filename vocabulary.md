@@ -4065,7 +4065,8 @@ platform 等于 10,就代表请求来自 web,对吧?
    别在措辞上纠结了,直接发吧。
 3. She agonized for days about whether she should take the job.
    几天来她为是否该接受这份工作大伤脑筋。
-   (for days 紧跟 agonized;放句末会被读成 take the job for days —— 去做几天这份工作。accept the offer 这种瞬间动作就没有这个歧义。)
+
+例 3 注意:for days 紧跟 agonized;放句末会被读成 take the job for days —— 去做几天这份工作。accept the offer 这种瞬间动作就没有这个歧义。
 
 **义项二:agonizing(形容词)—— 令人痛苦、煎熬的**
 1. It was an agonizing decision.
