@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -187,8 +186,8 @@ fun EntryScreen(
                 backSide = {
                     SideHeading("自测") { ExpandButton(expanded) { expanded = !expanded } }
                     if (!revealed) {
-                        // The question scrolls in what's left; the input and 显示答案 stay put at the
-                        // bottom, so typing never pushes them (or the question) out of view.
+                        // The question with the input right under it, scrolling together in what's
+                        // left; 显示答案 stays put at the bottom of the card, in thumb's reach.
                         Column(
                             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
                             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -201,16 +200,8 @@ fun EntryScreen(
                                 ex != null -> ExamplePrompt(ex, compact = imeVisible)
                                 else -> ReviewFront(entry, kindOf(entry, inTest = true))
                             }
+                            DraftField(draft, { draft = it }, maxLines = 6)
                         }
-                        OutlinedTextField(
-                            value = draft,
-                            onValueChange = { draft = it },
-                            placeholder = { Text("不看答案,写出英文…") },
-                            minLines = 3,
-                            maxLines = 6,
-                            textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
-                            modifier = Modifier.fillMaxWidth(),
-                        )
                         Button(onClick = reveal, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("显示答案") }
                     } else Scrolling {
                         SelfTestStats(attempts)
