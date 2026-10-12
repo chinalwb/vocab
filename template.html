@@ -310,11 +310,17 @@ h1{
 .lv{display:grid;grid-template-columns:repeat(var(--n,4),1fr);position:relative;margin:16px 0 12px;flex:none;--n:4;--k:0}
 .lv::before,.lv::after{content:"";position:absolute;top:13px;left:calc(50% / var(--n));height:3px;border-radius:2px;background:var(--card-edge);width:calc(100% - 100% / var(--n))}
 .lv::after{background:var(--card-ink);width:calc((100% - 100% / var(--n)) * var(--k) / (var(--n) - 1));transition:width .3s}
+/* 朗读: the browser's own speech synthesis */
+.spk{font:inherit;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:0;background:transparent;color:var(--card-ink-2);cursor:pointer;vertical-align:middle;margin-left:4px;padding:0}
+.spk svg{width:17px;height:17px}
+.spk:hover{background:var(--card-edge)}
+.spk:focus-visible{outline:2px solid var(--card-ink);outline-offset:1px}
+.sheet h2 .spk{width:30px;height:30px}
+.sheet h2 .spk svg{width:20px;height:20px}
 .adv{display:flex;align-items:center;gap:10px;background:color-mix(in srgb, var(--card-ink) 6%, transparent);border-radius:12px;padding:6px 6px 6px 14px;margin:0 0 14px;font-size:13.5px}
 .adv span{flex:1}
 .lvl{font:inherit;font-size:12.5px;color:var(--card-ink-2);background:none;border:0;padding:0 0 2px;cursor:pointer;position:relative;display:grid;justify-items:center;gap:6px;border-radius:10px}
 .lvl:disabled{cursor:default}
-.lvl.dim{opacity:.35}
 .lvl .node{width:28px;height:28px;border-radius:50%;border:2px solid var(--card-edge);background:var(--sw);display:grid;place-items:center;box-sizing:border-box;font-size:13px;font-weight:700}
 .lvl.passed .node{background:var(--card-ink);border-color:var(--card-ink);color:var(--sw)}
 .lvl.on .node{border-color:var(--card-ink)}
@@ -1102,11 +1108,12 @@ function bestDiff(mine, answer){
 function compareHtml(mine, answer, retry = true){
   // after a reveal, trying again is the next step: the sheet's filled button
   const again = retry ? `<button class="btn retry" type="button" id="st-again">↻ 再试一次</button>` : "";
-  if (!mine.trim()) return `<p class="verdict">没有写就看答案了 —— 下次先写再看。</p><p>${again}</p>`;
+  if (!mine.trim()) return `<p class="verdict">没有写就看答案了 —— 下次先写再看。${spkBtn((answer.split("\n").find(l => l.trim()) || "").trim())}</p><p>${again}</p>`;
   const d = bestDiff(mine, answer);
-  if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)</p><p>${again}</p>`;
+  const say = spkBtn(d.b.join(" "));
+  if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)${say}</p><p>${again}</p>`;
   const show = (ws, keep, cls) => ws.map((w, k) => keep.has(k) ? esc(w) : `<span class="${cls}">${esc(w)}</span>`).join(" ");
-  return `<p class="verdict">对照一下差异</p>` +
+  return `<p class="verdict">对照一下差异${say}</p>` +
     `<p class="line"><b>我写的(删除线 = 多出来或写错的)</b>${show(d.a, d.keepA, "st-x")}</p>` +
     `<p class="line"><b>答案(高亮 = 我漏掉或写错的)</b>${show(d.b, d.keepB, "st-m")}</p>` +
     `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。</p>` + (again ? `<p>${again}</p>` : "");
@@ -1254,6 +1261,42 @@ let notesAll = (() => { try { return localStorage.getItem("vk.notesAll") === "1"
 const ICON_FULL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 11V3h-8l3.29 3.29-10 10L3 13v8h8l-3.29-3.29 10-10z"/></svg>';
 const ICON_UNFULL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 3.41 16.71 8.7 20 12h-8V4l3.29 3.29L20.59 2 22 3.41zM3.41 22l5.29-5.29L12 20v-8H4l3.29 3.29L2 20.59 3.41 22z"/></svg>';
 const ICON_CHEV = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>';
+// ── 朗读: the browser's own speech synthesis — free, no key; the voice is whatever the OS has.
+// Prefers a natural-sounding US / UK English voice when there is one. ──
+const ICON_SPK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
+const spkBtn = text => text && /[A-Za-z]/.test(text) ? `<button class="spk" type="button" data-say="${esc(text)}" aria-label="朗读" title="朗读">${ICON_SPK}</button>` : "";
+let voice = null;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices().filter(v => /^en[-_](US|GB)/i.test(v.lang));
+  const score = v => (/natural|neural|premium|enhanced/i.test(v.name) ? 4 : 0) + (/Google US English|Samantha|Daniel|Aria|Jenny/i.test(v.name) ? 3 : 0) + (/^en[-_]US/i.test(v.lang) ? 1 : 0);
+  voice = vs.sort((a, b) => score(b) - score(a))[0] || null;
+}
+if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.addEventListener("voiceschanged", pickVoice); }
+function speak(text){
+  if (!("speechSynthesis" in window) || !text) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US"; if (voice) u.voice = voice; u.rate = 0.95;
+  speechSynthesis.speak(u);
+}
+// capture phase, so a 🔊 inside a clickable example (or card) only speaks
+document.addEventListener("click", e => {
+  const b = e.target.closest(".spk");
+  if (!b) return;
+  e.preventDefault(); e.stopPropagation();
+  speak(b.dataset.say);
+}, true);
+// every example sentence gets its 🔊, wherever notes are rendered
+function addSpeakButtons(){
+  document.querySelectorAll(".body ol.ex li .en").forEach(en => {
+    if (en.querySelector(".spk")) return;
+    en.insertAdjacentHTML("beforeend", spkBtn(en.textContent.trim()));
+  });
+}
+// what 🔊 on an entry reads: its headword, or a 自测题's first answer (its title is Chinese)
+const speakText = (it, level) => level === "SELFTEST" ? ((it.answer || "").split("\n").find(l => l.trim()) || "").trim()
+  : (it.title.match(/^(.+?)\s*[((].+[))]$/) || [, it.title])[1];
+
 // [fill]: on the entry card, where the notes take the face's height (and get the ⤢ button)
 function notesHtml(it, fill = false){
   const sl = it.slides;
@@ -1297,7 +1340,7 @@ function nvInit(nv){
   const ro = new ResizeObserver(() => nvPaint(nv, nv._k));
   nv.querySelectorAll(".nv-card").forEach(c => ro.observe(c));
 }
-new MutationObserver(() => document.querySelectorAll(".nv").forEach(nv => { if (!nv._init) nvInit(nv); }))
+new MutationObserver(() => { document.querySelectorAll(".nv").forEach(nv => { if (!nv._init) nvInit(nv); }); addSpeakButtons(); })
   .observe(document.body, { childList: true, subtree: true });
 document.addEventListener("click", e => {
   const nv = e.target.closest(".nv");
@@ -1353,8 +1396,7 @@ function show(it, level, i, o = {}){
   // progress band: levels on a track; a click on another level moves the entry there
   const idx = STAGES.findIndex(st => st[0] === stage);
   const levels = `<div class="lv" style="--n:${STAGES.length};--k:${idx}">` + STAGES.map(([k, name], j) => {
-    const dim = selfTest && j < STAGES.findIndex(x => x[0] === "test");   // a 自测题 starts at 考核
-    return `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}${dim ? " dim" : ""}" data-to="${k}"${dim || j === idx ? " disabled" : ""}>` +
+    return `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}" data-to="${k}"${j === idx ? " disabled" : ""}>` +
       `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`;
   }).join("") + `</div>`;
   // the card: notes on the front; while in 自测, the quiz on the back
@@ -1378,7 +1420,7 @@ function show(it, level, i, o = {}){
   sheet.innerHTML =
     `<button class="x" type="button" aria-label="关闭">✕</button>` +
     (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
-    `<div class="mband"><h2>${it.title}</h2>` +
+    `<div class="mband"><h2>${it.title}${spkBtn(speakText(it, level))}</h2>` +
     `<button type="button" class="mpill" aria-expanded="false"><span>${esc(pill)}</span>${ICON_CHEV}</button>` +
     `<div class="mdet" hidden>${rows.map(([k, v]) => `<b>${k}</b><span>${esc(String(v))}</span>`).join("")}</div></div>` +
     levels +

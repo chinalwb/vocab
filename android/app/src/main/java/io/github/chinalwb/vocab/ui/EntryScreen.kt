@@ -275,8 +275,6 @@ private fun Meta(entry: Entry, onDetails: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .clickable(onClick = onDetails)
             .padding(horizontal = 4.dp, vertical = 2.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -288,9 +286,12 @@ private fun Meta(entry: Entry, onDetails: () -> Unit) {
             lineHeight = 32.sp,
             modifier = Modifier.sharedEntryTitle(entry.anchor),
         )
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(
             Modifier
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(50))
+                .clip(RoundedCornerShape(50))
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .clickable(onClick = onDetails)
                 .padding(start = 12.dp, end = 6.dp, top = 5.dp, bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -303,6 +304,9 @@ private fun Meta(entry: Entry, onDetails: () -> Unit) {
                 modifier = Modifier.weight(1f, fill = false),
             )
             Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "详情", Modifier.padding(start = 2.dp).size(20.dp), tint = MaterialTheme.colorScheme.onSurface)
+        }
+        val say = entry.speakText()
+        if (say.isNotEmpty()) SpeakButton(say)
         }
     }
 }
@@ -334,8 +338,8 @@ private fun Details(entry: Entry) {
 /**
  * The progress band, drawn as levels: the stages as nodes on a track. The track
  * is filled up to the node the entry is at; the nodes behind it are ticked, the ones ahead are
- * empty rings. Tapping another node moves the entry there. A 自测题 can't go back to 学习中, so that
- * node is dimmed for it.
+ * empty rings. Tapping another node moves the entry there (a 自测题 starts at 考核, but may be
+ * moved anywhere like the rest — the greyed-out ticks it used to get read as a glitch).
  */
 @Composable
 private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
@@ -358,14 +362,12 @@ private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
         Stage.entries.forEachIndexed { i, s ->
             val here = i == cur
             val passed = i < cur
-            val allowed = !(selfTest && s.ordinal < Stage.Test.ordinal)   // a 自测题 starts at 考核
             Column(
                 Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(12.dp))
-                    .clickable(enabled = allowed && !here) { onStage(s) }
-                    .padding(bottom = 4.dp)
-                    .alpha(if (allowed) 1f else 0.35f),
+                    .clickable(enabled = !here) { onStage(s) }
+                    .padding(bottom = 4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {

@@ -137,6 +137,8 @@
 131. [自测:我们还想让「再试一次」按钮更醒目。](#t-more-prominent)
 132. [自测:你觉得如果我把这里的词汇一条条都练完,这个 App 真能提高我的写作吗?](#t-work-through)
 133. [自测:不试一试,你永远不知道自己能走多远。就算 Opus 说你做不到,也值得一试。](#t-worth-a-shot)
+134. [自测:这个 App 会自动检查更新吗?](#t-check-for-updates)
+135. [自测:给单词、短语和句子加朗读功能,有什么可行的办法?有免费的方案吗?](#t-text-to-speech)
 
 ---
 
@@ -4296,3 +4298,54 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [词形] **it worths** → **it's worth**。
 - ❌ [结构] **Even Opus says you can't** → **Even if Opus says you can't**。
 - ⚠️ [逻辑] **without doing it yourself** 反着说有点绕 → **until you try**。
+
+---
+
+<a id="t-check-for-updates"></a>
+## 自测:这个 App 会自动检查更新吗?
+
+- 日期:2026-10-12
+- 掌握:会写
+
+**答案:**
+
+> Does the app check for updates automatically?
+> Does the app auto-check for updates?
+
+**要点:**
+
+- **check for updates** —— 「检查更新」的固定说法,菜单项、设置页都这么写;不说 check the new version。
+- 问「有没有新版」用 **updates / new versions**;**the new version** 预设了某个具体的版本。
+- **auto-check for** 口语常见;正式一点用 **check … automatically**。
+
+**我的原句:**
+
+> Does the app auto-check the new version?
+
+- ⚠️ [搭配] **auto-check the new version** → **check for updates automatically**。
+
+---
+
+<a id="t-text-to-speech"></a>
+## 自测:给单词、短语和句子加朗读功能,有什么可行的办法?有免费的方案吗?
+
+- 日期:2026-10-12
+- 掌握:会写
+
+**答案:**
+
+> What would be a feasible way to add text-to-speech for the words, phrases and sentences? Is there a free option?
+
+**要点:**
+
+- 「朗读」功能的英文就是 **text-to-speech (TTS)**,或 **a read-aloud feature**;不说 read-out-loud feature。
+- **add X for Y** —— 给 Y 加上 X;不用 on。
+- **a feasible way to do sth** —— 可行的办法;**Is there a free option?** 比 any free approach 自然。
+
+**我的原句:**
+
+> What would be a feasible approach for adding a read-out-loud feature on the words / phrases / sentences? Is there any free approach?
+
+- ❌ [介词] **a feature on the words** → **for the words**。
+- ⚠️ [搭配] **read-out-loud feature** → **text-to-speech** / **read-aloud feature**。
+- ⚠️ [语气] **Is there any free approach?** → **Is there a free option?**
