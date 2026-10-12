@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Block
 import io.github.chinalwb.vocab.data.Entry
+import io.github.chinalwb.vocab.data.Example
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.summary
 import java.time.Instant
@@ -135,18 +136,36 @@ private fun Line(label: String, text: AnnotatedString) {
     }
 }
 
+/**
+ * The box I write my answer in. The default outline is too faint on a tinted card — unfocused
+ * it vanished, and the card gave no hint of where to type — so the border is ink-coloured and
+ * the box sits on a lighter ground.
+ */
+@Composable
+fun DraftField(value: String, onChange: (String) -> Unit, modifier: Modifier = Modifier, maxLines: Int = Int.MAX_VALUE) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onChange,
+        placeholder = { Text("不看答案,写出英文…") },
+        minLines = 3,
+        maxLines = maxLines,
+        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
+        shape = RoundedCornerShape(12.dp),
+        colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
+            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedBorderColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+            focusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+        ),
+        modifier = modifier.fillMaxWidth(),
+    )
+}
+
 /** Input + 显示答案, shown on a 自测 entry before its body is revealed. */
 @Composable
 fun SelfTestInput(value: String, onChange: (String) -> Unit, onReveal: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onChange,
-            placeholder = { Text("不看答案,写出英文…") },
-            minLines = 3,
-            textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
-            modifier = Modifier.fillMaxWidth(),
-        )
+        DraftField(value, onChange)
         Button(onClick = onReveal) { Text("显示答案") }
     }
 }
@@ -161,9 +180,16 @@ data class QuizExample(val en: String, val zh: String, val k: Int, val of: Int)
 
 private val CJK = Regex("[\\u4e00-\\u9fff]")
 
-fun Entry.quizExample(tries: Int): QuizExample? {
-    val xs = blocks.filterIsInstance<Block.Examples>().flatMap { it.items }
-        .filter { it.zh.isNotBlank() && Regex("[A-Za-z]").containsMatchIn(it.en) && CJK.containsMatchIn(it.zh) }
+/** An example that can be asked: an English sentence with a Chinese translation. */
+val Example.quizable: Boolean
+    get() = zh.isNotBlank() && Regex("[A-Za-z]").containsMatchIn(en) && CJK.containsMatchIn(zh)
+
+/** The examples a moved entry can be quizzed on, in note order; [excluded] holds the plain English of the ones I opted out. */
+fun Entry.quizExamples(excluded: Set<String> = emptySet()): List<Example> =
+    blocks.filterIsInstance<Block.Examples>().flatMap { it.items }.filter { it.quizable && plain(it.en) !in excluded }
+
+fun Entry.quizExample(tries: Int, excluded: Set<String> = emptySet()): QuizExample? {
+    val xs = quizExamples(excluded)
     if (xs.isEmpty()) return null
     val k = tries % xs.size
     return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size)
@@ -171,11 +197,11 @@ fun Entry.quizExample(tries: Int): QuizExample? {
 
 /** The prompt side for a moved entry with an example: 例句 k / n · 中译英. */
 @Composable
-fun ExamplePrompt(ex: QuizExample) {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+fun ExamplePrompt(ex: QuizExample, /** while the keyboard is up: smaller, no hint */ compact: Boolean = false) {
+    Column(verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 10.dp)) {
         Text("例句 ${ex.k + 1} / ${ex.of} · 中译英", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(ex.zh, style = MaterialTheme.typography.titleLarge)
-        Text("把这句写成英文,写完和例句原文逐词对照。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(ex.zh, style = if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge)
+        if (!compact) Text("把这句写成英文,写完和例句原文逐词对照。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
