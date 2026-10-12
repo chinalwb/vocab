@@ -14,14 +14,22 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import java.io.File
 
-/** 进度: 学习中 → 自测 → 已掌握, like 百词斩's 斩. [key] is what stage.json / vk.stage store. */
-enum class Stage(val key: String, val label: String) {
-    Learn("learn", "学习中"),
-    Test("test", "自测中"),
-    Done("done", "已掌握"),
+/**
+ * An entry's lifecycle: 学习中 → 复习 → 考核 → 已掌握 (the four tabs). I move entries along by
+ * hand; once every question of an entry has been answered right in its stage, the app offers
+ * the move. [key] is what stage.json / vk.stage store; [tab] names the tab.
+ */
+enum class Stage(val key: String, val label: String, val tab: String) {
+    Learn("learn", "学习中", "学习"),
+    Review("review", "复习中", "复习"),
+    Test("test", "考核中", "考核"),
+    Done("done", "已掌握", "掌握"),
 }
 
-/** Only moves are stored: a 自测 entry starts in 自测, everything else in 学习中 — same as stageOf() in template.html. */
+/** The stage after this one, or null at 已掌握. */
+val Stage.next: Stage? get() = Stage.entries.getOrNull(ordinal + 1)
+
+/** Only moves are stored: a 自测题 starts in 考核, everything else in 学习中 — same as stageOf() in template.html. */
 fun Map<String, String>.stageOf(e: Entry): Stage =
     Stage.entries.firstOrNull { it.key == this[e.anchor] } ?: if (e.level == "SELFTEST") Stage.Test else Stage.Learn
 

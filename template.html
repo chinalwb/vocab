@@ -307,9 +307,11 @@ h1{
 .mdet[hidden]{display:none}
 .mdet b{font-weight:500;color:var(--card-ink-2)}
 /* progress band, drawn as levels: three nodes on a track, filled up to the one the entry is at */
-.lv{display:grid;grid-template-columns:repeat(3,1fr);position:relative;margin:16px 0 12px;flex:none;--fill:0%}
-.lv::before,.lv::after{content:"";position:absolute;top:13px;left:16.67%;height:3px;border-radius:2px;background:var(--card-edge);width:66.66%}
-.lv::after{background:var(--card-ink);width:var(--fill);transition:width .3s}
+.lv{display:grid;grid-template-columns:repeat(var(--n,4),1fr);position:relative;margin:16px 0 12px;flex:none;--n:4;--k:0}
+.lv::before,.lv::after{content:"";position:absolute;top:13px;left:calc(50% / var(--n));height:3px;border-radius:2px;background:var(--card-edge);width:calc(100% - 100% / var(--n))}
+.lv::after{background:var(--card-ink);width:calc((100% - 100% / var(--n)) * var(--k) / (var(--n) - 1));transition:width .3s}
+.adv{display:flex;align-items:center;gap:10px;background:color-mix(in srgb, var(--card-ink) 6%, transparent);border-radius:12px;padding:6px 6px 6px 14px;margin:0 0 14px;font-size:13.5px}
+.adv span{flex:1}
 .lvl{font:inherit;font-size:12.5px;color:var(--card-ink-2);background:none;border:0;padding:0 0 2px;cursor:pointer;position:relative;display:grid;justify-items:center;gap:6px;border-radius:10px}
 .lvl:disabled{cursor:default}
 .lvl.dim{opacity:.35}
@@ -669,6 +671,8 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
   </section>
   <section id="review" class="pane" hidden></section>
   <section id="selftest" class="pane" hidden></section>
+  <section id="done" class="pane" hidden></section>
+  <section id="extras" class="pane" hidden></section>
   <div id="practice"></div>
   <p class="empty" id="empty" hidden>没有匹配的条目。</p>
   <div class="fback" id="fback" hidden></div>
@@ -736,8 +740,11 @@ const store = {
 // ── 进度: 学习中 → 自测 → 已掌握, like 百词斩's 斩. I move entries along with the buttons;
 // it stays in this browser (vk.stage), like the app's filesDir/stage.json. Only moves are
 // stored: a 自测 entry starts in 自测, everything else in 学习中. 已掌握 is left out of 复习.
-const STAGES = [["learn", "学习中"], ["test", "自测中"], ["done", "已掌握"]];
+// An entry's lifecycle, one tab each: 学习中 (浏览) → 复习 → 考核 → 掌握. Same keys as review/StageStore.kt.
+const STAGES = [["learn", "学习中"], ["review", "复习中"], ["test", "考核中"], ["done", "已掌握"]];
 const STAGE_NAME = Object.fromEntries(STAGES);
+const STAGE_TAB = { learn: "学习", review: "复习", test: "考核", done: "掌握" };
+const nextStage = k => (STAGES[STAGES.findIndex(s => s[0] === k) + 1] || [])[0];
 let stages = {}, stageT = {};               // stageT: when each move was made, for 同步
 try { stages = JSON.parse(store.get("vk.stage", "{}")) || {}; } catch(e){}
 try { stageT = JSON.parse(store.get("vk.stage.t", "{}")) || {}; } catch(e){}
@@ -769,6 +776,7 @@ const levelShown = lv => typeF === "ALL" || typeF === lv || (typeF === "WORD" &&
 // the 错题本 used to be a level pill; it is a tab now
 let view = store.get("vk.view", store.get("vk.level", "") === "MISTAKES" ? "mistakes" : "entries");
 if (view === "practice") view = "review";
+if (view === "mistakes") view = "more";
 let writeOnly = store.get("vk.write", "0") === "1";
 
 const pill = (text, on, click, cls = "") => {
@@ -884,7 +892,8 @@ const placeTabs = () => {
 phoneMQ.addEventListener("change", placeTabs);
 placeTabs();
 // 自测 took 练习's place (used far more); 练习 lives at the bottom of 复习 now
-const TABS = [["entries", "词条", total], ["mistakes", "错题本", mkTotal], ["review", "复习"], ["selftest", "自测"]];
+// the lifecycle left to right, then 更多 (错题本, 练习, 同步) — the app's ⋮ menu
+const TABS = [["entries", "浏览", total], ["review", "复习"], ["selftest", "考核"], ["done", "掌握"], ["more", "更多"]];
 TABS.forEach(([key, text, n]) => {
   const b = document.createElement("button");
   b.className = "tab"; b.type = "button"; b.dataset.k = key; b.setAttribute("role", "tab");
@@ -1018,20 +1027,22 @@ function render(){
   // "12" or "#12" jumps to entry #12
   const numQ = (term.match(/^#?(\d+)$/) || [])[1];
   [...tabs.children].forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === view)));
-  tools.hidden = view === "review" || view === "selftest";
+  tools.hidden = view !== "entries" && view !== "more";       // 更多 keeps the search for the 错题本
   fbtn.hidden = fsum.hidden = view !== "entries";
   if (view !== "entries") closeFilters();
   board.hidden = view !== "entries";
-  mistakesEl.hidden = view !== "mistakes";
+  mistakesEl.hidden = extrasEl.hidden = view !== "more";
   reviewEl.hidden = view !== "review";
   selftestEl.hidden = view !== "selftest";
+  doneEl.hidden = view !== "done";
   empty.hidden = true;
-  if (view === "mistakes") { empty.hidden = renderMistakes(term) > 0; return; }
-  if (view === "review") { renderReview(); return; }
-  if (view === "selftest") { renderSelfTest(); return; }
+  if (view === "more") { renderExtras(); empty.hidden = renderMistakes(term) > 0; return; }
+  if (view === "review") { renderStageTab("review", reviewEl); return; }
+  if (view === "selftest") { renderStageTab("test", selftestEl); return; }
+  if (view === "done") { renderStageTab("done", doneEl); return; }
   let shown = 0;
   // pill counts: each row counts what its pills would show with every other filter kept
-  const nType = { ALL: 0, WORD: 0 }, nCefr = { "": 0 }, nStage = { learn: 0, test: 0, done: 0 };
+  const nType = { ALL: 0, WORD: 0 }, nCefr = { "": 0 }, nStage = { learn: 0, review: 0, test: 0, done: 0 };
   sections.forEach(s => s.cards.forEach(c => {
     if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write))) return;
     const st = stageOf(c.it, s.level), word = CEFR.includes(s.level);
@@ -1043,7 +1054,7 @@ function render(){
   }));
   typeRow.querySelectorAll("[data-t] .n").forEach(el => { el.textContent = nType[el.parentNode.dataset.t] || 0; });
   cefrRow.querySelectorAll("[data-c] .n").forEach(el => { el.textContent = nCefr[el.parentNode.dataset.c] || 0; });
-  stageRow.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = el.parentNode.dataset.s ? nStage[el.parentNode.dataset.s] : nStage.learn + nStage.test + nStage.done; });
+  stageRow.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = el.parentNode.dataset.s ? nStage[el.parentNode.dataset.s] : Object.values(nStage).reduce((x, y) => x + y, 0); });
   sections.forEach(s => {
     if (!levelShown(s.level)) { s.el.hidden = true; return; }
     let n = 0;
@@ -1103,9 +1114,9 @@ function compareHtml(mine, answer, retry = true){
 const ST_MAX = 50;
 let stLog = {};
 try { stLog = JSON.parse(store.get("vk.selftest", "{}")) || {}; } catch(e){}
-function recordAttempt(anchor, text, answer, via){
+function recordAttempt(anchor, text, answer, via, ex = ""){   // ex: the example asked (plain English)
   const list = stLog[anchor] = stLog[anchor] || [];
-  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && bestDiff(text, answer).same, via });
+  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && bestDiff(text, answer).same, via, ex });
   if (list.length > ST_MAX) list.splice(0, list.length - ST_MAX);
   store.set("vk.selftest", JSON.stringify(stLog));
   refreshStCounts();
@@ -1157,9 +1168,9 @@ function markQuizExamples(sheet, it){
   });
 }
 const exPrompt = ex => `<p class="lab">例句 ${ex.k + 1} / ${ex.of} · 中译英</p><p class="prompt" style="font-size:19px">${esc(plainMd(ex.zh))}</p><p class="hint">把这句写成英文,写完和例句原文逐词对照。</p>`;
-function logAttempt(anchor, text, ok, via){             // the verdict is already known
+function logAttempt(anchor, text, ok, via, ex = ""){     // the verdict is already known
   const list = stLog[anchor] = stLog[anchor] || [];
-  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && ok, via });
+  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && ok, via, ex });
   if (list.length > ST_MAX) list.splice(0, list.length - ST_MAX);
   store.set("vk.selftest", JSON.stringify(stLog));
   refreshStCounts();
@@ -1190,7 +1201,7 @@ function stHistoryHtml(anchor){
   if (!list.length) return "";
   return `<details class="st-hist"><summary>历史记录(${list.length})</summary><ol>` +
     list.map(a => `<li><span class="when">${fmtWhen(a.t)}</span><span>${!a.text ? "👀" : a.ok ? "✅" : "❌"}</span>` +
-      `<span class="txt">${a.text ? esc(a.text) : "(没写就看了答案)"}${a.via === "review" ? ' <span class="when">· 复习</span>' : a.via === "selftest" ? ' <span class="when">· 自测</span>' : ""}</span></li>`).join("") +
+      `<span class="txt">${a.text ? esc(a.text) : "(没写就看了答案)"}${a.via === "review" ? ' <span class="when">· 复习</span>' : a.via === "selftest" || a.via === "test" ? ' <span class="when">· 考核</span>' : ""}</span></li>`).join("") +
     `</ol></details>`;
 }
 function refreshStCounts(){
@@ -1206,9 +1217,9 @@ function refreshStages(){
   document.querySelectorAll(".stg[data-anchor]").forEach(el => {
     const st = stageOf({ anchor: el.dataset.anchor }, el.dataset.level);
     // a 自测 entry sitting in 自测 is the default — nothing to say
-    el.textContent = st === "done" ? " · ✓ 已掌握" : st === "test" && el.dataset.level !== "SELFTEST" ? " · 自测中" : "";
+    el.textContent = st === "done" ? " · ✓ 已掌握" : st === "test" && el.dataset.level !== "SELFTEST" ? " · 考核中" : st === "review" ? " · 复习中" : "";
   });
-  const n = { learn: 0, test: 0, done: 0 };
+  const n = { learn: 0, review: 0, test: 0, done: 0 };
   DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));   // pill counts come from render()
   document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 已掌握 " + n.done + " · 错题 " + mkTotal;
 }
@@ -1328,8 +1339,8 @@ function show(it, level, i, o = {}){
   const back = trail[trail.length - 1];
   const stage = stageOf(it, level);
   const selfTest = level === "SELFTEST";
-  const quiz = stage === "test";                        // the card has a 自测 side
-  let ex = quiz && !selfTest ? quizEx(it) : null;       // fixed before this try is logged
+  const wantBack = stage === "test";                    // 考核 opens on the quiz side, the rest on the notes
+  let ex = selfTest ? null : quizEx(it);                // fixed before this try is logged
   const lvName = CEFR.includes(level) ? level : (TYPES.find(t => t[0] === level) || [, level])[1];
   // meta band: the headword and a pill; the rest of the facts unfold under it
   const pill = [lvName, it.pos, it.ipa].filter(Boolean).join(" · ");
@@ -1337,8 +1348,8 @@ function show(it, level, i, o = {}){
     ["掌握", it.mastery === "write" ? "会写" : "认识"], ["收录", it.date]].filter(r => r[1]);
   // progress band: levels on a track; a click on another level moves the entry there
   const idx = STAGES.findIndex(st => st[0] === stage);
-  const levels = `<div class="lv" style="--fill:${[0, 33.33, 66.66][idx]}%">` + STAGES.map(([k, name], j) => {
-    const dim = selfTest && k === "learn";              // a 自测题 can't go back to 学习中
+  const levels = `<div class="lv" style="--n:${STAGES.length};--k:${idx}">` + STAGES.map(([k, name], j) => {
+    const dim = selfTest && j < STAGES.findIndex(x => x[0] === "test");   // a 自测题 starts at 考核
     return `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}${dim ? " dim" : ""}" data-to="${k}"${dim || j === idx ? " disabled" : ""}>` +
       `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`;
   }).join("") + `</div>`;
@@ -1348,17 +1359,18 @@ function show(it, level, i, o = {}){
     ? `<p class="prompt st-title">${esc(it.title)}</p>`     // its question is its title, off the sheet while full screen
     : ex ? exPrompt(ex) : askHtml({ it, level, i }, kind({ it, level, i }));
   const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true)}</div>` +
-    (quiz ? `<div class="foot"><button class="btn ghost" type="button" id="to-quiz">↻ 回到自测</button></div>` : "") + `</div>`;
-  // the question with the input right under it, scrolling together; 显示答案 stays put at the bottom
-  const backFace = quiz
-    ? `<div class="face bk"><div class="fh"><span>自测</span><span class="ln"></span>${fullBtn}</div>` +
+    `<div class="foot"><button class="btn ghost" type="button" id="to-quiz">↻ 自测一下</button></div></div>`;
+  // the question with the input right under it, scrolling together; 显示答案 stays put at the bottom.
+  // 学习中 / 复习 may look at the notes first; 考核 only after answering.
+  const backFace = true
+    ? `<div class="face bk"><div class="fh"><span>自测</span><span class="ln"></span>${stage !== "test" ? `<button type="button" id="to-notes-pre">看笔记</button>` : ""}${fullBtn}</div>` +
       `<div class="scrollq" id="st-q"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
       `<div class="st"><div class="st-prompt">${promptHtml()}</div>` +
       `<textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea></div>` +
       `<div class="st-res" id="st-res" hidden></div></div>` +
       `<div class="cta" id="st-cta"><button class="btn" type="button" id="st-show">显示答案</button></div></div>`
     : "";
-  const startBack = o.from !== undefined ? o.from : o.face ? o.face === "back" : quiz;
+  const startBack = o.from !== undefined ? o.from : o.face ? o.face === "back" : wantBack;
   sheet.innerHTML =
     `<button class="x" type="button" aria-label="关闭">✕</button>` +
     (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
@@ -1371,7 +1383,7 @@ function show(it, level, i, o = {}){
   scrim.append(sheet);
   document.body.append(scrim);
   const card = sheet.querySelector(".ecard");
-  if (o.from !== undefined && o.from !== quiz) requestAnimationFrame(() => requestAnimationFrame(() => card.classList.toggle("flipped", quiz)));
+  if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => card.classList.toggle("flipped", wantBack)));
   markQuizExamples(sheet, it);
 
   // a cross-reference opens the note it points at, keeping a trail to come back
@@ -1404,19 +1416,24 @@ function show(it, level, i, o = {}){
     const input = sheet.querySelector("#st-in");
     if (input && !input.value) { ex = quizEx(it); sheet.querySelector(".st-prompt").innerHTML = promptHtml(); }
   });
-  const toQuiz = sheet.querySelector("#to-quiz");
-  if (toQuiz) toQuiz.addEventListener("click", () => card.classList.add("flipped"));
+  sheet.querySelector("#to-quiz").addEventListener("click", () => card.classList.add("flipped"));
+  const pre = sheet.querySelector("#to-notes-pre");
+  if (pre) pre.addEventListener("click", () => card.classList.remove("flipped"));
 
-  if (quiz) {
+  {
     const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
     const flipRow = `<div class="row"><button class="btn retry" type="button" id="st-again">↻ 再试一次</button><button class="btn ghost" type="button" id="to-notes">↻ 翻面看笔记</button></div>`;
+    // once every question is right in this stage, the move to the next one is offered
+    const adv = () => advanceReady(it, level, stage) ? advanceHtml(stage) : "";
     const wire = () => {
       sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor);
       res.querySelector("#st-again").addEventListener("click", () => show(it, level, i, { face: "back" }));   // re-render, input cleared
       res.querySelector("#to-notes").addEventListener("click", () => card.classList.remove("flipped"));
+      const ab = res.querySelector("#adv");
+      if (ab) ab.addEventListener("click", () => { setStage(it, nextStage(stage)); render(); show(it, level, i, { from: true }); });
     };
-    const paint = graded => {                           // a moved entry: compared with its example, or graded by me
-      res.innerHTML = movedHtml(ex, input.value, graded) + flipRow + stHistoryHtml(it.anchor);
+    const paint = graded => {                           // compared with its example, or graded by me
+      res.innerHTML = movedHtml(ex, input.value, graded) + adv() + flipRow + stHistoryHtml(it.anchor);
       res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {
         const ok = b.dataset.ok === "1";
         logAttempt(it.anchor, input.value, ok, "entry");
@@ -1428,10 +1445,10 @@ function show(it, level, i, o = {}){
       const v = input.value;
       if (selfTest) {
         recordAttempt(it.anchor, v, it.answer || "", "entry");
-        res.innerHTML = compareHtml(v, it.answer || "", false) + flipRow + stHistoryHtml(it.anchor);
+        res.innerHTML = compareHtml(v, it.answer || "", false) + adv() + flipRow + stHistoryHtml(it.anchor);
         wire();
       } else {
-        if (ex) recordAttempt(it.anchor, v, plainMd(ex.en), "entry");
+        if (ex) recordAttempt(it.anchor, v, plainMd(ex.en), "entry", plainMd(ex.en));
         else if (!v.trim()) logAttempt(it.anchor, "", false, "entry");
         paint();
       }
@@ -1478,6 +1495,8 @@ document.addEventListener("keydown", e => {
 const reviewEl = document.getElementById("review");
 const practiceEl = document.getElementById("practice");
 const selftestEl = document.getElementById("selftest");
+const doneEl = document.getElementById("done");
+const extrasEl = document.getElementById("extras");
 const ALL = Object.values(byAnchor);                       // {it, level, i}
 const dayNo = () => { const d = new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); };
 const plainMd = t => t.replace(/\*\*(.+?)\*\*/g, "$1").replace(/`(.+?)`/g, "$1");
@@ -1495,9 +1514,8 @@ async function copyText(text, btn){
   setTimeout(() => { btn.textContent = old; }, 1600);
 }
 
-// ── 复习: SM-2, same rules as the app (review/ReviewStore.kt); progress stays in this browser ──
-const NEW_PER_DAY = 10;
-const GRADES = [[1, "忘了"], [3, "模糊"], [4, "记得"], [5, "轻松"]];
+// ── 复习's schedule: SM-2, same rules as the app (review/ReviewStore.kt). The quiz grades it —
+// a sentence answered right is 记得 (4), wrong is 忘了 (1) — so there are no grade buttons. ──
 let rev;
 try { rev = JSON.parse(store.get("vk.review", "")) } catch(e){}
 if (!rev || !rev.cards) rev = { cards: {}, newDay: 0, newToday: 0 };
@@ -1509,17 +1527,21 @@ function schedule(c, q, today){
   const interval = reps === 1 ? 1 : reps === 2 ? (q === 5 ? 4 : 3) : Math.max(c.interval + 1, Math.round(c.interval * ease));
   return { ...c, ease, interval, reps, due: today + interval };
 }
+// Today's 复习 queue: what's due, then what was never scheduled (会写 first, then most recently
+// 收录). What's in 复习 is my own choice, so there is no daily quota any more.
 function planToday(){
   const today = dayNo();
-  const live = ALL.filter(t => stageOf(t.it, t.level) !== "done");   // 已掌握 never comes back on its own
+  const live = ALL.filter(t => stageOf(t.it, t.level) === "review");
   const due = live.filter(t => rev.cards[t.it.anchor] && rev.cards[t.it.anchor].due <= today)
     .sort((a, b) => rev.cards[a.it.anchor].due - rev.cards[b.it.anchor].due);
-  const quota = NEW_PER_DAY - (rev.newDay === today ? rev.newToday : 0);
-  // new entries: 会写 first, then most recently 收录
   const fresh = live.filter(t => !rev.cards[t.it.anchor])
-    .sort((a, b) => (b.it.mastery === "write") - (a.it.mastery === "write") || b.it.date.replace("~", "").localeCompare(a.it.date.replace("~", "")))
-    .slice(0, Math.max(0, quota));
+    .sort((a, b) => (b.it.mastery === "write") - (a.it.mastery === "write") || b.it.date.replace("~", "").localeCompare(a.it.date.replace("~", "")));
   return { due, fresh };
+}
+function scheduleReview(anchor, ok){
+  const today = dayNo(), existing = rev.cards[anchor];
+  rev.cards[anchor] = { ...schedule(existing || { ease: 2.5, interval: 0, reps: 0, lapses: 0, due: 0 }, ok ? 4 : 1, today), t: Date.now() };
+  saveRev(); syncSoon();
 }
 // What the front of a card asks: 会写 entries — and anything I moved to 自测 — are produced
 // (中→英); the other 认识 entries are recognised (英→中).
@@ -1528,56 +1550,13 @@ function kind(t){
   if (t.level === "SENTENCE" && t.it.original) return "sentence";
   if (t.it.title.startsWith("翻译")) return "translate";
   if (t.level === "GRAMMAR") return "grammar";
-  return t.it.mastery === "write" || stageOf(t.it, t.level) === "test" ? "produce" : "recognize";
+  return t.it.mastery === "write" || stageOf(t.it, t.level) !== "learn" ? "produce" : "recognize";
 }
 // A 中→英 prompt must not give the answer away: blank out the headword's English words.
 function maskTitle(text, title){
   const ws = [...new Set((title.match(/[A-Za-z]{3,}/g) || []).map(w => w.toLowerCase()))];
   return ws.reduce((t, w) => t.replace(new RegExp("\\b" + w + "\\w*", "gi"), "＿＿"), text);
 }
-let session = null, resetArmed = false;
-
-function renderReview(){
-  const s = session;
-  if (s && s.index < s.queue.length) return renderCard();
-  if (s) {
-    reviewEl.innerHTML = `<h2>完成 🎉</h2><p class="note">这一轮复习了 ${s.done} 张卡片。</p><button class="btn" type="button" id="rv-end">返回</button>`;
-    reviewEl.querySelector("#rv-end").addEventListener("click", () => { session = null; renderReview(); });
-    return;
-  }
-  const today = dayNo(), plan = planToday(), n = plan.due.length + plan.fresh.length;
-  const learned = ALL.filter(t => rev.cards[t.it.anchor]).length;
-  const mastered = ALL.filter(t => stageOf(t.it, t.level) === "done").length;
-  const tomorrow = ALL.filter(t => rev.cards[t.it.anchor] && rev.cards[t.it.anchor].due === today + 1).length;
-  reviewEl.innerHTML =
-    `<h2>今天的复习</h2>` +
-    `<p class="note">「会写」的条目反着考:先看中文或原句,自己写出英文再对答案;「认识」的条目看英文回想意思。每天最多引入 ${NEW_PER_DAY} 条新条目,会写的优先。标了「已掌握」的不再出现,在条目里点「移回自测」就会回来。进度只存在这个浏览器里,和手机 App 各记各的。</p>` +
-    `<div class="stats"><div class="stat"><b>${plan.due.length}</b><span>待复习</span></div>` +
-    `<div class="stat"><b>${plan.fresh.length}</b><span>新条目</span></div>` +
-    `<div class="stat"><b>${learned}</b><span>已学 / ${total}</span></div></div>` +
-    (mastered ? `<p class="toast" style="margin:-6px 0 16px">已掌握 ${mastered} 条,不进复习</p>` : "") +
-    `<div class="row"><button class="btn" type="button" id="rv-start"${n ? "" : " disabled"}>${n ? "开始复习 " + n + " 张" : "今天没有要复习的了"}</button>` +
-    `<span class="toast">明天到期 ${tomorrow} 张</span></div>` +
-    `<div class="sync" id="sync"></div>` +
-    `<details class="prac" id="prac"${store.get("vk.prac", "0") === "1" ? " open" : ""}><summary>练习 · 今日仿写 / 本周段落</summary></details>` +
-    `<p style="margin-top:28px"><button class="linkish" type="button" id="rv-reset">${resetArmed ? "确定清空全部复习记录?再点一次确认" : "重置复习进度"}</button></p>`;
-  reviewEl.querySelector("#rv-start").addEventListener("click", () => {
-    const p = planToday();
-    session = { queue: [...p.due, ...p.fresh], index: 0, revealed: false, requeued: new Set(), done: 0, draft: "" };
-    renderReview();
-  });
-  paintSync();
-  const prac = reviewEl.querySelector("#prac");
-  prac.append(practiceEl);
-  renderPractice();
-  prac.addEventListener("toggle", () => store.set("vk.prac", prac.open ? "1" : "0"));
-  reviewEl.querySelector("#rv-reset").addEventListener("click", () => {
-    if (!resetArmed) { resetArmed = true; renderReview(); return; }
-    // resetAt tells the other devices to drop their older cards too
-    resetArmed = false; rev = { cards: {}, newDay: 0, newToday: 0, resetAt: Date.now() }; saveRev(); syncSoon(); renderReview();
-  });
-}
-
 // The prompt side of a card; the 自测 quiz in an entry asks the same way.
 function askHtml(t, k){
   const it = t.it;
@@ -1589,64 +1568,6 @@ function askHtml(t, k){
     produce: `<p class="lab">写出英文${it.pos ? " · " + esc(it.pos) : ""}</p><p class="prompt">${esc(maskTitle(plainMd(it.gloss), it.title))}</p><p class="hint">想出这个英文表达,再用它造一个句子。</p>`,
     recognize: `<p class="lab">回想意思</p><p class="big">${it.title}</p>${it.ipa ? `<p class="hint">${esc(it.ipa)}</p>` : ""}<p class="hint">它是什么意思?什么语感?</p>`,
   }[k];
-}
-
-function renderCard(){
-  const s = session, t = s.queue[s.index], it = t.it, k = kind(t);
-  const ask = askHtml(t, k);
-  const writes = k !== "grammar" && k !== "recognize";
-  const pct = Math.round(s.index / s.queue.length * 100);
-  reviewEl.innerHTML =
-    `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
-    `<button class="linkish" type="button" id="rv-done" title="斩:以后不再出现在复习里">标为已掌握</button>` +
-    `<button class="linkish" type="button" id="rv-stop">结束</button></div>` +
-    `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ask}` +
-    (writes && !s.revealed ? `<textarea class="draft" id="rv-draft" placeholder="在这里写你的英文(可选,不会保存)">${esc(s.draft)}</textarea>` : "") +
-    (s.revealed
-      ? `<hr>${k === "selftest" ? `<p class="st-stats">${stStatsLine(it.anchor)}</p>` : ""}${k === "selftest" && s.draft.trim() ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>`
-          : writes && s.draft.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(s.draft)}</div>` : ""}` +
-        (k === "recognize" ? "" : `<p class="big" style="font-size:21px">${it.title}</p>`) +
-        `<div class="body">${notesHtml(it)}</div>`
-      : "") +
-    `</div>` +
-    (s.revealed
-      ? `<div class="grades">${GRADES.map(([q, l]) => `<button class="btn ghost" type="button" data-q="${q}">${l}</button>`).join("")}</div>`
-      : `<button class="btn" type="button" id="rv-reveal" style="width:100%">显示答案</button>`);
-  const d = reviewEl.querySelector("#rv-draft");
-  if (d) { d.addEventListener("input", () => { s.draft = d.value; }); d.focus(); }
-  reviewEl.querySelector("#rv-stop").addEventListener("click", () => { session = null; renderReview(); });
-  reviewEl.querySelector("#rv-done").addEventListener("click", () => {
-    setStage(it, "done");
-    s.queue = s.queue.filter((x, j) => j <= s.index || x.it.anchor !== it.anchor);   // drop a 忘了 repeat
-    s.index++; s.done++; s.revealed = false; s.draft = "";
-    render();
-  });
-  const rv = reviewEl.querySelector("#rv-reveal");
-  if (rv) rv.addEventListener("click", () => {
-    if (k === "selftest") recordAttempt(it.anchor, s.draft, it.answer || "", "review");
-    s.revealed = true; renderCard();
-  });
-  reviewEl.querySelectorAll(".rcard .xref").forEach(a => {
-    const x = byAnchor[a.dataset.ref];
-    if (!x) { a.dataset.missing = "1"; return; }
-    a.addEventListener("click", e => { e.preventDefault(); open(x.it, x.level, x.i); });
-  });
-  reviewEl.querySelectorAll(".grades [data-q]").forEach(b => b.addEventListener("click", () => grade(+b.dataset.q)));
-}
-
-function grade(q){
-  const s = session, t = s.queue[s.index], a = t.it.anchor, today = dayNo();
-  const existing = rev.cards[a];
-  const newCount = rev.newDay === today ? rev.newToday : 0;
-  rev.cards[a] = { ...schedule(existing || { ease: 2.5, interval: 0, reps: 0, lapses: 0, due: 0 }, q, today), t: Date.now() };
-  rev.newDay = today;
-  rev.newToday = existing ? newCount : newCount + 1;
-  saveRev();
-  syncSoon();
-  if (q === 1 && !s.requeued.has(a)) { s.queue.push(t); s.requeued.add(a); }  // 忘了 comes back once
-  s.index++; s.done++; s.revealed = false; s.draft = "";
-  renderReview();
-  window.scrollTo(0, 0);
 }
 
 // ── 同步: progress.json on the repo's orphan `progress` branch, read and written through the
@@ -1666,7 +1587,7 @@ const normProgress = r => ({ v: 1, stages: r.stages || {}, cards: r.cards || {},
 function progressOut(){
   const st = {}, at = {};
   for (const a in stages) st[a] = { s: stages[a], t: stageT[a] || 0 };
-  for (const a in stLog) at[a] = stLog[a].map(x => ({ t: x.t, ok: x.ok, peek: !x.text, via: x.via }));
+  for (const a in stLog) at[a] = stLog[a].map(x => ({ t: x.t, ok: x.ok, peek: !x.text, via: x.via, ex: x.ex || "" }));
   return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at });
 }
 // Newest wins per entry; a reset drops every card graded before it; 自测 attempts are a union.
@@ -1690,7 +1611,7 @@ function applyRemote(r){
   store.set("vk.stage.t", JSON.stringify(stageT));
   for (const a in r.attempts) {
     const list = stLog[a] || [], seen = new Set(list.map(x => x.t));
-    r.attempts[a].forEach(x => { if (!seen.has(x.t)) list.push({ t: x.t, text: x.peek ? "" : ELSEWHERE, ok: x.ok, via: x.via }); });
+    r.attempts[a].forEach(x => { if (!seen.has(x.t)) list.push({ t: x.t, text: x.peek ? "" : ELSEWHERE, ok: x.ok, via: x.via, ex: x.ex || "" }); });
     list.sort((x, y) => x.t - y.t);
     stLog[a] = list.slice(-ST_MAX);
   }
@@ -1769,99 +1690,168 @@ function paintSync(){
   });
 }
 
-// ── 自测 tab: everything in 自测中, one at a time. 自测题 are checked word by word against their
-// 答案 (and logged, via "selftest"); other entries I moved here are checked against their notes.
-// Never tried first, then the ones I got wrong or peeked at last time, then oldest attempt first.
-// Same order and rules as ui/SelfTestScreen.kt. ──
-let stSession = null;
-function stQueue(){
-  const rank = t => {
-    const last = stSummary(t.it.anchor).last;
-    return [!last ? 0 : !last.text || !last.ok ? 1 : 2, last ? last.t : t.it.no];
-  };
-  return ALL.filter(t => stageOf(t.it, t.level) === "test")
-    .map(t => [rank(t), t]).sort((a, b) => a[0][0] - b[0][0] || a[0][1] - b[0][1]).map(x => x[1]);
+// ── 复习 / 考核 / 掌握 tabs: a stage's entries, listed like 浏览, under a header that starts a run
+// through them (掌握 just lists). 复习 shows the notes first, then asks; 考核 asks first. One run
+// at a time, in `quiz`. Same order and rules as ui/QuizScreen.kt. ──
+let quiz = null, resetArmed = false;
+const newest = (a, b) => b.it.date.replace("~", "").localeCompare(a.it.date.replace("~", "")) || b.it.no - a.it.no;
+const inStage = k => ALL.filter(t => stageOf(t.it, t.level) === k).sort(newest);
+function quizQueue(stage){
+  if (stage === "review") { const p = planToday(); return [...p.due, ...p.fresh]; }
+  // never tried first, then wrong or peeked last time, then oldest attempt
+  const rank = t => { const last = stSummary(t.it.anchor).last; return [!last ? 0 : !last.text || !last.ok ? 1 : 2, last ? last.t : t.it.no]; };
+  return inStage(stage).map(t => [rank(t), t]).sort((a, b) => a[0][0] - b[0][0] || a[0][1] - b[0][1]).map(x => x[1]);
 }
-function renderSelfTest(){
-  const s = stSession;
-  if (s && s.index < s.queue.length) return renderStCard();
-  if (s) {
-    selftestEl.innerHTML = `<h2>完成 🎉</h2><p class="note">这一轮做了 ${s.done} 题` +
-      (s.checked ? `,自测题答对 ${s.ok} / ${s.checked}` : "") + (s.mastered ? `,${s.mastered} 条标了已掌握` : "") + `。</p>` +
-      `<button class="btn" type="button" id="st-end">返回</button>`;
-    selftestEl.querySelector("#st-end").addEventListener("click", () => { stSession = null; renderSelfTest(); });
+// the stage's entries as the same cards 浏览 shows (clones of them)
+function stageListEl(stage){
+  const grid = document.createElement("div"); grid.className = "grid";
+  inStage(stage).forEach(t => {
+    const c = sections.find(x => x.level === t.level).cards[t.i].el.cloneNode(true);
+    c.hidden = false;
+    c.addEventListener("click", () => open(t.it, t.level, t.i));
+    grid.append(c);
+  });
+  return grid;
+}
+// Moving on: once every question of an entry has been answered right since it entered its stage —
+// each example still in 自测, or a 自测题's one answer — the next stage is offered (advanceReady()
+// in ui/SelfTest.kt). Entries with nothing to check against move only by hand.
+function advanceReady(it, level, stage){
+  if (!nextStage(stage)) return false;
+  const since = stageT[it.anchor] || 0;
+  const qs = level === "SELFTEST" ? [""] : quizExamples(it).map(x => plainMd(x.en));
+  const log = stLog[it.anchor] || [];
+  return qs.length > 0 && qs.every(q => log.some(a => a.t >= since && a.ok && (a.ex || "") === q));
+}
+const advanceHtml = stage => `<div class="adv"><span>这一阶段的题都答对过了</span><button class="btn ghost" type="button" id="adv">移到${STAGE_TAB[nextStage(stage)]}</button></div>`;
+function renderStageTab(stage, el){
+  const s = quiz;
+  if (s && s.stage === stage) {
+    if (s.index < s.queue.length) return renderQuizCard(el);
+    el.innerHTML = `<h2>完成 🎉</h2><p class="note">这一轮做了 ${s.done} 题` + (s.checked ? `,答对 ${s.ok} / ${s.checked}` : "") +
+      (s.advanced ? `,${s.advanced} 条进入了${STAGE_TAB[nextStage(stage)]}` : "") + `。</p><button class="btn" type="button" id="qz-end">返回</button>`;
+    el.querySelector("#qz-end").addEventListener("click", () => { quiz = null; render(); });
     return;
   }
-  const q = stQueue(), never = q.filter(t => !stSummary(t.it.anchor).last).length;
-  const missed = q.filter(t => { const l = stSummary(t.it.anchor).last; return l && (!l.text || !l.ok); }).length;
-  selftestEl.innerHTML =
-    `<h2>自测</h2>` +
-    `<p class="note">「自测中」的条目都在这里,一题一题做:看中文写英文,再看答案。自测题逐词对照标准答案,其他条目对照笔记自己判断。` +
-    `做熟了点「已掌握」,它就不再出现;在条目里点「移到自测」可以加进来。没做过的和上次没做对的排在前面。</p>` +
-    `<div class="stats"><div class="stat"><b>${q.length}</b><span>自测中</span></div>` +
-    `<div class="stat"><b>${never}</b><span>没做过</span></div>` +
-    `<div class="stat"><b>${missed}</b><span>上次没对</span></div></div>` +
-    `<div class="row"><button class="btn" type="button" id="st-start"${q.length ? "" : " disabled"}>${q.length ? "开始自测 " + q.length + " 题" : "还没有自测中的条目"}</button></div>`;
-  selftestEl.querySelector("#st-start").addEventListener("click", () => {
-    stSession = { queue: stQueue(), index: 0, revealed: false, draft: "", done: 0, ok: 0, checked: 0, mastered: 0 };
-    renderSelfTest();
+  const mine = inStage(stage), queue = quizQueue(stage);
+  let head;
+  if (stage === "review") {
+    const p = planToday();
+    head = `<h2>复习</h2><p class="note">第二遍学:先看一遍笔记,再做例句(中译英)。答对了下次隔得更久,答错了明天再来;一个条目的例句在这一阶段都答对过,就会提示移到考核。</p>` +
+      `<div class="stats"><div class="stat"><b>${mine.length}</b><span>复习中</span></div><div class="stat"><b>${p.due.length}</b><span>今天到期</span></div><div class="stat"><b>${p.fresh.length}</b><span>还没排期</span></div></div>` +
+      `<div class="row"><button class="btn" type="button" id="qz-start"${queue.length ? "" : " disabled"}>${!mine.length ? "还没有复习中的条目" : !queue.length ? "今天的都复习完了" : "开始复习 " + queue.length + " 条"}</button></div>`;
+  } else if (stage === "test") {
+    const never = mine.filter(t => !stSummary(t.it.anchor).last).length;
+    const missed = mine.filter(t => { const l = stSummary(t.it.anchor).last; return l && (!l.text || !l.ok); }).length;
+    head = `<h2>考核</h2><p class="note">直接做题,答完才看笔记。自测题逐词对照标准答案,其他条目对照例句;例句都答对过,就会提示移到掌握。没做过的和上次没做对的排在前面。</p>` +
+      `<div class="stats"><div class="stat"><b>${mine.length}</b><span>考核中</span></div><div class="stat"><b>${never}</b><span>没做过</span></div><div class="stat"><b>${missed}</b><span>上次没对</span></div></div>` +
+      `<div class="row"><button class="btn" type="button" id="qz-start"${queue.length ? "" : " disabled"}>${queue.length ? "开始考核 " + queue.length + " 题" : "还没有考核中的条目"}</button></div>`;
+  } else {
+    head = `<h2>掌握</h2><p class="note">已掌握的条目不再进复习和考核。在条目里点进度条上的别的阶段,可以移回去。</p>` +
+      `<div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><b>${mine.length}</b><span>已掌握</span></div><div class="stat"><b>${total}</b><span>共</span></div></div>`;
+  }
+  el.innerHTML = head;
+  const start = el.querySelector("#qz-start");
+  if (start) start.addEventListener("click", () => {
+    quiz = { stage, queue: quizQueue(stage), index: 0, studied: false, revealed: false, draft: "", done: 0, ok: 0, checked: 0, advanced: 0 };
+    render(); window.scrollTo(0, 0);
+  });
+  el.append(stageListEl(stage));
+  refreshStCounts(); refreshStages();
+}
+function wireXrefs(el){
+  el.querySelectorAll(".rcard .xref").forEach(a => {
+    const x = byAnchor[a.dataset.ref];
+    if (!x) { a.dataset.missing = "1"; return; }
+    a.addEventListener("click", e => { e.preventDefault(); open(x.it, x.level, x.i); });
   });
 }
-function renderStCard(){
-  const s = stSession, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST";
+function renderQuizCard(el){
+  const s = quiz, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST", stage = s.stage;
   if (!exam && s.ex === undefined) s.ex = quizEx(it);     // this card's example, fixed for the card
   const ex = exam ? null : s.ex;
   const pct = Math.round(s.index / s.queue.length * 100);
-  selftestEl.innerHTML =
-    `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
-    `<button class="linkish" type="button" id="st-stop">结束</button></div>` +
+  const top = `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
+    `<button class="linkish" type="button" id="qz-stop">结束</button></div>`;
+  const stop = () => { quiz = null; render(); };
+  if (stage === "review" && !s.studied) {                   // 复习: read it again first
+    el.innerHTML = top +
+      `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})"><p class="lab">先看一遍</p><p class="big" style="font-size:21px">${it.title}</p><div class="body">${notesHtml(it)}</div></div>` +
+      `<button class="btn" type="button" id="qz-studied" style="width:100%">看完了,做题</button>`;
+    el.querySelector("#qz-stop").addEventListener("click", stop);
+    el.querySelector("#qz-studied").addEventListener("click", () => { s.studied = true; renderQuizCard(el); window.scrollTo(0, 0); });
+    wireXrefs(el);
+    return;
+  }
+  const ready = s.revealed && advanceReady(it, t.level, stage);
+  el.innerHTML = top +
     `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ex ? exPrompt(ex) : askHtml(t, k)}` +
     `<p class="st-stats">${stStatsLine(it.anchor)}</p>` +
     (s.revealed
       ? `<hr>` + (exam
-          ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>` + stHistoryHtml(it.anchor)
-          : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>` + stHistoryHtml(it.anchor)) +
+          ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>`
+          : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>`) + stHistoryHtml(it.anchor) +
+        (ready ? advanceHtml(stage) : "") +
         `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${notesHtml(it)}</div>`
-      : `<textarea class="draft" id="st-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)">${esc(s.draft)}</textarea>`) +
+      : `<textarea class="draft" id="qz-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)">${esc(s.draft)}</textarea>`) +
     `</div>` +
     (s.revealed
-      ? `<div class="grades" style="grid-template-columns:1fr 1fr"><button class="btn ghost" type="button" id="st-done" title="不再出现在自测和复习里">标为已掌握</button>` +
-        `<button class="btn" type="button" id="st-next">${s.index + 1 < s.queue.length ? "下一题" : "完成"}</button></div>`
-      : `<button class="btn" type="button" id="st-reveal" style="width:100%">显示答案</button>`);
-  const next = () => { s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; renderSelfTest(); window.scrollTo(0, 0); };
-  selftestEl.querySelectorAll(".st-res [data-ok]").forEach(b => b.addEventListener("click", () => {
+      ? `<div class="grades" style="grid-template-columns:${ready ? "1fr 1fr" : "1fr"}">` +
+        (ready ? `<button class="btn ghost" type="button" id="qz-adv">移到${STAGE_TAB[nextStage(stage)]}</button>` : "") +
+        `<button class="btn" type="button" id="qz-next">${s.index + 1 < s.queue.length ? "下一题" : "完成"}</button></div>`
+      : `<button class="btn" type="button" id="qz-reveal" style="width:100%">显示答案</button>`);
+  const next = adv => {
+    if (adv) { setStage(it, nextStage(stage)); s.advanced++; }
+    s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; s.studied = false;
+    render(); window.scrollTo(0, 0);
+  };
+  const via = stage;                                        // "review" / "test" in the history
+  el.querySelectorAll(".st-res [data-ok]").forEach(b => b.addEventListener("click", () => {
     s.graded = b.dataset.ok === "1";
-    logAttempt(it.anchor, s.draft, s.graded, "selftest");
+    logAttempt(it.anchor, s.draft, s.graded, via);
+    if (stage === "review") scheduleReview(it.anchor, s.graded);
     s.checked++; if (s.graded) s.ok++;
-    renderStCard();
+    renderQuizCard(el);
   }));
-  selftestEl.querySelector("#st-stop").addEventListener("click", () => { stSession = null; renderSelfTest(); });
-  const d = selftestEl.querySelector("#st-draft");
+  el.querySelector("#qz-stop").addEventListener("click", stop);
+  const d = el.querySelector("#qz-draft");
   const reveal = () => {
-    if (exam) {
-      recordAttempt(it.anchor, s.draft, it.answer || "", "selftest");
-      if (s.draft.trim()) { s.checked++; if (bestDiff(s.draft, it.answer || "").same) s.ok++; }
-    } else if (ex) {
-      recordAttempt(it.anchor, s.draft, plainMd(ex.en), "selftest");
-      if (s.draft.trim()) { s.checked++; if (bestDiff(s.draft, plainMd(ex.en)).same) s.ok++; }
-    } else if (!s.draft.trim()) logAttempt(it.anchor, "", false, "selftest");
-    s.revealed = true; renderStCard();
+    const tried = !!s.draft.trim();
+    let ok = null;
+    if (exam) { recordAttempt(it.anchor, s.draft, it.answer || "", via); ok = tried && bestDiff(s.draft, it.answer || "").same; }
+    else if (ex) { recordAttempt(it.anchor, s.draft, plainMd(ex.en), via, plainMd(ex.en)); ok = tried && bestDiff(s.draft, plainMd(ex.en)).same; }
+    else if (!tried) { logAttempt(it.anchor, "", false, via); ok = false; }
+    if (ok !== null) { if (tried) { s.checked++; if (ok) s.ok++; } if (stage === "review") scheduleReview(it.anchor, ok); }
+    s.revealed = true; renderQuizCard(el);
   };
   if (d) {
     d.addEventListener("input", () => { s.draft = d.value; });
     d.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) reveal(); });
     d.focus();
   }
-  const rv = selftestEl.querySelector("#st-reveal");
-  if (rv) rv.addEventListener("click", reveal);
-  const nx = selftestEl.querySelector("#st-next");
-  if (nx) { nx.addEventListener("click", next); nx.focus(); }
-  const dn = selftestEl.querySelector("#st-done");
-  if (dn) dn.addEventListener("click", () => { setStage(it, "done"); s.mastered++; next(); });
-  selftestEl.querySelectorAll(".rcard .xref").forEach(a => {
-    const x = byAnchor[a.dataset.ref];
-    if (!x) { a.dataset.missing = "1"; return; }
-    a.addEventListener("click", e => { e.preventDefault(); open(x.it, x.level, x.i); });
+  const rv = el.querySelector("#qz-reveal"); if (rv) rv.addEventListener("click", reveal);
+  const nx = el.querySelector("#qz-next"); if (nx) { nx.addEventListener("click", () => next(false)); nx.focus(); }
+  const ad = el.querySelector("#qz-adv"); if (ad) ad.addEventListener("click", () => next(true));
+  const ab = el.querySelector("#adv"); if (ab) ab.addEventListener("click", () => next(true));
+  wireXrefs(el);
+}
+// ── 更多: the 错题本 (above, its own section), 练习 and 同步 — what left the tabs ──
+function renderExtras(){
+  if (extrasEl.dataset.built) { paintSync(); renderPractice(); return; }
+  extrasEl.dataset.built = "1";
+  extrasEl.innerHTML =
+    `<h2 style="margin-top:32px">练习</h2><details class="prac" id="prac"${store.get("vk.prac", "0") === "1" ? " open" : ""}><summary>今日仿写 / 本周段落</summary></details>` +
+    `<h2 style="margin-top:32px">同步</h2><div class="sync" id="sync"></div>` +
+    `<p style="margin-top:20px"><button class="linkish" type="button" id="rv-reset">重置复习排期</button></p>`;
+  const prac = extrasEl.querySelector("#prac");
+  prac.append(practiceEl);
+  renderPractice();
+  prac.addEventListener("toggle", () => store.set("vk.prac", prac.open ? "1" : "0"));
+  paintSync();
+  extrasEl.querySelector("#rv-reset").addEventListener("click", function(){
+    if (!resetArmed) { resetArmed = true; this.textContent = "确定清空全部复习排期?再点一次确认"; return; }
+    // resetAt tells the other devices to drop their older cards too
+    resetArmed = false; rev = { cards: {}, newDay: 0, newToday: 0, resetAt: Date.now() }; saveRev(); syncSoon(); this.textContent = "重置复习排期";
   });
 }
 

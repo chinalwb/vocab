@@ -75,6 +75,7 @@ import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Stage
+import io.github.chinalwb.vocab.review.next
 
 /**
  * One entry. Cross-references push another EntryScreen on the nav back stack,
@@ -92,9 +93,11 @@ fun EntryScreen(
     onSeen: (String) -> Unit,
     attempts: List<Attempt> = emptyList(),
     onAttempt: (String) -> Unit = {},
-    /** an attempt on an entry moved to 自测, with its verdict */
-    onGrade: (String, Boolean) -> Unit = { _, _ -> },
+    /** an attempt at an example sentence, with its verdict and the example (plain English) */
+    onGrade: (String, Boolean, String) -> Unit = { _, _, _ -> },
     stage: Stage = Stage.Learn,
+    /** when it entered [stage] (ms): only attempts since then count towards the next stage */
+    since: Long = 0L,
     onStage: (Stage) -> Unit = {},
     /** examples opted out of 自测 (their plain English), and the tap that toggles one */
     excluded: Set<String> = emptySet(),
@@ -160,38 +163,41 @@ fun EntryScreen(
                 }
             }
             Spacer(Modifier.height(14.dp))
-            // The entry itself is a card with two sides, like a coin: the notes (a carousel)
-            // and, while it's in 自测, the quiz. Moving it into or out of 自测 flips the card;
-            // once I've answered I can flip over to the notes and back.
+            // The entry itself is a card with two sides, like a coin: the notes (a carousel) and
+            // its 自测 — one of its examples, 中→英 — which every stage has; 考核 opens on the quiz,
+            // the rest on the notes. Once every question is answered right in this stage, the
+            // quiz side offers the move to the next one.
             val selfTest = entry.level == "SELFTEST"
-            val quiz = stage == Stage.Test
             // kept out here so flipping to the notes and back doesn't lose my attempt; a new try
-            // (再试一次) resets them, and for a moved entry asks its next example
+            // (再试一次) resets them and asks the next example
             var tryNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
             val ex = remember(entry.anchor, tryNo, excluded) { if (selfTest) null else entry.quizExample(tryNo, excluded) }
             var draft by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf("") }
             var revealed by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
             var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
-            var notesUp by rememberSaveable(entry.anchor, stage) { mutableStateOf(false) }
-            val retry = { tryNo = maxOf(tryNo + 1, attempts.size); notesUp = false }
+            var quizUp by rememberSaveable(entry.anchor, stage) { mutableStateOf(stage == Stage.Test) }
+            val quiz = quizUp
+            val notesUp = !quizUp
+            val retry = { tryNo = maxOf(tryNo + 1, attempts.size); quizUp = true }
+            val ready = revealed && advanceReady(entry, stage, attempts, since, excluded)
             // With an answer to check against, the words can be tapped together (选词) instead
             // of typed; the strays come from the entry's other sentences.
             val answer = if (selfTest) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
             val (chips, setChips) = rememberChipsMode()
             SideEffect {
-                answering = quiz && !notesUp && !revealed
+                answering = quiz && !revealed
                 chipsAnswering = answering && chips && answer != null
             }
             val reveal = {
                 when {
                     selfTest -> onAttempt(draft)
-                    ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same)
-                    draft.isBlank() -> onGrade("", false)
+                    ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same, ex.en)
+                    draft.isBlank() -> onGrade("", false, "")
                 }
                 revealed = true
             }
             FlipCard(
-                back = quiz && !notesUp,
+                back = quiz,
                 color = levelColor(entry.level),
                 modifier = Modifier.weight(1f).fillMaxWidth(),
                 front = {
@@ -200,11 +206,17 @@ fun EntryScreen(
                         quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample),
                         trailing = { ExpandButton(fullscreen, toggleFull) },
                     )
-                    if (quiz) FlipButton("回到自测") { notesUp = false }
+                    FlipButton(if (revealed) "回到自测" else "自测一下") { quizUp = true }
                 },
                 backSide = {
                     SideHeading("自测") {
                         if (answer != null && !revealed) { AnswerModeToggle(chips, setChips); Spacer(Modifier.width(6.dp)) }
+                        if (!revealed && stage != Stage.Test) Text(
+                            "看笔记",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable { quizUp = false }.padding(horizontal = 6.dp, vertical = 4.dp),
+                        )
                         ExpandButton(fullscreen, toggleFull)
                     }
                     if (!revealed) {
@@ -236,10 +248,11 @@ fun EntryScreen(
                     } else Scrolling {
                         SelfTestStats(attempts)
                         if (selfTest) SelfTestResult(draft, entry.selfTestAnswer)
-                        else MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it) }
+                        else MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it, "") }
+                        if (ready) AdvanceBanner(stage) { stage.next?.let(onStage) }
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                             RetryButton(retry)
-                            FlipButton("翻面看笔记") { notesUp = true }
+                            FlipButton("翻面看笔记") { quizUp = false }
                         }
                         SelfTestHistory(attempts)
                     }
@@ -319,7 +332,7 @@ private fun Details(entry: Entry) {
 }
 
 /**
- * The progress band, drawn as levels: three nodes on a track, 学习中 → 自测中 → 已掌握. The track
+ * The progress band, drawn as levels: the stages as nodes on a track. The track
  * is filled up to the node the entry is at; the nodes behind it are ticked, the ones ahead are
  * empty rings. Tapping another node moves the entry there. A 自测题 can't go back to 学习中, so that
  * node is dimmed for it.
@@ -345,7 +358,7 @@ private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
         Stage.entries.forEachIndexed { i, s ->
             val here = i == cur
             val passed = i < cur
-            val allowed = !(selfTest && s == Stage.Learn)
+            val allowed = !(selfTest && s.ordinal < Stage.Test.ordinal)   // a 自测题 starts at 考核
             Column(
                 Modifier
                     .weight(1f)
