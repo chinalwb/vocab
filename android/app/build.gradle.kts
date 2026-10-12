@@ -13,6 +13,9 @@ val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties().apply {
     if (keystorePropertiesFile.exists()) keystorePropertiesFile.inputStream().use { load(it) }
 }
+// CI passes -PrequireReleaseKey: a debug-signed release would not install over the phone's app
+if (project.hasProperty("requireReleaseKey") && !keystorePropertiesFile.exists())
+    throw GradleException("requireReleaseKey: android/keystore.properties is missing")
 
 android {
     namespace = "io.github.chinalwb.vocab"
@@ -22,8 +25,8 @@ android {
         applicationId = "io.github.chinalwb.vocab"
         minSdk = 26
         targetSdk = 36
-        versionCode = 53
-        versionName = "1.52"
+        versionCode = 54
+        versionName = "1.53"
         // Where updates are fetched from. Override for local testing, e.g.
         // ./gradlew installDebug -PvocabUrl=http://localhost:8000/  (with adb reverse)
         val vocabUrl = (project.findProperty("vocabUrl") as String?) ?: "https://chinalwb.github.io/vocab/"
@@ -81,7 +84,8 @@ val bundleVocab by tasks.registering(Exec::class) {
 }
 tasks.named("preBuild") { dependsOn(bundleVocab) }
 
-// The APK committed to the repo, plus version.json for the app's 检查 App 更新:
+// The APK plus version.json for the app's 检查 App 更新, in android/apk/ (git-ignored): main's
+// apk.yml workflow runs this and publishes both as the latest GitHub Release.
 //   ./gradlew clean publishApk
 val apkVersionCode = android.defaultConfig.versionCode
 val apkVersionName = android.defaultConfig.versionName

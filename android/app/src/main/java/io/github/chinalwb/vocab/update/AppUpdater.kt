@@ -12,10 +12,11 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 /**
- * 检查 App 更新: the APK committed at android/apk/VoCab.apk on main is the latest build, and
- * version.json next to it says which version that is (Gradle's publishApk writes both). The
- * download goes to the cache and is handed to the system installer, which asks once for
- * "install unknown apps". Same debug-key signature, so it installs over the current app.
+ * 检查 App 更新: the latest GitHub Release carries the APK and version.json, which says which
+ * version that is — main's .github/workflows/apk.yml builds both (Gradle's publishApk) and
+ * publishes them; the APK isn't kept in git. The download goes to the cache and is handed to the
+ * system installer, which asks once for "install unknown apps". Same release-key signature, so
+ * it installs over the current app.
  */
 @Serializable
 data class RemoteVersion(val versionCode: Int, val versionName: String)
@@ -31,7 +32,7 @@ class AppUpdater(private val context: Context) {
     private val json = Json { ignoreUnknownKeys = true }
 
     suspend fun latest(): RemoteVersion = withContext(Dispatchers.IO) {
-        // the query string gets past raw.githubusercontent's few-minute cache
+        // releases/latest/download redirects to the asset of the newest release
         val text = open("$BASE/version.json?t=${System.currentTimeMillis()}").inputStream.bufferedReader().use { it.readText() }
         json.decodeFromString<RemoteVersion>(text)
     }
@@ -72,6 +73,6 @@ class AppUpdater(private val context: Context) {
     }
 
     companion object {
-        const val BASE = "https://raw.githubusercontent.com/chinalwb/vocab/main/android/apk"
+        const val BASE = "https://github.com/chinalwb/vocab/releases/latest/download"
     }
 }

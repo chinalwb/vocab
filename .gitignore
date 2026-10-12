@@ -13,5 +13,7 @@ android/build/
 android/app/build/
 android/local.properties
 android/keystore.properties
+# built and published as a GitHub Release by .github/workflows/apk.yml, not kept in git
+android/apk/
 android/.idea/
 *.iml
