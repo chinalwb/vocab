@@ -376,8 +376,9 @@ h1{
   display:inline-block;margin:0 0 10px;padding:3px 10px 3px 8px;
   background:var(--card-edge);color:var(--card-ink-2);
   border:1px solid var(--card-edge);border-radius:999px;
-  font:inherit;font-size:12px;cursor:pointer;
-  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font:inherit;font-size:12px;cursor:pointer;text-align:left;
+  /* the sheet is a flex column: keep it its own width, clear of the ✕ at the top right */
+  align-self:flex-start;max-width:calc(100% - 44px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 .back:hover{color:var(--card-ink)}
 .back:focus-visible{outline:2px solid var(--card-ink);outline-offset:1px}
