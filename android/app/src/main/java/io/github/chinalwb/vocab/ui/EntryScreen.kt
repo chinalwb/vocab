@@ -150,8 +150,7 @@ fun EntryScreen(
                 notesShown = revealed
             }
             if (!notesShown) return@Column
-            NotesHeading()
-            EntryBody(entry, onXref)
+            EntryNotes(entry, onXref)
             Spacer(Modifier.height(32.dp))
         }
     }
@@ -169,15 +168,6 @@ private fun QuizCard(content: @Composable androidx.compose.foundation.layout.Col
         content = content,
     )
     Spacer(Modifier.height(24.dp))
-}
-
-/** "笔记 ———": where the answer starts. */
-@Composable
-private fun NotesHeading() {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 4.dp, bottom = 12.dp)) {
-        Text("笔记", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        androidx.compose.material3.HorizontalDivider(Modifier.padding(start = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
-    }
 }
 
 /** 进度 and the moves out of it — the same buttons as the page's .stage row. */

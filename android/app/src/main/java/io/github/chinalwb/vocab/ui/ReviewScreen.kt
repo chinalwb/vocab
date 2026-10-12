@@ -228,7 +228,7 @@ private fun Card(
                     Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
                     Spacer(Modifier.height(12.dp))
                 }
-                EntryBody(entry, onXref)
+                EntryNotes(entry, onXref)
                 Spacer(Modifier.height(24.dp))
             }
         }

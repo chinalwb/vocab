@@ -509,6 +509,32 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .btn.retry{margin-top:4px}
 .notes-h{display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--card-ink-2);margin:0 0 12px}
 .notes-h::after{content:"";flex:1;border-top:1px solid var(--card-edge)}
+/* notes as a carousel: a tab per section, one card at a time; 全部展开 stacks them all */
+.nv-h{display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--card-ink-2);margin:0 0 10px}
+.nv-h .ln{flex:1;border-top:1px solid var(--card-edge)}
+.nv-h button{font:inherit;font-size:12.5px;color:var(--card-ink-2);background:none;border:0;padding:2px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.nv-h button:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px;border-radius:4px}
+.nv-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px 10px;padding:2px}
+.nv-tabs::-webkit-scrollbar{display:none}
+.nv-tab{flex:none;font:inherit;font-size:12.5px;color:var(--card-ink-2);background:transparent;border:1px solid var(--card-edge);border-radius:999px;padding:4px 11px;cursor:pointer;white-space:nowrap}
+.nv-tab[aria-selected="true"]{background:var(--card-ink);border-color:var(--card-ink);color:var(--sw, var(--ground))}
+.nv-tab:focus-visible{outline:2px solid var(--card-ink);outline-offset:1px}
+.nv-track{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:12px;transition:height .2s ease;outline:none}
+.nv-track::-webkit-scrollbar{display:none}
+.nv-card{flex:0 0 100%;box-sizing:border-box;scroll-snap-align:start;scroll-snap-stop:always;background:var(--glass-fill);border:1px solid var(--card-edge);border-radius:14px;padding:14px 15px 3px}
+.nv-card > p.lbl{display:none}
+.nv-card ol.ex.fold li:nth-child(n+2){display:none}
+.nv-more{font:inherit;font-size:12.5px;color:var(--card-ink-2);background:none;border:0;padding:0 0 12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.nv-dots{display:flex;justify-content:center;gap:5px;margin:10px 0 2px}
+.nv-dots i{width:5px;height:5px;border-radius:50%;background:var(--card-ink);opacity:.2;transition:opacity .2s,width .2s}
+.nv-dots i.on{opacity:.65;width:14px;border-radius:3px}
+.nv.all .nv-tabs,.nv.all .nv-dots{display:none}
+.nv.all .nv-track{display:block;overflow:visible;height:auto!important}
+.nv.all .nv-card{background:none;border:0;padding:0;border-radius:0}
+.nv.all .nv-card > p.lbl{display:block}
+.nv.all .nv-card ol.ex.fold li:nth-child(n+2){display:list-item}
+.nv.all .nv-more{display:none}
+@media (prefers-reduced-motion: reduce){.nv-track{transition:none}}
 .stage b{color:var(--card-ink)}
 .stage .btn{font-size:12.5px;padding:5px 13px}
 /* the 自测 quiz inside an entry borrows the review card's prompt styles */
@@ -585,6 +611,7 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 
 <script>
 const DATA = /*__DATA__*/;
+DATA.forEach(g => g.items.forEach(it => { it.html = it.slides.map(x => x[1]).join(""); }));
 const MISTAKES = /*__MISTAKES__*/;
 
 const LV = {
@@ -1094,6 +1121,88 @@ function goBack(){
   show(prev.it, prev.level, prev.i);
 }
 
+// The notes as a carousel: one section per card (build.py's sections()), a tab per section,
+// swipe or tap to move, never auto-advancing. 全部展开 stacks the cards back into one page.
+let notesAll = (() => { try { return localStorage.getItem("vk.notesAll") === "1"; } catch { return false; } })();
+function notesHtml(it){
+  const sl = it.slides;
+  if (sl.length < 2) return `<div class="notes-h">笔记</div>${it.html}`;
+  return `<div class="nv${notesAll ? " all" : ""}">` +
+    `<div class="nv-h"><span>笔记</span><span class="ln"></span><button type="button" class="nv-all">${notesAll ? "分卡显示" : "全部展开"}</button></div>` +
+    `<div class="nv-tabs" role="tablist">${sl.map(([l], k) => `<button type="button" class="nv-tab" role="tab" aria-selected="${!k}" data-k="${k}">${esc(l)}</button>`).join("")}</div>` +
+    `<div class="nv-track" tabindex="0" aria-label="笔记卡片,左右滑动或用 ← → 切换">${sl.map(([, h]) => `<section class="nv-card">${h}</section>`).join("")}</div>` +
+    `<div class="nv-dots">${sl.map((_, k) => `<i${k ? "" : ' class="on"'}></i>`).join("")}</div></div>`;
+}
+function nvIndex(track){ return Math.round(track.scrollLeft / (track.clientWidth + 12)); }
+function nvPaint(nv, k){
+  const track = nv.querySelector(".nv-track"), cards = track.children;
+  k = Math.max(0, Math.min(cards.length - 1, k));
+  nv._k = k;
+  nv.querySelectorAll(".nv-tab").forEach((t, j) => t.setAttribute("aria-selected", j === k));
+  nv.querySelectorAll(".nv-dots i").forEach((d, j) => d.classList.toggle("on", j === k));
+  const tab = nv.querySelectorAll(".nv-tab")[k];
+  if (tab) tab.parentNode.scrollTo({ left: tab.offsetLeft - 40, behavior: "smooth" });
+  if (!nv.classList.contains("all")) track.style.height = cards[k].offsetHeight ? cards[k].offsetHeight + "px" : "";
+}
+function nvGo(nv, k){
+  const track = nv.querySelector(".nv-track");
+  k = Math.max(0, Math.min(track.children.length - 1, k));
+  track.scrollTo({ left: k * (track.clientWidth + 12), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  nvPaint(nv, k);
+}
+function nvInit(nv){
+  nv._init = true;
+  nv.querySelectorAll(".nv-card").forEach(card => {
+    // a card's tab already names it: hide a heading that is only the label ("**常见搭配:**")
+    const p = card.firstElementChild;
+    if (p && p.tagName === "P" && p.children.length === 1 && p.firstElementChild.tagName === "STRONG" &&
+        p.textContent.trim() === p.firstElementChild.textContent.trim() && /[:：]$/.test(p.textContent.trim())) p.classList.add("lbl");
+    // one example per sense at a glance; the rest a tap away
+    card.querySelectorAll("ol.ex").forEach(ol => {
+      if (ol.children.length < 2) return;
+      ol.classList.add("fold");
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "nv-more"; b.textContent = `更多例句(${ol.children.length - 1})`;
+      ol.after(b);
+    });
+  });
+  nvPaint(nv, 0);
+  // the notes may start hidden (behind 显示答案) and fonts load late: refit when a card resizes
+  const ro = new ResizeObserver(() => nvPaint(nv, nv._k));
+  nv.querySelectorAll(".nv-card").forEach(c => ro.observe(c));
+}
+new MutationObserver(() => document.querySelectorAll(".nv").forEach(nv => { if (!nv._init) nvInit(nv); }))
+  .observe(document.body, { childList: true, subtree: true });
+document.addEventListener("click", e => {
+  const nv = e.target.closest(".nv");
+  if (!nv) return;
+  const tab = e.target.closest(".nv-tab"), more = e.target.closest(".nv-more");
+  if (tab) nvGo(nv, +tab.dataset.k);
+  else if (more) { more.previousElementSibling.classList.remove("fold"); more.remove(); nvPaint(nv, nv._k); }
+  else if (e.target.closest(".nv-all")) {
+    notesAll = !notesAll;
+    try { localStorage.setItem("vk.notesAll", notesAll ? "1" : "0"); } catch {}
+    document.querySelectorAll(".nv").forEach(n => {
+      n.classList.toggle("all", notesAll);
+      n.querySelector(".nv-all").textContent = notesAll ? "分卡显示" : "全部展开";
+      if (!notesAll) { n.querySelector(".nv-track").scrollLeft = 0; nvPaint(n, 0); }
+    });
+  }
+});
+document.addEventListener("scroll", e => {
+  const t = e.target;
+  if (!(t instanceof Element) || !t.classList.contains("nv-track")) return;
+  clearTimeout(t._st);
+  t._st = setTimeout(() => { const nv = t.closest(".nv"); if (nvIndex(t) !== nv._k) nvPaint(nv, nvIndex(t)); }, 60);
+}, true);
+document.addEventListener("keydown", e => {
+  const t = e.target;
+  if (!(t instanceof Element) || !t.classList.contains("nv-track") || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+  e.preventDefault();
+  const nv = t.closest(".nv");
+  nvGo(nv, nv._k + (e.key === "ArrowRight" ? 1 : -1));
+});
+
 function show(it, level, i){
   if (scrim) scrim.remove();
   scrim = document.createElement("div");
@@ -1140,7 +1249,7 @@ function show(it, level, i){
         `<div class="row"><button class="btn" type="button" id="st-show">显示答案</button></div></div>` +
         `<div class="st-res" id="st-res" hidden></div></div>`
       : "") +
-    `<div class="body"${level === "SELFTEST" || quiz ? " hidden" : ""}><div class="notes-h">笔记</div>${it.html}</div>`;
+    `<div class="body"${level === "SELFTEST" || quiz ? " hidden" : ""}>${notesHtml(it)}</div>`;
   scrim._entry = { it, level, i };
   scrim.append(sheet);
   document.body.append(scrim);
@@ -1364,7 +1473,7 @@ function renderCard(){
       ? `<hr>${k === "selftest" ? `<p class="st-stats">${stStatsLine(it.anchor)}</p>` : ""}${k === "selftest" && s.draft.trim() ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>`
           : writes && s.draft.trim() ? `<p class="lab">你写的</p><div class="mine">${esc(s.draft)}</div>` : ""}` +
         (k === "recognize" ? "" : `<p class="big" style="font-size:21px">${it.title}</p>`) +
-        `<div class="body">${it.html}</div>`
+        `<div class="body">${notesHtml(it)}</div>`
       : "") +
     `</div>` +
     (s.revealed
@@ -1579,7 +1688,7 @@ function renderStCard(){
       ? `<hr>` + (exam
           ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>` + stHistoryHtml(it.anchor)
           : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>` + stHistoryHtml(it.anchor)) +
-        `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${it.html}</div>`
+        `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${notesHtml(it)}</div>`
       : `<textarea class="draft" id="st-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)">${esc(s.draft)}</textarea>`) +
     `</div>` +
     (s.revealed

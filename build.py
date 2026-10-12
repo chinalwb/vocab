@@ -181,6 +181,41 @@ def to_html(blocks):
     return "".join(out)
 
 
+# A bold label opens a section: "**常见搭配:**", "**含义:** text", "**义项一:…**", "**race**(动词)".
+SECTION_RE = re.compile(r"^\*\*([^*]+?)[:：]\s*\*\*|^\*\*([^*]+?)\*\*\s*(?:[(（][^)）]*[)）])?$")
+# consecutive definition sections share one card
+DEFINITION = ("English definition", "含义", "释义", "整体释义")
+
+
+def section_label(text):
+    """The short name a section's tab shows: "义项一:纠结…" -> "义项一"."""
+    m = SECTION_RE.match(text)
+    if not m:
+        return None
+    return re.split(r"[:：(（—]", (m.group(1) or m.group(2)).replace("⚠️", "").strip())[0].strip()
+
+
+def sections(blocks):
+    """Split an entry's blocks at its bold labels: [(label, [blocks]), ...].
+
+    The notes show one section per card (a carousel), so a glance never has to take in the
+    whole entry. Whatever comes before the first label is 概要. The app splits the same way
+    (sections() in EntryBody.kt) — keep the two in step.
+    """
+    out = []
+    for b in blocks:
+        label = section_label(b["text"]) if b["t"] == "p" else None
+        if label and label in DEFINITION and out and out[-1][0] == "释义":
+            label = None                       # English definition + 含义 → one 释义 card
+        elif label in DEFINITION:
+            label = "释义"
+        if label or not out:
+            label = label or "概要"
+            out.append((label[:10] + "…" if len(label) > 11 else label, []))
+        out[-1][1].append(b)
+    return out
+
+
 def mastery(raw, level):
     """会写 → "write" (practise producing it), 认识 → "read" (recognising is enough)."""
     v = meta_field(raw, "掌握")
@@ -282,7 +317,8 @@ def page_data(entries):
         else:
             # an entry moved to 自测 is quizzed on its example sentences: Chinese → English
             item["examples"] = quiz_examples(e["blocks"])
-        item["html"] = to_html(e["blocks"])
+        # the page joins these back into the whole notes for search and the 全部展开 view
+        item["slides"] = [[label, to_html(bs)] for label, bs in sections(e["blocks"])]
         item["level"] = e["level"]
         grouped.setdefault(e["level"], []).append(item)
     return [{"level": l, "items": grouped[l]} for l in GROUP_ORDER if l in grouped]
