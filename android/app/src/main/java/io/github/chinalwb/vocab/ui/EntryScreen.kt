@@ -334,38 +334,38 @@ private fun Details(entry: Entry) {
 /**
  * The progress band, drawn as levels: the stages as nodes on a track. The track
  * is filled up to the node the entry is at; the nodes behind it are ticked, the ones ahead are
- * empty rings. Tapping another node moves the entry there. A 自测题 only has 考核 and 掌握.
+ * empty rings. Tapping another node moves the entry there. A 自测题 can't go back to 学习中, so that
+ * node is dimmed for it.
  */
 @Composable
 private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
     val ink = MaterialTheme.colorScheme.onSurface
     val track = MaterialTheme.colorScheme.outline
     val node = 30.dp
-    // a 自测题's life starts at 考核, so its track has just the two levels (greyed-out ticks on
-    // the first two looked like something had gone wrong)
-    val steps = if (selfTest) Stage.entries.filter { it.ordinal >= Stage.Test.ordinal } else Stage.entries
-    val cur = steps.indexOf(stage).coerceAtLeast(0)
+    val cur = stage.ordinal
     Row(
         Modifier
             .fillMaxWidth()
             .drawBehind {
                 // the track runs between the node centres, under the nodes
-                val w = size.width / steps.size
+                val w = size.width / Stage.entries.size
                 val y = (node / 2).toPx()
                 val stroke = 3.dp.toPx()
                 drawLine(track, Offset(w / 2, y), Offset(size.width - w / 2, y), stroke)
                 drawLine(ink, Offset(w / 2, y), Offset(w * (cur + 0.5f), y), stroke)
             },
     ) {
-        steps.forEachIndexed { i, s ->
+        Stage.entries.forEachIndexed { i, s ->
             val here = i == cur
             val passed = i < cur
+            val allowed = !(selfTest && s.ordinal < Stage.Test.ordinal)   // a 自测题 starts at 考核
             Column(
                 Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(12.dp))
-                    .clickable(enabled = !here) { onStage(s) }
-                    .padding(bottom = 4.dp),
+                    .clickable(enabled = allowed && !here) { onStage(s) }
+                    .padding(bottom = 4.dp)
+                    .alpha(if (allowed) 1f else 0.35f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
