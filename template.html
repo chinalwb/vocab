@@ -275,7 +275,7 @@ h1{
   margin-top:10px;padding-top:8px;border-top:1px solid var(--card-edge);
   font-size:11px;color:var(--card-ink-2);letter-spacing:.05em;
 }
-.foot .lv{font-weight:700}
+.foot .flv{font-weight:700}
 .foot .no{font-variant-numeric:tabular-nums;opacity:.75;margin-right:6px}
 .foot .dt{font-variant-numeric:tabular-nums;white-space:nowrap;opacity:.8}
 
@@ -949,7 +949,7 @@ const sections = DATA.map(g => {
       (meta ? `<div class="meta">${meta}</div>` : "") +
       (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
       `<div class="foot">` +
-      `<span><span class="no">#${it.no}</span><span class="lv">${it.cefr ? it.cefr.split("/")[0].trim() : (LABEL[g.level] || g.level)}</span>` +
+      `<span><span class="no">#${it.no}</span><span class="flv">${(it.cefr || "").match(/\b[ABC][12]\b/)?.[0] || LABEL[g.level] || g.level}</span>` +
       (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}<span class="stc" data-opt="1" data-anchor="${it.anchor}"></span>`) +
       `<span class="stg" data-anchor="${it.anchor}" data-level="${g.level}"></span></span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
