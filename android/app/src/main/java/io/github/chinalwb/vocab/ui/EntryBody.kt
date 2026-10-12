@@ -25,6 +25,9 @@ import io.github.chinalwb.vocab.data.Section
 import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.alpha
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
@@ -44,7 +47,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextDecoration
 import kotlinx.coroutines.launch
 
 @Composable
@@ -70,6 +72,8 @@ fun EntryNotes(
     /** on the entry page's card: no card per page, and the notes fill [modifier]'s height, scrolling inside */
     inCard: Boolean = false,
     modifier: Modifier = Modifier,
+    /** on the entry page: which examples 自测 may ask, and the tap that toggles one */
+    quiz: ExampleQuiz? = null,
 ) {
     val ctx = LocalContext.current
     val prefs = remember { ctx.getSharedPreferences("notes", Context.MODE_PRIVATE) }
@@ -81,8 +85,8 @@ fun EntryNotes(
             if (sections.size > 1) (if (all) "分卡显示" else "全部展开") else null,
         ) { all = !all; prefs.edit().putBoolean("all", all).apply() }
         when {
-            carousel -> NotesCarousel(entry.anchor, sections, onXref, inCard, if (inCard) Modifier.weight(1f) else Modifier)
-            inCard -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) { EntryBody(entry, onXref) }
+            carousel -> NotesCarousel(entry.anchor, sections, onXref, inCard, if (inCard) Modifier.weight(1f) else Modifier, quiz)
+            inCard -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) { EntryBody(entry, onXref, quiz) }
             else -> EntryBody(entry, onXref)
         }
     }
@@ -108,7 +112,7 @@ private fun NotesHeading(action: String?, onAction: () -> Unit) {
 private val LABEL_ONLY = Regex("""^\*\*[^*]+[:：]\s*\*\*$""")
 
 @Composable
-private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (String) -> Unit, inCard: Boolean, modifier: Modifier) {
+private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (String) -> Unit, inCard: Boolean, modifier: Modifier, quiz: ExampleQuiz?) {
     val pager = rememberPagerState { sections.size }
     val tabs = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -152,7 +156,7 @@ private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (Stri
                         if (inCard) Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).padding(top = 4.dp, bottom = 8.dp)
                         else Modifier.background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(16.dp)).padding(16.dp)
                     )
-            ) { Blocks(blocks, onXref, fold = true) }
+            ) { Blocks(blocks, onXref, quiz) }
         }
         if (sections.size > 1) Row(
             horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterHorizontally),
@@ -171,15 +175,18 @@ private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (Stri
     }
 }
 
+/** Which examples 自测 may ask ([excluded]: the plain English of the ones opted out) and the tap that toggles one. */
+class ExampleQuiz(val excluded: Set<String>, val onToggle: (String) -> Unit)
+
 /** Renders the blocks build.py produced; xref taps are handed to [onXref]. */
 @Composable
-fun EntryBody(entry: Entry, onXref: (String) -> Unit) = Blocks(entry.blocks, onXref)
+fun EntryBody(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) = Blocks(entry.blocks, onXref, quiz)
 
-/** [fold]: an example list shows its first sentence, the rest behind 更多例句. */
 @Composable
-private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, fold: Boolean = false) {
+private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) {
     val link = MaterialTheme.colorScheme.primary
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    val ink = MaterialTheme.colorScheme.onSurface
     val body = MaterialTheme.typography.bodyLarge.copy(lineHeight = 26.sp)
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         for (block in blocks) when (block) {
@@ -193,11 +200,26 @@ private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, fold: Boolean 
                 }
             }
             is Block.Examples -> Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                var open by remember(block) { mutableStateOf(!fold) }
-                val shown = if (open) block.items else block.items.take(1)
-                shown.forEachIndexed { i, ex ->
-                    Row {
-                        Text("${i + 1}", style = body, color = muted, modifier = Modifier.width(22.dp))
+                block.items.forEachIndexed { i, ex ->
+                    // every translated example is a 自测 question unless I tap it out: the number
+                    // sits in a filled dot while it's in, a hollow one (and dimmed text) when out
+                    val asks = quiz != null && ex.quizable
+                    val out = asks && plain(ex.en) in quiz!!.excluded
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .then(if (asks) Modifier.clip(RoundedCornerShape(8.dp)).clickable { quiz!!.onToggle(plain(ex.en)) } else Modifier)
+                            .alpha(if (out) 0.45f else 1f),
+                    ) {
+                        Box(Modifier.width(22.dp).padding(top = 4.dp)) {
+                            if (asks) Box(
+                                Modifier
+                                    .size(18.dp)
+                                    .then(if (out) Modifier.border(1.5.dp, muted, CircleShape) else Modifier.background(ink, CircleShape)),
+                                contentAlignment = Alignment.Center,
+                            ) { Text("${i + 1}", style = MaterialTheme.typography.labelSmall, color = if (out) muted else MaterialTheme.colorScheme.surface) }
+                            else Text("${i + 1}", style = body, color = muted)
+                        }
                         Column {
                             Text(inline(ex.en, link, onXref), style = body.copy(fontFamily = FontFamily.Serif, fontSize = 17.sp))
                             if (ex.zh.isNotEmpty()) {
@@ -206,12 +228,11 @@ private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, fold: Boolean 
                         }
                     }
                 }
-                if (shown.size < block.items.size) Text(
-                    "更多例句(${block.items.size - shown.size})",
-                    style = MaterialTheme.typography.labelLarge,
+                if (quiz != null && block.items.any { it.quizable }) Text(
+                    "● 自测会考这些例句,点一句可以排除(至少留一句)",
+                    style = MaterialTheme.typography.labelSmall,
                     color = muted,
-                    textDecoration = TextDecoration.Underline,
-                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable { open = true }.padding(start = 22.dp, top = 2.dp, bottom = 2.dp),
+                    modifier = Modifier.padding(start = 22.dp),
                 )
             }
             is Block.Quote -> Quote(block.lines, link, onXref)

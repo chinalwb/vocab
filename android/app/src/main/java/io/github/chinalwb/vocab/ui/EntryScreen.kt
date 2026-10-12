@@ -29,6 +29,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -84,6 +91,9 @@ fun EntryScreen(
     onGrade: (String, Boolean) -> Unit = { _, _ -> },
     stage: Stage = Stage.Learn,
     onStage: (Stage) -> Unit = {},
+    /** examples opted out of 自测 (their plain English), and the tap that toggles one */
+    excluded: Set<String> = emptySet(),
+    onToggleExample: (String) -> Unit = {},
 ) {
     if (entry != null) LaunchedEffect(entry.anchor) { onSeen(entry.anchor) }
     var details by rememberSaveable { mutableStateOf(false) }
@@ -131,7 +141,7 @@ fun EntryScreen(
             // kept out here so flipping to the notes and back doesn't lose my attempt; a new try
             // (再试一次) resets them, and for a moved entry asks its next example
             var tryNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
-            val ex = remember(entry.anchor, tryNo) { if (selfTest) null else entry.quizExample(tryNo) }
+            val ex = remember(entry.anchor, tryNo, excluded) { if (selfTest) null else entry.quizExample(tryNo, excluded) }
             var draft by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf("") }
             var revealed by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
             var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
@@ -142,7 +152,7 @@ fun EntryScreen(
                 color = levelColor(entry.level),
                 modifier = Modifier.weight(1f).fillMaxWidth(),
                 front = {
-                    EntryNotes(entry, onXref, inCard = true, modifier = Modifier.weight(1f))
+                    EntryNotes(entry, onXref, inCard = true, modifier = Modifier.weight(1f), quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample))
                     if (quiz) FlipButton("回到自测") { notesUp = false }
                 },
                 backSide = {
@@ -181,9 +191,9 @@ fun EntryScreen(
 }
 
 /**
- * The meta band, kept to the headword: the title and one muted line (type · 词性 · 音标 ›).
- * Everything else about the entry is a tap away in the details sheet — it rarely matters
- * while reading.
+ * The meta band, kept to the headword: the title, and under it a pill (type · 词性 · 音标 ›)
+ * that opens the details sheet — the whole band is the tap target. Everything else about the
+ * entry lives in the sheet; it rarely matters while reading.
  */
 @Composable
 private fun Meta(entry: Entry, onDetails: () -> Unit) {
@@ -191,10 +201,10 @@ private fun Meta(entry: Entry, onDetails: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = onDetails)
             .padding(horizontal = 4.dp, vertical = 2.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             entry.title,
@@ -204,7 +214,22 @@ private fun Meta(entry: Entry, onDetails: () -> Unit) {
             lineHeight = 32.sp,
             modifier = Modifier.sharedEntryTitle(entry.anchor),
         )
-        Text("$line  ›", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Row(
+            Modifier
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(50))
+                .padding(start = 12.dp, end = 6.dp, top = 5.dp, bottom = 5.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                line,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false),
+            )
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "详情", Modifier.padding(start = 2.dp).size(20.dp), tint = MaterialTheme.colorScheme.onSurface)
+        }
     }
 }
 
@@ -233,47 +258,68 @@ private fun Details(entry: Entry) {
 }
 
 /**
- * The progress band: a segmented stepper, 学习中 → 自测中 → 已掌握. The filled segment is where
- * the entry is; tapping another segment moves it there (the ✓ marks the stages behind it).
- * A 自测题 can't go back to 学习中, so that segment is dimmed for it.
+ * The progress band, drawn as levels: three nodes on a track, 学习中 → 自测中 → 已掌握. The track
+ * is filled up to the node the entry is at; the nodes behind it are ticked, the ones ahead are
+ * hollow. Tapping another node moves the entry there. A 自测题 can't go back to 学习中, so that
+ * node is dimmed for it.
  */
 @Composable
 private fun Stepper(stage: Stage, selfTest: Boolean, onStage: (Stage) -> Unit) {
     val ink = MaterialTheme.colorScheme.onSurface
-    val shape = RoundedCornerShape(50)
+    val track = MaterialTheme.colorScheme.outline
+    val node = 30.dp
+    val cur = stage.ordinal
     Row(
         Modifier
             .fillMaxWidth()
-            .height(44.dp)
-            .clip(shape)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-            .border(1.dp, MaterialTheme.colorScheme.outline, shape),
+            .drawBehind {
+                // the track runs between the node centres, under the nodes
+                val w = size.width / Stage.entries.size
+                val y = (node / 2).toPx()
+                val stroke = 3.dp.toPx()
+                drawLine(track, Offset(w / 2, y), Offset(size.width - w / 2, y), stroke)
+                drawLine(ink, Offset(w / 2, y), Offset(w * (cur + 0.5f), y), stroke)
+            },
     ) {
         Stage.entries.forEachIndexed { i, s ->
-            val here = s == stage
-            val passed = i < stage.ordinal
+            val here = i == cur
+            val passed = i < cur
             val allowed = !(selfTest && s == Stage.Learn)
-            Box(
+            Column(
                 Modifier
                     .weight(1f)
-                    .fillMaxHeight()
-                    .then(if (here) Modifier.background(ink, shape) else Modifier)
-                    .clickable(enabled = allowed && !here) { onStage(s) },
-                contentAlignment = Alignment.Center,
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable(enabled = allowed && !here) { onStage(s) }
+                    .padding(bottom = 4.dp)
+                    .alpha(if (allowed) 1f else 0.35f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    if (passed) Icon(Icons.Default.Check, null, Modifier.height(14.dp).width(14.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Text(
-                        s.label,
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = if (here) FontWeight.SemiBold else FontWeight.Normal,
-                        color = when {
-                            here -> MaterialTheme.colorScheme.surface
-                            !allowed -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f)
-                            else -> MaterialTheme.colorScheme.onSurfaceVariant
-                        },
-                    )
+                Box(
+                    Modifier
+                        .size(node)
+                        .then(
+                            when {
+                                // the current level: a filled node with a ring of ground around it
+                                here -> Modifier.border(2.dp, ink, CircleShape).padding(4.dp).background(ink, CircleShape)
+                                passed -> Modifier.background(ink, CircleShape)
+                                else -> Modifier.background(MaterialTheme.colorScheme.background, CircleShape).border(2.dp, track, CircleShape)
+                            }
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    when {
+                        passed -> Icon(Icons.Default.Check, null, Modifier.size(16.dp), tint = MaterialTheme.colorScheme.surface)
+                        here -> Box(Modifier.size(8.dp).background(MaterialTheme.colorScheme.surface, CircleShape))
+                        else -> Text("${i + 1}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
                 }
+                Text(
+                    s.label,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = if (here) FontWeight.SemiBold else FontWeight.Normal,
+                    color = if (here) ink else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }

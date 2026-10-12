@@ -156,6 +156,7 @@ private fun VocabNav() {
     val lib by vm.library.collectAsStateWithLifecycle()
     val selfTests by vm.selfTests.collectAsStateWithLifecycle()
     val stages by vm.stages.collectAsStateWithLifecycle()
+    val quizOptOut by vm.quizOptOut.collectAsStateWithLifecycle()
 
     // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
     // the plain fades match the container transform's length so both sides finish together.
@@ -193,6 +194,8 @@ private fun VocabNav() {
                             onGrade = { text, ok -> if (entry != null) vm.recordAttempt(entry, text, ok, "entry") },
                             stage = entry?.let { stages.stageOf(it) } ?: Stage.Learn,
                             onStage = { vm.setStage(anchor, it) },
+                            excluded = quizOptOut[anchor].orEmpty(),
+                            onToggleExample = { en -> if (entry != null) vm.toggleQuizExample(entry, en) },
                         )
                     }
                 }

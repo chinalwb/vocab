@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Block
 import io.github.chinalwb.vocab.data.Entry
+import io.github.chinalwb.vocab.data.Example
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.summary
 import java.time.Instant
@@ -161,9 +162,16 @@ data class QuizExample(val en: String, val zh: String, val k: Int, val of: Int)
 
 private val CJK = Regex("[\\u4e00-\\u9fff]")
 
-fun Entry.quizExample(tries: Int): QuizExample? {
-    val xs = blocks.filterIsInstance<Block.Examples>().flatMap { it.items }
-        .filter { it.zh.isNotBlank() && Regex("[A-Za-z]").containsMatchIn(it.en) && CJK.containsMatchIn(it.zh) }
+/** An example that can be asked: an English sentence with a Chinese translation. */
+val Example.quizable: Boolean
+    get() = zh.isNotBlank() && Regex("[A-Za-z]").containsMatchIn(en) && CJK.containsMatchIn(zh)
+
+/** The examples a moved entry can be quizzed on, in note order; [excluded] holds the plain English of the ones I opted out. */
+fun Entry.quizExamples(excluded: Set<String> = emptySet()): List<Example> =
+    blocks.filterIsInstance<Block.Examples>().flatMap { it.items }.filter { it.quizable && plain(it.en) !in excluded }
+
+fun Entry.quizExample(tries: Int, excluded: Set<String> = emptySet()): QuizExample? {
+    val xs = quizExamples(excluded)
     if (xs.isEmpty()) return null
     val k = tries % xs.size
     return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size)
