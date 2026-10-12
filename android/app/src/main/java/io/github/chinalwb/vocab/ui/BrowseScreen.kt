@@ -181,7 +181,8 @@ internal fun Map<String, List<Attempt>>.stFoot(e: Entry): String? =
 /** The card's 进度 note: nothing for where an entry starts, like the page's .stg. */
 internal fun stageFoot(e: Entry, s: Stage): String? = when {
     s == Stage.Done -> "✓ 已掌握"
-    s == Stage.Test && e.level != "SELFTEST" -> "自测中"
+    s == Stage.Test && e.level != "SELFTEST" -> "考核中"
+    s == Stage.Review -> "复习中"
     else -> null
 }
 
@@ -450,7 +451,7 @@ private fun Badge(text: String) {
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
+internal fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()

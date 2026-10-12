@@ -51,7 +51,7 @@ data class PStage(val s: String, val t: Long)
 
 /** A 自测 attempt without what I typed — the text never leaves the device. */
 @Serializable
-data class PAttempt(val t: Long, val ok: Boolean, val peek: Boolean, val via: String)
+data class PAttempt(val t: Long, val ok: Boolean, val peek: Boolean, val via: String, /** the example asked (from the public notes) */ val ex: String = "")
 
 /** What a synced attempt shows here: the result came from the other device, the text didn't. */
 const val ELSEWHERE = "(在另一台设备上写的)"
@@ -167,7 +167,7 @@ class ProgressSync(
             l + r.attempts.map { (a, list) ->
                 val mine = l[a].orEmpty()
                 val seen = mine.map { it.t }.toSet()
-                a to (mine + list.filter { it.t !in seen }.map { Attempt(it.t, if (it.peek) "" else ELSEWHERE, it.ok, it.via) })
+                a to (mine + list.filter { it.t !in seen }.map { Attempt(it.t, if (it.peek) "" else ELSEWHERE, it.ok, it.via, it.ex) })
                     .sortedBy { it.t }.takeLast(MAX_PER_ENTRY)
             }
         }
@@ -182,7 +182,7 @@ class ProgressSync(
             newDay = r.newDay,
             newToday = r.newToday,
             resetAt = r.resetAt,
-            attempts = selfTests.state.value.mapValues { (_, l) -> l.map { PAttempt(it.t, it.ok, it.text.isEmpty(), it.via) } },
+            attempts = selfTests.state.value.mapValues { (_, l) -> l.map { PAttempt(it.t, it.ok, it.text.isEmpty(), it.via, it.ex) } },
         )
     }
 

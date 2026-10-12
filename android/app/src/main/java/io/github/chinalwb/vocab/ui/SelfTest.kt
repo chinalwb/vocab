@@ -51,6 +51,9 @@ import io.github.chinalwb.vocab.data.Block
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.data.Example
 import io.github.chinalwb.vocab.review.Attempt
+import io.github.chinalwb.vocab.review.Stage
+import io.github.chinalwb.vocab.review.allCorrectSince
+import io.github.chinalwb.vocab.review.next
 import io.github.chinalwb.vocab.review.summary
 import java.time.Instant
 import java.time.ZoneId
@@ -291,7 +294,7 @@ fun SelfTestHistory(attempts: List<Attempt>) {
                     modifier = Modifier.padding(top = 3.dp, end = 8.dp))
                 Text(when { a.text.isEmpty() -> "👀"; a.ok -> "✅"; else -> "❌" }, modifier = Modifier.padding(end = 8.dp))
                 Text(
-                    (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + when (a.via) { "review" -> " · 复习"; "selftest" -> " · 自测"; else -> "" },
+                    (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + when (a.via) { "review" -> " · 复习"; "test", "selftest" -> " · 考核"; else -> "" },
                     fontFamily = FontFamily.Serif, fontSize = 15.sp,
                 )
             }
@@ -449,5 +452,32 @@ fun WordBankChips(st: WordBankState) {
                     .padding(horizontal = 10.dp, vertical = 5.dp),
             ) { Text(w, fontFamily = FontFamily.Serif, fontSize = 16.sp, modifier = Modifier.alpha(if (used) 0f else 1f)) }
         }
+    }
+}
+
+/*
+ * Moving on: once every question of an entry has been answered right since it entered its
+ * stage — each example still in 自测, or a 自测题's one answer — the app offers the next stage.
+ * Entries with nothing to check against (graded by me) move only by hand.
+ */
+fun advanceReady(entry: Entry, stage: Stage, attempts: List<Attempt>, since: Long, excluded: Set<String>): Boolean {
+    if (stage.next == null) return false
+    val questions = if (entry.level == "SELFTEST") listOf("") else entry.quizExamples(excluded).map { plain(it.en) }
+    return attempts.allCorrectSince(since, questions)
+}
+
+/** "例句都答对过了 → 移到复习": the offer, with the move as its button. */
+@Composable
+fun AdvanceBanner(stage: Stage, onAdvance: () -> Unit) {
+    val next = stage.next ?: return
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.6f), RoundedCornerShape(12.dp))
+            .padding(start = 14.dp, end = 8.dp, top = 6.dp, bottom = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text("这一阶段的题都答对过了", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+        TextButton(onClick = onAdvance) { Text("移到${next.tab}") }
     }
 }

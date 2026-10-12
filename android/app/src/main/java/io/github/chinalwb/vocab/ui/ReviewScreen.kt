@@ -2,21 +2,16 @@ package io.github.chinalwb.vocab.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -29,116 +24,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
-import io.github.chinalwb.vocab.data.LibraryState
-import io.github.chinalwb.vocab.review.Attempt
-import io.github.chinalwb.vocab.review.Grade
-import io.github.chinalwb.vocab.review.ReviewData
-import io.github.chinalwb.vocab.review.Stage
-import io.github.chinalwb.vocab.review.stageOf
-import io.github.chinalwb.vocab.review.planToday
-import io.github.chinalwb.vocab.review.today
 import io.github.chinalwb.vocab.sync.SyncStatus
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.platform.LocalUriHandler
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-@Composable
-fun ReviewScreen(
-    lib: LibraryState,
-    review: ReviewData,
-    session: Session?,
-    onStart: () -> Unit,
-    onReveal: () -> Unit,
-    onGrade: (Grade) -> Unit,
-    onEnd: () -> Unit,
-    onReset: () -> Unit,
-    onXref: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    selfTests: Map<String, List<Attempt>> = emptyMap(),
-    onSelfTest: (Entry, String) -> Unit = { _, _ -> },
-    stages: Map<String, String> = emptyMap(),
-    onMastered: () -> Unit = {},
-    sync: SyncStatus = SyncStatus(),
-    onConnect: (String) -> Unit = {},
-    onDisconnect: () -> Unit = {},
-    onSyncNow: () -> Unit = {},
-) {
-    val current = session?.current
-    when {
-        session != null && current != null -> Card(
-            session, current, onReveal, onGrade, onEnd, onXref, modifier, selfTests[current.anchor].orEmpty(), onSelfTest,
-            inTest = stages.stageOf(current) == Stage.Test, onMastered = onMastered,
-        )
-        session != null -> Finished(session.done, onEnd, modifier)
-        else -> Overview(lib, review, stages, onStart, onReset, modifier) {
-            SyncPanel(sync, onConnect, onDisconnect, onSyncNow)
-            PracticeDrawer(lib, onXref)
-        }
-    }
-}
-
-@Composable
-private fun Overview(
-    lib: LibraryState, review: ReviewData, stages: Map<String, String>, onStart: () -> Unit, onReset: () -> Unit, modifier: Modifier,
-    extra: @Composable () -> Unit,
-) {
-    val entries = lib.data?.entries.orEmpty()
-    val mastered = entries.count { stages.stageOf(it) == Stage.Done }
-    val plan = planToday(entries.filter { stages.stageOf(it) != Stage.Done }, review)
-    val learned = entries.count { it.anchor in review.cards }
-    val today = today()
-    val tomorrow = entries.count { e -> review.cards[e.anchor]?.due == today + 1 }
-    var confirmReset by remember { mutableStateOf(false) }
-
-    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("今天", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Stat("待复习", plan.due.size, Modifier.weight(1f))
-            Stat("新条目", plan.fresh.size, Modifier.weight(1f))
-        }
-        Button(onClick = onStart, enabled = plan.all.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(52.dp)) {
-            Text(if (plan.all.isEmpty()) "今天没有要复习的了" else "开始复习 ${plan.all.size} 条")
-        }
-        HorizontalDivider()
-        Text(
-            "已学 $learned / 共 ${entries.size} 条 · 明天到期 $tomorrow 条" + (if (mastered > 0) " · 已掌握 $mastered 条不进复习" else "") + "\n" +
-                "「会写」的条目反着考:先看中文或原句,自己写出英文再对答案;「认识」的条目看英文回想意思。" +
-                "每天最多引入 10 条新条目,会写的优先。标了「已掌握」的不再出现,在条目里点「移回自测」就会回来。",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        extra()
-        TextButton(onClick = { confirmReset = true }, modifier = Modifier.align(Alignment.End)) { Text("重置复习进度") }
-    }
-    if (confirmReset) AlertDialog(
-        onDismissRequest = { confirmReset = false },
-        title = { Text("重置复习进度?") },
-        text = { Text("所有条目的复习记录都会清空,从头开始。词库本身不受影响。") },
-        confirmButton = { TextButton(onClick = { confirmReset = false; onReset() }) { Text("重置") } },
-        dismissButton = { TextButton(onClick = { confirmReset = false }) { Text("取消") } },
-    )
-}
-
-/** 练习 moved here when 自测 took its tab: folded away under the review overview. */
-@Composable
-private fun PracticeDrawer(lib: LibraryState, onOpen: (String) -> Unit) {
-    val prefs = androidx.compose.ui.platform.LocalContext.current.getSharedPreferences("practice", android.content.Context.MODE_PRIVATE)
-    var open by remember { mutableStateOf(prefs.getBoolean("open", false)) }
-    Column {
-        HorizontalDivider()
-        TextButton(onClick = { open = !open; prefs.edit().putBoolean("open", open).apply() }, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) {
-            Text((if (open) "▾ " else "▸ ") + "练习 · 今日仿写 / 本周段落", style = MaterialTheme.typography.titleSmall)
-        }
-        if (open) PracticeScreen(lib, onOpen, embedded = true)
-    }
-}
+// The 复习 tab itself is QuizScreen now (a stage's list, then a run through it). What stays
+// here is what a card asks, shared by the runs and the entry page, and the 同步 page.
 
 @Composable
 internal fun Stat(label: String, value: Int, modifier: Modifier) {
@@ -152,113 +51,16 @@ internal fun Stat(label: String, value: Int, modifier: Modifier) {
     }
 }
 
-@Composable
-private fun Card(
-    session: Session,
-    entry: Entry,
-    onReveal: () -> Unit,
-    onGrade: (Grade) -> Unit,
-    onEnd: () -> Unit,
-    onXref: (String) -> Unit,
-    modifier: Modifier,
-    attempts: List<Attempt>,
-    onSelfTest: (Entry, String) -> Unit,
-    inTest: Boolean,
-    onMastered: () -> Unit,
-) {
-    val kind = kindOf(entry, inTest)
-    // scratch space for the 中→英 / 先改后看 cards; only 自测 reveals are logged
-    var draft by remember(session.index) { mutableStateOf("") }
-    Column(modifier.fillMaxSize()) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
-            LinearProgressIndicator(
-                progress = { session.index.toFloat() / session.queue.size },
-                modifier = Modifier.weight(1f),
-                trackColor = MaterialTheme.colorScheme.outline,
-                drawStopIndicator = {},
-            )
-            Text("  ${session.index + 1} / ${session.queue.size}", style = MaterialTheme.typography.labelMedium)
-            // 斩: out of review until I move it back from the entry page
-            TextButton(onClick = onMastered) { Text("标为已掌握") }
-            TextButton(onClick = onEnd) { Text("结束") }
-        }
-        Column(
-            Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 12.dp)
-        ) {
-            ReviewFront(entry, kind)
-            if (kind.writes && !session.revealed) {
-                Spacer(Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = draft,
-                    onValueChange = { draft = it },
-                    placeholder = { Text(if (kind == Kind.SelfTest) "不看笔记,写出英文(揭晓时会记进自测历史)" else "在这里写你的英文(可选,不会保存)") },
-                    minLines = 3,
-                    textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-            if (session.revealed) {
-                Spacer(Modifier.height(20.dp))
-                HorizontalDivider()
-                Spacer(Modifier.height(20.dp))
-                if (kind == Kind.SelfTest) {
-                    SelfTestStats(attempts)
-                    Spacer(Modifier.height(8.dp))
-                }
-                if (kind == Kind.SelfTest && draft.isNotBlank()) {
-                    SelfTestResult(draft, entry.selfTestAnswer)
-                    Spacer(Modifier.height(16.dp))
-                } else if (kind.writes && draft.isNotBlank()) {
-                    Text("你写的", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Text(
-                        draft.trim(),
-                        fontFamily = FontFamily.Serif,
-                        fontSize = 17.sp,
-                        modifier = Modifier
-                            .padding(top = 6.dp, bottom = 16.dp)
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))
-                            .padding(12.dp),
-                    )
-                }
-                if (kind != Kind.Recognize) {
-                    Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
-                    Spacer(Modifier.height(12.dp))
-                }
-                EntryNotes(entry, onXref)
-                Spacer(Modifier.height(24.dp))
-            }
-        }
-        Box(Modifier.padding(16.dp)) {
-            if (!session.revealed) {
-                Button(
-                    onClick = { if (kind == Kind.SelfTest) onSelfTest(entry, draft); onReveal() },
-                    modifier = Modifier.fillMaxWidth().height(52.dp),
-                ) { Text("显示答案") }
-            } else {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Grade.entries.forEach { g ->
-                        OutlinedButton(onClick = { onGrade(g) }, modifier = Modifier.weight(1f).height(52.dp)) { Text(g.label) }
-                    }
-                }
-            }
-        }
-    }
-}
-
 /** What a card asks — the same rules as kind() in template.html. */
 enum class Kind(val writes: Boolean) { SelfTest(true), Sentence(true), Translate(true), Grammar(false), Produce(true), Recognize(false) }
 
-/** [inTest]: I moved it to 自测, so a 认识 entry is produced too. */
+/** [inTest]: it's being quizzed, so a 认识 entry is produced too. */
 fun kindOf(e: Entry, inTest: Boolean = false): Kind = when {
     e.level == "SELFTEST" -> Kind.SelfTest   // title is the Chinese prompt, the quote is the answer
     e.level == "SENTENCE" && e.originalSentence != null -> Kind.Sentence
     e.title.startsWith("翻译") -> Kind.Translate
     e.level == "GRAMMAR" -> Kind.Grammar
-    e.writes || inTest -> Kind.Produce   // 会写 or moved to 自测: 中→英
+    e.writes || inTest -> Kind.Produce   // 会写 or quizzed: 中→英
     else -> Kind.Recognize         // 认识: 英→中
 }
 
@@ -267,7 +69,7 @@ fun maskTitle(text: String, title: String): String =
     Regex("[A-Za-z]{3,}").findAll(title).map { it.value.lowercase() }.distinct()
         .fold(text) { t, w -> t.replace(Regex("\\b$w\\w*", RegexOption.IGNORE_CASE), "＿＿") }
 
-/** The prompt side of a card; an entry moved to 自测 asks the same way on its own page. */
+/** The prompt side of a card, for an entry without an example sentence to ask. */
 @Composable
 fun ReviewFront(entry: Entry, kind: Kind) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -315,19 +117,32 @@ private fun Hint(text: String) {
     Text(text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
 }
 
+/** ⋮ → 同步与数据: the GitHub sync panel and 重置复习进度. */
 @Composable
-private fun Finished(done: Int, onEnd: () -> Unit, modifier: Modifier) {
-    Column(
-        modifier.fillMaxSize().padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text("完成 🎉", fontSize = 30.sp, fontFamily = FontFamily.Serif)
-        Spacer(Modifier.height(8.dp))
-        Text("这一轮复习了 $done 次", color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Spacer(Modifier.height(24.dp))
-        Button(onClick = onEnd) { Text("返回") }
+fun SyncScreen(
+    sync: SyncStatus,
+    onConnect: (String) -> Unit,
+    onDisconnect: () -> Unit,
+    onSyncNow: () -> Unit,
+    onReset: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var confirmReset by remember { mutableStateOf(false) }
+    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        SyncPanel(sync, onConnect, onDisconnect, onSyncNow)
+        Text(
+            "复习的排期(每条下次什么时候到期)只在这台手机和同步的 progress 分支里。重置会清掉所有排期,从头开始;进度阶段和答题记录不受影响。",
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        TextButton(onClick = { confirmReset = true }, modifier = Modifier.align(Alignment.End)) { Text("重置复习排期") }
     }
+    if (confirmReset) AlertDialog(
+        onDismissRequest = { confirmReset = false },
+        title = { Text("重置复习排期?") },
+        text = { Text("所有条目的复习排期都会清空,从头开始。词库、进度阶段和答题记录不受影响。") },
+        confirmButton = { TextButton(onClick = { confirmReset = false; onReset() }) { Text("重置") } },
+        dismissButton = { TextButton(onClick = { confirmReset = false }) { Text("取消") } },
+    )
 }
 
 private val SYNCED_AT = DateTimeFormatter.ofPattern("M/d HH:mm").withZone(ZoneId.systemDefault())

@@ -12,9 +12,23 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.io.File
 
-/** One reveal of a 自测 entry. A blank [text] is a 偷看 (looked at the answer without writing). */
+/**
+ * One reveal of a question. A blank [text] is a 偷看 (looked at the answer without writing).
+ * [ex] is the example sentence asked (plain English); "" for a 自测题, which has one answer.
+ */
 @Serializable
-data class Attempt(val t: Long, val text: String, val ok: Boolean, /** "entry", "review" or "selftest" (the 自测 tab) */ val via: String)
+data class Attempt(
+    val t: Long,
+    val text: String,
+    val ok: Boolean,
+    /** "entry" (the entry page), "review" (复习), "test" (考核; "selftest" before v1.42) */
+    val via: String,
+    val ex: String = "",
+)
+
+/** Every one of [questions] answered right since [since] (ms) — what earns the move to the next stage. */
+fun List<Attempt>.allCorrectSince(since: Long, questions: List<String>): Boolean =
+    questions.isNotEmpty() && questions.all { q -> any { it.t >= since && it.ok && it.ex == q } }
 
 data class AttemptSummary(val tries: Int, val ok: Int, val peeks: Int, val last: Attempt?)
 

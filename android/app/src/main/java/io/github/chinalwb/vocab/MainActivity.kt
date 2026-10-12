@@ -68,6 +68,12 @@ import androidx.core.view.WindowInsetsControllerCompat
 import android.app.Activity
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.layout.PaddingValues
+import io.github.chinalwb.vocab.ui.PracticeScreen
+import io.github.chinalwb.vocab.ui.SyncScreen
+import io.github.chinalwb.vocab.ui.QuizScreen
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Star
@@ -119,8 +125,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.CompositionLocalProvider
 import io.github.chinalwb.vocab.ui.GridViewIcon
 import io.github.chinalwb.vocab.ui.MistakesScreen
-import io.github.chinalwb.vocab.ui.SelfTestScreen
-import io.github.chinalwb.vocab.ui.ReviewScreen
 import io.github.chinalwb.vocab.ui.VocabTheme
 import io.github.chinalwb.vocab.ui.VocabViewModel
 import io.github.chinalwb.vocab.review.Stage
@@ -157,6 +161,7 @@ private fun VocabNav() {
     val selfTests by vm.selfTests.collectAsStateWithLifecycle()
     val stages by vm.stages.collectAsStateWithLifecycle()
     val quizOptOut by vm.quizOptOut.collectAsStateWithLifecycle()
+    val stageData by vm.stageTimes.collectAsStateWithLifecycle()
 
     // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
     // the plain fades match the container transform's length so both sides finish together.
@@ -180,6 +185,14 @@ private fun VocabNav() {
                         stages = stages,
                     )
                 }
+                composable("mistakes") { SubPage("错题本", onBack = { nav.popBackStack() }) { pad -> MistakesScreen(lib, onOpen = { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) } }
+                composable("practice") { SubPage("练习", onBack = { nav.popBackStack() }) { pad -> PracticeScreen(lib, { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) } }
+                composable("sync") {
+                    val sync by vm.syncStatus.collectAsStateWithLifecycle()
+                    SubPage("同步与数据", onBack = { nav.popBackStack() }) { pad ->
+                        SyncScreen(sync, { vm.connectSync(it) }, vm::disconnectSync, vm::syncNow, { vm.resetReview() }, Modifier.padding(pad))
+                    }
+                }
                 composable("entry/{anchor}") { back ->
                     val anchor = back.arguments?.getString("anchor").orEmpty()
                     CompositionLocalProvider(LocalNavAnimatedScope provides this) {
@@ -191,8 +204,9 @@ private fun VocabNav() {
                             onSeen = vm::markSeen,
                             attempts = selfTests[anchor].orEmpty(),
                             onAttempt = { text -> if (entry != null) vm.recordSelfTest(entry, text, "entry") },
-                            onGrade = { text, ok -> if (entry != null) vm.recordAttempt(entry, text, ok, "entry") },
+                            onGrade = { text, ok, ex -> if (entry != null) vm.recordAttempt(entry, text, ok, "entry", ex) },
                             stage = entry?.let { stages.stageOf(it) } ?: Stage.Learn,
+                            since = stageData.t[anchor] ?: 0L,
                             onStage = { vm.setStage(anchor, it) },
                             excluded = quizOptOut[anchor].orEmpty(),
                             onToggleExample = { en -> if (entry != null) vm.toggleQuizExample(entry, en) },
@@ -210,12 +224,12 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val lib by vm.library.collectAsStateWithLifecycle()
     val checking by vm.checking.collectAsStateWithLifecycle()
     val review by vm.review.collectAsStateWithLifecycle()
-    val session by vm.session.collectAsStateWithLifecycle()
+    val quiz by vm.quiz.collectAsStateWithLifecycle()
     val tiles by vm.tiles.collectAsStateWithLifecycle()
     val selfTests by vm.selfTests.collectAsStateWithLifecycle()
     val stages by vm.stages.collectAsStateWithLifecycle()
-    val sync by vm.syncStatus.collectAsStateWithLifecycle()
-    val test by vm.test.collectAsStateWithLifecycle()
+    val stageData by vm.stageTimes.collectAsStateWithLifecycle()
+    val quizOptOut by vm.quizOptOut.collectAsStateWithLifecycle()
     val appUpdate by vm.appUpdate.collectAsStateWithLifecycle()
     // the browse page's 筛选与排序 sheet opens from the top bar
     var filterOpen by rememberSaveable { mutableStateOf(false) }
@@ -298,15 +312,15 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent, scrolledContainerColor = Color.Transparent),
                 scrollBehavior = if (tab == 0) bars else null,
                 title = {
-                    val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; 2 -> "错题本"; else -> "自测" }
+                    val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; 2 -> "考核"; else -> "掌握" }
                     Text(name, fontFamily = FontFamily.Serif, modifier = Modifier.graphicsLayer(barFade))
                 },
                 actions = {
-                    if (tab == 0) Row(Modifier.graphicsLayer(barFade)) {
-                        IconButton(onClick = { insets.show(WindowInsetsCompat.Type.statusBars()); nav.navigate("search") }) {
+                    Row(Modifier.graphicsLayer(barFade)) {
+                        if (tab == 0) IconButton(onClick = { insets.show(WindowInsetsCompat.Type.statusBars()); nav.navigate("search") }) {
                             Icon(Icons.Default.Search, "搜索")
                         }
-                        IconButton(onClick = { filterOpen = true }) {
+                        if (tab == 0) IconButton(onClick = { filterOpen = true }) {
                             BadgedBox(badge = { if (activeFilters > 0) Badge(containerColor = MaterialTheme.colorScheme.primary) }) {
                                 Icon(FilterIcon, "筛选与排序")
                             }
@@ -322,6 +336,22 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                                     text = { Text(if (tiles) "列表视图" else "卡片视图") },
                                     leadingIcon = { if (tiles) Icon(Icons.AutoMirrored.Filled.List, null) else Icon(GridViewIcon, null) },
                                     onClick = { menuOpen = false; vm.toggleTiles() },
+                                )
+                                // what used to be tabs, or lived under 复习: not part of the lifecycle
+                                DropdownMenuItem(
+                                    text = { Text("错题本") },
+                                    leadingIcon = { Icon(Icons.Default.Warning, null) },
+                                    onClick = { menuOpen = false; nav.navigate("mistakes") },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("练习 · 仿写 / 段落") },
+                                    leadingIcon = { Icon(Icons.Default.Edit, null) },
+                                    onClick = { menuOpen = false; nav.navigate("practice") },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("同步与数据") },
+                                    leadingIcon = { Icon(Icons.Default.Settings, null) },
+                                    onClick = { menuOpen = false; nav.navigate("sync") },
                                 )
                                 DropdownMenuItem(
                                     text = { Text(if (checking) "正在检查…" else "检查词库更新") },
@@ -370,11 +400,11 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                         .graphicsLayer { alpha = (1 - bars.state.collapsedFraction * 1.6f).coerceIn(0f, 1f) },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    // same order as the page's tabs; the indices aren't sequential (3 was 练习, now 自测)
+                    // the lifecycle, left to right: 学习中 (浏览) → 复习 → 考核 → 掌握
                     GlassTab(tab == 0, { tab = 0 }, Icons.AutoMirrored.Filled.List, "浏览")
-                    GlassTab(tab == 2, { tab = 2 }, Icons.Default.Warning, "错题")
-                    GlassTab(tab == 1, { tab = 1 }, Icons.Default.Star, "复习")
-                    GlassTab(tab == 3, { tab = 3 }, Icons.Default.Edit, "自测")
+                    GlassTab(tab == 1, { tab = 1 }, Icons.Default.Refresh, "复习")
+                    GlassTab(tab == 2, { tab = 2 }, Icons.Default.Edit, "考核")
+                    GlassTab(tab == 3, { tab = 3 }, Icons.Default.Star, "掌握")
                 }
             }
         },
@@ -396,42 +426,38 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onSheetOpen = { filterOpen = it },
                 onActiveCount = { activeFilters = it },
             )
-        } else if (tab == 2) {
-            MistakesScreen(lib, onOpen = open, modifier = Modifier.padding(pad))
-        } else if (tab == 3) {
-            SelfTestScreen(
-                lib, test, stages, selfTests,
-                onStart = vm::startTest,
-                onReveal = vm::revealTest,
-                onNext = vm::nextTest,
-                onEnd = vm::endTest,
-                onXref = open,
-                onGrade = vm::gradeTest,
-                modifier = Modifier.padding(pad).imePadding(),
-            )
         } else {
-            ReviewScreen(
-                lib, review, session,
-                onStart = vm::startReview,
-                onReveal = vm::reveal,
-                onGrade = vm::grade,
-                onEnd = vm::endReview,
-                onReset = { vm.resetReview() },
-                onXref = open,
-                modifier = Modifier.padding(pad).imePadding(),
-                selfTests = selfTests,
-                onSelfTest = { e, text -> vm.recordSelfTest(e, text, "review") },
-                stages = stages,
-                onMastered = vm::markMastered,
-                sync = sync,
-                onConnect = { vm.connectSync(it) },
-                onDisconnect = vm::disconnectSync,
-                onSyncNow = vm::syncNow,
+            val stage = when (tab) { 1 -> Stage.Review; 2 -> Stage.Test; else -> Stage.Done }
+            QuizScreen(
+                stage, lib, quiz, stages, stageData.t, selfTests, review, quizOptOut, tiles,
+                onOpen = open,
+                onStart = { vm.startQuiz(stage) },
+                onStudied = vm::studiedQuiz,
+                onReveal = vm::revealQuiz,
+                onGrade = vm::gradeQuiz,
+                onNext = vm::nextQuiz,
+                onEnd = vm::endQuiz,
+                modifier = if (quiz?.stage == stage) Modifier.padding(pad).imePadding() else Modifier,
+                contentPadding = pad,
             )
         }
         }
     }
     }
+}
+
+/** A page off the ⋮ menu: a top bar with ← and the content under it. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SubPage(title: String, onBack: () -> Unit, content: @Composable (PaddingValues) -> Unit) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(title, fontFamily = FontFamily.Serif) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") } },
+            )
+        },
+    ) { pad -> content(pad) }
 }
 
 /** One slot of the glass tab bar: the selected one sits in a soft pill. */
