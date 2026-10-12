@@ -958,6 +958,13 @@
     "peek": false,
     "via": "selftest",
     "ex": ""
+   },
+   {
+    "t": 1791800537816,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": "We don't expect to see any performance impact."
    }
   ],
   "t-wrong-color-blend": [
