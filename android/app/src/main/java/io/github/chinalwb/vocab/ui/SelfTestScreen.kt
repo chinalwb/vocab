@@ -119,7 +119,7 @@ private fun TestCard(
     val exam = entry.level == "SELFTEST"
     var draft by rememberSaveable(session.index) { mutableStateOf("") }
     // 选词 when there's an answer to check against (a 自测题's 答案, a moved entry's example):
-    // the answer box scrolls with the question, the chips sit above 显示答案 at the bottom
+    // the sentence box sits right under the question, the chips above 显示答案 at the bottom
     val ex = session.example
     val answer = if (exam) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
     val (chips, setChips) = rememberChipsMode()
@@ -154,7 +154,7 @@ private fun TestCard(
                 Spacer(Modifier.height(12.dp))
                 if (answer != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { AnswerModeToggle(chips, setChips) }
                 Spacer(Modifier.height(8.dp))
-                if (bank == null) DraftField(draft, { draft = it })
+                if (bank != null) WordBankAnswer(bank) else DraftField(draft, { draft = it })
             } else {
                 Spacer(Modifier.height(20.dp))
                 HorizontalDivider()
@@ -178,7 +178,7 @@ private fun TestCard(
         }
         Column(Modifier.padding(16.dp)) {
             if (!session.revealed) {
-                if (bank != null) { WordBankAnswer(bank); Spacer(Modifier.height(10.dp)); WordBankChips(bank); Spacer(Modifier.height(12.dp)) }
+                if (bank != null) { WordBankChips(bank); Spacer(Modifier.height(12.dp)) }
                 Button(onClick = { onReveal(draft) }, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text("显示答案") }
             } else {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
