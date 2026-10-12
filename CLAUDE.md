@@ -311,8 +311,9 @@ build.py 内部只有一个解析器 `parse_blocks()`:它把条目正文解析�
 
 ```bash
 cd android
-./gradlew assembleRelease     # app/build/outputs/apk/release/app-release.apk(用 debug key 签名,可直接装)
-./gradlew installDebug        # 装到已连接的设备或模拟器
+./gradlew publishApk          # android/apk/VoCab.apk + version.json(gitignore;有 keystore.properties 时用正式 key 签名)
+adb install -r apk/VoCab.apk  # 覆盖安装到已连接的手机(签名必须是 CN=aix,见下面「签名」)
+# installDebug 是 debug key 签名,和手机上的正式版签名不同,装不上;只在模拟器 / 没装正式版的设备上用:
 # 用本地数据测试更新检查:在仓库根目录跑 python3 -m http.server 8000,然后
 adb reverse tcp:8000 tcp:8000 && ./gradlew installDebug -PvocabUrl=http://localhost:8000/
 ```
@@ -323,3 +324,30 @@ adb reverse tcp:8000 tcp:8000 && ./gradlew installDebug -PvocabUrl=http://localh
 - `android/` 的改动不会触发 Pages 构建(workflow 有路径过滤),提交到 dev 即可。
 - **APK 不进 git,由 GitHub Actions 发布成 Release**(用户 2026-10-12 要求:53 个版本的 APK 让仓库涨到 100 MB,已用 filter-repo 从历史里清掉)。`main` 上 `android/**` 有改动时,`.github/workflows/apk.yml` 跑 `./gradlew publishApk -PrequireReleaseKey`,把 `VoCab.apk` 和 `version.json` 发成 tag `app-v<versionName>` 的 latest Release(同一个版本再跑就覆盖它的附件)。App 的「⋮ → 检查 App 更新」读 `https://github.com/chinalwb/vocab/releases/latest/download/version.json`,比本机新就下载同一处的 `VoCab.apk` 交给系统安装(`update/AppUpdater.kt`)。所以**改了 App 就要递增 versionCode**(`android/app/build.gradle.kts`),否则不会出新 Release、手机上也检查不到更新;**不要再把 APK 提交进仓库**(`android/apk/` 已 gitignore,本地 `publishApk` 的输出只用来 `adb install` 测试)。**不要用 `-PvocabUrl` 构建要发布的包**(会把 localhost 地址打包进去),`versionCode` 不能比手机上已装的小。
 - **签名**:APK 用正式 key 签名(和 backdrop App 同一把)。本地凭据在 `android/keystore.properties`(gitignore,从 backdrop 项目复制,里面是密码,**不要读、不要打印、不要提交**);CI 用仓库的 Actions secrets `KEYSTORE_BASE64` / `STORE_PASSWORD` / `KEY_ALIAS` / `KEY_PASSWORD`(用户自己设,我不经手),缺了 workflow 直接失败,`-PrequireReleaseKey` 也会拦住 debug 签名的包。本地没有 keystore.properties 时退回 debug key,这样的包签名不一致、手机上必须卸载才能装——所以本地装之前确认 `apksigner verify --print-certs` 显示的是 `CN=aix`。
+
+### 在别的电脑上开发 / 发布 App(用户 2026-10-13 要求记下来)
+
+**发布不需要本地有任何密钥**:签名和发布都在 GitHub Actions 上做,用的是已经存在仓库里的 4 个 Actions secrets。任何一台电脑都可以:
+
+1. clone 仓库(现在约 2.5 MB)。**2026-10-13 用 filter-repo 改写过历史**:这之前 clone 的副本和新历史没有共同祖先,不要 pull / merge,直接删掉重新 clone(或 `git fetch` 后把本地分支 reset 到 `origin/*`,确认没有没推的提交再做)。
+2. 改 App,**递增 `android/app/build.gradle.kts` 的 `versionCode`**(versionName 也改一下,它就是 Release 的 tag `app-v<versionName>`),提交并推到 `dev`。
+3. 用户把 `dev` 合进 `main` → `apk.yml` 自动构建、签名、发 Release → 手机上「⋮ → 检查 App 更新」。
+4. 看结果:`gh run list --workflow apk.yml`;`gh release list`;下载核对:`curl -sL https://github.com/chinalwb/vocab/releases/latest/download/version.json`。
+
+**只有想在本地构建、用 `adb install` 直接装到手机上测试时**,才需要这台电脑也有签名 key:
+
+- 把 `backdrop-release.jks` 拷到这台电脑上,再在 `android/` 下建 `keystore.properties`(4 行:`storeFile=<jks 的绝对路径>`、`storePassword=`、`keyAlias=`、`keyPassword=`;值和 backdrop 项目 `bg/keystore.properties` 里的一样)。**这一步由用户自己做,我不读、不复制这个文件**。
+- 需要 JDK 17、Android SDK(`apksigner` 在 `build-tools/*/` 里)、`python3`。
+- 没有这个文件也能构建,但会退回 debug key,装到手机上会报 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`;**不要为了装上去而卸载手机上的 App**(会丢本地的复习排期和例句排除名单),先把 key 配好。
+
+**Actions secrets**(已设好,换 key 或密码时才要重设,用户自己做):
+
+```bash
+base64 -i <path>/backdrop-release.jks | gh secret set KEYSTORE_BASE64
+gh secret set STORE_PASSWORD     # 交互式粘贴,下面两个同理
+gh secret set KEY_ALIAS
+gh secret set KEY_PASSWORD
+gh secret list                   # 只看名字,确认 4 个都在
+```
+
+改了 secrets 想立刻重新发当前版本:`gh workflow run apk.yml`(同一个 versionName 会覆盖那个 Release 的附件)。
