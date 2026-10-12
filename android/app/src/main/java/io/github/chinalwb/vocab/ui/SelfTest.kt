@@ -130,9 +130,11 @@ fun SelfTestResult(mine: String, answer: String, onRetry: (() -> Unit)? = null) 
                 Text("没有写就看答案了 —— 下次先写再看。", style = MaterialTheme.typography.titleSmall)
                 answer.lines().filter { it.isNotBlank() }.forEach { Line("答案", AnnotatedString(it), say = it) }
             }
-            d.same -> Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("✅ 和答案一致(大小写、标点不计)", style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-                SpeakButton(d.answer.joinToString(" "))
+            // right or wrong, both sentences are shown side by side: what I wrote, and the answer
+            d.same -> {
+                Text("✅ 和答案一致(大小写、标点不计)", style = MaterialTheme.typography.titleSmall)
+                Line("我写的", AnnotatedString(mine.trim()))
+                Line("答案", AnnotatedString(d.answer.joinToString(" ")), say = d.answer.joinToString(" "))
             }
             else -> {
                 Text("对照一下差异", style = MaterialTheme.typography.titleSmall)
