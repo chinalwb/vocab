@@ -1351,10 +1351,11 @@ function show(it, level, i, o = {}){
   const rows = [["类型", lvName], ["编号", it.no ? "#" + it.no : ""], ["音标", it.ipa], ["词性", it.pos], ["CEFR", it.cefr],
     ["掌握", it.mastery === "write" ? "会写" : "认识"], ["收录", it.date]].filter(r => r[1]);
   // progress band: levels on a track; a click on another level moves the entry there
-  const idx = STAGES.findIndex(st => st[0] === stage);
-  const levels = `<div class="lv" style="--n:${STAGES.length};--k:${idx}">` + STAGES.map(([k, name], j) => {
-    const dim = selfTest && j < STAGES.findIndex(x => x[0] === "test");   // a 自测题 starts at 考核
-    return `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}${dim ? " dim" : ""}" data-to="${k}"${dim || j === idx ? " disabled" : ""}>` +
+  // a 自测题's life starts at 考核, so its track has just those two levels
+  const steps = selfTest ? STAGES.filter(([k]) => k === "test" || k === "done") : STAGES;
+  const idx = Math.max(0, steps.findIndex(st => st[0] === stage));
+  const levels = `<div class="lv" style="--n:${steps.length};--k:${idx}">` + steps.map(([k, name], j) => {
+    return `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}" data-to="${k}"${j === idx ? " disabled" : ""}>` +
       `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`;
   }).join("") + `</div>`;
   // the card: notes on the front; while in 自测, the quiz on the back
