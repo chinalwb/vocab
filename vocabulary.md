@@ -144,6 +144,7 @@
 138. [自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?](#t-once-finished-list)
 139. [自测:我跟团队谈完再回复你。](#t-get-back-to-you)
 140. [worth](#worth)
+141. [for what it's worth](#for-what-its-worth)
 
 ---
 
@@ -4548,6 +4549,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 2. For what it's worth, the old version never had this bug.
    说一句供参考,旧版本从来没有这个 bug。
 
+详见独立条目 [for what it's worth](#for-what-its-worth)(语境、场景和 make the right call)。
+
 **worthwhile:值得的(可放在名词前,也可放在 be 后)**
 1. Learning to write well is a worthwhile investment.
    学会写好文章是一项值得的投资。
@@ -4568,3 +4571,44 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ *It worths a try.* → ✅ **It's worth a try.**;❌ *It's worth to read.* → ✅ **It's worth reading.**
 
 **相关条目:** [自测:不试一试,你永远不知道自己能走多远……](#t-worth-a-shot) —— *worth a shot* 和 *it worths* 的错误第一次出现在这里
+**相关条目:** [for what it's worth](#for-what-its-worth) —— 由 worth 构成的固定说法,单独展开了用法场景
+
+---
+
+<a id="for-what-its-worth"></a>
+## for what it's worth
+
+- 词性:phrase
+- CEFR:C2
+- 日期:2026-10-13
+- 掌握:会写
+
+**English definition:** used to say that you are offering an opinion or a piece of information that may or may not be useful or important.
+
+**含义:** 说句不一定管用的话;仅供参考。先把自己这句话的分量降下来,显得谦虚、不强加于人。字面是"按它本来值多少就算多少",也就是"我这话你看着办"。
+
+**义项一:表示支持(对方已经做了决定,正在犹豫或被质疑)**
+1. For what it's worth, I think you made the right call.
+   不管有没有用,我觉得你的决定是对的。
+2. For what it's worth, I think you made the right call. You seem much happier now.
+   不管有没有用,我觉得你选对了。你现在看起来开心多了。
+
+例 1 语境:同事说 *I pushed the release back a week. The manager isn't happy about it.*(我把发布推迟了一周,经理不太高兴。)你不是决策者,支持也改变不了经理的态度,所以先说 *for what it's worth*:"我的意见可能没什么用,但我站你这边。"
+
+例 2 语境:朋友说 *I keep wondering if I should've stayed at my old job.*(我老在想是不是该留在原来的公司。)
+
+**义项二:补充信息、提建议(仅供参考)**
+1. For what it's worth, I had the same issue last year and restarting fixed it.
+   仅供参考,我去年也遇到过这个问题,重启就好了。
+2. I'm not an expert, but for what it's worth, I'd go with option B.
+   我不是专家,但仅供参考,我会选方案 B。
+
+**什么时候用:** 自己的意见可能不被需要、不够权威,或者事情已经定了的时候。表示支持、提建议、补充信息都可以。
+
+**常见搭配:**
+
+- **make the right call** —— 做出正确的判断或决定;*call* 就是"决定、判断",来自裁判"判罚"。*You made the right call.*(你做得对。)
+- **make the wrong call** —— 判断错了。*In hindsight, I made the wrong call.*(事后看,我判断错了。)
+- **It's your call.** —— 你来决定。*Both options work. It's your call.*(两个方案都行,你定。)
+
+**相关条目:** [worth](#worth) —— worth 的全部用法;这个短语是其中的固定说法
