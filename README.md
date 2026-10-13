@@ -4,7 +4,7 @@
 
 **在线浏览:** https://chinalwb.github.io/vocab/
 
-**Android App(VoCab):** [下载 APK](https://github.com/chinalwb/vocab/raw/main/android/apk/VoCab.apk)
+**Android App(VoCab):** [下载 APK](https://github.com/chinalwb/vocab/releases/latest/download/VoCab.apk)(最新 [Release](https://github.com/chinalwb/vocab/releases/latest))
 
 ## 内容
 
@@ -50,7 +50,7 @@
 
 `android/` 里是一个自用的 Android App(VoCab),用来浏览词条、做间隔重复复习。它从 Pages 拉取 `data.json`,词库更新后会自动提示。
 
-**下载:** [VoCab.apk](https://github.com/chinalwb/vocab/raw/main/android/apk/VoCab.apk) —— 在手机浏览器里打开就会直接下载;首次安装需要在系统设置里允许浏览器"安装未知应用"。
+**下载:** [VoCab.apk](https://github.com/chinalwb/vocab/releases/latest/download/VoCab.apk) —— APK 不在仓库里,由 GitHub Actions 构建并发布到 [Releases](https://github.com/chinalwb/vocab/releases),这个链接始终指向最新版;在手机浏览器里打开就会直接下载,首次安装需要在系统设置里允许浏览器"安装未知应用"。装好之后用 App 里的「⋮ → 检查 App 更新」升级即可。
 
 构建方法见 `CLAUDE.md`。
 
