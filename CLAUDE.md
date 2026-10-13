@@ -209,6 +209,13 @@
 - 切分规则有两份:`build.py` 的 `sections()`(网页,`item["slides"]`)和 `Model.kt` 的 `splitSections()`(App,从 blocks 现算)——**改一处必须同步改另一处**。
 - 所以写条目时:每个义项、搭配、辨析都用加粗小标题开头;例句下的补充说明不要缩进成第三行(会被解析成独立段落),单独写一段并注明「例 N 注意:…」。
 
+### 字体与字号(用户 2026-10-13)
+
+- **App 全部文字用 Atkinson Hyperlegible**(用户从十种字体的并排对比里选的,"tidy and neat")。走 Google 可下载字体(依赖 `ui-text-google-fonts`,证书在 `res/values/font_certs.xml`),APK 不变大;没下载到之前或首次离线时显示系统字体。中文没有字形,用系统字体。这个字体只有 400 / 700 两档,Medium / SemiBold 会落到最近的一档。
+- **只在一处定义**:`ui/Fonts.kt` 的 `APP_FONT_NAME` / `AppFont`,`AppTypography` 把它套进所有 Material 文字样式;原来写死的 `FontFamily.Serif` 全换成了 `AppFont`。用户说以后可能换字体、真有需要时再做「字体设置」,所以**不要再在别处写死字体**。
+- **字号整体放大 8%**:`FONT_SCALE = 1.08f`,在 `VocabTheme` 里乘到 `LocalDensity.fontScale` 上,叠加在手机系统字号之上,Material 样式和写死的 `fontSize` 一起变。要再调大小只改这个数。
+- 网页还是 Newsreader(英文)+ Noto Sans SC(中文),还没跟着换。
+
 ### 朗读(用户 2026-10-12 要求,网页和 App 一致)
 
 - 用设备自带的语音合成,免费、离线、不用密钥:App 是 Android `TextToSpeech`(`ui/Speech.kt` 的 `Speaker`,全 App 一个实例挂在 `VocabApp.speaker`;Manifest 里有 `<queries>` 声明 TTS_SERVICE,Android 11+ 找引擎要用),网页是 `speechSynthesis`(`speak()`,优先挑名字带 natural / neural / Google US English / Samantha 的英美音色)。en-US,语速 0.95。

@@ -277,7 +277,7 @@ private fun QuizCard(
                 // 复习: read it again first
                 Text("先看一遍", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(Modifier.height(6.dp))
-                Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 24.sp, lineHeight = 30.sp)
+                Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.SemiBold, fontSize = 24.sp, lineHeight = 30.sp)
                 Spacer(Modifier.height(12.dp))
                 EntryNotes(entry, onXref)
                 Spacer(Modifier.height(24.dp))
@@ -300,7 +300,7 @@ private fun QuizCard(
                     SelfTestHistory(attempts)
                     if (ready) { Spacer(Modifier.height(8.dp)); AdvanceBanner(session.stage) { onNext(true) } }
                     Spacer(Modifier.height(16.dp))
-                    Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+                    Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
                     Spacer(Modifier.height(12.dp))
                     EntryNotes(entry, onXref)
                     Spacer(Modifier.height(24.dp))

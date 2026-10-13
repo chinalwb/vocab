@@ -191,7 +191,7 @@ private fun MistakeCard(m: Mistake, entry: Entry, onClick: () -> Unit) {
                     Box(Modifier.width(2.dp).fillMaxHeight().background(MaterialTheme.colorScheme.outline))
                     Text(
                         m.original,
-                        fontFamily = FontFamily.Serif,
+                        fontFamily = AppFont,
                         fontSize = 15.sp,
                         lineHeight = 21.sp,
                         color = muted,

@@ -153,7 +153,7 @@ private fun Draft(value: String, placeholder: String, minLines: Int = 3, onChang
         onValueChange = onChange,
         placeholder = { Text(placeholder) },
         minLines = minLines,
-        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
+        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = AppFont),
         modifier = Modifier.fillMaxWidth(),
     )
 }

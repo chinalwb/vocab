@@ -126,6 +126,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import io.github.chinalwb.vocab.ui.GridViewIcon
 import io.github.chinalwb.vocab.ui.MistakesScreen
 import io.github.chinalwb.vocab.ui.VocabTheme
+import io.github.chinalwb.vocab.ui.AppFont
 import io.github.chinalwb.vocab.ui.VocabViewModel
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.stageOf
@@ -191,7 +192,6 @@ private fun VocabNav() {
                 }
                 composable("mistakes") { SubPage("错题本", onBack = { nav.popBackStack() }) { pad -> MistakesScreen(lib, onOpen = openAlone, modifier = Modifier.padding(pad)) } }
                 composable("practice") { SubPage("练习", onBack = { nav.popBackStack() }) { pad -> PracticeScreen(lib, openAlone, modifier = Modifier.padding(pad)) } }
-                composable("fonts") { SubPage("字体对比", onBack = { nav.popBackStack() }) { pad -> io.github.chinalwb.vocab.ui.FontPreviewScreen(Modifier.padding(pad)) } }
                 composable("sync") {
                     val sync by vm.syncStatus.collectAsStateWithLifecycle()
                     SubPage("同步与数据", onBack = { nav.popBackStack() }) { pad ->
@@ -330,7 +330,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 scrollBehavior = if (tab == 0) bars else null,
                 title = {
                     val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; 2 -> "考核"; else -> "掌握" }
-                    Text(name, fontFamily = FontFamily.Serif, modifier = Modifier.graphicsLayer(barFade))
+                    Text(name, fontFamily = AppFont, modifier = Modifier.graphicsLayer(barFade))
                 },
                 actions = {
                     Row(Modifier.graphicsLayer(barFade)) {
@@ -364,11 +364,6 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                                     text = { Text("练习 · 仿写 / 段落") },
                                     leadingIcon = { Icon(Icons.Default.Edit, null) },
                                     onClick = { menuOpen = false; nav.navigate("practice") },
-                                )
-                                DropdownMenuItem(
-                                    text = { Text("字体对比") },
-                                    leadingIcon = { Icon(Icons.Default.Edit, null) },
-                                    onClick = { menuOpen = false; nav.navigate("fonts") },
                                 )
                                 DropdownMenuItem(
                                     text = { Text("同步与数据") },
@@ -476,7 +471,7 @@ private fun SubPage(title: String, onBack: () -> Unit, content: @Composable (Pad
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title, fontFamily = FontFamily.Serif) },
+                title = { Text(title, fontFamily = AppFont) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") } },
             )
         },
