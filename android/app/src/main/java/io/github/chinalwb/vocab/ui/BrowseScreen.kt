@@ -214,11 +214,14 @@ fun BrowseScreen(
     // 排序: by level (grouped, the default) or by 收录 date, newest / oldest first, grouped by month
     var sortF by rememberSaveable { mutableStateOf(SORT_LEVEL) }
     // 筛选, same as the page: 类型 (ALL / WORD / TERM …, with a CEFR sub-row under WORD) and
-    // 进度, each single-choice; 只看会写 and 有更新 are toggles that narrow the rest.
+    // 进度, each single-choice; 只看会写, 有收藏 and 有更新 are toggles that narrow the rest.
     var typeF by rememberSaveable { mutableStateOf(ALL) }
     var cefrF by rememberSaveable { mutableStateOf<String?>(null) }
     var writeOnly by rememberSaveable { mutableStateOf(false) }
     var changedOnly by rememberSaveable { mutableStateOf(false) }
+    // entries with a ⭐ example sentence (long-press → 收藏 on the entry page)
+    var favOnly by rememberSaveable { mutableStateOf(false) }
+    val starred = LocalStarred.current
     val entries = lib.data?.entries.orEmpty()
     val changed = lib.newAnchors + lib.updatedAnchors
     if (changedOnly && changed.isEmpty()) changedOnly = false
@@ -227,9 +230,11 @@ fun BrowseScreen(
     }
 
     // what the toggles leave; the chip rows and the list narrow it further (search has its own page)
-    val base = remember(entries, changed, changedOnly, writeOnly) {
-        entries.filter { e -> (!writeOnly || e.writes) && (!changedOnly || e.anchor in changed) }
+    val base = remember(entries, changed, changedOnly, writeOnly, favOnly, starred) {
+        entries.filter { e -> (!writeOnly || e.writes) && (!changedOnly || e.anchor in changed) && (!favOnly || e.anchor in starred) }
     }
+    val favCount = entries.count { it.anchor in starred }
+    if (favOnly && favCount == 0) favOnly = false
     // (header label, entries): level groups, or month groups when sorted by date
     val groups = remember(base, typeF, cefrF, stageF, stages, sortF) {
         val shown = base.filter { e -> (stageF == null || stages.stageOf(e) == stageF) && levelShown(e.level) }
@@ -268,12 +273,13 @@ fun BrowseScreen(
     }
     val shownCount = groups.sumOf { it.second.size }
     val shownAnchors = remember(groups) { groups.flatMap { g -> g.second.map { it.anchor } } }
-    val clearAll = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false; sortF = SORT_LEVEL }
+    val clearAll = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false; favOnly = false; sortF = SORT_LEVEL }
     // what's on, as removable chips under the search; the same list drives the button's badge
     val active = buildList {
         if (typeF != ALL) add((TYPES.first { it.first == typeF }.second + (cefrF?.let { " · $it" } ?: "")) to { typeF = ALL; cefrF = null })
         stageF?.let { add(it.label to { stageF = null }) }
         if (writeOnly) add("只看会写" to { writeOnly = false })
+        if (favOnly) add("⭐ 有收藏" to { favOnly = false })
         if (changedOnly) add("有更新" to { changedOnly = false })
         if (sortF != SORT_LEVEL) add(SORTS.first { it.first == sortF }.second to { sortF = SORT_LEVEL })
     }
@@ -340,6 +346,7 @@ fun BrowseScreen(
                 // toggles narrow everything else, so they are checkboxes rather than another chip
                 FilterSection("选项") {
                     CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly }
+                    if (favCount > 0) CheckToggle("⭐ 有收藏 $favCount", favOnly) { favOnly = !favOnly }
                     if (changed.isNotEmpty()) CheckToggle("有更新 ${changed.size}", changedOnly) { changedOnly = !changedOnly }
                 }
                 androidx.compose.material3.Button(onClick = { onSheetOpen(false) }, modifier = Modifier.fillMaxWidth().height(48.dp)) {

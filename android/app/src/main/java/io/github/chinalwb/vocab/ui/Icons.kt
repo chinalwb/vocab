@@ -37,3 +37,20 @@ val VolumeUpIcon: ImageVector = ImageVector.Builder("VolumeUp", 24.dp, 24.dp, 24
     ),
     fill = SolidColor(Color.Black),
 ).build()
+
+// Material's "content_copy" and "star_border": the long-press menu on an example sentence.
+val ContentCopyIcon: ImageVector = ImageVector.Builder("ContentCopy", 24.dp, 24.dp, 24f, 24f).addPath(
+    pathData = addPathNodes(
+        "M16,1H4c-1.1,0 -2,0.9 -2,2v14h2V3h12V1z" +
+            "M19,5H8c-1.1,0 -2,0.9 -2,2v14c0,1.1 0.9,2 2,2h11c1.1,0 2,-0.9 2,-2V7c0,-1.1 -0.9,-2 -2,-2zM19,21H8V7h11v14z"
+    ),
+    fill = SolidColor(Color.Black),
+).build()
+
+val StarBorderIcon: ImageVector = ImageVector.Builder("StarBorder", 24.dp, 24.dp, 24f, 24f).addPath(
+    pathData = addPathNodes(
+        "M22,9.24l-7.19,-0.62L12,2L9.19,8.63L2,9.24l5.46,4.73L5.82,21L12,17.27L18.18,21l-1.63,-7.03L22,9.24z" +
+            "M12,15.4l-3.76,2.27l1,-4.28l-3.32,-2.88l4.38,-0.38L12,6.1l1.71,4.04l4.38,0.38l-3.32,2.88l1,4.28L12,15.4z"
+    ),
+    fill = SolidColor(Color.Black),
+).build()

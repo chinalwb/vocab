@@ -104,6 +104,8 @@ fun EntryScreen(
     /** examples opted out of 自测 (their plain English), and the tap that toggles one */
     excluded: Set<String> = emptySet(),
     onToggleExample: (String) -> Unit = {},
+    /** long-press → 收藏 / 取消收藏 on an example (its plain English) */
+    onFav: (String) -> Unit = {},
     /** 下一个 in the list this was opened from ("6 / 20"), when there is one */
     nextLabel: String? = null,
     onNext: (() -> Unit)? = null,
@@ -216,7 +218,7 @@ fun EntryScreen(
                 front = {
                     EntryNotes(
                         entry, onXref, inCard = true, modifier = Modifier.weight(1f),
-                        quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample),
+                        quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample, onFav),
                         trailing = { ExpandButton(fullscreen, toggleFull) },
                     )
                     FlipButton(if (revealed) "回到自测" else "自测一下") { quizUp = true }

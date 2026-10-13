@@ -13,7 +13,8 @@ class VocabApp : Application() {
     val reviews by lazy { ReviewStore(this) }
     val selfTests by lazy { SelfTestLog(this) }
     val stages by lazy { StageStore(this) }
-    val progress by lazy { ProgressSync(this, reviews, selfTests, stages) }
+    val favs by lazy { io.github.chinalwb.vocab.review.FavStore(this) }
+    val progress by lazy { ProgressSync(this, reviews, selfTests, stages, favs) }
     val updater by lazy { io.github.chinalwb.vocab.update.AppUpdater(this) }
     val speaker by lazy { io.github.chinalwb.vocab.ui.Speaker(this) }
 
