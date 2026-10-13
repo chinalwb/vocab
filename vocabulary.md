@@ -141,6 +141,7 @@
 135. [自测:给单词、短语和句子加朗读功能,有什么可行的办法?有免费的方案吗?](#t-text-to-speech)
 136. [stray](#stray)
 137. [自测:很高兴看到自己有点进步,哪怕很小。](#t-making-some-progress)
+138. [自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?](#t-once-finished-list)
 
 ---
 
@@ -4425,3 +4426,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ❌ [结构] **happy for it seems like** —— *for* 表"因为"是书面文学体,前面必须有逗号;日常读起来是 *happy for it*,后面的 *seems like* 就接不上 → **I'm glad to see (that) I'm …** 或 **I'm happy because …**。
 - ⚠️ [搭配] **making some tiny improvements** —— *make improvements* 用于改进某个东西;说自己在进步用 **making progress** / **improving**,*tiny* 换成 *small*。
+
+---
+
+<a id="t-once-finished-list"></a>
+## 自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?
+
+- 日期:2026-10-13
+- 掌握:会写
+
+**答案:**
+
+> Once we've finished everything on this list, task #3 will be done, right?
+> Once we finish everything on this list, task #3 will be done, right?
+
+**要点:**
+
+- **once + 时间从句**:「等…就…」默认事情会发生,用 *once*;「如果…就…」才用 *if*(言下之意可能做不完)。
+- **时间从句不用 will**:从句用一般现在时或现在完成时,主句用 *will*,和第一条件句同一条规则;❌ *Once we will finish…*。*we've finished* 强调先做完、再有结果。
+- **on a list / in a table**:列表用 *on*,表格用 *in*。
+
+**我的原句:**
+
+> We will finish task #3 if we complete the tasks listed in the table, right?
+
+- ⚠️ [搭配] **listed in the table** —— 原文是「列表」,*table* 是表格 → **everything on this list**。
+- ✅ **finish … if we complete …** —— 意思清楚,日常使用完全够用;*finish* 和 *complete* 重复,「做完…就…」用 **once** 更贴切。
