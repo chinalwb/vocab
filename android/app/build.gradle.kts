@@ -25,8 +25,8 @@ android {
         applicationId = "io.github.chinalwb.vocab"
         minSdk = 26
         targetSdk = 36
-        versionCode = 55
-        versionName = "1.54"
+        versionCode = 56
+        versionName = "1.55"
         // Where updates are fetched from. Override for local testing, e.g.
         // ./gradlew installDebug -PvocabUrl=http://localhost:8000/  (with adb reverse)
         val vocabUrl = (project.findProperty("vocabUrl") as String?) ?: "https://chinalwb.github.io/vocab/"
@@ -105,6 +105,7 @@ dependencies {
     implementation(composeBom)
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-text-google-fonts")
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
