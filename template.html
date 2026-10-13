@@ -355,7 +355,10 @@ h1{
 .wb-ans .wchip{background:var(--card-ink);border-color:var(--card-ink);color:var(--sw)}
 .wchip.used{background:color-mix(in srgb, var(--card-ink) 8%, transparent);border-color:transparent;color:transparent;cursor:default}
 .wb-clear{position:absolute;top:6px;right:6px;font:inherit;font-size:12.5px;color:var(--card-ink-2);background:none;border:0;padding:6px 8px;cursor:pointer;border-radius:8px}
-.wb-bank{display:flex;flex-wrap:wrap;gap:6px;max-height:200px;overflow-y:auto;margin:12px 0 0}
+.wb-bank{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.wb-bank .wchip{font-size:17px;padding:8px 14px}
+.wb-ans span.wchip{opacity:.75;cursor:default}
+.wb-done{color:var(--card-ink-2);font-size:13px;padding:8px 0}
 .face .cta .wb-bank{margin:0 0 10px}
 .wchip:focus-visible,.wb-clear:focus-visible,.amode button:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px}
 .wb-ans[hidden],.wb-bank[hidden],textarea.draft[hidden]{display:none}
@@ -1178,27 +1181,43 @@ const modeToggleHtml = () => `<span class="amode" role="group" aria-label="作�
 // what a question checks against: a 自测题's first 答案 line, a moved entry's example; else none
 const answerOf = (it, level, ex) => level === "SELFTEST" ? ((it.answer || "").split("\n").find(l => l.trim()) || null) : ex ? plainMd(ex.en) : null;
 const othersOf = (it, answer) => [...quizExamples(it).map(x => plainMd(x.en)), ...(it.answer || "").split("\n")].filter(l => l.trim() && l !== answer);
-// [picks]: bank indices in order, kept by the caller (mutated in place) so a re-render keeps them
+// 选词, four at a time (用户 2026-10-13, same as ui/SelfTest.kt WordBankState): after k picks the
+// chips are the answer's word k+1, two words from later in the answer (so order is what's tested)
+// and a stray, shuffled. A wrong pick still moves on; 显示答案's diff shows where it went wrong.
+// Only the last word can be taken back. [picks]: the words so far, kept by the caller (mutated in
+// place) so a re-render keeps them.
+const BANK_CHIPS = 4;
+function bankOptions(words, strays, seed, k){
+  if (k >= words.length) return [];
+  const s = seed * 31 + k, right = words[k], seen = new Set([right.toLowerCase()]);
+  const fresh = w => !seen.has(w.toLowerCase()) && seen.add(w.toLowerCase());
+  const later = shuffled(words.slice(k + 1), s).filter(fresh).slice(0, 2);
+  const fill = shuffled(strays, s + 1).filter(fresh).slice(0, BANK_CHIPS - 1 - later.length);
+  return shuffled([right, ...later, ...fill], s + 2);
+}
 function mountBank(ansEl, bankEl, input, answer, others, seed, picks){
-  const bank = shuffled([...chipWords(answer), ...strayWords(answer, others, seed)], seed);
-  const paint = focusK => {
-    input.value = picks.map(k => bank[k]).join(" ");
+  const words = chipWords(answer), strays = strayWords(answer, others, seed, 6);
+  const paint = focus => {
+    input.value = picks.join(" ");
     input.dispatchEvent(new Event("input"));
     ansEl.innerHTML = picks.length
-      ? picks.map(k => `<button type="button" class="wchip" data-k="${k}" aria-label="放回 ${esc(bank[k])}">${esc(bank[k])}</button>`).join("") + `<button type="button" class="wb-clear">清空</button>`
-      : `<span class="wb-ph">点下面的词,拼出英文…</span>`;
-    // a used chip leaves an empty slot, so the rest don't jump about
-    bankEl.innerHTML = bank.map((w, k) => picks.includes(k)
-      ? `<button type="button" class="wchip used" disabled aria-hidden="true">${esc(w)}</button>`
-      : `<button type="button" class="wchip" data-k="${k}">${esc(w)}</button>`).join("");
-    if (focusK !== undefined) (bankEl.querySelector(".wchip:not(.used)") || ansEl.querySelector(".wchip"))?.focus();
+      ? picks.map((w, k) => k === picks.length - 1
+          ? `<button type="button" class="wchip last" aria-label="撤回 ${esc(w)}">${esc(w)}</button>`
+          : `<span class="wchip">${esc(w)}</span>`).join("") + `<button type="button" class="wb-clear">清空</button>`
+      : `<span class="wb-ph">点下面的词,一个一个拼出英文…</span>`;
+    const opts = bankOptions(words, strays, seed, picks.length);
+    bankEl.innerHTML = opts.length
+      ? opts.map(w => `<button type="button" class="wchip" data-w="${esc(w)}">${esc(w)}</button>`).join("")
+      : `<span class="wb-done">拼完了,点「显示答案」对照;点最后一个词可以撤回</span>`;
+    if (focus) (bankEl.querySelector(".wchip") || ansEl.querySelector(".wchip.last"))?.focus();
   };
   ansEl.onclick = e => {
     if (e.target.closest(".wb-clear")) picks.length = 0;
-    else { const b = e.target.closest(".wchip"); if (!b) return; picks.splice(picks.indexOf(+b.dataset.k), 1); }
+    else if (e.target.closest(".wchip.last")) picks.pop();
+    else return;
     paint();
   };
-  bankEl.onclick = e => { const b = e.target.closest(".wchip[data-k]"); if (!b) return; picks.push(+b.dataset.k); paint(true); };
+  bankEl.onclick = e => { const b = e.target.closest(".wchip[data-w]"); if (!b) return; picks.push(b.dataset.w); paint(true); };
   paint();
 }
 function setChipsMode(v){ chipsMode = v; store.set("vk.chips", v ? "1" : "0"); }
