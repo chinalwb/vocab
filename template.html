@@ -385,7 +385,17 @@ h1{
 .sheet .body ol.ex li.qz.out{opacity:.45}
 .sheet .body ol.ex li.qz.out::before{background:transparent;border:1.5px solid var(--card-ink-2);color:var(--card-ink-2)}
 .qz-cap{font-size:11.5px;color:var(--card-ink-2);margin:-6px 0 12px 24px}
-.flash{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:var(--chip-on);color:var(--chip-on-ink);font-size:13px;padding:9px 16px;border-radius:999px;box-shadow:var(--shadow-lift);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+/* ⭐ on a starred example; the long-press menu (a bottom sheet over the entry sheet) */
+.body ol.ex li .star::before{content:"⭐";font-size:.8em;margin-left:4px}
+.sheet .body ol.ex > li[data-key]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.exm-back{position:fixed;inset:0;z-index:70;background:var(--scrim)}
+.exm{position:fixed;z-index:71;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;background:var(--ground);color:var(--ink);border-radius:20px 20px 0 0;box-shadow:var(--shadow-lift);padding:18px 0 calc(10px + env(safe-area-inset-bottom,0px))}
+.exm-en{margin:0 24px;font-family:Newsreader,serif;font-size:18px;line-height:1.4}
+.exm-zh{margin:4px 24px 0;font-size:14px;color:var(--ink-2)}
+.exm button{display:block;width:100%;text-align:left;font:inherit;font-size:15px;color:inherit;background:none;border:0;padding:14px 24px;cursor:pointer}
+.exm button:first-of-type{margin-top:10px;border-top:1px solid var(--rule)}
+.exm button:hover,.exm button:focus-visible{background:var(--rule);outline:none}
+.flash{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;background:var(--chip-on);color:var(--chip-on-ink);font-size:13px;padding:9px 16px;border-radius:999px;box-shadow:var(--shadow-lift);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
 .flash.on{opacity:1}
 .sheet h2{
   font-family:Newsreader,Georgia,"Songti SC",serif;
@@ -815,6 +825,7 @@ let view = store.get("vk.view", store.get("vk.level", "") === "MISTAKES" ? "mist
 if (view === "practice") view = "review";
 if (view === "mistakes") view = "more";
 let writeOnly = store.get("vk.write", "0") === "1";
+let favOnly = store.get("vk.fav", "0") === "1";             // entries with a ⭐ example
 
 const pill = (text, on, click, cls = "") => {
   const b = document.createElement("button");
@@ -832,7 +843,7 @@ const row = (label, cls = "") => {
   return r.lastChild;                       // the pills go in here; the label keeps its own column
 };
 const typeRow = row("类型"), cefrRow = row("级别", "sub"), stageRow = row("进度"), optRow = row("选项");
-const clearAll = () => { typeF = "ALL"; cefrF = ""; stageF = ""; writeOnly = false; saveFilters(); };
+const clearAll = () => { typeF = "ALL"; cefrF = ""; stageF = ""; writeOnly = false; favOnly = false; saveFilters(); };
 const clearBtn = document.getElementById("freset");
 clearBtn.addEventListener("click", clearAll);
 const fbtn = document.getElementById("fbtn"), fbn = document.getElementById("fbn"), fsum = document.getElementById("fsum");
@@ -861,7 +872,7 @@ addEventListener("resize", () => { if (!fsheet.hidden) openFilters(); });
 
 function saveFilters(){
   store.set("vk.type", typeF); store.set("vk.cefr", cefrF);
-  store.set("vk.stagef", stageF); store.set("vk.write", writeOnly ? "1" : "0");
+  store.set("vk.stagef", stageF); store.set("vk.write", writeOnly ? "1" : "0"); store.set("vk.fav", favOnly ? "1" : "0");
   paintFilters(); render();
 }
 function paintFilters(){
@@ -870,11 +881,13 @@ function paintFilters(){
   cefrRow.querySelectorAll(".pill").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.c === cefrF)));
   stageRow.querySelectorAll("[data-s]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === stageF)));
   wr.setAttribute("aria-checked", String(writeOnly));
+  fv.setAttribute("aria-checked", String(favOnly));
   // what's on stays visible after the panel closes: a removable chip per filter, a count on the button
   const on = [];
   if (typeF !== "ALL") on.push([TYPES.find(t => t[0] === typeF)[1] + (cefrF ? " · " + cefrF : ""), () => { typeF = "ALL"; cefrF = ""; }]);
   if (stageF) on.push([STAGE_NAME[stageF], () => { stageF = ""; }]);
   if (writeOnly) on.push(["只看会写", () => { writeOnly = false; }]);
+  if (favOnly) on.push(["⭐ 有收藏", () => { favOnly = false; }]);
   fbn.hidden = !on.length; fbn.textContent = on.length;
   fbtn.classList.toggle("on", on.length > 0);
   clearBtn.hidden = !on.length;
@@ -914,6 +927,13 @@ wr.title = "只看标了「会写」的条目:这些要练到能自己写出来"
 wr.innerHTML = '<span class="box" aria-hidden="true"></span>只看会写';
 wr.addEventListener("click", () => { writeOnly = !writeOnly; saveFilters(); });
 optRow.append(wr);
+// ⭐: entries with a starred example sentence (long-press → 收藏); shown once there is one
+const fv = document.createElement("button");
+fv.className = "wr-box"; fv.type = "button"; fv.setAttribute("role", "checkbox");
+fv.title = "只看有收藏例句的条目(在条目里长按例句收藏)";
+fv.innerHTML = '<span class="box" aria-hidden="true"></span>⭐ 有收藏 <span class="n"></span>';
+fv.addEventListener("click", () => { favOnly = !favOnly; saveFilters(); });
+optRow.append(fv);
 paintFilters();
 
 // view tabs
@@ -1081,7 +1101,7 @@ function render(){
   // pill counts: each row counts what its pills would show with every other filter kept
   const nType = { ALL: 0, WORD: 0 }, nCefr = { "": 0 }, nStage = { learn: 0, review: 0, test: 0, done: 0 };
   sections.forEach(s => s.cards.forEach(c => {
-    if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write))) return;
+    if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)))) return;
     const st = stageOf(c.it, s.level), word = CEFR.includes(s.level);
     if (!stageF || st === stageF) {
       nType.ALL++; nType[s.level] = (nType[s.level] || 0) + 1;
@@ -1089,6 +1109,9 @@ function render(){
     }
     if (levelShown(s.level)) nStage[st]++;
   }));
+  const nFav = sections.reduce((n, s) => n + s.cards.filter(c => hasFav(c.it.anchor)).length, 0);
+  if (!nFav && favOnly) { favOnly = false; saveFilters(); return; }
+  fv.hidden = !nFav; fv.querySelector(".n").textContent = nFav;
   typeRow.querySelectorAll("[data-t] .n").forEach(el => { el.textContent = nType[el.parentNode.dataset.t] || 0; });
   cefrRow.querySelectorAll("[data-c] .n").forEach(el => { el.textContent = nCefr[el.parentNode.dataset.c] || 0; });
   stageRow.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = el.parentNode.dataset.s ? nStage[el.parentNode.dataset.s] : Object.values(nStage).reduce((x, y) => x + y, 0); });
@@ -1096,7 +1119,7 @@ function render(){
     if (!levelShown(s.level)) { s.el.hidden = true; return; }
     let n = 0;
     s.cards.forEach(c => {
-      const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write) &&
+      const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)) &&
         (!stageF || stageOf(c.it, s.level) === stageF);
       c.el.hidden = !hit;
       if (hit) n++;
@@ -1254,6 +1277,79 @@ function toggleQuizEx(it, en){
   store.set("vk.quizopt", JSON.stringify(quizOpt));
   return true;
 }
+// ⭐ example sentences (long-press → 收藏): {anchor: {plain English: {on, t}}}; an unstar is kept
+// (on: false) so 同步 carries it too, newest wins per sentence — the app keeps the same in favs.json.
+let favs = {};
+try { favs = JSON.parse(store.get("vk.favs", "{}")) || {}; } catch(e){}
+const isFav = (anchor, en) => !!(favs[anchor] && favs[anchor][en] && favs[anchor][en].on);
+const hasFav = anchor => Object.values(favs[anchor] || {}).some(f => f.on);
+function toggleFav(anchor, en){
+  const on = !isFav(anchor, en);
+  (favs[anchor] = favs[anchor] || {})[en] = { on, t: Date.now() };
+  store.set("vk.favs", JSON.stringify(favs));
+  syncSoon();
+  return on;
+}
+// Gives every example in [root]'s notes its key (the plain English: from it.examples when it's
+// there, else the rendered text) and a ⭐ when starred. The star is a CSS glyph, so the text
+// that 自测 matches against stays the same.
+function markExamples(root, it){
+  const xs = it.examples || [];
+  root.querySelectorAll(".body ol.ex > li").forEach(li => {
+    const en = li.querySelector(".en");
+    if (!en) return;
+    if (!li.dataset.key) {
+      const x = xs.find(x => exKey(x.en) === exKey(en.textContent));
+      li.dataset.key = x ? plainMd(x.en) : exKey(en.textContent);
+    }
+    const on = isFav(it.anchor, li.dataset.key);
+    let star = en.querySelector(".star");
+    if (on && !star) { star = document.createElement("span"); star.className = "star"; star.setAttribute("aria-label", "已收藏"); const spk = en.querySelector(".spk"); spk ? spk.before(star) : en.append(star); }
+    if (!on && star) star.remove();
+  });
+}
+// The long-press menu on an example: 复制, 收藏 / 取消收藏, and 加入 / 移出自测 when it can be asked.
+function exMenu(it, li, onQuiz){
+  const key = li.dataset.key, zh = li.querySelector(".zh"), qz = li.classList.contains("qz");
+  const back = document.createElement("div"), m = document.createElement("div");
+  back.className = "exm-back"; m.className = "exm";
+  m.setAttribute("role", "dialog"); m.setAttribute("aria-label", "例句操作");
+  m.innerHTML = `<p class="exm-en">${esc(key)}</p>` + (zh ? `<p class="exm-zh">${esc(zh.textContent)}</p>` : "") +
+    `<button type="button" data-a="copy">复制</button>` +
+    `<button type="button" data-a="fav">${isFav(it.anchor, key) ? "取消收藏" : "收藏"}</button>` +
+    (qz ? `<button type="button" data-a="quiz">${li.classList.contains("out") ? "加入自测" : "移出自测"}</button>` : "");
+  const done = () => { back.remove(); m.remove(); document.removeEventListener("keydown", esc_, true); };
+  const esc_ = e => { if (e.key === "Escape") { e.stopPropagation(); done(); } };
+  document.addEventListener("keydown", esc_, true);
+  back.addEventListener("click", done);
+  m.addEventListener("click", e => {
+    const a = e.target.closest("button[data-a]");
+    if (!a) return;
+    done();
+    if (a.dataset.a === "copy") (navigator.clipboard ? navigator.clipboard.writeText(key) : Promise.reject())
+      .then(() => flash("已复制"), () => flash("复制失败"));
+    else if (a.dataset.a === "fav") { flash(toggleFav(it.anchor, key) ? "已收藏 ⭐" : "已取消收藏"); document.querySelectorAll(".scrim, .rcard").forEach(r => markExamples(r, it)); render(); }
+    else onQuiz(li);
+  });
+  document.body.append(back, m);
+  m.querySelector("button").focus();
+}
+// long-press (touch) or right-click on an example in [root] opens exMenu; the tap that follows a
+// long-press is swallowed (it would toggle the example). Returns that check for the click handler.
+function wireExMenu(root, it, onQuiz){
+  let t = 0, fired = false, x0 = 0, y0 = 0;
+  const liOf = e => !e.target.closest("a, .spk") && e.target.closest(".body ol.ex > li[data-key]");
+  const open = li => { if (fired) return; fired = true; clearTimeout(t); if (navigator.vibrate) navigator.vibrate(10); exMenu(it, li, onQuiz); };
+  root.addEventListener("pointerdown", e => {
+    fired = false; clearTimeout(t);
+    const li = e.button === 0 && liOf(e);
+    if (li) { x0 = e.clientX; y0 = e.clientY; t = setTimeout(() => open(li), 500); }
+  });
+  root.addEventListener("pointermove", e => { if (Math.hypot(e.clientX - x0, e.clientY - y0) > 8) clearTimeout(t); });
+  ["pointerup", "pointercancel"].forEach(ev => root.addEventListener(ev, () => clearTimeout(t)));
+  root.addEventListener("contextmenu", e => { const li = liOf(e); if (li) { e.preventDefault(); open(li); } });
+  return () => { const f = fired; fired = false; return f; };
+}
 let flashEl = null, flashT = 0;
 function flash(msg){
   if (!flashEl) { flashEl = document.createElement("div"); flashEl.className = "flash"; flashEl.setAttribute("role", "status"); document.body.append(flashEl); }
@@ -1277,7 +1373,7 @@ function markQuizExamples(sheet, it){
       li.dataset.en = plainMd(x.en);
       li.classList.toggle("out", (quizOpt[it.anchor] || []).includes(li.dataset.en));
     });
-    if (any) { const cap = document.createElement("p"); cap.className = "qz-cap"; cap.textContent = "● 自测会考这些例句,点一句可以排除(至少留一句)"; ol.after(cap); }
+    if (any) { const cap = document.createElement("p"); cap.className = "qz-cap"; cap.textContent = "● 自测会考这些例句,点一句可以排除(至少留一句);长按复制或收藏"; ol.after(cap); }
   });
 }
 const exPrompt = ex => `<p class="lab">例句 ${ex.k + 1} / ${ex.of} · 中译英</p><p class="prompt" style="font-size:19px">${esc(plainMd(ex.zh))}</p><p class="hint">把这句写成英文,写完和例句原文逐词对照。</p>`;
@@ -1298,21 +1394,23 @@ function movedHtml(ex, mine, graded){
     ? `<p class="fine">这条没有例句可以对照,看下面的笔记自己判断:</p><div class="row"><button class="btn ghost" type="button" data-ok="1">我写对了</button><button class="btn ghost" type="button" data-ok="0">没写对</button></div>`
     : `<p class="verdict">已记为 ${graded ? "✅" : "❌"}</p>`);
 }
-function stSummary(anchor){
-  const list = stLog[anchor] || [], tries = list.filter(a => a.text);
+// [ex]: only the attempts at that example (its plain English) — an example question shows its own
+const stList = (anchor, ex) => (stLog[anchor] || []).filter(a => ex == null || a.ex === ex);
+function stSummary(anchor, ex){
+  const list = stList(anchor, ex), tries = list.filter(a => a.text);
   return { tries: tries.length, ok: tries.filter(a => a.ok).length, peeks: list.length - tries.length, last: list[list.length - 1] };
 }
 const fmtWhen = t => { const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
-function stStatsLine(anchor){
-  const s = stSummary(anchor);
-  if (!s.tries && !s.peeks) return "还没自测过";
-  return `已尝试 ${s.tries} 次 · 答对 ${s.ok} 次` + (s.peeks ? ` · 偷看 ${s.peeks} 次` : "") +
+function stStatsLine(anchor, ex){
+  const s = stSummary(anchor, ex), pre = ex == null ? "" : "这一句:";
+  if (!s.tries && !s.peeks) return pre + "还没自测过";
+  return pre + `已尝试 ${s.tries} 次 · 答对 ${s.ok} 次` + (s.peeks ? ` · 偷看 ${s.peeks} 次` : "") +
     ` · 上次 ${fmtWhen(s.last.t)} ${!s.last.text ? "偷看" : s.last.ok ? "✅" : "❌"}`;
 }
-function stHistoryHtml(anchor){
-  const list = (stLog[anchor] || []).slice().reverse();
+function stHistoryHtml(anchor, ex){
+  const list = stList(anchor, ex).slice().reverse();
   if (!list.length) return "";
-  return `<details class="st-hist"><summary>历史记录(${list.length})</summary><ol>` +
+  return `<details class="st-hist"><summary>${ex == null ? "" : "这一句的"}历史记录(${list.length})</summary><ol>` +
     list.map(a => `<li><span class="when">${fmtWhen(a.t)}</span><span>${!a.text ? "👀" : a.ok ? "✅" : "❌"}</span>` +
       `<span class="txt">${a.text ? esc(a.text) : "(没写就看了答案)"}${a.via === "review" ? ' <span class="when">· 复习</span>' : a.via === "selftest" || a.via === "test" ? ' <span class="when">· 考核</span>' : ""}</span></li>`).join("") +
     `</ol></details>`;
@@ -1489,6 +1587,7 @@ document.addEventListener("keydown", e => {
 
 // [o.from]: the side the card showed before a move (it turns over to the new one);
 // [o.face]: "front" / "back" to re-render on that side without turning.
+// [o.ex]: which example to ask (再试一次 keeps it, 下一句 adds one); by default the next by attempt count.
 function show(it, level, i, o = {}){
   if (scrim) scrim.remove();
   scrim = document.createElement("div");
@@ -1503,7 +1602,7 @@ function show(it, level, i, o = {}){
   const stage = stageOf(it, level);
   const selfTest = level === "SELFTEST";
   const wantBack = stage === "test";                    // 考核 opens on the quiz side, the rest on the notes
-  let ex = selfTest ? null : quizEx(it);                // fixed before this try is logged
+  let ex = selfTest ? null : o.ex !== undefined ? quizEx(it, o.ex) : quizEx(it);   // fixed before this try is logged
   const lvName = CEFR.includes(level) ? level : (TYPES.find(t => t[0] === level) || [, level])[1];
   // meta band: the headword and a pill; the rest of the facts unfold under it
   const pill = [lvName, it.pos, it.ipa].filter(Boolean).join(" · ");
@@ -1517,6 +1616,7 @@ function show(it, level, i, o = {}){
   }).join("") + `</div>`;
   // the card: notes on the front; while in 自测, the quiz on the back
   const fullBtn = `<button type="button" class="full" aria-label="${cardFull ? "退出全屏" : "全屏"}">${cardFull ? ICON_UNFULL : ICON_FULL}</button>`;
+  const curEx = () => ex ? plainMd(ex.en) : null;      // stats and history are this sentence's own
   const promptHtml = () => selfTest
     ? `<p class="prompt st-title">${esc(it.title)}</p>`     // its question is its title, off the sheet while full screen
     : ex ? exPrompt(ex) : askHtml({ it, level, i }, kind({ it, level, i }));
@@ -1526,7 +1626,7 @@ function show(it, level, i, o = {}){
   // 学习中 / 复习 may look at the notes first; 考核 only after answering.
   const backFace = true
     ? `<div class="face bk"><div class="fh"><span>自测</span><span class="ln"></span>${answerOf(it, level, ex) ? modeToggleHtml() : ""}${stage !== "test" ? `<button type="button" id="to-notes-pre">看笔记</button>` : ""}${fullBtn}</div>` +
-      `<div class="scrollq" id="st-q"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
+      `<div class="scrollq" id="st-q"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor, curEx())}</p>` +
       `<div class="st"><div class="st-prompt">${promptHtml()}</div>` +
       `<textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea><div class="wb-ans" id="wb-ans" hidden></div></div>` +
       `<div class="st-res" id="st-res" hidden></div></div>` +
@@ -1550,6 +1650,7 @@ function show(it, level, i, o = {}){
   const card = sheet.querySelector(".ecard");
   if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => card.classList.toggle("flipped", wantBack)));
   markQuizExamples(sheet, it);
+  markExamples(sheet, it);
 
   // a cross-reference opens the note it points at, keeping a trail to come back
   sheet.querySelectorAll(".xref").forEach(a => {
@@ -1573,13 +1674,19 @@ function show(it, level, i, o = {}){
     sheet.querySelectorAll(".full").forEach(f => { f.innerHTML = cardFull ? ICON_UNFULL : ICON_FULL; f.setAttribute("aria-label", cardFull ? "退出全屏" : "全屏"); });
   }));
   // a click on an example toggles it in or out of 自测; an unanswered question follows
-  sheet.addEventListener("click", e => {
-    const li = e.target.closest("li.qz");
-    if (!li || e.target.closest("a")) return;
+  const toggleLi = li => {
     if (!toggleQuizEx(it, li.dataset.en)) return;
     li.classList.toggle("out");
     const input = sheet.querySelector("#st-in");
-    if (input && !input.value) { ex = quizEx(it); sheet.querySelector(".st-prompt").innerHTML = promptHtml(); sheet._applyMode(); }
+    if (input && !input.value) { ex = quizEx(it); sheet.querySelector(".st-prompt").innerHTML = promptHtml(); sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor, curEx()); sheet._applyMode(); }
+  };
+  // long-press: 复制 / 收藏 / 加入或移出自测
+  const afterLongPress = wireExMenu(sheet, it, toggleLi);
+  sheet.addEventListener("click", e => {
+    if (afterLongPress()) return;
+    const li = e.target.closest("li.qz");
+    if (!li || e.target.closest("a")) return;
+    toggleLi(li);
   });
   sheet.querySelector("#to-quiz").addEventListener("click", () => card.classList.add("flipped"));
   const pre = sheet.querySelector("#to-notes-pre");
@@ -1587,19 +1694,24 @@ function show(it, level, i, o = {}){
 
   {
     const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
-    const flipRow = `<div class="row"><button class="btn retry" type="button" id="st-again">↻ 再试一次</button><button class="btn ghost" type="button" id="to-notes">↻ 翻面看笔记</button></div>`;
+    // 再试一次 asks the same sentence again; with more than one, 下一句 goes on to the next
+    const flipRow = `<div class="row"><button class="btn retry" type="button" id="st-again">↻ 再试一次</button>` +
+      (ex && ex.of > 1 ? `<button class="btn ghost" type="button" id="st-nextex">下一句 ›</button>` : "") +
+      `<button class="btn ghost" type="button" id="to-notes">↻ 翻面看笔记</button></div>`;
     // once every question is right in this stage, the move to the next one is offered
     const adv = () => advanceReady(it, level, stage) ? advanceHtml(stage) : "";
     const wire = () => {
-      sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor);
-      res.querySelector("#st-again").addEventListener("click", () => show(it, level, i, { face: "back" }));   // re-render, input cleared
+      sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor, curEx());
+      res.querySelector("#st-again").addEventListener("click", () => show(it, level, i, { face: "back", ex: ex && ex.k }));   // re-render, input cleared
+      const nx = res.querySelector("#st-nextex");
+      if (nx) nx.addEventListener("click", () => show(it, level, i, { face: "back", ex: ex.k + 1 }));
       res.querySelector("#to-notes").addEventListener("click", () => card.classList.remove("flipped"));
       const ab = res.querySelector("#adv");
       // 移到 X moves and goes on to the next one in the list; a move on the track stays put
       if (ab) ab.addEventListener("click", () => { setStage(it, nextStage(stage)); render(); if (nextInList()) goNext(); else show(it, level, i, { from: true }); });
     };
     const paint = graded => {                           // compared with its example, or graded by me
-      res.innerHTML = movedHtml(ex, input.value, graded) + adv() + flipRow + stHistoryHtml(it.anchor);
+      res.innerHTML = movedHtml(ex, input.value, graded) + adv() + flipRow + stHistoryHtml(it.anchor, curEx());
       res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {
         const ok = b.dataset.ok === "1";
         logAttempt(it.anchor, input.value, ok, "entry");
@@ -1611,7 +1723,7 @@ function show(it, level, i, o = {}){
       const v = input.value;
       if (selfTest) {
         recordAttempt(it.anchor, v, it.answer || "", "entry");
-        res.innerHTML = compareHtml(v, it.answer || "", false) + adv() + flipRow + stHistoryHtml(it.anchor);
+        res.innerHTML = compareHtml(v, it.answer || "", false) + adv() + flipRow + stHistoryHtml(it.anchor, curEx());
         wire();
       } else {
         if (ex) recordAttempt(it.anchor, v, plainMd(ex.en), "entry", plainMd(ex.en));
@@ -1767,14 +1879,14 @@ try { syncState = JSON.parse(store.get("vk.sync", "{}")) || {}; } catch(e){}
 const stable = v => JSON.stringify(v, (k, x) => x && typeof x === "object" && !Array.isArray(x)
   ? Object.fromEntries(Object.keys(x).sort().map(k2 => [k2, x[k2]])) : x);
 const normProgress = r => ({ v: 1, stages: r.stages || {}, cards: r.cards || {}, newDay: r.newDay || 0,
-  newToday: r.newToday || 0, resetAt: r.resetAt || 0, attempts: r.attempts || {} });
+  newToday: r.newToday || 0, resetAt: r.resetAt || 0, attempts: r.attempts || {}, favs: r.favs || {} });
 function progressOut(){
   const st = {}, at = {};
   for (const a in stages) st[a] = { s: stages[a], t: stageT[a] || 0 };
   for (const a in stLog) at[a] = stLog[a].map(x => ({ t: x.t, ok: x.ok, peek: !x.text, via: x.via, ex: x.ex || "" }));
-  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at });
+  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs });
 }
-// Newest wins per entry; a reset drops every card graded before it; 自测 attempts are a union.
+// Newest wins per entry (per sentence for ⭐); a reset drops every card graded before it; 自测 attempts are a union.
 function applyRemote(r){
   r = normProgress(r);
   const resetAt = Math.max(rev.resetAt || 0, r.resetAt);
@@ -1800,6 +1912,11 @@ function applyRemote(r){
     stLog[a] = list.slice(-ST_MAX);
   }
   store.set("vk.selftest", JSON.stringify(stLog));
+  for (const a in r.favs) for (const en in r.favs[a]) {
+    const o = r.favs[a][en], m = favs[a] = favs[a] || {};
+    if (o.t > ((m[en] || {}).t || 0)) m[en] = { on: !!o.on, t: o.t };
+  }
+  store.set("vk.favs", JSON.stringify(favs));
 }
 const b64 = t => btoa(unescape(encodeURIComponent(t)));
 const unb64 = t => decodeURIComponent(escape(atob(t.replace(/\s/g, ""))));
@@ -1944,6 +2061,8 @@ function renderStageTab(stage, el){
   refreshStCounts(); refreshStages();
 }
 function wireXrefs(el){
+  const t = quiz && quiz.queue[quiz.index];
+  if (t) markExamples(el, t.it);                          // ⭐ on the notes shown with the card
   el.querySelectorAll(".rcard .xref").forEach(a => {
     const x = byAnchor[a.dataset.ref];
     if (!x) { a.dataset.missing = "1"; return; }
@@ -1971,11 +2090,11 @@ function renderQuizCard(el){
   const qAns = s.revealed ? null : answerOf(it, t.level, ex), bankOn = chipsMode && !!qAns;   // 选词
   el.innerHTML = top +
     `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ex ? exPrompt(ex) : askHtml(t, k)}` +
-    `<p class="st-stats">${stStatsLine(it.anchor)}</p>` +
+    `<p class="st-stats">${stStatsLine(it.anchor, ex ? plainMd(ex.en) : null)}</p>` +
     (s.revealed
       ? `<hr>` + (exam
           ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>`
-          : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>`) + stHistoryHtml(it.anchor) +
+          : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>`) + stHistoryHtml(it.anchor, ex ? plainMd(ex.en) : null) +
         (ready ? advanceHtml(stage) : "") +
         `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${notesHtml(it)}</div>`
       : (qAns ? `<div class="amode-row">${modeToggleHtml()}</div>` : "") +

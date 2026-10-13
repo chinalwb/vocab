@@ -56,6 +56,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     private val stageStore = (app as VocabApp).stages
     /** 进度 moves by anchor — read through stageOf(). */
     val stages = stageStore.state
+    private val favStore = (app as VocabApp).favs
+    /** ⭐ example sentences: {anchor: {plain English: Fav}}, unstars included — read through starred(). */
+    val favs = favStore.data
     private val progress = (app as VocabApp).progress
     /** 同步 to GitHub: connected / last success / error. */
     val syncStatus = progress.status
@@ -149,6 +152,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             reviews.load()
             selfTestLog.load()
             stageStore.load()
+            favStore.load()
             progress.ready.complete(Unit)
             progress.now()
             check(quiet = true)
@@ -184,6 +188,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun openedFrom(list: List<String>, anchor: String) { _openList.value = list to anchor }
 
     fun setStage(anchor: String, stage: Stage) = viewModelScope.launch { stageStore.set(anchor, stage); progress.soon() }
+
+    /** Long-press → 收藏 / 取消收藏 on an example sentence. */
+    fun toggleFav(anchor: String, en: String) = viewModelScope.launch { favStore.toggle(anchor, en); progress.soon() }
 
     fun connectSync(token: String) = progress.connect(token)
     fun disconnectSync() = progress.disconnect()

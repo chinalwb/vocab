@@ -5,6 +5,8 @@ import android.util.Base64
 import io.github.chinalwb.vocab.BuildConfig
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Card
+import io.github.chinalwb.vocab.review.FavStore
+import io.github.chinalwb.vocab.review.Favs
 import io.github.chinalwb.vocab.review.MAX_PER_ENTRY
 import io.github.chinalwb.vocab.review.ReviewData
 import io.github.chinalwb.vocab.review.ReviewStore
@@ -44,6 +46,8 @@ data class Progress(
     val newToday: Int = 0,
     val resetAt: Long = 0,
     val attempts: Map<String, List<PAttempt>> = emptyMap(),
+    /** ⭐ example sentences, unstars included: {anchor: {plain English: Fav}} */
+    val favs: Favs = emptyMap(),
 )
 
 @Serializable
@@ -63,13 +67,14 @@ private const val API = BuildConfig.PROGRESS_API
 /**
  * 同步: pull progress.json, merge it into the local stores, push back if this device knew
  * something GitHub didn't. Same format and merge rules as syncNow() in template.html:
- * newest wins per entry, a reset drops older cards, 自测 attempts are a union.
+ * newest wins per entry (per sentence for ⭐), a reset drops older cards, 自测 attempts are a union.
  */
 class ProgressSync(
     context: Context,
     private val reviews: ReviewStore,
     private val selfTests: SelfTestLog,
     private val stages: StageStore,
+    private val favs: FavStore,
 ) {
     // encodeDefaults: the page compares field by field, so every field must be written
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
@@ -163,6 +168,12 @@ class ProgressSync(
             val newer = r.stages.filter { (a, o) -> Stage.entries.any { it.key == o.s } && o.t > (l.t[a] ?: 0) }
             StageData(l.stages + newer.mapValues { it.value.s }, l.t + newer.mapValues { it.value.t })
         }
+        favs.replace { l ->
+            (l.keys + r.favs.keys).associateWith { a ->
+                val mine = l[a].orEmpty()
+                mine + r.favs[a].orEmpty().filter { (en, f) -> f.t > (mine[en]?.t ?: 0) }
+            }
+        }
         selfTests.replace { l ->
             l + r.attempts.map { (a, list) ->
                 val mine = l[a].orEmpty()
@@ -183,6 +194,7 @@ class ProgressSync(
             newToday = r.newToday,
             resetAt = r.resetAt,
             attempts = selfTests.state.value.mapValues { (_, l) -> l.map { PAttempt(it.t, it.ok, it.text.isEmpty(), it.via, it.ex) } },
+            favs = favs.data.value,
         )
     }
 

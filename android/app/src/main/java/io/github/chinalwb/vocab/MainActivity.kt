@@ -113,6 +113,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.chinalwb.vocab.ui.BrowseScreen
+import io.github.chinalwb.vocab.ui.LocalStarred
+import io.github.chinalwb.vocab.review.starred
 import io.github.chinalwb.vocab.ui.EntryScreen
 import io.github.chinalwb.vocab.ui.LocalNavAnimatedScope
 import io.github.chinalwb.vocab.ui.LocalSharedTransitionScope
@@ -164,6 +166,8 @@ private fun VocabNav() {
     val quizOptOut by vm.quizOptOut.collectAsStateWithLifecycle()
     val stageData by vm.stageTimes.collectAsStateWithLifecycle()
     val openList by vm.openList.collectAsStateWithLifecycle()
+    val favs by vm.favs.collectAsStateWithLifecycle()
+    val starred = remember(favs) { favs.starred() }
     // from a list: remember it for 下一个; from anywhere else: no list
     val openIn = { anchor: String, list: List<String> -> vm.openedFrom(list, anchor); nav.navigate("entry/$anchor") }
     val openAlone = { anchor: String -> openIn(anchor, emptyList()) }
@@ -171,7 +175,7 @@ private fun VocabNav() {
     // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
     // the plain fades match the container transform's length so both sides finish together.
     SharedTransitionLayout {
-        CompositionLocalProvider(LocalSharedTransitionScope provides this) {
+        CompositionLocalProvider(LocalSharedTransitionScope provides this, LocalStarred provides starred) {
             NavHost(
                 nav,
                 startDestination = "home",
@@ -220,6 +224,7 @@ private fun VocabNav() {
                             onStage = { vm.setStage(anchor, it) },
                             excluded = quizOptOut[anchor].orEmpty(),
                             onToggleExample = { en -> if (entry != null) vm.toggleQuizExample(entry, en) },
+                            onFav = { en -> vm.toggleFav(anchor, en) },
                             nextLabel = if (next != null) "${pos + 1} / ${list.size}" else null,
                             onNext = next?.let { n ->
                                 {

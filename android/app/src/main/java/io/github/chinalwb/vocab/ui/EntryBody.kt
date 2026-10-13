@@ -29,6 +29,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.draw.alpha
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -160,7 +164,7 @@ private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (Stri
                         if (inCard) Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).padding(top = 4.dp, bottom = 8.dp)
                         else Modifier.background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(16.dp)).padding(16.dp)
                     )
-            ) { Blocks(blocks, onXref, quiz) }
+            ) { Blocks(anchor, blocks, onXref, quiz) }
         }
         if (sections.size > 1) Row(
             horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterHorizontally),
@@ -179,15 +183,26 @@ private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (Stri
     }
 }
 
-/** Which examples 自测 may ask ([excluded]: the plain English of the ones opted out) and the tap that toggles one. */
-class ExampleQuiz(val excluded: Set<String>, val onToggle: (String) -> Unit)
+/**
+ * On the entry page: which examples 自测 may ask ([excluded]: the plain English of the ones opted
+ * out), the tap that toggles one, and [onFav] for the long-press menu's 收藏.
+ */
+class ExampleQuiz(val excluded: Set<String>, val onToggle: (String) -> Unit, val onFav: (String) -> Unit = {})
+
+/** The ⭐ example sentences by anchor (their plain English), shown wherever notes are. */
+val LocalStarred = androidx.compose.runtime.compositionLocalOf<Map<String, Set<String>>> { emptyMap() }
 
 /** Renders the blocks build.py produced; xref taps are handed to [onXref]. */
 @Composable
-fun EntryBody(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) = Blocks(entry.blocks, onXref, quiz)
+fun EntryBody(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) = Blocks(entry.anchor, entry.blocks, onXref, quiz)
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
-private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) {
+private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) {
+    val starred = LocalStarred.current[anchor].orEmpty()
+    // long-press on an example (entry page only): 复制 / 收藏 / 加入或移出自测, in a bottom sheet
+    var menuFor by remember { mutableStateOf<io.github.chinalwb.vocab.data.Example?>(null) }
+    val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
     val link = MaterialTheme.colorScheme.primary
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     val ink = MaterialTheme.colorScheme.onSurface
@@ -212,7 +227,12 @@ private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQ
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .then(if (asks) Modifier.clip(RoundedCornerShape(8.dp)).clickable { quiz!!.onToggle(plain(ex.en)) } else Modifier)
+                            .then(
+                                if (quiz != null) Modifier.clip(RoundedCornerShape(8.dp)).combinedClickable(
+                                    onLongClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); menuFor = ex },
+                                    onClick = { if (asks) quiz.onToggle(plain(ex.en)) },
+                                ) else Modifier
+                            )
                             .alpha(if (out) 0.45f else 1f),
                     ) {
                         Box(Modifier.width(22.dp).padding(top = 4.dp)) {
@@ -225,7 +245,11 @@ private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQ
                             else Text("${i + 1}", style = body, color = muted)
                         }
                         Column(Modifier.weight(1f)) {
-                            Text(inline(ex.en, link, onXref), style = body.copy(fontFamily = AppFont, fontSize = 17.sp))
+                            val en = inline(ex.en, link, onXref)
+                            Text(
+                                if (plain(ex.en) in starred) androidx.compose.ui.text.buildAnnotatedString { append(en); append(" ⭐") } else en,
+                                style = body.copy(fontFamily = AppFont, fontSize = 17.sp),
+                            )
                             if (ex.zh.isNotEmpty()) {
                                 Text(inline(ex.zh, link, onXref), style = MaterialTheme.typography.bodyMedium, color = muted)
                             }
@@ -234,7 +258,7 @@ private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQ
                     }
                 }
                 if (quiz != null && block.items.any { it.quizable }) Text(
-                    "● 自测会考这些例句,点一句可以排除(至少留一句)",
+                    "● 自测会考这些例句,点一句可以排除(至少留一句);长按复制或收藏",
                     style = MaterialTheme.typography.labelSmall,
                     color = muted,
                     modifier = Modifier.padding(start = 22.dp),
@@ -242,6 +266,55 @@ private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQ
             }
             is Block.Quote -> Quote(block.lines, link, onXref)
         }
+    }
+    val ex = menuFor
+    if (ex != null && quiz != null) ExampleMenu(
+        ex,
+        starred = plain(ex.en) in starred,
+        inQuiz = if (ex.quizable) plain(ex.en) !in quiz.excluded else null,
+        onFav = { quiz.onFav(plain(ex.en)) },
+        onToggle = { quiz.onToggle(plain(ex.en)) },
+        onDismiss = { menuFor = null },
+    )
+}
+
+/** The long-press menu on an example: 复制, 收藏 / 取消收藏, and 加入 / 移出自测 when it can be asked ([inQuiz] non-null). */
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+@Composable
+private fun ExampleMenu(ex: io.github.chinalwb.vocab.data.Example, starred: Boolean, inQuiz: Boolean?, onFav: () -> Unit, onToggle: () -> Unit, onDismiss: () -> Unit) {
+    val ctx = LocalContext.current
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    androidx.compose.material3.ModalBottomSheet(onDismissRequest = onDismiss) {
+        Column(Modifier.padding(bottom = 16.dp)) {
+            // the sentence itself on top, so it's clear which one the menu is for
+            Text(plain(ex.en), fontFamily = AppFont, fontSize = 17.sp, lineHeight = 24.sp, modifier = Modifier.padding(horizontal = 24.dp))
+            if (ex.zh.isNotEmpty()) Text(plain(ex.zh), style = MaterialTheme.typography.bodyMedium, color = muted, modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp))
+            HorizontalDivider(Modifier.padding(top = 12.dp, bottom = 4.dp))
+            MenuRow(ContentCopyIcon, "复制") {
+                val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                cm.setPrimaryClip(android.content.ClipData.newPlainText("例句", plain(ex.en)))
+                // Android 13+ shows its own copied notice
+                if (android.os.Build.VERSION.SDK_INT < 33) android.widget.Toast.makeText(ctx, "已复制", android.widget.Toast.LENGTH_SHORT).show()
+                onDismiss()
+            }
+            MenuRow(if (starred) androidx.compose.material.icons.Icons.Default.Star else StarBorderIcon, if (starred) "取消收藏" else "收藏") { onFav(); onDismiss() }
+            if (inQuiz != null) MenuRow(
+                if (inQuiz) androidx.compose.material.icons.Icons.Default.Clear else androidx.compose.material.icons.Icons.Default.Add,
+                if (inQuiz) "移出自测" else "加入自测",
+            ) { onToggle(); onDismiss() }
+        }
+    }
+}
+
+@Composable
+private fun MenuRow(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 24.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        androidx.compose.material3.Icon(icon, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(label, style = MaterialTheme.typography.bodyLarge)
     }
 }
 

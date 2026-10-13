@@ -276,11 +276,15 @@ fun MovedResult(ex: QuizExample?, draft: String, graded: Boolean?, onGrade: (Boo
 private val WHEN = DateTimeFormatter.ofPattern("M/d HH:mm").withZone(ZoneId.systemDefault())
 private fun whenOf(t: Long) = WHEN.format(Instant.ofEpochMilli(t))
 
-/** "已尝试 N 次 · 答对 M 次 · …" — the same line the page shows (stStatsLine). */
-fun statsLine(attempts: List<Attempt>): String {
+/** Only the attempts at [ex] (an example question shows its own); a 自测题 keeps them all. */
+fun List<Attempt>.at(ex: QuizExample?): List<Attempt> = if (ex == null) this else filter { it.ex == ex.en }
+
+/** "已尝试 N 次 · 答对 M 次 · …" — the same line the page shows (stStatsLine); [one] = one sentence's. */
+fun statsLine(attempts: List<Attempt>, one: Boolean = false): String {
     val s = attempts.summary()
-    val last = s.last ?: return "还没自测过"
-    return "已尝试 ${s.tries} 次 · 答对 ${s.ok} 次" + (if (s.peeks > 0) " · 偷看 ${s.peeks} 次" else "") +
+    val pre = if (one) "这一句:" else ""
+    val last = s.last ?: return pre + "还没自测过"
+    return pre + "已尝试 ${s.tries} 次 · 答对 ${s.ok} 次" + (if (s.peeks > 0) " · 偷看 ${s.peeks} 次" else "") +
         " · 上次 ${whenOf(last.t)} " + when { last.text.isEmpty() -> "偷看"; last.ok -> "✅"; else -> "❌" }
 }
 
@@ -289,18 +293,18 @@ fun countsShort(attempts: List<Attempt>): String =
     attempts.summary().let { if (it.tries == 0) "未自测" else "试 ${it.tries} · 对 ${it.ok}" }
 
 @Composable
-fun SelfTestStats(attempts: List<Attempt>) {
-    Text(statsLine(attempts), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+fun SelfTestStats(attempts: List<Attempt>, one: Boolean = false) {
+    Text(statsLine(attempts, one), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
 }
 
 /** Newest first, collapsed until tapped. */
 @Composable
-fun SelfTestHistory(attempts: List<Attempt>) {
+fun SelfTestHistory(attempts: List<Attempt>, one: Boolean = false) {
     if (attempts.isEmpty()) return
     var open by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         TextButton(onClick = { open = !open }, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) {
-            Text((if (open) "▾ " else "▸ ") + "历史记录(${attempts.size})")
+            Text((if (open) "▾ " else "▸ ") + (if (one) "这一句的" else "") + "历史记录(${attempts.size})")
         }
         if (open) attempts.asReversed().forEach { a ->
             androidx.compose.foundation.layout.Row {
