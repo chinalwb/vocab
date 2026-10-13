@@ -142,6 +142,7 @@
 136. [stray](#stray)
 137. [自测:很高兴看到自己有点进步,哪怕很小。](#t-making-some-progress)
 138. [自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?](#t-once-finished-list)
+139. [自测:我跟团队谈完再回复你。](#t-get-back-to-you)
 
 ---
 
@@ -4446,9 +4447,32 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **时间从句不用 will**:从句用一般现在时或现在完成时,主句用 *will*,和第一条件句同一条规则;❌ *Once we will finish…*。*we've finished* 强调先做完、再有结果。
 - **on a list / in a table**:列表用 *on*,表格用 *in*。
 
+**相关条目:** [自测:我跟团队谈完再回复你。](#t-get-back-to-you) —— 同样是 once + 现在完成时的时间从句
+
 **我的原句:**
 
 > We will finish task #3 if we complete the tasks listed in the table, right?
 
 - ⚠️ [搭配] **listed in the table** —— 原文是「列表」,*table* 是表格 → **everything on this list**。
 - ✅ **finish … if we complete …** —— 意思清楚,日常使用完全够用;*finish* 和 *complete* 重复,「做完…就…」用 **once** 更贴切。
+
+---
+
+<a id="t-get-back-to-you"></a>
+## 自测:我跟团队谈完再回复你。
+
+- 日期:2026-10-13
+- 掌握:会写
+
+**答案:**
+
+> I'll get back to you once I've talked to the team.
+> I'll get back to you after I've talked to the team.
+> I'll get back to you once I talk to the team.
+
+**要点:**
+
+- **get back to sb** —— 回头答复某人,邮件、Slack、电话都能用,比 *call you* 适用面广。
+- **时间从句不用 will**:*once / after* 后面用现在完成时(或一般现在时),强调先谈完、再回复;❌ *once I will talk*。和 [等我们把这个列表上的事都做完…](#t-once-finished-list) 是同一条规则。
+
+**相关条目:** [自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?](#t-once-finished-list) —— 同样是 once + 现在完成时的时间从句
