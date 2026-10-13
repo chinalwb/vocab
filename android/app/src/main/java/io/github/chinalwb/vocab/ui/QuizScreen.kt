@@ -284,7 +284,7 @@ private fun QuizCard(
             } else {
                 if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
                 Spacer(Modifier.height(8.dp))
-                SelfTestStats(attempts)
+                SelfTestStats(attempts.at(ex), one = ex != null)
                 if (!session.revealed) {
                     Spacer(Modifier.height(12.dp))
                     if (answer != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { AnswerModeToggle(chips, setChips) }
@@ -297,7 +297,7 @@ private fun QuizCard(
                     if (exam) SelfTestResult(draft, entry.selfTestAnswer)
                     else MovedResult(ex, draft, session.graded) { onGrade(draft, it) }
                     Spacer(Modifier.height(8.dp))
-                    SelfTestHistory(attempts)
+                    SelfTestHistory(attempts.at(ex), one = ex != null)
                     if (ready) { Spacer(Modifier.height(8.dp)); AdvanceBanner(session.stage) { onNext(true) } }
                     Spacer(Modifier.height(16.dp))
                     Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)

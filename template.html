@@ -1298,21 +1298,23 @@ function movedHtml(ex, mine, graded){
     ? `<p class="fine">这条没有例句可以对照,看下面的笔记自己判断:</p><div class="row"><button class="btn ghost" type="button" data-ok="1">我写对了</button><button class="btn ghost" type="button" data-ok="0">没写对</button></div>`
     : `<p class="verdict">已记为 ${graded ? "✅" : "❌"}</p>`);
 }
-function stSummary(anchor){
-  const list = stLog[anchor] || [], tries = list.filter(a => a.text);
+// [ex]: only the attempts at that example (its plain English) — an example question shows its own
+const stList = (anchor, ex) => (stLog[anchor] || []).filter(a => ex == null || a.ex === ex);
+function stSummary(anchor, ex){
+  const list = stList(anchor, ex), tries = list.filter(a => a.text);
   return { tries: tries.length, ok: tries.filter(a => a.ok).length, peeks: list.length - tries.length, last: list[list.length - 1] };
 }
 const fmtWhen = t => { const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
-function stStatsLine(anchor){
-  const s = stSummary(anchor);
-  if (!s.tries && !s.peeks) return "还没自测过";
-  return `已尝试 ${s.tries} 次 · 答对 ${s.ok} 次` + (s.peeks ? ` · 偷看 ${s.peeks} 次` : "") +
+function stStatsLine(anchor, ex){
+  const s = stSummary(anchor, ex), pre = ex == null ? "" : "这一句:";
+  if (!s.tries && !s.peeks) return pre + "还没自测过";
+  return pre + `已尝试 ${s.tries} 次 · 答对 ${s.ok} 次` + (s.peeks ? ` · 偷看 ${s.peeks} 次` : "") +
     ` · 上次 ${fmtWhen(s.last.t)} ${!s.last.text ? "偷看" : s.last.ok ? "✅" : "❌"}`;
 }
-function stHistoryHtml(anchor){
-  const list = (stLog[anchor] || []).slice().reverse();
+function stHistoryHtml(anchor, ex){
+  const list = stList(anchor, ex).slice().reverse();
   if (!list.length) return "";
-  return `<details class="st-hist"><summary>历史记录(${list.length})</summary><ol>` +
+  return `<details class="st-hist"><summary>${ex == null ? "" : "这一句的"}历史记录(${list.length})</summary><ol>` +
     list.map(a => `<li><span class="when">${fmtWhen(a.t)}</span><span>${!a.text ? "👀" : a.ok ? "✅" : "❌"}</span>` +
       `<span class="txt">${a.text ? esc(a.text) : "(没写就看了答案)"}${a.via === "review" ? ' <span class="when">· 复习</span>' : a.via === "selftest" || a.via === "test" ? ' <span class="when">· 考核</span>' : ""}</span></li>`).join("") +
     `</ol></details>`;
@@ -1489,6 +1491,7 @@ document.addEventListener("keydown", e => {
 
 // [o.from]: the side the card showed before a move (it turns over to the new one);
 // [o.face]: "front" / "back" to re-render on that side without turning.
+// [o.ex]: which example to ask (再试一次 keeps it, 下一句 adds one); by default the next by attempt count.
 function show(it, level, i, o = {}){
   if (scrim) scrim.remove();
   scrim = document.createElement("div");
@@ -1503,7 +1506,7 @@ function show(it, level, i, o = {}){
   const stage = stageOf(it, level);
   const selfTest = level === "SELFTEST";
   const wantBack = stage === "test";                    // 考核 opens on the quiz side, the rest on the notes
-  let ex = selfTest ? null : quizEx(it);                // fixed before this try is logged
+  let ex = selfTest ? null : o.ex !== undefined ? quizEx(it, o.ex) : quizEx(it);   // fixed before this try is logged
   const lvName = CEFR.includes(level) ? level : (TYPES.find(t => t[0] === level) || [, level])[1];
   // meta band: the headword and a pill; the rest of the facts unfold under it
   const pill = [lvName, it.pos, it.ipa].filter(Boolean).join(" · ");
@@ -1517,6 +1520,7 @@ function show(it, level, i, o = {}){
   }).join("") + `</div>`;
   // the card: notes on the front; while in 自测, the quiz on the back
   const fullBtn = `<button type="button" class="full" aria-label="${cardFull ? "退出全屏" : "全屏"}">${cardFull ? ICON_UNFULL : ICON_FULL}</button>`;
+  const exKey = () => ex ? plainMd(ex.en) : null;      // stats and history are this sentence's own
   const promptHtml = () => selfTest
     ? `<p class="prompt st-title">${esc(it.title)}</p>`     // its question is its title, off the sheet while full screen
     : ex ? exPrompt(ex) : askHtml({ it, level, i }, kind({ it, level, i }));
@@ -1526,7 +1530,7 @@ function show(it, level, i, o = {}){
   // 学习中 / 复习 may look at the notes first; 考核 only after answering.
   const backFace = true
     ? `<div class="face bk"><div class="fh"><span>自测</span><span class="ln"></span>${answerOf(it, level, ex) ? modeToggleHtml() : ""}${stage !== "test" ? `<button type="button" id="to-notes-pre">看笔记</button>` : ""}${fullBtn}</div>` +
-      `<div class="scrollq" id="st-q"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor)}</p>` +
+      `<div class="scrollq" id="st-q"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor, exKey())}</p>` +
       `<div class="st"><div class="st-prompt">${promptHtml()}</div>` +
       `<textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea><div class="wb-ans" id="wb-ans" hidden></div></div>` +
       `<div class="st-res" id="st-res" hidden></div></div>` +
@@ -1579,7 +1583,7 @@ function show(it, level, i, o = {}){
     if (!toggleQuizEx(it, li.dataset.en)) return;
     li.classList.toggle("out");
     const input = sheet.querySelector("#st-in");
-    if (input && !input.value) { ex = quizEx(it); sheet.querySelector(".st-prompt").innerHTML = promptHtml(); sheet._applyMode(); }
+    if (input && !input.value) { ex = quizEx(it); sheet.querySelector(".st-prompt").innerHTML = promptHtml(); sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor, exKey()); sheet._applyMode(); }
   });
   sheet.querySelector("#to-quiz").addEventListener("click", () => card.classList.add("flipped"));
   const pre = sheet.querySelector("#to-notes-pre");
@@ -1587,19 +1591,24 @@ function show(it, level, i, o = {}){
 
   {
     const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
-    const flipRow = `<div class="row"><button class="btn retry" type="button" id="st-again">↻ 再试一次</button><button class="btn ghost" type="button" id="to-notes">↻ 翻面看笔记</button></div>`;
+    // 再试一次 asks the same sentence again; with more than one, 下一句 goes on to the next
+    const flipRow = `<div class="row"><button class="btn retry" type="button" id="st-again">↻ 再试一次</button>` +
+      (ex && ex.of > 1 ? `<button class="btn ghost" type="button" id="st-nextex">下一句 ›</button>` : "") +
+      `<button class="btn ghost" type="button" id="to-notes">↻ 翻面看笔记</button></div>`;
     // once every question is right in this stage, the move to the next one is offered
     const adv = () => advanceReady(it, level, stage) ? advanceHtml(stage) : "";
     const wire = () => {
-      sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor);
-      res.querySelector("#st-again").addEventListener("click", () => show(it, level, i, { face: "back" }));   // re-render, input cleared
+      sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor, exKey());
+      res.querySelector("#st-again").addEventListener("click", () => show(it, level, i, { face: "back", ex: ex && ex.k }));   // re-render, input cleared
+      const nx = res.querySelector("#st-nextex");
+      if (nx) nx.addEventListener("click", () => show(it, level, i, { face: "back", ex: ex.k + 1 }));
       res.querySelector("#to-notes").addEventListener("click", () => card.classList.remove("flipped"));
       const ab = res.querySelector("#adv");
       // 移到 X moves and goes on to the next one in the list; a move on the track stays put
       if (ab) ab.addEventListener("click", () => { setStage(it, nextStage(stage)); render(); if (nextInList()) goNext(); else show(it, level, i, { from: true }); });
     };
     const paint = graded => {                           // compared with its example, or graded by me
-      res.innerHTML = movedHtml(ex, input.value, graded) + adv() + flipRow + stHistoryHtml(it.anchor);
+      res.innerHTML = movedHtml(ex, input.value, graded) + adv() + flipRow + stHistoryHtml(it.anchor, exKey());
       res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {
         const ok = b.dataset.ok === "1";
         logAttempt(it.anchor, input.value, ok, "entry");
@@ -1611,7 +1620,7 @@ function show(it, level, i, o = {}){
       const v = input.value;
       if (selfTest) {
         recordAttempt(it.anchor, v, it.answer || "", "entry");
-        res.innerHTML = compareHtml(v, it.answer || "", false) + adv() + flipRow + stHistoryHtml(it.anchor);
+        res.innerHTML = compareHtml(v, it.answer || "", false) + adv() + flipRow + stHistoryHtml(it.anchor, exKey());
         wire();
       } else {
         if (ex) recordAttempt(it.anchor, v, plainMd(ex.en), "entry", plainMd(ex.en));
@@ -1971,11 +1980,11 @@ function renderQuizCard(el){
   const qAns = s.revealed ? null : answerOf(it, t.level, ex), bankOn = chipsMode && !!qAns;   // 选词
   el.innerHTML = top +
     `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ex ? exPrompt(ex) : askHtml(t, k)}` +
-    `<p class="st-stats">${stStatsLine(it.anchor)}</p>` +
+    `<p class="st-stats">${stStatsLine(it.anchor, ex ? plainMd(ex.en) : null)}</p>` +
     (s.revealed
       ? `<hr>` + (exam
           ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>`
-          : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>`) + stHistoryHtml(it.anchor) +
+          : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>`) + stHistoryHtml(it.anchor, ex ? plainMd(ex.en) : null) +
         (ready ? advanceHtml(stage) : "") +
         `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${notesHtml(it)}</div>`
       : (qAns ? `<div class="amode-row">${modeToggleHtml()}</div>` : "") +

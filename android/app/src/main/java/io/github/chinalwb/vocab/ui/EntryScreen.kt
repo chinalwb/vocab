@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -179,9 +180,10 @@ fun EntryScreen(
             // quiz side offers the move to the next one.
             val selfTest = entry.level == "SELFTEST"
             // kept out here so flipping to the notes and back doesn't lose my attempt; a new try
-            // (再试一次) resets them and asks the next example
+            // resets them: 再试一次 asks the same example again, 下一句 the next one
             var tryNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
-            val ex = remember(entry.anchor, tryNo, excluded) { if (selfTest) null else entry.quizExample(tryNo, excluded) }
+            var exNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
+            val ex = remember(entry.anchor, exNo, excluded) { if (selfTest) null else entry.quizExample(exNo, excluded) }
             var draft by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf("") }
             var revealed by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
             var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
@@ -189,6 +191,7 @@ fun EntryScreen(
             val quiz = quizUp
             val notesUp = !quizUp
             val retry = { tryNo = maxOf(tryNo + 1, attempts.size); quizUp = true }
+            val nextExample = { exNo = (ex?.k ?: exNo) + 1; retry() }
             val ready = revealed && advanceReady(entry, stage, attempts, since, excluded)
             // With an answer to check against, the words can be tapped together (选词) instead
             // of typed; the strays come from the entry's other sentences.
@@ -243,7 +246,7 @@ fun EntryScreen(
                             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
                             verticalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
-                            if (!imeVisible && bank == null) SelfTestStats(attempts)
+                            if (!imeVisible && bank == null) SelfTestStats(attempts.at(ex), one = ex != null)
                             when {
                                 // a 自测题's question is its title — off the page while full screen
                                 selfTest -> if (fullscreen) Text(entry.title, style = MaterialTheme.typography.titleMedium)
@@ -256,16 +259,18 @@ fun EntryScreen(
                         if (bank != null) WordBankChips(bank)
                         Button(onClick = reveal, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("显示答案") }
                     } else Scrolling {
-                        SelfTestStats(attempts)
+                        SelfTestStats(attempts.at(ex), one = ex != null)
                         if (selfTest) SelfTestResult(draft, entry.selfTestAnswer)
                         else MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it, "") }
                         // 移到 X moves and goes on to the next one in the list; a move on the stepper stays put
                         if (ready) AdvanceBanner(stage) { stage.next?.let(onStage); onNext?.invoke() }
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        // 再试一次 asks the same sentence again; with more than one, 下一句 the next
+                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             RetryButton(retry)
+                            if (ex != null && ex.of > 1) OutlinedButton(onClick = nextExample, contentPadding = PaddingValues(horizontal = 16.dp)) { Text("下一句 ›") }
                             FlipButton("翻面看笔记") { quizUp = false }
                         }
-                        SelfTestHistory(attempts)
+                        SelfTestHistory(attempts.at(ex), one = ex != null)
                     }
                 },
             )
