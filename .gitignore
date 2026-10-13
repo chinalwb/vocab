@@ -13,6 +13,9 @@ android/build/
 android/app/build/
 android/local.properties
 android/keystore.properties
+# signing key (never commit; the public repo is served as-is)
+*.jks
+*.keystore
 # built and published as a GitHub Release by .github/workflows/apk.yml, not kept in git
 android/apk/
 android/.idea/
