@@ -48,6 +48,12 @@ private val CANDIDATES = listOf(
     Triple("Literata", "Google 为 Play 图书设计的屏幕阅读衬线体(推荐)", google("Literata")),
     Triple("Source Serif 4", "Adobe 的中性衬线体,偏技术文档", google("Source Serif 4")),
     Triple("Inter", "无衬线,更现代、更像工具类 App", google("Inter")),
+    Triple("Newsreader", "网页现在用的字体;选它网页和 App 完全统一", google("Newsreader")),
+    Triple("Merriweather", "为屏幕设计的衬线体,字宽笔画粗,小字最清楚", google("Merriweather")),
+    Triple("Lora", "带书法味的衬线体,温暖、有书卷气", google("Lora")),
+    Triple("Noto Serif", "Google 通用衬线体,字符最全,音标最稳", google("Noto Serif")),
+    Triple("Atkinson Hyperlegible", "无衬线,专为辨识度设计(l / I / 1 很好分)", google("Atkinson Hyperlegible")),
+    Triple("Nunito", "圆润的无衬线体,友好轻松,有点 Duolingo 味", google("Nunito")),
 )
 
 @Composable
@@ -59,7 +65,7 @@ fun FontPreviewScreen(modifier: Modifier = Modifier) {
     ) {
         item {
             Text(
-                "同一段 worth 条目,四种英文字体;中文都是系统字体。第一次打开要联网下载字体,没加载出来时会显示成系统字体,稍等或重进一次。",
+                "同一段 worth 条目,十种英文字体;中文都是系统字体。第一次打开要联网下载字体,没加载出来时会显示成系统字体,稍等或重进一次。",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
