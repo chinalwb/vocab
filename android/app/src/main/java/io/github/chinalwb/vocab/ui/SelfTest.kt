@@ -332,7 +332,7 @@ fun chipWords(sentence: String): List<String> =
 private val STRAY_POOL = listOf("the", "a", "an", "to", "of", "in", "on", "at", "for", "with", "is", "are", "was", "has", "that", "it", "and", "but")
 
 /** A few words that aren't in [answer]: from [others] (the entry's other sentences) first, then stock function words. */
-fun strayWords(answer: String, others: List<String>, seed: Int, n: Int = 3): List<String> {
+fun strayWords(answer: String, others: List<String>, seed: Int, n: Int = 6): List<String> {
     val have = chipWords(answer).map { it.lowercase() }.toSet()
     val own = others.flatMap { chipWords(it) }.filter { it.lowercase() !in have }.distinctBy { it.lowercase() }.shuffled(Random(seed))
     val stock = STRAY_POOL.filter { it !in have }.shuffled(Random(seed))
@@ -373,31 +373,48 @@ fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit) {
 }
 
 /**
- * The chips: [answer]'s words plus [strays], shuffled by [seed] (fixed for one try). [picked] are
- * bank indices in order; [draft] is the sentence they make, which 显示答案 checks like typed text.
+ * 选词, four at a time (用户 2026-10-13): after k picks, the chips are the answer's word k+1, two
+ * words from later in the answer (so the order is what's tested, not recognising words) and a
+ * stray, shuffled. A wrong pick still moves on — 显示答案's word diff shows where it went wrong.
+ * Only the last word can be taken back. [pickedText] is the words so far, space-separated (chip
+ * words never hold spaces), and is the draft 显示答案 checks like typed text.
  */
-class WordBankState(val bank: List<String>, picked: String) {
+class WordBankState(val words: List<String>, private val strays: List<String>, private val seed: Int, picked: String) {
     var pickedText by mutableStateOf(picked)
-    val picked: List<Int> get() = pickedText.split(",").filter { it.isNotEmpty() }.map { it.toInt() }
-    val draft: String get() = picked.joinToString(" ") { bank[it] }
-    fun pick(i: Int) { pickedText = (picked + i).joinToString(",") }
-    fun unpick(i: Int) { pickedText = (picked - i).joinToString(",") }
+    val picked: List<String> get() = pickedText.split(" ").filter { it.isNotEmpty() }
+    val draft: String get() = pickedText
+    val done: Boolean get() = picked.size >= words.size
+    val options: List<String> get() = optionsAt(picked.size)
+    fun pick(w: String) { pickedText = (picked + w).joinToString(" ") }
+    fun undo() { pickedText = picked.dropLast(1).joinToString(" ") }
     fun clear() { pickedText = "" }
+
+    private fun optionsAt(k: Int): List<String> {
+        if (k >= words.size) return emptyList()
+        val rnd = Random(seed * 31 + k)
+        val right = words[k]
+        val seen = mutableSetOf(right.lowercase())
+        val later = words.drop(k + 1).shuffled(rnd).filter { seen.add(it.lowercase()) }.take(2)
+        val fill = strays.shuffled(rnd).filter { seen.add(it.lowercase()) }.take(CHIPS - 1 - later.size)
+        return (listOf(right) + later + fill).shuffled(rnd)
+    }
+
+    companion object { const val CHIPS = 4 }
 }
 
 @Composable
 fun rememberWordBank(answer: String, strays: List<String>, seed: Int): WordBankState {
-    val bank = remember(answer, strays, seed) { (chipWords(answer) + strays).shuffled(Random(seed)) }
+    val words = remember(answer) { chipWords(answer) }
     // the picks are saved as text so a rotation keeps them
     var pickedText by rememberSaveable(answer, seed) { mutableStateOf("") }
-    val st = remember(bank) { WordBankState(bank, pickedText) }
+    val st = remember(words, strays, seed) { WordBankState(words, strays, seed, pickedText) }
     LaunchedEffect(st.pickedText) { pickedText = st.pickedText }
     return st
 }
 
 /**
- * The sentence being built, in a box styled like the text field; a tap on a chip puts it back,
- * 清空 (in the corner, once there's something) puts them all back.
+ * The sentence being built, in a box styled like the text field. Tapping its last word takes that
+ * one back (the chips step back with it); 清空 in the corner starts over.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -416,17 +433,18 @@ fun WordBankAnswer(st: WordBankState) {
             horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
-            if (picked.isEmpty()) Text("点下面的词,拼出英文…", color = muted, modifier = Modifier.padding(4.dp))
-            picked.forEach { i ->
+            if (picked.isEmpty()) Text("点下面的词,一个一个拼出英文…", color = muted, modifier = Modifier.padding(4.dp))
+            picked.forEachIndexed { i, w ->
+                val last = i == picked.lastIndex
                 Text(
-                    st.bank[i],
+                    w,
                     fontFamily = FontFamily.Serif,
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.surface,
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.onSurface)
-                        .clickable { st.unpick(i) }
+                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = if (last) 1f else 0.75f))
+                        .clickable(enabled = last) { st.undo() }
                         .padding(horizontal = 10.dp, vertical = 5.dp),
                 )
             }
@@ -444,27 +462,34 @@ fun WordBankAnswer(st: WordBankState) {
     }
 }
 
-/** The bank, kept near the thumb: a used chip leaves an empty slot, so the rest don't jump about. */
+/** The four chips for the next word, near the thumb; once the sentence is long enough, a hint instead. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WordBankChips(st: WordBankState) {
-    val ink = MaterialTheme.colorScheme.onSurface
     val shape = RoundedCornerShape(10.dp)
-    val picked = st.picked
+    if (st.done) {
+        Text(
+            "拼完了,点「显示答案」对照;点最后一个词可以撤回",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+        )
+        return
+    }
     FlowRow(
-        Modifier.fillMaxWidth().heightIn(max = 200.dp).verticalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        st.bank.forEachIndexed { i, w ->
-            val used = i in picked
+        st.options.forEach { w ->
             Box(
                 Modifier
                     .clip(shape)
-                    .then(if (used) Modifier.background(ink.copy(alpha = 0.08f)) else Modifier.background(MaterialTheme.colorScheme.surface).border(1.dp, MaterialTheme.colorScheme.outline, shape))
-                    .clickable(enabled = !used) { st.pick(i) }
-                    .padding(horizontal = 10.dp, vertical = 5.dp),
-            ) { Text(w, fontFamily = FontFamily.Serif, fontSize = 16.sp, modifier = Modifier.alpha(if (used) 0f else 1f)) }
+                    .background(MaterialTheme.colorScheme.surface)
+                    .border(1.dp, MaterialTheme.colorScheme.outline, shape)
+                    .clickable { st.pick(w) }
+                    .padding(horizontal = 14.dp, vertical = 8.dp),
+            ) { Text(w, fontFamily = FontFamily.Serif, fontSize = 17.sp) }
         }
     }
 }

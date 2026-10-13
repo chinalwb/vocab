@@ -140,6 +140,7 @@
 134. [自测:这个 App 会自动检查更新吗?](#t-check-for-updates)
 135. [自测:给单词、短语和句子加朗读功能,有什么可行的办法?有免费的方案吗?](#t-text-to-speech)
 136. [stray](#stray)
+137. [自测:很高兴看到自己有点进步,哪怕很小。](#t-making-some-progress)
 
 ---
 
@@ -4398,3 +4399,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **stray from the point / topic** —— 跑题
 
 **共同的语感:** 都是"脱离了本该在的地方或群体":流浪猫离开了家,流弹离开了目标,多余的逗号离开了该在的位置。
+
+---
+
+<a id="t-making-some-progress"></a>
+## 自测:很高兴看到自己有点进步,哪怕很小。
+
+- 日期:2026-10-13
+- 掌握:会写
+
+**答案:**
+
+> I'm glad to see I'm making some progress, even if it's small.
+> I'm happy to see I'm making some progress, even if it's small.
+
+**要点:**
+
+- **glad / happy to see (that) + 从句** —— 把"高兴的原因"直接带出来,不用 *because*,更不用书面体的 *for*。
+- **make progress** 说的是自己的进步;**make improvements to X** 是改进某个东西,别用在自己身上。
+- **even if it's small** —— 让步补充放句尾,比在名词前堆 *tiny* 自然。
+
+**我的原句:**
+
+> I am happy for it seems like I am making some tiny improvements.
+
+- ❌ [结构] **happy for it seems like** —— *for* 表"因为"是书面文学体,前面必须有逗号;日常读起来是 *happy for it*,后面的 *seems like* 就接不上 → **I'm glad to see (that) I'm …** 或 **I'm happy because …**。
+- ⚠️ [搭配] **making some tiny improvements** —— *make improvements* 用于改进某个东西;说自己在进步用 **making progress** / **improving**,*tiny* 换成 *small*。
