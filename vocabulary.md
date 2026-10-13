@@ -143,6 +143,7 @@
 137. [自测:很高兴看到自己有点进步,哪怕很小。](#t-making-some-progress)
 138. [自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?](#t-once-finished-list)
 139. [自测:我跟团队谈完再回复你。](#t-get-back-to-you)
+140. [worth](#worth)
 
 ---
 
@@ -4303,6 +4304,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [结构] **Even Opus says you can't** → **Even if Opus says you can't**。
 - ⚠️ [逻辑] **without doing it yourself** 反着说有点绕 → **until you try**。
 
+**相关条目:** [worth](#worth) —— worth 的全部用法和易错点(*it worths* 已经错过两次)
+
 ---
 
 <a id="t-check-for-updates"></a>
@@ -4476,3 +4479,92 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **时间从句不用 will**:*once / after* 后面用现在完成时(或一般现在时),强调先谈完、再回复;❌ *once I will talk*。和 [等我们把这个列表上的事都做完…](#t-once-finished-list) 是同一条规则。
 
 **相关条目:** [自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?](#t-once-finished-list) —— 同样是 once + 现在完成时的时间从句
+
+---
+
+<a id="worth"></a>
+## worth
+
+- 音标:英 /wɜːθ/ 美 /wɝːθ/
+- 词性:adj. / n.
+- CEFR:B1
+- 日期:2026-10-13
+- 掌握:会写
+
+**English definition:** having a particular value, or good or useful enough to justify the time, money or effort spent on it.
+
+**含义:** 值(多少钱);值得(花时间、花钱、花力气)。作形容词时后面必须直接跟宾语,像介词一样;**worth 从来不是动词**,所以没有 *worths*。
+
+**我的原句:**
+
+> Do you think it worths to save this one too?
+
+- ❌ [词形] **it worths** —— worth 是形容词不是动词,不能加 -s → **it's worth**。
+- ❌ [动词] **worth to save** —— worth 后面接动名词 → **worth saving**:*Do you think it's worth saving this one too?*
+
+**义项一:值多少钱(worth + 金额)**
+1. This old guitar is worth about $2,000.
+   这把旧吉他大概值两千美元。
+2. How much is the company worth now?
+   这家公司现在值多少钱?
+
+**义项二:值得做某事(be worth + doing)**
+1. The book is worth reading.
+   这本书值得一读。
+2. Is it worth upgrading to the new version?
+   值得升级到新版本吗?
+3. It's not worth arguing about.
+   这不值得争。
+
+例 1 注意:主语就是被读的东西,也不用 *to do* 或被动:❌ *worth to read*、❌ *worth being read*。
+
+**义项三:值得(be worth + 名词 / it)**
+1. The trip was long, but the view was worth it.
+   路很远,但那风景值了。
+2. It's worth a try.
+   值得一试。
+3. Was it worth the money?
+   花这个钱值吗?
+
+**义项四:名词 —— 价值;相当于……的量**
+1. She finally proved her worth to the team.
+   她终于向团队证明了自己的价值。
+2. We lost a week's worth of work.
+   我们白干了一周的活。
+3. I bought ten dollars' worth of snacks.
+   我买了十美元的零食。
+
+例 2、例 3 注意:*a week's worth of* / *ten dollars' worth of* 表示"相当于……的量",所有格的撇号别漏。
+
+**常见搭配:**
+
+- **worth it** —— 值了;口语里可以单说 *Totally worth it.*
+- **worth a try / worth a shot** —— 值得一试。*It's a long shot, but it's worth a try.*(希望不大,但值得一试。)
+- **worth your while** —— 值得你花时间。*Come to the demo; it'll be worth your while.*(来看演示吧,不会让你白跑。)
+
+**for what it's worth:说一句供参考(语气谦虚,不保证有用)**
+1. For what it's worth, I think you made the right call.
+   不管有没有用,我觉得你的决定是对的。
+2. For what it's worth, the old version never had this bug.
+   说一句供参考,旧版本从来没有这个 bug。
+
+**worthwhile:值得的(可放在名词前,也可放在 be 后)**
+1. Learning to write well is a worthwhile investment.
+   学会写好文章是一项值得的投资。
+2. The extra testing turned out to be worthwhile.
+   多做的那些测试最后证明是值得的。
+
+**worthy of:配得上、值得(比 worth 正式,常跟抽象名词)**
+1. Her proposal is worthy of serious consideration.
+   她的提议值得认真考虑。
+2. This bug is hardly worthy of a hotfix.
+   这个 bug 不值得专门发一个热修复。
+
+**辨析:worth / worthwhile / worthy**
+
+- **worth** 后面必须跟东西(金额、doing、名词、it),不能放在名词前:❌ *a worth project*。
+- **worthwhile** 自己就完整,可以放在名词前:✅ *a worthwhile project*;也可以 *It's worthwhile.*
+- **worthy (of)** 偏正式,强调"配得上":*worthy of respect*、*a worthy cause*。
+- ❌ *It worths a try.* → ✅ **It's worth a try.**;❌ *It's worth to read.* → ✅ **It's worth reading.**
+
+**相关条目:** [自测:不试一试,你永远不知道自己能走多远……](#t-worth-a-shot) —— *worth a shot* 和 *it worths* 的错误第一次出现在这里
