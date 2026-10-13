@@ -126,6 +126,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import io.github.chinalwb.vocab.ui.GridViewIcon
 import io.github.chinalwb.vocab.ui.MistakesScreen
 import io.github.chinalwb.vocab.ui.VocabTheme
+import io.github.chinalwb.vocab.ui.AppFont
 import io.github.chinalwb.vocab.ui.VocabViewModel
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.stageOf
@@ -329,7 +330,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 scrollBehavior = if (tab == 0) bars else null,
                 title = {
                     val name = when (tab) { 0 -> stringResource(R.string.app_name); 1 -> "复习"; 2 -> "考核"; else -> "掌握" }
-                    Text(name, fontFamily = FontFamily.Serif, modifier = Modifier.graphicsLayer(barFade))
+                    Text(name, fontFamily = AppFont, modifier = Modifier.graphicsLayer(barFade))
                 },
                 actions = {
                     Row(Modifier.graphicsLayer(barFade)) {
@@ -470,7 +471,7 @@ private fun SubPage(title: String, onBack: () -> Unit, content: @Composable (Pad
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title, fontFamily = FontFamily.Serif) },
+                title = { Text(title, fontFamily = AppFont) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") } },
             )
         },

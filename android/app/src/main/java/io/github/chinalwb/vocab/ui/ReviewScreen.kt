@@ -46,7 +46,7 @@ internal fun Stat(label: String, value: Int, modifier: Modifier) {
             .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(8.dp))
             .padding(16.dp)
     ) {
-        Text("$value", fontSize = 34.sp, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold)
+        Text("$value", fontSize = 34.sp, fontFamily = AppFont, fontWeight = FontWeight.SemiBold)
         Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
@@ -100,11 +100,11 @@ fun ReviewFront(entry: Entry, kind: Kind) {
                 Hint("想出这个英文表达,再用它造一个句子。")
             }
             Kind.Grammar -> {
-                Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 26.sp, lineHeight = 32.sp)
+                Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.SemiBold, fontSize = 26.sp, lineHeight = 32.sp)
                 Hint("回想这条规则,以及正反例句。")
             }
             Kind.Recognize -> {
-                Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 30.sp, lineHeight = 36.sp)
+                Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.SemiBold, fontSize = 30.sp, lineHeight = 36.sp)
                 if (entry.ipa.isNotEmpty()) Text(entry.ipa, style = MaterialTheme.typography.bodyLarge)
                 Hint("它是什么意思?什么语感?")
             }

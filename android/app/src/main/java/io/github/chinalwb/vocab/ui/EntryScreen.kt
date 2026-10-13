@@ -130,7 +130,7 @@ fun EntryScreen(
                 // Stable padding: the status bar may be re-showing while this page flies in.
                 windowInsets = WindowInsets.statusBarsIgnoringVisibility,
                 title = {
-                    if (fullscreen && entry != null) Text(entry.title, fontFamily = FontFamily.Serif, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    if (fullscreen && entry != null) Text(entry.title, fontFamily = AppFont, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     else Text(entry?.let { levelStyle(it.level).name } ?: "")
                 },
                 navigationIcon = {
@@ -291,7 +291,7 @@ private fun Meta(entry: Entry, onDetails: () -> Unit) {
     ) {
         Text(
             entry.title,
-            fontFamily = FontFamily.Serif,
+            fontFamily = AppFont,
             fontWeight = FontWeight.SemiBold,
             fontSize = 26.sp,
             lineHeight = 32.sp,
@@ -335,7 +335,7 @@ private fun Details(entry: Entry) {
         "收录" to entry.date,
     ).filter { it.second.isNotBlank() }
     Column(Modifier.padding(start = 24.dp, end = 24.dp, bottom = 36.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(entry.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 26.sp)
+        Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, lineHeight = 26.sp)
         HorizontalDivider(color = MaterialTheme.colorScheme.outline)
         rows.forEach { (label, value) ->
             Row {

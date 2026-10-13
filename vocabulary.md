@@ -141,6 +141,10 @@
 135. [自测:给单词、短语和句子加朗读功能,有什么可行的办法?有免费的方案吗?](#t-text-to-speech)
 136. [stray](#stray)
 137. [自测:很高兴看到自己有点进步,哪怕很小。](#t-making-some-progress)
+138. [自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?](#t-once-finished-list)
+139. [自测:我跟团队谈完再回复你。](#t-get-back-to-you)
+140. [worth](#worth)
+141. [for what it's worth](#for-what-its-worth)
 
 ---
 
@@ -4301,6 +4305,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [结构] **Even Opus says you can't** → **Even if Opus says you can't**。
 - ⚠️ [逻辑] **without doing it yourself** 反着说有点绕 → **until you try**。
 
+**相关条目:** [worth](#worth) —— worth 的全部用法和易错点(*it worths* 已经错过两次)
+
 ---
 
 <a id="t-check-for-updates"></a>
@@ -4425,3 +4431,184 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ❌ [结构] **happy for it seems like** —— *for* 表"因为"是书面文学体,前面必须有逗号;日常读起来是 *happy for it*,后面的 *seems like* 就接不上 → **I'm glad to see (that) I'm …** 或 **I'm happy because …**。
 - ⚠️ [搭配] **making some tiny improvements** —— *make improvements* 用于改进某个东西;说自己在进步用 **making progress** / **improving**,*tiny* 换成 *small*。
+
+---
+
+<a id="t-once-finished-list"></a>
+## 自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?
+
+- 日期:2026-10-13
+- 掌握:会写
+
+**答案:**
+
+> Once we've finished everything on this list, task #3 will be done, right?
+> Once we finish everything on this list, task #3 will be done, right?
+
+**要点:**
+
+- **once + 时间从句**:「等…就…」默认事情会发生,用 *once*;「如果…就…」才用 *if*(言下之意可能做不完)。
+- **时间从句不用 will**:从句用一般现在时或现在完成时,主句用 *will*,和第一条件句同一条规则;❌ *Once we will finish…*。*we've finished* 强调先做完、再有结果。
+- **on a list / in a table**:列表用 *on*,表格用 *in*。
+
+**相关条目:** [自测:我跟团队谈完再回复你。](#t-get-back-to-you) —— 同样是 once + 现在完成时的时间从句
+
+**我的原句:**
+
+> We will finish task #3 if we complete the tasks listed in the table, right?
+
+- ⚠️ [搭配] **listed in the table** —— 原文是「列表」,*table* 是表格 → **everything on this list**。
+- ✅ **finish … if we complete …** —— 意思清楚,日常使用完全够用;*finish* 和 *complete* 重复,「做完…就…」用 **once** 更贴切。
+
+---
+
+<a id="t-get-back-to-you"></a>
+## 自测:我跟团队谈完再回复你。
+
+- 日期:2026-10-13
+- 掌握:会写
+
+**答案:**
+
+> I'll get back to you once I've talked to the team.
+> I'll get back to you after I've talked to the team.
+> I'll get back to you once I talk to the team.
+
+**要点:**
+
+- **get back to sb** —— 回头答复某人,邮件、Slack、电话都能用,比 *call you* 适用面广。
+- **时间从句不用 will**:*once / after* 后面用现在完成时(或一般现在时),强调先谈完、再回复;❌ *once I will talk*。和 [等我们把这个列表上的事都做完…](#t-once-finished-list) 是同一条规则。
+
+**相关条目:** [自测:等我们把这个列表上的事都做完,第三号任务就完成了,对吧?](#t-once-finished-list) —— 同样是 once + 现在完成时的时间从句
+
+---
+
+<a id="worth"></a>
+## worth
+
+- 音标:英 /wɜːθ/ 美 /wɝːθ/
+- 词性:adj. / n.
+- CEFR:B1
+- 日期:2026-10-13
+- 掌握:会写
+
+**English definition:** having a particular value, or good or useful enough to justify the time, money or effort spent on it.
+
+**含义:** 值(多少钱);值得(花时间、花钱、花力气)。作形容词时后面必须直接跟宾语,像介词一样;**worth 从来不是动词**,所以没有 *worths*。
+
+**我的原句:**
+
+> Do you think it worths to save this one too?
+
+- ❌ [词形] **it worths** —— worth 是形容词不是动词,不能加 -s → **it's worth**。
+- ❌ [动词] **worth to save** —— worth 后面接动名词 → **worth saving**:*Do you think it's worth saving this one too?*
+
+**义项一:值多少钱(worth + 金额)**
+1. This old guitar is worth about $2,000.
+   这把旧吉他大概值两千美元。
+2. How much is the company worth now?
+   这家公司现在值多少钱?
+
+**义项二:值得做某事(be worth + doing)**
+1. The book is worth reading.
+   这本书值得一读。
+2. Is it worth upgrading to the new version?
+   值得升级到新版本吗?
+3. It's not worth arguing about.
+   这不值得争。
+
+例 1 注意:主语就是被读的东西,也不用 *to do* 或被动:❌ *worth to read*、❌ *worth being read*。
+
+**义项三:值得(be worth + 名词 / it)**
+1. The trip was long, but the view was worth it.
+   路很远,但那风景值了。
+2. It's worth a try.
+   值得一试。
+3. Was it worth the money?
+   花这个钱值吗?
+
+**义项四:名词 —— 价值;相当于……的量**
+1. She finally proved her worth to the team.
+   她终于向团队证明了自己的价值。
+2. We lost a week's worth of work.
+   我们白干了一周的活。
+3. I bought ten dollars' worth of snacks.
+   我买了十美元的零食。
+
+例 2、例 3 注意:*a week's worth of* / *ten dollars' worth of* 表示"相当于……的量",所有格的撇号别漏。
+
+**常见搭配:**
+
+- **worth it** —— 值了;口语里可以单说 *Totally worth it.*
+- **worth a try / worth a shot** —— 值得一试。*It's a long shot, but it's worth a try.*(希望不大,但值得一试。)
+- **worth your while** —— 值得你花时间。*Come to the demo; it'll be worth your while.*(来看演示吧,不会让你白跑。)
+
+**for what it's worth:说一句供参考(语气谦虚,不保证有用)**
+1. For what it's worth, I think you made the right call.
+   不管有没有用,我觉得你的决定是对的。
+2. For what it's worth, the old version never had this bug.
+   说一句供参考,旧版本从来没有这个 bug。
+
+详见独立条目 [for what it's worth](#for-what-its-worth)(语境、场景和 make the right call)。
+
+**worthwhile:值得的(可放在名词前,也可放在 be 后)**
+1. Learning to write well is a worthwhile investment.
+   学会写好文章是一项值得的投资。
+2. The extra testing turned out to be worthwhile.
+   多做的那些测试最后证明是值得的。
+
+**worthy of:配得上、值得(比 worth 正式,常跟抽象名词)**
+1. Her proposal is worthy of serious consideration.
+   她的提议值得认真考虑。
+2. This bug is hardly worthy of a hotfix.
+   这个 bug 不值得专门发一个热修复。
+
+**辨析:worth / worthwhile / worthy**
+
+- **worth** 后面必须跟东西(金额、doing、名词、it),不能放在名词前:❌ *a worth project*。
+- **worthwhile** 自己就完整,可以放在名词前:✅ *a worthwhile project*;也可以 *It's worthwhile.*
+- **worthy (of)** 偏正式,强调"配得上":*worthy of respect*、*a worthy cause*。
+- ❌ *It worths a try.* → ✅ **It's worth a try.**;❌ *It's worth to read.* → ✅ **It's worth reading.**
+
+**相关条目:** [自测:不试一试,你永远不知道自己能走多远……](#t-worth-a-shot) —— *worth a shot* 和 *it worths* 的错误第一次出现在这里
+**相关条目:** [for what it's worth](#for-what-its-worth) —— 由 worth 构成的固定说法,单独展开了用法场景
+
+---
+
+<a id="for-what-its-worth"></a>
+## for what it's worth
+
+- 词性:phrase
+- CEFR:C2
+- 日期:2026-10-13
+- 掌握:会写
+
+**English definition:** used to say that you are offering an opinion or a piece of information that may or may not be useful or important.
+
+**含义:** 说句不一定管用的话;仅供参考。先把自己这句话的分量降下来,显得谦虚、不强加于人。字面是"按它本来值多少就算多少",也就是"我这话你看着办"。
+
+**义项一:表示支持(对方已经做了决定,正在犹豫或被质疑)**
+1. For what it's worth, I think you made the right call.
+   不管有没有用,我觉得你的决定是对的。
+2. For what it's worth, I think you made the right call. You seem much happier now.
+   不管有没有用,我觉得你选对了。你现在看起来开心多了。
+
+例 1 语境:同事说 *I pushed the release back a week. The manager isn't happy about it.*(我把发布推迟了一周,经理不太高兴。)你不是决策者,支持也改变不了经理的态度,所以先说 *for what it's worth*:"我的意见可能没什么用,但我站你这边。"
+
+例 2 语境:朋友说 *I keep wondering if I should've stayed at my old job.*(我老在想是不是该留在原来的公司。)
+
+**义项二:补充信息、提建议(仅供参考)**
+1. For what it's worth, I had the same issue last year and restarting fixed it.
+   仅供参考,我去年也遇到过这个问题,重启就好了。
+2. I'm not an expert, but for what it's worth, I'd go with option B.
+   我不是专家,但仅供参考,我会选方案 B。
+
+**什么时候用:** 自己的意见可能不被需要、不够权威,或者事情已经定了的时候。表示支持、提建议、补充信息都可以。
+
+**常见搭配:**
+
+- **make the right call** —— 做出正确的判断或决定;*call* 就是"决定、判断",来自裁判"判罚"。*You made the right call.*(你做得对。)
+- **make the wrong call** —— 判断错了。*In hindsight, I made the wrong call.*(事后看,我判断错了。)
+- **It's your call.** —— 你来决定。*Both options work. It's your call.*(两个方案都行,你定。)
+
+**相关条目:** [worth](#worth) —— worth 的全部用法;这个短语是其中的固定说法

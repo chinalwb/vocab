@@ -225,7 +225,7 @@ private fun Blocks(blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQ
                             else Text("${i + 1}", style = body, color = muted)
                         }
                         Column(Modifier.weight(1f)) {
-                            Text(inline(ex.en, link, onXref), style = body.copy(fontFamily = FontFamily.Serif, fontSize = 17.sp))
+                            Text(inline(ex.en, link, onXref), style = body.copy(fontFamily = AppFont, fontSize = 17.sp))
                             if (ex.zh.isNotEmpty()) {
                                 Text(inline(ex.zh, link, onXref), style = MaterialTheme.typography.bodyMedium, color = muted)
                             }
@@ -258,7 +258,7 @@ fun Quote(lines: List<String>, link: androidx.compose.ui.graphics.Color, onXref:
             lines.forEach {
                 Text(
                     inline(it, link, onXref),
-                    style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif, fontSize = 17.sp, lineHeight = 26.sp),
+                    style = MaterialTheme.typography.bodyLarge.copy(fontFamily = AppFont, fontSize = 17.sp, lineHeight = 26.sp),
                 )
             }
         }

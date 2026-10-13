@@ -168,7 +168,7 @@ private fun Line(label: String, text: AnnotatedString, say: String? = null) {
     ) {
         Column(Modifier.weight(1f)) {
             Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(text, fontFamily = FontFamily.Serif, fontSize = 17.sp, lineHeight = 24.sp)
+            Text(text, fontFamily = AppFont, fontSize = 17.sp, lineHeight = 24.sp)
         }
         if (say != null) SpeakButton(say)
     }
@@ -187,7 +187,7 @@ fun DraftField(value: String, onChange: (String) -> Unit, modifier: Modifier = M
         placeholder = { Text("不看答案,写出英文…") },
         minLines = 3,
         maxLines = maxLines,
-        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Serif),
+        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = AppFont),
         shape = RoundedCornerShape(12.dp),
         // ✕ to start over, once there's something to clear
         trailingIcon = if (value.isEmpty()) null else ({
@@ -309,7 +309,7 @@ fun SelfTestHistory(attempts: List<Attempt>) {
                 Text(when { a.text.isEmpty() -> "👀"; a.ok -> "✅"; else -> "❌" }, modifier = Modifier.padding(end = 8.dp))
                 Text(
                     (if (a.text.isEmpty()) "(没写就看了答案)" else a.text) + when (a.via) { "review" -> " · 复习"; "test", "selftest" -> " · 考核"; else -> "" },
-                    fontFamily = FontFamily.Serif, fontSize = 15.sp,
+                    fontFamily = AppFont, fontSize = 15.sp,
                 )
             }
         }
@@ -438,7 +438,7 @@ fun WordBankAnswer(st: WordBankState) {
                 val last = i == picked.lastIndex
                 Text(
                     w,
-                    fontFamily = FontFamily.Serif,
+                    fontFamily = AppFont,
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.surface,
                     modifier = Modifier
@@ -489,7 +489,7 @@ fun WordBankChips(st: WordBankState) {
                     .border(1.dp, MaterialTheme.colorScheme.outline, shape)
                     .clickable { st.pick(w) }
                     .padding(horizontal = 14.dp, vertical = 8.dp),
-            ) { Text(w, fontFamily = FontFamily.Serif, fontSize = 17.sp) }
+            ) { Text(w, fontFamily = AppFont, fontSize = 17.sp) }
         }
     }
 }
