@@ -505,7 +505,7 @@ internal fun EntryTile(e: Entry, badge: String?, foot: String?, onClick: () -> U
 }
 
 /** The gloss as a card shows it: a leading "释义:" says nothing on a card. */
-private fun cardGloss(g: String) = plain(g).replaceFirst(Regex("^释义\\s*[::]\\s*"), "")
+internal fun cardGloss(g: String) = plain(g).replaceFirst(Regex("^释义\\s*[::]\\s*"), "")
 
 /** The bottom pills: 新 / 已更新 first (filled), then the level, then 自测中 / 已掌握 / 试 N · 对 M. */
 @OptIn(ExperimentalLayoutApi::class)

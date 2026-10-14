@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- the downloaded update, shared with the system installer -->
+<!-- the downloaded update, shared with the system installer; 今天的练习's PDF, shared with whatever app I pick -->
 <paths>
     <cache-path name="update" path="update/" />
+    <cache-path name="exports" path="exports/" />
 </paths>

@@ -30,6 +30,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.draw.alpha
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Star
@@ -67,120 +68,8 @@ fun Chip(text: String, color: androidx.compose.ui.graphics.Color) {
     )
 }
 
-/**
- * The notes under a 笔记 heading: one section per card in a pager (a tab per section, swipe or
- * tap, never auto-advancing), so a glance takes in one thing. 全部展开 stacks them back into one
- * page and is remembered. Entries without sections show as before.
- */
-@Composable
-fun EntryNotes(
-    entry: Entry,
-    onXref: (String) -> Unit,
-    /** on the entry page's card: no card per page, and the notes fill [modifier]'s height, scrolling inside */
-    inCard: Boolean = false,
-    modifier: Modifier = Modifier,
-    /** on the entry page: which examples 自测 may ask, and the tap that toggles one */
-    quiz: ExampleQuiz? = null,
-    /** on the entry page: the card's expand button, at the end of the 笔记 heading */
-    trailing: @Composable () -> Unit = {},
-) {
-    val ctx = LocalContext.current
-    val prefs = remember { ctx.getSharedPreferences("notes", Context.MODE_PRIVATE) }
-    var all by remember { mutableStateOf(prefs.getBoolean("all", false)) }
-    val sections = entry.sections
-    val carousel = sections.size > 1 && !all
-    Column(modifier) {
-        NotesHeading(
-            if (sections.size > 1) (if (all) "分卡显示" else "全部展开") else null,
-            trailing,
-        ) { all = !all; prefs.edit().putBoolean("all", all).apply() }
-        when {
-            carousel -> NotesCarousel(entry.anchor, sections, onXref, inCard, if (inCard) Modifier.weight(1f) else Modifier, quiz)
-            inCard -> Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) { EntryBody(entry, onXref, quiz) }
-            else -> EntryBody(entry, onXref)
-        }
-    }
-}
-
-/** "笔记 ——— 全部展开": where the answer starts. */
-@Composable
-private fun NotesHeading(action: String?, trailing: @Composable () -> Unit, onAction: () -> Unit) {
-    val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 4.dp)) {
-        Text("笔记", style = MaterialTheme.typography.labelLarge, color = muted)
-        HorizontalDivider(Modifier.padding(horizontal = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
-        // 卡片 | 全部, the same two-way switch as on the entry page
-        if (action != null) AnswerModeToggle(action == "全部展开", { cards -> if (cards != (action == "全部展开")) onAction() }, labels = "卡片" to "全部")
-        trailing()
-    }
-}
-
 // a section heading that is only its label ("**常见搭配:**") — the card's tab already says it
 private val LABEL_ONLY = Regex("""^\*\*[^*]+[:：]\s*\*\*$""")
-
-@Composable
-private fun NotesCarousel(anchor: String, sections: List<Section>, onXref: (String) -> Unit, inCard: Boolean, modifier: Modifier, quiz: ExampleQuiz?) {
-    val pager = rememberPagerState { sections.size }
-    val tabs = rememberLazyListState()
-    val scope = rememberCoroutineScope()
-    val ink = MaterialTheme.colorScheme.onSurface
-    LaunchedEffect(pager.currentPage) { tabs.animateScrollToItem((pager.currentPage - 1).coerceAtLeast(0)) }
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        LazyRow(state = tabs, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            itemsIndexed(sections) { i, s ->
-                val on = i == pager.currentPage
-                Text(
-                    s.label,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = if (on) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(50))
-                        .then(
-                            if (on) Modifier.background(ink)
-                            else Modifier.border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50))
-                        )
-                        .clickable { scope.launch { pager.animateScrollToPage(i) } }
-                        .padding(horizontal = 12.dp, vertical = 6.dp),
-                )
-            }
-        }
-        HorizontalPager(
-            state = pager,
-            pageSpacing = 12.dp,
-            verticalAlignment = Alignment.Top,
-            key = { "$anchor/$it" },
-            // on the entry card the pager takes the card's remaining height and each page scrolls;
-            // elsewhere it is as tall as the page in view, so a short one leaves no gap below
-            modifier = if (inCard) Modifier.weight(1f).fillMaxWidth() else Modifier.animateContentSize(),
-        ) { page ->
-            val blocks = sections[page].blocks.let { b ->
-                if ((b.firstOrNull() as? Block.Para)?.text?.let(LABEL_ONLY::matches) == true) b.drop(1) else b
-            }
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .then(
-                        if (inCard) Modifier.fillMaxHeight().verticalScroll(rememberScrollState()).padding(top = 4.dp, bottom = 8.dp)
-                        else Modifier.background(MaterialTheme.colorScheme.surfaceContainer, RoundedCornerShape(16.dp)).padding(16.dp)
-                    )
-            ) { Blocks(anchor, blocks, onXref, quiz) }
-        }
-        if (sections.size > 1) Row(
-            horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterHorizontally),
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            sections.indices.forEach { i ->
-                val on = i == pager.currentPage
-                Box(
-                    Modifier
-                        .height(5.dp)
-                        .width(if (on) 14.dp else 5.dp)
-                        .background(ink.copy(alpha = if (on) 0.6f else 0.2f), RoundedCornerShape(3.dp))
-                )
-            }
-        }
-    }
-}
 
 /**
  * On the entry page: which examples 自测 may ask ([excluded]: the plain English of the ones opted
@@ -195,13 +84,17 @@ val LocalStarred = androidx.compose.runtime.compositionLocalOf<Map<String, Set<S
 @Composable
 fun EntryBody(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) = Blocks(entry.anchor, entry.blocks, onXref, quiz)
 
-/** Notes blocks outside an entry (阅读): same rendering, no quiz. */
+/** Notes blocks outside the entry page (阅读, under a reveal): same rendering, no quiz; [highlight] marks one example (its plain English). */
 @Composable
-fun NoteBlocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit) = Blocks(anchor, blocks, onXref)
+fun NoteBlocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, highlight: String? = null) = Blocks(anchor, blocks, onXref, highlight = highlight)
+
+/** A section's blocks without its label-only title ("**常见搭配:**"), which a tab or heading already says. */
+fun sectionBlocks(s: Section): List<Block> =
+    if ((s.blocks.firstOrNull() as? Block.Para)?.text?.let(LABEL_ONLY::matches) == true) s.blocks.drop(1) else s.blocks
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
-private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) {
+private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQuiz? = null, highlight: String? = null) {
     val starred = LocalStarred.current[anchor].orEmpty()
     // long-press on an example (entry page only): 复制 / 收藏 / 加入或移出自测, in a bottom sheet
     var menuFor by remember { mutableStateOf<io.github.chinalwb.vocab.data.Example?>(null) }
@@ -227,9 +120,12 @@ private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit
                     // sits in a filled dot while it's in, a hollow one (and dimmed text) when out
                     val asks = quiz != null && ex.quizable
                     val out = asks && plain(ex.en) in quiz!!.excluded
+                    // the sentence just asked, under a reveal
+                    val lit = highlight != null && plain(ex.en) == highlight
                     Row(
                         Modifier
                             .fillMaxWidth()
+                            .then(if (lit) Modifier.background(sheetColors().well, RoundedCornerShape(12.dp)).padding(horizontal = 8.dp, vertical = 6.dp) else Modifier)
                             .then(
                                 if (quiz != null) Modifier.clip(RoundedCornerShape(8.dp)).combinedClickable(
                                     onLongClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); menuFor = ex },
@@ -347,8 +243,14 @@ fun Quote(lines: List<String>, link: androidx.compose.ui.graphics.Color, onXref:
  * section, and the chip of the section in view is the filled one. Replaces the carousel there.
  */
 @Composable
-fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifier: Modifier = Modifier) =
-    NotesPager(entry.anchor, entry.sections, entry.blocks, onXref, quiz, modifier)
+fun NotesPage(
+    entry: Entry,
+    onXref: (String) -> Unit,
+    quiz: ExampleQuiz?,
+    modifier: Modifier = Modifier,
+    inCard: Boolean = false,
+    trailing: @Composable () -> Unit = {},
+) = NotesPager(entry.anchor, entry.sections, entry.blocks, onXref, quiz, modifier, inCard = inCard, trailing = trailing)
 
 /**
  * [NotesPage] for any sectioned blocks — the entry page's notes and 阅读's details share it, the
@@ -366,6 +268,12 @@ fun NotesPager(
     title: String = "笔记",
     footer: (@Composable () -> Unit)? = null,
     lastCard: Section? = null,
+    /**
+     * On the entry page's card (V2): one header row — the section tabs, the 卡片 / 全部 switch as
+     * an icon, then [trailing] (⤢) — instead of the 笔记 heading row over a row of chips.
+     */
+    inCard: Boolean = false,
+    trailing: @Composable () -> Unit = {},
 ) {
     // 分卡 (one section at a time) or 全部展开 (one long page): the user keeps both (用户 2026-10-14),
     // remembered across entries and launches — the same switch and key the carousel had
@@ -396,27 +304,56 @@ fun NotesPager(
     LaunchedEffect(current) { if (tabs.size > 1) chips.animateScrollToItem((current - 1).coerceAtLeast(0)) }
     val ink = MaterialTheme.colorScheme.onSurface
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    val switchTo = { cards: Boolean ->
+        if (cards == all) {
+            val at = current
+            all = !cards
+            prefs.edit().putBoolean("all", all).apply()
+            // keep the same section in view across the switch; the long page
+            // scrolls once it has measured where that section is (below)
+            if (all) pending = at.coerceAtMost(sections.lastIndex) else scope.launch { pager.scrollToPage(at) }
+        }
+    }
     Column(modifier) {
-        if (cards.size > 1) {
+        if (inCard) Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 10.dp, end = 4.dp, top = 6.dp)) {
+            LazyRow(
+                state = chips,
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 2.dp, vertical = 4.dp),
+            ) {
+                itemsIndexed(tabs) { i, s ->
+                    val on = i == current
+                    Text(
+                        s.label,
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = if (on) FontWeight.Bold else FontWeight.Normal,
+                        color = if (on) MaterialTheme.colorScheme.surface else ink.copy(alpha = 0.76f),
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(50))
+                            .then(if (on) Modifier.background(ink) else Modifier)
+                            .clickable {
+                                scope.launch { if (tabbed) pager.animateScrollToPage(i) else scroll.animateScrollTo(tops[i] ?: 0) }
+                            }
+                            .padding(horizontal = 13.dp, vertical = 9.dp),
+                    )
+                }
+            }
+            if (cards.size > 1) androidx.compose.material3.IconButton(onClick = { switchTo(all) }) {
+                androidx.compose.material3.Icon(
+                    if (all) GridViewIcon else androidx.compose.material.icons.Icons.AutoMirrored.Filled.List,
+                    if (all) "分卡显示" else "全部展开",
+                    tint = ink.copy(alpha = 0.76f),
+                )
+            }
+            trailing()
+        } else if (cards.size > 1) {
             // "笔记 ——— 卡片 | 全部": the switch on a row of its own, so it can't pass for a section chip
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 18.dp, end = 12.dp, top = 12.dp)) {
                 Text(title, style = MaterialTheme.typography.labelLarge, color = muted)
                 HorizontalDivider(Modifier.padding(horizontal = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
                 // 卡片 | 全部: a two-way switch like 选词 | 打字, the side in use filled
-                AnswerModeToggle(
-                    !all,
-                    { cards ->
-                        if (cards == all) {
-                            val at = current
-                            all = !cards
-                            prefs.edit().putBoolean("all", all).apply()
-                            // keep the same section in view across the switch; the long page
-                            // scrolls once it has measured where that section is (below)
-                            if (all) pending = at.coerceAtMost(sections.lastIndex) else scope.launch { pager.scrollToPage(at) }
-                        }
-                    },
-                    labels = "卡片" to "全部",
-                )
+                AnswerModeToggle(!all, switchTo, labels = "卡片" to "全部")
             }
             LazyRow(
                 state = chips,
@@ -449,13 +386,13 @@ fun NotesPager(
             modifier = Modifier.weight(1f).fillMaxWidth(),
         ) { page ->
             Column(
-                Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),
+                Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(start = 20.dp, end = 20.dp, top = if (inCard) 12.dp else 20.dp, bottom = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 Section(anchor, cards[page], heading = false, onXref, quiz, muted)
             }
         } else Column(
-            Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),
+            Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(start = 20.dp, end = 20.dp, top = if (inCard) 12.dp else 20.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
             if (sections.isEmpty()) Blocks(anchor, blocks, onXref, quiz)

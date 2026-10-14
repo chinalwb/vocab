@@ -1,11 +1,11 @@
 package io.github.chinalwb.vocab.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,18 +14,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
@@ -36,9 +35,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +47,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -61,16 +61,18 @@ import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.next
 
 /**
- * One entry (UI refactor, direction A, 用户 2026-10-14). Cross-references push another EntryScreen
+ * One entry (V2, ui/claude-code-v2, 用户 2026-10-14). Cross-references push another EntryScreen
  * on the nav back stack, so the system back gesture walks back through the chain.
  *
- * Two modes on one page. Notes: a band in the entry's level colour (headword, a meta line that
- * opens the details sheet, and the progress panel — where the entry is and what moves it on; a
- * tap opens the stage picker), then the notes as one scrolling page with section chips, and one
- * button at the bottom, 自测这条. Self-test: a compact band (headword, which sentence of how many),
- * the question with the answer under it, and the chips / 显示答案 at the bottom; after the
- * reveal, a one-line verdict, both sentences, and 再试一次 / 下一句. 考核 opens on the self-test
- * and keeps the notes shut until it's answered.
+ * Notes: ← and the 下一个 pill on top, the headword with 🔊, a meta pill that opens the details,
+ * the four-stage track (tap a stage to move there), then the notes on a card in the level colour
+ * — section tabs, 卡片 / 全部 and ⤢ in the card's own top row, and at its foot how many sentences
+ * are left in this stage beside 自测这条. ⤢ folds the headword and the track away so the card
+ * takes the page; ⤡ in the same spot brings them back.
+ *
+ * 自测: the answer sheet (AnswerSheet.kt) under a row with ⤡ (back to the notes), the headword and
+ * a bar per sentence; after the reveal, the verdict, the notes the sentence comes from, and
+ * 再试一次 / 下一句. 考核 opens on the 自测 and keeps the notes shut until it's answered.
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -109,15 +111,14 @@ fun EntryScreen(
             .imePadding()
     ) {
         if (entry == null) {
-            Column(Modifier.background(band).windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility).padding(8.dp)) {
-                IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") }
-            }
+            TopRow(onBack, null, null)
             Text("找不到这个条目,可能已在词库里改名或删除。", Modifier.padding(20.dp))
             return@Column
         }
         val selfTest = entry.level == "SELFTEST"
         var details by rememberSaveable { mutableStateOf(false) }
-        var picking by rememberSaveable { mutableStateOf(false) }
+        // ⤢: the card takes the page (the headword, meta pill and track fold away)
+        var full by rememberSaveable { mutableStateOf(false) }
         // the attempt lives out here, so going to the notes and back doesn't lose it; a new try
         // resets it: 再试一次 asks the same example again, 下一句 the next one
         var tryNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
@@ -140,41 +141,51 @@ fun EntryScreen(
             }
             revealed = true
         }
-        // 考核 keeps the notes shut until the question is answered; elsewhere ← goes back to them
+        // 考核 keeps the notes shut until the question is answered; elsewhere ⤡ goes back to them
         val toNotes = quizUp && (stage != Stage.Test || revealed)
 
         if (!quizUp) {
-            NotesBand(
-                entry, band, stage,
-                hint = progressHint(entry, stage, attempts, since, excluded),
-                nextLabel = nextLabel, onNext = onNext, onBack = onBack,
-                onDetails = { details = true }, onProgress = { picking = true },
-            )
-            NotesPage(
-                entry, onXref,
-                quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample, onFav),
-                modifier = Modifier.weight(1f),
-            )
-            BottomBar {
-                val n = entry.quizExamples(excluded).size
-                PrimaryButton(
-                    when {
+            TopRow(onBack, nextLabel, onNext, title = if (full) entry else null)
+            if (!full) {
+                Headword(entry)
+                MetaPill(entry) { details = true }
+                StageTrack(stage, onStage)
+            }
+            Column(
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(start = 8.dp, end = 8.dp, top = if (full) 4.dp else 0.dp, bottom = 10.dp)
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(band),
+            ) {
+                NotesPage(
+                    entry, onXref,
+                    quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample, onFav),
+                    modifier = Modifier.weight(1f),
+                    inCard = true,
+                    trailing = {
+                        IconButton(onClick = { full = !full }) {
+                            Icon(if (full) CloseFullscreenIcon else OpenInFullIcon, if (full) "退出全屏" else "全屏", Modifier.size(20.dp))
+                        }
+                    },
+                )
+                CardFoot(
+                    hint = progressHint(entry, stage, attempts, since, excluded),
+                    label = when {
                         revealed -> "回到自测"
-                        !selfTest && n > 0 -> "自测这条 · $n 句"
-                        else -> "自测一下"
+                        selfTest -> "自测一下"
+                        else -> "自测这条"
                     },
                 ) { quizUp = true }
             }
         } else {
-            QuizBand(
-                entry, band,
-                label = when {
-                    ex != null -> "自测 · 第 ${ex.k + 1} 句,共 ${ex.of} 句"
-                    else -> "自测"
-                },
-                at = ex?.k, of = ex?.of,
-                onBack = if (toNotes) ({ quizUp = false }) else onBack,
-                backLabel = if (toNotes) "回到笔记" else "返回",
+            QuizTop(
+                entry, ex,
+                icon = if (toNotes) CloseFullscreenIcon else null,
+                label = if (toNotes) "回到笔记" else "返回",
+                onClick = if (toNotes) ({ quizUp = false }) else onBack,
             )
             val bank = if (!revealed && answer != null && chips) {
                 val seed = entry.anchor.hashCode() + tryNo
@@ -183,149 +194,222 @@ fun EntryScreen(
                 }.filter { it.isNotBlank() && it != answer }
                 rememberWordBank(answer, strayWords(answer, others, seed), seed).also { st -> LaunchedEffect(st.pickedText) { draft = st.draft } }
             } else null
-            val imeVisible = WindowInsets.isImeVisible
-            Column(
-                Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                if (!revealed) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            if (ex != null || selfTest) "中译英" else "回想并写出来",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.weight(1f),
-                        )
-                        if (answer != null) AnswerModeToggle(chips, setChips)
+            val stats = statsLine(attempts.at(ex), one = ex != null)
+            AnswerSheet(
+                band,
+                Modifier.weight(1f).navigationBarsPadding(),
+                card = {
+                    SheetMetaRow(
+                        when {
+                            selfTest -> "自测题 · 中译英"
+                            ex != null -> "例句 ${ex.k + 1} / ${ex.of} · 中译英"
+                            else -> "回想并写出来"
+                        },
+                        toggle = if (!revealed && answer != null) ({ AnswerModeToggle(chips, setChips) }) else null,
+                    )
+                    if (!revealed) {
+                        Question(entry, ex)
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub, modifier = Modifier.weight(1f, fill = false))
+                            if (toNotes) Text(
+                                "看笔记",
+                                style = MaterialTheme.typography.labelLarge,
+                                modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { quizUp = false }.padding(horizontal = 6.dp, vertical = 4.dp),
+                            )
+                        }
+                        if (bank != null) ChipsAnswerBox(bank) else TypingAnswerBox(draft) { draft = it }
+                    } else {
+                        // the question again, quietly, above the verdict
+                        QuestionQuiet(entry, ex)
+                        when {
+                            selfTest -> RevealVerdict(draft, entry.selfTestAnswer, stats)
+                            ex != null -> RevealVerdict(draft, ex.en, stats)
+                            else -> MovedResult(draft, graded) { graded = it; onGrade(draft, it, "") }
+                        }
+                        // 移到 X moves and goes on to the next one in the list; the track only moves
+                        if (ready) AdvanceBanner(stage) { stage.next?.let(onStage); onNext?.invoke() }
+                        NotesForQuestion(entry, ex, onXref, onAll = if (toNotes) ({ quizUp = false }) else null)
+                        SelfTestHistory(attempts.at(ex), one = ex != null)
                     }
-                    Question(entry, ex, compact = imeVisible)
-                    if (bank != null) WordBankAnswer(bank) else DraftField(draft, { draft = it }, maxLines = 6)
-                } else {
-                    // the question again, quietly, above the verdict
-                    when {
-                        selfTest -> Text(entry.title.removePrefix("自测:").removePrefix("自测:"), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        ex != null -> Text(ex.zh, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                },
+                panel = {
+                    if (!revealed) {
+                        if (bank != null) WordKeys(bank)
+                        SheetButton("显示答案", onClick = reveal)
+                    } else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        SheetButton("再试一次", Modifier.weight(1f), filled = false, onClick = retry)
+                        if (ex != null && ex.of > 1) SheetButton("下一句 ›", Modifier.weight(1f), onClick = nextExample)
+                        else SheetButton("看笔记", Modifier.weight(1f)) { quizUp = false }
                     }
-                    if (selfTest) SelfTestResult(draft, entry.selfTestAnswer)
-                    else MovedResult(ex, draft, graded) { graded = it; onGrade(draft, it, "") }
-                    // 移到 X moves and goes on to the next one in the list; the stage picker only moves
-                    if (ready) AdvanceBanner(stage) { stage.next?.let(onStage); onNext?.invoke() }
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outline)
-                    SelfTestStats(attempts.at(ex), one = ex != null)
-                    SelfTestHistory(attempts.at(ex), one = ex != null)
-                }
-            }
-            BottomBar {
-                if (!revealed) {
-                    if (bank != null) WordBankChips(bank)
-                    PrimaryButton("显示答案", onClick = reveal)
-                } else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    OutlinedButton(onClick = retry, modifier = Modifier.weight(1f).height(52.dp)) { Text("再试一次", fontSize = 16.sp) }
-                    if (ex != null && ex.of > 1) Button(onClick = nextExample, modifier = Modifier.weight(1f).height(52.dp)) { Text("下一句 ›", fontSize = 16.sp, fontWeight = FontWeight.Bold) }
-                    else Button(onClick = { quizUp = false }, modifier = Modifier.weight(1f).height(52.dp)) { Text("看笔记", fontSize = 16.sp, fontWeight = FontWeight.Bold) }
-                }
-            }
+                },
+            )
         }
         if (details) ModalBottomSheet(onDismissRequest = { details = false }) { Details(entry) }
-        if (picking) ModalBottomSheet(onDismissRequest = { picking = false }) {
-            StagePicker(stage) { onStage(it); picking = false }
-        }
+    }
     }
 }
-}
 
-/** The notes mode's band: ← and 下一个, the headword with 🔊, the meta line, the progress panel. */
+/** ←, the headword with 🔊 while full screen ([title]), and the 下一个 pill. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun NotesBand(
-    entry: Entry,
-    band: Color,
-    stage: Stage,
-    hint: String,
-    nextLabel: String?,
-    onNext: (() -> Unit)?,
-    onBack: () -> Unit,
-    onDetails: () -> Unit,
-    onProgress: () -> Unit,
-) {
-    val sub = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f)
-    Column(
+private fun TopRow(onBack: () -> Unit, nextLabel: String?, onNext: (() -> Unit)?, title: Entry? = null) {
+    Row(
         Modifier
             .fillMaxWidth()
-            .background(band)
             .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility)
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+            .height(52.dp)
+            .padding(start = 4.dp, end = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack, modifier = Modifier.padding(start = 0.dp).size(44.dp)) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回")
-            }
-            Spacer(Modifier.weight(1f))
-            if (onNext != null) TextButton(onClick = onNext) {
-                Text("${nextLabel.orEmpty()} · 下一个", color = sub)
-                Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null, tint = sub)
-            }
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") }
+        if (title != null) Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
             Text(
-                entry.title,
-                fontFamily = AppFont,
-                fontWeight = FontWeight.Bold,
-                fontSize = if (entry.title.length > 18) 26.sp else 34.sp,
-                lineHeight = if (entry.title.length > 18) 32.sp else 40.sp,
-                modifier = Modifier.weight(1f, fill = false).sharedEntryTitle(entry.anchor),
+                title.title, fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = 19.sp,
+                maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false),
             )
-            val say = entry.speakText()
-            if (say.isNotEmpty()) SpeakButton(say, size = 22.dp)
-        }
-        val line = listOf(levelStyle(entry.level).short, entry.pos, entry.ipa).filter { it.isNotEmpty() }.joinToString(" · ")
-        Row(
-            Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onDetails).padding(vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(line, style = MaterialTheme.typography.bodyMedium, color = sub, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
-            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "详情", Modifier.size(18.dp), tint = sub)
-        }
-        ProgressPanel(stage, hint, onProgress)
+            title.speakText().takeIf { it.isNotEmpty() }?.let { SpeakButton(it) }
+        } else Spacer(Modifier.weight(1f))
+        if (onNext != null) NextPill(nextLabel.orEmpty(), onNext)
     }
 }
 
-/** Where the entry is, what moves it on, and four short bars; a tap opens the stage picker. */
+/** "6 / 20 · 下一个 ›" as a pill in the top right. */
 @Composable
-private fun ProgressPanel(stage: Stage, hint: String, onClick: () -> Unit) {
+private fun NextPill(label: String, onClick: () -> Unit) {
+    val shape = RoundedCornerShape(50)
+    Row(
+        Modifier
+            .height(36.dp)
+            .clip(shape)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .border(1.dp, MaterialTheme.colorScheme.outline, shape)
+            .clickable(onClick = onClick)
+            .padding(start = 14.dp, end = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("下一个", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null, Modifier.size(18.dp))
+    }
+}
+
+/** The headword with 🔊; long titles drop a size so they wrap in two lines, not three. */
+@Composable
+private fun Headword(entry: Entry) {
+    val long = entry.title.length > 18
+    Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 2.dp), verticalAlignment = Alignment.Top) {
+        Text(
+            entry.title,
+            fontFamily = AppFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = if (long) 26.sp else 32.sp,
+            lineHeight = if (long) 32.sp else 38.sp,
+            modifier = Modifier.weight(1f).sharedEntryTitle(entry.anchor),
+        )
+        entry.speakText().takeIf { it.isNotEmpty() }?.let { SpeakButton(it, size = 22.dp) }
+    }
+}
+
+/** "B2 · adj. · /…/ ›" — the details sheet behind it holds the rest (type, number, date). */
+@Composable
+private fun MetaPill(entry: Entry, onClick: () -> Unit) {
+    val pos = entry.pos.substringBefore('(').substringBefore('(').trim()
+    val rest = listOf(pos, entry.ipa).filter { it.isNotEmpty() }
+    Row(
+        Modifier
+            .padding(start = 20.dp, end = 20.dp, top = 10.dp)
+            .height(32.dp)
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+            .clickable(onClick = onClick)
+            .padding(start = 12.dp, end = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(levelStyle(entry.level).short, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+        if (rest.isNotEmpty()) Text(
+            " · " + rest.joinToString(" · "),
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false),
+        )
+        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "详情", Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+/**
+ * The four stages as a track (学习中 → 复习中 → 考核中 → 已掌握): passed ones ticked, the current one
+ * a ringed dot, the rest hollow; the line fills up to where the entry is. Tapping another stage
+ * moves it there (it only moves — no jump to the next entry).
+ */
+@Composable
+private fun StageTrack(stage: Stage, onPick: (Stage) -> Unit) {
     val ink = MaterialTheme.colorScheme.onSurface
-    val done = stage == Stage.Done
-    val fill = if (done) Color(0xFF2E6B3A) else ink
-    Column(
+    val track = MaterialTheme.colorScheme.outline
+    val ground = MaterialTheme.colorScheme.background
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    val n = Stage.entries.size
+    Row(
         Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.55f))
-            .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 10.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(horizontal = 20.dp, vertical = 12.dp)
+            .drawBehind {
+                val col = size.width / n
+                val y = 13.dp.toPx()
+                val x0 = col / 2
+                val x1 = size.width - col / 2
+                drawLine(track, Offset(x0, y), Offset(x1, y), 3.dp.toPx(), StrokeCap.Round)
+                if (stage.ordinal > 0) drawLine(ink, Offset(x0, y), Offset(x0 + (x1 - x0) * stage.ordinal / (n - 1), y), 3.dp.toPx(), StrokeCap.Round)
+            },
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(stage.label, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.width(10.dp))
-            Text(hint, style = MaterialTheme.typography.bodySmall, color = ink.copy(alpha = 0.72f), maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
-            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "换阶段", Modifier.size(18.dp), tint = ink.copy(alpha = 0.6f))
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            Stage.entries.forEach { s ->
-                Box(
-                    Modifier
-                        .weight(1f)
-                        .height(6.dp)
-                        .background(if (s.ordinal <= stage.ordinal) fill else ink.copy(alpha = 0.15f), RoundedCornerShape(3.dp))
+        Stage.entries.forEach { s ->
+            val cur = s == stage
+            Column(
+                Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable(enabled = !cur) { onPick(s) },
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                when {
+                    s.ordinal < stage.ordinal -> Box(Modifier.size(26.dp).background(ink, CircleShape), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.Check, null, Modifier.size(15.dp), tint = ground)
+                    }
+                    cur -> Box(Modifier.size(26.dp).background(ground, CircleShape).border(3.dp, ink, CircleShape), contentAlignment = Alignment.Center) {
+                        Box(Modifier.size(10.dp).background(ink, CircleShape))
+                    }
+                    else -> Box(Modifier.size(26.dp).background(ground, CircleShape).border(2.dp, track, CircleShape))
+                }
+                Text(
+                    s.label,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = if (cur) FontWeight.Bold else FontWeight.Normal,
+                    color = if (cur) ink else muted,
                 )
             }
         }
     }
 }
 
-/** The panel's hint: how many sentences are left before the next stage is offered. */
+/** The card's foot: what's left in this stage, and the way into 自测. */
+@Composable
+private fun CardFoot(hint: String, label: String, onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().padding(start = 18.dp, end = 10.dp, top = 6.dp, bottom = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(hint, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub, maxLines = 2, modifier = Modifier.weight(1f))
+        Button(onClick = onClick, modifier = Modifier.height(48.dp), contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 20.dp, end = 16.dp)) {
+            Text(label, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.width(6.dp))
+            Icon(Icons.AutoMirrored.Filled.ArrowForward, null, Modifier.size(16.dp))
+        }
+    }
+}
+
+/** The panel's hint: how many sentences are still to be answered right before the next stage is offered. */
 private fun progressHint(entry: Entry, stage: Stage, attempts: List<Attempt>, since: Long, excluded: Set<String>): String {
     val next = stage.next ?: return "已掌握,不再进复习和考核"
     val left = remainingToAdvance(entry, stage, attempts, since, excluded) ?: return "可以手动移到${next.tab}"
@@ -336,84 +420,50 @@ private fun progressHint(entry: Entry, stage: Stage, attempts: List<Attempt>, si
     }
 }
 
-/** The four stages as rows; tapping one moves the entry there (only moves — no jump to the next entry). */
-@Composable
-private fun StagePicker(stage: Stage, onPick: (Stage) -> Unit) {
-    Column(Modifier.padding(bottom = 24.dp)) {
-        Text("移到哪个阶段", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp))
-        Stage.entries.forEach { s ->
-            Row(
-                Modifier.fillMaxWidth().clickable { onPick(s) }.padding(horizontal = 24.dp, vertical = 14.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(s.label, style = MaterialTheme.typography.bodyLarge, fontWeight = if (s == stage) FontWeight.Bold else FontWeight.Normal, modifier = Modifier.weight(1f))
-                if (s == stage) Icon(Icons.Default.Check, "当前阶段")
-            }
-        }
-    }
-}
-
-/** The self-test mode's band: ←, the headword, which sentence of how many, one bar per sentence. */
+/** The 自测's row: ⤡ back to the notes (← out, while 考核 keeps them shut), the headword, a bar per sentence. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun QuizBand(entry: Entry, band: Color, label: String, at: Int?, of: Int?, onBack: () -> Unit, backLabel: String) {
-    val ink = MaterialTheme.colorScheme.onSurface
-    Column(
+private fun QuizTop(entry: Entry, ex: QuizExample?, icon: androidx.compose.ui.graphics.vector.ImageVector?, label: String, onClick: () -> Unit) {
+    Row(
         Modifier
             .fillMaxWidth()
-            .background(band)
             .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility)
-            .padding(start = 16.dp, end = 16.dp, bottom = 14.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+            .height(52.dp)
+            .padding(start = 4.dp, end = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack, modifier = Modifier.size(44.dp)) { Icon(Icons.AutoMirrored.Filled.ArrowBack, backLabel) }
-            Text(
-                entry.title.removePrefix("自测:").removePrefix("自测:"),
-                fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = 19.sp,
-                maxLines = 1, overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f).padding(start = 4.dp),
-            )
-            Text(label, style = MaterialTheme.typography.bodySmall, color = ink.copy(alpha = 0.72f), modifier = Modifier.padding(start = 8.dp))
+        IconButton(onClick = onClick) {
+            if (icon != null) Icon(icon, label, Modifier.size(20.dp)) else Icon(Icons.AutoMirrored.Filled.ArrowBack, label)
         }
-        if (at != null && of != null && of in 2..10) Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            repeat(of) { i ->
-                Box(Modifier.weight(1f).height(4.dp).background(if (i <= at) ink else ink.copy(alpha = 0.15f), RoundedCornerShape(2.dp)))
-            }
-        }
+        Text(
+            entry.title.removePrefix("自测:").removePrefix("自测:"),
+            fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = 18.sp,
+            maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f),
+        )
+        if (ex != null) SentenceBars(ex.k, ex.of)
     }
 }
 
 /** The question: a 自测题's Chinese title, an example's Chinese, or — with none — a review card. */
 @Composable
-private fun Question(entry: Entry, ex: QuizExample?, compact: Boolean) {
-    val style = if (compact) MaterialTheme.typography.titleLarge else MaterialTheme.typography.headlineSmall
+private fun Question(entry: Entry, ex: QuizExample?) {
     when {
-        entry.level == "SELFTEST" -> Text(entry.title.removePrefix("自测:").removePrefix("自测:"), style = style, fontWeight = FontWeight.Bold)
-        ex != null -> Text(ex.zh, style = style, fontWeight = FontWeight.Bold)
+        entry.level == "SELFTEST" -> Text(entry.title.removePrefix("自测:").removePrefix("自测:"), fontSize = 24.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
+        ex != null -> Text(ex.zh, fontSize = 24.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
         else -> ReviewFront(entry, kindOf(entry, inTest = true))
     }
 }
 
-/** The bottom of either mode: what's there stays put above the navigation bar. */
+/** The question again after the reveal, small and quiet. */
 @Composable
-private fun BottomBar(content: @Composable ColumnScope.() -> Unit) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .navigationBarsPadding()
-            .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp),
-        content = content,
-    )
-}
-
-@Composable
-private fun PrimaryButton(label: String, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.fillMaxWidth().height(52.dp)) {
-        Text(label, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+private fun QuestionQuiet(entry: Entry, ex: QuizExample?) {
+    val text = when {
+        entry.level == "SELFTEST" -> entry.title.removePrefix("自测:").removePrefix("自测:")
+        ex != null -> ex.zh
+        else -> return
     }
+    Text(text, style = MaterialTheme.typography.bodyLarge, color = sheetColors().sub)
 }
 
 /** The details sheet: type, number, IPA, part of speech, CEFR, 会写 / 认识, date. */

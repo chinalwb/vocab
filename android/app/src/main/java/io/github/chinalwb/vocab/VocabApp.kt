@@ -14,6 +14,8 @@ class VocabApp : Application() {
     val selfTests by lazy { SelfTestLog(this) }
     val stages by lazy { StageStore(this) }
     val favs by lazy { io.github.chinalwb.vocab.review.FavStore(this) }
+    /** 今天的练习: the day's sentences, one Markdown file a day, on this phone only. */
+    val practice by lazy { io.github.chinalwb.vocab.review.PracticeLog(this) }
     val progress by lazy { ProgressSync(this, reviews, selfTests, stages, favs) }
     val updater by lazy { io.github.chinalwb.vocab.update.AppUpdater(this) }
     val speaker by lazy { io.github.chinalwb.vocab.ui.Speaker(this) }

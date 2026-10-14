@@ -66,3 +66,28 @@ val MenuBookIcon: ImageVector = ImageVector.Builder("MenuBook", 24.dp, 24.dp, 24
     ),
     fill = SolidColor(Color.Black),
 ).build()
+
+// Material's "backspace" (outlined): ⌫ in the word-chip panel takes back the last word.
+val BackspaceIcon: ImageVector = ImageVector.Builder("Backspace", 24.dp, 24.dp, 24f, 24f).addPath(
+    pathData = addPathNodes(
+        "M22,3H7c-0.69,0 -1.23,0.35 -1.59,0.88L0,12l5.41,8.11C5.77,20.64 6.31,21 7,21h15c1.1,0 2,-0.9 2,-2V5C24,3.9 23.1,3 22,3z" +
+            "M22,19H7.07L2.4,12l4.66,-7H22V19z" +
+            "M10.41,17L14,13.41L17.59,17L19,15.59L15.41,12L19,8.41L17.59,7L14,10.59L10.41,7L9,8.41L12.59,12L9,15.59z"
+    ),
+    fill = SolidColor(Color.Black),
+).build()
+
+// Material's "picture_as_pdf": 导出 PDF.
+val PdfIcon: ImageVector = ImageVector.Builder("PictureAsPdf", 24.dp, 24.dp, 24f, 24f).addPath(
+    pathData = addPathNodes(
+        "M20,2H8C6.9,2 6,2.9 6,4v12c0,1.1 0.9,2 2,2h12c1.1,0 2,-0.9 2,-2V4C22,2.9 21.1,2 20,2z" +
+            "M20,16H8V4h12V16z" +
+            "M4,6H2v14c0,1.1 0.9,2 2,2h14v-2H4V6z" +
+            "M16,12V9c0,-0.55 -0.45,-1 -1,-1h-2v5h2C15.55,13 16,12.55 16,12z" +
+            "M14,9h1v3h-1V9z" +
+            "M18,11h1v-1h-1V9h1V8h-2v5h1V11z" +
+            "M10,11h1c0.55,0 1,-0.45 1,-1V9c0,-0.55 -0.45,-1 -1,-1H9v5h1V11z" +
+            "M10,9h1v1h-1V9z"
+    ),
+    fill = SolidColor(Color.Black),
+).build()
