@@ -146,6 +146,7 @@
 140. [worth](#worth)
 141. [for what it's worth](#for-what-its-worth)
 142. [自测:不过我们可以把它当成一个独立的任务,和主重构分开处理。](#t-separate-task)
+143. [自测:按团队里新来的产品经理来写,他们不太了解这个产品。每一点都写清楚,让这条消息不看别的资料也能读懂。](#t-write-for-new-pms)
 
 ---
 
@@ -4641,3 +4642,35 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [搭配] **take it as** —— 表示"当作某种意思",这里是"当成一个任务来处理" → **treat it as**。
 - ⚠️ [介词] **independent … from** —— 有人这么说,标准搭配是 **independent of**;这里更自然的是 **separate from**。
 - ❌ [冠词] **from main refactor** —— 特指的那项重构要加冠词 → **from the main refactor**。
+
+---
+
+<a id="t-write-for-new-pms"></a>
+## 自测:按团队里新来的产品经理来写,他们不太了解这个产品。每一点都写清楚,让这条消息不看别的资料也能读懂。
+
+- 日期:2026-10-14
+- 掌握:认识
+
+**答案:**
+
+> Write for new PMs on the team who know little about this product. Spell everything out and make the message self-contained.
+> Assume no prior knowledge of this product — the readers are new PMs, so leave nothing implied.
+
+**要点:**
+
+- **Write for + 读者** —— "按……来写、以……为读者",写作指示里最地道的开头。
+- **who know little about** —— 用定语从句把两句并成一句,避免逗号硬接两个完整句子。
+- **on the team** —— 团队成员用 **on**(美式尤其如此),*in the team* 不算错但少见。
+- **spell everything out** —— 把每一点都讲明白、不留言外之意。
+- **self-contained** —— 自成一体,只看这一份就能懂;比 *as detailed as possible* 更准确:要的是不依赖背景,不是越长越好。
+- **Assume no prior knowledge (of)** —— 固定说法,"假定读者没有任何背景知识"。
+- **That said** —— 意思是"话虽如此",后面必须接**转折**(*It's risky. That said, it's our best option.*);表示"所以"要用 **so / that means**。
+
+**我的原句:**
+
+> Assume the readers are new PMs in the team, they know little about this product. That said, the message should be as detailed as possible.
+
+- ❌ [结构] **…in the team, they know little…** —— 两个完整句子只用逗号连接(comma splice) → **new PMs who know little about…**,或者拆成两句。
+- ❌ [搭配] **That said** —— 表示转折("话虽如此"),这里是因果 → **So / That means**。
+- ⚠️ [介词] **in the team** —— 更常说 **on the team**。
+- ⚠️ [直译] **as detailed as possible** —— 从"越详细越好"直译而来;真正想要的是 **self-contained / spell everything out**。
