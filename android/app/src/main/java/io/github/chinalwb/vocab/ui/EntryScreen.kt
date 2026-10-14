@@ -33,12 +33,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -96,6 +98,9 @@ fun EntryScreen(
 ) {
     if (entry != null) LaunchedEffect(entry.anchor) { onSeen(entry.anchor) }
     val band = entry?.let { levelColor(it.level) } ?: MaterialTheme.colorScheme.surfaceContainer
+    // not inside a Surface, so un-coloured text (the headword, the notes) would default to black —
+    // unreadable in dark mode
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) {
     Column(
         Modifier
             .fillMaxSize()
@@ -226,6 +231,7 @@ fun EntryScreen(
             StagePicker(stage) { onStage(it); picking = false }
         }
     }
+}
 }
 
 /** The notes mode's band: ← and 下一个, the headword with 🔊, the meta line, the progress panel. */
