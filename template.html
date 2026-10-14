@@ -687,6 +687,142 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .tabs.float .tab .n{display:none}
 .tabs.float .tab:focus-visible{outline-offset:-3px;border-radius:999px}
 @media (max-width:639px){ .wrap{padding-block-end:110px} }
+/* ── V2 (分支 ui/claude-code-v2,用户 2026-10-14),和 App 一样:条目在中性底上,笔记在级别色卡片里;
+   自测和复习 / 考核做题是同一张答题纸(题目卡 + 下面拼接的词块面板)── */
+:root{--well:rgba(255,255,255,.62);--panel:#ffffff;--key:#d9d6cc;--sum-bg:#1f1f1e;--sum-fg:#f7f6f2}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--well:rgba(0,0,0,.24);--panel:#232320;--key:#45433e;--sum-bg:#2a2926;--sum-fg:#eceae2} }
+:root[data-theme="dark"]{--well:rgba(0,0,0,.24);--panel:#232320;--key:#45433e;--sum-bg:#2a2926;--sum-fg:#eceae2}
+.sheet{background:var(--ground);color:var(--ink);padding:16px 12px 12px}
+.sheet .mband,.sheet .back{margin-left:8px;margin-right:8px}
+.sheet .lv{margin:14px 8px 12px}
+.sheet .lvl .node{background:var(--ground)}
+.sheet .lvl.passed .node{color:var(--ground)}
+.nx{background:var(--chip);color:var(--ink-3);border:1px solid var(--rule)}
+.nx b{color:var(--ink);font-weight:700}
+.sheet.quizzing .mpill,.sheet.quizzing .mdet,.sheet.quizzing .lv{display:none}
+.sheet.quizzing h2{font-size:17px;margin:0 0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-wrap:unset}
+/* the card: the notes on the level colour; tabs, 卡片/全部 and ⤢ in its own top row */
+.face{background:var(--sw);color:var(--card-ink);border:0;border-radius:24px;padding:0;overflow:hidden}
+.face.fr .body.fillb{padding:0}
+.nv-bar{display:flex;align-items:center;gap:2px;padding:6px 4px 0 10px;flex:none}
+.nv-bar .nv-tabs{flex:1;min-width:0;margin:0;padding:4px 2px;gap:4px}
+.nv-bar .nv-tab{border:0;padding:8px 13px;font-size:13.5px;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
+.nv-bar .nv-tab[aria-selected="true"]{background:var(--card-ink);color:var(--sw);font-weight:700}
+.nv.v2.all .nv-bar .nv-tabs{display:flex;visibility:hidden}
+.nv.v2 .nv-card{padding:12px 20px 16px}
+.nv.v2.all .nv-track{padding:12px 20px 16px}
+.nv.v2.all .nv-card+.nv-card{margin-top:22px}
+.nv.v2 .scrollq{flex:1;min-height:0;overflow-y:auto;padding:12px 20px 16px}
+.ib{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:none;color:color-mix(in srgb,var(--card-ink) 76%,transparent);display:grid;place-items:center;cursor:pointer;padding:0}
+.ib svg{width:20px;height:20px}
+.ib:hover{background:color-mix(in srgb,var(--card-ink) 8%,transparent)}
+.ib:focus-visible{outline:2px solid var(--card-ink);outline-offset:1px}
+.card-foot{display:flex;align-items:center;gap:8px;padding:6px 10px 10px 18px;flex:none}
+.card-foot .hint{flex:1;min-width:0;font-size:12.5px;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
+.card-foot .btn{padding:12px 18px;font-weight:700}
+/* the answer sheet */
+.face.bk{background:transparent;border-radius:0;overflow:visible;display:flex;flex-direction:column}
+.qsheet{flex:1;min-height:0;display:flex;flex-direction:column}
+.qcard{flex:1;min-height:0;overflow-y:auto;background:var(--sw);color:var(--card-ink);border-radius:24px 24px 0 0;padding:16px 18px 18px 20px;display:flex;flex-direction:column;gap:12px}
+.qcard [hidden]{display:none!important}
+.qmeta{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
+.qmeta>span:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qmeta .amode{background:color-mix(in srgb,var(--card-ink) 8%,transparent);border:0;padding:3px}
+.qmeta .amode button{padding:7px 14px;font-size:13px}
+.qcard .st{display:flex;flex-direction:column;gap:12px}
+.qprompt{font-size:22px;line-height:1.5;font-weight:700;margin:0}
+.qcard .st-prompt>:last-child{margin-bottom:0}
+.qstats{display:flex;align-items:center;gap:12px;font-size:12.5px;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
+.qstats .linkish{color:var(--card-ink);font-size:13px}
+.ybox{border-radius:16px;background:var(--well);border:1.5px solid transparent;padding:4px 10px 12px 14px;min-height:140px;box-sizing:border-box;display:flex;flex-direction:column;gap:6px}
+.ybox.typing{border-color:var(--card-ink)}
+.ybox-h{display:flex;align-items:center;min-height:30px;font-size:12px;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
+.ybox-h span{flex:1}
+.ybox-h button{font:inherit;font-size:13px;color:inherit;background:none;border:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px 6px;border-radius:6px}
+.sheet .ybox textarea.draft,.ybox textarea.draft{border:0;background:transparent;margin:0;padding:0;min-height:76px;resize:none;font-size:19px;line-height:28px;color:var(--card-ink);outline:none;border-radius:0}
+.ybox textarea.draft::placeholder{color:color-mix(in srgb,var(--card-ink) 60%,transparent)}
+.ybox .wb-ans{border:0;background:none;margin:0;padding:0;min-height:0;gap:6px}
+.ybox .wb-ans .wchip{background:var(--panel);color:var(--card-ink);border:0;box-shadow:0 1px 0 var(--key);font-size:17px;padding:7px 12px;opacity:1}
+.ybox .wb-ans .wchip.last{box-shadow:inset 0 0 0 2px var(--card-ink)}
+.ybox .wb-ans .caret{display:inline-block;width:2px;height:24px;background:var(--card-ink);margin-left:2px}
+.ybox .wb-ph{color:color-mix(in srgb,var(--card-ink) 70%,transparent);padding:6px 0}
+.ybox-hint{font-size:11.5px;margin:0;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
+.qpanel{flex:none;background:var(--panel);color:var(--ink);border-radius:0 0 24px 24px;border-top:1px solid var(--rule);padding:14px;display:flex;flex-direction:column;gap:12px}
+.qpanel [hidden]{display:none!important}
+.qpanel .btn{width:100%;padding:14px;font-size:16px;font-weight:700}
+.wb-keys{display:flex;gap:8px}
+.wb-keys .wb-bank{flex:1;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0}
+.wb-keys .wb-bank .wchip,.wb-bs{height:54px;border-radius:14px;border:1px solid var(--key);border-bottom-width:3px;background:var(--panel);color:var(--ink);font-size:19px;padding:0 6px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wb-bs{flex:none;width:56px;height:116px;display:grid;place-items:center}
+.wb-bs svg{width:24px;height:24px}
+.wb-bs:disabled{opacity:.4;cursor:default}
+.wb-keys .wb-done{grid-column:1/-1;height:116px;display:grid;place-items:center;text-align:center;color:var(--ink-3);font-size:14px;padding:0}
+.row2{display:flex;gap:10px}
+.row2 .btn{flex:1;width:auto}
+.row2 .btn.ghost{background:transparent;color:var(--ink);border-color:var(--key)}
+/* the reveal */
+.qcard .st-res{margin:0;display:flex;flex-direction:column;gap:12px;font-size:14px}
+.qquiet{margin:0;font-size:15px;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
+.vbar{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--ink);color:var(--ground)}
+.vbar .dot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#1f1f1e;font-weight:700;flex:none}
+.vbar .dot.good{background:#8fd19e}.vbar .dot.warn{background:#f2a65a}.vbar .dot.peek{background:#b9b6ac}
+.vbar b{display:block;font-size:15px;line-height:1.35}
+.vbar small{display:block;font-size:12px;opacity:.75}
+.vl{display:block;font-size:12px;font-weight:700;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
+.vmine p,.vwell p{margin:2px 0 0;font-family:Newsreader,Georgia,serif;font-size:18px;line-height:1.55}
+.vwell{display:flex;align-items:center;gap:4px;background:var(--well);border-radius:16px;padding:10px 6px 12px 14px}
+.vwell>div{flex:1;min-width:0}
+.st-res .fine{font-size:12px;color:color-mix(in srgb,var(--card-ink) 76%,transparent);margin:0}
+.nfq{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--card-edge);padding-top:12px}
+.nfq-h{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
+.nfq-h span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nfq-h .linkish{color:inherit;font-size:13px}
+.nfq .body>p.lbl{display:none}
+.body ol.ex li.lit{background:var(--well);border-radius:12px;padding:6px 8px;margin-left:-8px;margin-right:-8px}
+/* a 复习 / 考核 run: the whole screen, nothing else */
+body.running{overflow:hidden}
+.run{position:fixed;inset:0;z-index:45;background:var(--ground);color:var(--ink);display:flex;flex-direction:column;padding:max(6px,env(safe-area-inset-top,0px)) 8px max(12px,env(safe-area-inset-bottom,0px));box-sizing:border-box}
+.run>*{width:min(680px,100%);margin-inline:auto;box-sizing:border-box}
+.runbar{display:flex;align-items:center;gap:10px;height:52px;flex:none;padding-right:8px;font-size:13px;color:var(--ink-3)}
+.runbar .bar{height:8px;border-radius:4px}
+.x2{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:none;color:var(--ink);font:inherit;font-size:18px;cursor:pointer}
+.x2:hover{background:var(--rule)}
+.scard{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--sw);color:var(--card-ink);border-radius:24px;overflow:hidden}
+.shead{padding:16px 20px 0;flex:none}
+.shead .lab{font-size:12.5px;margin:0;color:color-mix(in srgb,var(--card-ink) 72%,transparent)}
+.shead .big{font-family:Newsreader,Georgia,"Songti SC",serif;font-weight:700;font-size:28px;line-height:1.2;margin:2px 0}
+.shead .ipa{font-size:13px;margin:0;color:color-mix(in srgb,var(--card-ink) 72%,transparent)}
+.scard .body.fillb{flex:1;min-height:0;display:flex;flex-direction:column}
+.sfoot{padding:0 10px 10px;flex:none}
+.sfoot .btn{width:100%;padding:14px;font-size:16px;font-weight:700}
+.run-done{padding:24px}
+/* a stage's tab: one summary card, the offer to move on, the entries grouped, a line each */
+.ssum{background:var(--sum-bg);color:var(--sum-fg);border-radius:24px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:12px;margin:4px 0 8px}
+.ssum-n{display:flex;align-items:flex-end;gap:10px}
+.ssum-n b{font-size:52px;line-height:.9;font-weight:700}
+.ssum-n span{font-size:16px;padding-bottom:4px}
+.ssum-c{display:flex;gap:6px;flex-wrap:wrap}
+.ssum-c span{font-size:13px;padding:5px 10px;border-radius:12px;background:color-mix(in srgb,var(--sum-fg) 12%,transparent)}
+.ssum-bar{display:flex;gap:3px;height:10px}
+.ssum-bar i{display:block;border-radius:5px}
+.ssum-lg{display:flex;gap:14px;flex-wrap:wrap;font-size:13px}
+.ssum-lg span{display:inline-flex;align-items:center;gap:6px}
+.ssum-lg i{display:inline-block;width:8px;height:8px;border-radius:50%}
+.ssum .b0{background:color-mix(in srgb,var(--sum-fg) 22%,transparent)}.ssum .b1{background:#f2a65a}.ssum .b2{background:var(--sum-fg)}
+.ssum .btn{background:var(--sum-fg);color:var(--sum-bg);border-color:var(--sum-fg);padding:14px;font-size:16px;font-weight:700}
+.ssum-note{font-size:12.5px;margin:0;opacity:.72}
+.ready{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;font-size:14px;color:var(--ink);background:var(--chip);border:1px solid var(--rule);border-radius:16px;padding:12px 14px;cursor:pointer;margin:0 0 8px}
+.ready .ck{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--ground);display:grid;place-items:center;flex:none;font-weight:700}
+.ready .t{flex:1}
+.ready svg{width:18px;height:18px;flex:none}
+.grp-h{font-size:13px;font-weight:700;color:var(--ink-3);margin:14px 8px 6px}
+.srows{display:flex;flex-direction:column;gap:8px}
+.srow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;background:var(--sw);color:var(--card-ink);border:0;border-radius:16px;padding:14px 16px;cursor:pointer}
+.srow .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.srow b{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srow small{font-size:12.5px;opacity:.76;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srow .tg{font-size:11px;padding:3px 8px;border-radius:10px;background:color-mix(in srgb,var(--card-ink) 12%,transparent);flex:none}
+.srow:focus-visible,.ready:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
@@ -1080,6 +1216,7 @@ function renderMistakes(term){
 }
 
 function render(){
+  document.body.classList.remove("running");               // a stage tab puts it back while its run is on
   const term = q.value.trim().toLowerCase();
   // "12" or "#12" jumps to entry #12
   const numQ = (term.match(/^#?(\d+)$/) || [])[1];
@@ -1156,24 +1293,22 @@ function bestDiff(mine, answer){
   const ds = answer.split("\n").filter(a => a.trim()).map(a => diffWords(mine, a));
   return ds.find(d => d.same) || ds.sort((x, y) => y.keepB.size - x.keepB.size)[0] || diffWords(mine, "");
 }
-function compareHtml(mine, answer, retry = true){
-  // after a reveal, trying again is the next step: the sheet's filled button
-  const again = retry ? `<button class="btn retry" type="button" id="st-again">↻ 再试一次</button>` : "";
+function verdictHtml(mine, answer, stats){
+  const bar = (cls, glyph, title) => `<div class="vbar"><span class="dot ${cls}" aria-hidden="true">${glyph}</span><div><b>${esc(title)}</b>${stats ? `<small>${esc(stats)}</small>` : ""}</div></div>`;
+  const well = (label, html, say) => `<div class="vwell"><div><span class="vl">${label}</span><p>${html}</p></div>${spkBtn(say)}</div>`;
+  const mineP = (label, html) => `<div class="vmine"><span class="vl">${label}</span><p>${html}</p></div>`;
   if (!mine.trim()) {                                     // a peek still gets the answer — that's what the button promised
     const lines = answer.split("\n").map(l => l.trim()).filter(Boolean);
-    return `<p class="verdict">没有写就看答案了 —— 下次先写再看。</p>` +
-      `<p class="line"><b>答案</b>${lines.map(l => esc(l) + spkBtn(l)).join("<br>")}</p><p>${again}</p>`;
+    return bar("peek", "–", "没写就看了答案") + lines.map(l => well("答案", esc(l), l)).join("");
   }
-  const d = bestDiff(mine, answer);
-  const say = spkBtn(d.b.join(" "));
-  // right or wrong, both sentences are shown side by side: what I wrote, and the answer
-  if (d.same) return `<p class="verdict">✅ 和答案一致(大小写、标点不计)</p>` +
-    `<p class="line"><b>我写的</b>${esc(mine.trim())}</p><p class="line"><b>答案</b>${esc(d.b.join(" "))}${say}</p><p>${again}</p>`;
+  const d = bestDiff(mine, answer), say = d.b.join(" ");
+  if (d.same) return bar("good", "✓", "完全正确") + mineP("我写的", esc(mine.trim())) + well("答案", esc(say), say);
+  const extra = d.a.length - d.keepA.size, missing = d.b.length - d.keepB.size;
   const show = (ws, keep, cls) => ws.map((w, k) => keep.has(k) ? esc(w) : `<span class="${cls}">${esc(w)}</span>`).join(" ");
-  return `<p class="verdict">对照一下差异</p>` +
-    `<p class="line"><b>我写的(删除线 = 多出来或写错的)</b>${show(d.a, d.keepA, "st-x")}</p>` +
-    `<p class="line"><b>答案(高亮 = 我漏掉或写错的)</b>${show(d.b, d.keepB, "st-m")}${say}</p>` +
-    `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。</p>` + (again ? `<p>${again}</p>` : "");
+  return bar("warn", "!", [extra + missing <= 2 ? "差一点" : "还不对", extra ? `多了 ${extra} 个词` : "", missing ? `漏了 ${missing} 个词` : ""].filter(Boolean).join(" · ")) +
+    mineP("我写的(划掉 = 多出来或写错的)", show(d.a, d.keepA, "st-x")) +
+    well("答案(高亮 = 漏掉或写错的)", show(d.b, d.keepB, "st-m"), say) +
+    `<p class="fine">逐词对照只看字面:意思对、换了说法也可能没问题。</p>`;
 }
 
 // ── 选词: the quick way to answer, after Duolingo (same rules as ui/SelfTest.kt): the answer's
@@ -1221,7 +1356,7 @@ function bankOptions(words, strays, seed, k){
   const fill = shuffled(strays, s + 1).filter(fresh).slice(0, BANK_CHIPS - 1 - later.length);
   return shuffled([right, ...later, ...fill], s + 2);
 }
-function mountBank(ansEl, bankEl, input, answer, others, seed, picks){
+function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
   const words = chipWords(answer), strays = strayWords(answer, others, seed, 6);
   const paint = focus => {
     input.value = picks.join(" ");
@@ -1229,21 +1364,21 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks){
     ansEl.innerHTML = picks.length
       ? picks.map((w, k) => k === picks.length - 1
           ? `<button type="button" class="wchip last" aria-label="撤回 ${esc(w)}">${esc(w)}</button>`
-          : `<span class="wchip">${esc(w)}</span>`).join("") + `<button type="button" class="wb-clear">清空</button>`
+          : `<span class="wchip">${esc(w)}</span>`).join("") + `<i class="caret" aria-hidden="true"></i>`
       : `<span class="wb-ph">点下面的词,一个一个拼出英文…</span>`;
     const opts = bankOptions(words, strays, seed, picks.length);
     bankEl.innerHTML = opts.length
       ? opts.map(w => `<button type="button" class="wchip" data-w="${esc(w)}">${esc(w)}</button>`).join("")
-      : `<span class="wb-done">拼完了,点「显示答案」对照;点最后一个词可以撤回</span>`;
+      : `<span class="wb-done">拼完了,点「显示答案」对照</span>`;
+    if (ctl.clear) ctl.clear.hidden = !picks.length;
+    if (ctl.bs) ctl.bs.disabled = !picks.length;
+    if (ctl.hint) ctl.hint.hidden = !picks.length;
     if (focus) (bankEl.querySelector(".wchip") || ansEl.querySelector(".wchip.last"))?.focus();
   };
-  ansEl.onclick = e => {
-    if (e.target.closest(".wb-clear")) picks.length = 0;
-    else if (e.target.closest(".wchip.last")) picks.pop();
-    else return;
-    paint();
-  };
+  ansEl.onclick = e => { if (e.target.closest(".wchip.last")) { picks.pop(); paint(); } };
   bankEl.onclick = e => { const b = e.target.closest(".wchip[data-w]"); if (!b) return; picks.push(b.dataset.w); paint(true); };
+  if (ctl.clear) ctl.clear.onclick = () => { picks.length = 0; paint(); };
+  if (ctl.bs) ctl.bs.onclick = () => { picks.pop(); paint(); };       // ⌫: the last word back, without reaching up
   paint();
 }
 function setChipsMode(v){ chipsMode = v; store.set("vk.chips", v ? "1" : "0"); }
@@ -1391,7 +1526,7 @@ function logAttempt(anchor, text, ok, via, ex = ""){     // the verdict is alrea
 // After 显示答案 on a moved entry: the word-by-word compare with the example, or — with no
 // example to compare against — 我写对了 / 没写对 until I've graded it.
 function movedHtml(ex, mine, graded){
-  if (ex) return compareHtml(mine, plainMd(ex.en), false);
+  if (ex) return verdictHtml(mine, plainMd(ex.en), "");
   if (!mine.trim()) return `<p class="verdict">没有写就看答案了 —— 下次先写再看。</p>`;
   return `<p class="line"><b>我写的</b>${esc(mine.trim())}</p>` + (graded === undefined
     ? `<p class="fine">这条没有例句可以对照,看下面的笔记自己判断:</p><div class="row"><button class="btn ghost" type="button" data-ok="1">我写对了</button><button class="btn ghost" type="button" data-ok="0">没写对</button></div>`
@@ -1477,6 +1612,9 @@ function goBack(){
 let notesAll = (() => { try { return localStorage.getItem("vk.notesAll") === "1"; } catch { return false; } })();
 const ICON_FULL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 11V3h-8l3.29 3.29-10 10L3 13v8h8l-3.29-3.29 10-10z"/></svg>';
 const ICON_UNFULL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 3.41 16.71 8.7 20 12h-8V4l3.29 3.29L20.59 2 22 3.41zM3.41 22l5.29-5.29L12 20v-8H4l3.29 3.29L2 20.59 3.41 22z"/></svg>';
+const ICON_BS = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"/></svg>';
+const ICON_LIST = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>';
+const ICON_CARDS = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3v8h8V3H3zm6 6H5V5h4v4zm-6 4v8h8v-8H3zm6 6H5v-4h4v4zm4-16v8h8V3h-8zm6 6h-4V5h4v4zm-6 4v8h8v-8h-8zm6 6h-4v-4h4v4z"/></svg>';
 const ICON_CHEV = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>';
 // ── 朗读: the browser's own speech synthesis — free, no key; the voice is whatever the OS has.
 // Prefers a natural-sounding US / UK English voice when there is one. ──
@@ -1515,17 +1653,22 @@ const speakText = (it, level) => level === "SELFTEST" ? ((it.answer || "").split
   : (it.title.match(/^(.+?)\s*[((].+[))]$/) || [, it.title])[1];
 
 // [fill]: on the entry card, where the notes take the face's height (and get the ⤢ button)
-function notesHtml(it, fill = false){
+function notesHtml(it, fill = false, withFull = true){
   const sl = it.slides;
-  const fullBtn = fill ? `<button type="button" class="full" aria-label="${cardFull ? "退出全屏" : "全屏"}">${cardFull ? ICON_UNFULL : ICON_FULL}</button>` : "";
-  if (sl.length < 2) return fill
-    ? `<div class="nv fill"><div class="nv-h"><span>笔记</span><span class="ln"></span>${fullBtn}</div><div class="scrollq">${it.html}</div></div>`
-    : `<div class="notes-h">笔记</div>${it.html}`;
-  return `<div class="nv${notesAll ? " all" : ""}${fill ? " fill" : ""}">` +
-    `<div class="nv-h"><span>笔记</span><span class="ln"></span><button type="button" class="nv-all">${notesAll ? "分卡显示" : "全部展开"}</button>${fullBtn}</div>` +
+  if (!fill) return sl.length < 2 ? `<div class="notes-h">笔记</div>${it.html}` :
+    `<div class="nv${notesAll ? " all" : ""}">` +
+    `<div class="nv-h"><span>笔记</span><span class="ln"></span><button type="button" class="nv-all">${notesAll ? "分卡显示" : "全部展开"}</button></div>` +
     `<div class="nv-tabs" role="tablist">${sl.map(([l], k) => `<button type="button" class="nv-tab" role="tab" aria-selected="${!k}" data-k="${k}">${esc(l)}</button>`).join("")}</div>` +
     `<div class="nv-track" tabindex="0" aria-label="笔记卡片,左右滑动或用 ← → 切换">${sl.map(([, h]) => `<section class="nv-card">${h}</section>`).join("")}</div>` +
     `<div class="nv-dots">${sl.map((_, k) => `<i${k ? "" : ' class="on"'}></i>`).join("")}</div></div>`;
+  // on a card (V2): one row on top — the section tabs, 卡片 / 全部 as an icon, ⤢ — and each page scrolling
+  const fullBtn = withFull ? `<button type="button" class="full ib" aria-label="${cardFull ? "退出全屏" : "全屏"}">${cardFull ? ICON_UNFULL : ICON_FULL}</button>` : "";
+  if (sl.length < 2) return `<div class="nv fill v2"><div class="nv-bar"><div class="nv-tabs">` +
+    (sl.length ? `<span class="nv-tab" aria-selected="true">${esc(sl[0][0])}</span>` : "") + `</div>${fullBtn}</div><div class="scrollq">${it.html}</div></div>`;
+  return `<div class="nv fill v2${notesAll ? " all" : ""}"><div class="nv-bar">` +
+    `<div class="nv-tabs" role="tablist">${sl.map(([l], k) => `<button type="button" class="nv-tab" role="tab" aria-selected="${!k}" data-k="${k}">${esc(l)}</button>`).join("")}</div>` +
+    `<button type="button" class="nv-all ib" aria-label="${notesAll ? "分卡显示" : "全部展开"}">${notesAll ? ICON_CARDS : ICON_LIST}</button>${fullBtn}</div>` +
+    `<div class="nv-track" tabindex="0" aria-label="笔记卡片,左右滑动或用 ← → 切换">${sl.map(([, h]) => `<section class="nv-card">${h}</section>`).join("")}</div></div>`;
 }
 function nvIndex(track){ return Math.round(track.scrollLeft / (track.clientWidth + 12)); }
 function nvPaint(nv, k){
@@ -1546,6 +1689,7 @@ function nvGo(nv, k){
 }
 function nvInit(nv){
   nv._init = true;
+  if (!nv.querySelector(".nv-track")) return;            // one section: nothing to page through
   nv.querySelectorAll(".nv-card").forEach(card => {
     // a card's tab already names it: hide a heading that is only the label ("**常见搭配:**")
     const p = card.firstElementChild;
@@ -1569,8 +1713,10 @@ document.addEventListener("click", e => {
     try { localStorage.setItem("vk.notesAll", notesAll ? "1" : "0"); } catch {}
     document.querySelectorAll(".nv").forEach(n => {
       n.classList.toggle("all", notesAll);
-      n.querySelector(".nv-all").textContent = notesAll ? "分卡显示" : "全部展开";
-      if (!notesAll) { n.querySelector(".nv-track").scrollLeft = 0; nvPaint(n, 0); }
+      const b = n.querySelector(".nv-all"), track = n.querySelector(".nv-track");
+      if (b && b.classList.contains("ib")) { b.innerHTML = notesAll ? ICON_CARDS : ICON_LIST; b.setAttribute("aria-label", notesAll ? "分卡显示" : "全部展开"); }
+      else if (b) b.textContent = notesAll ? "分卡显示" : "全部展开";
+      if (!notesAll && track) { track.scrollLeft = 0; nvPaint(n, 0); }
     });
   }
 });
@@ -1588,6 +1734,99 @@ document.addEventListener("keydown", e => {
   nvGo(nv, nv._k + (e.key === "ArrowRight" ? 1 : -1));
 });
 
+// ── V2 (ui/claude-code-v2, 用户 2026-10-14), the same layout as the app's: the entry on the plain
+// ground, its notes on a card in the level colour; 自测 and the 复习 / 考核 runs on one answer sheet
+// (AnswerSheet.kt) — the question card joined to a panel with the chips and 显示答案. The 你的句子 box
+// sits under the question in both 选词 and 打字, the same size in the same place.
+const stTitle = it => it.title.replace(/^自测[::]/, "");
+const textOf = h => { const d = document.createElement("div"); d.innerHTML = h; return d.textContent; };
+const lvShort = level => CEFR.includes(level) ? level : LABEL[level] || level;
+const wireXrefsIn = (root, go) => root.querySelectorAll(".xref").forEach(a => {
+  const t = byAnchor[a.dataset.ref];
+  if (!t) { a.dataset.missing = "1"; return; }
+  a.addEventListener("click", e => { e.preventDefault(); go(t); });
+});
+// the card's foot: how many sentences are still to be answered right before the next stage
+function progressHint(it, level, stage){
+  const nx = nextStage(stage);
+  if (!nx) return "已掌握,不再进复习和考核";
+  const since = stageT[it.anchor] || 0, log = stLog[it.anchor] || [];
+  const qs = level === "SELFTEST" ? [""] : quizExamples(it).map(x => plainMd(x.en));
+  if (!qs.length) return `可以手动移到${STAGE_TAB[nx]}`;
+  const left = qs.filter(q => !log.some(a => a.t >= since && a.ok && (a.ex || "") === q)).length;
+  return !left ? `题都答对过了,可以移到${STAGE_TAB[nx]}` : level === "SELFTEST" ? `答对这道题可移到${STAGE_TAB[nx]}` : `再答对 ${left} 句可移到${STAGE_TAB[nx]}`;
+}
+// the answer sheet's markup; [o.extra] goes after the stats line (看笔记)
+function qsheetHtml(o){
+  return `<div class="qcard"><div class="qmeta"><span>${esc(o.meta)}</span>${o.toggle || ""}</div>` +
+    `<div class="st" id="q-ask"><div class="st-prompt">${o.prompt}</div>` +
+    `<div class="qstats"><span id="q-stats">${esc(o.stats)}</span>${o.extra || ""}</div>` +
+    `<div class="ybox" id="ybox"><div class="ybox-h"><span>你的句子</span><button type="button" id="yb-clear" hidden>清空</button></div>` +
+    `<textarea class="draft" id="q-in" aria-label="你的英文" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)">${esc(o.draft || "")}</textarea>` +
+    `<div class="wb-ans" id="wb-ans" hidden></div><p class="ybox-hint" id="yb-hint" hidden>点最后一个词或右下角的 ⌫ 撤回</p></div></div>` +
+    `<div class="st-res" id="q-res" hidden></div></div>` +
+    `<div class="qpanel"><div class="wb-keys" id="wb-keys" hidden><div class="wb-bank" id="wb-bank"></div>` +
+    `<button type="button" class="wb-bs" id="wb-bs" aria-label="撤回最后一个词">${ICON_BS}</button></div>` +
+    `<button class="btn" type="button" id="q-show">显示答案</button><div class="row2" id="q-after" hidden></div></div>`;
+}
+// 选词 | 打字 in the 你的句子 box. [a]: {answer (null: typing only), others, seed, picks (kept by the
+// caller), onReveal, onInput}. The chips write into the (hidden) text box, so a reveal reads one place.
+function wireAnswer(root, a){
+  const input = root.querySelector("#q-in"), ansEl = root.querySelector("#wb-ans"), keys = root.querySelector("#wb-keys"),
+    bank = root.querySelector("#wb-bank"), bs = root.querySelector("#wb-bs"), clear = root.querySelector("#yb-clear"),
+    hint = root.querySelector("#yb-hint"), box = root.querySelector("#ybox"), mode = root.querySelector(".qmeta .amode");
+  const chips = () => chipsMode && !!a.answer;
+  const apply = () => {
+    const on = chips();
+    input.hidden = on; ansEl.hidden = keys.hidden = !on;
+    box.classList.toggle("typing", !on);
+    if (mode) mode.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", (b.dataset.chips === "1") === chipsMode));
+    if (on) mountBank(ansEl, bank, input, a.answer, a.others, a.seed, a.picks, { clear, bs, hint });
+    else {
+      hint.hidden = true; clear.hidden = !input.value;
+      clear.onclick = () => { input.value = ""; input.dispatchEvent(new Event("input")); input.focus(); };
+    }
+  };
+  input.addEventListener("input", () => { if (!chips()) clear.hidden = !input.value; if (a.onInput) a.onInput(input.value); });
+  input.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) a.onReveal(); });
+  if (mode) mode.addEventListener("click", e => {
+    const b = e.target.closest("button[data-chips]");
+    if (!b || (b.dataset.chips === "1") === chipsMode) return;
+    setChipsMode(b.dataset.chips === "1");
+    if (chipsMode) a.picks.length = 0;                    // to 打字 keeps the sentence built so far
+    apply();
+    if (!chipsMode) input.focus();
+  });
+  root.querySelector("#q-show").addEventListener("click", () => a.onReveal());
+  apply();
+  return { input, apply };
+}
+// Under a reveal: the notes for what was just asked — the section its example comes from, that
+// sentence highlighted (decorateNotes) — or all of them for a 自测题 or an entry without one.
+function notesForQuestionHtml(it, ex){
+  let label = "笔记", html = it.html;
+  if (ex) {
+    const k = exKey(ex.en);
+    for (const [l, h] of it.slides) {
+      const d = document.createElement("div"); d.innerHTML = h;
+      if ([...d.querySelectorAll("ol.ex > li .en")].some(e => exKey(e.textContent) === k)) { label = "笔记里的这一句 · " + l; html = h; break; }
+    }
+  }
+  return `<div class="nfq"><div class="nfq-h"><span>${esc(label)}</span><button type="button" class="linkish" data-allnotes>全部笔记 ›</button></div><div class="body">${html}</div></div>`;
+}
+function decorateNotes(root, it, ex, go, onAll){
+  const box = root.querySelector(".nfq");
+  if (!box) return;
+  const p = box.querySelector(".body").firstElementChild;
+  if (p && p.tagName === "P" && p.children.length === 1 && p.firstElementChild.tagName === "STRONG" &&
+      p.textContent.trim() === p.firstElementChild.textContent.trim() && /[:：]$/.test(p.textContent.trim())) p.classList.add("lbl");
+  markExamples(box, it);
+  if (ex) box.querySelectorAll("ol.ex > li[data-key]").forEach(li => li.classList.toggle("lit", li.dataset.key === plainMd(ex.en)));
+  wireXrefsIn(box, go);
+  const all = box.querySelector("[data-allnotes]");
+  if (onAll) all.addEventListener("click", onAll); else all.remove();
+}
+
 // [o.from]: the side the card showed before a move (it turns over to the new one);
 // [o.face]: "front" / "back" to re-render on that side without turning.
 // [o.ex]: which example to ask (再试一次 keeps it, 下一句 adds one); by default the next by attempt count.
@@ -1596,7 +1835,6 @@ function show(it, level, i, o = {}){
   scrim = document.createElement("div");
   scrim.className = "scrim";
   const sheet = document.createElement("div");
-  sheet.className = "sheet" + (cardFull ? " full" : "");
   sheet.setAttribute("role", "dialog");
   sheet.setAttribute("aria-modal", "true");
   sheet.setAttribute("aria-label", it.title);
@@ -1604,43 +1842,41 @@ function show(it, level, i, o = {}){
   const back = trail[trail.length - 1];
   const stage = stageOf(it, level);
   const selfTest = level === "SELFTEST";
-  const wantBack = stage === "test";                    // 考核 opens on the quiz side, the rest on the notes
+  const wantBack = stage === "test";                    // 考核 opens on the 自测 side, the rest on the notes
   let ex = selfTest ? null : o.ex !== undefined ? quizEx(it, o.ex) : quizEx(it);   // fixed before this try is logged
   const lvName = CEFR.includes(level) ? level : (TYPES.find(t => t[0] === level) || [, level])[1];
   // meta band: the headword and a pill; the rest of the facts unfold under it
-  const pill = [lvName, it.pos, it.ipa].filter(Boolean).join(" · ");
+  const pill = [lvName, (it.pos || "").split(/[((]/)[0].trim(), it.ipa].filter(Boolean).join(" · ");
   const rows = [["类型", lvName], ["编号", it.no ? "#" + it.no : ""], ["音标", it.ipa], ["词性", it.pos], ["CEFR", it.cefr],
     ["掌握", it.mastery === "write" ? "会写" : "认识"], ["收录", it.date]].filter(r => r[1]);
-  // progress band: levels on a track; a click on another level moves the entry there
+  // the four stages on a track; a click on another one moves the entry there (only moves)
   const idx = STAGES.findIndex(st => st[0] === stage);
   const levels = `<div class="lv" style="--n:${STAGES.length};--k:${idx}">` + STAGES.map(([k, name], j) => {
     return `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}" data-to="${k}"${j === idx ? " disabled" : ""}>` +
       `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`;
   }).join("") + `</div>`;
-  // the card: notes on the front; while in 自测, the quiz on the back
-  const fullBtn = `<button type="button" class="full" aria-label="${cardFull ? "退出全屏" : "全屏"}">${cardFull ? ICON_UNFULL : ICON_FULL}</button>`;
   const curEx = () => ex ? plainMd(ex.en) : null;      // stats and history are this sentence's own
-  const promptHtml = () => selfTest
-    ? `<p class="prompt st-title">${esc(it.title)}</p>`     // its question is its title, off the sheet while full screen
-    : ex ? exPrompt(ex) : askHtml({ it, level, i }, kind({ it, level, i }));
+  const qMeta = () => selfTest ? "自测题 · 中译英" : ex ? `例句 ${ex.k + 1} / ${ex.of} · 中译英` : "回想并写出来";
+  const promptHtml = () => selfTest ? `<p class="qprompt">${esc(stTitle(it))}</p>`
+    : ex ? `<p class="qprompt">${esc(plainMd(ex.zh))}</p>` : askHtml({ it, level, i }, kind({ it, level, i }));
+  // the card: the notes on the front, with what's left in this stage and 自测这条 at its foot; the
+  // answer sheet on the back. 学习中 / 复习 may look at the notes first; 考核 only after answering.
   const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true)}</div>` +
-    `<div class="foot"><button class="btn ghost" type="button" id="to-quiz">↻ 自测一下</button></div></div>`;
-  // the question with the input right under it, scrolling together; 显示答案 stays put at the bottom.
-  // 学习中 / 复习 may look at the notes first; 考核 only after answering.
-  const backFace = true
-    ? `<div class="face bk"><div class="fh"><span>自测</span><span class="ln"></span>${answerOf(it, level, ex) ? modeToggleHtml() : ""}${stage !== "test" ? `<button type="button" id="to-notes-pre">看笔记</button>` : ""}${fullBtn}</div>` +
-      `<div class="scrollq" id="st-q"><p class="st-stats" id="st-stats">${stStatsLine(it.anchor, curEx())}</p>` +
-      `<div class="st"><div class="st-prompt">${promptHtml()}</div>` +
-      `<textarea class="draft" id="st-in" placeholder="不看答案,写出英文…(⌘/Ctrl + Enter 显示答案)"></textarea><div class="wb-ans" id="wb-ans" hidden></div></div>` +
-      `<div class="st-res" id="st-res" hidden></div></div>` +
-      `<div class="cta" id="st-cta"><div class="wb-bank" id="wb-bank" hidden></div><button class="btn" type="button" id="st-show">显示答案</button></div></div>`
-    : "";
+    `<div class="card-foot"><span class="hint" id="cf-hint">${esc(progressHint(it, level, stage))}</span>` +
+    `<button class="btn" type="button" id="to-quiz">${selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
+  const backFace = `<div class="face bk">` + qsheetHtml({
+    meta: qMeta(), toggle: answerOf(it, level, ex) ? modeToggleHtml() : "", prompt: promptHtml(),
+    stats: stStatsLine(it.anchor, curEx()),
+    extra: stage !== "test" ? `<button type="button" class="linkish" id="to-notes-pre">看笔记</button>` : "",
+  }) + `</div>`;
   const startBack = o.from !== undefined ? o.from : o.face ? o.face === "back" : wantBack;
+  // while the answer sheet shows, the pill and the track fold away, as on the app's 自测
+  sheet.className = "sheet" + (cardFull ? " full" : "") + (startBack ? " quizzing" : "");
   const nextT = nextInList(), pos = openList.indexOf(openAt);
   if (nextT) sheet.classList.add("has-nx");
   sheet.innerHTML =
     `<button class="x" type="button" aria-label="关闭">✕</button>` +
-    (nextT ? `<button class="nx" type="button" title="下一个:${esc(plainMd(nextT.it.title))}">${pos + 1} / ${openList.length} · 下一个 ›</button>` : "") +
+    (nextT ? `<button class="nx" type="button" title="下一个:${esc(plainMd(nextT.it.title))}"><span>${pos + 1} / ${openList.length}</span> <b>下一个</b> ›</button>` : "") +
     (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
     `<div class="mband"><h2>${it.title}${spkBtn(speakText(it, level))}</h2>` +
     `<button type="button" class="mpill" aria-expanded="false"><span>${esc(pill)}</span>${ICON_CHEV}</button>` +
@@ -1651,20 +1887,16 @@ function show(it, level, i, o = {}){
   scrim.append(sheet);
   document.body.append(scrim);
   const card = sheet.querySelector(".ecard");
-  if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => card.classList.toggle("flipped", wantBack)));
+  const flip = toQuiz => { card.classList.toggle("flipped", toQuiz); sheet.classList.toggle("quizzing", toQuiz); };
+  if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => flip(wantBack)));
   markQuizExamples(sheet, it);
   markExamples(sheet, it);
-
   // a cross-reference opens the note it points at, keeping a trail to come back
-  sheet.querySelectorAll(".xref").forEach(a => {
-    const t = byAnchor[a.dataset.ref];
-    if (!t) { a.dataset.missing = "1"; return; }
-    a.addEventListener("click", e => { e.preventDefault(); follow(t); });
-  });
+  wireXrefsIn(sheet, follow);
   if (back) sheet.querySelector(".back").addEventListener("click", goBack);
   const mpill = sheet.querySelector(".mpill"), mdet = sheet.querySelector(".mdet");
   mpill.addEventListener("click", () => { mdet.hidden = !mdet.hidden; mpill.setAttribute("aria-expanded", !mdet.hidden); });
-  // moving re-renders the sheet, turning the card over if the quiz side comes or goes
+  // moving re-renders the sheet, turning the card over if the 自测 side comes or goes
   sheet.querySelectorAll(".lvl[data-to]").forEach(b => b.addEventListener("click", () => {
     const was = card.classList.contains("flipped");
     setStage(it, b.dataset.to);
@@ -1676,12 +1908,27 @@ function show(it, level, i, o = {}){
     sheet.classList.toggle("full", cardFull);
     sheet.querySelectorAll(".full").forEach(f => { f.innerHTML = cardFull ? ICON_UNFULL : ICON_FULL; f.setAttribute("aria-label", cardFull ? "退出全屏" : "全屏"); });
   }));
+  sheet.querySelector("#to-quiz").addEventListener("click", () => flip(true));
+  const pre = sheet.querySelector("#to-notes-pre");
+  if (pre) pre.addEventListener("click", () => flip(false));
+
+  // the answer sheet
+  const res = sheet.querySelector("#q-res"), after = sheet.querySelector("#q-after");
+  let revealed = false;
+  const cfg = { answer: answerOf(it, level, ex), seed: hashStr(it.anchor) + (stLog[it.anchor] || []).length, picks: [], onReveal: () => reveal() };
+  cfg.others = othersOf(it, cfg.answer);
+  const api = wireAnswer(sheet.querySelector(".face.bk"), cfg), input = api.input;
   // a click on an example toggles it in or out of 自测; an unanswered question follows
   const toggleLi = li => {
     if (!toggleQuizEx(it, li.dataset.en)) return;
     li.classList.toggle("out");
-    const input = sheet.querySelector("#st-in");
-    if (input && !input.value) { ex = quizEx(it); sheet.querySelector(".st-prompt").innerHTML = promptHtml(); sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor, curEx()); sheet._applyMode(); }
+    if (revealed || input.value) return;
+    ex = quizEx(it);
+    sheet.querySelector(".st-prompt").innerHTML = promptHtml();
+    sheet.querySelector(".qmeta span").textContent = qMeta();
+    sheet.querySelector("#q-stats").textContent = stStatsLine(it.anchor, curEx());
+    cfg.answer = answerOf(it, level, ex); cfg.others = othersOf(it, cfg.answer); cfg.picks.length = 0;
+    api.apply();
   };
   // long-press: 复制 / 收藏 / 加入或移出自测
   const afterLongPress = wireExMenu(sheet, it, toggleLi);
@@ -1691,77 +1938,49 @@ function show(it, level, i, o = {}){
     if (!li || e.target.closest("a")) return;
     toggleLi(li);
   });
-  sheet.querySelector("#to-quiz").addEventListener("click", () => card.classList.add("flipped"));
-  const pre = sheet.querySelector("#to-notes-pre");
-  if (pre) pre.addEventListener("click", () => card.classList.remove("flipped"));
-
-  {
-    const input = sheet.querySelector("#st-in"), res = sheet.querySelector("#st-res");
+  const adv = () => advanceReady(it, level, stage) ? advanceHtml(stage) : "";
+  const quiet = () => selfTest ? stTitle(it) : ex ? plainMd(ex.zh) : "";
+  const paint = verdict => {                             // the verdict, the notes it comes from, the history
+    res.innerHTML = (quiet() ? `<p class="qquiet">${esc(quiet())}</p>` : "") + verdict + adv() +
+      notesForQuestionHtml(it, selfTest ? null : ex) + stHistoryHtml(it.anchor, curEx());
+    decorateNotes(res, it, selfTest ? null : ex, follow, () => flip(false));
+    res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {   // graded by me
+      const ok = b.dataset.ok === "1";
+      logAttempt(it.anchor, input.value, ok, "entry");
+      paint(movedHtml(null, input.value, ok));
+    }));
+    // 移到 X moves and goes on to the next one in the list; a move on the track stays put
+    const ab = res.querySelector("#adv");
+    if (ab) ab.addEventListener("click", () => { setStage(it, nextStage(stage)); render(); if (nextInList()) goNext(); else show(it, level, i, { from: true }); });
+    sheet.querySelector("#cf-hint").textContent = progressHint(it, level, stage);
+  };
+  const reveal = () => {
+    if (revealed) return;
+    revealed = true;
+    const v = input.value, stats = () => stStatsLine(it.anchor, curEx());
+    if (selfTest) { recordAttempt(it.anchor, v, it.answer || "", "entry"); paint(verdictHtml(v, it.answer || "", stats())); }
+    else if (ex) { recordAttempt(it.anchor, v, plainMd(ex.en), "entry", plainMd(ex.en)); paint(verdictHtml(v, plainMd(ex.en), stats())); }
+    else { if (!v.trim()) logAttempt(it.anchor, "", false, "entry"); paint(movedHtml(null, v)); }
+    res.hidden = false;
+    sheet.querySelector("#q-ask").hidden = sheet.querySelector("#wb-keys").hidden = sheet.querySelector("#q-show").hidden = true;
+    const mode = sheet.querySelector(".qmeta .amode");
+    if (mode) mode.hidden = true;
     // 再试一次 asks the same sentence again; with more than one, 下一句 goes on to the next
-    const flipRow = `<div class="row"><button class="btn retry" type="button" id="st-again">↻ 再试一次</button>` +
-      (ex && ex.of > 1 ? `<button class="btn ghost" type="button" id="st-nextex">下一句 ›</button>` : "") +
-      `<button class="btn ghost" type="button" id="to-notes">↻ 翻面看笔记</button></div>`;
-    // once every question is right in this stage, the move to the next one is offered
-    const adv = () => advanceReady(it, level, stage) ? advanceHtml(stage) : "";
-    const wire = () => {
-      sheet.querySelector("#st-stats").textContent = stStatsLine(it.anchor, curEx());
-      res.querySelector("#st-again").addEventListener("click", () => show(it, level, i, { face: "back", ex: ex && ex.k }));   // re-render, input cleared
-      const nx = res.querySelector("#st-nextex");
-      if (nx) nx.addEventListener("click", () => show(it, level, i, { face: "back", ex: ex.k + 1 }));
-      res.querySelector("#to-notes").addEventListener("click", () => card.classList.remove("flipped"));
-      const ab = res.querySelector("#adv");
-      // 移到 X moves and goes on to the next one in the list; a move on the track stays put
-      if (ab) ab.addEventListener("click", () => { setStage(it, nextStage(stage)); render(); if (nextInList()) goNext(); else show(it, level, i, { from: true }); });
-    };
-    const paint = graded => {                           // compared with its example, or graded by me
-      res.innerHTML = movedHtml(ex, input.value, graded) + adv() + flipRow + stHistoryHtml(it.anchor, curEx());
-      res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {
-        const ok = b.dataset.ok === "1";
-        logAttempt(it.anchor, input.value, ok, "entry");
-        paint(ok);
-      }));
-      wire();
-    };
-    const reveal = () => {
-      const v = input.value;
-      if (selfTest) {
-        recordAttempt(it.anchor, v, it.answer || "", "entry");
-        res.innerHTML = compareHtml(v, it.answer || "", false) + adv() + flipRow + stHistoryHtml(it.anchor, curEx());
-        wire();
-      } else {
-        if (ex) recordAttempt(it.anchor, v, plainMd(ex.en), "entry", plainMd(ex.en));
-        else if (!v.trim()) logAttempt(it.anchor, "", false, "entry");
-        paint();
-      }
-      res.hidden = false;
-      sheet.querySelector("#st-q .st").hidden = true;
-      sheet.querySelector("#st-cta").hidden = true;
-    };
-    sheet.querySelector("#st-show").addEventListener("click", reveal);
-    input.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) reveal(); });
-    // 选词 or 打字: the chips write into the input, so reveal() above doesn't care which
-    const ansEl = sheet.querySelector("#wb-ans"), bankEl = sheet.querySelector("#wb-bank"), mode = sheet.querySelector(".fh .amode");
-    sheet._applyMode = () => {
-      const a = answerOf(it, level, ex), on = chipsMode && !!a;
-      input.hidden = on; ansEl.hidden = bankEl.hidden = !on;
-      if (mode) mode.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", (b.dataset.chips === "1") === chipsMode));
-      if (on) mountBank(ansEl, bankEl, input, a, othersOf(it, a), hashStr(it.anchor) + (stLog[it.anchor] || []).length, []);
-    };
-    if (mode) mode.addEventListener("click", e => {
-      const b = e.target.closest("button[data-chips]");
-      if (!b || (b.dataset.chips === "1") === chipsMode) return;
-      setChipsMode(b.dataset.chips === "1");
-      sheet._applyMode();                                 // to 打字 keeps the sentence built so far
-      if (!chipsMode) input.focus();
-    });
-    sheet._applyMode();
-    sheet.querySelector("#st-show").addEventListener("click", () => { if (mode) mode.hidden = true; });
-  }
+    after.innerHTML = `<button class="btn ghost" type="button" id="st-again">↻ 再试一次</button>` +
+      (ex && ex.of > 1 ? `<button class="btn" type="button" id="st-nextex">下一句 ›</button>` : `<button class="btn" type="button" id="to-notes">看笔记</button>`);
+    after.hidden = false;
+    after.querySelector("#st-again").addEventListener("click", () => show(it, level, i, { face: "back", ex: ex && ex.k }));
+    const nx = after.querySelector("#st-nextex");
+    if (nx) nx.addEventListener("click", () => show(it, level, i, { face: "back", ex: ex.k + 1 }));
+    const tn = after.querySelector("#to-notes");
+    if (tn) tn.addEventListener("click", () => flip(false));
+    sheet.querySelector("#to-quiz").textContent = "回到自测 →";
+  };
 
   sheet.querySelector(".x").addEventListener("click", close);
   if (nextT) sheet.querySelector(".nx").addEventListener("click", goNext);
   scrim.addEventListener("click", e => { if (e.target === scrim) close(); });
-  (startBack && sheet.querySelector("#st-in") || sheet.querySelector(".x")).focus();
+  (startBack && !input.hidden ? input : sheet.querySelector(".x")).focus();
 }
 function close(){
   if (!scrim) return;
@@ -2028,130 +2247,143 @@ function advanceReady(it, level, stage){
   return qs.length > 0 && qs.every(q => log.some(a => a.t >= since && a.ok && (a.ex || "") === q));
 }
 const advanceHtml = stage => `<div class="adv"><span>这一阶段的题都答对过了</span><button class="btn ghost" type="button" id="adv">移到${STAGE_TAB[nextStage(stage)]}</button></div>`;
+// A stage's tab (V2, same as ui/QuizScreen.kt): one summary card — the big number, a few counts,
+// the start button — then, when some entries have every question right, the offer to move them on,
+// and the entries grouped by why they're there, one line each. 掌握 keeps its counts and cards.
+// While a run is on it takes the whole screen (.run, fixed over the page): no header, no tabs.
+const summaryHtml = (big, caption, chips, bar, btn, enabled, note) =>
+  `<section class="ssum"><div class="ssum-n"><b>${big}</b><span>${caption}</span></div>` +
+  (chips.length ? `<div class="ssum-c">${chips.map(c => `<span>${c}</span>`).join("")}</div>` : "") +
+  (bar && bar.some(Boolean) ? `<div class="ssum-bar" role="img" aria-label="没做过 ${bar[0]},上次没对 ${bar[1]},上次答对 ${bar[2]}">${bar.map((n, k) => n ? `<i class="b${k}" style="flex:${n}"></i>` : "").join("")}</div>` +
+    `<div class="ssum-lg">${["没做过", "上次没对", "上次答对"].map((l, k) => `<span><i class="b${k}"></i>${l} ${bar[k]}</span>`).join("")}</div>` : "") +
+  `<button class="btn" type="button" id="qz-start"${enabled ? "" : " disabled"}>${btn}${enabled ? " →" : ""}</button>` +
+  (note ? `<p class="ssum-note">${note}</p>` : "") + `</section>`;
 function renderStageTab(stage, el){
-  const s = quiz;
-  if (s && s.stage === stage) {
+  const s = quiz, running = !!(s && s.stage === stage);
+  document.body.classList.toggle("running", running);
+  if (running) {
     if (s.index < s.queue.length) return renderQuizCard(el);
-    el.innerHTML = `<h2>完成 🎉</h2><p class="note">这一轮做了 ${s.done} 题` + (s.checked ? `,答对 ${s.ok} / ${s.checked}` : "") +
-      (s.advanced ? `,${s.advanced} 条进入了${STAGE_TAB[nextStage(stage)]}` : "") + `。</p><button class="btn" type="button" id="qz-end">返回</button>`;
+    el.innerHTML = `<div class="run"><div class="run-done"><h2>完成 🎉</h2><p class="note">这一轮做了 ${s.done} 题` + (s.checked ? `,答对 ${s.ok} / ${s.checked}` : "") +
+      (s.advanced ? `,${s.advanced} 条进入了${STAGE_TAB[nextStage(stage)]}` : "") + `。</p><button class="btn" type="button" id="qz-end">返回</button></div></div>`;
     el.querySelector("#qz-end").addEventListener("click", () => { quiz = null; render(); });
     return;
   }
   const mine = inStage(stage), queue = quizQueue(stage);
-  let head;
-  if (stage === "review") {
-    const p = planToday();
-    head = `<h2>复习</h2><p class="note">第二遍学:先看一遍笔记,再做例句(中译英)。答对了下次隔得更久,答错了明天再来;一个条目的例句在这一阶段都答对过,就会提示移到考核。</p>` +
-      `<div class="stats"><div class="stat"><b>${mine.length}</b><span>复习中</span></div><div class="stat"><b>${p.due.length}</b><span>今天到期</span></div><div class="stat"><b>${p.fresh.length}</b><span>还没排期</span></div></div>` +
-      `<div class="row"><button class="btn" type="button" id="qz-start"${queue.length ? "" : " disabled"}>${!mine.length ? "还没有复习中的条目" : !queue.length ? "今天的都复习完了" : "开始复习 " + queue.length + " 条"}</button></div>`;
-  } else if (stage === "test") {
-    const never = mine.filter(t => !stSummary(t.it.anchor).last).length;
-    const missed = mine.filter(t => { const l = stSummary(t.it.anchor).last; return l && (!l.text || !l.ok); }).length;
-    head = `<h2>考核</h2><p class="note">直接做题,答完才看笔记。自测题逐词对照标准答案,其他条目对照例句;例句都答对过,就会提示移到掌握。没做过的和上次没做对的排在前面。</p>` +
-      `<div class="stats"><div class="stat"><b>${mine.length}</b><span>考核中</span></div><div class="stat"><b>${never}</b><span>没做过</span></div><div class="stat"><b>${missed}</b><span>上次没对</span></div></div>` +
-      `<div class="row"><button class="btn" type="button" id="qz-start"${queue.length ? "" : " disabled"}>${queue.length ? "开始考核 " + queue.length + " 题" : "还没有考核中的条目"}</button></div>`;
-  } else {
-    head = `<h2>掌握</h2><p class="note">已掌握的条目不再进复习和考核。在条目里点进度条上的别的阶段,可以移回去。</p>` +
+  if (stage === "done") {
+    el.innerHTML = `<h2>掌握</h2><p class="note">已掌握的条目不再进复习和考核。在条目里点进度条上的别的阶段,可以移回去。</p>` +
       `<div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><b>${mine.length}</b><span>已掌握</span></div><div class="stat"><b>${total}</b><span>共</span></div></div>`;
+    el.append(stageListEl(stage));
+    refreshStCounts(); refreshStages();
+    return;
   }
-  el.innerHTML = head;
+  const ready = mine.filter(t => advanceReady(t.it, t.level, stage));
+  const gloss = t => t.level === "SELFTEST" ? "先说出英文,再点开对答案" : textOf(t.it.gloss || "");
+  const tried = t => { const x = stSummary(t.it.anchor); return x.tries ? `试 ${x.tries} · 对 ${x.ok}` : ""; };
+  let groups, sum;
+  if (stage === "review") {
+    const p = planToday(), planned = new Set([...p.due, ...p.fresh].map(t => t.it.anchor)), today = dayNo();
+    const due = t => (rev.cards[t.it.anchor] || {}).due;
+    const later = mine.filter(t => !planned.has(t.it.anchor)).sort((a, b) => (due(a) || 1e9) - (due(b) || 1e9));
+    const dueLine = t => { const d = due(t); return d === undefined ? "" : d <= today ? "今天到期" : d === today + 1 ? "明天到期" : `${d - today} 天后到期`; };
+    const sub = t => [tried(t), dueLine(t)].filter(Boolean).join(" · ") || gloss(t);
+    groups = [["今天到期", p.due, sub], ["还没排期", p.fresh, t => tried(t) || gloss(t)], ["以后到期", later, sub]];
+    sum = summaryHtml(queue.length, !mine.length ? "条 · 还没有复习中的条目" : !queue.length ? "条 · 今天的都复习完了" : "条 · 今天要复习",
+      [`今天到期 ${p.due.length}`, `还没排期 ${p.fresh.length}`], null, `开始复习 ${queue.length} 条`, queue.length > 0,
+      "先看一遍笔记,再翻面做例句。答对了下次隔得更久,答错了明天再来。");
+  } else {
+    // 没做过 / 上次没对 (wrong or peeked) / 上次答对, in the order the run takes them
+    const grp = t => { const l = stSummary(t.it.anchor).last; return !l ? 0 : !l.text || !l.ok ? 1 : 2; };
+    const by = [0, 1, 2].map(g => queue.filter(t => grp(t) === g));
+    groups = [["没做过", by[0], gloss], ["上次没对", by[1], t => tried(t) || gloss(t)], ["上次答对", by[2], t => tried(t) || gloss(t)]];
+    sum = summaryHtml(mine.length, "条考核中", [], by.map(x => x.length), queue.length ? `开始考核 ${queue.length} 题` : "还没有考核中的条目", queue.length > 0, "");
+  }
+  groups = groups.filter(g => g[1].length);
+  const order = groups.flatMap(g => g[1].map(t => t.it.anchor));
+  el.innerHTML = sum +
+    (ready.length ? `<button type="button" class="ready" id="qz-ready"><span class="ck" aria-hidden="true">✓</span><span class="t">${ready.length} 条的题都答对过了,可以移到${STAGE_TAB[nextStage(stage)]}</span>${ICON_CHEV}</button>` : "") +
+    groups.map(([title, list, sub]) => `<h3 class="grp-h">${title} · ${list.length}</h3><div class="srows">` +
+      list.map(t => `<button type="button" class="srow" data-anchor="${t.it.anchor}" style="--sw:var(${LV[t.level].sw[t.i % 3]})">` +
+        `<span class="t"><b>${stTitle(t.it)}</b><small>${esc(sub(t))}</small></span><span class="tg">${lvShort(t.level)}</span></button>`).join("") + `</div>`).join("");
   const start = el.querySelector("#qz-start");
   if (start) start.addEventListener("click", () => {
     quiz = { stage, queue: quizQueue(stage), index: 0, studied: false, revealed: false, draft: "", done: 0, ok: 0, checked: 0, advanced: 0 };
     render(); window.scrollTo(0, 0);
   });
-  el.append(stageListEl(stage));
-  refreshStCounts(); refreshStages();
+  const rd = el.querySelector("#qz-ready");
+  if (rd) rd.addEventListener("click", () => { const t = ready[0]; open(t.it, t.level, t.i, ready.map(x => x.it.anchor)); });
+  el.querySelectorAll(".srow").forEach(b => b.addEventListener("click", () => { const t = byAnchor[b.dataset.anchor]; open(t.it, t.level, t.i, order); }));
 }
-function wireXrefs(el){
-  const t = quiz && quiz.queue[quiz.index];
-  if (t) markExamples(el, t.it);                          // ⭐ on the notes shown with the card
-  el.querySelectorAll(".rcard .xref").forEach(a => {
-    const x = byAnchor[a.dataset.ref];
-    if (!x) { a.dataset.missing = "1"; return; }
-    a.addEventListener("click", e => { e.preventDefault(); open(x.it, x.level, x.i); });
-  });
-}
+// One card of a run: ✕, the progress bar and "3 / 32" on top, then 复习's notes (翻面做题) or the
+// answer sheet; after the reveal, the verdict, the notes the sentence comes from, and 下一题 — with
+// the move to the next stage offered once it's earned.
 function renderQuizCard(el){
   const s = quiz, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST", stage = s.stage;
   if (!exam && s.ex === undefined) s.ex = quizEx(it);     // this card's example, fixed for the card
-  const ex = exam ? null : s.ex;
-  const pct = Math.round(s.index / s.queue.length * 100);
-  const top = `<div class="row"><div class="bar"><i style="width:${pct}%"></i></div><span class="toast">${s.index + 1} / ${s.queue.length}</span>` +
-    `<button class="linkish" type="button" id="qz-stop">结束</button></div>`;
+  const ex = exam ? null : s.ex, exEn = ex ? plainMd(ex.en) : null;
+  const pct = Math.round((s.index + (s.revealed ? 1 : 0)) / s.queue.length * 100);
+  const sw = `var(${LV[t.level].sw[t.i % 3]})`;
+  const top = `<div class="runbar"><button type="button" class="x2" id="qz-stop" aria-label="结束这一轮">✕</button>` +
+    `<div class="bar" role="img" aria-label="进度 ${s.index + 1} / ${s.queue.length}"><i style="width:${pct}%"></i></div><span>${s.index + 1} / ${s.queue.length}</span></div>`;
   const stop = () => { quiz = null; render(); };
+  const go = x => open(x.it, x.level, x.i);
   if (stage === "review" && !s.studied) {                   // 复习: read it again first
-    el.innerHTML = top +
-      `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})"><p class="lab">先看一遍</p><p class="big" style="font-size:21px">${it.title}</p><div class="body">${notesHtml(it)}</div></div>` +
-      `<button class="btn" type="button" id="qz-studied" style="width:100%">看完了,做题</button>`;
+    el.innerHTML = `<div class="run">${top}<div class="scard" style="--sw:${sw}"><div class="shead"><p class="lab">${lvShort(t.level)} · 先看一遍</p>` +
+      `<p class="big">${it.title}</p>${it.ipa ? `<p class="ipa">${it.ipa}</p>` : ""}</div>` +
+      `<div class="body fillb">${notesHtml(it, true, false)}</div><div class="sfoot"><button class="btn" type="button" id="qz-studied">翻面做题</button></div></div></div>`;
     el.querySelector("#qz-stop").addEventListener("click", stop);
-    el.querySelector("#qz-studied").addEventListener("click", () => { s.studied = true; renderQuizCard(el); window.scrollTo(0, 0); });
-    wireXrefs(el);
+    el.querySelector("#qz-studied").addEventListener("click", () => { s.studied = true; renderQuizCard(el); });
+    markExamples(el, it); wireXrefsIn(el, go);
     return;
   }
   const ready = s.revealed && advanceReady(it, t.level, stage);
-  const qAns = s.revealed ? null : answerOf(it, t.level, ex), bankOn = chipsMode && !!qAns;   // 选词
-  el.innerHTML = top +
-    `<div class="rcard" style="--sw:var(${LV[t.level].sw[t.i % 3]})">${ex ? exPrompt(ex) : askHtml(t, k)}` +
-    `<p class="st-stats">${stStatsLine(it.anchor, ex ? plainMd(ex.en) : null)}</p>` +
-    (s.revealed
-      ? `<hr>` + (exam
-          ? `<div class="st-res">${compareHtml(s.draft, it.answer || "", false)}</div>`
-          : `<div class="st-res">${movedHtml(ex, s.draft, s.graded)}</div>`) + stHistoryHtml(it.anchor, ex ? plainMd(ex.en) : null) +
-        (ready ? advanceHtml(stage) : "") +
-        `<p class="big" style="font-size:21px">${it.title}</p><div class="body">${notesHtml(it)}</div>`
-      : (qAns ? `<div class="amode-row">${modeToggleHtml()}</div>` : "") +
-        `<textarea class="draft" id="qz-draft" placeholder="不看笔记,写出英文…(⌘/Ctrl + Enter 显示答案)"${bankOn ? " hidden" : ""}>${esc(s.draft)}</textarea>` +
-        (bankOn ? `<div class="wb-ans" id="wb-ans"></div><div class="wb-bank" id="wb-bank"></div>` : "")) +
-    `</div>` +
-    (s.revealed
-      ? `<div class="grades" style="grid-template-columns:${ready ? "1fr 1fr" : "1fr"}">` +
-        (ready ? `<button class="btn ghost" type="button" id="qz-adv">移到${STAGE_TAB[nextStage(stage)]}</button>` : "") +
-        `<button class="btn" type="button" id="qz-next">${s.index + 1 < s.queue.length ? "下一题" : "完成"}</button></div>`
-      : `<button class="btn" type="button" id="qz-reveal" style="width:100%">显示答案</button>`);
+  const qAns = answerOf(it, t.level, ex);
+  const meta = (exam ? "自测题" : plainMd(textOf(it.title))) + (ex ? ` · 例句 ${ex.k + 1} / ${ex.of}` : "") + " · 中译英";
+  const prompt = exam ? `<p class="qprompt">${esc(stTitle(it))}</p>` : ex ? `<p class="qprompt">${esc(plainMd(ex.zh))}</p>` : askHtml(t, k);
+  el.innerHTML = `<div class="run">${top}<div class="qsheet" style="--sw:${sw}">` +
+    qsheetHtml({ meta, toggle: qAns && !s.revealed ? modeToggleHtml() : "", prompt, stats: stStatsLine(it.anchor, exEn), draft: s.draft }) + `</div></div>`;
+  el.querySelector("#qz-stop").addEventListener("click", stop);
+  const via = stage;                                        // "review" / "test" in the history
   const next = adv => {
     if (adv) { setStage(it, nextStage(stage)); s.advanced++; }
     s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; s.studied = false; s.picks = undefined;
     render(); window.scrollTo(0, 0);
   };
-  const via = stage;                                        // "review" / "test" in the history
-  el.querySelectorAll(".st-res [data-ok]").forEach(b => b.addEventListener("click", () => {
+  const reveal = () => {
+    const tried = !!s.draft.trim();
+    let ok = null;
+    if (exam) { recordAttempt(it.anchor, s.draft, it.answer || "", via); ok = tried && bestDiff(s.draft, it.answer || "").same; }
+    else if (ex) { recordAttempt(it.anchor, s.draft, exEn, via, exEn); ok = tried && bestDiff(s.draft, exEn).same; }
+    else if (!tried) { logAttempt(it.anchor, "", false, via); ok = false; }
+    if (ok !== null) { if (tried) { s.checked++; if (ok) s.ok++; } if (stage === "review") scheduleReview(it.anchor, ok); }
+    s.revealed = true; renderQuizCard(el);
+  };
+  const api = wireAnswer(el.querySelector(".qsheet"), {
+    answer: s.revealed ? null : qAns, others: othersOf(it, qAns), seed: hashStr(it.anchor) + s.index,
+    picks: s.picks = s.picks || [], onReveal: () => { if (!s.revealed) reveal(); }, onInput: v => { s.draft = v; },
+  });
+  if (!s.revealed) { if (!api.input.hidden) api.input.focus(); return; }
+  const res = el.querySelector("#q-res"), after = el.querySelector("#q-after");
+  const stats = stStatsLine(it.anchor, exEn);
+  const quiet = exam ? stTitle(it) : ex ? plainMd(ex.zh) : "";
+  res.innerHTML = (quiet ? `<p class="qquiet">${esc(quiet)}</p>` : "") +
+    (exam ? verdictHtml(s.draft, it.answer || "", stats) : ex ? verdictHtml(s.draft, exEn, stats) : movedHtml(null, s.draft, s.graded)) +
+    (ready ? advanceHtml(stage) : "") + notesForQuestionHtml(it, ex) + stHistoryHtml(it.anchor, exEn);
+  decorateNotes(res, it, ex, go, () => go(t));
+  res.hidden = false;
+  el.querySelector("#q-ask").hidden = el.querySelector("#wb-keys").hidden = el.querySelector("#q-show").hidden = true;
+  after.innerHTML = (ready ? `<button class="btn ghost" type="button" id="qz-adv">移到${STAGE_TAB[nextStage(stage)]}</button>` : "") +
+    `<button class="btn" type="button" id="qz-next">${s.index + 1 < s.queue.length ? "下一题 ›" : "完成"}</button>`;
+  after.hidden = false;
+  res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {   // graded by me
     s.graded = b.dataset.ok === "1";
     logAttempt(it.anchor, s.draft, s.graded, via);
     if (stage === "review") scheduleReview(it.anchor, s.graded);
     s.checked++; if (s.graded) s.ok++;
     renderQuizCard(el);
   }));
-  el.querySelector("#qz-stop").addEventListener("click", stop);
-  const d = el.querySelector("#qz-draft");
-  const reveal = () => {
-    const tried = !!s.draft.trim();
-    let ok = null;
-    if (exam) { recordAttempt(it.anchor, s.draft, it.answer || "", via); ok = tried && bestDiff(s.draft, it.answer || "").same; }
-    else if (ex) { recordAttempt(it.anchor, s.draft, plainMd(ex.en), via, plainMd(ex.en)); ok = tried && bestDiff(s.draft, plainMd(ex.en)).same; }
-    else if (!tried) { logAttempt(it.anchor, "", false, via); ok = false; }
-    if (ok !== null) { if (tried) { s.checked++; if (ok) s.ok++; } if (stage === "review") scheduleReview(it.anchor, ok); }
-    s.revealed = true; renderQuizCard(el);
-  };
-  if (d) {
-    d.addEventListener("input", () => { s.draft = d.value; });
-    d.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) reveal(); });
-    if (bankOn) mountBank(el.querySelector("#wb-ans"), el.querySelector("#wb-bank"), d, qAns, othersOf(it, qAns), hashStr(it.anchor) + s.index, s.picks = s.picks || []);
-    else d.focus();
-  }
-  const am = el.querySelector(".amode");
-  if (am) am.addEventListener("click", e => {
-    const b = e.target.closest("button[data-chips]");
-    if (!b || (b.dataset.chips === "1") === chipsMode) return;
-    setChipsMode(b.dataset.chips === "1");
-    if (chipsMode) s.picks = [];                            // to 打字 keeps the sentence built so far
-    renderQuizCard(el);
-  });
-  const rv = el.querySelector("#qz-reveal"); if (rv) rv.addEventListener("click", reveal);
-  const nx = el.querySelector("#qz-next"); if (nx) { nx.addEventListener("click", () => next(false)); nx.focus(); }
-  const ad = el.querySelector("#qz-adv"); if (ad) ad.addEventListener("click", () => next(true));
-  const ab = el.querySelector("#adv"); if (ab) ab.addEventListener("click", () => next(true));
-  wireXrefs(el);
+  const nx = after.querySelector("#qz-next"); nx.addEventListener("click", () => next(false)); nx.focus();
+  const ad = after.querySelector("#qz-adv"); if (ad) ad.addEventListener("click", () => next(true));
+  const ab = res.querySelector("#adv"); if (ab) ab.addEventListener("click", () => next(true));
 }
 // ── 更多: the 错题本 (above, its own section), 练习 and 同步 — what left the tabs ──
 function renderExtras(){
