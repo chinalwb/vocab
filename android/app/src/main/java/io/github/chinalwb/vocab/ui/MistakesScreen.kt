@@ -65,7 +65,8 @@ fun MistakesScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifi
         Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
     }
-    var type by rememberSaveable { mutableStateOf<String?>(null) }
+    // kept across launches (SharedPreferences "filters"/"mistake", like the page's vk.mtype)
+    var typeSaved by rememberPrefString("filters", "mistake", null)
 
     val groups = remember(data) {
         val rows = data.entries
@@ -79,7 +80,8 @@ fun MistakesScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifi
     val desc = remember(data) { data.mistakeTypes.associate { it.key to it.desc } }
     val check = remember(data) { data.mistakeTypes.associate { it.key to it.check } }
     val total = groups.sumOf { it.second.size }
-    if (type != null && groups.none { it.first == type }) type = null
+    // a type with no mistakes (any more) reads as 全部, but stays saved
+    val type = typeSaved?.takeIf { t -> groups.any { it.first == t } }
 
     if (total == 0) {
         Box(modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
@@ -124,7 +126,7 @@ fun MistakesScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifi
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .clickable { type = k }
+                            .clickable { typeSaved = k }
                             .padding(vertical = 7.dp),
                         verticalAlignment = Alignment.Top,
                     ) {
@@ -141,9 +143,9 @@ fun MistakesScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifi
         }
         item {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(vertical = 8.dp)) {
-                item { FilterChip(type == null, { type = null }, { Text("全部 $total") }) }
+                item { FilterChip(type == null, { typeSaved = null }, { Text("全部 $total") }) }
                 items(groups, key = { it.first }) { (k, list) ->
-                    FilterChip(type == k, { type = if (type == k) null else k }, { Text("$k ${list.size}") })
+                    FilterChip(type == k, { typeSaved = if (type == k) null else k }, { Text("$k ${list.size}") })
                 }
             }
         }

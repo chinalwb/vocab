@@ -1180,7 +1180,9 @@ function compareHtml(mine, answer, retry = true){
 // words, shuffled with a few strays, are chips; tapping them in order builds the sentence, which
 // goes into the (hidden) text box, so 显示答案 checks it exactly like typed text. 打字 is a
 // toggle away, remembered in vk.chips (default 选词). Only for questions with an answer to check.
-const chipWords = t => t.split(/\s+/).map(w => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "")).filter(Boolean);
+// a chip keeps the punctuation after its word ("view." "However,", 用户 2026-10-14), not before it
+const chipWords = t => t.split(/\s+/).map(w => w.replace(/^[^\p{L}\p{N}]+/u, "")).filter(Boolean);
+const bareWord = w => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "").toLowerCase();   // strays and duplicates compare by this
 const STRAY_POOL = ["the", "a", "an", "to", "of", "in", "on", "at", "for", "with", "is", "are", "was", "has", "that", "it", "and", "but"];
 function shuffled(xs, seed){                              // seeded (mulberry32): fixed for one try
   let st = seed >>> 0;
@@ -1192,8 +1194,9 @@ function shuffled(xs, seed){                              // seeded (mulberry32)
 const uniqCI = xs => xs.filter((w, k) => xs.findIndex(v => v.toLowerCase() === w.toLowerCase()) === k);
 // a few words that aren't in the answer: the entry's other sentences first, then stock function words
 function strayWords(answer, others, seed, n = 3){
-  const have = new Set(chipWords(answer).map(w => w.toLowerCase()));
-  const own = shuffled(uniqCI(others.flatMap(chipWords).filter(w => !have.has(w.toLowerCase()))), seed);
+  const have = new Set(chipWords(answer).map(bareWord));
+  // strays go in bare, so a "." can't mark them as a sentence end
+  const own = shuffled(uniqCI(others.flatMap(chipWords).map(w => w.replace(/[^\p{L}\p{N}]+$/u, "")).filter(w => !have.has(bareWord(w)))), seed);
   const stock = shuffled(STRAY_POOL.filter(w => !have.has(w)), seed);
   return uniqCI([...own, ...stock]).slice(0, n);
 }
@@ -1212,8 +1215,8 @@ const othersOf = (it, answer) => [...quizExamples(it).map(x => plainMd(x.en)), .
 const BANK_CHIPS = 4;
 function bankOptions(words, strays, seed, k){
   if (k >= words.length) return [];
-  const s = seed * 31 + k, right = words[k], seen = new Set([right.toLowerCase()]);
-  const fresh = w => !seen.has(w.toLowerCase()) && seen.add(w.toLowerCase());
+  const s = seed * 31 + k, right = words[k], seen = new Set([bareWord(right)]);
+  const fresh = w => !seen.has(bareWord(w)) && seen.add(bareWord(w));
   const later = shuffled(words.slice(k + 1), s).filter(fresh).slice(0, 2);
   const fill = shuffled(strays, s + 1).filter(fresh).slice(0, BANK_CHIPS - 1 - later.length);
   return shuffled([right, ...later, ...fill], s + 2);
