@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.rememberScrollState
@@ -127,17 +129,20 @@ fun SelfTestResult(mine: String, answer: String, onRetry: (() -> Unit)? = null) 
         when {
             // a peek still gets the answer — that's what the button promised — with 🔊 on it
             mine.isBlank() -> {
-                Text("没有写就看答案了 —— 下次先写再看。", style = MaterialTheme.typography.titleSmall)
+                Verdict("没写就看了答案", "下次先写再看,记得更牢", Tone.Neutral)
                 answer.lines().filter { it.isNotBlank() }.forEach { Line("答案", AnnotatedString(it), say = it) }
             }
             // right or wrong, both sentences are shown side by side: what I wrote, and the answer
             d.same -> {
-                Text("✅ 和答案一致(大小写、标点不计)", style = MaterialTheme.typography.titleSmall)
+                Verdict("完全正确", "和答案一致(大小写、标点不计)", Tone.Good)
                 Line("我写的", AnnotatedString(mine.trim()))
                 Line("答案", AnnotatedString(d.answer.joinToString(" ")), say = d.answer.joinToString(" "))
             }
             else -> {
-                Text("对照一下差异", style = MaterialTheme.typography.titleSmall)
+                val extra = d.mine.size - d.keepMine.size
+                val missing = d.answer.size - d.keepAnswer.size
+                val parts = listOfNotNull(if (extra > 0) "多了 $extra 个词" else null, if (missing > 0) "漏了 $missing 个词" else null)
+                Verdict(if (extra + missing <= 2) "差一点" else "还不对", parts.joinToString(" · "), Tone.Warn)
                 Line("我写的(删除线 = 多出来或写错的)", marked(d.mine, d.keepMine, SpanStyle(color = err, textDecoration = TextDecoration.LineThrough)))
                 Line("答案(高亮 = 我漏掉或写错的)", marked(d.answer, d.keepAnswer, SpanStyle(background = warn)), say = d.answer.joinToString(" "))
                 Text("逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。", style = MaterialTheme.typography.bodySmall, color = muted)
@@ -327,18 +332,26 @@ fun SelfTestHistory(attempts: List<Attempt>, one: Boolean = false) {
  * toggle away, remembered.
  */
 
+private val LEAD_PUNCT = Regex("^[^\\p{L}\\p{N}]+")
 private val EDGE_PUNCT = Regex("^[^\\p{L}\\p{N}]+|[^\\p{L}\\p{N}]+$")
 
-/** A sentence as chips: punctuation off the ends of each word, pure punctuation dropped. */
+/**
+ * A sentence as chips: a word keeps the punctuation after it ("view." "However,", 用户 2026-10-14),
+ * loses any before it (opening quotes, brackets); pure punctuation is dropped.
+ */
 fun chipWords(sentence: String): List<String> =
-    sentence.split(Regex("\\s+")).map { it.replace(EDGE_PUNCT, "") }.filter { it.isNotEmpty() }
+    sentence.split(Regex("\\s+")).map { it.replace(LEAD_PUNCT, "") }.filter { it.isNotEmpty() }
+
+/** A chip without its punctuation: what strays and duplicates are compared by. */
+fun bareWord(w: String): String = w.replace(EDGE_PUNCT, "").lowercase()
 
 private val STRAY_POOL = listOf("the", "a", "an", "to", "of", "in", "on", "at", "for", "with", "is", "are", "was", "has", "that", "it", "and", "but")
 
 /** A few words that aren't in [answer]: from [others] (the entry's other sentences) first, then stock function words. */
 fun strayWords(answer: String, others: List<String>, seed: Int, n: Int = 6): List<String> {
-    val have = chipWords(answer).map { it.lowercase() }.toSet()
-    val own = others.flatMap { chipWords(it) }.filter { it.lowercase() !in have }.distinctBy { it.lowercase() }.shuffled(Random(seed))
+    val have = chipWords(answer).map(::bareWord).toSet()
+    // strays go in bare, so a "." can't mark them as a sentence end
+    val own = others.flatMap { chipWords(it) }.map { it.replace(EDGE_PUNCT, "") }.filter { bareWord(it) !in have }.distinctBy(::bareWord).shuffled(Random(seed))
     val stock = STRAY_POOL.filter { it !in have }.shuffled(Random(seed))
     return (own + stock).distinctBy { it.lowercase() }.take(n)
 }
@@ -354,13 +367,13 @@ fun rememberChipsMode(): Pair<Boolean, (Boolean) -> Unit> {
 
 /** The 选词 | 打字 switch, a small pill at the end of its row. */
 @Composable
-fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit) {
+fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit, labels: Pair<String, String> = "选词" to "打字") {
     val shape = RoundedCornerShape(50)
     Row(
         Modifier.clip(shape).border(1.dp, MaterialTheme.colorScheme.outline, shape).padding(2.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        listOf(true to "选词", false to "打字").forEach { (v, label) ->
+        listOf(true to labels.first, false to labels.second).forEach { (v, label) ->
             val on = v == chips
             Text(
                 label,
@@ -397,9 +410,9 @@ class WordBankState(val words: List<String>, private val strays: List<String>, p
         if (k >= words.size) return emptyList()
         val rnd = Random(seed * 31 + k)
         val right = words[k]
-        val seen = mutableSetOf(right.lowercase())
-        val later = words.drop(k + 1).shuffled(rnd).filter { seen.add(it.lowercase()) }.take(2)
-        val fill = strays.shuffled(rnd).filter { seen.add(it.lowercase()) }.take(CHIPS - 1 - later.size)
+        val seen = mutableSetOf(bareWord(right))
+        val later = words.drop(k + 1).shuffled(rnd).filter { seen.add(bareWord(it)) }.take(2)
+        val fill = strays.shuffled(rnd).filter { seen.add(bareWord(it)) }.take(CHIPS - 1 - later.size)
         return (listOf(right) + later + fill).shuffled(rnd)
     }
 
@@ -470,7 +483,6 @@ fun WordBankAnswer(st: WordBankState) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WordBankChips(st: WordBankState) {
-    val shape = RoundedCornerShape(10.dp)
     if (st.done) {
         Text(
             "拼完了,点「显示答案」对照;点最后一个词可以撤回",
@@ -480,20 +492,24 @@ fun WordBankChips(st: WordBankState) {
         )
         return
     }
-    FlowRow(
-        Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        st.options.forEach { w ->
-            Box(
-                Modifier
-                    .clip(shape)
-                    .background(MaterialTheme.colorScheme.surface)
-                    .border(1.dp, MaterialTheme.colorScheme.outline, shape)
-                    .clickable { st.pick(w) }
-                    .padding(horizontal = 14.dp, vertical = 8.dp),
-            ) { Text(w, fontFamily = AppFont, fontSize = 17.sp) }
+    // two by two, big enough to hit without looking (UI refactor, direction A)
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        st.options.chunked(2).forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                row.forEach { w ->
+                    Box(
+                        Modifier
+                            .weight(1f)
+                            .height(56.dp)
+                            .clip(RoundedCornerShape(14.dp))
+                            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(14.dp))
+                            .clickable { st.pick(w) },
+                        contentAlignment = Alignment.Center,
+                    ) { Text(w, fontFamily = AppFont, fontSize = 19.sp) }
+                }
+                if (row.size == 1) Spacer(Modifier.weight(1f))
+            }
         }
     }
 }
@@ -523,4 +539,35 @@ fun AdvanceBanner(stage: Stage, onAdvance: () -> Unit) {
         Text("这一阶段的题都答对过了", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
         TextButton(onClick = onAdvance) { Text("移到${next.tab}") }
     }
+}
+
+enum class Tone { Good, Warn, Neutral }
+
+/** The one-line verdict on top of a reveal: what happened, then a short why (UI refactor, direction A). */
+@Composable
+fun Verdict(title: String, sub: String, tone: Tone) {
+    val dark = isSystemInDarkTheme()
+    val (bg, fg) = when (tone) {
+        Tone.Good -> if (dark) Color(0xFF23402A) to Color(0xFFBFE5C4) else Color(0xFFDDF0DF) to Color(0xFF2E6B3A)
+        Tone.Warn -> if (dark) Color(0xFF4A3418) to Color(0xFFF2CF9A) else Color(0xFFFDEBD3) to Color(0xFF7A4A12)
+        Tone.Neutral -> MaterialTheme.colorScheme.surfaceContainerHigh to MaterialTheme.colorScheme.onSurface
+    }
+    Column(
+        Modifier.fillMaxWidth().background(bg, RoundedCornerShape(16.dp)).padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, color = fg)
+        if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.bodyMedium, color = fg)
+    }
+}
+
+/**
+ * How many questions are still to be answered right before the next stage is offered — the
+ * progress panel's hint. Null when there's no next stage or nothing to check against.
+ */
+fun remainingToAdvance(entry: Entry, stage: Stage, attempts: List<Attempt>, since: Long, excluded: Set<String>): Int? {
+    if (stage.next == null) return null
+    val questions = if (entry.level == "SELFTEST") listOf("") else entry.quizExamples(excluded).map { plain(it.en) }
+    if (questions.isEmpty()) return null
+    return questions.count { q -> attempts.none { it.t >= since && it.ok && it.ex == q } }
 }

@@ -100,6 +100,7 @@ def inline(t):
     t = html.escape(t)
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
     t = re.sub(r"~~(.+?)~~", r"<del>\1</del>", t)
+    t = re.sub(r"==(.+?)==", r'<mark class="mistake">\1</mark>', t)   # 阅读: a mistake in 我的原句
     t = re.sub(r"`(.+?)`", r"<code>\1</code>", t)
     # 错题本 tags first, so a tag is never swallowed into a later [text](#anchor)
     t = re.sub(r"\[(" + "|".join(TYPE_KEYS) + r")\](?!\()", r'<span class="mtag">\1</span>', t)
@@ -111,7 +112,7 @@ def inline(t):
 
 def strip_meta(raw):
     # the 音标/词性/CEFR/日期/掌握 bullets are rendered as chips, not body text
-    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
+    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握|关键词)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
 
 
 def parse_blocks(raw):
@@ -292,6 +293,31 @@ def build_entries(src):
     return out
 
 
+def build_reads(src):
+    """阅读 (readlist.md): read-only pairs of a common and a C1 way to say the same thing.
+
+    Not entries: no level, no quiz, no 进度, no 错题本. Newest (last in the file) first.
+    """
+    out = []
+    for e in split_entries(src):
+        blocks = parse_blocks(e["raw"])
+        # 我的原句 goes last and folded on the detail page, so it ships apart from the rest
+        cut = next((i for i, b in enumerate(blocks) if b["t"] == "p" and section_label(b["text"]) == "我的原句"), len(blocks))
+        item = {"anchor": e["anchor"], "title": e["title"], "date": meta_field(e["raw"], "日期"),
+                "keywords": [k.strip() for k in meta_field(e["raw"], "关键词").split("·") if k.strip()],
+                "blocks": blocks[:cut], "original": [l for b in blocks[cut + 1:] if b["t"] == "quote" for l in b["lines"]],
+                # one bullet per ==highlighted== mistake: what it should be and why
+                "originalNotes": [it for b in blocks[cut + 1:] if b["t"] == "ul" for it in b["items"]]}
+        item["hash"] = digest(item)
+        out.append(item)
+    seen = set()
+    for r in out:
+        if r["anchor"] in seen:
+            raise SystemExit(f"readlist.md: duplicate anchor {r['anchor']}")
+        seen.add(r["anchor"])
+    return out[::-1]
+
+
 def quiz_examples(blocks):
     """Numbered examples that have both an English sentence and a Chinese translation."""
     out = []
@@ -363,6 +389,8 @@ def main():
     args = ap.parse_args()
 
     entries = build_entries((ROOT / "vocabulary.md").read_text(encoding="utf-8"))
+    read_md = ROOT / "readlist.md"
+    reads = build_reads(read_md.read_text(encoding="utf-8")) if read_md.exists() else []
     data = page_data(entries)
     mistakes = mistake_data(entries)
     page = (ROOT / "template.html").read_text(encoding="utf-8").replace(
@@ -379,14 +407,15 @@ def main():
     # the hash differs from what it last fetched. Keep SCHEMA in sync with the app.
     meta = {
         "schema": SCHEMA,
-        "hash": digest([e["hash"] for e in entries]),
+        # reads count too, so a new 阅读 item alone makes the app fetch data.json again
+        "hash": digest([e["hash"] for e in entries] + [r["hash"] for r in reads]),
         "count": len(entries),
         "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     (ROOT / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
     (ROOT / "data.json").write_text(
         json.dumps({**meta, "mistakeTypes": [{"key": k, "desc": d, "check": c} for k, d, c in MISTAKE_TYPES],
-                    "entries": entries}, ensure_ascii=False), encoding="utf-8")
+                    "entries": entries, "reads": reads}, ensure_ascii=False), encoding="utf-8")
 
     if args.artifact:
         pathlib.Path(args.artifact).write_text(
@@ -396,6 +425,7 @@ def main():
     print(f"{total} entries -> " + ", ".join(f"{g['level']}:{len(g['items'])}" for g in data))
     print(f"{sum(len(g['items']) for g in mistakes)} mistakes -> "
           + ", ".join(f"{g['type']}:{len(g['items'])}" for g in mistakes))
+    print(f"{len(reads)} reads (readlist.md)")
 
 
 if __name__ == "__main__":

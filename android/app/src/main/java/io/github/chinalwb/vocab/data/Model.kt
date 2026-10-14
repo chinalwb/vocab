@@ -27,6 +27,8 @@ data class VocabData(
     /** 错题本 categories in display order — MISTAKE_TYPES in build.py. */
     val mistakeTypes: List<MistakeType> = emptyList(),
     val entries: List<Entry>,
+    /** 阅读 (readlist.md): common vs C1 phrasing, read only; newest first. Absent in older data. */
+    val reads: List<Read> = emptyList(),
 ) {
     @Transient
     val byAnchor: Map<String, Entry> = entries.associateBy { it.anchor }
@@ -75,6 +77,23 @@ data class Entry(
     @Transient
     val sections: List<Section> = splitSections(blocks)
 }
+
+/**
+ * One 阅读 item: [title] is the meaning in Chinese; [keywords] tell items apart in the list;
+ * [blocks] hold 常用说法 / C1 说法 / 差别; [original] is 我的原句, its mistakes marked `==like this==`.
+ */
+@Serializable
+data class Read(
+    val anchor: String,
+    val title: String,
+    val date: String = "",
+    val keywords: List<String> = emptyList(),
+    val blocks: List<Block> = emptyList(),
+    val original: List<String> = emptyList(),
+    /** Under 我的原句: one bullet per `==highlighted==` mistake in it. */
+    val originalNotes: List<String> = emptyList(),
+    val hash: String = "",
+)
 
 /** One card of the notes carousel: [label] is its tab ("释义", "义项一", "常见搭配"). */
 data class Section(val label: String, val blocks: List<Block>)

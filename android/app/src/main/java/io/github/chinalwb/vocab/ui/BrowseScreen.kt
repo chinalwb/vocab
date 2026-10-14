@@ -209,20 +209,29 @@ fun BrowseScreen(
     /** How many filters / a non-default sort are on, for the icon's dot. */
     onActiveCount: (Int) -> Unit = {},
 ) {
-    var stageF by rememberSaveable { mutableStateOf<Stage?>(null) }
+    // 筛选与排序 are kept across launches (SharedPreferences "filters", 用户 2026-10-14), like the
+    // page's vk.type / vk.cefr / vk.stagef / vk.write / vk.fav; 有更新 is for this update only.
+    var stageKey by rememberPrefString("filters", "stage", null)
+    val stageF = Stage.entries.firstOrNull { it.key == stageKey }
+    val setStage = { s: Stage? -> stageKey = s?.key }
     val foot = { e: Entry -> listOfNotNull(selfTests.stFoot(e), stageFoot(e, stages.stageOf(e))).joinToString(LABEL_SEP).ifEmpty { null } }
     // 排序: by level (grouped, the default) or by 收录 date, newest / oldest first, grouped by month
-    var sortF by rememberSaveable { mutableStateOf(SORT_LEVEL) }
+    var sortSaved by rememberPrefString("filters", "sort", SORT_LEVEL)
+    val sortF = sortSaved.takeIf { k -> SORTS.any { it.first == k } } ?: SORT_LEVEL
     // 筛选, same as the page: 类型 (ALL / WORD / TERM …, with a CEFR sub-row under WORD) and
     // 进度, each single-choice; 只看会写, 有收藏 and 有更新 are toggles that narrow the rest.
-    var typeF by rememberSaveable { mutableStateOf(ALL) }
-    var cefrF by rememberSaveable { mutableStateOf<String?>(null) }
-    var writeOnly by rememberSaveable { mutableStateOf(false) }
+    var typeSaved by rememberPrefString("filters", "type", ALL)
+    val typeF = typeSaved.takeIf { k -> TYPES.any { it.first == k } } ?: ALL
+    var cefrSaved by rememberPrefString("filters", "cefr", null)
+    val cefrF = cefrSaved?.takeIf { it in CEFR }
+    var writeOnly by rememberPrefBool("filters", "write", false)
     var changedOnly by rememberSaveable { mutableStateOf(false) }
     // entries with a ⭐ example sentence (long-press → 收藏 on the entry page)
-    var favOnly by rememberSaveable { mutableStateOf(false) }
+    var favSaved by rememberPrefBool("filters", "fav", false)
     val starred = LocalStarred.current
     val entries = lib.data?.entries.orEmpty()
+    // no ⭐ left (or not loaded yet): the toggle reads as off, but stays saved
+    val favOnly = favSaved && entries.any { it.anchor in starred }
     val changed = lib.newAnchors + lib.updatedAnchors
     if (changedOnly && changed.isEmpty()) changedOnly = false
     val levelShown = { lvl: String ->
@@ -234,7 +243,6 @@ fun BrowseScreen(
         entries.filter { e -> (!writeOnly || e.writes) && (!changedOnly || e.anchor in changed) && (!favOnly || e.anchor in starred) }
     }
     val favCount = entries.count { it.anchor in starred }
-    if (favOnly && favCount == 0) favOnly = false
     // (header label, entries): level groups, or month groups when sorted by date
     val groups = remember(base, typeF, cefrF, stageF, stages, sortF) {
         val shown = base.filter { e -> (stageF == null || stages.stageOf(e) == stageF) && levelShown(e.level) }
@@ -273,15 +281,15 @@ fun BrowseScreen(
     }
     val shownCount = groups.sumOf { it.second.size }
     val shownAnchors = remember(groups) { groups.flatMap { g -> g.second.map { it.anchor } } }
-    val clearAll = { typeF = ALL; cefrF = null; stageF = null; writeOnly = false; changedOnly = false; favOnly = false; sortF = SORT_LEVEL }
+    val clearAll = { typeSaved = ALL; cefrSaved = null; setStage(null); writeOnly = false; changedOnly = false; favSaved = false; sortSaved = SORT_LEVEL }
     // what's on, as removable chips under the search; the same list drives the button's badge
     val active = buildList {
-        if (typeF != ALL) add((TYPES.first { it.first == typeF }.second + (cefrF?.let { " · $it" } ?: "")) to { typeF = ALL; cefrF = null })
-        stageF?.let { add(it.label to { stageF = null }) }
+        if (typeF != ALL) add((TYPES.first { it.first == typeF }.second + (cefrF?.let { " · $it" } ?: "")) to { typeSaved = ALL; cefrSaved = null })
+        stageF?.let { add(it.label to { setStage(null) }) }
         if (writeOnly) add("只看会写" to { writeOnly = false })
-        if (favOnly) add("⭐ 有收藏" to { favOnly = false })
+        if (favOnly) add("⭐ 有收藏" to { favSaved = false })
         if (changedOnly) add("有更新" to { changedOnly = false })
-        if (sortF != SORT_LEVEL) add(SORTS.first { it.first == sortF }.second to { sortF = SORT_LEVEL })
+        if (sortF != SORT_LEVEL) add(SORTS.first { it.first == sortF }.second to { sortSaved = SORT_LEVEL })
     }
     androidx.compose.runtime.LaunchedEffect(active.size) { onActiveCount(active.size) }
     val filters: @Composable () -> Unit = {
@@ -323,30 +331,30 @@ fun BrowseScreen(
                     if (active.isNotEmpty()) TextButton(onClick = clearAll) { Text("重置") }
                 }
                 FilterSection("排序") {
-                    SORTS.forEach { (k, label) -> FilterChip(sortF == k, { sortF = k }, { Text(label) }) }
+                    SORTS.forEach { (k, label) -> FilterChip(sortF == k, { sortSaved = k }, { Text(label) }) }
                 }
                 FilterSection("类型") {
                     TYPES.filter { (k, _) -> k == ALL || k == WORD && CEFR.any { it in present } || k in present }.forEach { (k, label) ->
-                        FilterChip(typeF == k, { typeF = k; if (k != WORD) cefrF = null }, { Text("$label ${typeCount(k)}") },
+                        FilterChip(typeF == k, { typeSaved = k; if (k != WORD) cefrSaved = null }, { Text("$label ${typeCount(k)}") },
                             leadingIcon = if (k in LEVELS) ({ Dot(levelColor(k)) }) else null)
                     }
                 }
                 if (typeF == WORD) FilterSection("级别") {
-                    FilterChip(cefrF == null, { cefrF = null }, { Text("全部 ${typeCount(WORD)}") })
+                    FilterChip(cefrF == null, { cefrSaved = null }, { Text("全部 ${typeCount(WORD)}") })
                     CEFR.filter { it in present }.forEach { c ->
-                        FilterChip(cefrF == c, { cefrF = c }, { Text("$c ${levelCounts[c] ?: 0}") }, leadingIcon = { Dot(levelColor(c)) })
+                        FilterChip(cefrF == c, { cefrSaved = c }, { Text("$c ${levelCounts[c] ?: 0}") }, leadingIcon = { Dot(levelColor(c)) })
                     }
                 }
                 FilterSection("进度") {
-                    FilterChip(stageF == null, { stageF = null }, { Text("全部 ${stageCounts.values.sum()}") })
+                    FilterChip(stageF == null, { setStage(null) }, { Text("全部 ${stageCounts.values.sum()}") })
                     Stage.entries.forEach { s ->
-                        FilterChip(stageF == s, { stageF = s }, { Text("${s.label} ${stageCounts[s] ?: 0}") })
+                        FilterChip(stageF == s, { setStage(s) }, { Text("${s.label} ${stageCounts[s] ?: 0}") })
                     }
                 }
                 // toggles narrow everything else, so they are checkboxes rather than another chip
                 FilterSection("选项") {
                     CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly }
-                    if (favCount > 0) CheckToggle("⭐ 有收藏 $favCount", favOnly) { favOnly = !favOnly }
+                    if (favCount > 0) CheckToggle("⭐ 有收藏 $favCount", favOnly) { favSaved = !favOnly }
                     if (changed.isNotEmpty()) CheckToggle("有更新 ${changed.size}", changedOnly) { changedOnly = !changedOnly }
                 }
                 androidx.compose.material3.Button(onClick = { onSheetOpen(false) }, modifier = Modifier.fillMaxWidth().height(48.dp)) {

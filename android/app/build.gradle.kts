@@ -25,8 +25,8 @@ android {
         applicationId = "io.github.chinalwb.vocab"
         minSdk = 26
         targetSdk = 36
-        versionCode = 60
-        versionName = "1.59"
+        versionCode = 69
+        versionName = "1.68"
         // Where updates are fetched from. Override for local testing, e.g.
         // ./gradlew installDebug -PvocabUrl=http://localhost:8000/  (with adb reverse)
         val vocabUrl = (project.findProperty("vocabUrl") as String?) ?: "https://chinalwb.github.io/vocab/"
@@ -74,7 +74,7 @@ val repoRoot = rootProject.layout.projectDirectory.dir("..")
 val bundleVocab by tasks.registering(Exec::class) {
     workingDir = repoRoot.asFile
     commandLine("python3", "build.py")
-    inputs.files(repoRoot.file("vocabulary.md"), repoRoot.file("build.py"))
+    inputs.files(repoRoot.file("vocabulary.md"), repoRoot.file("readlist.md"), repoRoot.file("build.py"))
     val out = layout.buildDirectory.dir("generated/vocabAssets")
     outputs.dir(out)
     doLast {
