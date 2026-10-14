@@ -370,7 +370,7 @@ private fun QuizBand(entry: Entry, band: Color, label: String, at: Int?, of: Int
             )
             Text(label, style = MaterialTheme.typography.bodySmall, color = ink.copy(alpha = 0.72f), modifier = Modifier.padding(start = 8.dp))
         }
-        if (at != null && of != null && of > 1) Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        if (at != null && of != null && of in 2..10) Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             repeat(of) { i ->
                 Box(Modifier.weight(1f).height(4.dp).background(if (i <= at) ink else ink.copy(alpha = 0.15f), RoundedCornerShape(2.dp)))
             }

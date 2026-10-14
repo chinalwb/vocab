@@ -391,15 +391,15 @@ fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifi
         ) {
             if (sections.isEmpty()) Blocks(entry.anchor, entry.blocks, onXref, quiz)
             sections.forEachIndexed { i, s ->
-                val blocks = s.blocks.let { b ->
-                    if ((b.firstOrNull() as? Block.Para)?.text?.let(LABEL_ONLY::matches) == true) b.drop(1) else b
-                }
+                val labelOnly = (s.blocks.firstOrNull() as? Block.Para)?.text?.let(LABEL_ONLY::matches) == true
+                val blocks = if (labelOnly) s.blocks.drop(1) else s.blocks
                 Column(
                     Modifier.onGloballyPositionedTop { tops[i] = it },
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    // the definition needs no heading; the other sections get a small one
-                    if (sections.size > 1 && i > 0) Text(
+                    // a section whose bold title was only its label ("**常见搭配:**") gets it back as a
+                    // small heading; one with a real title ("**义项二:值得做某事**") already has it
+                    if (labelOnly && i > 0) Text(
                         s.label,
                         style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp),
                         fontWeight = FontWeight.Bold,
