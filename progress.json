@@ -3675,6 +3675,13 @@
     "peek": false,
     "via": "entry",
     "ex": "This is a simple exercise, but the implications are profound."
+   },
+   {
+    "t": 1791942626102,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "There was no indication that the server was about to crash."
    }
   ]
  },
