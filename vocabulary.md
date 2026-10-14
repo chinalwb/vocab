@@ -146,6 +146,8 @@
 140. [worth](#worth)
 141. [for what it's worth](#for-what-its-worth)
 142. [自测:不过我们可以把它当成一个独立的任务,和主重构分开处理。](#t-separate-task)
+143. [自测:按团队里新来的产品经理来写,他们不太了解这个产品。每一点都写清楚,让这条消息不看别的资料也能读懂。](#t-write-for-new-pms)
+144. [that said / that being said](#that-said)
 
 ---
 
@@ -4641,3 +4643,71 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ⚠️ [搭配] **take it as** —— 表示"当作某种意思",这里是"当成一个任务来处理" → **treat it as**。
 - ⚠️ [介词] **independent … from** —— 有人这么说,标准搭配是 **independent of**;这里更自然的是 **separate from**。
 - ❌ [冠词] **from main refactor** —— 特指的那项重构要加冠词 → **from the main refactor**。
+
+---
+
+<a id="t-write-for-new-pms"></a>
+## 自测:按团队里新来的产品经理来写,他们不太了解这个产品。每一点都写清楚,让这条消息不看别的资料也能读懂。
+
+- 日期:2026-10-14
+- 掌握:认识
+
+**答案:**
+
+> Write for new PMs on the team who know little about this product. Spell everything out and make the message self-contained.
+> Assume no prior knowledge of this product — the readers are new PMs, so leave nothing implied.
+
+**要点:**
+
+- **Write for + 读者** —— "按……来写、以……为读者",写作指示里最地道的开头。
+- **who know little about** —— 用定语从句把两句并成一句,避免逗号硬接两个完整句子。
+- **on the team** —— 团队成员用 **on**(美式尤其如此),*in the team* 不算错但少见。
+- **spell everything out** —— 把每一点都讲明白、不留言外之意。
+- **self-contained** —— 自成一体,只看这一份就能懂;比 *as detailed as possible* 更准确:要的是不依赖背景,不是越长越好。
+- **Assume no prior knowledge (of)** —— 固定说法,"假定读者没有任何背景知识"。
+- **That said** —— 意思是"话虽如此",后面必须接**转折**(*It's risky. That said, it's our best option.*);表示"所以"要用 **so / that means**。详见 [that said / that being said](#that-said)。
+
+**我的原句:**
+
+> Assume the readers are new PMs in the team, they know little about this product. That said, the message should be as detailed as possible.
+
+- ❌ [结构] **…in the team, they know little…** —— 两个完整句子只用逗号连接(comma splice) → **new PMs who know little about…**,或者拆成两句。
+- ❌ [搭配] **That said** —— 表示转折("话虽如此"),这里是因果 → **So / That means**。
+- ⚠️ [介词] **in the team** —— 更常说 **on the team**。
+- ⚠️ [直译] **as detailed as possible** —— 从"越详细越好"直译而来;真正想要的是 **self-contained / spell everything out**。
+
+---
+
+<a id="that-said"></a>
+## that said / that being said
+
+- 词性:phrase
+- CEFR:B2
+- 日期:2026-10-14
+- 掌握:会写
+
+**English definition:** used to introduce a statement that contrasts with or limits what you have just said; similar to "however" or "having said that".
+
+**含义:** 话虽如此;尽管这样。先承认前一句成立,再转到另一面。两种说法可以互换,*that being said* 稍长、稍正式,*that said* 更简洁、更常用。英式英语里也常说 *having said that*。
+
+**例句:**
+1. This solution is inexpensive. That said, it's hard to maintain.
+   这个方案成本低。话虽如此,它维护起来很麻烦。
+2. We're swamped this week. That being said, I can still take a look at your PR.
+   我们这周忙得不可开交。尽管如此,我还是可以看一下你的 PR。
+3. The PR looks good overall. That said, I'd split the second commit before we merge.
+   这个 PR 整体不错。不过合并前我建议把第二个提交拆开。
+
+**怎么判断用得对不对:** 换成 *but / however* 读一遍,通顺就对;想说的是"所以",就不能用它。
+
+- 转折("话虽如此,但……"):**that said** / that being said / having said that / however
+- 因果("所以……"):**so** / that means / therefore
+- 补充("而且……"):**also** / on top of that / what's more
+
+**用法提示:**
+
+- 一般放句首,后面加逗号;也可以放句中:*I'm happy with it — that said, there's room to improve.*
+- 常和 **still / yet** 搭配,强调"即便这样也……":*That being said, I can **still** help.*
+- 语气比 *however* 柔和,适合先肯定再提意见,在 code review 和工作消息里很好用。
+
+**我犯过的错:** 把它当成"所以"用。*They know little about this product. ~~That said~~, the message should be detailed.* 这里是因果,应改用 **so**。见 [自测:按团队里新来的产品经理来写](#t-write-for-new-pms)。
