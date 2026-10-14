@@ -34,6 +34,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyRow
@@ -347,69 +348,120 @@ fun Quote(lines: List<String>, link: androidx.compose.ui.graphics.Color, onXref:
 @Composable
 fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifier: Modifier = Modifier) {
     val sections = entry.sections
+    // 分卡 (one section at a time) or 全部展开 (one long page): the user keeps both (用户 2026-10-14),
+    // remembered across entries and launches — the same switch and key the carousel had
+    val ctx = LocalContext.current
+    val prefs = remember { ctx.getSharedPreferences("notes", Context.MODE_PRIVATE) }
+    var all by remember { mutableStateOf(prefs.getBoolean("all", false)) }
     val scroll = rememberScrollState()
+    val pager = rememberPagerState { sections.size }
     val scope = rememberCoroutineScope()
     val tops = remember(entry.anchor) { androidx.compose.runtime.mutableStateMapOf<Int, Int>() }
     val density = androidx.compose.ui.platform.LocalDensity.current
     val slack = with(density) { 24.dp.roundToPx() }
-    val current by androidx.compose.runtime.remember(entry.anchor) {
+    val inView by androidx.compose.runtime.remember(entry.anchor) {
         androidx.compose.runtime.derivedStateOf {
             if (scroll.value >= scroll.maxValue && scroll.maxValue > 0) sections.lastIndex
             else tops.entries.filter { it.value <= scroll.value + slack }.maxByOrNull { it.value }?.key ?: 0
         }
     }
+    var pending by remember(entry.anchor) { mutableStateOf<Int?>(null) }
+    val pendingTop = pending?.let { tops[it] }
+    LaunchedEffect(pendingTop) { if (pendingTop != null) { scroll.scrollTo(pendingTop); pending = null } }
+    val tabbed = sections.size > 1 && !all
+    val current = if (tabbed) pager.currentPage else inView
     val chips = rememberLazyListState()
     LaunchedEffect(current) { if (sections.size > 1) chips.animateScrollToItem((current - 1).coerceAtLeast(0)) }
     val ink = MaterialTheme.colorScheme.onSurface
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Column(modifier) {
         if (sections.size > 1) {
-            LazyRow(
-                state = chips,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 12.dp),
-            ) {
-                itemsIndexed(sections) { i, s ->
-                    val on = i == current
-                    Text(
-                        s.label,
-                        style = MaterialTheme.typography.labelLarge,
-                        color = if (on) MaterialTheme.colorScheme.surface else ink,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(50))
-                            .then(if (on) Modifier.background(ink) else Modifier.border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50)))
-                            .clickable { scope.launch { scroll.animateScrollTo(tops[i] ?: 0) } }
-                            .padding(horizontal = 14.dp, vertical = 8.dp),
-                    )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                LazyRow(
+                    state = chips,
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
+                ) {
+                    itemsIndexed(sections) { i, s ->
+                        val on = i == current
+                        Text(
+                            s.label,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = if (on) MaterialTheme.colorScheme.surface else ink,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(50))
+                                .then(if (on) Modifier.background(ink) else Modifier.border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50)))
+                                .clickable {
+                                    scope.launch { if (tabbed) pager.animateScrollToPage(i) else scroll.animateScrollTo(tops[i] ?: 0) }
+                                }
+                                .padding(horizontal = 14.dp, vertical = 8.dp),
+                        )
+                    }
                 }
+                // the switch stays put at the end of the row while the chips scroll
+                Text(
+                    if (all) "分卡" else "全部展开",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = muted,
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable {
+                            val at = current
+                            all = !all
+                            prefs.edit().putBoolean("all", all).apply()
+                            // keep the same section in view across the switch; the long page
+                            // scrolls once it has measured where that section is (below)
+                            if (all) pending = at else scope.launch { pager.scrollToPage(at) }
+                        }
+                        .padding(horizontal = 8.dp, vertical = 10.dp),
+                )
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)
         }
-        Column(
+        if (tabbed) HorizontalPager(
+            state = pager,
+            pageSpacing = 16.dp,
+            verticalAlignment = Alignment.Top,
+            key = { "${entry.anchor}/$it" },
+            modifier = Modifier.weight(1f).fillMaxWidth(),
+        ) { page ->
+            Column(
+                Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) { Section(entry.anchor, sections[page], heading = false, onXref, quiz, muted) }
+        } else Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
             if (sections.isEmpty()) Blocks(entry.anchor, entry.blocks, onXref, quiz)
             sections.forEachIndexed { i, s ->
-                val labelOnly = (s.blocks.firstOrNull() as? Block.Para)?.text?.let(LABEL_ONLY::matches) == true
-                val blocks = if (labelOnly) s.blocks.drop(1) else s.blocks
                 Column(
                     Modifier.onGloballyPositionedTop { tops[i] = it },
                     verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    // a section whose bold title was only its label ("**常见搭配:**") gets it back as a
-                    // small heading; one with a real title ("**义项二:值得做某事**") already has it
-                    if (labelOnly && i > 0) Text(
-                        s.label,
-                        style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp),
-                        fontWeight = FontWeight.Bold,
-                        color = muted,
-                    )
-                    Blocks(entry.anchor, blocks, onXref, quiz)
-                }
+                ) { Section(entry.anchor, s, heading = i > 0, onXref, quiz, muted) }
             }
         }
     }
+}
+
+/**
+ * One section of the notes. A section whose bold title was only its label ("**常见搭配:**") gets
+ * it back as a small [heading] on the long page (on a tab the chip already says it); one with a
+ * real title ("**义项二:值得做某事**") keeps that title as it is.
+ */
+@Composable
+private fun Section(anchor: String, s: Section, heading: Boolean, onXref: (String) -> Unit, quiz: ExampleQuiz?, muted: androidx.compose.ui.graphics.Color) {
+    val labelOnly = (s.blocks.firstOrNull() as? Block.Para)?.text?.let(LABEL_ONLY::matches) == true
+    val blocks = if (labelOnly) s.blocks.drop(1) else s.blocks
+    if (labelOnly && heading) Text(
+        s.label,
+        style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp),
+        fontWeight = FontWeight.Bold,
+        color = muted,
+    )
+    Blocks(anchor, blocks, onXref, quiz)
 }
 
 /** Reports the composable's top within its scrolling parent's content (px), for scroll-to-section. */
