@@ -110,57 +110,6 @@ fun bestDiff(mine: String, answer: String): WordDiff {
     return ds.firstOrNull { it.same } ?: ds.maxByOrNull { it.keepAnswer.size } ?: diffWords(mine, "")
 }
 
-private fun marked(words: List<String>, keep: Set<Int>, style: SpanStyle): AnnotatedString = buildAnnotatedString {
-    words.forEachIndexed { i, w ->
-        if (i > 0) append(' ')
-        if (i in keep) append(w) else withStyle(style) { append(w) }
-    }
-}
-
-/** The verdict shown after 显示答案: ✅ when the words match, otherwise both lines marked up. */
-@Composable
-fun SelfTestResult(mine: String, answer: String, onRetry: (() -> Unit)? = null) {
-    val dark = isSystemInDarkTheme()
-    val err = if (dark) Color(0xFFF08A78) else Color(0xFFC2412D)
-    val warn = (if (dark) Color(0xFFE6B35C) else Color(0xFFB7791F)).copy(alpha = 0.3f)
-    val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        val d = bestDiff(mine, answer)
-        when {
-            // a peek still gets the answer — that's what the button promised — with 🔊 on it
-            mine.isBlank() -> {
-                Verdict("没写就看了答案", "下次先写再看,记得更牢", Tone.Neutral)
-                answer.lines().filter { it.isNotBlank() }.forEach { Line("答案", AnnotatedString(it), say = it) }
-            }
-            // right or wrong, both sentences are shown side by side: what I wrote, and the answer
-            d.same -> {
-                Verdict("完全正确", "和答案一致(大小写、标点不计)", Tone.Good)
-                Line("我写的", AnnotatedString(mine.trim()))
-                Line("答案", AnnotatedString(d.answer.joinToString(" ")), say = d.answer.joinToString(" "))
-            }
-            else -> {
-                val extra = d.mine.size - d.keepMine.size
-                val missing = d.answer.size - d.keepAnswer.size
-                val parts = listOfNotNull(if (extra > 0) "多了 $extra 个词" else null, if (missing > 0) "漏了 $missing 个词" else null)
-                Verdict(if (extra + missing <= 2) "差一点" else "还不对", parts.joinToString(" · "), Tone.Warn)
-                Line("我写的(删除线 = 多出来或写错的)", marked(d.mine, d.keepMine, SpanStyle(color = err, textDecoration = TextDecoration.LineThrough)))
-                Line("答案(高亮 = 我漏掉或写错的)", marked(d.answer, d.keepAnswer, SpanStyle(background = warn)), say = d.answer.joinToString(" "))
-                Text("逐词对照只看字面:意思对、换了说法也可能没问题,看看下面的要点。", style = MaterialTheme.typography.bodySmall, color = muted)
-            }
-        }
-        if (onRetry != null) RetryButton(onRetry)
-    }
-}
-
-/** After a reveal, trying again is the next step, so it's the page's filled button. */
-@Composable
-fun RetryButton(onClick: () -> Unit) {
-    Button(onClick = onClick, contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp)) {
-        androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Default.Refresh, null, Modifier.padding(end = 6.dp))
-        Text("再试一次")
-    }
-}
-
 @Composable
 /** A labelled line of the verdict; [say] puts a 🔊 at its end that reads that text. */
 private fun Line(label: String, text: AnnotatedString, say: String? = null) {
@@ -176,46 +125,6 @@ private fun Line(label: String, text: AnnotatedString, say: String? = null) {
             Text(text, fontFamily = AppFont, fontSize = 17.sp, lineHeight = 24.sp)
         }
         if (say != null) SpeakButton(say)
-    }
-}
-
-/**
- * The box I write my answer in. The default outline is too faint on a tinted card — unfocused
- * it vanished, and the card gave no hint of where to type — so the border is ink-coloured and
- * the box sits on a lighter ground.
- */
-@Composable
-fun DraftField(value: String, onChange: (String) -> Unit, modifier: Modifier = Modifier, maxLines: Int = Int.MAX_VALUE) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onChange,
-        placeholder = { Text("不看答案,写出英文…") },
-        minLines = 3,
-        maxLines = maxLines,
-        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = AppFont),
-        shape = RoundedCornerShape(12.dp),
-        // ✕ to start over, once there's something to clear
-        trailingIcon = if (value.isEmpty()) null else ({
-            androidx.compose.material3.IconButton(onClick = { onChange("") }) {
-                androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Default.Close, "清空", tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        }),
-        colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
-            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            focusedBorderColor = MaterialTheme.colorScheme.onSurface,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-            focusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-        ),
-        modifier = modifier.fillMaxWidth(),
-    )
-}
-
-/** Input + 显示答案, shown on a 自测 entry before its body is revealed. */
-@Composable
-fun SelfTestInput(value: String, onChange: (String) -> Unit, onReveal: () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        DraftField(value, onChange)
-        Button(onClick = onReveal) { Text("显示答案") }
     }
 }
 
@@ -244,23 +153,12 @@ fun Entry.quizExample(tries: Int, excluded: Set<String> = emptySet()): QuizExamp
     return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size)
 }
 
-/** The prompt side for a moved entry with an example: 例句 k / n · 中译英. */
-@Composable
-fun ExamplePrompt(ex: QuizExample, /** while the keyboard is up: smaller, no hint */ compact: Boolean = false) {
-    Column(verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 10.dp)) {
-        Text("例句 ${ex.k + 1} / ${ex.of} · 中译英", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(ex.zh, style = if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge)
-        if (!compact) Text("把这句写成英文,写完和例句原文逐词对照。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-    }
-}
-
 /**
- * The verdict for a moved entry after 显示答案: the word-by-word compare with its example, or —
- * with none to compare against — 我写对了 / 没写对 buttons until I've graded it.
+ * The verdict for an entry with no sentence to compare against (example sentences and 自测题 get
+ * RevealVerdict): what I wrote, then 我写对了 / 没写对 until I've graded it.
  */
 @Composable
-fun MovedResult(ex: QuizExample?, draft: String, graded: Boolean?, onGrade: (Boolean) -> Unit) {
-    if (ex != null) return SelfTestResult(draft, ex.en)
+fun MovedResult(draft: String, graded: Boolean?, onGrade: (Boolean) -> Unit) {
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (draft.isBlank()) {
@@ -296,11 +194,6 @@ fun statsLine(attempts: List<Attempt>, one: Boolean = false): String {
 /** Short form for cards: "试 2 · 对 1" / "未自测". */
 fun countsShort(attempts: List<Attempt>): String =
     attempts.summary().let { if (it.tries == 0) "未自测" else "试 ${it.tries} · 对 ${it.ok}" }
-
-@Composable
-fun SelfTestStats(attempts: List<Attempt>, one: Boolean = false) {
-    Text(statsLine(attempts, one), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-}
 
 /** Newest first, collapsed until tapped. */
 @Composable
@@ -429,91 +322,6 @@ fun rememberWordBank(answer: String, strays: List<String>, seed: Int): WordBankS
     return st
 }
 
-/**
- * The sentence being built, in a box styled like the text field. Tapping its last word takes that
- * one back (the chips step back with it); 清空 in the corner starts over.
- */
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun WordBankAnswer(st: WordBankState) {
-    val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    val picked = st.picked
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .defaultMinSize(minHeight = 72.dp)
-            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
-            .border(1.5.dp, muted, RoundedCornerShape(12.dp)),
-    ) {
-        FlowRow(
-            Modifier.fillMaxWidth().padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = if (picked.isEmpty()) 10.dp else 56.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
-        ) {
-            if (picked.isEmpty()) Text("点下面的词,一个一个拼出英文…", color = muted, modifier = Modifier.padding(4.dp))
-            picked.forEachIndexed { i, w ->
-                val last = i == picked.lastIndex
-                Text(
-                    w,
-                    fontFamily = AppFont,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.surface,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = if (last) 1f else 0.75f))
-                        .clickable(enabled = last) { st.undo() }
-                        .padding(horizontal = 10.dp, vertical = 5.dp),
-                )
-            }
-        }
-        if (picked.isNotEmpty()) Text(
-            "清空",
-            style = MaterialTheme.typography.labelMedium,
-            color = muted,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .clip(RoundedCornerShape(8.dp))
-                .clickable { st.clear() }
-                .padding(horizontal = 10.dp, vertical = 10.dp),
-        )
-    }
-}
-
-/** The four chips for the next word, near the thumb; once the sentence is long enough, a hint instead. */
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun WordBankChips(st: WordBankState) {
-    if (st.done) {
-        Text(
-            "拼完了,点「显示答案」对照;点最后一个词可以撤回",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
-        )
-        return
-    }
-    // two by two, big enough to hit without looking (UI refactor, direction A)
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        st.options.chunked(2).forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                row.forEach { w ->
-                    Box(
-                        Modifier
-                            .weight(1f)
-                            .height(56.dp)
-                            .clip(RoundedCornerShape(14.dp))
-                            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(14.dp))
-                            .clickable { st.pick(w) },
-                        contentAlignment = Alignment.Center,
-                    ) { Text(w, fontFamily = AppFont, fontSize = 19.sp) }
-                }
-                if (row.size == 1) Spacer(Modifier.weight(1f))
-            }
-        }
-    }
-}
-
 /*
  * Moving on: once every question of an entry has been answered right since it entered its
  * stage — each example still in 自测, or a 自测题's one answer — the app offers the next stage.
@@ -538,26 +346,6 @@ fun AdvanceBanner(stage: Stage, onAdvance: () -> Unit) {
     ) {
         Text("这一阶段的题都答对过了", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
         TextButton(onClick = onAdvance) { Text("移到${next.tab}") }
-    }
-}
-
-enum class Tone { Good, Warn, Neutral }
-
-/** The one-line verdict on top of a reveal: what happened, then a short why (UI refactor, direction A). */
-@Composable
-fun Verdict(title: String, sub: String, tone: Tone) {
-    val dark = isSystemInDarkTheme()
-    val (bg, fg) = when (tone) {
-        Tone.Good -> if (dark) Color(0xFF23402A) to Color(0xFFBFE5C4) else Color(0xFFDDF0DF) to Color(0xFF2E6B3A)
-        Tone.Warn -> if (dark) Color(0xFF4A3418) to Color(0xFFF2CF9A) else Color(0xFFFDEBD3) to Color(0xFF7A4A12)
-        Tone.Neutral -> MaterialTheme.colorScheme.surfaceContainerHigh to MaterialTheme.colorScheme.onSurface
-    }
-    Column(
-        Modifier.fillMaxWidth().background(bg, RoundedCornerShape(16.dp)).padding(horizontal = 16.dp, vertical = 14.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, color = fg)
-        if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.bodyMedium, color = fg)
     }
 }
 

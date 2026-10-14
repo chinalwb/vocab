@@ -1,39 +1,45 @@
 package io.github.chinalwb.vocab.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.draw.clip
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.border
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items as gridItems
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,8 +49,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
@@ -72,18 +81,19 @@ fun quizQueue(stage: Stage, entries: List<Entry>, stages: Map<String, String>, l
     return when (stage) {
         Stage.Review -> planToday(mine, review).all
         else -> mine.sortedWith(
-            compareBy<Entry>({ e ->
-                val last = log[e.anchor]?.lastOrNull()
-                when { last == null -> 0; last.text.isEmpty() || !last.ok -> 1; else -> 2 }
-            }, { e -> log[e.anchor]?.lastOrNull()?.t ?: e.no.toLong() }),
+            compareBy<Entry>({ e -> testGroup(log[e.anchor]?.lastOrNull()) }, { e -> log[e.anchor]?.lastOrNull()?.t ?: e.no.toLong() }),
         )
     }
 }
 
+/** 考核's three groups by the last attempt: 0 没做过, 1 上次没对 (wrong or peeked), 2 上次答对. */
+private fun testGroup(last: Attempt?): Int = when { last == null -> 0; last.text.isEmpty() || !last.ok -> 1; else -> 2 }
+
 /**
- * One stage's tab: its entries, listed like 浏览, under a header that starts the run (复习,
- * 考核) or just counts them (掌握). While a run is on, the card takes the tab.
+ * One stage's tab: its entries under a header that starts the run (复习, 考核) or just counts
+ * them (掌握). While a run is on, it takes the whole screen — the app's bars hide (MainActivity).
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun QuizScreen(
     stage: Stage,
@@ -112,7 +122,10 @@ fun QuizScreen(
             session, current, selfTests[current.anchor].orEmpty(), stageTimes[current.anchor] ?: 0L, excluded[current.anchor].orEmpty(),
             onStudied, onReveal, onGrade, onNext, onEnd, { onOpen(it, emptyList()) }, modifier,
         )
-        session != null && session.stage == stage -> Column(modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        session != null && session.stage == stage -> Column(
+            modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility).padding(24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
             Text("完成 🎉", style = MaterialTheme.typography.headlineSmall)
             Text(
                 "这一轮做了 ${session.done} 题" +
@@ -122,18 +135,27 @@ fun QuizScreen(
             )
             Button(onClick = onEnd) { Text("返回") }
         }
-        else -> StageList(stage, lib, stages, selfTests, review, tiles, onOpen, onStart, modifier, contentPadding)
+        else -> StageList(stage, lib, stages, stageTimes, selfTests, review, excluded, tiles, onOpen, onStart, modifier, contentPadding)
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+/** One group of a stage's list: a heading and its entries, each with the line under its title. */
+private class Group(val title: String, val entries: List<Entry>, val sub: (Entry) -> String)
+
+/**
+ * A stage's tab (V2): one summary card — the big number, a few counts, the start button — then
+ * the entries grouped by why they're there, one line each, so the first screen shows six or
+ * seven of them. 掌握 keeps the plain cards (or tiles) under its counts.
+ */
 @Composable
 private fun StageList(
     stage: Stage,
     lib: LibraryState,
     stages: Map<String, String>,
+    stageTimes: Map<String, Long>,
     selfTests: Map<String, List<Attempt>>,
     review: ReviewData,
+    excluded: Map<String, Set<String>>,
     tiles: Boolean,
     onOpen: (String, List<String>) -> Unit,
     onStart: () -> Unit,
@@ -148,72 +170,227 @@ private fun StageList(
     val mine = remember(data, stages, stage) { stageEntries(stage, data.entries, stages) }
     val queue = remember(mine, selfTests, review, stage) { quizQueue(stage, mine, stages, selfTests, review) }
     val today = today()
-    // the card's pills, the same as 浏览's: "试 N · 对 M", the stage (so a 自测题's type pill
-    // isn't read as its stage), and for 复习 when it's next due
-    val foot = { e: Entry ->
-        val due = if (stage == Stage.Review) review.cards[e.anchor]?.due?.let { d ->
-            when { d <= today -> "今天到期"; d == today + 1 -> "明天到期"; else -> "${d - today} 天后" }
-        } else null
-        listOfNotNull(selfTests.stFoot(e), stageFoot(e, stage), due).joinToString(LABEL_SEP).ifEmpty { null }
-    }
-    val header: @Composable () -> Unit = {
-        Column(Modifier.padding(horizontal = 8.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            when (stage) {
-                Stage.Review -> {
-                    val plan = planToday(mine, review)
-                    // the ring: how much of 复习 is done for today (not due again yet)
-                    RunHead(
-                        big = queue.size, caption = if (queue.isEmpty()) "今天的都复习完了" else "今天要复习",
-                        fill = if (mine.isEmpty()) 0f else 1f - queue.size.toFloat() / mine.size,
-                        counts = listOf("今天到期" to plan.due.size, "还没排期" to plan.fresh.size),
-                        next = queue.take(3),
-                    )
-                    Button(onClick = onStart, enabled = queue.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(56.dp)) {
-                        Text(if (mine.isEmpty()) "还没有复习中的条目" else if (queue.isEmpty()) "今天的都复习完了" else "开始复习 ${queue.size} 条", fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    }
-                    Text(
-                        "先看一遍笔记,再翻面做例句。答对了下次隔得更久,答错了明天再来;例句都答对过,就会提示移到考核。",
-                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Stage.Test -> {
-                    val never = mine.count { selfTests[it.anchor].isNullOrEmpty() }
-                    val missed = mine.count { e -> selfTests[e.anchor]?.lastOrNull()?.let { it.text.isEmpty() || !it.ok } == true }
-                    val right = mine.count { e -> selfTests[e.anchor]?.lastOrNull()?.let { it.text.isNotEmpty() && it.ok } == true }
-                    // the ring: how many were answered right the last time they came up
-                    RunHead(
-                        big = mine.size, caption = "考核中 · 上次答对 $right",
-                        fill = if (mine.isEmpty()) 0f else right.toFloat() / mine.size,
-                        counts = listOf("没做过" to never, "上次没对" to missed),
-                        next = queue.take(3),
-                    )
-                    Button(onClick = onStart, enabled = queue.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(56.dp)) {
-                        Text(if (queue.isEmpty()) "还没有考核中的条目" else "开始考核 ${queue.size} 题", fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    }
-                    Text(
-                        "直接做题,答完才看笔记。没做过的和上次没做对的排在前面;例句都答对过,就会提示移到掌握。",
-                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                else -> {
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Stat("已掌握", mine.size, Modifier.weight(1f))
-                        Stat("共", data.entries.size, Modifier.weight(1f))
-                    }
-                    Text(
-                        "已掌握的条目不再进复习和考核。在条目里点进度条上的别的阶段,可以移回去。",
-                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-            HorizontalDivider(Modifier.padding(top = 4.dp))
-        }
-    }
     val padding = PaddingValues(
         start = 8.dp, end = 8.dp,
         top = contentPadding.calculateTopPadding(),
         bottom = contentPadding.calculateBottomPadding() + 24.dp,
     )
+    if (stage == Stage.Done) {
+        DoneList(mine, data.entries.size, selfTests, tiles, onOpen, padding, modifier)
+        return
+    }
+    // the ones whose every question has been answered right since they came in: offered on
+    val ready = remember(mine, selfTests, stageTimes, excluded, stage) {
+        mine.filter { advanceReady(it, stage, selfTests[it.anchor].orEmpty(), stageTimes[it.anchor] ?: 0L, excluded[it.anchor].orEmpty()) }
+    }
+    val counts = { e: Entry -> selfTests[e.anchor]?.takeIf { it.isNotEmpty() }?.let(::countsShort) }
+    val gloss = { e: Entry -> if (e.level == "SELFTEST") "先说出英文,再点开对答案" else cardGloss(e.gloss) }
+    val groups = remember(mine, selfTests, review, stage) {
+        if (stage == Stage.Review) {
+            val plan = planToday(mine, review)
+            val later = (mine - plan.due.toSet() - plan.fresh.toSet()).sortedBy { review.cards[it.anchor]?.due ?: Long.MAX_VALUE }
+            val dueLine = { e: Entry ->
+                review.cards[e.anchor]?.due?.let { d -> when { d <= today -> "今天到期"; d == today + 1 -> "明天到期"; else -> "${d - today} 天后到期" } }
+            }
+            listOf(
+                Group("今天到期", plan.due) { e -> listOfNotNull(counts(e), dueLine(e)).joinToString(" · ").ifEmpty { gloss(e) } },
+                Group("还没排期", plan.fresh) { e -> counts(e) ?: gloss(e) },
+                Group("以后到期", later) { e -> listOfNotNull(counts(e), dueLine(e)).joinToString(" · ").ifEmpty { gloss(e) } },
+            )
+        } else {
+            val by = queue.groupBy { testGroup(selfTests[it.anchor]?.lastOrNull()) }
+            listOf(
+                Group("没做过", by[0].orEmpty()) { e -> gloss(e) },
+                Group("上次没对", by[1].orEmpty()) { e -> counts(e) ?: gloss(e) },
+                Group("上次答对", by[2].orEmpty()) { e -> counts(e) ?: gloss(e) },
+            )
+        }.filter { it.entries.isNotEmpty() }
+    }
+    val order = groups.flatMap { it.entries }.map { it.anchor }
+    LazyColumn(contentPadding = padding, modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        item {
+            if (stage == Stage.Review) {
+                val plan = planToday(mine, review)
+                Summary(
+                    big = "${queue.size}",
+                    caption = if (mine.isEmpty()) "条 · 还没有复习中的条目" else if (queue.isEmpty()) "条 · 今天的都复习完了" else "条 · 今天要复习",
+                    chips = listOf("今天到期 ${plan.due.size}", "还没排期 ${plan.fresh.size}"),
+                    bar = null,
+                    button = "开始复习 ${queue.size} 条",
+                    enabled = queue.isNotEmpty(),
+                    note = "先看一遍笔记,再翻面做例句。答对了下次隔得更久,答错了明天再来。",
+                    onStart = onStart,
+                )
+            } else {
+                val n = groups.associate { it.title to it.entries.size }
+                Summary(
+                    big = "${mine.size}",
+                    caption = "条考核中",
+                    chips = emptyList(),
+                    bar = listOf(n["没做过"] ?: 0, n["上次没对"] ?: 0, n["上次答对"] ?: 0),
+                    button = "开始考核 ${queue.size} 题",
+                    enabled = queue.isNotEmpty(),
+                    note = null,
+                    onStart = onStart,
+                )
+            }
+        }
+        if (ready.isNotEmpty()) item {
+            ReadyBanner(ready.size, stage) { onOpen(ready.first().anchor, ready.map { it.anchor }) }
+        }
+        groups.forEach { g ->
+            item(key = "h:" + g.title) {
+                Text(
+                    "${g.title} · ${g.entries.size}",
+                    style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(start = 8.dp, top = 10.dp),
+                )
+            }
+            items(g.entries, key = { g.title + ":" + it.anchor }) { e ->
+                StageRow(e, g.sub(e)) { onOpen(e.anchor, order) }
+            }
+        }
+    }
+}
+
+/**
+ * The tab's summary card: inverted in light mode, a raised grey in dark. [bar] (考核): the three
+ * groups as one segmented bar with a legend — 没做过 / 上次没对 / 上次答对.
+ */
+@Composable
+private fun Summary(
+    big: String,
+    caption: String,
+    chips: List<String>,
+    bar: List<Int>?,
+    button: String,
+    enabled: Boolean,
+    note: String?,
+    onStart: () -> Unit,
+) {
+    val dark = isSystemInDarkTheme()
+    val bg = if (dark) MaterialTheme.colorScheme.surfaceContainerHigh else MaterialTheme.colorScheme.inverseSurface
+    val fg = if (dark) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.inverseOnSurface
+    val missed = Color(0xFFF2A65A)
+    Column(
+        Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(bg).padding(start = 18.dp, end = 18.dp, top = 18.dp, bottom = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(big, color = fg, fontSize = 52.sp, lineHeight = 52.sp, fontWeight = FontWeight.Bold)
+            Text(caption, color = fg, fontSize = 16.sp, modifier = Modifier.padding(bottom = 6.dp))
+        }
+        if (chips.isNotEmpty()) Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            chips.forEach {
+                Text(it, color = fg, style = MaterialTheme.typography.labelLarge, modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(fg.copy(alpha = 0.12f)).padding(horizontal = 10.dp, vertical = 5.dp))
+            }
+        }
+        if (bar != null && bar.sum() > 0) {
+            val colors = listOf(fg.copy(alpha = 0.22f), missed, fg)
+            Row(Modifier.fillMaxWidth().height(10.dp), horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                bar.forEachIndexed { i, n -> if (n > 0) Box(Modifier.weight(n.toFloat()).height(10.dp).background(colors[i], RoundedCornerShape(5.dp))) }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                listOf("没做过", "上次没对", "上次答对").forEachIndexed { i, label ->
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Box(Modifier.size(8.dp).background(colors[i], CircleShape))
+                        Text("$label ${bar[i]}", color = fg, style = MaterialTheme.typography.labelLarge)
+                    }
+                }
+            }
+        }
+        Button(
+            onClick = onStart,
+            enabled = enabled,
+            modifier = Modifier.fillMaxWidth().height(52.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = fg, contentColor = bg),
+        ) {
+            Text(button, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.width(8.dp))
+            Icon(Icons.AutoMirrored.Filled.ArrowForward, null, Modifier.size(16.dp))
+        }
+        if (note != null) Text(note, color = fg.copy(alpha = 0.72f), style = MaterialTheme.typography.bodySmall)
+    }
+}
+
+/** "N 条的题都答对过了,可以移到掌握 ›": opens the first of them, 下一个 walks the rest. */
+@Composable
+private fun ReadyBanner(n: Int, stage: Stage, onClick: () -> Unit) {
+    val next = stage.next ?: return
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 14.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Box(Modifier.size(28.dp).background(MaterialTheme.colorScheme.onSurface, CircleShape), contentAlignment = Alignment.Center) {
+            Icon(Icons.Default.Check, null, Modifier.size(14.dp), tint = MaterialTheme.colorScheme.background)
+        }
+        Text("$n 条的题都答对过了,可以移到${next.tab}", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null, Modifier.size(18.dp))
+    }
+}
+
+/** One line of a stage's list: the title, the line under it, the level as a pill. */
+@Composable
+private fun StageRow(e: Entry, sub: String, onClick: () -> Unit) {
+    val ink = MaterialTheme.colorScheme.onSurface
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(levelColor(e.level))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Text(
+                e.title.removePrefix("自测:").removePrefix("自测:"),
+                fontSize = 17.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis,
+            )
+            if (sub.isNotEmpty()) Text(sub, fontSize = 13.sp, color = ink.copy(alpha = 0.76f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+        }
+        Text(
+            levelStyle(e.level).short,
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(ink.copy(alpha = 0.12f)).padding(horizontal = 8.dp, vertical = 3.dp),
+        )
+    }
+}
+
+/** 掌握: its counts, then the cards (or tiles), as before. */
+@Composable
+private fun DoneList(
+    mine: List<Entry>,
+    total: Int,
+    selfTests: Map<String, List<Attempt>>,
+    tiles: Boolean,
+    onOpen: (String, List<String>) -> Unit,
+    padding: PaddingValues,
+    modifier: Modifier,
+) {
+    val foot = { e: Entry -> listOfNotNull(selfTests.stFoot(e), stageFoot(e, Stage.Done)).joinToString(LABEL_SEP).ifEmpty { null } }
+    val header: @Composable () -> Unit = {
+        Column(Modifier.padding(horizontal = 8.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Stat("已掌握", mine.size, Modifier.weight(1f))
+                Stat("共", total, Modifier.weight(1f))
+            }
+            Text(
+                "已掌握的条目不再进复习和考核。在条目里点进度条上的别的阶段,可以移回去。",
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            HorizontalDivider(Modifier.padding(top = 4.dp))
+        }
+    }
     if (tiles) LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Adaptive(160.dp),
         contentPadding = padding,
@@ -233,71 +410,10 @@ private fun StageList(
 }
 
 /**
- * The head of 复习 / 考核 (UI refactor, direction B): a ring with the big number in it, two small
- * counts, and the next cards peeking out as a stack in their level colours.
- */
-@Composable
-private fun RunHead(big: Int, caption: String, fill: Float, counts: List<Pair<String, Int>>, next: List<Entry>) {
-    val ink = MaterialTheme.colorScheme.onSurface
-    val track = MaterialTheme.colorScheme.outline
-    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(18.dp)) {
-        Box(Modifier.padding(top = 8.dp).size(196.dp), contentAlignment = Alignment.Center) {
-            androidx.compose.foundation.Canvas(Modifier.fillMaxSize()) {
-                val stroke = androidx.compose.ui.graphics.drawscope.Stroke(width = 14.dp.toPx(), cap = androidx.compose.ui.graphics.StrokeCap.Round)
-                val inset = 7.dp.toPx()
-                val box = androidx.compose.ui.geometry.Size(size.width - inset * 2, size.height - inset * 2)
-                val at = androidx.compose.ui.geometry.Offset(inset, inset)
-                drawArc(track, 0f, 360f, false, at, box, style = stroke)
-                if (fill > 0f) drawArc(ink, -90f, 360f * fill.coerceIn(0f, 1f), false, at, box, style = stroke)
-            }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("$big", fontSize = 52.sp, fontWeight = FontWeight.Bold, lineHeight = 56.sp)
-                Text(caption, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            counts.forEach { (label, n) -> Stat(label, n, Modifier.weight(1f)) }
-        }
-        if (next.isNotEmpty()) Box(Modifier.fillMaxWidth().height(84.dp)) {
-            // back to front: the cards after the next one, narrower and higher, peek out on top
-            next.drop(1).asReversed().forEachIndexed { i, e ->
-                val k = next.size - 1 - i
-                Box(
-                    Modifier
-                        .padding(horizontal = (12 * k).dp)
-                        .padding(top = (10 * (2 - k)).dp.coerceAtLeast(0.dp))
-                        .fillMaxWidth()
-                        .height(64.dp)
-                        .background(levelColor(e.level), androidx.compose.foundation.shape.RoundedCornerShape(18.dp))
-                        .border(1.dp, MaterialTheme.colorScheme.surface, androidx.compose.foundation.shape.RoundedCornerShape(18.dp))
-                )
-            }
-            Row(
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .height(64.dp)
-                    .shadow(3.dp, androidx.compose.foundation.shape.RoundedCornerShape(18.dp))
-                    .background(levelColor(next[0].level), androidx.compose.foundation.shape.RoundedCornerShape(18.dp))
-                    .padding(horizontal = 18.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    "下一张 · " + next[0].title.removePrefix("自测:").removePrefix("自测:"),
-                    style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold,
-                    maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-                )
-            }
-        }
-    }
-}
-
-/**
- * One card of a run (UI refactor, direction B): a progress bar on top, then one card at a time.
- * 复习 shows the notes first on a card in the entry's level colour (翻面做题); the
- * question is a white card edged in that colour, the answer under it, the chips and 显示答案 at
- * the bottom; then the verdict, the notes, and 下一题 — with the move to the next stage offered
- * once this entry has earned it. Going from the notes to the question turns the card over.
+ * One card of a run (V2): ✕, the progress bar and "3 / 32" on top, and the answer sheet under it.
+ * 复习 shows the notes first, on a card in the entry's level colour (翻面做题), and turns it over
+ * to the sheet; 考核 goes straight to the question. After the reveal: the verdict, the notes the
+ * sentence comes from, and 下一题 — with the move to the next stage offered once it's earned.
  */
 @Composable
 private fun QuizCard(
@@ -328,104 +444,99 @@ private fun QuizCard(
     } else null
     val ready = session.revealed && advanceReady(entry, session.stage, attempts, since, excluded)
     val color = levelColor(entry.level)
-    val shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp)
     // the turn from the notes (front) to the question (back), 复习 only
     val angle by androidx.compose.animation.core.animateFloatAsState(
         if (studying) 0f else 180f, androidx.compose.animation.core.tween(550), label = "turn",
     )
-    val flipped = session.stage != Stage.Review || angle > 90f
+    val front = session.stage == Stage.Review && angle <= 90f
     val density = androidx.compose.ui.platform.LocalDensity.current.density
+    val stats = statsLine(attempts.at(ex), one = ex != null)
     Column(modifier.fillMaxSize()) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 4.dp, end = 16.dp)) {
-            androidx.compose.material3.IconButton(onClick = onEnd) {
-                androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Filled.Close, "结束这一轮")
-            }
-            LinearProgressIndicator(
-                progress = { (session.index + if (session.revealed) 1 else 0).toFloat() / session.queue.size },
-                modifier = Modifier.weight(1f).height(8.dp),
-                trackColor = MaterialTheme.colorScheme.outline,
-                strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
-                gapSize = 0.dp,
-                drawStopIndicator = {},
-            )
-            Text("  ${session.index + 1} / ${session.queue.size}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        Column(
+        RunTopBar(
+            onEnd,
+            progress = (session.index + if (session.revealed) 1 else 0).toFloat() / session.queue.size,
+            label = "${session.index + 1} / ${session.queue.size}",
+        )
+        Box(
             Modifier
                 .weight(1f)
-                .padding(horizontal = 12.dp, vertical = 8.dp)
+                .fillMaxWidth()
+                .navigationBarsPadding()
                 .graphicsLayer {
                     if (session.stage == Stage.Review) {
                         rotationY = angle
                         cameraDistance = 16f * density
                     }
                 }
-                .then(
-                    if (!flipped) Modifier.shadow(6.dp, shape).background(color, shape)
-                    else Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh, shape).border(2.dp, color, shape)
-                )
-                .clip(shape)
         ) {
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .graphicsLayer { if (session.stage == Stage.Review && angle > 90f) rotationY = 180f }
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 22.dp, vertical = 22.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-            ) {
-                if (!flipped) {
-                    // 复习: read it again first, on the front
-                    Text("${levelStyle(entry.level).short} · 先看一遍", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
-                    Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = if (entry.title.length > 18) 28.sp else 40.sp, lineHeight = if (entry.title.length > 18) 34.sp else 46.sp)
-                    if (entry.ipa.isNotEmpty()) Text(entry.ipa, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
-                    EntryNotes(entry, onXref)
-                } else {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            (if (exam) "自测题" else entry.title) + " · 中译英",
-                            style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis, modifier = Modifier.weight(1f),
+            if (front) StudyCard(entry, color, onXref, onStudied)
+            else Box(Modifier.fillMaxSize().graphicsLayer { if (session.stage == Stage.Review) rotationY = 180f }) {
+                AnswerSheet(
+                    color,
+                    Modifier.fillMaxSize(),
+                    card = {
+                        SheetMetaRow(
+                            (if (exam) "自测题" else entry.title) + (ex?.let { " · 例句 ${it.k + 1} / ${it.of}" } ?: "") + " · 中译英",
+                            toggle = if (answer != null && !session.revealed) ({ AnswerModeToggle(chips, setChips) }) else null,
                         )
-                        if (answer != null && !session.revealed) AnswerModeToggle(chips, setChips)
-                    }
-                    when {
-                        exam -> Text(entry.title.removePrefix("自测:").removePrefix("自测:"), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                        ex != null -> Text(ex.zh, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                        else -> ReviewFront(entry, kindOf(entry, inTest = true))
-                    }
-                    if (!session.revealed) {
-                        if (bank != null) WordBankAnswer(bank) else DraftField(draft, { draft = it })
-                        SelfTestStats(attempts.at(ex), one = ex != null)
-                    } else {
-                        if (exam) SelfTestResult(draft, entry.selfTestAnswer)
-                        else MovedResult(ex, draft, session.graded) { onGrade(draft, it) }
-                        if (ready) AdvanceBanner(session.stage) { onNext(true) }
-                        SelfTestStats(attempts.at(ex), one = ex != null)
-                        SelfTestHistory(attempts.at(ex), one = ex != null)
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
-                        Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                        EntryNotes(entry, onXref)
-                    }
-                }
+                        if (!session.revealed) {
+                            when {
+                                exam -> Text(entry.title.removePrefix("自测:").removePrefix("自测:"), fontSize = 24.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
+                                ex != null -> Text(ex.zh, fontSize = 24.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
+                                else -> ReviewFront(entry, kindOf(entry, inTest = true))
+                            }
+                            Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub)
+                            if (bank != null) ChipsAnswerBox(bank) else TypingAnswerBox(draft) { draft = it }
+                        } else {
+                            val q = if (exam) entry.title.removePrefix("自测:").removePrefix("自测:") else ex?.zh
+                            if (q != null) Text(q, style = MaterialTheme.typography.bodyLarge, color = sheetColors().sub)
+                            when {
+                                exam -> RevealVerdict(draft, entry.selfTestAnswer, stats)
+                                ex != null -> RevealVerdict(draft, ex.en, stats)
+                                else -> MovedResult(draft, session.graded) { onGrade(draft, it) }
+                            }
+                            if (ready) AdvanceBanner(session.stage) { onNext(true) }
+                            NotesForQuestion(entry, ex, onXref, onAll = { onXref(entry.anchor) })
+                            SelfTestHistory(attempts.at(ex), one = ex != null)
+                        }
+                    },
+                    panel = {
+                        if (!session.revealed) {
+                            if (bank != null) WordKeys(bank)
+                            SheetButton("显示答案") { onReveal(draft) }
+                        } else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                            if (ready) SheetButton("移到${session.stage.next?.tab}", Modifier.weight(1f), filled = false) { onNext(true) }
+                            SheetButton(if (session.index + 1 < session.queue.size) "下一题 ›" else "完成", Modifier.weight(1f)) { onNext(false) }
+                        }
+                    },
+                )
             }
         }
-        Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            when {
-                studying -> Button(onClick = onStudied, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("翻面做题", fontSize = 17.sp, fontWeight = FontWeight.Bold) }
-                !session.revealed -> {
-                    if (bank != null) WordBankChips(bank)
-                    Button(onClick = { onReveal(draft) }, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("显示答案", fontSize = 17.sp, fontWeight = FontWeight.Bold) }
-                }
-                else -> Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    if (ready) OutlinedButton(onClick = { onNext(true) }, modifier = Modifier.weight(1f).height(56.dp)) {
-                        Text("移到${session.stage.next?.tab}", fontSize = 16.sp)
-                    }
-                    Button(onClick = { onNext(false) }, modifier = Modifier.weight(1f).height(56.dp)) {
-                        Text(if (session.index + 1 < session.queue.size) "下一题" else "完成", fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    }
-                }
-            }
+    }
+}
+
+/** 复习's front: the notes on a card in the level colour, with 翻面做题 at its foot. */
+@Composable
+private fun StudyCard(entry: Entry, color: Color, onXref: (String) -> Unit, onStudied: () -> Unit) {
+    val sub = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f)
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 12.dp)
+            .clip(RoundedCornerShape(24.dp))
+            .background(color),
+    ) {
+        Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text("${levelStyle(entry.level).short} · 先看一遍", style = MaterialTheme.typography.labelLarge, color = sub)
+            Text(
+                entry.title, fontFamily = AppFont, fontWeight = FontWeight.Bold,
+                fontSize = if (entry.title.length > 18) 24.sp else 32.sp, lineHeight = if (entry.title.length > 18) 30.sp else 38.sp,
+            )
+            if (entry.ipa.isNotEmpty()) Text(entry.ipa, style = MaterialTheme.typography.bodyMedium, color = sub)
+        }
+        NotesPage(entry, onXref, quiz = null, modifier = Modifier.weight(1f), inCard = true)
+        Box(Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
+            SheetButton("翻面做题", onClick = onStudied)
         }
     }
 }

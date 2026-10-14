@@ -20,7 +20,15 @@ import dev.chrisbanes.haze.hazeEffect
 
 // "Liquid glass", after iOS 26: controls float over the content as frosted glass with a light
 // rim; the content itself stays opaque. Haze blurs whatever is drawn under hazeSource(LocalHaze)
-// on Android 12+; older versions get the fallback tint, a near-solid wash.
+// on Android 12L+ (GLASS_BLUR); older versions get the fallback tint, a near-solid wash.
+
+/**
+ * Real blur only from Android 12L (SDK 32). Below that Haze re-draws the blur before every frame
+ * to keep it in sync, so Home drew 60 frames a second while sitting still — about 65% of a core
+ * on an Android 12 phone, all night with the screen on (found 2026-10-15). The tint fallback
+ * costs nothing.
+ */
+val GLASS_BLUR: Boolean = android.os.Build.VERSION.SDK_INT >= 32
 
 /** The screen's content, the thing the glass blurs. Null outside Home (no blur, tint only). */
 val LocalHaze = staticCompositionLocalOf<HazeState?> { null }
