@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import io.github.chinalwb.vocab.ui.FilterIcon
 import io.github.chinalwb.vocab.ui.SearchScreen
 import io.github.chinalwb.vocab.ui.ReadScreen
+import io.github.chinalwb.vocab.ui.ReadDetail
 import io.github.chinalwb.vocab.ui.MenuBookIcon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -197,7 +198,11 @@ private fun VocabNav() {
                     )
                 }
                 composable("mistakes") { SubPage("错题本", onBack = { nav.popBackStack() }) { pad -> MistakesScreen(lib, onOpen = openAlone, modifier = Modifier.padding(pad)) } }
-                composable("read") { SubPage("阅读 · C1 对比", onBack = { nav.popBackStack() }) { pad -> ReadScreen(lib, onXref = { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) } }
+                composable("read") { SubPage("阅读 · C1 对比", onBack = { nav.popBackStack() }) { pad -> ReadScreen(lib, onOpen = { nav.navigate("read/$it") }, modifier = Modifier.padding(pad)) } }
+                composable("read/{anchor}") { back ->
+                    val anchor = back.arguments?.getString("anchor").orEmpty()
+                    SubPage("阅读", onBack = { nav.popBackStack() }) { pad -> ReadDetail(lib, anchor, onXref = { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) }
+                }
                 composable("practice") { SubPage("练习", onBack = { nav.popBackStack() }) { pad -> PracticeScreen(lib, openAlone, modifier = Modifier.padding(pad)) } }
                 composable("sync") {
                     val sync by vm.syncStatus.collectAsStateWithLifecycle()

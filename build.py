@@ -111,7 +111,7 @@ def inline(t):
 
 def strip_meta(raw):
     # the 音标/词性/CEFR/日期/掌握 bullets are rendered as chips, not body text
-    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
+    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握|关键词)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
 
 
 def parse_blocks(raw):
@@ -299,8 +299,12 @@ def build_reads(src):
     """
     out = []
     for e in split_entries(src):
+        blocks = parse_blocks(e["raw"])
+        # 我的原句 goes last and folded on the detail page, so it ships apart from the rest
+        cut = next((i for i, b in enumerate(blocks) if b["t"] == "p" and section_label(b["text"]) == "我的原句"), len(blocks))
         item = {"anchor": e["anchor"], "title": e["title"], "date": meta_field(e["raw"], "日期"),
-                "blocks": parse_blocks(e["raw"])}
+                "keywords": [k.strip() for k in meta_field(e["raw"], "关键词").split("·") if k.strip()],
+                "blocks": blocks[:cut], "original": [l for b in blocks[cut + 1:] if b["t"] == "quote" for l in b["lines"]]}
         item["hash"] = digest(item)
         out.append(item)
     seen = set()

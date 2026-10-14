@@ -78,13 +78,18 @@ data class Entry(
     val sections: List<Section> = splitSections(blocks)
 }
 
-/** One 阅读 item: [title] is the meaning in Chinese; [blocks] hold 常用说法 / C1 说法 / 差别. */
+/**
+ * One 阅读 item: [title] is the meaning in Chinese; [keywords] tell items apart in the list;
+ * [blocks] hold 常用说法 / C1 说法 / 差别; [original] is 我的原句, folded at the bottom.
+ */
 @Serializable
 data class Read(
     val anchor: String,
     val title: String,
     val date: String = "",
+    val keywords: List<String> = emptyList(),
     val blocks: List<Block> = emptyList(),
+    val original: List<String> = emptyList(),
     val hash: String = "",
 )
 
