@@ -21,8 +21,11 @@ val MISTAKE_TAGS = listOf("冠词", "介词", "搭配", "动词", "结构", "词
 // The tag alternative goes first so a tag is never swallowed into a later `[text](#anchor)`.
 private val TOKEN = Regex(
     """\[(""" + MISTAKE_TAGS.joinToString("|") + """)](?!\()|""" +
-        """\*\*(.+?)\*\*|~~(.+?)~~|`(.+?)`|\[(.+?)]\(#([^)]+)\)|(?<![\w*])\*([^*\n]+)\*(?![\w*])"""
+        """\*\*(.+?)\*\*|~~(.+?)~~|`(.+?)`|\[(.+?)]\(#([^)]+)\)|(?<![\w*])\*([^*\n]+)\*(?![\w*])|==(.+?)=="""
 )
+
+/** `==text==`: a mistake in 我的原句 (阅读), on a red wash that reads in both themes. */
+private val MISTAKE_WASH = Color(0x40E5484D)
 
 /** Renders inline markdown; `[text](#anchor)` becomes a tappable cross-reference. */
 fun inline(text: String, linkColor: Color, onXref: (String) -> Unit): AnnotatedString =
@@ -48,6 +51,7 @@ private fun AnnotatedString.Builder.append(text: String, linkColor: Color, onXre
                 }
             }
             g[7] != null -> withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append(g[7]!!.value, linkColor, onXref) }
+            g[8] != null -> withStyle(SpanStyle(background = MISTAKE_WASH)) { append(g[8]!!.value, linkColor, onXref) }
         }
         last = m.range.last + 1
     }
@@ -57,5 +61,5 @@ private fun AnnotatedString.Builder.append(text: String, linkColor: Color, onXre
 /** Plain text with the markdown markers dropped, for one-line previews. */
 fun plain(text: String): String = TOKEN.replace(text) { m ->
     m.groups[1]?.value?.let { "[$it]" } ?: m.groups[2]?.value ?: m.groups[3]?.value ?: m.groups[4]?.value
-        ?: m.groups[5]?.value ?: m.groups[7]?.value ?: ""
+        ?: m.groups[5]?.value ?: m.groups[7]?.value ?: m.groups[8]?.value ?: ""
 }

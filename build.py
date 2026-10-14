@@ -100,6 +100,7 @@ def inline(t):
     t = html.escape(t)
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
     t = re.sub(r"~~(.+?)~~", r"<del>\1</del>", t)
+    t = re.sub(r"==(.+?)==", r'<mark class="mistake">\1</mark>', t)   # 阅读: a mistake in 我的原句
     t = re.sub(r"`(.+?)`", r"<code>\1</code>", t)
     # 错题本 tags first, so a tag is never swallowed into a later [text](#anchor)
     t = re.sub(r"\[(" + "|".join(TYPE_KEYS) + r")\](?!\()", r'<span class="mtag">\1</span>', t)
@@ -304,7 +305,9 @@ def build_reads(src):
         cut = next((i for i, b in enumerate(blocks) if b["t"] == "p" and section_label(b["text"]) == "我的原句"), len(blocks))
         item = {"anchor": e["anchor"], "title": e["title"], "date": meta_field(e["raw"], "日期"),
                 "keywords": [k.strip() for k in meta_field(e["raw"], "关键词").split("·") if k.strip()],
-                "blocks": blocks[:cut], "original": [l for b in blocks[cut + 1:] if b["t"] == "quote" for l in b["lines"]]}
+                "blocks": blocks[:cut], "original": [l for b in blocks[cut + 1:] if b["t"] == "quote" for l in b["lines"]],
+                # one bullet per ==highlighted== mistake: what it should be and why
+                "originalNotes": [it for b in blocks[cut + 1:] if b["t"] == "ul" for it in b["items"]]}
         item["hash"] = digest(item)
         out.append(item)
     seen = set()

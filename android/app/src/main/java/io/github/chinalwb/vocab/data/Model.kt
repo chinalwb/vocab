@@ -80,7 +80,7 @@ data class Entry(
 
 /**
  * One 阅读 item: [title] is the meaning in Chinese; [keywords] tell items apart in the list;
- * [blocks] hold 常用说法 / C1 说法 / 差别; [original] is 我的原句, folded at the bottom.
+ * [blocks] hold 常用说法 / C1 说法 / 差别; [original] is 我的原句, its mistakes marked `==like this==`.
  */
 @Serializable
 data class Read(
@@ -90,6 +90,8 @@ data class Read(
     val keywords: List<String> = emptyList(),
     val blocks: List<Block> = emptyList(),
     val original: List<String> = emptyList(),
+    /** Under 我的原句: one bullet per `==highlighted==` mistake in it. */
+    val originalNotes: List<String> = emptyList(),
     val hash: String = "",
 )
 

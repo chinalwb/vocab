@@ -9,7 +9,7 @@
 - `**常用说法:**` 后面一个引用块(低一级的说法)
 - `**C1 说法:**` 后面一个引用块,高级的地方用 **加粗**
 - `**差别:**` 后面一个列表,每条讲一个用法
-- `**我的原句:**` 后面一个引用块(可选,详情页折叠在最下面)
+- `**我的原句:**` 后面一个引用块(可选),错的地方用 `==…==` 标出(App 里红底高亮);下面一个列表,每处错误一条:`- ❌/⚠️ [类型] ==原文== → **改法** —— 原因`(类型同错题本那 10 个;这里的错误不进错题本)
 
 <a id="r-gemini-grammar"></a>
 ## Gemini 也会犯语法错误吗?我原本以为它的英文几乎完美。
@@ -34,7 +34,12 @@
 
 **我的原句:**
 
-> However, does Gemini also make grammar mistakes? I deeply believe Gemini is pretty good at it and doesn't make any mistakes, at least no obvious grammar mistakes.
+> ==However,== does Gemini also make grammar mistakes? ==I deeply believe== Gemini is pretty good at ==it== and ==doesn't make any mistakes, at least no obvious grammar mistakes==.
+
+- ⚠️ [语气] ==However,== → **But** —— *however* 用在陈述句里转折,问句开头用 *But* 更自然。
+- ⚠️ [搭配] ==I deeply believe== → **I'm pretty sure** —— *deeply believe* 多用于信念、价值观。
+- ⚠️ [逻辑] ==it== → **English** —— *it* 指英语还是语法不清楚,直接写名词。
+- ❌ [逻辑] ==doesn't make any mistakes, at least no obvious …== → **rarely makes mistakes — at least not obvious ones** —— 先说"完全不错",又用 *at least* 收回一半,前后矛盾。
 
 ---
 
@@ -61,7 +66,13 @@
 
 **我的原句:**
 
-> If we compare these two sentences, the first one runs natural for me. The latter one is ok too, but it just feels advanced and is some level I am chasing.
+> If we compare ==these two sentences==, the first one ==runs natural for me==. ==The latter one== is ==ok== too, but it just feels advanced and ==is some level I am chasing==.
+
+- ⚠️ [搭配] ==these two sentences== → **these two versions** —— 每一版都不止一句。
+- ❌ [搭配] ==runs natural for me== → **comes more naturally to me** —— *run* + 形容词只用于 *run dry / run late* 等少数搭配;比较两者要用比较级。
+- ⚠️ [结构] ==The latter one== → **The latter** / **The second one** —— *latter* 本身就是代词,不再加 *one*。
+- ⚠️ [词形] ==ok== → **OK** / **okay**。
+- ❌ [搭配] ==is some level I am chasing== → **is the level I'm aiming for** —— *some level* 显得随意;追求某个水平用 *aim for / work toward*。
 
 ---
 
@@ -89,7 +100,13 @@
 
 **我的原句:**
 
-> Let's introduce a new channel for the app: read-list. This is a read-only channel. Sentences here are for identifying the differences between expressions in C1 and lower levels.
+> Let's introduce a new ==channel== for the app: ==read-list==. ==This is a read-only channel.== ==Sentences here are for identifying== the differences between expressions ==in C1 and lower levels==.
+
+- ⚠️ [搭配] ==channel== → **section** —— App 里的板块叫 *section / page*;*channel* 多指频道。
+- ⚠️ [词形] ==read-list== → **reading list** —— 固定说法,不加连字符。
+- ⚠️ [直译] ==This is a read-only channel.== → 并进前一句:**a new read-only section** —— 单独成句显得啰嗦。
+- ⚠️ [结构] ==Sentences here are for identifying== → **so I can see** —— 做比较的是读的人,不是句子。
+- ⚠️ [介词] ==in C1 and lower levels== → **at C1 / at lower levels** —— 说某个级别用 *at*。
 
 ---
 
@@ -119,4 +136,13 @@
 
 **我的原句:**
 
-> What's more, read-list is not a single page, instead, it is a page that lists sentences. Each time a new item is added, there should be a "keyword" or something alike to identify it from others. This way, I can browse the read-list page and see whether I need to tap on it to see the details page. And in the details page, it should show the Chinese at top, lower-level translation below it. Subsequently, the C1 translation is shown too, with my original sentence collpased at the bottom. Is this clear?
+> What's more, read-list is ==not a single page, instead, it is== a page that lists sentences. Each time a new item is added, there should be a "keyword" or ==something alike== to ==identify it from others==. This way, I can browse the read-list page and see whether I need to tap on it to see the details page. And ==in the details page==, it should show the Chinese ==at top==, ==lower-level translation== below it. ==Subsequently==, the C1 translation is shown too, with my original sentence ==collpased== at the bottom. Is this clear?
+
+- ❌ [标点] ==not a single page, instead, it is== → **not a single page; instead, it's** —— 两个完整句子只用逗号连接(逗号粘连)。
+- ❌ [搭配] ==something alike== → **something similar** / **something like that** —— *alike* 不能放在名词后作定语。
+- ⚠️ [介词] ==identify it from others== → **tell it apart from the others** —— *identify* 不搭配 *from*。
+- ⚠️ [介词] ==in the details page== → **on the details page** —— 页面上用 *on*。
+- ⚠️ [冠词] ==at top== → **at the top**。
+- ⚠️ [冠词] ==lower-level translation== → **the lower-level version** —— 可数名词要加冠词。
+- ⚠️ [语气] ==Subsequently== → **Then** —— 太正式,描述页面顺序用 *Then* 就够了。
+- ❌ [词形] ==collpased== → **collapsed** —— 拼写。

@@ -114,6 +114,8 @@ fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modi
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     val sections = remember(r) { splitSections(r.blocks) }
     var showOriginal by rememberSaveable(anchor) { mutableStateOf(false) }
+    // 我的原句 with its mistakes on a red wash, then what each should have been
+    val mine = remember(r) { listOf(Block.Quote(r.original)) + listOfNotNull(r.originalNotes.takeIf { it.isNotEmpty() }?.let { Block.Bullets(it) }) }
     Column(modifier.fillMaxSize()) {
         Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(r.title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
@@ -124,7 +126,7 @@ fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modi
             modifier = Modifier.weight(1f),
             title = "对比",
             // 我的原句: its own tab in 卡片 mode (用户 2026-10-14), folded at the end of the long page
-            lastCard = if (r.original.isEmpty()) null else Section("我的原句", listOf(Block.Quote(r.original))),
+            lastCard = if (r.original.isEmpty()) null else Section("我的原句", mine),
             footer = if (r.original.isEmpty()) null else { {
                 Column(Modifier.padding(top = 8.dp)) {
                     HorizontalDivider()
@@ -135,7 +137,7 @@ fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modi
                         Text("我的原句", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                         Icon(if (showOriginal) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, if (showOriginal) "收起" else "展开", tint = muted)
                     }
-                    AnimatedVisibility(showOriginal) { Quote(r.original, MaterialTheme.colorScheme.primary, onXref) }
+                    AnimatedVisibility(showOriginal) { NoteBlocks(r.anchor, mine, onXref) }
                 }
             } },
         )
