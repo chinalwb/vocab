@@ -90,3 +90,33 @@
 **我的原句:**
 
 > Let's introduce a new channel for the app: read-list. This is a read-only channel. Sentences here are for identifying the differences between expressions in C1 and lower levels.
+
+---
+
+<a id="r-list-not-page"></a>
+## 另外,阅读清单应该是一个列表,而不是单独一页。每条要有个关键词,让我一眼分清、决定要不要点开。详情页从上到下是中文、普通说法、C1 说法,我的原句折叠在最下面。这样说清楚吗?
+
+- 日期:2026-10-14
+- 关键词:at a glance · tucked away
+
+**常用说法:**
+
+> Also, the reading list isn't a single page — it's a list of sentences. Each new item should have a keyword or something similar to tell it apart from the others, so I can scan the list and decide whether to open an item. On the details page, the Chinese should be at the top, with the lower-level version below it, then the C1 version. My original sentence should be collapsed at the bottom. Is that clear?
+
+**C1 说法:**
+
+> **One more thing:** the reading list should be **a list, not a single page**. Each entry needs a keyword **so I can tell them apart at a glance** and decide which ones are **worth opening**. **The detail view should run top to bottom**: the Chinese, the everyday version, then the C1 version, **with my original sentence tucked away** at the bottom. **Does that make sense?**
+
+**差别:**
+
+- **One more thing:** —— 口语里追加要求的自然开头;对应 *Also,*。
+- **a list, not a single page** —— "是 A 不是 B"直接并列,比 *isn't … — it's …* 更短。
+- **tell them apart at a glance** —— *tell … apart* = 区分开;*at a glance* = 一眼就能;对应 *tell it apart from the others* + *scan the list*。
+- **worth opening** —— *worth + doing*,"值得点开";对应 *decide whether to open an item*。
+- **run top to bottom** —— 描述页面从上到下的排布;后面冒号直接列出顺序,不用 *at the top … below it … then …* 一个个交代。
+- **tucked away** —— "收在一边、不占地方",对应 *collapsed*,更生动。
+- **Does that make sense?** —— 确认对方理解的常用问法,比 *Is that clear?* 更客气。
+
+**我的原句:**
+
+> What's more, read-list is not a single page, instead, it is a page that lists sentences. Each time a new item is added, there should be a "keyword" or something alike to identify it from others. This way, I can browse the read-list page and see whether I need to tap on it to see the details page. And in the details page, it should show the Chinese at top, lower-level translation below it. Subsequently, the C1 translation is shown too, with my original sentence collpased at the bottom. Is this clear?
