@@ -52,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.launch
+import androidx.compose.ui.layout.onGloballyPositioned
 
 @Composable
 fun Chip(text: String, color: androidx.compose.ui.graphics.Color) {
@@ -337,3 +338,83 @@ fun Quote(lines: List<String>, link: androidx.compose.ui.graphics.Color, onXref:
         }
     }
 }
+
+/**
+ * The entry page's notes (UI refactor, direction A, 用户 2026-10-14): one page that scrolls, every
+ * section under its own small heading, and a row of section chips on top — a tap scrolls to that
+ * section, and the chip of the section in view is the filled one. Replaces the carousel there.
+ */
+@Composable
+fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifier: Modifier = Modifier) {
+    val sections = entry.sections
+    val scroll = rememberScrollState()
+    val scope = rememberCoroutineScope()
+    val tops = remember(entry.anchor) { androidx.compose.runtime.mutableStateMapOf<Int, Int>() }
+    val density = androidx.compose.ui.platform.LocalDensity.current
+    val slack = with(density) { 24.dp.roundToPx() }
+    val current by androidx.compose.runtime.remember(entry.anchor) {
+        androidx.compose.runtime.derivedStateOf {
+            if (scroll.value >= scroll.maxValue && scroll.maxValue > 0) sections.lastIndex
+            else tops.entries.filter { it.value <= scroll.value + slack }.maxByOrNull { it.value }?.key ?: 0
+        }
+    }
+    val chips = rememberLazyListState()
+    LaunchedEffect(current) { if (sections.size > 1) chips.animateScrollToItem((current - 1).coerceAtLeast(0)) }
+    val ink = MaterialTheme.colorScheme.onSurface
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    Column(modifier) {
+        if (sections.size > 1) {
+            LazyRow(
+                state = chips,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+            ) {
+                itemsIndexed(sections) { i, s ->
+                    val on = i == current
+                    Text(
+                        s.label,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = if (on) MaterialTheme.colorScheme.surface else ink,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(50))
+                            .then(if (on) Modifier.background(ink) else Modifier.border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50)))
+                            .clickable { scope.launch { scroll.animateScrollTo(tops[i] ?: 0) } }
+                            .padding(horizontal = 14.dp, vertical = 8.dp),
+                    )
+                }
+            }
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        }
+        Column(
+            Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+        ) {
+            if (sections.isEmpty()) Blocks(entry.anchor, entry.blocks, onXref, quiz)
+            sections.forEachIndexed { i, s ->
+                val blocks = s.blocks.let { b ->
+                    if ((b.firstOrNull() as? Block.Para)?.text?.let(LABEL_ONLY::matches) == true) b.drop(1) else b
+                }
+                Column(
+                    Modifier.onGloballyPositionedTop { tops[i] = it },
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    // the definition needs no heading; the other sections get a small one
+                    if (sections.size > 1 && i > 0) Text(
+                        s.label,
+                        style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp),
+                        fontWeight = FontWeight.Bold,
+                        color = muted,
+                    )
+                    Blocks(entry.anchor, blocks, onXref, quiz)
+                }
+            }
+        }
+    }
+}
+
+/** Reports the composable's top within its scrolling parent's content (px), for scroll-to-section. */
+private fun Modifier.onGloballyPositionedTop(onTop: (Int) -> Unit): Modifier =
+    this.then(Modifier.onGloballyPositioned { c ->
+        val parent = c.parentLayoutCoordinates ?: return@onGloballyPositioned
+        onTop(parent.localPositionOf(c, androidx.compose.ui.geometry.Offset.Zero).y.toInt())
+    })
