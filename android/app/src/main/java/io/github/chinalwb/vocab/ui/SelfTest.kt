@@ -332,18 +332,26 @@ fun SelfTestHistory(attempts: List<Attempt>, one: Boolean = false) {
  * toggle away, remembered.
  */
 
+private val LEAD_PUNCT = Regex("^[^\\p{L}\\p{N}]+")
 private val EDGE_PUNCT = Regex("^[^\\p{L}\\p{N}]+|[^\\p{L}\\p{N}]+$")
 
-/** A sentence as chips: punctuation off the ends of each word, pure punctuation dropped. */
+/**
+ * A sentence as chips: a word keeps the punctuation after it ("view." "However,", 用户 2026-10-14),
+ * loses any before it (opening quotes, brackets); pure punctuation is dropped.
+ */
 fun chipWords(sentence: String): List<String> =
-    sentence.split(Regex("\\s+")).map { it.replace(EDGE_PUNCT, "") }.filter { it.isNotEmpty() }
+    sentence.split(Regex("\\s+")).map { it.replace(LEAD_PUNCT, "") }.filter { it.isNotEmpty() }
+
+/** A chip without its punctuation: what strays and duplicates are compared by. */
+fun bareWord(w: String): String = w.replace(EDGE_PUNCT, "").lowercase()
 
 private val STRAY_POOL = listOf("the", "a", "an", "to", "of", "in", "on", "at", "for", "with", "is", "are", "was", "has", "that", "it", "and", "but")
 
 /** A few words that aren't in [answer]: from [others] (the entry's other sentences) first, then stock function words. */
 fun strayWords(answer: String, others: List<String>, seed: Int, n: Int = 6): List<String> {
-    val have = chipWords(answer).map { it.lowercase() }.toSet()
-    val own = others.flatMap { chipWords(it) }.filter { it.lowercase() !in have }.distinctBy { it.lowercase() }.shuffled(Random(seed))
+    val have = chipWords(answer).map(::bareWord).toSet()
+    // strays go in bare, so a "." can't mark them as a sentence end
+    val own = others.flatMap { chipWords(it) }.map { it.replace(EDGE_PUNCT, "") }.filter { bareWord(it) !in have }.distinctBy(::bareWord).shuffled(Random(seed))
     val stock = STRAY_POOL.filter { it !in have }.shuffled(Random(seed))
     return (own + stock).distinctBy { it.lowercase() }.take(n)
 }
@@ -402,9 +410,9 @@ class WordBankState(val words: List<String>, private val strays: List<String>, p
         if (k >= words.size) return emptyList()
         val rnd = Random(seed * 31 + k)
         val right = words[k]
-        val seen = mutableSetOf(right.lowercase())
-        val later = words.drop(k + 1).shuffled(rnd).filter { seen.add(it.lowercase()) }.take(2)
-        val fill = strays.shuffled(rnd).filter { seen.add(it.lowercase()) }.take(CHIPS - 1 - later.size)
+        val seen = mutableSetOf(bareWord(right))
+        val later = words.drop(k + 1).shuffled(rnd).filter { seen.add(bareWord(it)) }.take(2)
+        val fill = strays.shuffled(rnd).filter { seen.add(bareWord(it)) }.take(CHIPS - 1 - later.size)
         return (listOf(right) + later + fill).shuffled(rnd)
     }
 
