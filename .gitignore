@@ -6,6 +6,9 @@ meta.json
 _site/
 __pycache__/
 .DS_Store
+# vim swap files
+*.swp
+*.swo
 
 # Android build outputs
 android/.gradle/

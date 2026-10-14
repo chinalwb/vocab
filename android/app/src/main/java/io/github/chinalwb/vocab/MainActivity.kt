@@ -47,6 +47,7 @@ import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -204,6 +205,14 @@ private fun VocabNav() {
                     SubPage("阅读", onBack = { nav.popBackStack() }) { pad -> ReadDetail(lib, anchor, onXref = { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) }
                 }
                 composable("practice") { SubPage("练习", onBack = { nav.popBackStack() }) { pad -> PracticeScreen(lib, openAlone, modifier = Modifier.padding(pad)) } }
+                composable("today") {
+                    val day by vm.practiceToday.collectAsStateWithLifecycle()
+                    // past midnight since the last answer: show the new (empty) day
+                    LaunchedEffect(Unit) { vm.refreshToday() }
+                    SubPage("今天的练习", onBack = { nav.popBackStack() }) { pad ->
+                        io.github.chinalwb.vocab.ui.TodayScreen(day, onOpen = openAlone, modifier = Modifier.padding(pad))
+                    }
+                }
                 composable("sync") {
                     val sync by vm.syncStatus.collectAsStateWithLifecycle()
                     SubPage("同步与数据", onBack = { nav.popBackStack() }) { pad ->
@@ -266,6 +275,9 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     var activeFilters by remember { mutableIntStateOf(0) }
     var menuOpen by remember { mutableStateOf(false) }
     var tab by rememberSaveable { mutableIntStateOf(0) }
+    // a 复习 / 考核 run takes the whole screen: no top bar, no tab bar; back ends the run
+    val running = quiz != null && quiz?.stage == when (tab) { 1 -> Stage.Review; 2 -> Stage.Test; else -> null }
+    BackHandler(enabled = running) { vm.endQuiz() }
     val snackbar = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) { vm.messages.collect { snackbar.showSnackbar(it) } }
@@ -321,11 +333,12 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     }
 
     // Liquid glass: the content is the haze source; the top bar and the floating tab bar blur it.
-    val haze = rememberHazeState()
+    val haze = rememberHazeState(blurEnabled = io.github.chinalwb.vocab.ui.GLASS_BLUR)
     CompositionLocalProvider(LocalHaze provides haze) {
     Scaffold(
         modifier = if (tab == 0) Modifier.nestedScroll(bars.nestedScrollConnection) else Modifier,
         topBar = {
+            if (running) return@Scaffold
             // The status-bar strip isn't part of the bar: it stays solid until the status bar
             // hides, then fades and the list scrolls up into that space.
             // Padding ignores visibility so hiding the status bar doesn't shift the layout.
@@ -379,6 +392,11 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                                     onClick = { menuOpen = false; nav.navigate("read") },
                                 )
                                 DropdownMenuItem(
+                                    text = { Text("今天的练习 · 导出 PDF") },
+                                    leadingIcon = { Icon(io.github.chinalwb.vocab.ui.PdfIcon, null) },
+                                    onClick = { menuOpen = false; nav.navigate("today") },
+                                )
+                                DropdownMenuItem(
                                     text = { Text("练习 · 仿写 / 段落") },
                                     leadingIcon = { Icon(Icons.Default.Edit, null) },
                                     onClick = { menuOpen = false; nav.navigate("practice") },
@@ -413,6 +431,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
             )
         },
         bottomBar = {
+            if (running) return@Scaffold
             // A floating glass capsule; the cards scroll on underneath it. It slides off the
             // bottom edge with the top bar, the slot shrinking as it goes.
             Box(
@@ -473,7 +492,8 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onGrade = vm::gradeQuiz,
                 onNext = vm::nextQuiz,
                 onEnd = vm::endQuiz,
-                modifier = if (quiz?.stage == stage) Modifier.padding(pad).imePadding() else Modifier,
+                // a run draws its own top row under the status bar and keeps above the navigation bar
+                modifier = if (quiz?.stage == stage) Modifier.imePadding() else Modifier,
                 contentPadding = pad,
             )
         }

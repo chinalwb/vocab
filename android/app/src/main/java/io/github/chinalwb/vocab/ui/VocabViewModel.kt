@@ -60,6 +60,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     /** ⭐ example sentences: {anchor: {plain English: Fav}}, unstars included — read through starred(). */
     val favs = favStore.data
     private val progress = (app as VocabApp).progress
+    private val practice = (app as VocabApp).practice
+    /** 今天的练习: today's practised sentences, each with what I wrote and the answer. */
+    val practiceToday = practice.today
     /** 同步 to GitHub: connected / last success / error. */
     val syncStatus = progress.status
 
@@ -153,6 +156,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             selfTestLog.load()
             stageStore.load()
             favStore.load()
+            practice.load()
             progress.ready.complete(Unit)
             progress.now()
             check(quiet = true)
@@ -264,14 +268,32 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
 
     /** One attempt with the verdict already known; [ex] is the example it answered (plain English). */
     fun recordAttempt(entry: Entry, text: String, ok: Boolean, via: String, ex: String = "") = viewModelScope.launch {
-        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), text.trim(), ok && text.isNotBlank(), via, ex))
+        val t = text.trim()
+        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), t, ok && t.isNotEmpty(), via, ex))
         progress.soon()
+        // an example sentence goes into 今天的练习 too; what I grade myself has no answer to pair with
+        val zh = entry.quizExamples().firstOrNull { plain(it.en) == ex }?.let { plain(it.zh) }
+        if (ex.isNotEmpty() && zh != null) practice.record(practiceItem(entry, zh, t, ex, ok && t.isNotEmpty(), via))
     }
 
     /** Records one reveal of a 自测 entry; ok = the words match the answer. */
     fun recordSelfTest(entry: Entry, text: String, via: String) = viewModelScope.launch {
         val t = text.trim()
-        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), t, t.isNotEmpty() && bestDiff(t, entry.selfTestAnswer).same, via))
+        val d = bestDiff(t, entry.selfTestAnswer)
+        val ok = t.isNotEmpty() && d.same
+        selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), t, ok, via))
         progress.soon()
+        // the answer it was checked against: the closest of the accepted ones, or the first after a peek
+        val answer = if (t.isEmpty()) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() }.orEmpty() else d.answer.joinToString(" ")
+        if (answer.isNotEmpty()) practice.record(practiceItem(entry, entry.title.removePrefix("自测:").removePrefix("自测:"), t, answer, ok, via))
     }
+
+    private fun practiceItem(entry: Entry, zh: String, mine: String, answer: String, ok: Boolean, via: String) =
+        io.github.chinalwb.vocab.review.PracticeItem(
+            anchor = entry.anchor, title = entry.title, zh = zh, mine = mine, answer = answer, ok = ok, via = via,
+            time = io.github.chinalwb.vocab.review.PracticeLog.now(),
+        )
+
+    /** 今天的练习 opened: if the day has turned since the last answer, start on the new one. */
+    fun refreshToday() = viewModelScope.launch { practice.load() }
 }
