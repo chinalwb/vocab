@@ -215,3 +215,32 @@
 - ❌ [词形] ==Today's== → **today's** —— 句中不大写。
 - ⚠️ [搭配] ==3 copies== → **three versions** —— *copies* 指一模一样的几份;这三份内容不同。
 - ❌ [词形] ==praticing== → **practicing** —— 拼写。
+
+---
+
+<a id="r-merge-back-into-dev"></a>
+## 把这个分支合进 main,再把 main 合回 dev。发布新的 APK,并更新网页版,让它的界面和 App 保持一致。
+
+- 日期:2026-10-15
+- 关键词:merge main back into dev · stays in sync with
+
+**常用说法:**
+
+> Merge this branch into main, then merge main into dev. Release the new APK, and update the web version so the UI is the same as the app.
+
+**C1 说法:**
+
+> Merge this branch into main, then **merge main back into dev**. **Publish the new APK**, and update the web app **so its UI stays in sync with** the app.
+
+**差别:**
+
+- **merge main back into dev** —— *back* 表示合回原来的分支;说清楚是 main 合进 dev,对应 *sync it to dev*(*it* 指代不清)。
+- **Publish the new APK** —— APK 是缩写,要大写;*new* 已经说了"新版本",不用再加 *version*。
+- **so its UI stays in sync with the app** —— *so* + 从句说目的,主语 *its UI* 明确,*stay in sync with* 交代和谁保持一致;对应 *to make the UI stay in sync*。
+
+**我的原句:**
+
+> Merge this branch into main, then ==sync it== to dev. Publish the ==new version apk== and update the web app to make the UI stay in sync.
+
+- ⚠️ [逻辑] ==sync it== → **merge main back** —— *it* 指 this branch 还是 main 不清楚。
+- ⚠️ [词形] ==new version apk== → **new APK** —— 缩写要大写;*new* 已经表示新版本。
