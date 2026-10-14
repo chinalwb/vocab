@@ -176,3 +176,42 @@
 - ⚠️ [词形] ==take== → **Take** —— 句首大写。
 - ⚠️ [标点] ==-== → **.** —— 两个完整句子之间用句号;连字符不能当分隔用。
 - ⚠️ [介词] ==for== → **to** —— 给某物加东西是 *add … to*。
+
+---
+
+<a id="r-dedicated-branch"></a>
+## 开个专门的分支按 V2 重构界面;做完再加个功能:每天的练习记下来,今天的能导出成 PDF(三个版本)。没完全弄清需求前别急着写代码。
+
+- 日期:2026-10-15
+- 关键词:on a dedicated branch · side by side
+
+**常用说法:**
+
+> OK, now please refactor the UI based on your V2 design. Do it on a separate branch, and let's name it ui/claude-code-v2. After that, let's add a new feature for the whole app: record the user's practice in a file (maybe .md), one file per day. Save the user's input and the correct sentence as a pair, and if the user practices a sentence several times, keep the last one. Finally, we want to export today's practice as a PDF with three versions: one with only the correct sentences (Chinese and English), one with the user's input and the correct sentences for comparison, and one with only the Chinese for more practice. Is this clear? You don't need to start coding until you fully understand my requirements.
+
+**C1 说法:**
+
+> OK — go ahead and implement your V2 **on a dedicated branch**; **let's call it** ui/claude-code-v2. **Once the refactor is in**, let's add an **app-wide** feature: log each day's practice to a file (Markdown, perhaps), storing the user's input and the correct sentence as a pair and **keeping only the latest attempt** at each sentence. On top of that, I'd like to export today's practice as a PDF in three versions: the correct sentences (Chinese and English), the user's input and the correct sentence **side by side**, and the Chinese alone for extra practice. **Does that make sense?** **No need to jump into the code** until the requirements are clear.
+
+**差别:**
+
+- **on a dedicated branch** —— dedicated = 专用的、专门为某事开的:*a dedicated server / a dedicated team*。对应 *a separate branch*。
+- **let's call it X** —— 给东西起名最自然的说法;对应 *name the branch as X*。
+- **Once the refactor is in** —— be in = 做完、合进去了;*once* 比 *after that* 更强调"一完成就接着做"。
+- **app-wide** —— "整个 App 范围的",名词 + *-wide* 很常用:*company-wide / system-wide*。对应 *for the whole app*。
+- **keeping only the latest attempt** —— *latest* 强调时间上最新;*the last one* 也能懂,但可能被理解成"排在最后的那个"。
+- **side by side** —— "并排",放在一起对照时最常用;对应 *for comparison*。
+- **Does that make sense?** —— 确认对方理解,比 *Is this clear?* 柔和,不像在考对方。
+- **No need to jump into the code** —— jump into = 急着一头扎进去做;对应 *You don't need to start coding*。
+
+**我的原句:**
+
+> OK - Now refactor the UI as per your V2. Do it on a ==dedicateed== branch. ==Lets== ==name the branch as== ui/claude-code-v2. And after implementing the UI refactor, ==lets== add a new feature for the entire app, see details ==as follow==: Record user's practice to some file (maybe .md). Save it by day. We save both the user's input and the correct one as a pair. If the user has practiced some of them multiple times, keep the last one. Finally, we want to have a feature to export ==Today's== practice as a PDF file. It contains ==3 copies==: one is only the correct sentences (both Chinese and English), the 2nd one is for saving the user's input and the correct sentences for comparing; the last one is only Chinese for ==praticing== more. Is this clear? You don't need to rush to code until you understand my requirements fully.
+
+- ❌ [词形] ==dedicateed== → **dedicated** —— 拼写。
+- ❌ [标点] ==Lets== → **Let's** —— let us 的缩写要加撇号;*lets* 是"允许"的第三人称单数(两处)。
+- ⚠️ [搭配] ==name the branch as== → **name the branch** / **call it** —— name 后面直接跟名字,"命名为"不用 as。
+- ❌ [搭配] ==as follow== → **as follows** —— 固定说法,总带 s。
+- ❌ [词形] ==Today's== → **today's** —— 句中不大写。
+- ⚠️ [搭配] ==3 copies== → **three versions** —— *copies* 指一模一样的几份;这三份内容不同。
+- ❌ [词形] ==praticing== → **practicing** —— 拼写。
