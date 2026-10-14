@@ -76,9 +76,10 @@ fun ReadScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifier =
 @Composable
 private fun ReadRow(r: Read, onClick: () -> Unit) {
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    // the C1 colour (用户 2026-10-14): these are C1 phrasings, and the cards stand off the page
     Surface(
         shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = levelColor("C1"),
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
     ) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
