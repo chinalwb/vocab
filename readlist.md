@@ -146,3 +146,33 @@
 - ⚠️ [冠词] ==lower-level translation== → **the lower-level version** —— 可数名词要加冠词。
 - ⚠️ [语气] ==Subsequently== → **Then** —— 太正式,描述页面顺序用 *Then* 就够了。
 - ❌ [词形] ==collpased== → **collapsed** —— 拼写。
+
+---
+
+<a id="r-could-use-color"></a>
+## 截个图。我想给这些条目加个背景色。
+
+- 日期:2026-10-14
+- 关键词:could use · grab a screenshot
+
+**常用说法:**
+
+> Take a screenshot. I'd like to add a background color to these entries.
+
+**C1 说法:**
+
+> **Grab** a screenshot. **These cards could use** a background color.
+
+**差别:**
+
+- **Grab a screenshot** —— *grab* 口语里表示"随手拿/弄一下",比 *take* 更轻快;*grab a coffee / grab a seat* 同理。
+- **could use** —— "需要、有了会更好",婉转地提建议:*The intro could use some work.*(开头还可以再改改。)对应 *I'd like to add*。
+- **These cards …** —— 主语从"我"换成物:不说"我想加",而说"它们需要",语气更客观;*cards* 也比 *entries* 更具体,说的就是屏幕上那些卡片。
+
+**我的原句:**
+
+> ==take== a screenshot ==-== I'd like to add some background color ==for== these entries
+
+- ⚠️ [词形] ==take== → **Take** —— 句首大写。
+- ⚠️ [标点] ==-== → **.** —— 两个完整句子之间用句号;连字符不能当分隔用。
+- ⚠️ [介词] ==for== → **to** —— 给某物加东西是 *add … to*。
