@@ -347,8 +347,25 @@ fun Quote(lines: List<String>, link: androidx.compose.ui.graphics.Color, onXref:
  * section, and the chip of the section in view is the filled one. Replaces the carousel there.
  */
 @Composable
-fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifier: Modifier = Modifier) {
-    val sections = entry.sections
+fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifier: Modifier = Modifier) =
+    NotesPager(entry.anchor, entry.sections, entry.blocks, onXref, quiz, modifier)
+
+/**
+ * [NotesPage] for any sectioned blocks — the entry page's notes and 阅读's details share it, the
+ * 卡片 | 全部 switch and its remembered choice included. [footer] goes after the last section:
+ * at the end of the long page, or under the last card.
+ */
+@Composable
+fun NotesPager(
+    anchor: String,
+    sections: List<Section>,
+    blocks: List<Block>,
+    onXref: (String) -> Unit,
+    quiz: ExampleQuiz?,
+    modifier: Modifier = Modifier,
+    title: String = "笔记",
+    footer: (@Composable () -> Unit)? = null,
+) {
     // 分卡 (one section at a time) or 全部展开 (one long page): the user keeps both (用户 2026-10-14),
     // remembered across entries and launches — the same switch and key the carousel had
     val ctx = LocalContext.current
@@ -357,16 +374,16 @@ fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifi
     val scroll = rememberScrollState()
     val pager = rememberPagerState { sections.size }
     val scope = rememberCoroutineScope()
-    val tops = remember(entry.anchor) { androidx.compose.runtime.mutableStateMapOf<Int, Int>() }
+    val tops = remember(anchor) { androidx.compose.runtime.mutableStateMapOf<Int, Int>() }
     val density = androidx.compose.ui.platform.LocalDensity.current
     val slack = with(density) { 24.dp.roundToPx() }
-    val inView by androidx.compose.runtime.remember(entry.anchor) {
+    val inView by androidx.compose.runtime.remember(anchor) {
         androidx.compose.runtime.derivedStateOf {
             if (scroll.value >= scroll.maxValue && scroll.maxValue > 0) sections.lastIndex
             else tops.entries.filter { it.value <= scroll.value + slack }.maxByOrNull { it.value }?.key ?: 0
         }
     }
-    var pending by remember(entry.anchor) { mutableStateOf<Int?>(null) }
+    var pending by remember(anchor) { mutableStateOf<Int?>(null) }
     val pendingTop = pending?.let { tops[it] }
     LaunchedEffect(pendingTop) { if (pendingTop != null) { scroll.scrollTo(pendingTop); pending = null } }
     val tabbed = sections.size > 1 && !all
@@ -379,7 +396,7 @@ fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifi
         if (sections.size > 1) {
             // "笔记 ——— 卡片 | 全部": the switch on a row of its own, so it can't pass for a section chip
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 18.dp, end = 12.dp, top = 12.dp)) {
-                Text("笔记", style = MaterialTheme.typography.labelLarge, color = muted)
+                Text(title, style = MaterialTheme.typography.labelLarge, color = muted)
                 HorizontalDivider(Modifier.padding(horizontal = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
                 // 卡片 | 全部: a two-way switch like 选词 | 打字, the side in use filled
                 AnswerModeToggle(
@@ -424,24 +441,28 @@ fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifi
             state = pager,
             pageSpacing = 16.dp,
             verticalAlignment = Alignment.Top,
-            key = { "${entry.anchor}/$it" },
+            key = { "${anchor}/$it" },
             modifier = Modifier.weight(1f).fillMaxWidth(),
         ) { page ->
             Column(
                 Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
-            ) { Section(entry.anchor, sections[page], heading = false, onXref, quiz, muted) }
+            ) {
+                Section(anchor, sections[page], heading = false, onXref, quiz, muted)
+                if (page == sections.lastIndex) footer?.invoke()
+            }
         } else Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
-            if (sections.isEmpty()) Blocks(entry.anchor, entry.blocks, onXref, quiz)
+            if (sections.isEmpty()) Blocks(anchor, blocks, onXref, quiz)
             sections.forEachIndexed { i, s ->
                 Column(
                     Modifier.onGloballyPositionedTop { tops[i] = it },
                     verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) { Section(entry.anchor, s, heading = i > 0, onXref, quiz, muted) }
+                ) { Section(anchor, s, heading = i > 0, onXref, quiz, muted) }
             }
+            footer?.invoke()
         }
     }
 }

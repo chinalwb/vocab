@@ -2,6 +2,8 @@ package io.github.chinalwb.vocab.ui
 
 import io.github.chinalwb.vocab.data.LibraryState
 import io.github.chinalwb.vocab.data.Read
+import io.github.chinalwb.vocab.data.splitSections
+import androidx.compose.runtime.remember
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,9 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -98,8 +98,8 @@ private fun ReadRow(r: Read, onClick: () -> Unit) {
 }
 
 /**
- * One 阅读 item: the Chinese on top, then 常用说法, C1 说法 and 差别 as written in readlist.md;
- * 我的原句 sits folded at the bottom.
+ * One 阅读 item: the Chinese on top, then 常用说法, C1 说法 and 差别 with the entry page's
+ * 卡片 | 全部 switch (the same remembered choice); 我的原句 sits folded after the last of them.
  */
 @Composable
 fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modifier: Modifier = Modifier) {
@@ -109,29 +109,30 @@ fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modi
         return
     }
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    val sections = remember(r) { splitSections(r.blocks) }
     var showOriginal by rememberSaveable(anchor) { mutableStateOf(false) }
-    Column(
-        modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(r.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+    Column(modifier.fillMaxSize()) {
+        Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text(r.title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             if (r.date.isNotEmpty()) Text(r.date, style = MaterialTheme.typography.labelMedium, color = muted)
         }
-        NoteBlocks(r.anchor, r.blocks, onXref)
-        if (r.original.isNotEmpty()) {
-            HorizontalDivider()
-            Row(
-                Modifier.fillMaxWidth().clickable { showOriginal = !showOriginal }.padding(vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text("我的原句", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                Icon(if (showOriginal) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, if (showOriginal) "收起" else "展开", tint = muted)
-            }
-            AnimatedVisibility(showOriginal) {
-                Quote(r.original, MaterialTheme.colorScheme.primary, onXref)
-            }
-        }
-        Box(Modifier.padding(bottom = 24.dp))
+        NotesPager(
+            r.anchor, sections, r.blocks, onXref, quiz = null,
+            modifier = Modifier.weight(1f),
+            title = "对比",
+            footer = if (r.original.isEmpty()) null else { {
+                Column(Modifier.padding(top = 8.dp)) {
+                    HorizontalDivider()
+                    Row(
+                        Modifier.fillMaxWidth().clickable { showOriginal = !showOriginal }.padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text("我的原句", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                        Icon(if (showOriginal) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, if (showOriginal) "收起" else "展开", tint = muted)
+                    }
+                    AnimatedVisibility(showOriginal) { Quote(r.original, MaterialTheme.colorScheme.primary, onXref) }
+                }
+            } },
+        )
     }
 }
