@@ -195,6 +195,10 @@ val LocalStarred = androidx.compose.runtime.compositionLocalOf<Map<String, Set<S
 @Composable
 fun EntryBody(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) = Blocks(entry.anchor, entry.blocks, onXref, quiz)
 
+/** Notes blocks outside an entry (阅读): same rendering, no quiz. */
+@Composable
+fun NoteBlocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit) = Blocks(anchor, blocks, onXref)
+
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) {

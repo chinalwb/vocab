@@ -15,6 +15,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.mutableStateOf
 import io.github.chinalwb.vocab.ui.FilterIcon
 import io.github.chinalwb.vocab.ui.SearchScreen
+import io.github.chinalwb.vocab.ui.ReadScreen
+import io.github.chinalwb.vocab.ui.MenuBookIcon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -195,6 +197,7 @@ private fun VocabNav() {
                     )
                 }
                 composable("mistakes") { SubPage("错题本", onBack = { nav.popBackStack() }) { pad -> MistakesScreen(lib, onOpen = openAlone, modifier = Modifier.padding(pad)) } }
+                composable("read") { SubPage("阅读 · C1 对比", onBack = { nav.popBackStack() }) { pad -> ReadScreen(lib, onXref = { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) } }
                 composable("practice") { SubPage("练习", onBack = { nav.popBackStack() }) { pad -> PracticeScreen(lib, openAlone, modifier = Modifier.padding(pad)) } }
                 composable("sync") {
                     val sync by vm.syncStatus.collectAsStateWithLifecycle()
@@ -364,6 +367,11 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                                     text = { Text("错题本") },
                                     leadingIcon = { Icon(Icons.Default.Warning, null) },
                                     onClick = { menuOpen = false; nav.navigate("mistakes") },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("阅读 · C1 对比") },
+                                    leadingIcon = { Icon(MenuBookIcon, null) },
+                                    onClick = { menuOpen = false; nav.navigate("read") },
                                 )
                                 DropdownMenuItem(
                                     text = { Text("练习 · 仿写 / 段落") },

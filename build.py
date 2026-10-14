@@ -292,6 +292,25 @@ def build_entries(src):
     return out
 
 
+def build_reads(src):
+    """阅读 (readlist.md): read-only pairs of a common and a C1 way to say the same thing.
+
+    Not entries: no level, no quiz, no 进度, no 错题本. Newest (last in the file) first.
+    """
+    out = []
+    for e in split_entries(src):
+        item = {"anchor": e["anchor"], "title": e["title"], "date": meta_field(e["raw"], "日期"),
+                "blocks": parse_blocks(e["raw"])}
+        item["hash"] = digest(item)
+        out.append(item)
+    seen = set()
+    for r in out:
+        if r["anchor"] in seen:
+            raise SystemExit(f"readlist.md: duplicate anchor {r['anchor']}")
+        seen.add(r["anchor"])
+    return out[::-1]
+
+
 def quiz_examples(blocks):
     """Numbered examples that have both an English sentence and a Chinese translation."""
     out = []
@@ -363,6 +382,8 @@ def main():
     args = ap.parse_args()
 
     entries = build_entries((ROOT / "vocabulary.md").read_text(encoding="utf-8"))
+    read_md = ROOT / "readlist.md"
+    reads = build_reads(read_md.read_text(encoding="utf-8")) if read_md.exists() else []
     data = page_data(entries)
     mistakes = mistake_data(entries)
     page = (ROOT / "template.html").read_text(encoding="utf-8").replace(
@@ -379,14 +400,15 @@ def main():
     # the hash differs from what it last fetched. Keep SCHEMA in sync with the app.
     meta = {
         "schema": SCHEMA,
-        "hash": digest([e["hash"] for e in entries]),
+        # reads count too, so a new 阅读 item alone makes the app fetch data.json again
+        "hash": digest([e["hash"] for e in entries] + [r["hash"] for r in reads]),
         "count": len(entries),
         "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     (ROOT / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
     (ROOT / "data.json").write_text(
         json.dumps({**meta, "mistakeTypes": [{"key": k, "desc": d, "check": c} for k, d, c in MISTAKE_TYPES],
-                    "entries": entries}, ensure_ascii=False), encoding="utf-8")
+                    "entries": entries, "reads": reads}, ensure_ascii=False), encoding="utf-8")
 
     if args.artifact:
         pathlib.Path(args.artifact).write_text(
@@ -396,6 +418,7 @@ def main():
     print(f"{total} entries -> " + ", ".join(f"{g['level']}:{len(g['items'])}" for g in data))
     print(f"{sum(len(g['items']) for g in mistakes)} mistakes -> "
           + ", ".join(f"{g['type']}:{len(g['items'])}" for g in mistakes))
+    print(f"{len(reads)} reads (readlist.md)")
 
 
 if __name__ == "__main__":
