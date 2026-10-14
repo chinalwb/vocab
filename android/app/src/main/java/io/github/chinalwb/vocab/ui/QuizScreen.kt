@@ -1,6 +1,13 @@
 package io.github.chinalwb.vocab.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -154,34 +161,37 @@ private fun StageList(
             when (stage) {
                 Stage.Review -> {
                     val plan = planToday(mine, review)
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Stat("复习中", mine.size, Modifier.weight(1f))
-                        Stat("今天到期", plan.due.size, Modifier.weight(1f))
-                        Stat("还没排期", plan.fresh.size, Modifier.weight(1f))
-                    }
-                    Button(onClick = onStart, enabled = queue.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(52.dp)) {
-                        Text(if (mine.isEmpty()) "还没有复习中的条目" else if (queue.isEmpty()) "今天的都复习完了" else "开始复习 ${queue.size} 条")
+                    // the ring: how much of 复习 is done for today (not due again yet)
+                    RunHead(
+                        big = queue.size, caption = if (queue.isEmpty()) "今天的都复习完了" else "今天要复习",
+                        fill = if (mine.isEmpty()) 0f else 1f - queue.size.toFloat() / mine.size,
+                        counts = listOf("今天到期" to plan.due.size, "还没排期" to plan.fresh.size),
+                        next = queue.take(3),
+                    )
+                    Button(onClick = onStart, enabled = queue.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(56.dp)) {
+                        Text(if (mine.isEmpty()) "还没有复习中的条目" else if (queue.isEmpty()) "今天的都复习完了" else "开始复习 ${queue.size} 条", fontSize = 17.sp, fontWeight = FontWeight.Bold)
                     }
                     Text(
-                        "第二遍学:先看一遍笔记,再做例句(中译英)。答对了下次隔得更久,答错了明天再来;" +
-                            "一个条目的例句在这一阶段都答对过,就会提示移到考核。",
+                        "先看一遍笔记,再翻面做例句。答对了下次隔得更久,答错了明天再来;例句都答对过,就会提示移到考核。",
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Stage.Test -> {
                     val never = mine.count { selfTests[it.anchor].isNullOrEmpty() }
                     val missed = mine.count { e -> selfTests[e.anchor]?.lastOrNull()?.let { it.text.isEmpty() || !it.ok } == true }
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Stat("考核中", mine.size, Modifier.weight(1f))
-                        Stat("没做过", never, Modifier.weight(1f))
-                        Stat("上次没对", missed, Modifier.weight(1f))
-                    }
-                    Button(onClick = onStart, enabled = queue.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(52.dp)) {
-                        Text(if (queue.isEmpty()) "还没有考核中的条目" else "开始考核 ${queue.size} 题")
+                    val right = mine.count { e -> selfTests[e.anchor]?.lastOrNull()?.let { it.text.isNotEmpty() && it.ok } == true }
+                    // the ring: how many were answered right the last time they came up
+                    RunHead(
+                        big = mine.size, caption = "考核中 · 上次答对 $right",
+                        fill = if (mine.isEmpty()) 0f else right.toFloat() / mine.size,
+                        counts = listOf("没做过" to never, "上次没对" to missed),
+                        next = queue.take(3),
+                    )
+                    Button(onClick = onStart, enabled = queue.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(56.dp)) {
+                        Text(if (queue.isEmpty()) "还没有考核中的条目" else "开始考核 ${queue.size} 题", fontSize = 17.sp, fontWeight = FontWeight.Bold)
                     }
                     Text(
-                        "直接做题,答完才看笔记。自测题逐词对照标准答案,其他条目对照例句;例句都答对过,就会提示移到掌握。" +
-                            "没做过的和上次没做对的排在前面。",
+                        "直接做题,答完才看笔记。没做过的和上次没做对的排在前面;例句都答对过,就会提示移到掌握。",
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
@@ -223,9 +233,71 @@ private fun StageList(
 }
 
 /**
- * One card of a run. 复习 shows the notes first (看完了,做题); then the question with the
- * answer box under it, the chips (选词) and 显示答案 at the bottom; then the verdict, the
- * notes, and 下一题 — with the move to the next stage offered once this entry has earned it.
+ * The head of 复习 / 考核 (UI refactor, direction B): a ring with the big number in it, two small
+ * counts, and the next cards peeking out as a stack in their level colours.
+ */
+@Composable
+private fun RunHead(big: Int, caption: String, fill: Float, counts: List<Pair<String, Int>>, next: List<Entry>) {
+    val ink = MaterialTheme.colorScheme.onSurface
+    val track = MaterialTheme.colorScheme.outline
+    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(18.dp)) {
+        Box(Modifier.padding(top = 8.dp).size(196.dp), contentAlignment = Alignment.Center) {
+            androidx.compose.foundation.Canvas(Modifier.fillMaxSize()) {
+                val stroke = androidx.compose.ui.graphics.drawscope.Stroke(width = 14.dp.toPx(), cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                val inset = 7.dp.toPx()
+                val box = androidx.compose.ui.geometry.Size(size.width - inset * 2, size.height - inset * 2)
+                val at = androidx.compose.ui.geometry.Offset(inset, inset)
+                drawArc(track, 0f, 360f, false, at, box, style = stroke)
+                if (fill > 0f) drawArc(ink, -90f, 360f * fill.coerceIn(0f, 1f), false, at, box, style = stroke)
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("$big", fontSize = 52.sp, fontWeight = FontWeight.Bold, lineHeight = 56.sp)
+                Text(caption, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            counts.forEach { (label, n) -> Stat(label, n, Modifier.weight(1f)) }
+        }
+        if (next.isNotEmpty()) Box(Modifier.fillMaxWidth().height(84.dp)) {
+            // back to front: the cards after the next one, narrower and higher, peek out on top
+            next.drop(1).asReversed().forEachIndexed { i, e ->
+                val k = next.size - 1 - i
+                Box(
+                    Modifier
+                        .padding(horizontal = (12 * k).dp)
+                        .padding(top = (10 * (2 - k)).dp.coerceAtLeast(0.dp))
+                        .fillMaxWidth()
+                        .height(64.dp)
+                        .background(levelColor(e.level), androidx.compose.foundation.shape.RoundedCornerShape(18.dp))
+                        .border(1.dp, MaterialTheme.colorScheme.surface, androidx.compose.foundation.shape.RoundedCornerShape(18.dp))
+                )
+            }
+            Row(
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(64.dp)
+                    .shadow(3.dp, androidx.compose.foundation.shape.RoundedCornerShape(18.dp))
+                    .background(levelColor(next[0].level), androidx.compose.foundation.shape.RoundedCornerShape(18.dp))
+                    .padding(horizontal = 18.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    "下一张 · " + next[0].title.removePrefix("自测:").removePrefix("自测:"),
+                    style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold,
+                    maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * One card of a run (UI refactor, direction B): a progress bar on top, then one card at a time.
+ * 复习 shows the notes first on a card in the entry's level colour (看完了,翻面做题); the
+ * question is a white card edged in that colour, the answer under it, the chips and 显示答案 at
+ * the bottom; then the verdict, the notes, and 下一题 — with the move to the next stage offered
+ * once this entry has earned it. Going from the notes to the question turns the card over.
  */
 @Composable
 private fun QuizCard(
@@ -246,7 +318,6 @@ private fun QuizCard(
     val ex = session.example
     var draft by rememberSaveable(session.index) { mutableStateOf("") }
     val studying = session.stage == Stage.Review && !session.studied
-    // 选词 when there's an answer to check against (a 自测题's 答案, an example's English)
     val answer = if (exam) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
     val (chips, setChips) = rememberChipsMode()
     val bank = if (answer != null && chips && !session.revealed && !studying) {
@@ -256,70 +327,102 @@ private fun QuizCard(
         rememberWordBank(answer, strayWords(answer, others, seed), seed).also { st -> LaunchedEffect(st.pickedText) { draft = st.draft } }
     } else null
     val ready = session.revealed && advanceReady(entry, session.stage, attempts, since, excluded)
+    val color = levelColor(entry.level)
+    val shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp)
+    // the turn from the notes (front) to the question (back), 复习 only
+    val angle by androidx.compose.animation.core.animateFloatAsState(
+        if (studying) 0f else 180f, androidx.compose.animation.core.tween(550), label = "turn",
+    )
+    val flipped = session.stage != Stage.Review || angle > 90f
+    val density = androidx.compose.ui.platform.LocalDensity.current.density
     Column(modifier.fillMaxSize()) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 4.dp, end = 16.dp)) {
+            androidx.compose.material3.IconButton(onClick = onEnd) {
+                androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Filled.Close, "结束这一轮")
+            }
             LinearProgressIndicator(
-                progress = { session.index.toFloat() / session.queue.size },
-                modifier = Modifier.weight(1f),
+                progress = { (session.index + if (session.revealed) 1 else 0).toFloat() / session.queue.size },
+                modifier = Modifier.weight(1f).height(8.dp),
                 trackColor = MaterialTheme.colorScheme.outline,
+                strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
+                gapSize = 0.dp,
                 drawStopIndicator = {},
             )
-            Text("  ${session.index + 1} / ${session.queue.size}", style = MaterialTheme.typography.labelMedium)
-            TextButton(onClick = onEnd) { Text("结束") }
+            Text("  ${session.index + 1} / ${session.queue.size}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Column(
             Modifier
                 .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 12.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp)
+                .graphicsLayer {
+                    if (session.stage == Stage.Review) {
+                        rotationY = angle
+                        cameraDistance = 16f * density
+                    }
+                }
+                .then(
+                    if (!flipped) Modifier.shadow(6.dp, shape).background(color, shape)
+                    else Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh, shape).border(2.dp, color, shape)
+                )
+                .clip(shape)
         ) {
-            if (studying) {
-                // 复习: read it again first
-                Text("先看一遍", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Spacer(Modifier.height(6.dp))
-                Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.SemiBold, fontSize = 24.sp, lineHeight = 30.sp)
-                Spacer(Modifier.height(12.dp))
-                EntryNotes(entry, onXref)
-                Spacer(Modifier.height(24.dp))
-            } else {
-                if (ex != null) ExamplePrompt(ex) else ReviewFront(entry, kindOf(entry, inTest = true))
-                Spacer(Modifier.height(8.dp))
-                SelfTestStats(attempts.at(ex), one = ex != null)
-                if (!session.revealed) {
-                    Spacer(Modifier.height(12.dp))
-                    if (answer != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { AnswerModeToggle(chips, setChips) }
-                    Spacer(Modifier.height(8.dp))
-                    if (bank != null) WordBankAnswer(bank) else DraftField(draft, { draft = it })
-                } else {
-                    Spacer(Modifier.height(20.dp))
-                    HorizontalDivider()
-                    Spacer(Modifier.height(20.dp))
-                    if (exam) SelfTestResult(draft, entry.selfTestAnswer)
-                    else MovedResult(ex, draft, session.graded) { onGrade(draft, it) }
-                    Spacer(Modifier.height(8.dp))
-                    SelfTestHistory(attempts.at(ex), one = ex != null)
-                    if (ready) { Spacer(Modifier.height(8.dp)); AdvanceBanner(session.stage) { onNext(true) } }
-                    Spacer(Modifier.height(16.dp))
-                    Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
-                    Spacer(Modifier.height(12.dp))
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .graphicsLayer { if (session.stage == Stage.Review && angle > 90f) rotationY = 180f }
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 22.dp, vertical = 22.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp),
+            ) {
+                if (!flipped) {
+                    // 复习: read it again first, on the front
+                    Text("${levelStyle(entry.level).short} · 先看一遍", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
+                    Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = if (entry.title.length > 18) 28.sp else 40.sp, lineHeight = if (entry.title.length > 18) 34.sp else 46.sp)
+                    if (entry.ipa.isNotEmpty()) Text(entry.ipa, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
                     EntryNotes(entry, onXref)
-                    Spacer(Modifier.height(24.dp))
+                } else {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            (if (exam) "自测题" else entry.title) + " · 中译英",
+                            style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis, modifier = Modifier.weight(1f),
+                        )
+                        if (answer != null && !session.revealed) AnswerModeToggle(chips, setChips)
+                    }
+                    when {
+                        exam -> Text(entry.title.removePrefix("自测:").removePrefix("自测:"), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                        ex != null -> Text(ex.zh, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                        else -> ReviewFront(entry, kindOf(entry, inTest = true))
+                    }
+                    if (!session.revealed) {
+                        if (bank != null) WordBankAnswer(bank) else DraftField(draft, { draft = it })
+                        SelfTestStats(attempts.at(ex), one = ex != null)
+                    } else {
+                        if (exam) SelfTestResult(draft, entry.selfTestAnswer)
+                        else MovedResult(ex, draft, session.graded) { onGrade(draft, it) }
+                        if (ready) AdvanceBanner(session.stage) { onNext(true) }
+                        SelfTestStats(attempts.at(ex), one = ex != null)
+                        SelfTestHistory(attempts.at(ex), one = ex != null)
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+                        Text(entry.title, fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                        EntryNotes(entry, onXref)
+                    }
                 }
             }
         }
-        Column(Modifier.padding(16.dp)) {
+        Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             when {
-                studying -> Button(onClick = onStudied, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text("看完了,做题") }
+                studying -> Button(onClick = onStudied, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("看完了,翻面做题", fontSize = 17.sp, fontWeight = FontWeight.Bold) }
                 !session.revealed -> {
-                    if (bank != null) { WordBankChips(bank); Spacer(Modifier.height(12.dp)) }
-                    Button(onClick = { onReveal(draft) }, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text("显示答案") }
+                    if (bank != null) WordBankChips(bank)
+                    Button(onClick = { onReveal(draft) }, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("显示答案", fontSize = 17.sp, fontWeight = FontWeight.Bold) }
                 }
-                else -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (ready) OutlinedButton(onClick = { onNext(true) }, modifier = Modifier.weight(1f).height(52.dp)) {
-                        Text("移到${session.stage.next?.tab}")
+                else -> Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    if (ready) OutlinedButton(onClick = { onNext(true) }, modifier = Modifier.weight(1f).height(56.dp)) {
+                        Text("移到${session.stage.next?.tab}", fontSize = 16.sp)
                     }
-                    Button(onClick = { onNext(false) }, modifier = Modifier.weight(1f).height(52.dp)) {
-                        Text(if (session.index + 1 < session.queue.size) "下一题" else "完成")
+                    Button(onClick = { onNext(false) }, modifier = Modifier.weight(1f).height(56.dp)) {
+                        Text(if (session.index + 1 < session.queue.size) "下一题" else "完成", fontSize = 17.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }

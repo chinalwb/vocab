@@ -109,12 +109,8 @@ private fun NotesHeading(action: String?, trailing: @Composable () -> Unit, onAc
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(bottom = 4.dp)) {
         Text("笔记", style = MaterialTheme.typography.labelLarge, color = muted)
         HorizontalDivider(Modifier.padding(horizontal = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
-        if (action != null) Text(
-            action,
-            style = MaterialTheme.typography.labelLarge,
-            color = muted,
-            modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable(onClick = onAction).padding(horizontal = 4.dp, vertical = 6.dp),
-        )
+        // 卡片 | 全部, the same two-way switch as on the entry page
+        if (action != null) AnswerModeToggle(action == "全部展开", { cards -> if (cards != (action == "全部展开")) onAction() }, labels = "卡片" to "全部")
         trailing()
     }
 }
