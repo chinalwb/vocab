@@ -51,6 +51,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.launch
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -374,39 +375,24 @@ fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifi
     LaunchedEffect(current) { if (sections.size > 1) chips.animateScrollToItem((current - 1).coerceAtLeast(0)) }
     val ink = MaterialTheme.colorScheme.onSurface
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    Column(modifier) {
+    // the notes as one card on the page: they read as one bundle (用户 2026-10-14)
+    val card = RoundedCornerShape(24.dp)
+    Column(
+        modifier
+            .padding(start = 12.dp, end = 12.dp, top = 12.dp)
+            .shadow(2.dp, card)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh, card)
+            .clip(card)
+    ) {
         if (sections.size > 1) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                LazyRow(
-                    state = chips,
-                    modifier = Modifier.weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
-                ) {
-                    itemsIndexed(sections) { i, s ->
-                        val on = i == current
-                        Text(
-                            s.label,
-                            style = MaterialTheme.typography.labelLarge,
-                            color = if (on) MaterialTheme.colorScheme.surface else ink,
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(50))
-                                .then(if (on) Modifier.background(ink) else Modifier.border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50)))
-                                .clickable {
-                                    scope.launch { if (tabbed) pager.animateScrollToPage(i) else scroll.animateScrollTo(tops[i] ?: 0) }
-                                }
-                                .padding(horizontal = 14.dp, vertical = 8.dp),
-                        )
-                    }
-                }
-                // the switch stays put at the end of the row while the chips scroll
-                Text(
-                    if (all) "分卡" else "全部展开",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = muted,
-                    modifier = Modifier
-                        .padding(end = 8.dp)
+            // "笔记 ——— 全部展开": the switch on a row of its own, so it can't pass for a section chip
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 18.dp, end = 12.dp, top = 12.dp)) {
+                Text("笔记", style = MaterialTheme.typography.labelLarge, color = muted)
+                HorizontalDivider(Modifier.padding(horizontal = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
+                Row(
+                    Modifier
                         .clip(RoundedCornerShape(8.dp))
+                        .background(ink.copy(alpha = 0.07f))
                         .clickable {
                             val at = current
                             all = !all
@@ -415,8 +401,32 @@ fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifi
                             // scrolls once it has measured where that section is (below)
                             if (all) pending = at else scope.launch { pager.scrollToPage(at) }
                         }
-                        .padding(horizontal = 8.dp, vertical = 10.dp),
-                )
+                        .padding(horizontal = 10.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(if (all) "分卡显示" else "全部展开", style = MaterialTheme.typography.labelLarge, color = ink)
+                }
+            }
+            LazyRow(
+                state = chips,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+            ) {
+                itemsIndexed(sections) { i, s ->
+                    val on = i == current
+                    Text(
+                        s.label,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = if (on) MaterialTheme.colorScheme.surface else ink,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(50))
+                            .then(if (on) Modifier.background(ink) else Modifier.border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50)))
+                            .clickable {
+                                scope.launch { if (tabbed) pager.animateScrollToPage(i) else scroll.animateScrollTo(tops[i] ?: 0) }
+                            }
+                            .padding(horizontal = 14.dp, vertical = 8.dp),
+                    )
+                }
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)
         }
