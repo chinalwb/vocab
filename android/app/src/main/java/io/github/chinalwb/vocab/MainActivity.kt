@@ -333,7 +333,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     }
 
     // Liquid glass: the content is the haze source; the top bar and the floating tab bar blur it.
-    val haze = rememberHazeState()
+    val haze = rememberHazeState(blurEnabled = io.github.chinalwb.vocab.ui.GLASS_BLUR)
     CompositionLocalProvider(LocalHaze provides haze) {
     Scaffold(
         modifier = if (tab == 0) Modifier.nestedScroll(bars.nestedScrollConnection) else Modifier,

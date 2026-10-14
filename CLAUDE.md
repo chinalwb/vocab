@@ -209,7 +209,7 @@
 
 - 玻璃只用在浮在内容上方的控件层,内容(卡片、条目)保持不透明。
 - 顶栏:透明玻璃,滚动时卡片在下面模糊透出;原来的上滑收起 / 隐藏状态栏逻辑不变。底栏:悬浮的玻璃胶囊(左右 20dp、离底 10dp),选中项是浅色胶囊底;随顶栏一起滑出。
-- 模糊用 Haze(`dev.chrisbanes.haze:haze:1.7.2`;2.x 需要更新的 Kotlin)。Android 12+ 真模糊,更老的系统退化成接近不透明的底色。样式集中在 `ui/Glass.kt`:`glass()` 真模糊 + 边缘高光,`glassFlat()` 用于在内容里面的控件(搜索框、筛选按钮),不模糊只做半透明 + 高光。
+- 模糊用 Haze(`dev.chrisbanes.haze:haze:1.7.2`;2.x 需要更新的 Kotlin)。**Android 12L(SDK 32)+ 才真模糊**,更老的系统(包括 Android 12)退化成接近不透明的底色(`Glass.kt` 的 `GLASS_BLUR`,`rememberHazeState(blurEnabled = …)`)。原因(2026-10-15 查到):SDK < 32 时 Haze 每一帧都强制重画模糊,浏览页静止时也 60 帧 / 秒、占一个核的 65%,开着屏幕一夜耗电。样式集中在 `ui/Glass.kt`:`glass()` 真模糊 + 边缘高光,`glassFlat()` 用于在内容里面的控件(搜索框、筛选按钮),不模糊只做半透明 + 高光。
 - 筛选弹层在独立窗口里,Haze 够不着,用 90% 不透明底色 + 高光边。
 - **网页同样是 Liquid Glass**(CSS `backdrop-filter`,变量 `--glass*` 在三个主题块里各定义一份):顶栏、筛选弹层 / 下拉是毛玻璃,搜索框和筛选按钮是半透明 + 顶部高光,条目弹窗的遮罩带轻微模糊。窄屏(<640px)视图标签变成底部悬浮的玻璃胶囊——JS 会把 `#tabs` 移出 header(header 的 backdrop-filter 会让里面的 `position:fixed` 失效),宽屏再移回去。
 
