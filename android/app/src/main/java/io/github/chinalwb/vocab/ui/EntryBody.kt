@@ -352,8 +352,8 @@ fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifi
 
 /**
  * [NotesPage] for any sectioned blocks — the entry page's notes and 阅读's details share it, the
- * 卡片 | 全部 switch and its remembered choice included. [footer] goes after the last section:
- * at the end of the long page, or under the last card.
+ * 卡片 | 全部 switch and its remembered choice included. [footer] goes at the end of the long page;
+ * [lastCard], when given, is an extra tab after the sections in 卡片 mode only (阅读's 我的原句).
  */
 @Composable
 fun NotesPager(
@@ -365,6 +365,7 @@ fun NotesPager(
     modifier: Modifier = Modifier,
     title: String = "笔记",
     footer: (@Composable () -> Unit)? = null,
+    lastCard: Section? = null,
 ) {
     // 分卡 (one section at a time) or 全部展开 (one long page): the user keeps both (用户 2026-10-14),
     // remembered across entries and launches — the same switch and key the carousel had
@@ -372,7 +373,8 @@ fun NotesPager(
     val prefs = remember { ctx.getSharedPreferences("notes", Context.MODE_PRIVATE) }
     var all by remember { mutableStateOf(prefs.getBoolean("all", false)) }
     val scroll = rememberScrollState()
-    val pager = rememberPagerState { sections.size }
+    val cards = if (lastCard == null) sections else sections + lastCard
+    val pager = rememberPagerState { cards.size }
     val scope = rememberCoroutineScope()
     val tops = remember(anchor) { androidx.compose.runtime.mutableStateMapOf<Int, Int>() }
     val density = androidx.compose.ui.platform.LocalDensity.current
@@ -386,14 +388,16 @@ fun NotesPager(
     var pending by remember(anchor) { mutableStateOf<Int?>(null) }
     val pendingTop = pending?.let { tops[it] }
     LaunchedEffect(pendingTop) { if (pendingTop != null) { scroll.scrollTo(pendingTop); pending = null } }
-    val tabbed = sections.size > 1 && !all
+    val tabbed = cards.size > 1 && !all
+    // the chips follow what's on screen: every card in 卡片 mode, the long page's sections in 全部
+    val tabs = if (tabbed) cards else sections
     val current = if (tabbed) pager.currentPage else inView
     val chips = rememberLazyListState()
-    LaunchedEffect(current) { if (sections.size > 1) chips.animateScrollToItem((current - 1).coerceAtLeast(0)) }
+    LaunchedEffect(current) { if (tabs.size > 1) chips.animateScrollToItem((current - 1).coerceAtLeast(0)) }
     val ink = MaterialTheme.colorScheme.onSurface
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Column(modifier) {
-        if (sections.size > 1) {
+        if (cards.size > 1) {
             // "笔记 ——— 卡片 | 全部": the switch on a row of its own, so it can't pass for a section chip
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 18.dp, end = 12.dp, top = 12.dp)) {
                 Text(title, style = MaterialTheme.typography.labelLarge, color = muted)
@@ -408,7 +412,7 @@ fun NotesPager(
                             prefs.edit().putBoolean("all", all).apply()
                             // keep the same section in view across the switch; the long page
                             // scrolls once it has measured where that section is (below)
-                            if (all) pending = at else scope.launch { pager.scrollToPage(at) }
+                            if (all) pending = at.coerceAtMost(sections.lastIndex) else scope.launch { pager.scrollToPage(at) }
                         }
                     },
                     labels = "卡片" to "全部",
@@ -419,7 +423,7 @@ fun NotesPager(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 12.dp),
             ) {
-                itemsIndexed(sections) { i, s ->
+                itemsIndexed(tabs) { i, s ->
                     val on = i == current
                     Text(
                         s.label,
@@ -448,8 +452,7 @@ fun NotesPager(
                 Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                Section(anchor, sections[page], heading = false, onXref, quiz, muted)
-                if (page == sections.lastIndex) footer?.invoke()
+                Section(anchor, cards[page], heading = false, onXref, quiz, muted)
             }
         } else Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 32.dp),

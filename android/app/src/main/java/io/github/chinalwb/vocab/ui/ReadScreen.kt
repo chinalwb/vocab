@@ -2,6 +2,8 @@ package io.github.chinalwb.vocab.ui
 
 import io.github.chinalwb.vocab.data.LibraryState
 import io.github.chinalwb.vocab.data.Read
+import io.github.chinalwb.vocab.data.Block
+import io.github.chinalwb.vocab.data.Section
 import io.github.chinalwb.vocab.data.splitSections
 import androidx.compose.runtime.remember
 import androidx.compose.animation.AnimatedVisibility
@@ -99,7 +101,8 @@ private fun ReadRow(r: Read, onClick: () -> Unit) {
 
 /**
  * One 阅读 item: the Chinese on top, then 常用说法, C1 说法 and 差别 with the entry page's
- * 卡片 | 全部 switch (the same remembered choice); 我的原句 sits folded after the last of them.
+ * 卡片 | 全部 switch (the same remembered choice). 我的原句 is the last tab in 卡片 mode and sits
+ * folded at the end in 全部 mode.
  */
 @Composable
 fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modifier: Modifier = Modifier) {
@@ -120,6 +123,8 @@ fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modi
             r.anchor, sections, r.blocks, onXref, quiz = null,
             modifier = Modifier.weight(1f),
             title = "对比",
+            // 我的原句: its own tab in 卡片 mode (用户 2026-10-14), folded at the end of the long page
+            lastCard = if (r.original.isEmpty()) null else Section("我的原句", listOf(Block.Quote(r.original))),
             footer = if (r.original.isEmpty()) null else { {
                 Column(Modifier.padding(top = 8.dp)) {
                     HorizontalDivider()
