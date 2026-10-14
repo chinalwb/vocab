@@ -294,7 +294,7 @@ private fun RunHead(big: Int, caption: String, fill: Float, counts: List<Pair<St
 
 /**
  * One card of a run (UI refactor, direction B): a progress bar on top, then one card at a time.
- * 复习 shows the notes first on a card in the entry's level colour (看完了,翻面做题); the
+ * 复习 shows the notes first on a card in the entry's level colour (翻面做题); the
  * question is a white card edged in that colour, the answer under it, the chips and 显示答案 at
  * the bottom; then the verdict, the notes, and 下一题 — with the move to the next stage offered
  * once this entry has earned it. Going from the notes to the question turns the card over.
@@ -412,7 +412,7 @@ private fun QuizCard(
         }
         Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             when {
-                studying -> Button(onClick = onStudied, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("看完了,翻面做题", fontSize = 17.sp, fontWeight = FontWeight.Bold) }
+                studying -> Button(onClick = onStudied, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("翻面做题", fontSize = 17.sp, fontWeight = FontWeight.Bold) }
                 !session.revealed -> {
                     if (bank != null) WordBankChips(bank)
                     Button(onClick = { onReveal(draft) }, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text("显示答案", fontSize = 17.sp, fontWeight = FontWeight.Bold) }
