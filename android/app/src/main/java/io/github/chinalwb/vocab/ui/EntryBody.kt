@@ -375,37 +375,27 @@ fun NotesPage(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz?, modifi
     LaunchedEffect(current) { if (sections.size > 1) chips.animateScrollToItem((current - 1).coerceAtLeast(0)) }
     val ink = MaterialTheme.colorScheme.onSurface
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    // the notes as one card on the page: they read as one bundle (用户 2026-10-14)
-    val card = RoundedCornerShape(24.dp)
-    Column(
-        modifier
-            .padding(start = 12.dp, end = 12.dp, top = 12.dp)
-            .shadow(2.dp, card)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh, card)
-            .clip(card)
-    ) {
+    Column(modifier) {
         if (sections.size > 1) {
-            // "笔记 ——— 全部展开": the switch on a row of its own, so it can't pass for a section chip
+            // "笔记 ——— 卡片 | 全部": the switch on a row of its own, so it can't pass for a section chip
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 18.dp, end = 12.dp, top = 12.dp)) {
                 Text("笔记", style = MaterialTheme.typography.labelLarge, color = muted)
                 HorizontalDivider(Modifier.padding(horizontal = 12.dp).weight(1f), color = MaterialTheme.colorScheme.outline)
-                Row(
-                    Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(ink.copy(alpha = 0.07f))
-                        .clickable {
+                // 卡片 | 全部: a two-way switch like 选词 | 打字, the side in use filled
+                AnswerModeToggle(
+                    !all,
+                    { cards ->
+                        if (cards == all) {
                             val at = current
-                            all = !all
+                            all = !cards
                             prefs.edit().putBoolean("all", all).apply()
                             // keep the same section in view across the switch; the long page
                             // scrolls once it has measured where that section is (below)
                             if (all) pending = at else scope.launch { pager.scrollToPage(at) }
                         }
-                        .padding(horizontal = 10.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(if (all) "分卡显示" else "全部展开", style = MaterialTheme.typography.labelLarge, color = ink)
-                }
+                    },
+                    labels = "卡片" to "全部",
+                )
             }
             LazyRow(
                 state = chips,

@@ -359,13 +359,13 @@ fun rememberChipsMode(): Pair<Boolean, (Boolean) -> Unit> {
 
 /** The 选词 | 打字 switch, a small pill at the end of its row. */
 @Composable
-fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit) {
+fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit, labels: Pair<String, String> = "选词" to "打字") {
     val shape = RoundedCornerShape(50)
     Row(
         Modifier.clip(shape).border(1.dp, MaterialTheme.colorScheme.outline, shape).padding(2.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        listOf(true to "选词", false to "打字").forEach { (v, label) ->
+        listOf(true to labels.first, false to labels.second).forEach { (v, label) ->
             val on = v == chips
             Text(
                 label,
