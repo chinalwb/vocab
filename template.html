@@ -2054,9 +2054,11 @@ function show(it, level, i, o = {}){
     : ex ? `<p class="qprompt">${esc(plainMd(ex.zh))}</p>` : askHtml({ it, level, i }, kind({ it, level, i }));
   // the card: the notes on the front, with what's left in this stage and 自测这条 at its foot; the
   // answer sheet on the back. 学习中 / 复习 may look at the notes first; 考核 only after answering.
+  // due for 复习 today: the button reviews it (a run of one) — not before, as reviewing early stretches its intervals
+  const reviewNow = stage === "review" && reviewDue(it);
   const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true, true, memorySlide(it, stage))}</div>` +
     `<div class="card-foot"><span class="hint" id="cf-hint">${esc(progressHint(it, level, stage))}</span>` +
-    `<button class="btn" type="button" id="to-quiz">${selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
+    `<button class="btn" type="button" id="to-quiz">${reviewNow ? "复习这一条" : selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
   const backFace = `<div class="face bk">` + qsheetHtml({
     meta: qMeta(), toggle: answerOf(it, level, ex) ? modeToggleHtml(step) : "", prompt: promptHtml(),
     stats: stStatsLine(it.anchor, curEx()),
@@ -2104,7 +2106,7 @@ function show(it, level, i, o = {}){
     sheet.classList.toggle("full", cardFull);
     sheet.querySelectorAll(".full").forEach(f => { f.innerHTML = cardFull ? ICON_UNFULL : ICON_FULL; f.setAttribute("aria-label", cardFull ? "退出全屏" : "全屏"); });
   }));
-  sheet.querySelector("#to-quiz").addEventListener("click", () => flip(true));
+  sheet.querySelector("#to-quiz").addEventListener("click", () => reviewNow ? reviewOne({ it, level, i }) : flip(true));
   const pre = sheet.querySelector("#to-notes-pre");
   if (pre) pre.addEventListener("click", () => flip(false));
 
@@ -2577,6 +2579,18 @@ const summaryHtml = (big, caption, chips, bar, btn, enabled, note) =>
     `<div class="ssum-lg">${["没做过", "上次没对", "上次答对"].map((l, k) => `<span><i class="b${k}"></i>${l} ${bar[k]}</span>`).join("")}</div>` : "") +
   `<button class="btn" type="button" id="qz-start"${enabled ? "" : " disabled"}>${btn}${enabled ? " →" : ""}</button>` +
   (note ? `<p class="ssum-note">${note}</p>` : "") + `</section>`;
+// a run's state: 开始复习 / 开始考核 queue the stage's entries, 复习这一条 just one (its notes already read)
+const newRun = (stage, queue, extra = {}) => ({ stage, queue, index: 0, studied: false, revealed: false, draft: "", done: 0, ok: 0, checked: 0,
+  advanced: 0, missed: false, promoted: [], demoted: [], k: 0, step: 1, entryOk: true, ...extra });
+// 复习这一条 (用户 2026-10-16): an entry due for 复习 today, reviewed from its own page as a run of one —
+// the same rules as 开始复习 (every sentence, the SM-2 card graded once, the moves) — where the page's
+// own 自测 never grades. Same as startReviewOf() in VocabViewModel.kt.
+const reviewDue = it => { const c = rev.cards[it.anchor]; return !c || c.due <= dayNo(); };
+function reviewOne(t){
+  close();
+  quiz = newRun("review", [t], { studied: true });
+  setView("review");
+}
 function renderStageTab(stage, el){
   const s = quiz, running = !!(s && s.stage === stage);
   document.body.classList.toggle("running", running);
@@ -2639,7 +2653,7 @@ function renderStageTab(stage, el){
         `<span class="t"><b>${stTitle(t.it)}</b><small>${esc(sub(t))}</small></span><span class="tg">${lvShort(t.level)}</span></button>`).join("") + `</div>`).join("");
   const start = el.querySelector("#qz-start");
   if (start) start.addEventListener("click", () => {
-    quiz = { stage, queue: quizQueue(stage), index: 0, studied: false, revealed: false, draft: "", done: 0, ok: 0, checked: 0, advanced: 0, missed: false, promoted: [], demoted: [], k: 0, step: 1, entryOk: true };
+    quiz = newRun(stage, quizQueue(stage));
     render(); window.scrollTo(0, 0);
   });
   const rd = el.querySelector("#qz-ready");
