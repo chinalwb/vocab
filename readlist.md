@@ -331,3 +331,54 @@
 
 - ⚠️ [直译] ==which means it is== → **for** —— "意思是它是……"逐字翻译,绕了一圈;*the word for + 名词* 就够了。
 - ⚠️ [逻辑] ==the short form of the initial letters== → **a short form made from the first letters** —— 缩写是"由首字母组成的短形式",不是"首字母的短形式"。
+
+<a id="r-as-i-understand-it"></a>
+## 我看了这个 MR 改动的文件,按我的理解说一下它是怎么工作的;有理解错的地方请指出来。
+
+- 日期:2026-10-15
+- 关键词:as I understand it · in turn · the single entry point for
+
+**常用说法:**
+
+> I looked at the changed files in this MR. This is how it works, I think:
+> • PushManager is the main class for showing and cancelling notifications.
+> • Showing: there is a new tag parameter, so every notification has a tag now.
+> • Cancelling: PushManager adds an onSessionShown listener. It is called when the user opens a session. ChatScreen calls OnScreenSession.register() when a session is shown, and then the listener clears the notifications of that session.
+> Please tell me if I'm wrong.
+
+**C1 说法:**
+
+> I walked through the changed files in this MR. Here's how it works, **as I understand it**:
+> • PushManager is **the single entry point for** displaying and cancelling notifications.
+> • Displaying: a new `tag` parameter has been added, so every notification **is now posted with** a tag.
+> • Cancelling: PushManager registers an `onSessionShown` listener, **which fires when** the user opens a session. ChatScreen calls `OnScreenSession.register()` when a session is shown, **which in turn triggers** the listener to clear **that session's** notifications.
+> **Let me know if I've got any of this wrong.**
+
+**差别:**
+
+- **as I understand it** —— 插入语"按我的理解",放句末或句中,先说明这是自己的理解、可能有偏差;对应 *I think*。也说 *as far as I can tell*。
+- **the single entry point for** —— "所有调用都经过它的唯一入口",比 *the main class for* 更准确地说出它在架构里的位置。
+- **is now posted with a tag** —— Android 里通知是 *post* 出去的;*now* 点出这是这次 MR 带来的变化;对应 *has a tag now*。
+- **which fires when** —— 监听器、事件"触发"用 *fire*,描述代码行为用一般现在时;对应 *It is called when*。
+- **which in turn triggers** —— *in turn* = "进而、接着又",用在 A 引起 B、B 再引起 C 的连锁里;对应 *and then*,*then* 只说先后,*in turn* 说的是因果一环扣一环。例句:
+  - *The config change restarts the service, which in turn clears the cache.* 配置一改,服务就会重启,服务重启又会把缓存清掉。
+  - *Faster builds mean quicker reviews, which in turn let us ship more often.* 构建更快,评审就更快,我们也就能更频繁地发版。
+  - 另一个意思是"依次、轮流":*Each reviewer commented in turn.* 每个评审人依次发表了意见。
+- **that session's notifications** —— 说清是哪些通知;对应 *the notifications of that session*,所有格更简洁。
+- **Let me know if I've got any of this wrong.** —— 对着作者复述自己的理解时常用的收尾,语气谦和,也请对方纠正;对应 *Please tell me if I'm wrong*。
+
+**我的原句:**
+
+> I walked through the changed files in this MR. Here is how it works ==by my understanding==. First off, PushManager is the ==exis== for displaying and cancelling notifications. ==There is a new parameter called "tag" added== for displaying notifications. So every notification is delivered with a tag. As for cancelling, PushManager sets up an ==on session shown listener==, which ==will be called== when ==user== opens ==as sessions==. So in ChatScreen, ==it== calls OnScreenSession.==registerer== when a session is shown. ==Subsequently==, the session shown listener is fired to ==clear off== the related notifications.
+
+- ⚠️ [搭配] ==by my understanding== → **as I understand it** —— 固定说法是 *as I understand it* 或 *to my understanding*。
+- ❌ [词形] ==exis== → **the single entry point** —— *exis* 不是英文单词;*axis*(轴线)也不能表示"核心入口"。
+- ⚠️ [结构] ==There is a new parameter called "tag" added== → **A new `tag` parameter has been added** —— *There is … added* 结构拖沓,直接用被动句。
+- ⚠️ [词形] ==on session shown listener== → **an `onSessionShown` listener** —— 多个词组成的修饰语要加连字符,或者直接写代码里的名字。
+- ⚠️ [动词] ==will be called== → **fires** —— 描述代码的行为用一般现在时。
+- ❌ [冠词] ==user== → **the user** —— 单数可数名词前要有冠词。
+- ❌ [词形] ==as sessions== → **a session** —— 打错了;用户一次打开的是一个会话。
+- ⚠️ [逻辑] ==it== → **ChatScreen** —— *it* 指代不清,写出是谁在调用。
+- ⚠️ [词形] ==registerer== → **`register()`** —— 方法名照代码原样写,加上括号和反引号。
+- ⚠️ [语气] ==Subsequently== → **which in turn** —— *subsequently* 偏书面;MR 评论里用 *which in turn* 或 *That then* 更自然,也点出因果。
+- ⚠️ [搭配] ==clear off== → **clear** —— 清除通知说 *clear* 或 *dismiss*,不说 *clear off*。
