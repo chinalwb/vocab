@@ -848,17 +848,31 @@ body.running{overflow:hidden}
 .srow .tg{font-size:calc(11px * var(--fs));padding:3px 8px;border-radius:10px;background:color-mix(in srgb,var(--card-ink) 12%,transparent);flex:none}
 .srow:focus-visible,.ready:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 /* ── 桌面:三栏书桌(用户 2026-10-15):左边分类,中间列表,右边条目;窄屏保持原样 ── */
-.side,.dock-ph{display:none}
+.side,.dock-ph,.pbtn{display:none}
 .mk-types .pill .mbar{display:none}
 @media (min-width:1100px){
   .wrap{max-width:none;padding:0}
   .top{margin-inline:0;padding:12px 24px;grid-template-columns:196px minmax(0,1fr) auto;grid-template-areas:"brand tools hx" ". fsum .";column-gap:24px}
   .top:has(#tools[hidden]){border-bottom-color:var(--glass-edge);padding-bottom:12px}
   .brand,.hx{margin-bottom:0}
+  .brand{align-items:center;gap:6px}
+  /* the two side panels fold away (buttons left of the name, or [ and ]); widths are tokens so the
+     docked entry follows */
+  :root{--sidew:220px;--listw:380px}
+  body.side-off{--sidew:0px}
+  body.list-off{--listw:0px}
+  .pbtn{display:grid;place-items:center;width:34px;height:34px;padding:0;border-radius:8px;border:0;background:none;color:var(--ink-2);cursor:pointer;flex:none}
+  .pbtn svg{width:20px;height:20px}
+  .pbtn:hover{background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink)}
+  .pbtn[aria-pressed="false"]{color:var(--ink-3)}
+  .pbtn[hidden]{display:none}
+  .pbtn:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+  .brand h1{margin-left:4px}
   .top .tally{display:none}
   .tabs{display:none}
   .search{max-width:560px;height:40px;border-radius:10px;font-size:calc(14px * var(--fs))}
-  .desk{display:grid;grid-template-columns:220px minmax(0,1fr);align-items:start}
+  .desk{display:grid;grid-template-columns:var(--sidew) minmax(0,1fr);align-items:start}
+  body.side-off .side{visibility:hidden;padding:0;border:0;overflow:hidden}
   .side{display:flex;flex-direction:column;gap:20px;position:sticky;top:calc(var(--toph,64px) + env(safe-area-inset-top,0px));
     height:calc(100dvh - var(--toph,64px) - env(safe-area-inset-top,0px));overflow-y:auto;border-right:1px solid var(--rule);padding:18px 12px 24px 16px}
   .sgrp{display:flex;flex-direction:column;gap:1px}
@@ -875,7 +889,9 @@ body.running{overflow:hidden}
   .col{min-width:0;padding:0 32px 64px}
   .pane{margin-top:28px}
   /* 浏览: the list on the left of the column, the entry docked on the right */
-  .col.ents{display:grid;grid-template-columns:380px minmax(0,1fr);padding:0}
+  .col.ents{display:grid;grid-template-columns:var(--listw) minmax(0,1fr);padding:0}
+  /* folded, the list keeps its cards (J / K and 下一个 still walk them), just out of sight */
+  body.list-off .col.ents #board,body.list-off .col.ents #empty{visibility:hidden;max-height:0;min-height:0;overflow:hidden;padding:0;border:0}
   .col.ents #board,.col.ents #empty{grid-column:1}
   .col.ents #board{border-right:1px solid var(--rule);padding:0 10px 64px;min-height:calc(100dvh - var(--toph,64px))}
   .col.ents #empty{border-right:1px solid var(--rule);margin:0}
@@ -893,7 +909,7 @@ body.running{overflow:hidden}
   .col.ents .card .meta{display:none}
   .col.ents .card .gloss{-webkit-line-clamp:1;font-size:calc(13px * var(--fs));color:var(--ink-2)}
   .col.ents .card .foot{border-top:0;padding-top:0;margin-top:3px;color:var(--ink-3)}
-  .scrim.docked{position:fixed;z-index:15;top:calc(var(--toph,64px) + env(safe-area-inset-top,0px));left:600px;right:0;bottom:0;
+  .scrim.docked{position:fixed;z-index:15;top:calc(var(--toph,64px) + env(safe-area-inset-top,0px));left:calc(var(--sidew) + var(--listw));right:0;bottom:0;
     background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;padding:20px 28px 24px;overflow:hidden;display:block}
   .scrim.docked .sheet{width:100%;max-width:860px;height:100%;margin:0 auto;box-shadow:none;border:1px solid var(--rule);background:var(--chip)}
   .scrim.docked .sheet .lvl .node{background:var(--chip)}
@@ -921,6 +937,8 @@ body.running{overflow:hidden}
 <div class="wrap">
   <header class="top">
     <div class="brand">
+      <button class="pbtn" id="sidetog" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg></button>
+      <button class="pbtn" id="listtog" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
       <h1>VoCab</h1>
       <span class="tally" id="tally"></span>
     </div>
@@ -1324,7 +1342,7 @@ function render(){
   [...tabs.children].forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === view || (view === "mistakes" && t.dataset.k === "more"))));
   colEl.classList.toggle("ents", view === "entries");
   if (scrim && scrim.classList.contains("docked") && !dockable()) close();
-  paintSide(); paintChrome();
+  paintSide(); paintChrome(); paintPanels();
   mistakesEl.hidden = !(view === "mistakes" || (view === "more" && !deskMQ.matches));
   extrasEl.hidden = view !== "more";
   tools.hidden = view !== "entries" && mistakesEl.hidden;     // the search also filters the 错题本
@@ -2652,6 +2670,21 @@ function paintChrome(){
   syncDot.title = syncState.err || "同步与设置";
 }
 deskMQ.addEventListener("change", () => { if (scrim) close(); autoOpen = true; render(); });
+// fold the sidebar / the list; remembered in this browser
+const sideTog = document.getElementById("sidetog"), listTog = document.getElementById("listtog");
+function paintPanels(){
+  const sideOff = store.get("vk.sideOff", "0") === "1", listOff = store.get("vk.listOff", "0") === "1";
+  document.body.classList.toggle("side-off", sideOff);
+  document.body.classList.toggle("list-off", listOff);
+  sideTog.setAttribute("aria-pressed", String(!sideOff));
+  sideTog.setAttribute("aria-label", sideOff ? "展开分类栏" : "收起分类栏"); sideTog.title = sideTog.getAttribute("aria-label") + "  [";
+  listTog.setAttribute("aria-pressed", String(!listOff));
+  listTog.setAttribute("aria-label", listOff ? "展开列表" : "收起列表"); listTog.title = listTog.getAttribute("aria-label") + "  ]";
+  listTog.hidden = view !== "entries";
+}
+const togglePanel = k => { store.set(k, store.get(k, "0") === "1" ? "0" : "1"); paintPanels(); };
+sideTog.addEventListener("click", () => togglePanel("vk.sideOff"));
+listTog.addEventListener("click", () => togglePanel("vk.listOff"));
 // the header's height, for the sticky sidebar and the docked entry
 const topEl = document.querySelector(".top");
 new ResizeObserver(() => document.documentElement.style.setProperty("--toph", topEl.offsetHeight + "px")).observe(topEl);
@@ -2660,6 +2693,8 @@ document.addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey || document.body.classList.contains("running")) return;
   if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable]")) return;
   if (e.key === "/") { e.preventDefault(); q.focus(); return; }
+  if (deskMQ.matches && e.key === "[") { togglePanel("vk.sideOff"); return; }
+  if (dockable() && e.key === "]") { togglePanel("vk.listOff"); return; }
   if (!dockable() || (e.key !== "j" && e.key !== "k")) return;
   const cards = visibleCards();
   if (!cards.length) return;
