@@ -98,6 +98,13 @@ class ReviewStore(context: Context) {
     }
 }
 
+/**
+ * 复习 → 考核 by itself: SM-2 right answers in a row (Card.reps) an entry needs first. Right on
+ * days 0, +1 and +3 (the intervals below) = still remembered after a three-day gap. A wrong
+ * answer sets reps back to 0. Same as PROMOTE_REPS in template.html.
+ */
+const val PROMOTE_REPS = 3
+
 fun today(): Long = LocalDate.now().toEpochDay()
 
 fun schedule(c: Card, grade: Grade, today: Long): Card {

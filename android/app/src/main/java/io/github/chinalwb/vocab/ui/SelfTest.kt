@@ -54,6 +54,7 @@ import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.data.Example
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Stage
+import io.github.chinalwb.vocab.review.PROMOTE_REPS
 import io.github.chinalwb.vocab.review.allCorrectSince
 import io.github.chinalwb.vocab.review.next
 import io.github.chinalwb.vocab.review.summary
@@ -326,10 +327,14 @@ fun rememberWordBank(answer: String, strays: List<String>, seed: Int): WordBankS
  * Moving on: once every question of an entry has been answered right since it entered its
  * stage — each example still in 自测, or a 自测题's one answer — the app offers the next stage.
  * Entries with nothing to check against (graded by me) move only by hand.
+ * 复习 → 考核 also needs the SM-2 card to have [PROMOTE_REPS] right answers in a row ([reps]), i.e.
+ * remembered across a gap of days, not just on the day; then a 复习 run moves it by itself, and
+ * entries graded by me qualify on that alone. Same rule as advanceReady() in template.html.
  */
-fun advanceReady(entry: Entry, stage: Stage, attempts: List<Attempt>, since: Long, excluded: Set<String>): Boolean {
+fun advanceReady(entry: Entry, stage: Stage, attempts: List<Attempt>, since: Long, excluded: Set<String>, reps: Int): Boolean {
     if (stage.next == null) return false
     val questions = if (entry.level == "SELFTEST") listOf("") else entry.quizExamples(excluded).map { plain(it.en) }
+    if (stage == Stage.Review) return reps >= PROMOTE_REPS && (questions.isEmpty() || attempts.allCorrectSince(since, questions))
     return attempts.allCorrectSince(since, questions)
 }
 

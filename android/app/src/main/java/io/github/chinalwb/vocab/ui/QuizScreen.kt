@@ -34,6 +34,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -60,6 +61,7 @@ import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.data.LibraryState
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.ReviewData
+import io.github.chinalwb.vocab.review.PROMOTE_REPS
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.next
 import io.github.chinalwb.vocab.review.planToday
@@ -113,6 +115,8 @@ fun QuizScreen(
     onGrade: (String, Boolean) -> Unit,
     onNext: (advance: Boolean) -> Unit,
     onEnd: () -> Unit,
+    /** 撤销 on the last page: put back what the run moved by itself */
+    onUndo: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
 ) {
@@ -120,7 +124,7 @@ fun QuizScreen(
     when {
         session != null && session.stage == stage && current != null -> QuizCard(
             session, current, selfTests[current.anchor].orEmpty(), stageTimes[current.anchor] ?: 0L, excluded[current.anchor].orEmpty(),
-            onStudied, onReveal, onGrade, onNext, onEnd, { onOpen(it, emptyList()) }, modifier,
+            review.cards[current.anchor]?.reps ?: 0, onStudied, onReveal, onGrade, onNext, onEnd, { onOpen(it, emptyList()) }, modifier,
         )
         session != null && session.stage == stage -> Column(
             modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility).padding(24.dp),
@@ -133,7 +137,14 @@ fun QuizScreen(
                     (if (session.advanced > 0) ",${session.advanced} 条进入了${session.stage.next?.tab ?: ""}" else "") + "。",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Button(onClick = onEnd) { Text("返回") }
+            // what the run moved by itself, by name, with one 撤销 for all of it
+            val titles = { list: List<String> -> list.mapNotNull { lib.data?.byAnchor?.get(it)?.title }.joinToString("、") }
+            if (session.promoted.isNotEmpty()) Text("自动移到考核(复习里连续答对 $PROMOTE_REPS 次):${titles(session.promoted)}")
+            if (session.demoted.isNotEmpty()) Text("答错了,退回复习(排期从明天重新开始):${titles(session.demoted)}")
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Button(onClick = onEnd) { Text("返回") }
+                if (session.promoted.isNotEmpty() || session.demoted.isNotEmpty()) OutlinedButton(onClick = onUndo) { Text("撤销移动") }
+            }
         }
         else -> StageList(stage, lib, stages, stageTimes, selfTests, review, excluded, tiles, onOpen, onStart, modifier, contentPadding)
     }
@@ -180,8 +191,8 @@ private fun StageList(
         return
     }
     // the ones whose every question has been answered right since they came in: offered on
-    val ready = remember(mine, selfTests, stageTimes, excluded, stage) {
-        mine.filter { advanceReady(it, stage, selfTests[it.anchor].orEmpty(), stageTimes[it.anchor] ?: 0L, excluded[it.anchor].orEmpty()) }
+    val ready = remember(mine, selfTests, stageTimes, excluded, stage, review) {
+        mine.filter { advanceReady(it, stage, selfTests[it.anchor].orEmpty(), stageTimes[it.anchor] ?: 0L, excluded[it.anchor].orEmpty(), review.cards[it.anchor]?.reps ?: 0) }
     }
     val counts = { e: Entry -> selfTests[e.anchor]?.takeIf { it.isNotEmpty() }?.let(::countsShort) }
     val gloss = { e: Entry -> if (e.level == "SELFTEST") "先说出英文,再点开对答案" else cardGloss(e.gloss) }
@@ -218,7 +229,7 @@ private fun StageList(
                     bar = null,
                     button = "开始复习 ${queue.size} 条",
                     enabled = queue.isNotEmpty(),
-                    note = "先看一遍笔记,再翻面做例句。答对了下次隔得更久,答错了明天再来。",
+                    note = "先看一遍笔记,再翻面做例句。答对了下次隔得更久,答错了明天再来;连续答对 3 次(隔开几天)、例句也都答对过,就自动移到考核。",
                     onStart = onStart,
                 )
             } else {
@@ -422,6 +433,7 @@ private fun QuizCard(
     attempts: List<Attempt>,
     since: Long,
     excluded: Set<String>,
+    reps: Int,
     onStudied: () -> Unit,
     onReveal: (String) -> Unit,
     onGrade: (String, Boolean) -> Unit,
@@ -442,7 +454,10 @@ private fun QuizCard(
             .filter { it.isNotBlank() && it != answer }
         rememberWordBank(answer, strayWords(answer, others, seed), seed).also { st -> LaunchedEffect(st.pickedText) { draft = st.draft } }
     } else null
-    val ready = session.revealed && advanceReady(entry, session.stage, attempts, since, excluded)
+    val ready = session.revealed && advanceReady(entry, session.stage, attempts, since, excluded, reps)
+    // 复习 → 考核 happens by itself on 下一题; 考核 sends a miss back to 复习 — say so, no button
+    val auto = ready && session.stage == Stage.Review
+    val back = session.revealed && session.stage == Stage.Test && session.missed && !ready
     val color = levelColor(entry.level)
     // the turn from the notes (front) to the question (back), 复习 only
     val angle by androidx.compose.animation.core.animateFloatAsState(
@@ -495,7 +510,11 @@ private fun QuizCard(
                                 ex != null -> RevealVerdict(draft, ex.en, stats)
                                 else -> MovedResult(draft, session.graded) { onGrade(draft, it) }
                             }
-                            if (ready) AdvanceBanner(session.stage) { onNext(true) }
+                            when {
+                                auto -> AutoMoveNote("复习里连续答对 $PROMOTE_REPS 次了,下一题时自动移到考核")
+                                back -> AutoMoveNote("没答对,下一题时退回复习,排期从明天重新开始")
+                                ready -> AdvanceBanner(session.stage) { onNext(true) }
+                            }
                             NotesForQuestion(entry, ex, onXref, onAll = { onXref(entry.anchor) })
                             SelfTestHistory(attempts.at(ex), one = ex != null)
                         }
@@ -505,7 +524,7 @@ private fun QuizCard(
                             if (bank != null) WordKeys(bank)
                             SheetButton("显示答案") { onReveal(draft) }
                         } else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                            if (ready) SheetButton("移到${session.stage.next?.tab}", Modifier.weight(1f), filled = false) { onNext(true) }
+                            if (ready && !auto) SheetButton("移到${session.stage.next?.tab}", Modifier.weight(1f), filled = false) { onNext(true) }
                             SheetButton(if (session.index + 1 < session.queue.size) "下一题 ›" else "完成", Modifier.weight(1f)) { onNext(false) }
                         }
                     },
@@ -513,6 +532,19 @@ private fun QuizCard(
             }
         }
     }
+}
+
+/** What 下一题 will do to this entry by itself (no button: the run decides). */
+@Composable
+private fun AutoMoveNote(text: String) {
+    Text(
+        text,
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.6f), RoundedCornerShape(12.dp))
+            .padding(horizontal = 14.dp, vertical = 10.dp),
+    )
 }
 
 /** 复习's front: the notes on a card in the level colour, with 翻面做题 at its foot. */

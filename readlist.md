@@ -244,3 +244,141 @@
 
 - ⚠️ [逻辑] ==sync it== → **merge main back** —— *it* 指 this branch 还是 main 不清楚。
 - ⚠️ [词形] ==new version apk== → **new APK** —— 缩写要大写;*new* 已经表示新版本。
+
+<a id="r-given-how-it-works"></a>
+## 按照 SRS 的原理,你建议怎么把条目从「复习」自动移到「考核」?
+
+- 日期:2026-10-15
+- 关键词:given how … works · how would you suggest we
+
+**常用说法:**
+
+> According to how SRS works, what is your advice for moving entries from Review to Test automatically?
+
+**C1 说法:**
+
+> **Given how SRS works**, **how would you suggest we automatically promote** entries from Review to Test?
+
+**差别:**
+
+- **Given how SRS works** —— *given* 是"考虑到……、既然……",把原理当作前提;*according to* 多用于"据某人 / 某来源说",后面接 *how it works* 不太贴切。
+- **how would you suggest we …** —— 直接问"你建议我们怎么做",*would* 让语气更客气;对应 *what is your advice for moving*,名词化的问法更绕。
+- **automatically promote** —— *promote* 是"升级、晋级",比 *move* 更准确地说出"进到下一阶段";副词放在动词前面,不用拖到句尾。
+
+**我的原句:**
+
+> So, ==according to how SRS works==, ==what is your advice for== moving entries from 复习 to 考核 automatically?
+
+- ⚠️ [搭配] ==according to how SRS works== → **given how SRS works** —— *according to* 引出信息来源,表示"考虑到这个原理"用 *given*。
+- ⚠️ [直译] ==what is your advice for== → **how would you suggest we** —— "你的建议是什么"直译成名词结构,问做法时用 *how would you suggest we + 动词原形* 更自然。
+
+<a id="r-didnt-pick-up"></a>
+## 我在新浏览器里打开网页版,发现它没有同步我的进度。我猜是因为它没有我的 GitHub PAT,所以找不到进度文件了。可我想填 PAT 的时候,却找不到原来那个输入框。
+
+- 日期:2026-10-15
+- 关键词:didn't pick up · lost track of · the input field that used to be there
+
+**常用说法:**
+
+> I opened the web app at chinalwb.github.io/vocab in a new browser, but it wasn't in sync with my progress. I think it couldn't find the progress file because it didn't have my GitHub PAT. When I tried to enter the PAT, I couldn't find the input field.
+
+**C1 说法:**
+
+> I opened the web app at chinalwb.github.io/vocab in a new browser, and it **didn't pick up** my progress. I **suspect** it **lost track of** the progress file because it didn't have my GitHub PAT. But when I went to enter the PAT, I couldn't find **the input field that used to be there**.
+
+**差别:**
+
+- **didn't pick up my progress** —— *pick up* 是"(自动)获取、接上",说的是新浏览器根本没拿到进度;对应 *wasn't in sync with*,只描述状态。
+- **I suspect** —— 猜测一件不太好的事、还算有把握时用 *suspect*,比 *I think / I guess* 更书面、更精确。
+- **lost track of** —— 固定搭配"不再掌握……的下落",不加 *the*;对应 *couldn't find*。
+- **the input field that used to be there** —— *used to be there* 点出"原来有、现在不见了",正是要说的意思;对应常用说法里只说 *the input field*。
+
+**我的原句:**
+
+> I opened ==https://chinalwb.github.io/vocab/ web app== in a new browser, but I found it ==didn't stay in sync== with my progress. I guess it was because it lost ==the track of== the ==rogress== file ==as it may not have== the PAT for my ==Github==. When I tried to fill in the PAT, I ==didn't find== the input ==which previously worked well==.
+
+- ⚠️ [冠词] ==https://chinalwb.github.io/vocab/ web app== → **the web app at https://…** —— 网址当修饰语时前面要有冠词,更自然的是 *the web app at + 网址*。
+- ⚠️ [逻辑] ==didn't stay in sync== → **didn't pick up my progress** —— *stay in sync* 暗示原来同步、后来断了;新浏览器从没同步过。
+- ❌ [冠词] ==the track of== → **lost track of** —— 固定搭配 *lose track of*,不加 *the*。
+- ❌ [词形] ==rogress== → **progress** —— 拼写。
+- ⚠️ [动词] ==as it may not have== → **because it didn't have** —— 前文是过去时,这里也用过去时;*as* 表原因容易有歧义,用 *because*。
+- ⚠️ [词形] ==Github== → **GitHub** —— 专有名词大小写。
+- ⚠️ [动词] ==didn't find== → **couldn't find** —— 表示"找不到"用 *couldn't*,强调能力 / 结果。
+- ⚠️ [逻辑] ==which previously worked well== → **that used to be there** —— 要说的是"原来有、现在不见了",不是"原来好用"。
+
+<a id="r-what-do-you-call"></a>
+## 用一个短语里各个词的首字母组成的那种词,叫什么?
+
+- 日期:2026-10-15
+- 关键词:what do you call · formed from the initial letters
+
+**常用说法:**
+
+> What's the word for a short form made from the first letters of a phrase?
+
+**C1 说法:**
+
+> **What do you call** a word **formed from the initial letters** of a phrase?
+
+**差别:**
+
+- **What do you call …?** —— 问"这个东西叫什么"最地道的句型;对应 *What's the word for …?*,后者也自然,但没这么口语化。
+- **a word formed from the initial letters** —— *formed from* 说清这个词是"由首字母组成的",*initial letters* 比 *first letters* 更书面;答案是 [acronym](#acronym)。
+
+**我的原句:**
+
+> What is the word ==which means it is== ==the short form of the initial letters== of a phrase?
+
+- ⚠️ [直译] ==which means it is== → **for** —— "意思是它是……"逐字翻译,绕了一圈;*the word for + 名词* 就够了。
+- ⚠️ [逻辑] ==the short form of the initial letters== → **a short form made from the first letters** —— 缩写是"由首字母组成的短形式",不是"首字母的短形式"。
+
+<a id="r-as-i-understand-it"></a>
+## 我看了这个 MR 改动的文件,按我的理解说一下它是怎么工作的;有理解错的地方请指出来。
+
+- 日期:2026-10-15
+- 关键词:as I understand it · in turn · the single entry point for
+
+**常用说法:**
+
+> I looked at the changed files in this MR. This is how it works, I think:
+> • PushManager is the main class for showing and cancelling notifications.
+> • Showing: there is a new tag parameter, so every notification has a tag now.
+> • Cancelling: PushManager adds an onSessionShown listener. It is called when the user opens a session. ChatScreen calls OnScreenSession.register() when a session is shown, and then the listener clears the notifications of that session.
+> Please tell me if I'm wrong.
+
+**C1 说法:**
+
+> I walked through the changed files in this MR. Here's how it works, **as I understand it**:
+> • PushManager is **the single entry point for** displaying and cancelling notifications.
+> • Displaying: a new `tag` parameter has been added, so every notification **is now posted with** a tag.
+> • Cancelling: PushManager registers an `onSessionShown` listener, **which fires when** the user opens a session. ChatScreen calls `OnScreenSession.register()` when a session is shown, **which in turn triggers** the listener to clear **that session's** notifications.
+> **Let me know if I've got any of this wrong.**
+
+**差别:**
+
+- **as I understand it** —— 插入语"按我的理解",放句末或句中,先说明这是自己的理解、可能有偏差;对应 *I think*。也说 *as far as I can tell*。
+- **the single entry point for** —— "所有调用都经过它的唯一入口",比 *the main class for* 更准确地说出它在架构里的位置。
+- **is now posted with a tag** —— Android 里通知是 *post* 出去的;*now* 点出这是这次 MR 带来的变化;对应 *has a tag now*。
+- **which fires when** —— 监听器、事件"触发"用 *fire*,描述代码行为用一般现在时;对应 *It is called when*。
+- **which in turn triggers** —— *in turn* = "进而、接着又",用在 A 引起 B、B 再引起 C 的连锁里;对应 *and then*,*then* 只说先后,*in turn* 说的是因果一环扣一环。例句:
+  - *The config change restarts the service, which in turn clears the cache.* 配置一改,服务就会重启,服务重启又会把缓存清掉。
+  - *Faster builds mean quicker reviews, which in turn let us ship more often.* 构建更快,评审就更快,我们也就能更频繁地发版。
+  - 另一个意思是"依次、轮流":*Each reviewer commented in turn.* 每个评审人依次发表了意见。
+- **that session's notifications** —— 说清是哪些通知;对应 *the notifications of that session*,所有格更简洁。
+- **Let me know if I've got any of this wrong.** —— 对着作者复述自己的理解时常用的收尾,语气谦和,也请对方纠正;对应 *Please tell me if I'm wrong*。
+
+**我的原句:**
+
+> I walked through the changed files in this MR. Here is how it works ==by my understanding==. First off, PushManager is the ==exis== for displaying and cancelling notifications. ==There is a new parameter called "tag" added== for displaying notifications. So every notification is delivered with a tag. As for cancelling, PushManager sets up an ==on session shown listener==, which ==will be called== when ==user== opens ==as sessions==. So in ChatScreen, ==it== calls OnScreenSession.==registerer== when a session is shown. ==Subsequently==, the session shown listener is fired to ==clear off== the related notifications.
+
+- ⚠️ [搭配] ==by my understanding== → **as I understand it** —— 固定说法是 *as I understand it* 或 *to my understanding*。
+- ❌ [词形] ==exis== → **the single entry point** —— *exis* 不是英文单词;*axis*(轴线)也不能表示"核心入口"。
+- ⚠️ [结构] ==There is a new parameter called "tag" added== → **A new `tag` parameter has been added** —— *There is … added* 结构拖沓,直接用被动句。
+- ⚠️ [词形] ==on session shown listener== → **an `onSessionShown` listener** —— 多个词组成的修饰语要加连字符,或者直接写代码里的名字。
+- ⚠️ [动词] ==will be called== → **fires** —— 描述代码的行为用一般现在时。
+- ❌ [冠词] ==user== → **the user** —— 单数可数名词前要有冠词。
+- ❌ [词形] ==as sessions== → **a session** —— 打错了;用户一次打开的是一个会话。
+- ⚠️ [逻辑] ==it== → **ChatScreen** —— *it* 指代不清,写出是谁在调用。
+- ⚠️ [词形] ==registerer== → **`register()`** —— 方法名照代码原样写,加上括号和反引号。
+- ⚠️ [语气] ==Subsequently== → **which in turn** —— *subsequently* 偏书面;MR 评论里用 *which in turn* 或 *That then* 更自然,也点出因果。
+- ⚠️ [搭配] ==clear off== → **clear** —— 清除通知说 *clear* 或 *dismiss*,不说 *clear off*。

@@ -148,6 +148,7 @@
 142. [自测:不过我们可以把它当成一个独立的任务,和主重构分开处理。](#t-separate-task)
 143. [自测:按团队里新来的产品经理来写,他们不太了解这个产品。每一点都写清楚,让这条消息不看别的资料也能读懂。](#t-write-for-new-pms)
 144. [that said / that being said](#that-said)
+145. [acronym](#acronym)
 
 ---
 
@@ -4711,3 +4712,41 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 语气比 *however* 柔和,适合先肯定再提意见,在 code review 和工作消息里很好用。
 
 **我犯过的错:** 把它当成"所以"用。*They know little about this product. ~~That said~~, the message should be detailed.* 这里是因果,应改用 **so**。见 [自测:按团队里新来的产品经理来写](#t-write-for-new-pms)。
+
+<a id="acronym"></a>
+## acronym
+
+- 音标:英 /ˈækrənɪm/ 美 /ˈækrənɪm/
+- 词性:n.
+- CEFR:C1
+- 日期:2026-10-15
+- 掌握:会写
+
+**English definition:** a word formed from the first letters of the words in a phrase and pronounced as a word, such as NASA or PIN.
+
+**含义:** 首字母缩略词。用一个短语里每个词的首字母组成,**当成一个单词来读**(*NASA* 读 /ˈnæsə/,*laser*、*PIN* 也是)。它常和下面两个词一起出现:
+
+- **initialism** /ɪˈnɪʃəlɪzəm/(C2):也是首字母组成,但**逐个字母读**,如 *FBI*、*PR*、*APK*、*PAT*(读 P-A-T 时)。
+- **abbreviation** /əˌbriːviˈeɪʃn/(B2):所有缩短写法的总称,包括上面两种,也包括 *Dr.*、*e.g.*、*approx.*。
+
+**例句:**
+1. "SRS" is an acronym for "spaced repetition system".
+   SRS 是 spaced repetition system 的首字母缩写。
+2. Strictly speaking, "PR" is an initialism, not an acronym.
+   严格来说,PR 是逐字母读的缩写,不算 acronym。
+3. "Repo" is a common abbreviation for "repository".
+   repo 是 repository 的常见缩写。
+
+**怎么选:**
+
+- 能当单词读的:**acronym**(NASA、PIN、laser)
+- 逐个字母读的:**initialism**(FBI、PR、APK)——但日常说话里多数母语者也叫它 acronym,没人会挑错
+- 不确定、或者是截短的词(repo、Dr.、e.g.):**abbreviation**,最保险
+
+**常用搭配:**
+
+- *X is an acronym **for** Y*(介词用 **for**)
+- *X **stands for** Y*,最口语:*What does SRS stand for?*
+- *spell out an acronym*:写出缩写的全称
+
+**相关条目:** [阅读:用首字母组成的词叫什么?](#r-what-do-you-call) —— 问这个词时的原句和 C1 改法(在 ⋮ → 阅读)。

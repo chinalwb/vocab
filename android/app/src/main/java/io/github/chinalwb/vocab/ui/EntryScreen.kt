@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.review.Attempt
+import io.github.chinalwb.vocab.review.PROMOTE_REPS
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.next
 
@@ -91,6 +92,8 @@ fun EntryScreen(
     onStage: (Stage) -> Unit = {},
     /** examples opted out of 自测 (their plain English), and the tap that toggles one */
     excluded: Set<String> = emptySet(),
+    /** the SM-2 card's right answers in a row: 复习 → 考核 needs [PROMOTE_REPS] of them */
+    reps: Int = 0,
     onToggleExample: (String) -> Unit = {},
     /** long-press → 收藏 / 取消收藏 on an example (its plain English) */
     onFav: (String) -> Unit = {},
@@ -130,7 +133,7 @@ fun EntryScreen(
         var quizUp by rememberSaveable(entry.anchor, stage) { mutableStateOf(stage == Stage.Test) }
         val retry = { tryNo = maxOf(tryNo + 1, attempts.size); quizUp = true }
         val nextExample = { exNo = (ex?.k ?: exNo) + 1; retry() }
-        val ready = revealed && advanceReady(entry, stage, attempts, since, excluded)
+        val ready = revealed && advanceReady(entry, stage, attempts, since, excluded, reps)
         val answer = if (selfTest) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
         val (chips, setChips) = rememberChipsMode()
         val reveal = {
@@ -172,7 +175,7 @@ fun EntryScreen(
                     },
                 )
                 CardFoot(
-                    hint = progressHint(entry, stage, attempts, since, excluded),
+                    hint = progressHint(entry, stage, attempts, since, excluded, reps),
                     label = when {
                         revealed -> "回到自测"
                         selfTest -> "自测一下"
@@ -409,10 +412,22 @@ private fun CardFoot(hint: String, label: String, onClick: () -> Unit) {
     }
 }
 
-/** The panel's hint: how many sentences are still to be answered right before the next stage is offered. */
-private fun progressHint(entry: Entry, stage: Stage, attempts: List<Attempt>, since: Long, excluded: Set<String>): String {
+/**
+ * The panel's hint: how many sentences are still to be answered right before the next stage is
+ * offered — and in 复习, how many more right answers in a row its runs need (then it moves by itself).
+ */
+private fun progressHint(entry: Entry, stage: Stage, attempts: List<Attempt>, since: Long, excluded: Set<String>, reps: Int): String {
     val next = stage.next ?: return "已掌握,不再进复习和考核"
-    val left = remainingToAdvance(entry, stage, attempts, since, excluded) ?: return "可以手动移到${next.tab}"
+    val left = remainingToAdvance(entry, stage, attempts, since, excluded)
+    if (stage == Stage.Review) {
+        val more = PROMOTE_REPS - reps
+        val todo = listOfNotNull(
+            left?.takeIf { it > 0 }?.let { if (entry.level == "SELFTEST") "答对这道题" else "再答对 $it 句" },
+            more.takeIf { it > 0 }?.let { "复习里再连续答对 $it 次" },
+        )
+        return if (todo.isEmpty()) "都做到了,可以移到${next.tab}" else todo.joinToString(",") + ",就自动移到${next.tab}"
+    }
+    left ?: return "可以手动移到${next.tab}"
     return when {
         left == 0 -> "题都答对过了,可以移到${next.tab}"
         entry.level == "SELFTEST" -> "答对这道题可移到${next.tab}"
