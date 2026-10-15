@@ -4982,6 +4982,15 @@
     "via": "entry",
     "ex": "There was a brief service interruption on the server just now while the test cases were executing."
    }
+  ],
+  "defer": [
+   {
+    "t": 1792053745297,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Students can defer their admission to the following academic year."
+   }
   ]
  },
  "favs": {
