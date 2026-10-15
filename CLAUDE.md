@@ -205,6 +205,16 @@
 - 版本:v2.0(versionCode 72);v2.0.1(74)去掉 Android 12 及以下的真模糊(见「App 视觉」)。
 - **网页同款**(template.html,2026-10-15):条目弹层改成中性底,`.lv` 轨道和 `.mband` 照旧;笔记卡片 `.face.fr` 是级别色,`notesHtml(it, true)` 输出 `.nv.fill.v2`,顶上一行 `.nv-bar`(分节标签 + `.nv-all.ib` 卡片/全部图标 + ⤢ `.full.ib`),底部 `.card-foot`(`progressHint()` + 「自测这条 →」)。背面 `.face.bk` 是答题纸 `qsheetHtml()`:`.qcard`(`.qmeta` 带选词|打字、`.qprompt`、`.qstats`、「你的句子」框 `.ybox`)+ `.qpanel`(`.wb-keys` 2×2 词块 + ⌫ `.wb-bs`、显示答案、揭晓后的 `.row2`)。选词 / 打字的切换都走 `wireAnswer()`,词块是 `mountBank(…, ctl)`(清空 / ⌫ / 提示由 ctl 管)。揭晓用 `verdictHtml()`(反色判定条 `.vbar`),下面 `notesForQuestionHtml()` + `decorateNotes()`(这句高亮 `li.lit`)。显示答案面时弹层加 `.quizzing`(胶囊和轨道收起)。复习 / 考核 tab 是 `summaryHtml()` 概况卡 + `.ready` 提示条 + `.srow` 分组列表(`renderStageTab()`);做题是全屏的 `.run`(`renderQuizCard()`,`body.running`),复习先看 `.scard` 笔记卡。
 
+### 网页桌面版:三栏书桌(用户 2026-10-15,网页不必跟 App 一个样)
+
+设计稿:https://claude.ai/artifact/PxXkUCTP3e9yP5CY7N1NMR 。只在宽度 ≥ 1100px 时生效(`deskMQ`),窄屏(平板、手机)保持原来的标签栏 / 底部胶囊和弹层。
+- **配色**:中性色换成冷灰(浅 `#f3f4f6` / 深 `#14161a`),新增 `--accent`(蓝墨水色,浅 `#2b4acb` / 深 `#8ea2ff`)和阶段色 `--st-learn` / `--st-test` / `--st-done`。级别色卡片不变。
+- **顶栏**:品牌 · 搜索 · 「今天要复习 N 条 →」(`#today`,点了去复习;没有要复习的变成灰色「今天的复习做完了」)· 同步状态 `#syncdot`(点了去「练习与同步」)· 主题。这两个按钮 640px 以下隐藏。`paintChrome()` 画它们,`render()` 和 `paintSync()` 都会调。
+- **左栏** `#side`(`SIDE` / `paintSide()`):学习阶段(学习中 = 浏览 + 进度筛选 learn;复习 / 考核 / 已掌握 = 原来的 tab)、分类(全部、A1–C2、术语、语法、句子订正、自测题,点了设置 `typeF` / `cefrF` 并回到浏览)、其他(错题本、练习与同步)。数字随进度变。
+- **浏览**:`.col.ents` 两列,左边 380px 是紧凑的条目行(级别色小方块 + 标题 + 一行释义),右边是停靠的条目:还是 `show()` 那个弹层,只是加了 `.scrim.docked`(固定在右栏、不模糊、点空白不关、`aria-modal=false`),当前条目在列表里加 `.sel`(`markSel()`)。进入浏览时自动打开列表第一条(`autoOpen`,不抢焦点)。快捷键:`/` 搜索,J / K 上下换条(只在停靠时)。
+- **错题本**:桌面上是单独的视图 `view = "mistakes"`(窄屏仍在「更多」里和练习、同步放一起);左边是十类错误的条形图(`.mk-types .mbar`,宽度按最多那类算)和「发消息前 30 秒自检」,右边两列错题卡。
+- **复习 / 考核做题**照旧是全屏 `.run`,本身就是设计稿里的专注模式。
+
 ### 今天的练习 · 导出 PDF(用户 2026-10-14,只做了 App)
 
 - **记什么**:条目页自测、复习、考核里**有标准答案**的题(例句、自测题)每揭晓一次,记一对:中文题目、我写的、答案;没写就看算「没写」。自己判断对错的条目不记(没有答案可配对)。练习页的仿写 / 段落也不记。

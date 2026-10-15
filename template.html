@@ -16,20 +16,20 @@
   /* Same as the App: Atkinson Hyperlegible for Latin; Chinese falls through to Noto Sans SC,
      the face Android draws Chinese in (Noto Sans CJK), so both read alike on every screen. */
   --font:"Atkinson Hyperlegible","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
-  --ground:#f7f6f2;
-  --ink:#1f1f1e;
-  --ink-2:#4a4944;
-  --ink-3:#77756c;
-  --rule:#e2e0d8;
+  --ground:#f3f4f6;
+  --ink:#15171c;
+  --ink-2:#4b5060;
+  --ink-3:#6b7080;
+  --rule:#e3e5ea;
   --chip:#ffffff;
-  --chip-on:#1f1f1e;
-  --chip-on-ink:#f7f6f2;
-  --shadow:0 1px 2px rgba(31,31,30,.10), 0 1px 3px 1px rgba(31,31,30,.07);
-  --shadow-lift:0 2px 6px rgba(31,31,30,.14), 0 8px 20px -6px rgba(31,31,30,.18);
-  --scrim:rgba(31,31,30,.42);
-  --card-ink:#1f1f1e;
-  --card-ink-2:#4a4944;
-  --card-edge:rgba(31,31,30,.10);
+  --chip-on:#15171c;
+  --chip-on-ink:#f3f4f6;
+  --shadow:0 1px 2px rgba(21,23,28,.10), 0 1px 3px 1px rgba(21,23,28,.07);
+  --shadow-lift:0 2px 6px rgba(21,23,28,.14), 0 8px 20px -6px rgba(21,23,28,.18);
+  --scrim:rgba(21,23,28,.42);
+  --card-ink:#15171c;
+  --card-ink-2:#4b5060;
+  --card-edge:rgba(21,23,28,.10);
 
   --a1-1:#dcecd4; --a1-2:#cde5c6; --a1-3:#e7f2e1;
   --a2-1:#cbe7e1; --a2-2:#bbdfd8; --a2-3:#dbefeb;
@@ -42,23 +42,24 @@
   --sn-1:#e8d7c3; --sn-2:#dfcaaf; --sn-3:#f1e5d7;
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
 
-  --err:#c2412d; --warn:#b7791f; --mk:#ffffff; --tag:#ece9e0; --tag-ink:#4a4944;
+  --accent:#2b4acb; --accent-ink:#ffffff; --st-learn:#8a8f9c; --st-test:#e0812f; --st-done:#3e9b5b;
+  --err:#c2412d; --warn:#b7791f; --mk:#ffffff; --tag:#e9ebef; --tag-ink:#4b5060;
   /* liquid glass (after iOS 26): frosted controls floating over the cards */
-  --glass:rgba(247,246,242,.55); --glass-strong:rgba(247,246,242,.78);
-  --glass-fill:rgba(255,255,255,.66); --glass-rim:rgba(255,255,255,.9); --glass-edge:rgba(31,31,30,.09);
-  --glass-shadow:0 8px 28px rgba(31,31,30,.12), 0 1px 2px rgba(31,31,30,.06);
+  --glass:rgba(243,244,246,.72); --glass-strong:rgba(243,244,246,.86);
+  --glass-fill:rgba(255,255,255,.66); --glass-rim:rgba(255,255,255,.9); --glass-edge:rgba(21,23,28,.09);
+  --glass-shadow:0 8px 28px rgba(21,23,28,.12), 0 1px 2px rgba(21,23,28,.06);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme: dark;
-    --ground:#1b1b19;
-    --ink:#eceae2;
-    --ink-2:#c3c0b5;
-    --ink-3:#928f84;
-    --rule:#343330;
-    --chip:#2a2926;
-    --chip-on:#eceae2;
-    --chip-on-ink:#1b1b19;
+    --ground:#14161a;
+    --ink:#e8eaee;
+    --ink-2:#b9bdc7;
+    --ink-3:#8a8f9c;
+    --rule:#2a2e36;
+    --chip:#1e2127;
+    --chip-on:#e8eaee;
+    --chip-on-ink:#14161a;
     --shadow:0 1px 2px rgba(0,0,0,.45), 0 1px 3px 1px rgba(0,0,0,.3);
     --shadow-lift:0 2px 8px rgba(0,0,0,.55), 0 10px 24px -6px rgba(0,0,0,.5);
     --scrim:rgba(0,0,0,.62);
@@ -77,22 +78,23 @@
     --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
-    --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
-  --glass:rgba(27,27,25,.55); --glass-strong:rgba(27,27,25,.8);
+    --accent:#8ea2ff; --accent-ink:#10142a;
+    --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db;
+  --glass:rgba(20,22,26,.72); --glass-strong:rgba(20,22,26,.86);
   --glass-fill:rgba(255,255,255,.06); --glass-rim:rgba(255,255,255,.14); --glass-edge:rgba(255,255,255,.08);
   --glass-shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.3);
   }
 }
 :root[data-theme="dark"]{
   color-scheme: dark;
-  --ground:#1b1b19;
-  --ink:#eceae2;
-  --ink-2:#c3c0b5;
-  --ink-3:#928f84;
-  --rule:#343330;
-  --chip:#2a2926;
-  --chip-on:#eceae2;
-  --chip-on-ink:#1b1b19;
+  --ground:#14161a;
+  --ink:#e8eaee;
+  --ink-2:#b9bdc7;
+  --ink-3:#8a8f9c;
+  --rule:#2a2e36;
+  --chip:#1e2127;
+  --chip-on:#e8eaee;
+  --chip-on-ink:#14161a;
   --shadow:0 1px 2px rgba(0,0,0,.45), 0 1px 3px 1px rgba(0,0,0,.3);
   --shadow-lift:0 2px 8px rgba(0,0,0,.55), 0 10px 24px -6px rgba(0,0,0,.5);
   --scrim:rgba(0,0,0,.62);
@@ -111,8 +113,9 @@
   --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
-  --err:#f08a78; --warn:#e6b35c; --mk:#242421; --tag:#35342f; --tag-ink:#d6d3c8;
-  --glass:rgba(27,27,25,.55); --glass-strong:rgba(27,27,25,.8);
+  --accent:#8ea2ff; --accent-ink:#10142a;
+  --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db;
+  --glass:rgba(20,22,26,.72); --glass-strong:rgba(20,22,26,.86);
   --glass-fill:rgba(255,255,255,.06); --glass-rim:rgba(255,255,255,.14); --glass-edge:rgba(255,255,255,.08);
   --glass-shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.3);
 }
@@ -135,9 +138,21 @@ body{
   -webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
   border-bottom:1px solid var(--glass-edge);
   margin-inline:-16px;padding:14px 16px 12px;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:center;
+  grid-template-areas:"brand hx" "tabs tabs" "tools tools" "fsum fsum";
 }
-.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
-.tabs{display:flex;gap:2px;margin:0 0 10px;border-bottom:1px solid var(--rule);overflow-x:auto}
+.brand{grid-area:brand;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px;min-width:0}
+.hx{grid-area:hx;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.tools{grid-area:tools}.fsum{grid-area:fsum}
+.tabs{grid-area:tabs;display:flex;gap:2px;margin:0 0 10px;border-bottom:1px solid var(--rule);overflow-x:auto}
+/* the header's right side: today's 复习 (accent) and the sync state */
+.today{font:inherit;font-size:13.5px;font-weight:700;height:34px;padding:0 14px;border-radius:999px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;white-space:nowrap}
+.today.idle{background:var(--chip);color:var(--ink-2);border:1px solid var(--rule);font-weight:500}
+.syncdot{font:inherit;font-size:12.5px;color:var(--ink-2);background:none;border:0;padding:4px 6px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border-radius:8px}
+.syncdot i{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
+.syncdot.ok i{background:var(--st-done)}.syncdot.err i{background:var(--err)}.syncdot.busy i{background:var(--accent)}
+.today:focus-visible,.syncdot:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (max-width:639px){ .today,.syncdot{display:none} }
 /* off 浏览 the search row is hidden: the tab rule is then the header's only line */
 .top:has(#tools[hidden]){border-bottom-color:transparent;padding-bottom:0}
 .top:has(#tools[hidden]) .tabs{margin-bottom:0}
@@ -226,7 +241,7 @@ h1{
 .pill[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink);border-color:var(--chip-on)}
 .pill:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .theme{
-  margin-left:auto;flex:0 0 auto;align-self:center;
+  flex:0 0 auto;align-self:center;
   width:32px;height:32px;padding:0;
   display:inline-grid;place-items:center;
   background:var(--chip);color:var(--ink-2);
@@ -696,9 +711,9 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 @media (max-width:639px){ .wrap{padding-block-end:110px} }
 /* ── V2 (分支 ui/claude-code-v2,用户 2026-10-14),和 App 一样:条目在中性底上,笔记在级别色卡片里;
    自测和复习 / 考核做题是同一张答题纸(题目卡 + 下面拼接的词块面板)── */
-:root{--well:rgba(255,255,255,.62);--panel:#ffffff;--key:#d9d6cc;--sum-bg:#1f1f1e;--sum-fg:#f7f6f2}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--well:rgba(0,0,0,.24);--panel:#232320;--key:#45433e;--sum-bg:#2a2926;--sum-fg:#eceae2} }
-:root[data-theme="dark"]{--well:rgba(0,0,0,.24);--panel:#232320;--key:#45433e;--sum-bg:#2a2926;--sum-fg:#eceae2}
+:root{--well:rgba(255,255,255,.62);--panel:#ffffff;--key:#d5d8df;--sum-bg:#15171c;--sum-fg:#f3f4f6}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--well:rgba(0,0,0,.24);--panel:#1e2127;--key:#3a3f48;--sum-bg:#1e2127;--sum-fg:#e8eaee} }
+:root[data-theme="dark"]{--well:rgba(0,0,0,.24);--panel:#1e2127;--key:#3a3f48;--sum-bg:#1e2127;--sum-fg:#e8eaee}
 .sheet{background:var(--ground);color:var(--ink);padding:16px 12px 12px}
 .sheet .mband,.sheet .back{margin-left:8px;margin-right:8px}
 .sheet .lv{margin:14px 8px 12px}
@@ -830,6 +845,71 @@ body.running{overflow:hidden}
 .srow small{font-size:12.5px;opacity:.76;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .srow .tg{font-size:11px;padding:3px 8px;border-radius:10px;background:color-mix(in srgb,var(--card-ink) 12%,transparent);flex:none}
 .srow:focus-visible,.ready:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+/* ── 桌面:三栏书桌(用户 2026-10-15):左边分类,中间列表,右边条目;窄屏保持原样 ── */
+.side,.dock-ph{display:none}
+.mk-types .pill .mbar{display:none}
+@media (min-width:1100px){
+  .wrap{max-width:none;padding:0}
+  .top{margin-inline:0;padding:12px 24px;grid-template-columns:196px minmax(0,1fr) auto;grid-template-areas:"brand tools hx" ". fsum .";column-gap:24px}
+  .top:has(#tools[hidden]){border-bottom-color:var(--glass-edge);padding-bottom:12px}
+  .brand,.hx{margin-bottom:0}
+  .top .tally{display:none}
+  .tabs{display:none}
+  .search{max-width:560px;height:40px;border-radius:10px;font-size:14px}
+  .desk{display:grid;grid-template-columns:220px minmax(0,1fr);align-items:start}
+  .side{display:flex;flex-direction:column;gap:20px;position:sticky;top:calc(var(--toph,64px) + env(safe-area-inset-top,0px));
+    height:calc(100dvh - var(--toph,64px) - env(safe-area-inset-top,0px));overflow-y:auto;border-right:1px solid var(--rule);padding:18px 12px 24px 16px}
+  .sgrp{display:flex;flex-direction:column;gap:1px}
+  .sgrp>span{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ink-3);padding:0 10px 6px}
+  .sbtn{font:inherit;font-size:14px;color:var(--ink);background:none;border:0;border-radius:8px;padding:6px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;text-align:left}
+  .sbtn .nm{flex:1;min-width:0}
+  .sbtn .n{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .sbtn .d{width:8px;height:8px;border-radius:50%;flex:none}
+  .sbtn .d.sq{width:10px;height:10px;border-radius:3px;border:1px solid var(--card-edge)}
+  .sbtn:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+  .sbtn[aria-current="true"]{background:var(--chip);box-shadow:0 0 0 1px var(--rule);font-weight:700}
+  .sbtn[aria-current="true"] .n{color:var(--ink)}
+  .sbtn:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+  .col{min-width:0;padding:0 32px 64px}
+  .pane{margin-top:28px}
+  /* 浏览: the list on the left of the column, the entry docked on the right */
+  .col.ents{display:grid;grid-template-columns:380px minmax(0,1fr);padding:0}
+  .col.ents #board,.col.ents #empty{grid-column:1}
+  .col.ents #board{border-right:1px solid var(--rule);padding:0 10px 64px;min-height:calc(100dvh - var(--toph,64px))}
+  .col.ents #empty{border-right:1px solid var(--rule);margin:0}
+  .col.ents .dock-ph{display:grid;grid-column:2;grid-row:1/span 2;place-items:start center;padding-top:30vh;text-align:center;color:var(--ink-3);font-size:15px}
+  .col.ents .dock-ph small{font-size:12.5px}
+  .col.ents .grid{columns:1}
+  .col.ents .sect{margin-top:18px}
+  .col.ents .sect-head{margin:0 8px 6px}
+  .col.ents .sect-head .badge{font-size:13px;padding:1px 8px}
+  .col.ents .card{background:transparent;border-color:transparent;box-shadow:none;color:var(--ink);border-radius:10px;padding:9px 12px 8px;margin-bottom:2px;contain-intrinsic-size:auto 72px}
+  .col.ents .card:hover{background:color-mix(in srgb,var(--ink) 5%,transparent);transform:none;box-shadow:none}
+  .col.ents .card.sel{background:var(--chip);box-shadow:0 0 0 1.5px var(--accent)}
+  .col.ents .card .hw{font-size:16px;margin:0 0 1px}
+  .col.ents .card .hw::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--sw);border:1px solid var(--card-edge);margin-right:8px;vertical-align:1px}
+  .col.ents .card .meta{display:none}
+  .col.ents .card .gloss{-webkit-line-clamp:1;font-size:13px;color:var(--ink-2)}
+  .col.ents .card .foot{border-top:0;padding-top:0;margin-top:3px;color:var(--ink-3)}
+  .scrim.docked{position:fixed;z-index:15;top:calc(var(--toph,64px) + env(safe-area-inset-top,0px));left:600px;right:0;bottom:0;
+    background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;padding:20px 28px 24px;overflow:hidden;display:block}
+  .scrim.docked .sheet{width:100%;max-width:860px;height:100%;margin:0 auto;box-shadow:none;border:1px solid var(--rule);background:var(--chip)}
+  .scrim.docked .sheet .lvl .node{background:var(--chip)}
+  .scrim.docked .sheet .lvl.passed .node{background:var(--card-ink);color:var(--chip)}
+  /* 错题本: the types as a bar chart and the 自检 on the left, the mistakes on the right */
+  #mistakes:not([hidden]){display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;column-gap:32px;align-items:start;padding-top:8px}
+  #mistakes .mk-intro{grid-column:1;grid-row:1}
+  #mistakes .mk-types{grid-column:1;grid-row:2}
+  #mistakes .check{grid-column:1;grid-row:3;max-width:none}
+  #mboard{grid-column:2;grid-row:1/span 4}
+  #mboard .grid{columns:2 300px}
+  .mk-types{flex-direction:column;gap:2px;background:var(--mk);border:1px solid var(--rule);border-radius:14px;padding:10px}
+  .mk-types .pill{display:grid;grid-template-columns:52px minmax(0,1fr) 30px;gap:10px;align-items:center;border:0;border-radius:8px;background:transparent;padding:6px 8px;color:var(--ink);font-size:13px;text-align:left}
+  .mk-types .pill .mbar{display:block;height:12px;border-radius:4px;background:color-mix(in srgb,var(--accent) 38%,transparent);width:calc(var(--w) * 100%)}
+  .mk-types .pill .n{text-align:right;opacity:1;color:var(--ink-3)}
+  .mk-types .pill[aria-pressed="true"]{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--ink);font-weight:700}
+  .mk-types .pill[aria-pressed="true"] .mbar{background:var(--accent)}
+}
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
@@ -839,8 +919,12 @@ body.running{overflow:hidden}
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <h1>词汇便签墙</h1>
+      <h1>VoCab</h1>
       <span class="tally" id="tally"></span>
+    </div>
+    <div class="hx">
+      <button class="today" id="today" type="button"></button>
+      <button class="syncdot" id="syncdot" type="button"><i aria-hidden="true"></i><span></span></button>
       <button class="theme" id="theme" type="button"></button>
     </div>
     <nav class="tabs" id="tabs" aria-label="视图"></nav>
@@ -852,19 +936,25 @@ body.running{overflow:hidden}
     </div>
     <div class="fsum" id="fsum"></div>
   </header>
-  <main id="board"></main>
-  <section id="mistakes" hidden>
-    <div class="check" id="check"></div>
-    <p class="mk-intro">只收我自己写错的地方。<b style="color:var(--err)">❌</b> 是语法错误,<b style="color:var(--warn)">⚠️</b> 是能用但不是最常见的写法。点卡片打开原条目。</p>
-    <div class="mk-types" id="mtypes"></div>
-    <div id="mboard"></div>
-  </section>
-  <section id="review" class="pane" hidden></section>
-  <section id="selftest" class="pane" hidden></section>
-  <section id="done" class="pane" hidden></section>
-  <section id="extras" class="pane" hidden></section>
-  <div id="practice"></div>
-  <p class="empty" id="empty" hidden>没有匹配的条目。</p>
+  <div class="desk">
+    <nav class="side" id="side" aria-label="分类"></nav>
+    <div class="col" id="col">
+      <main id="board"></main>
+      <p class="empty" id="empty" hidden>没有匹配的条目。</p>
+      <div class="dock-ph" aria-hidden="true"><p>选一条看笔记<br><small>J / K 上下切换 · / 搜索</small></p></div>
+      <section id="mistakes" hidden>
+        <div class="check" id="check"></div>
+        <p class="mk-intro">只收我自己写错的地方。<b style="color:var(--err)">❌</b> 是语法错误,<b style="color:var(--warn)">⚠️</b> 是能用但不是最常见的写法。点卡片打开原条目。</p>
+        <div class="mk-types" id="mtypes"></div>
+        <div id="mboard"></div>
+      </section>
+      <section id="review" class="pane" hidden></section>
+      <section id="selftest" class="pane" hidden></section>
+      <section id="done" class="pane" hidden></section>
+      <section id="extras" class="pane" hidden></section>
+      <div id="practice"></div>
+    </div>
+  </div>
   <div class="fback" id="fback" hidden></div>
   <div class="fsheet" id="fsheet" role="dialog" aria-modal="true" aria-labelledby="fsh-t" hidden>
     <div class="fsh-head"><span class="fsh-grab" aria-hidden="true"></span><b id="fsh-t">筛选</b><button class="fclear" id="freset" type="button">重置</button></div>
@@ -966,7 +1056,6 @@ const levelShown = lv => typeF === "ALL" || typeF === lv || (typeF === "WORD" &&
 // the 错题本 used to be a level pill; it is a tab now
 let view = store.get("vk.view", store.get("vk.level", "") === "MISTAKES" ? "mistakes" : "entries");
 if (view === "practice") view = "review";
-if (view === "mistakes") view = "more";
 let writeOnly = store.get("vk.write", "0") === "1";
 let favOnly = store.get("vk.fav", "0") === "1";             // entries with a ⭐ example
 
@@ -1103,6 +1192,7 @@ TABS.forEach(([key, text, n]) => {
 });
 function setView(key){
   view = key;
+  autoOpen = true;
   store.set("vk.view", key);
   render();
   window.scrollTo(0, 0);
@@ -1162,11 +1252,12 @@ try { const s = localStorage.getItem("vk.mtype"); if (s) mtype = s; } catch(e){}
 if (mtype !== "ALL" && !MISTAKES.some(g => g.type === mtype)) mtype = "ALL";
 const esc = t => t.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
+const mkMax = Math.max(1, ...MISTAKES.map(g => g.items.length));
 const mkType = (key, text, n) => {
   const b = document.createElement("button");
   b.className = "pill"; b.type = "button"; b.dataset.k = key;
   b.setAttribute("aria-pressed", String(mtype === key));
-  b.innerHTML = `${text} <span class="n">${n}</span>`;
+  b.innerHTML = `${text} <i class="mbar" style="--w:${key === "ALL" ? 0 : n / mkMax}"></i><span class="n">${n}</span>`;
   b.addEventListener("click", () => {
     mtype = key;
     try { localStorage.setItem("vk.mtype", key); } catch(e){}
@@ -1227,17 +1318,22 @@ function render(){
   const term = q.value.trim().toLowerCase();
   // "12" or "#12" jumps to entry #12
   const numQ = (term.match(/^#?(\d+)$/) || [])[1];
-  [...tabs.children].forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === view)));
-  tools.hidden = view !== "entries" && view !== "more";       // 更多 keeps the search for the 错题本
+  // 错题本 is its own view on wide screens (the sidebar); on narrow ones it sits in 更多
+  [...tabs.children].forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === view || (view === "mistakes" && t.dataset.k === "more"))));
+  colEl.classList.toggle("ents", view === "entries");
+  if (scrim && scrim.classList.contains("docked") && !dockable()) close();
+  paintSide(); paintChrome();
+  mistakesEl.hidden = !(view === "mistakes" || (view === "more" && !deskMQ.matches));
+  extrasEl.hidden = view !== "more";
+  tools.hidden = view !== "entries" && mistakesEl.hidden;     // the search also filters the 错题本
   fbtn.hidden = fsum.hidden = view !== "entries";
   if (view !== "entries") closeFilters();
   board.hidden = view !== "entries";
-  mistakesEl.hidden = extrasEl.hidden = view !== "more";
   reviewEl.hidden = view !== "review";
   selftestEl.hidden = view !== "selftest";
   doneEl.hidden = view !== "done";
   empty.hidden = true;
-  if (view === "more") { renderExtras(); empty.hidden = renderMistakes(term) > 0; return; }
+  if (view === "more" || view === "mistakes") { if (view === "more") renderExtras(); empty.hidden = mistakesEl.hidden || renderMistakes(term) > 0; return; }
   if (view === "review") { renderStageTab("review", reviewEl); return; }
   if (view === "selftest") { renderStageTab("test", selftestEl); return; }
   if (view === "done") { renderStageTab("done", doneEl); return; }
@@ -1275,6 +1371,12 @@ function render(){
   empty.hidden = shown > 0;
   fgo.textContent = shown ? `显示 ${shown} 条` : "没有匹配的条目";
   if (fsumCount) fsumCount.textContent = `共 ${shown} 条`;
+  // wide screens: the first entry in the list is open on the right when the view comes up
+  if (autoOpen && dockable() && !scrim) {
+    autoOpen = false;
+    const c = visibleCards()[0];
+    if (c) { const t = byAnchor[c.dataset.anchor]; open(t.it, t.level, t.i, listOf(c), { noFocus: true }); }
+  }
 }
 q.addEventListener("input", render);
 
@@ -1598,12 +1700,12 @@ function goNext(){
   openAt = t.it.anchor; trail = [];
   show(t.it, t.level, t.i);
 }
-function open(it, level, i, list = []){   // opened from a card — starts a fresh chain
+function open(it, level, i, list = [], o = {}){   // opened from a card — starts a fresh chain
   lastFocus = document.activeElement;
   trail = [];
   cardFull = false;
   openList = list; openAt = it.anchor;
-  show(it, level, i);
+  show(it, level, i, o);
 }
 function follow(t){                   // opened from a cross-reference
   trail.push(scrim._entry);
@@ -1845,10 +1947,12 @@ function decorateNotes(root, it, ex, go, onAll){
 function show(it, level, i, o = {}){
   if (scrim) scrim.remove();
   scrim = document.createElement("div");
-  scrim.className = "scrim";
+  // wide screens, 浏览: docked in the column next to the list instead of over the page
+  const docked = dockable() && !document.body.classList.contains("running");
+  scrim.className = "scrim" + (docked ? " docked" : "");
   const sheet = document.createElement("div");
   sheet.setAttribute("role", "dialog");
-  sheet.setAttribute("aria-modal", "true");
+  sheet.setAttribute("aria-modal", String(!docked));
   sheet.setAttribute("aria-label", it.title);
   sheet.style.setProperty("--sw", `var(${LV[level].sw[i % 3]})`);
   const back = trail[trail.length - 1];
@@ -1898,6 +2002,7 @@ function show(it, level, i, o = {}){
   scrim._entry = { it, level, i };
   scrim.append(sheet);
   document.body.append(scrim);
+  markSel(docked ? it.anchor : "");
   const card = sheet.querySelector(".ecard");
   const flip = toQuiz => { card.classList.toggle("flipped", toQuiz); sheet.classList.toggle("quizzing", toQuiz); };
   if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => flip(wantBack)));
@@ -1991,12 +2096,13 @@ function show(it, level, i, o = {}){
 
   sheet.querySelector(".x").addEventListener("click", close);
   if (nextT) sheet.querySelector(".nx").addEventListener("click", goNext);
-  scrim.addEventListener("click", e => { if (e.target === scrim) close(); });
-  (startBack && !input.hidden ? input : sheet.querySelector(".x")).focus();
+  scrim.addEventListener("click", e => { if (e.target === scrim && !docked) close(); });
+  if (!o.noFocus) (startBack && !input.hidden ? input : sheet.querySelector(".x")).focus();
 }
 function close(){
   if (!scrim) return;
   scrim.remove(); scrim = null; trail = []; openList = [];
+  markSel("");
   if (lastFocus) lastFocus.focus();
 }
 document.addEventListener("keydown", e => {
@@ -2202,6 +2308,7 @@ document.addEventListener("visibilitychange", () => {
 });
 
 function paintSync(){
+  paintChrome();
   const el = document.getElementById("sync");
   if (!el) return;
   if (!ghToken()) {
@@ -2489,6 +2596,78 @@ function renderPractice(){
     if (x) open(x.it, x.level, x.i);
   }));
 }
+
+// ── 桌面三栏(≥1100px,用户 2026-10-15):左边分类,中间列表,右边停靠的条目;顶栏放今天的复习和同步状态 ──
+const deskMQ = matchMedia("(min-width:1100px)");
+const colEl = document.getElementById("col"), sideEl = document.getElementById("side");
+const dockable = () => deskMQ.matches && view === "entries";
+let autoOpen = true;
+const visibleCards = () => [...board.querySelectorAll(".card[data-anchor]")].filter(c => c.checkVisibility ? c.checkVisibility() : c.offsetParent);
+function markSel(anchor){
+  board.querySelectorAll(".card.sel").forEach(c => c.classList.remove("sel"));
+  const c = anchor && board.querySelector(`.card[data-anchor="${CSS.escape(anchor)}"]`);
+  if (c) { c.classList.add("sel"); c.scrollIntoView({ block: "nearest" }); }
+}
+const toFilter = (t, c, st) => { typeF = t; cefrF = c; stageF = st; saveFilters(); setView("entries"); };
+const SIDE = [
+  ["学习阶段", [
+    ["learn", "学习中", "var(--st-learn)", () => toFilter("ALL", "", "learn")],
+    ["review", "复习", "var(--accent)", () => setView("review")],
+    ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
+    ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
+  ["分类", [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"], ["SELFTEST", "自测题"]]
+    .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])],
+  ["其他", [["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
+];
+sideEl.innerHTML = SIDE.map(([g, items]) => `<div class="sgrp"><span>${g}</span>` + items.map(([k, name, dot]) =>
+  `<button type="button" class="sbtn" data-k="${k}">${dot ? `<span class="d${k.startsWith("c:") ? " sq" : ""}" style="background:${dot}"></span>` : ""}` +
+  `<span class="nm">${name}</span><span class="n"></span></button>`).join("") + `</div>`).join("");
+const sideFns = Object.fromEntries(SIDE.flatMap(g => g[1]).map(x => [x[0], x[3]]));
+sideEl.addEventListener("click", e => { const b = e.target.closest(".sbtn"); if (b) sideFns[b.dataset.k](); });
+function paintSide(){
+  const n = { learn: 0, review: 0, test: 0, done: 0 };
+  DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));
+  const cnt = { learn: n.learn, review: n.review, selftest: n.test, done: n.done, "c:ALL": total, mistakes: mkTotal };
+  DATA.forEach(g => { cnt["c:" + g.level] = g.items.length; });
+  const cur = view !== "entries" ? view : stageF === "learn" && typeF === "ALL" ? "learn" : stageF ? ""
+    : typeF === "WORD" ? (cefrF ? "c:" + cefrF : "") : "c:" + typeF;
+  sideEl.querySelectorAll(".sbtn").forEach(b => {
+    b.querySelector(".n").textContent = cnt[b.dataset.k] ?? "";
+    b.setAttribute("aria-current", String(b.dataset.k === cur));
+  });
+}
+const todayBtn = document.getElementById("today"), syncDot = document.getElementById("syncdot");
+todayBtn.addEventListener("click", () => setView("review"));
+syncDot.addEventListener("click", () => setView("more"));
+function paintChrome(){
+  const p = planToday(), n = p.due.length + p.fresh.length;
+  todayBtn.textContent = n ? `今天要复习 ${n} 条 →` : "今天的复习做完了";
+  todayBtn.classList.toggle("idle", !n);
+  const st = !ghToken() ? ["", "未连接同步"] : syncState.busy ? ["busy", "同步中…"] : syncState.err ? ["err", "同步失败"]
+    : syncState.ok ? ["ok", "已同步 · " + fmtWhen(syncState.ok)] : ["", "还没同步过"];
+  syncDot.className = "syncdot " + st[0];
+  syncDot.querySelector("span").textContent = st[1];
+  syncDot.title = syncState.err || "同步与设置";
+}
+deskMQ.addEventListener("change", () => { if (scrim) close(); autoOpen = true; render(); });
+// the header's height, for the sticky sidebar and the docked entry
+const topEl = document.querySelector(".top");
+new ResizeObserver(() => document.documentElement.style.setProperty("--toph", topEl.offsetHeight + "px")).observe(topEl);
+// keys: / searches; J / K walk the list with the entry docked
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey || document.body.classList.contains("running")) return;
+  if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable]")) return;
+  if (e.key === "/") { e.preventDefault(); q.focus(); return; }
+  if (!dockable() || (e.key !== "j" && e.key !== "k")) return;
+  const cards = visibleCards();
+  if (!cards.length) return;
+  const at = scrim ? cards.findIndex(c => c.dataset.anchor === scrim._entry.it.anchor) : -1;
+  const c = cards[Math.max(0, Math.min(cards.length - 1, at + (e.key === "j" ? 1 : -1)))];
+  if (at >= 0 && c === cards[at]) return;
+  e.preventDefault();
+  const t = byAnchor[c.dataset.anchor];
+  open(t.it, t.level, t.i, listOf(c));
+});
 
 refreshStCounts();
 refreshStages();
