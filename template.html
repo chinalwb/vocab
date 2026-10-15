@@ -1533,6 +1533,16 @@ function bankOptions(words, strays, seed, k){
   const fill = shuffled(strays, s + 1).filter(fresh).slice(0, BANK_CHIPS - 1 - later.length);
   return shuffled([right, ...later, ...fill], s + 2);
 }
+// the word bank on screen: the keyboard's Delete / Backspace takes its last word back, like ⌫
+// (用户 2026-10-15) — not while a text field has the focus, and not once the bank is hidden
+let liveBank = null;
+document.addEventListener("keydown", e => {
+  if ((e.key !== "Backspace" && e.key !== "Delete") || e.metaKey || e.ctrlKey || e.altKey || !liveBank) return;
+  if (e.target instanceof Element && e.target.closest("input, textarea, select, [contenteditable]")) return;
+  const b = liveBank.bankEl;
+  if (!b.isConnected || !(b.checkVisibility ? b.checkVisibility() : b.offsetParent)) return;
+  if (liveBank.undo()) e.preventDefault();
+});
 function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
   const words = chipWords(answer), strays = strayWords(answer, others, seed, 6);
   const paint = focus => {
@@ -1556,6 +1566,7 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
   bankEl.onclick = e => { const b = e.target.closest(".wchip[data-w]"); if (!b) return; picks.push(b.dataset.w); paint(true); };
   if (ctl.clear) ctl.clear.onclick = () => { picks.length = 0; paint(); };
   if (ctl.bs) ctl.bs.onclick = () => { picks.pop(); paint(); };       // ⌫: the last word back, without reaching up
+  liveBank = { bankEl, undo: () => { if (!picks.length) return false; picks.pop(); paint(); return true; } };
   paint();
 }
 
