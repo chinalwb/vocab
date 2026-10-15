@@ -5060,6 +5060,13 @@
     "peek": false,
     "via": "entry",
     "ex": "This solution is inexpensive. That said, it's hard to maintain."
+   },
+   {
+    "t": 1792080199517,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We're swamped this week. That being said, I can still take a look at your PR."
    }
   ],
   "intermittent-outage": [
