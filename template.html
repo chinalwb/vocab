@@ -546,6 +546,7 @@ h1{
 }
 .btn[disabled]{opacity:.45;cursor:default}
 .btn.ghost{background:var(--chip);color:var(--ink-2);border-color:var(--rule)}
+.btn.go{background:#8fd19e;color:#1f1f1e;border-color:transparent}
 .btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .linkish{font:inherit;font-size:12.5px;background:none;border:0;color:var(--ink-3);cursor:pointer;text-decoration:underline;text-underline-offset:2px;padding:0}
@@ -2260,7 +2261,7 @@ function advanceReady(it, level, stage){
   if (stage === "review") return repsOf(it.anchor) >= PROMOTE_REPS && all;
   return qs.length > 0 && all;
 }
-const advanceHtml = stage => `<div class="adv"><span>这一阶段的题都答对过了</span><button class="btn ghost" type="button" id="adv">移到${STAGE_TAB[nextStage(stage)]}</button></div>`;
+const advanceHtml = stage => `<div class="adv"><span>这一阶段的题都答对过了</span><button class="btn go" type="button" id="adv">移到${STAGE_TAB[nextStage(stage)]}</button></div>`;
 // A stage's tab (V2, same as ui/QuizScreen.kt): one summary card — the big number, a few counts,
 // the start button — then, when some entries have every question right, the offer to move them on,
 // and the entries grouped by why they're there, one line each. 掌握 keeps its counts and cards.
