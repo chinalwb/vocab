@@ -4906,6 +4906,15 @@
     "via": "entry",
     "ex": "The PR looks good overall. That said, I'd split the second commit before we merge."
    }
+  ],
+  "intermittent-outage": [
+   {
+    "t": 1792048692644,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": "The server was briefly down while I was running the test cases just now."
+   }
   ]
  },
  "favs": {
