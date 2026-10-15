@@ -264,6 +264,10 @@
   "intermittent-outage": {
    "s": "review",
    "t": 1792049557437
+  },
+  "defer": {
+   "s": "review",
+   "t": 1792055766133
   }
  },
  "cards": {
@@ -5008,6 +5012,13 @@
    {
     "t": 1792055695886,
     "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "I'll defer to your judgment on this — you know the client better than I do."
+   },
+   {
+    "t": 1792055761870,
+    "ok": true,
     "peek": false,
     "via": "entry",
     "ex": "I'll defer to your judgment on this — you know the client better than I do."
