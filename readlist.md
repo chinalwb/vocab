@@ -382,3 +382,65 @@
 - ⚠️ [词形] ==registerer== → **`register()`** —— 方法名照代码原样写,加上括号和反引号。
 - ⚠️ [语气] ==Subsequently== → **which in turn** —— *subsequently* 偏书面;MR 评论里用 *which in turn* 或 *That then* 更自然,也点出因果。
 - ⚠️ [搭配] ==clear off== → **clear** —— 清除通知说 *clear* 或 *dismiss*,不说 *clear off*。
+
+<a id="r-sanitize-so-that"></a>
+## 把记忆脱敏后推到 GitHub,这样我在别的电脑上工作时也适用同样的规则。
+
+- 日期:2026-10-15
+- 关键词:sanitize · so that
+
+**常用说法:**
+
+> Remove the private details from the memory and upload it to GitHub, so I can use the same rules on other computers.
+
+**C1 说法:**
+
+> **Sanitize** the memory **and push it to GitHub, so that** the same rules apply when I work on other computers.
+
+**差别:**
+
+- **sanitize** —— 去掉数据里的敏感信息(人名、公司名、账号等)再交出去,工程里的标准说法;对应 *remove the private details*。不要用 *desensitize*,它是"使脱敏、使麻木"(过敏治疗、对暴力麻木)。
+- **push it to GitHub** —— 代码、文件进远程仓库用 *push*,比 *upload* 更贴近 git 的实际操作。
+- **, so that** —— 引出目的"以便……";*Therefore* 只引出结论"因此",不能表示目的。口语里也可以只说 *so*。
+- **the same rules apply** —— 规则"适用、生效"用 *apply*(不及物),主语是规则本身;对应 *I can use the same rules*。
+
+**我的原句:**
+
+> ==Desensitize== the memory==, upload== it to GitHub. ==Therefore== the same rules still apply when I work on other computers.
+
+- ⚠️ [搭配] ==Desensitize== → **Sanitize** —— 去掉敏感信息用 *sanitize* 或 *strip out sensitive details*;*desensitize* 是"使脱敏、使麻木"。
+- ⚠️ [标点] ==, upload== → **and upload** —— 两个祈使句只用逗号连起来是逗号拼接,用 *and* 连接。
+- ⚠️ [逻辑] ==Therefore== → **so that** —— *therefore* 引出结论,这里要表达的是目的。
+
+<a id="r-bump-the-version"></a>
+## 把版本号命名规则加进 CLAUDE.md:一般两段 主.次;热修复用三段;次版本可以直接改,改主版本前先问我。
+
+- 日期:2026-10-15
+- 关键词:bump the minor version · check with me before
+
+**常用说法:**
+
+> Add this version naming rule to CLAUDE.md: the version name has two parts, major.minor, like 2.1. For a hotfix, the pattern is major.minor.hotfix. You can change the minor number, but ask me before you change the major number.
+
+**C1 说法:**
+
+> Add this **versioning convention** to CLAUDE.md: a version name **normally has two parts**, major.minor (**e.g.** 2.1); for a hotfix, **use** major.minor.hotfix. **Feel free to bump the minor version**, but **check with me before bumping** the major one.
+
+**差别:**
+
+- **versioning convention** —— 软件里"版本号规则"的固定说法;*convention* 是团队约定俗成的做法,比 *rule* 更贴切。
+- **normally has two parts** —— 版本号的各段叫 *parts* 或 *components*,比 *sections* 常见;*normally* 对应 *generally*,放在动词前更自然。
+- **(e.g. 2.1)** —— 举例放括号里,一句话里就不用堆两个冒号;对应 *like 2.1*。
+- **for a hotfix, use …** —— 直接给做法,主语和指代都不会出错;对应 *if some changes are for a hotfix, name it…*。
+- **bump the minor version** —— *bump* = 把版本号加一,工程里的固定说法。例句:
+  - *Bump the version to 2.2 before you merge.* 合并之前把版本号升到 2.2。
+  - *The release script bumps the patch version automatically.* 发布脚本会自动把补丁版本号加一。
+- **check with me before bumping** —— "做之前先问我一声",比 *confirm with me* 更口语;*before* 后面接动名词 *bumping*。
+
+**我的原句:**
+
+> Add this version naming convention to ==the CLAUDE.me==: generally, the version name consists of two ==sections==: major.minor, like 2.1; if some changes are for a hotfix, ==name it== in this pattern: major.minor.hotfix. Feel free to update the minor section, but please confirm with me before updating the major.
+
+- ⚠️ [冠词] ==the CLAUDE.me== → **CLAUDE.md** —— 文件名前不加 *the*;*.me* 是笔误。
+- ⚠️ [搭配] ==sections== → **parts** —— 版本号的各段一般叫 *parts* 或 *components*。
+- ⚠️ [结构] ==name it== → **use major.minor.hotfix** —— 前面是复数 *changes*,*it* 指代对不上。

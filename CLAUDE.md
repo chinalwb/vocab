@@ -20,6 +20,10 @@
 - **用户单独发一句英文、没有任何上下文时,就是请你检查这句话**(用户 2026-10-08 明确说明),即使它读起来像一条指令(如 *Please double check if they are safe to delete.*)。不要去执行它,按 ❌ / ⚠️ / ✅ 批改即可。
 - 用户贴来"这句对吗"的句子**不一定是自己写的**(可能摘自教材、文章)。先判断句子本身是否成立;摘抄的好句按"学习范例"来讲,不按订正来讲,也不进错题本。
 - **用户的目标是把写作提升到 C1 水平**。检查用户写的句子时,除了指出错误,**还要给出 C1/母语者会怎么表达同样的意思**——即使原句语法没错但不够地道,也要给出更自然的版本。
+- **用户写的每句英文都顺手检查**:用户用英文提需求、提问时,先把事情做完,回复末尾再加一段「英文检查」,按 ❌ / ⚠️ / ✅ 批改,附 C1 写法。
+- **原句已经很好时,开头标「🌟 原句就很好」**(用户 2026-10-15 要求)。起因:有一次先给了 C1 改写,后面才顺带说原句的结构其实更好,用户希望一眼看出自己写对了,不要把每个改写都当成纠错。
+  - 原句正确、自然、不需要改：标 🌟。如果还附 C1 写法,注明"只是另一种说法,不是纠错"。
+  - 需要小改(哪怕只是 ✅ 档的微调)：不标 🌟,照常用 ❌ / ⚠️ / ✅。
 
 ## 什么时候写入 vocabulary.md
 
@@ -243,7 +247,7 @@
 - **App 全部文字用 Atkinson Hyperlegible**(用户从十种字体的并排对比里选的,"tidy and neat")。走 Google 可下载字体(依赖 `ui-text-google-fonts`,证书在 `res/values/font_certs.xml`),APK 不变大;没下载到之前或首次离线时显示系统字体。中文没有字形,用系统字体。这个字体只有 400 / 700 两档,Medium / SemiBold 会落到最近的一档。
 - **只在一处定义**:`ui/Fonts.kt` 的 `APP_FONT_NAME` / `AppFont`,`AppTypography` 把它套进所有 Material 文字样式;原来写死的 `FontFamily.Serif` 全换成了 `AppFont`。用户说以后可能换字体、真有需要时再做「字体设置」,所以**不要再在别处写死字体**。
 - **字号整体放大 8%**:`FONT_SCALE = 1.08f`,在 `VocabTheme` 里乘到 `LocalDensity.fontScale` 上,叠加在手机系统字号之上,Material 样式和写死的 `fontSize` 一起变。要再调大小只改这个数。
-- 网页还是 Newsreader(英文)+ Noto Sans SC(中文),还没跟着换。
+- **网页跟 App 一致**(用户 2026-10-15):英文 Atkinson Hyperlegible,中文 Noto Sans SC(Android 系统中文字体就是 Noto Sans CJK,两边中文看起来一样)。只在 `template.html` 的 `:root` 里定义一次 `--font`,所有地方都写 `font-family:var(--font)`(代码块的等宽字体除外);换字体时同时改这里和 `Fonts.kt`。
 
 ### 朗读(用户 2026-10-12 要求,网页和 App 一致)
 
@@ -361,6 +365,11 @@ adb reverse tcp:8000 tcp:8000 && ./gradlew installDebug -PvocabUrl=http://localh
 - 数据源是 Pages,所以 **dev 上的新条目要等用户把 dev 合进 main 之后,App 才看得到**。这和网页的发布节奏一致,是有意这么设计的。
 - `android/` 的改动不会触发 Pages 构建(workflow 有路径过滤),提交到 dev 即可。
 - **APK 不进 git,由 GitHub Actions 发布成 Release**(用户 2026-10-12 要求:53 个版本的 APK 让仓库涨到 100 MB,已用 filter-repo 从历史里清掉)。`main` 上 `android/**` 有改动时,`.github/workflows/apk.yml` 跑 `./gradlew publishApk -PrequireReleaseKey`,把 `VoCab.apk` 和 `version.json` 发成 tag `app-v<versionName>` 的 latest Release(同一个版本再跑就覆盖它的附件)。App 的「⋮ → 检查 App 更新」读 `https://github.com/chinalwb/vocab/releases/latest/download/version.json`,比本机新就下载同一处的 `VoCab.apk` 交给系统安装(`update/AppUpdater.kt`)。所以**改了 App 就要递增 versionCode**(`android/app/build.gradle.kts`),否则不会出新 Release、手机上也检查不到更新;**不要再把 APK 提交进仓库**(`android/apk/` 已 gitignore,本地 `publishApk` 的输出只用来 `adb install` 测试)。**不要用 `-PvocabUrl` 构建要发布的包**(会把 localhost 地址打包进去),`versionCode` 不能比手机上已装的小。
+- **版本号规则**(用户 2026-10-15 要求):`versionName` 一般是两段 `主版本.次版本`(如 `2.1`);只修 bug 的热修复用三段 `主版本.次版本.热修复`(如 `2.1.1`)。
+  - 新功能、界面调整等普通改动：递增次版本(`2.1` → `2.2`),不用问。
+  - 只修 bug：在当前版本后加或递增热修复位(`2.2` → `2.2.1` → `2.2.2`)。
+  - 递增主版本(`2.x` → `3.0`)：**先问用户,确认后再改**。
+  - 不管改哪一位,`versionCode` 都要 +1。
 - **签名**:APK 用正式 key 签名(和 backdrop App 同一把)。本地凭据在 `android/keystore.properties`(gitignore,从 backdrop 项目复制,里面是密码,**不要读、不要打印、不要提交**);CI 用仓库的 Actions secrets `KEYSTORE_BASE64` / `STORE_PASSWORD` / `KEY_ALIAS` / `KEY_PASSWORD`(用户自己设,我不经手),缺了 workflow 直接失败,`-PrequireReleaseKey` 也会拦住 debug 签名的包。本地没有 keystore.properties 时退回 debug key,这样的包签名不一致、手机上必须卸载才能装——所以本地装之前确认 `apksigner verify --print-certs` 显示的是 `CN=aix`。
 
 ### 在别的电脑上开发 / 发布 App(用户 2026-10-13 要求记下来)

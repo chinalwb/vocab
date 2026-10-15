@@ -32,6 +32,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -350,7 +351,11 @@ fun AdvanceBanner(stage: Stage, onAdvance: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text("这一阶段的题都答对过了", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
-        TextButton(onClick = onAdvance) { Text("移到${next.tab}") }
+        // Tinted with the ✓ green of a right answer: every question here has been answered right.
+        TextButton(
+            onClick = onAdvance,
+            colors = ButtonDefaults.textButtonColors(containerColor = Color(0xFF8FD19E), contentColor = Color(0xFF1F1F1E)),
+        ) { Text("移到${next.tab}") }
     }
 }
 
