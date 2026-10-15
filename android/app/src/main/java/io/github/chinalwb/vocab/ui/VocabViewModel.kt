@@ -45,11 +45,23 @@ data class QuizSession(
     val graded: Boolean? = null,
     /** the example sentence this card asks, fixed when the card comes up */
     val example: QuizExample? = null,
+    /** an entry asks all its sentences (用户 2026-10-15): which one, and its step (1 选词, 2 打字) */
+    val k: Int = 0,
+    val step: Int = 1,
+    /** how ① went, and ② once revealed (helped: revealed from the 选词 hint) */
+    val bankOk: Boolean = false,
+    val typedOk: Boolean = false,
+    val helped: Boolean = false,
+    /** every sentence so far right: grades the SM-2 card and the moves after the last one */
+    val entryOk: Boolean = true,
 ) {
     val current get() = queue.getOrNull(index)
 
-    fun withExample(log: Map<String, List<Attempt>>, optOut: Map<String, Set<String>>) =
-        copy(example = current?.takeIf { it.level != "SELFTEST" }?.let { it.quizExample(log[it.anchor]?.size ?: 0, optOut[it.anchor].orEmpty()) })
+    /** the entry's last sentence (a 自测题 or an entry without examples has one question) */
+    val lastQ get() = example == null || example.k + 1 >= example.of
+
+    fun withExample(optOut: Map<String, Set<String>>) =
+        copy(example = current?.takeIf { it.level != "SELFTEST" }?.let { it.quizExample(k, optOut[it.anchor].orEmpty()) })
 }
 
 class VocabViewModel(app: Application) : AndroidViewModel(app) {
@@ -211,7 +223,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun startQuiz(stage: Stage) {
         val entries = library.value.data?.entries ?: return
         val q = quizQueue(stage, entries, stages.value, selfTests.value, review.value)
-        _quiz.value = if (q.isEmpty()) null else QuizSession(stage, q).withExample(selfTests.value, quizOptOut.value)
+        _quiz.value = if (q.isEmpty()) null else QuizSession(stage, q).withExample(quizOptOut.value)
     }
 
     /** 复习: the notes are read, on to the question. */
@@ -219,30 +231,43 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         _quiz.value = _quiz.value?.copy(studied = true)
     }
 
-    /** 显示答案: a 自测题 is checked against its 答案, an example against its English; both are logged. */
-    fun revealQuiz(draft: String) {
+    /**
+     * 显示答案: a 自测题 is checked against its 答案, an example against its English. ① 选词 is only
+     * checked; ② 打字 is logged, right only if ① was too ([helped]: revealed from the 选词 hint).
+     * The entry's SM-2 grade and its miss come after its last sentence, right only if all were.
+     */
+    fun revealQuiz(draft: String, helped: Boolean = false) {
         val s = _quiz.value ?: return
         val e = s.current ?: return
         val via = s.stage.key
         val tried = draft.isNotBlank()
         val ex = s.example
+        val answer = if (e.level == "SELFTEST") e.selfTestAnswer else ex?.en
         when {
-            e.level == "SELFTEST" -> {
-                val ok = tried && bestDiff(draft.trim(), e.selfTestAnswer).same
-                recordSelfTest(e, draft, via)
-                schedule(s, e, ok)
-                _quiz.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0, missed = !ok)
-            }
-            ex != null -> {
-                val ok = tried && bestDiff(draft.trim(), ex.en).same
-                recordAttempt(e, draft, ok, via, ex.en)
-                schedule(s, e, ok)
-                _quiz.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0, missed = !ok)
+            answer != null && s.step == 1 ->
+                _quiz.value = s.copy(revealed = true, bankOk = tried && bestDiff(draft.trim(), answer).same)
+            answer != null -> {
+                val typedOk = !helped && tried && bestDiff(draft.trim(), answer).same
+                val ok = s.bankOk && typedOk
+                if (ex == null) recordSelfTest(e, draft, via, ok) else recordAttempt(e, draft, ok, via, ex.en)
+                val all = s.entryOk && ok
+                if (s.lastQ) schedule(s, e, all)
+                _quiz.value = s.copy(
+                    revealed = true, typedOk = typedOk, helped = helped, entryOk = all, missed = s.lastQ && !all,
+                    checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0,
+                )
             }
             // nothing to check against: a blank reveal is a peek, anything else waits for my verdict
             !tried -> { recordAttempt(e, "", false, via); schedule(s, e, false); _quiz.value = s.copy(revealed = true, missed = true) }
             else -> _quiz.value = s.copy(revealed = true)
         }
+    }
+
+    /** Within the entry: ① → ② 打字, or ([nextSentence]) on to its next sentence's ①. */
+    fun onwardQuiz(nextSentence: Boolean) {
+        val s = _quiz.value ?: return
+        _quiz.value = if (nextSentence) s.copy(k = s.k + 1, step = 1, revealed = false).withExample(quizOptOut.value)
+        else s.copy(step = 2, revealed = false)
     }
 
     /** 我写对了 / 没写对 on an entry that has no answer to check against. */
@@ -288,7 +313,8 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         _quiz.value = s.copy(
             index = s.index + 1, studied = false, revealed = false, graded = null, missed = false, done = s.done + 1,
             advanced = s.advanced + if (moved) 1 else 0, promoted = promoted, demoted = demoted,
-        ).withExample(selfTests.value, quizOptOut.value)
+            k = 0, step = 1, bankOk = false, typedOk = false, helped = false, entryOk = true,
+        ).withExample(quizOptOut.value)
     }
 
     /** 撤销 on the last page: put back what this run moved by itself (the schedule stays as graded). */
@@ -316,11 +342,11 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         if (ex.isNotEmpty() && zh != null) practice.record(practiceItem(entry, zh, t, ex, ok && t.isNotEmpty(), via))
     }
 
-    /** Records one reveal of a 自测 entry; ok = the words match the answer. */
-    fun recordSelfTest(entry: Entry, text: String, via: String) = viewModelScope.launch {
+    /** Records one reveal of a 自测 entry; ok = the words match the answer, unless [okAs] says (两步). */
+    fun recordSelfTest(entry: Entry, text: String, via: String, okAs: Boolean? = null) = viewModelScope.launch {
         val t = text.trim()
         val d = bestDiff(t, entry.selfTestAnswer)
-        val ok = t.isNotEmpty() && d.same
+        val ok = t.isNotEmpty() && (okAs ?: d.same)
         selfTestLog.record(entry.anchor, Attempt(System.currentTimeMillis(), t, ok, via))
         progress.soon()
         // the answer it was checked against: the closest of the accepted ones, or the first after a peek

@@ -1,6 +1,5 @@
 package io.github.chinalwb.vocab.ui
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,7 +20,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import kotlin.random.Random
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -251,18 +249,36 @@ fun strayWords(answer: String, others: List<String>, seed: Int, n: Int = 6): Lis
     return (own + stock).distinctBy { it.lowercase() }.take(n)
 }
 
-/** 选词 or 打字, remembered across launches (SharedPreferences "ui"/"chips"). */
+/*
+ * 两步 (用户 2026-10-15, same as template.html): every sentence with an answer is built from the
+ * chips first (① 选词), then typed (② 打字); it counts as right only when both are. The 选词 | 打字
+ * switch stays: in ① 打字 waits its turn ([lockSecond]); in ② 选词 is a hint a tap away — back to
+ * 打字 keeps what was typed, and a reveal from the chips doesn't make ② right.
+ */
+fun stepLabel(step: Int) = if (step == 1) " · ① 选词" else " · ② 打字"
+
+const val STEP1_NOTE = "第 1 步 · 选词;接着把它打出来"
+
+/** After ②: how both steps went, and whether the sentence counts. */
 @Composable
-fun rememberChipsMode(): Pair<Boolean, (Boolean) -> Unit> {
-    val ctx = LocalContext.current
-    val prefs = remember { ctx.getSharedPreferences("ui", Context.MODE_PRIVATE) }
-    var chips by remember { mutableStateOf(prefs.getBoolean("chips", true)) }
-    return chips to { v: Boolean -> chips = v; prefs.edit().putBoolean("chips", v).apply() }
+fun StepsLine(text: String, ok: Boolean) {
+    Text(
+        text,
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background((if (ok) Color(0xFF8FD19E) else Color(0xFFF2A65A)).copy(alpha = if (ok) 0.3f else 0.22f), RoundedCornerShape(10.dp))
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+    )
 }
 
-/** The 选词 | 打字 switch, a small pill at the end of its row. */
+fun stepsText(bankOk: Boolean, typedOk: Boolean, helped: Boolean) =
+    "选词 ${if (bankOk) "✓" else "✗"} · 打字 ${if (typedOk) "✓" else if (helped) "✗(用选词交的)" else "✗"} — " +
+        if (bankOk && typedOk) "两步都对,这一句算答对" else "两步都对才算答对,这次记为没对"
+
+/** The 选词 | 打字 switch, a small pill at the end of its row; [lockSecond] greys out the second. */
 @Composable
-fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit, labels: Pair<String, String> = "选词" to "打字") {
+fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit, labels: Pair<String, String> = "选词" to "打字", lockSecond: Boolean = false) {
     val shape = RoundedCornerShape(50)
     Row(
         Modifier.clip(shape).border(1.dp, MaterialTheme.colorScheme.outline, shape).padding(2.dp),
@@ -270,6 +286,7 @@ fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit, labels: Pair<St
     ) {
         listOf(true to labels.first, false to labels.second).forEach { (v, label) ->
             val on = v == chips
+            val locked = lockSecond && !v
             Text(
                 label,
                 style = MaterialTheme.typography.labelMedium,
@@ -277,7 +294,8 @@ fun AnswerModeToggle(chips: Boolean, onChips: (Boolean) -> Unit, labels: Pair<St
                 modifier = Modifier
                     .clip(shape)
                     .then(if (on) Modifier.background(MaterialTheme.colorScheme.onSurface) else Modifier)
-                    .clickable { onChips(v) }
+                    .alpha(if (locked) 0.4f else 1f)
+                    .clickable(enabled = !locked) { onChips(v) }
                     .padding(horizontal = 10.dp, vertical = 3.dp),
             )
         }
