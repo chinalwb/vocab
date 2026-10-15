@@ -149,6 +149,7 @@
 143. [自测:按团队里新来的产品经理来写,他们不太了解这个产品。每一点都写清楚,让这条消息不看别的资料也能读懂。](#t-write-for-new-pms)
 144. [that said / that being said](#that-said)
 145. [acronym](#acronym)
+146. [convoluted](#convoluted)
 
 ---
 
@@ -4750,3 +4751,30 @@ platform 等于 10,就代表请求来自 web,对吧?
 - *spell out an acronym*:写出缩写的全称
 
 **相关条目:** [阅读:用首字母组成的词叫什么?](#r-what-do-you-call) —— 问这个词时的原句和 C1 改法(在 ⋮ → 阅读)。
+
+---
+
+<a id="convoluted"></a>
+## convoluted
+
+- 音标:英 /ˈkɒnvəluːtɪd/ 美 /ˈkɑːnvəluːtɪd/
+- 词性:adj.
+- CEFR:C2
+- 日期:2026-10-15
+- 掌握:会写
+
+**English definition:** Extremely complex and difficult to follow, often more complicated than it needs to be.
+
+**含义:** (逻辑、解释、代码、句子)绕、弯弯绕绕、复杂难懂。常带一点批评:本来可以更简单。"这段逻辑有点绕"就说 *This logic is a bit convoluted.*
+
+**例句**
+1. This logic is a bit convoluted.
+   这段逻辑有点绕。
+2. The plot was so convoluted that I lost track halfway through.
+   情节太绕了,看到一半我就跟不上了。
+
+**近义说法:按语气轻重**
+- **hard to follow** —— 最委婉,把问题说成"我跟不上",适合代码评审、对同事说:*This part is a little hard to follow — could we simplify it?*(这部分有点绕,能简化一下吗?)
+- **roundabout** —— 强调"绕远路、不直接",不一定复杂:*That's a rather roundabout way to do it.*(这个做法有点绕。)
+- **tangled** —— 缠成一团:*The control flow is pretty tangled.*(控制流缠成一团了。)说代码还常说更重的 *spaghetti code*(面条代码)。
+- 易混:**circular logic / circular reasoning** 是"循环论证"(用结论证明结论),不是"绕"。
