@@ -169,6 +169,7 @@ private fun VocabNav() {
     val stages by vm.stages.collectAsStateWithLifecycle()
     val quizOptOut by vm.quizOptOut.collectAsStateWithLifecycle()
     val stageData by vm.stageTimes.collectAsStateWithLifecycle()
+    val reviewCards by vm.review.collectAsStateWithLifecycle()
     val openList by vm.openList.collectAsStateWithLifecycle()
     val favs by vm.favs.collectAsStateWithLifecycle()
     val starred = remember(favs) { favs.starred() }
@@ -240,6 +241,7 @@ private fun VocabNav() {
                             since = stageData.t[anchor] ?: 0L,
                             onStage = { vm.setStage(anchor, it) },
                             excluded = quizOptOut[anchor].orEmpty(),
+                            reps = reviewCards.cards[anchor]?.reps ?: 0,
                             onToggleExample = { en -> if (entry != null) vm.toggleQuizExample(entry, en) },
                             onFav = { en -> vm.toggleFav(anchor, en) },
                             nextLabel = if (next != null) "${pos + 1} / ${list.size}" else null,
@@ -492,6 +494,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onGrade = vm::gradeQuiz,
                 onNext = vm::nextQuiz,
                 onEnd = vm::endQuiz,
+                onUndo = vm::undoQuizMoves,
                 // a run draws its own top row under the status bar and keeps above the navigation bar
                 modifier = if (quiz?.stage == stage) Modifier.imePadding() else Modifier,
                 contentPadding = pad,

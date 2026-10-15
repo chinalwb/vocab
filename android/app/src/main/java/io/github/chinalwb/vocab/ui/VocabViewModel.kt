@@ -36,6 +36,11 @@ data class QuizSession(
     val ok: Int = 0,
     /** moved on to the next stage this run */
     val advanced: Int = 0,
+    /** this card was answered wrong or peeked at: 考核 sends it back to 复习 on 下一题 */
+    val missed: Boolean = false,
+    /** what this run moved by itself (复习 → 考核 earned, 考核 → 复习 missed), for 撤销 on the last page */
+    val promoted: List<String> = emptyList(),
+    val demoted: List<String> = emptyList(),
     /** my own verdict on an entry that can't be checked automatically */
     val graded: Boolean? = null,
     /** the example sentence this card asks, fixed when the card comes up */
@@ -226,16 +231,16 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
                 val ok = tried && bestDiff(draft.trim(), e.selfTestAnswer).same
                 recordSelfTest(e, draft, via)
                 schedule(s, e, ok)
-                _quiz.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0)
+                _quiz.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0, missed = !ok)
             }
             ex != null -> {
                 val ok = tried && bestDiff(draft.trim(), ex.en).same
                 recordAttempt(e, draft, ok, via, ex.en)
                 schedule(s, e, ok)
-                _quiz.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0)
+                _quiz.value = s.copy(revealed = true, checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0, missed = !ok)
             }
             // nothing to check against: a blank reveal is a peek, anything else waits for my verdict
-            !tried -> { recordAttempt(e, "", false, via); schedule(s, e, false); _quiz.value = s.copy(revealed = true) }
+            !tried -> { recordAttempt(e, "", false, via); schedule(s, e, false); _quiz.value = s.copy(revealed = true, missed = true) }
             else -> _quiz.value = s.copy(revealed = true)
         }
     }
@@ -246,7 +251,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         val e = s.current ?: return
         recordAttempt(e, draft, ok, s.stage.key)
         schedule(s, e, ok)
-        _quiz.value = s.copy(graded = ok, checked = s.checked + 1, ok = s.ok + if (ok) 1 else 0)
+        _quiz.value = s.copy(graded = ok, checked = s.checked + 1, ok = s.ok + if (ok) 1 else 0, missed = !ok)
     }
 
     // 复习 keeps its spaced schedule, graded by the quiz: right → Good (the interval grows), wrong → Again (tomorrow)
@@ -254,12 +259,47 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         if (s.stage == Stage.Review) viewModelScope.launch { reviews.grade(e.anchor, if (ok) Grade.Good else Grade.Again); progress.soon() }
     }
 
-    /** 下一题 — [advance]: move this entry on to the next stage first (offered once all its questions are right). */
+    /**
+     * 下一题 — [advance]: move this entry on to the next stage first (offered once all its questions
+     * are right). The run also moves entries by itself: in 复习, one that has earned 考核
+     * (advanceReady, with its SM-2 streak) goes on; in 考核, one answered wrong or peeked at goes back
+     * to 复习 and starts its schedule again. Both can be undone on the last page.
+     */
     fun nextQuiz(advance: Boolean) {
         val s = _quiz.value ?: return
-        if (advance) s.current?.let { e -> s.stage.next?.let { setStage(e.anchor, it) } }
-        _quiz.value = s.copy(index = s.index + 1, studied = false, revealed = false, graded = null, done = s.done + 1, advanced = s.advanced + if (advance) 1 else 0)
-            .withExample(selfTests.value, quizOptOut.value)
+        val e = s.current
+        var promoted = s.promoted
+        var demoted = s.demoted
+        val auto = e != null && s.revealed && s.stage == Stage.Review && advanceReady(
+            e, s.stage, selfTests.value[e.anchor].orEmpty(), stageTimes.value.t[e.anchor] ?: 0L,
+            quizOptOut.value[e.anchor].orEmpty(), review.value.cards[e.anchor]?.reps ?: 0,
+        )
+        val moved = e != null && (advance || auto)
+        if (e != null && moved) s.stage.next?.let { setStage(e.anchor, it) }
+        if (e != null && moved && s.stage == Stage.Review) promoted = promoted + e.anchor
+        if (e != null && !moved && s.stage == Stage.Test && s.revealed && s.missed) {
+            demoted = demoted + e.anchor
+            viewModelScope.launch {
+                stageStore.set(e.anchor, Stage.Review)
+                reviews.grade(e.anchor, Grade.Again)   // its streak starts over: due tomorrow
+                progress.soon()
+            }
+        }
+        _quiz.value = s.copy(
+            index = s.index + 1, studied = false, revealed = false, graded = null, missed = false, done = s.done + 1,
+            advanced = s.advanced + if (moved) 1 else 0, promoted = promoted, demoted = demoted,
+        ).withExample(selfTests.value, quizOptOut.value)
+    }
+
+    /** 撤销 on the last page: put back what this run moved by itself (the schedule stays as graded). */
+    fun undoQuizMoves() {
+        val s = _quiz.value ?: return
+        viewModelScope.launch {
+            s.promoted.forEach { stageStore.set(it, Stage.Review) }
+            s.demoted.forEach { stageStore.set(it, Stage.Test) }
+            progress.soon()
+        }
+        _quiz.value = s.copy(advanced = s.advanced - s.promoted.size, promoted = emptyList(), demoted = emptyList())
     }
 
     fun endQuiz() {
