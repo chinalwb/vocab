@@ -370,6 +370,7 @@ h1{
 .amode{display:inline-flex;gap:2px;padding:2px;border:1px solid var(--card-edge);border-radius:999px;flex:none}
 .amode button,.fh .amode button{font:inherit;font-size:calc(12px * var(--fs));line-height:1;padding:4px 10px;border-radius:999px;border:0;background:none;color:var(--card-ink-2);cursor:pointer;text-decoration:none}
 .amode button[aria-pressed="true"]{background:var(--card-ink);color:var(--sw)}
+.amode button:disabled{opacity:.4;cursor:default}
 .amode-row{display:flex;justify-content:flex-end;margin:8px 0 0}
 .wb-ans{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:72px;box-sizing:border-box;padding:10px;margin-top:10px;border:1.5px solid var(--card-ink-2);border-radius:12px;background:color-mix(in srgb, var(--chip) 55%, transparent);position:relative}
 .wb-ans:has(.wb-clear){padding-right:60px}
@@ -796,6 +797,9 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .vbar .dot.good{background:#8fd19e}.vbar .dot.warn{background:#f2a65a}.vbar .dot.peek{background:#b9b6ac}
 .vbar b{display:block;font-size:calc(15px * var(--fs));line-height:1.35}
 .vbar small{display:block;font-size:calc(12px * var(--fs));opacity:.75}
+.steps{margin:0;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,#f2a65a 22%,transparent);font-size:calc(14px * var(--fs));line-height:1.45}
+.steps.ok{background:color-mix(in srgb,#8fd19e 30%,transparent)}
+#qz-nextk small{font-weight:400;opacity:.75}
 .vl{display:block;font-size:calc(12px * var(--fs));font-weight:700;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
 .vmine p,.vwell p{margin:2px 0 0;font-family:var(--font);font-size:calc(18px * var(--fs));line-height:1.55}
 .vwell{display:flex;align-items:center;gap:4px;background:var(--well);border-radius:16px;padding:10px 6px 12px 14px}
@@ -1478,9 +1482,18 @@ function strayWords(answer, others, seed, n = 3){
   return uniqCI([...own, ...stock]).slice(0, n);
 }
 const hashStr = t => { let h = 0; for (const c of t) h = Math.imul(h, 31) + c.codePointAt(0) | 0; return h; };
-let chipsMode = store.get("vk.chips", "1") === "1";
-const modeToggleHtml = () => `<span class="amode" role="group" aria-label="作答方式">` +
-  [["1", "选词"], ["0", "打字"]].map(([v, l]) => `<button type="button" data-chips="${v}" aria-pressed="${(v === "1") === chipsMode}">${l}</button>`).join("") + `</span>`;
+// 两步 (用户 2026-10-15, same as ui/SelfTest.kt): every sentence is built from the chips first
+// (① 选词), then typed (② 打字); it counts as right only when both are. The 选词 | 打字 switch stays
+// (用户 2026-10-15): in ① 打字 waits its turn; in ② 选词 is a hint a tap away — typing goes back to
+// what was typed, and a reveal from the chips doesn't make ② right.
+const modeToggleHtml = step => `<span class="amode" role="group" aria-label="作答方式">` +
+  [["1", "选词"], ["0", "打字"]].map(([v, l]) => `<button type="button" data-chips="${v}" aria-pressed="${(v === "1") === (step === 1)}"` +
+    (step === 1 && v === "0" ? ` disabled title="先选词,再打字"` : "") + `>${l}</button>`).join("") + `</span>`;
+const stepLabel = step => step === 1 ? " · ① 选词" : " · ② 打字";
+const STEP1_NOTE = "第 1 步 · 选词;接着把它打出来";
+const stepsHtml = (bankOk, typedOk, helped) => `<p class="steps${bankOk && typedOk ? " ok" : ""}">` +
+  `选词 ${bankOk ? "✓" : "✗"} · 打字 ${typedOk ? "✓" : helped ? "✗(用选词交的)" : "✗"} — ` +
+  `${bankOk && typedOk ? "两步都对,这一句算答对" : "两步都对才算答对,这次记为没对"}</p>`;
 // what a question checks against: a 自测题's first 答案 line, a moved entry's example; else none
 const answerOf = (it, level, ex) => level === "SELFTEST" ? ((it.answer || "").split("\n").find(l => l.trim()) || null) : ex ? plainMd(ex.en) : null;
 const othersOf = (it, answer) => [...quizExamples(it).map(x => plainMd(x.en)), ...(it.answer || "").split("\n")].filter(l => l.trim() && l !== answer);
@@ -1523,21 +1536,12 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
   if (ctl.bs) ctl.bs.onclick = () => { picks.pop(); paint(); };       // ⌫: the last word back, without reaching up
   paint();
 }
-function setChipsMode(v){ chipsMode = v; store.set("vk.chips", v ? "1" : "0"); }
 
 // ── 自测 attempt log: every reveal is recorded here (this browser only, like the review
 // progress). {anchor: [{t, text, ok, via}]}; a blank reveal is a 偷看 (text "").
 const ST_MAX = 50;
 let stLog = {};
 try { stLog = JSON.parse(store.get("vk.selftest", "{}")) || {}; } catch(e){}
-function recordAttempt(anchor, text, answer, via, ex = ""){   // ex: the example asked (plain English)
-  const list = stLog[anchor] = stLog[anchor] || [];
-  list.push({ t: Date.now(), text: text.trim(), ok: !!text.trim() && bestDiff(text, answer).same, via, ex });
-  if (list.length > ST_MAX) list.splice(0, list.length - ST_MAX);
-  store.set("vk.selftest", JSON.stringify(stLog));
-  refreshStCounts();
-  syncSoon();
-}
 // Entries moved to 自测 are quizzed like 自测题 (same rules as ui/SelfTest.kt): the Chinese of one
 // of their example sentences is the prompt and the English sentence is the answer, compared word
 // by word. Each try takes the next example in turn (attempt count % examples). Entries without a
@@ -1916,33 +1920,36 @@ function qsheetHtml(o){
     `<button type="button" class="wb-bs" id="wb-bs" aria-label="撤回最后一个词">${ICON_BS}</button></div>` +
     `<button class="btn" type="button" id="q-show">显示答案</button><div class="row2" id="q-after" hidden></div></div>`;
 }
-// 选词 | 打字 in the 你的句子 box. [a]: {answer (null: typing only), others, seed, picks (kept by the
-// caller), onReveal, onInput}. The chips write into the (hidden) text box, so a reveal reads one place.
+// The 你的句子 box. [a]: {answer (null: typing only), step (1: chips only; 2: typing, chips as a hint
+// while a.help), others, seed, picks and typed (kept by the caller), onReveal, onInput}. The chips
+// write into the (hidden) text box, so a reveal reads one place; back to 打字 restores a.typed.
 function wireAnswer(root, a){
   const input = root.querySelector("#q-in"), ansEl = root.querySelector("#wb-ans"), keys = root.querySelector("#wb-keys"),
     bank = root.querySelector("#wb-bank"), bs = root.querySelector("#wb-bs"), clear = root.querySelector("#yb-clear"),
     hint = root.querySelector("#yb-hint"), box = root.querySelector("#ybox"), mode = root.querySelector(".qmeta .amode");
-  const chips = () => chipsMode && !!a.answer;
+  a.typed = a.typed || "";
+  const chips = () => !!a.answer && (a.step === 1 || !!a.help);
   const apply = () => {
     const on = chips();
     input.hidden = on; ansEl.hidden = keys.hidden = !on;
     box.classList.toggle("typing", !on);
-    if (mode) mode.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", (b.dataset.chips === "1") === chipsMode));
+    if (mode) mode.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", (b.dataset.chips === "1") === on));
     if (on) mountBank(ansEl, bank, input, a.answer, a.others, a.seed, a.picks, { clear, bs, hint });
     else {
+      if (a.answer) { input.value = a.typed; input.dispatchEvent(new Event("input")); }
       hint.hidden = true; clear.hidden = !input.value;
       clear.onclick = () => { input.value = ""; input.dispatchEvent(new Event("input")); input.focus(); };
     }
   };
-  input.addEventListener("input", () => { if (!chips()) clear.hidden = !input.value; if (a.onInput) a.onInput(input.value); });
+  input.addEventListener("input", () => { if (!chips()) { a.typed = input.value; clear.hidden = !input.value; } if (a.onInput) a.onInput(input.value); });
   input.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) a.onReveal(); });
   if (mode) mode.addEventListener("click", e => {
     const b = e.target.closest("button[data-chips]");
-    if (!b || (b.dataset.chips === "1") === chipsMode) return;
-    setChipsMode(b.dataset.chips === "1");
-    if (chipsMode) a.picks.length = 0;                    // to 打字 keeps the sentence built so far
+    if (!b || b.disabled || a.step === 1 || (b.dataset.chips === "1") === !!a.help) return;
+    a.help = b.dataset.chips === "1";
+    if (a.help) a.picks.length = 0;                       // a fresh hint each time
     apply();
-    if (!chipsMode) input.focus();
+    if (!a.help) input.focus();
   });
   root.querySelector("#q-show").addEventListener("click", () => a.onReveal());
   apply();
@@ -1977,6 +1984,7 @@ function decorateNotes(root, it, ex, go, onAll){
 // [o.from]: the side the card showed before a move (it turns over to the new one);
 // [o.face]: "front" / "back" to re-render on that side without turning.
 // [o.ex]: which example to ask (再试一次 keeps it, 下一句 adds one); by default the next by attempt count.
+// [o.step]: 2 = the sentence's ② 打字, with [o.bankOk] how its ① 选词 went.
 function show(it, level, i, o = {}){
   if (scrim) scrim.remove();
   scrim = document.createElement("div");
@@ -2005,7 +2013,9 @@ function show(it, level, i, o = {}){
       `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`;
   }).join("") + `</div>`;
   const curEx = () => ex ? plainMd(ex.en) : null;      // stats and history are this sentence's own
-  const qMeta = () => selfTest ? "自测题 · 中译英" : ex ? `例句 ${ex.k + 1} / ${ex.of} · 中译英` : "回想并写出来";
+  let step = o.step || 1;
+  const qMeta = () => (selfTest ? "自测题 · 中译英" : ex ? `例句 ${ex.k + 1} / ${ex.of} · 中译英` : "回想并写出来") +
+    (answerOf(it, level, ex) ? stepLabel(step) : "");
   const promptHtml = () => selfTest ? `<p class="qprompt">${esc(stTitle(it))}</p>`
     : ex ? `<p class="qprompt">${esc(plainMd(ex.zh))}</p>` : askHtml({ it, level, i }, kind({ it, level, i }));
   // the card: the notes on the front, with what's left in this stage and 自测这条 at its foot; the
@@ -2014,7 +2024,7 @@ function show(it, level, i, o = {}){
     `<div class="card-foot"><span class="hint" id="cf-hint">${esc(progressHint(it, level, stage))}</span>` +
     `<button class="btn" type="button" id="to-quiz">${selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
   const backFace = `<div class="face bk">` + qsheetHtml({
-    meta: qMeta(), toggle: answerOf(it, level, ex) ? modeToggleHtml() : "", prompt: promptHtml(),
+    meta: qMeta(), toggle: answerOf(it, level, ex) ? modeToggleHtml(step) : "", prompt: promptHtml(),
     stats: stStatsLine(it.anchor, curEx()),
     extra: stage !== "test" ? `<button type="button" class="linkish" id="to-notes-pre">看笔记</button>` : "",
   }) + `</div>`;
@@ -2065,7 +2075,7 @@ function show(it, level, i, o = {}){
   // the answer sheet
   const res = sheet.querySelector("#q-res"), after = sheet.querySelector("#q-after");
   let revealed = false;
-  const cfg = { answer: answerOf(it, level, ex), seed: hashStr(it.anchor) + (stLog[it.anchor] || []).length, picks: [], onReveal: () => reveal() };
+  const cfg = { answer: answerOf(it, level, ex), step, seed: hashStr(it.anchor) + (stLog[it.anchor] || []).length, picks: [], onReveal: () => reveal() };
   cfg.others = othersOf(it, cfg.answer);
   const api = wireAnswer(sheet.querySelector(".face.bk"), cfg), input = api.input;
   // a click on an example toggles it in or out of 自测; an unanswered question follows
@@ -2078,6 +2088,7 @@ function show(it, level, i, o = {}){
     sheet.querySelector(".qmeta span").textContent = qMeta();
     sheet.querySelector("#q-stats").textContent = stStatsLine(it.anchor, curEx());
     cfg.answer = answerOf(it, level, ex); cfg.others = othersOf(it, cfg.answer); cfg.picks.length = 0;
+    if (step === 2) { show(it, level, i, { face: "back" }); return; }   // a new sentence starts at ①
     api.apply();
   };
   // long-press: 复制 / 收藏 / 加入或移出自测
@@ -2108,13 +2119,27 @@ function show(it, level, i, o = {}){
     if (revealed) return;
     revealed = true;
     const v = input.value, stats = () => stStatsLine(it.anchor, curEx());
-    if (selfTest) { recordAttempt(it.anchor, v, it.answer || "", "entry"); paint(verdictHtml(v, it.answer || "", stats())); }
-    else if (ex) { recordAttempt(it.anchor, v, plainMd(ex.en), "entry", plainMd(ex.en)); paint(verdictHtml(v, plainMd(ex.en), stats())); }
-    else { if (!v.trim()) logAttempt(it.anchor, "", false, "entry"); paint(movedHtml(null, v)); }
+    const ans = selfTest ? it.answer || "" : ex ? plainMd(ex.en) : null;
     res.hidden = false;
     sheet.querySelector("#q-ask").hidden = sheet.querySelector("#wb-keys").hidden = sheet.querySelector("#q-show").hidden = true;
     const mode = sheet.querySelector(".qmeta .amode");
     if (mode) mode.hidden = true;
+    if (ans !== null && step === 1) {                    // ① checked, not logged: on to ② 打字
+      const bankOk = !!v.trim() && bestDiff(v, ans).same;
+      res.innerHTML = (quiet() ? `<p class="qquiet">${esc(quiet())}</p>` : "") + verdictHtml(v, ans, STEP1_NOTE);
+      after.innerHTML = `<button class="btn" type="button" id="st-step2">下一步:打字 ›</button>`;
+      after.hidden = false;
+      const b = after.querySelector("#st-step2");
+      b.addEventListener("click", () => show(it, level, i, { face: "back", ex: ex ? ex.k : undefined, step: 2, bankOk }));
+      b.focus();
+      return;
+    }
+    if (ans !== null) {                                   // ②: right only if ① was too
+      const typedOk = !cfg.help && !!v.trim() && bestDiff(v, ans).same;
+      logAttempt(it.anchor, v, !!o.bankOk && typedOk, "entry", ex ? plainMd(ex.en) : "");
+      paint(stepsHtml(!!o.bankOk, typedOk, !!cfg.help) + verdictHtml(v, ans, stats()));
+    }
+    else { if (!v.trim()) logAttempt(it.anchor, "", false, "entry"); paint(movedHtml(null, v)); }
     // 再试一次 asks the same sentence again; with more than one, 下一句 goes on to the next
     after.innerHTML = `<button class="btn ghost" type="button" id="st-again">↻ 再试一次</button>` +
       (ex && ex.of > 1 ? `<button class="btn" type="button" id="st-nextex">下一句 ›</button>` : `<button class="btn" type="button" id="to-notes">看笔记</button>`);
@@ -2427,7 +2452,7 @@ function renderStageTab(stage, el){
     // what the run moved by itself, by name, with one 撤销 for all of it
     const names = list => list.map(a => byAnchor[a] ? plainMd(textOf(byAnchor[a].it.title)) : a).map(esc).join("、");
     const moved = s.promoted.length || s.demoted.length;
-    el.innerHTML = `<div class="run"><div class="run-done"><h2>完成 🎉</h2><p class="note">这一轮做了 ${s.done} 题` + (s.checked ? `,答对 ${s.ok} / ${s.checked}` : "") +
+    el.innerHTML = `<div class="run"><div class="run-done"><h2>完成 🎉</h2><p class="note">这一轮做了 ${s.done} 条` + (s.checked ? `,答对 ${s.ok} / ${s.checked} 句` : "") +
       (s.advanced ? `,${s.advanced} 条进入了${STAGE_TAB[nextStage(stage)]}` : "") + `。</p>` +
       (s.promoted.length ? `<p>自动移到考核(复习里连续答对 ${PROMOTE_REPS} 次):${names(s.promoted)}</p>` : "") +
       (s.demoted.length ? `<p>答错了,退回复习(排期从明天重新开始):${names(s.demoted)}</p>` : "") +
@@ -2464,7 +2489,7 @@ function renderStageTab(stage, el){
     groups = [["今天到期", p.due, sub], ["还没排期", p.fresh, t => tried(t) || gloss(t)], ["以后到期", later, sub]];
     sum = summaryHtml(queue.length, !mine.length ? "条 · 还没有复习中的条目" : !queue.length ? "条 · 今天的都复习完了" : "条 · 今天要复习",
       [`今天到期 ${p.due.length}`, `还没排期 ${p.fresh.length}`], null, `开始复习 ${queue.length} 条`, queue.length > 0,
-      "先看一遍笔记,再翻面做例句。答对了下次隔得更久,答错了明天再来;连续答对 3 次(隔开几天)、例句也都答对过,就自动移到考核。");
+      "先看一遍笔记,再翻面把每句例句都做一遍(先选词、再打字)。全部答对了下次隔得更久,答错了明天再来;连续答对 3 次(隔开几天)、例句也都答对过,就自动移到考核。");
   } else {
     // 没做过 / 上次没对 (wrong or peeked) / 上次答对, in the order the run takes them
     const grp = t => { const l = stSummary(t.it.anchor).last; return !l ? 0 : !l.text || !l.ok ? 1 : 2; };
@@ -2481,7 +2506,7 @@ function renderStageTab(stage, el){
         `<span class="t"><b>${stTitle(t.it)}</b><small>${esc(sub(t))}</small></span><span class="tg">${lvShort(t.level)}</span></button>`).join("") + `</div>`).join("");
   const start = el.querySelector("#qz-start");
   if (start) start.addEventListener("click", () => {
-    quiz = { stage, queue: quizQueue(stage), index: 0, studied: false, revealed: false, draft: "", done: 0, ok: 0, checked: 0, advanced: 0, missed: false, promoted: [], demoted: [] };
+    quiz = { stage, queue: quizQueue(stage), index: 0, studied: false, revealed: false, draft: "", done: 0, ok: 0, checked: 0, advanced: 0, missed: false, promoted: [], demoted: [], k: 0, step: 1, entryOk: true };
     render(); window.scrollTo(0, 0);
   });
   const rd = el.querySelector("#qz-ready");
@@ -2491,11 +2516,17 @@ function renderStageTab(stage, el){
 // One card of a run: ✕, the progress bar and "3 / 32" on top, then 复习's notes (翻面做题) or the
 // answer sheet; after the reveal, the verdict, the notes the sentence comes from, and 下一题 — with
 // the move to the next stage offered once it's earned.
+// An entry asks every one of its sentences (用户 2026-10-15, same as nextQuiz() in VocabViewModel.kt),
+// s.k in turn, each ① 选词 then ② 打字 (s.step); the entry is right only if all of them are
+// (s.entryOk) — that grades the SM-2 card and decides the moves, once, after its last sentence.
 function renderQuizCard(el){
   const s = quiz, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST", stage = s.stage;
-  if (!exam && s.ex === undefined) s.ex = quizEx(it);     // this card's example, fixed for the card
+  if (!exam && s.ex === undefined) s.ex = quizEx(it, s.k);  // this sentence, fixed for it
   const ex = exam ? null : s.ex, exEn = ex ? plainMd(ex.en) : null;
-  const pct = Math.round((s.index + (s.revealed ? 1 : 0)) / s.queue.length * 100);
+  const qAns = answerOf(it, t.level, ex), step = qAns ? s.step : 2;
+  const lastQ = exam || !ex || ex.k + 1 >= ex.of;           // the entry's last sentence
+  const final = s.revealed && step === 2 && lastQ;           // the entry is done
+  const pct = Math.round((s.index + (final ? 1 : 0)) / s.queue.length * 100);
   const sw = `var(${LV[t.level].sw[t.i % 3]})`;
   const top = `<div class="runbar"><button type="button" class="x2" id="qz-stop" aria-label="结束这一轮">✕</button>` +
     `<div class="bar" role="img" aria-label="进度 ${s.index + 1} / ${s.queue.length}"><i style="width:${pct}%"></i></div><span>${s.index + 1} / ${s.queue.length}</span></div>`;
@@ -2510,14 +2541,13 @@ function renderQuizCard(el){
     markExamples(el, it); wireXrefsIn(el, go);
     return;
   }
-  const ready = s.revealed && advanceReady(it, t.level, stage);
+  const ready = final && advanceReady(it, t.level, stage);
   // 复习 → 考核 happens by itself on 下一题; 考核 sends a miss back to 复习 — say so, no button
-  const auto = ready && stage === "review", back = s.revealed && stage === "test" && s.missed && !ready;
-  const qAns = answerOf(it, t.level, ex);
-  const meta = (exam ? "自测题" : plainMd(textOf(it.title))) + (ex ? ` · 例句 ${ex.k + 1} / ${ex.of}` : "") + " · 中译英";
+  const auto = ready && stage === "review", back = final && stage === "test" && s.missed && !ready;
+  const meta = (exam ? "自测题" : plainMd(textOf(it.title))) + (ex ? ` · 例句 ${ex.k + 1} / ${ex.of}` : "") + " · 中译英" + (qAns ? stepLabel(step) : "");
   const prompt = exam ? `<p class="qprompt">${esc(stTitle(it))}</p>` : ex ? `<p class="qprompt">${esc(plainMd(ex.zh))}</p>` : askHtml(t, k);
   el.innerHTML = `<div class="run">${top}<div class="qsheet" style="--sw:${sw}">` +
-    qsheetHtml({ meta, toggle: qAns && !s.revealed ? modeToggleHtml() : "", prompt, stats: stStatsLine(it.anchor, exEn), draft: s.draft }) + `</div></div>`;
+    qsheetHtml({ meta, toggle: qAns && !s.revealed ? modeToggleHtml(step) : "", prompt, stats: stStatsLine(it.anchor, exEn), draft: s.draft }) + `</div></div>`;
   el.querySelector("#qz-stop").addEventListener("click", stop);
   const via = stage;                                        // "review" / "test" in the history
   // 下一题: the move I tapped, or the one the run makes by itself (see nextQuiz() in VocabViewModel.kt)
@@ -2525,35 +2555,62 @@ function renderQuizCard(el){
     if (adv || auto) { setStage(it, nextStage(stage)); s.advanced++; if (stage === "review") s.promoted.push(it.anchor); }
     else if (back) { setStage(it, "review"); scheduleReview(it.anchor, false); s.demoted.push(it.anchor); }
     s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; s.studied = false; s.picks = undefined; s.missed = false;
+    s.k = 0; s.step = 1; s.entryOk = true; s.ans = undefined;
     render(); window.scrollTo(0, 0);
   };
+  // within the entry: ① → ②, then its next sentence
+  const onward = nextK => {
+    if (nextK) { s.k++; s.ex = undefined; s.step = 1; } else s.step = 2;
+    s.revealed = false; s.draft = ""; s.picks = undefined; s.ans = undefined;
+    renderQuizCard(el); window.scrollTo(0, 0);
+  };
   const reveal = () => {
-    const tried = !!s.draft.trim();
+    const tried = !!s.draft.trim(), ans = exam ? it.answer || "" : exEn;
+    if (qAns && step === 1) { s.bankOk = tried && bestDiff(s.draft, ans).same; s.revealed = true; renderQuizCard(el); return; }
     let ok = null;
-    if (exam) { recordAttempt(it.anchor, s.draft, it.answer || "", via); ok = tried && bestDiff(s.draft, it.answer || "").same; }
-    else if (ex) { recordAttempt(it.anchor, s.draft, exEn, via, exEn); ok = tried && bestDiff(s.draft, exEn).same; }
+    if (qAns) {                                             // ②: right only if ① was too
+      s.typedOk = !s.ans.help && tried && bestDiff(s.draft, ans).same; s.helped = !!s.ans.help;
+      ok = s.bankOk && s.typedOk;
+      logAttempt(it.anchor, s.draft, ok, via, exEn || "");
+    }
     else if (!tried) { logAttempt(it.anchor, "", false, via); ok = false; }
-    if (ok !== null) { if (tried) { s.checked++; if (ok) s.ok++; } if (stage === "review") scheduleReview(it.anchor, ok); s.missed = !ok; }
+    if (ok !== null) {
+      if (tried) { s.checked++; if (ok) s.ok++; }
+      s.entryOk = s.entryOk && ok;
+      if (lastQ) { if (stage === "review") scheduleReview(it.anchor, s.entryOk); s.missed = !s.entryOk; }
+    }
     s.revealed = true; renderQuizCard(el);
   };
-  const api = wireAnswer(el.querySelector(".qsheet"), {
-    answer: s.revealed ? null : qAns, others: othersOf(it, qAns), seed: hashStr(it.anchor) + s.index,
+  const api = wireAnswer(el.querySelector(".qsheet"), Object.assign(s.ans = s.ans || { typed: s.draft }, {
+    answer: s.revealed ? null : qAns, step, others: othersOf(it, qAns), seed: hashStr(it.anchor) + s.index + 7 * s.k,
     picks: s.picks = s.picks || [], onReveal: () => { if (!s.revealed) reveal(); }, onInput: v => { s.draft = v; },
-  });
+  }));
   if (!s.revealed) { if (!api.input.hidden) api.input.focus(); return; }
   const res = el.querySelector("#q-res"), after = el.querySelector("#q-after");
   const stats = stStatsLine(it.anchor, exEn);
   const quiet = exam ? stTitle(it) : ex ? plainMd(ex.zh) : "";
-  res.innerHTML = (quiet ? `<p class="qquiet">${esc(quiet)}</p>` : "") +
-    (exam ? verdictHtml(s.draft, it.answer || "", stats) : ex ? verdictHtml(s.draft, exEn, stats) : movedHtml(null, s.draft, s.graded)) +
+  res.hidden = false;
+  el.querySelector("#q-ask").hidden = el.querySelector("#wb-keys").hidden = el.querySelector("#q-show").hidden = true;
+  after.hidden = false;
+  if (qAns && step === 1) {                                 // ① checked, not logged
+    res.innerHTML = (quiet ? `<p class="qquiet">${esc(quiet)}</p>` : "") + verdictHtml(s.draft, exam ? it.answer || "" : exEn, STEP1_NOTE);
+    after.innerHTML = `<button class="btn" type="button" id="qz-step2">下一步:打字 ›</button>`;
+    const b = after.querySelector("#qz-step2"); b.addEventListener("click", () => onward(false)); b.focus();
+    return;
+  }
+  const whole = final && ex && ex.of > 1 ? `<p class="steps${s.entryOk ? " ok" : ""}">这一条的 ${ex.of} 句都做完了:${s.entryOk ? "全部答对" : "有没答对的,整条记为没对"}</p>` : "";
+  res.innerHTML = (quiet ? `<p class="qquiet">${esc(quiet)}</p>` : "") + (qAns ? stepsHtml(s.bankOk, s.typedOk, s.helped) : "") +
+    (exam ? verdictHtml(s.draft, it.answer || "", stats) : ex ? verdictHtml(s.draft, exEn, stats) : movedHtml(null, s.draft, s.graded)) + whole +
     (auto ? `<div class="adv"><span>复习里连续答对 ${PROMOTE_REPS} 次了,下一题时自动移到考核</span></div>` :
       back ? `<div class="adv"><span>没答对,下一题时退回复习,排期从明天重新开始</span></div>` : ready ? advanceHtml(stage) : "") + notesForQuestionHtml(it, ex) + stHistoryHtml(it.anchor, exEn);
   decorateNotes(res, it, ex, go, () => go(t));
-  res.hidden = false;
-  el.querySelector("#q-ask").hidden = el.querySelector("#wb-keys").hidden = el.querySelector("#q-show").hidden = true;
+  if (!lastQ) {
+    after.innerHTML = `<button class="btn" type="button" id="qz-nextk">下一句 › <small>${ex.k + 2} / ${ex.of}</small></button>`;
+    const b = after.querySelector("#qz-nextk"); b.addEventListener("click", () => onward(true)); b.focus();
+    return;
+  }
   after.innerHTML = (ready && !auto ? `<button class="btn ghost" type="button" id="qz-adv">移到${STAGE_TAB[nextStage(stage)]}</button>` : "") +
     `<button class="btn" type="button" id="qz-next">${s.index + 1 < s.queue.length ? "下一题 ›" : "完成"}</button>`;
-  after.hidden = false;
   res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {   // graded by me
     s.graded = b.dataset.ok === "1";
     logAttempt(it.anchor, s.draft, s.graded, via);

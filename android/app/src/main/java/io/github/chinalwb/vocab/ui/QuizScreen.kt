@@ -111,8 +111,10 @@ fun QuizScreen(
     onOpen: (String, List<String>) -> Unit,
     onStart: () -> Unit,
     onStudied: () -> Unit,
-    onReveal: (String) -> Unit,
+    onReveal: (String, Boolean) -> Unit,
     onGrade: (String, Boolean) -> Unit,
+    /** within an entry: ① → ②, or (true) on to its next sentence */
+    onOnward: (Boolean) -> Unit,
     onNext: (advance: Boolean) -> Unit,
     onEnd: () -> Unit,
     /** 撤销 on the last page: put back what the run moved by itself */
@@ -124,7 +126,7 @@ fun QuizScreen(
     when {
         session != null && session.stage == stage && current != null -> QuizCard(
             session, current, selfTests[current.anchor].orEmpty(), stageTimes[current.anchor] ?: 0L, excluded[current.anchor].orEmpty(),
-            review.cards[current.anchor]?.reps ?: 0, onStudied, onReveal, onGrade, onNext, onEnd, { onOpen(it, emptyList()) }, modifier,
+            review.cards[current.anchor]?.reps ?: 0, onStudied, onReveal, onGrade, onOnward, onNext, onEnd, { onOpen(it, emptyList()) }, modifier,
         )
         session != null && session.stage == stage -> Column(
             modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility).padding(24.dp),
@@ -132,8 +134,8 @@ fun QuizScreen(
         ) {
             Text("完成 🎉", style = MaterialTheme.typography.headlineSmall)
             Text(
-                "这一轮做了 ${session.done} 题" +
-                    (if (session.checked > 0) ",答对 ${session.ok} / ${session.checked}" else "") +
+                "这一轮做了 ${session.done} 条" +
+                    (if (session.checked > 0) ",答对 ${session.ok} / ${session.checked} 句" else "") +
                     (if (session.advanced > 0) ",${session.advanced} 条进入了${session.stage.next?.tab ?: ""}" else "") + "。",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -425,6 +427,8 @@ private fun DoneList(
  * 复习 shows the notes first, on a card in the entry's level colour (翻面做题), and turns it over
  * to the sheet; 考核 goes straight to the question. After the reveal: the verdict, the notes the
  * sentence comes from, and 下一题 — with the move to the next stage offered once it's earned.
+ * An entry asks every one of its sentences in turn (用户 2026-10-15), each ① 选词 then ② 打字; the
+ * moves come after its last one (revealQuiz() in VocabViewModel.kt, renderQuizCard() in template.html).
  */
 @Composable
 private fun QuizCard(
@@ -435,8 +439,9 @@ private fun QuizCard(
     excluded: Set<String>,
     reps: Int,
     onStudied: () -> Unit,
-    onReveal: (String) -> Unit,
+    onReveal: (String, Boolean) -> Unit,
     onGrade: (String, Boolean) -> Unit,
+    onOnward: (Boolean) -> Unit,
     onNext: (Boolean) -> Unit,
     onEnd: () -> Unit,
     onXref: (String) -> Unit,
@@ -444,20 +449,26 @@ private fun QuizCard(
 ) {
     val exam = entry.level == "SELFTEST"
     val ex = session.example
-    var draft by rememberSaveable(session.index) { mutableStateOf("") }
     val studying = session.stage == Stage.Review && !session.studied
     val answer = if (exam) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
-    val (chips, setChips) = rememberChipsMode()
-    val bank = if (answer != null && chips && !session.revealed && !studying) {
-        val seed = entry.anchor.hashCode() + session.index
+    val step = if (answer != null) session.step else 2
+    // per sentence and step: what's typed, the 选词 hint (② only), and what the reveal checked
+    val key = "${session.index}/${session.k}/$step"
+    var typed by rememberSaveable(key) { mutableStateOf("") }
+    var help by rememberSaveable(key) { mutableStateOf(false) }
+    var draft by rememberSaveable(key) { mutableStateOf("") }
+    val bank = if (answer != null && (step == 1 || help) && !session.revealed && !studying) {
+        val seed = entry.anchor.hashCode() + session.index + 7 * session.k
         val others = remember(entry.anchor) { entry.quizExamples().map { plain(it.en) } + entry.selfTestAnswer.lines() }
             .filter { it.isNotBlank() && it != answer }
-        rememberWordBank(answer, strayWords(answer, others, seed), seed).also { st -> LaunchedEffect(st.pickedText) { draft = st.draft } }
+        rememberWordBank(answer, strayWords(answer, others, seed), seed)
     } else null
-    val ready = session.revealed && advanceReady(entry, session.stage, attempts, since, excluded, reps)
+    val reveal = { draft = bank?.draft ?: typed; onReveal(draft, bank != null) }
+    val final = session.revealed && step == 2 && session.lastQ
+    val ready = final && advanceReady(entry, session.stage, attempts, since, excluded, reps)
     // 复习 → 考核 happens by itself on 下一题; 考核 sends a miss back to 复习 — say so, no button
     val auto = ready && session.stage == Stage.Review
-    val back = session.revealed && session.stage == Stage.Test && session.missed && !ready
+    val back = final && session.stage == Stage.Test && session.missed && !ready
     val color = levelColor(entry.level)
     // the turn from the notes (front) to the question (back), 复习 only
     val angle by androidx.compose.animation.core.animateFloatAsState(
@@ -469,7 +480,7 @@ private fun QuizCard(
     Column(modifier.fillMaxSize()) {
         RunTopBar(
             onEnd,
-            progress = (session.index + if (session.revealed) 1 else 0).toFloat() / session.queue.size,
+            progress = (session.index + if (final) 1 else 0).toFloat() / session.queue.size,
             label = "${session.index + 1} / ${session.queue.size}",
         )
         Box(
@@ -491,8 +502,11 @@ private fun QuizCard(
                     Modifier.fillMaxSize(),
                     card = {
                         SheetMetaRow(
-                            (if (exam) "自测题" else entry.title) + (ex?.let { " · 例句 ${it.k + 1} / ${it.of}" } ?: "") + " · 中译英",
-                            toggle = if (answer != null && !session.revealed) ({ AnswerModeToggle(chips, setChips) }) else null,
+                            (if (exam) "自测题" else entry.title) + (ex?.let { " · 例句 ${it.k + 1} / ${it.of}" } ?: "") + " · 中译英" +
+                                (if (answer != null) stepLabel(step) else ""),
+                            toggle = if (answer != null && !session.revealed) ({
+                                AnswerModeToggle(step == 1 || help, { if (step == 2) help = it }, lockSecond = step == 1)
+                            }) else null,
                         )
                         if (!session.revealed) {
                             when {
@@ -501,15 +515,23 @@ private fun QuizCard(
                                 else -> ReviewFront(entry, kindOf(entry, inTest = true))
                             }
                             Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub)
-                            if (bank != null) ChipsAnswerBox(bank) else TypingAnswerBox(draft) { draft = it }
+                            if (bank != null) ChipsAnswerBox(bank) else TypingAnswerBox(typed) { typed = it }
                         } else {
                             val q = if (exam) entry.title.removePrefix("自测:").removePrefix("自测:") else ex?.zh
                             if (q != null) Text(q, style = MaterialTheme.typography.bodyLarge, color = sheetColors().sub)
+                            val full = if (exam) entry.selfTestAnswer else ex?.en
+                            if (full != null && step == 1) {   // ① checked, not logged
+                                RevealVerdict(draft, full, STEP1_NOTE)
+                                return@AnswerSheet
+                            }
+                            if (full != null) StepsLine(stepsText(session.bankOk, session.typedOk, session.helped), session.bankOk && session.typedOk)
                             when {
-                                exam -> RevealVerdict(draft, entry.selfTestAnswer, stats)
-                                ex != null -> RevealVerdict(draft, ex.en, stats)
+                                full != null -> RevealVerdict(draft, full, stats)
                                 else -> MovedResult(draft, session.graded) { onGrade(draft, it) }
                             }
+                            if (final && ex != null && ex.of > 1) StepsLine(
+                                "这一条的 ${ex.of} 句都做完了:" + if (session.entryOk) "全部答对" else "有没答对的,整条记为没对", session.entryOk,
+                            )
                             when {
                                 auto -> AutoMoveNote("复习里连续答对 $PROMOTE_REPS 次了,下一题时自动移到考核")
                                 back -> AutoMoveNote("没答对,下一题时退回复习,排期从明天重新开始")
@@ -522,8 +544,10 @@ private fun QuizCard(
                     panel = {
                         if (!session.revealed) {
                             if (bank != null) WordKeys(bank)
-                            SheetButton("显示答案") { onReveal(draft) }
-                        } else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                            SheetButton("显示答案", onClick = reveal)
+                        } else if (answer != null && step == 1) SheetButton("下一步:打字 ›") { onOnward(false) }
+                        else if (!session.lastQ) SheetButton("下一句 › ${(ex?.k ?: 0) + 2} / ${ex?.of}") { onOnward(true) }
+                        else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                             if (ready && !auto) SheetButton("移到${session.stage.next?.tab}", Modifier.weight(1f), filled = false) { onNext(true) }
                             SheetButton(if (session.index + 1 < session.queue.size) "下一题 ›" else "完成", Modifier.weight(1f)) { onNext(false) }
                         }

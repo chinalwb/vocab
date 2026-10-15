@@ -83,7 +83,8 @@ fun EntryScreen(
     onXref: (String) -> Unit,
     onSeen: (String) -> Unit,
     attempts: List<Attempt> = emptyList(),
-    onAttempt: (String) -> Unit = {},
+    /** a 自测题's answer, and whether it counts as right (both steps) */
+    onAttempt: (String, Boolean) -> Unit = { _, _ -> },
     /** an attempt at an example sentence, with its verdict and the example (plain English) */
     onGrade: (String, Boolean, String) -> Unit = { _, _, _ -> },
     stage: Stage = Stage.Learn,
@@ -127,19 +128,33 @@ fun EntryScreen(
         var tryNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
         var exNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
         val ex = remember(entry.anchor, exNo, excluded) { if (selfTest) null else entry.quizExample(exNo, excluded) }
-        var draft by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf("") }
-        var revealed by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
+        // 两步: ① 选词 then ② 打字 (stepLabel() in SelfTest.kt); the step's own state resets with it
+        var step by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(1) }
+        var bankOk by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
+        var typedOk by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
+        var helped by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
+        var typed by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf("") }
+        var help by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf(false) }
+        var draft by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf("") }
+        var revealed by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf(false) }
         var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
         var quizUp by rememberSaveable(entry.anchor, stage) { mutableStateOf(stage == Stage.Test) }
         val retry = { tryNo = maxOf(tryNo + 1, attempts.size); quizUp = true }
         val nextExample = { exNo = (ex?.k ?: exNo) + 1; retry() }
-        val ready = revealed && advanceReady(entry, stage, attempts, since, excluded, reps)
+        val ready = revealed && (step == 2 || !selfTest && ex == null) && advanceReady(entry, stage, attempts, since, excluded, reps)
         val answer = if (selfTest) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
-        val (chips, setChips) = rememberChipsMode()
+        val key = if (selfTest) entry.selfTestAnswer else ex?.en       // what a reveal checks against
+        var bankDraft: () -> String? = { null }
         val reveal = {
+            draft = bankDraft() ?: typed
+            val right = draft.isNotBlank() && key != null && bestDiff(draft, key).same
             when {
-                selfTest -> onAttempt(draft)
-                ex != null -> onGrade(draft, draft.isNotBlank() && bestDiff(draft, ex.en).same, ex.en)
+                key != null && step == 1 -> bankOk = right            // ① checked, not logged
+                key != null -> {                                       // ②: right only if ① was too
+                    helped = bankDraft() != null
+                    typedOk = right && !helped
+                    if (selfTest) onAttempt(draft, bankOk && typedOk) else onGrade(draft, bankOk && typedOk, ex!!.en)
+                }
                 draft.isBlank() -> onGrade("", false, "")
             }
             revealed = true
@@ -190,13 +205,14 @@ fun EntryScreen(
                 label = if (toNotes) "回到笔记" else "返回",
                 onClick = if (toNotes) ({ quizUp = false }) else onBack,
             )
-            val bank = if (!revealed && answer != null && chips) {
+            val bank = if (!revealed && answer != null && (step == 1 || help)) {
                 val seed = entry.anchor.hashCode() + tryNo
                 val others = remember(entry.anchor, excluded) {
                     entry.quizExamples(excluded).map { plain(it.en) } + entry.selfTestAnswer.lines()
                 }.filter { it.isNotBlank() && it != answer }
-                rememberWordBank(answer, strayWords(answer, others, seed), seed).also { st -> LaunchedEffect(st.pickedText) { draft = st.draft } }
+                rememberWordBank(answer, strayWords(answer, others, seed), seed)
             } else null
+            bankDraft = { bank?.draft }
             val stats = statsLine(attempts.at(ex), one = ex != null)
             AnswerSheet(
                 band,
@@ -207,8 +223,10 @@ fun EntryScreen(
                             selfTest -> "自测题 · 中译英"
                             ex != null -> "例句 ${ex.k + 1} / ${ex.of} · 中译英"
                             else -> "回想并写出来"
-                        },
-                        toggle = if (!revealed && answer != null) ({ AnswerModeToggle(chips, setChips) }) else null,
+                        } + if (answer != null) stepLabel(step) else "",
+                        toggle = if (!revealed && answer != null) ({
+                            AnswerModeToggle(step == 1 || help, { if (step == 2) help = it }, lockSecond = step == 1)
+                        }) else null,
                     )
                     if (!revealed) {
                         Question(entry, ex)
@@ -220,13 +238,17 @@ fun EntryScreen(
                                 modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { quizUp = false }.padding(horizontal = 6.dp, vertical = 4.dp),
                             )
                         }
-                        if (bank != null) ChipsAnswerBox(bank) else TypingAnswerBox(draft) { draft = it }
+                        if (bank != null) ChipsAnswerBox(bank) else TypingAnswerBox(typed) { typed = it }
                     } else {
                         // the question again, quietly, above the verdict
                         QuestionQuiet(entry, ex)
+                        if (key != null && step == 1) {
+                            RevealVerdict(draft, key, STEP1_NOTE)
+                            return@AnswerSheet
+                        }
+                        if (key != null) StepsLine(stepsText(bankOk, typedOk, helped), bankOk && typedOk)
                         when {
-                            selfTest -> RevealVerdict(draft, entry.selfTestAnswer, stats)
-                            ex != null -> RevealVerdict(draft, ex.en, stats)
+                            key != null -> RevealVerdict(draft, key, stats)
                             else -> MovedResult(draft, graded) { graded = it; onGrade(draft, it, "") }
                         }
                         // 移到 X moves and goes on to the next one in the list; the track only moves
@@ -239,7 +261,8 @@ fun EntryScreen(
                     if (!revealed) {
                         if (bank != null) WordKeys(bank)
                         SheetButton("显示答案", onClick = reveal)
-                    } else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    } else if (key != null && step == 1) SheetButton("下一步:打字 ›") { step = 2 }
+                    else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         SheetButton("再试一次", Modifier.weight(1f), filled = false, onClick = retry)
                         if (ex != null && ex.of > 1) SheetButton("下一句 ›", Modifier.weight(1f), onClick = nextExample)
                         else SheetButton("看笔记", Modifier.weight(1f)) { quizUp = false }

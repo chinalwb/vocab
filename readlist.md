@@ -444,3 +444,56 @@
 - ⚠️ [冠词] ==the CLAUDE.me== → **CLAUDE.md** —— 文件名前不加 *the*;*.me* 是笔误。
 - ⚠️ [搭配] ==sections== → **parts** —— 版本号的各段一般叫 *parts* 或 *components*。
 - ⚠️ [结构] ==name it== → **use major.minor.hotfix** —— 前面是复数 *changes*,*it* 指代对不上。
+
+<a id="r-make-the-sentences-stick"></a>
+## 调整自测流程:每句先选词、再打字,两步都对才算对,打字时可以切回选词看提示;复习时要把一条的所有句子都做完;网页和手机都改。
+
+- 日期:2026-10-15
+- 关键词:make the sentences stick · go through all of its sentences
+
+**常用说法:**
+
+> Let's change the self-test flow. For each sentence, the user does word-bank mode first and then typing mode. The sentence is correct only if both are correct. In typing mode, the user can go back to word-bank mode for help, so please keep the switch. The Show Answer button should work in both modes. I want the user to remember the sentences well.
+>
+> Also, when reviewing an item, the user should answer all of its sentences. Now it only asks one. Please check this.
+>
+> These two changes are for both the web app and the mobile app.
+
+**C1 说法:**
+
+> Let's **tweak** the self-test flow. For each sentence, the user should **start with** word-bank mode and then **move on to** typing mode, and a sentence counts as correct **only if both steps are** answered correctly. In typing mode, the user can switch back to word-bank mode **for a quick hint**, **so keep** the switch between the two modes. The Show Answer button should be available **in both modes**. The goal is to **make the sentences stick**.
+>
+> **Also**, when reviewing an item, the user should **go through all of its sentences** **— right now it only asks one**. Could you **double-check** this?
+>
+> Both changes **apply to** the web and mobile apps.
+
+**差别:**
+
+- **分三段** —— 第一段讲两步作答,第二段讲复习要做完所有句子,第三段说两边都改;对应原来一整段,读的人一眼看出有两个需求。
+- **should / can** —— 需求里统一用 *should*(应该这样)和 *can*(允许这样);对应原句里混用的 *needs to*、*may*、*is available*。
+- **tweak** —— 小幅调整,比 *change* 更准确地说明"只是改一点"。
+- **start with … and then move on to …** —— 讲先后步骤的固定搭配;对应 *does … first and then …*。
+- **only if both steps are** —— *only if* 强调"缺一不可";对应 *only if both are correct*,补上 *steps* 指代更清楚。
+- **for a quick hint, so keep the switch** —— 先说为什么,再提要求,把中途补充的那句并进正文;对应 *for help, so please keep the switch*。
+- **in both modes** —— "在某种模式下"用 *in*;对应 *work in both modes*。
+- **make the sentences stick** —— *stick* = 记住、记牢,比说 *remember well* 更地道。例句:
+  - *Writing it out by hand helps the new words stick.* 手写一遍,新词更容易记住。
+  - *Short daily reviews make vocabulary stick.* 每天复习一会儿,单词才记得牢。
+- **Also** —— 书面需求里比 *One more thing* 简洁,后者偏口语。
+- **go through all of its sentences** —— *go through* = 逐一做一遍;对应 *answer all of its sentences*。
+- **— right now it only asks one** —— 用破折号把现状补在要求后面,比另起一句 *Now it …* 紧凑。
+- **double-check** —— 动词带连字符,直接接宾语;对应 *check this*。
+- **apply to** —— "适用于"的固定搭配;对应 *are for*。
+
+**我的原句:**
+
+> Let's tweak the self-test flow a bit like this: for each sentence, ==user== needs to ==go with== the word-bank mode first, then the typing mode. Count the sentence as correct if both are answered correctly. The user may go back to word-bank mode from typing mode for a temporary ==assistant==. ==Show Answer button== is available ==for both modes==. The goal is to make the sentence ==sticky==. / One more thing: when reviewing an item, the user needs to cover all of the sentences too. Currently, it just asks for one of them. Please ==double check on== this. --> These two enhancements ==apply on== both web and mobile. … The switch between word-bank and typing mode should be kept.
+
+- ❌ [冠词] ==user== → **the user** —— 特指使用者,要加冠词。
+- ⚠️ [搭配] ==go with== → **start with** —— *go with* 多指"选择、采用",讲先后步骤用 *start with*。
+- ❌ [词形] ==assistant== → **assistance / a hint** —— *assistant* 是"助手"(人),这里要的是"帮助"。
+- ❌ [冠词] ==Show Answer button== → **The Show Answer button** —— 句首缺 *The*。
+- ⚠️ [介词] ==for both modes== → **in both modes** —— "在某种模式下"用 *in*。
+- ⚠️ [搭配] ==sticky== → **make the sentences stick** —— 说"记得牢"用动词 *stick* 更地道,指所有句子用复数。
+- ⚠️ [搭配] ==double check on== → **double-check** —— 动词带连字符,不带 *on*。
+- ❌ [介词] ==apply on== → **apply to** —— "适用于"是 *apply to*。
