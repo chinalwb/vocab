@@ -497,3 +497,35 @@
 - ⚠️ [搭配] ==sticky== → **make the sentences stick** —— 说"记得牢"用动词 *stick* 更地道,指所有句子用复数。
 - ⚠️ [搭配] ==double check on== → **double-check** —— 动词带连字符,不带 *on*。
 - ❌ [介词] ==apply on== → **apply to** —— "适用于"是 *apply to*。
+
+<a id="r-lets-not-locally"></a>
+## 截图先别推了,README 也不改了;截图留在本地,加进 .gitignore 就行。
+
+- 日期:2026-10-15
+- 关键词:let's not · keep … locally, though
+
+**常用说法:**
+
+> No, don't push the screenshots, and don't update the README. But keep the screenshots on my computer and add them to .gitignore.
+
+**C1 说法:**
+
+> No, **let's not** push the screenshots, and **let's drop** the README update. We can keep the screenshots **locally, though** **— just** add them to .gitignore.
+
+**差别:**
+
+- **let's not** —— 「咱们别…」,*let's* 的否定直接在后面加 *not*,语气是商量;对应 *don't*(命令口气)。规则见 [let's not vs don't](#lets-not)。
+- **drop the README update** —— *drop* = 放弃一个计划或任务,工作里很常用;*the README update* 是顺的名词短语。对应 *don't update the README*。例句:
+  - *We dropped the feature to ship on time.* 为了按时发布,我们砍掉了这个功能。
+  - *Let's drop this for now and revisit it next sprint.* 这个先不做了,下个迭代再看。
+- **locally** —— 「在本地」用副词 *locally*;对应 *on my computer*。
+- **, though** —— 放在句末表示轻微转折(「不过」),比句首的 *But* 柔和。
+- **— just add them to .gitignore** —— 破折号后面补上具体做法;*just* = 「这样就行」,让要求听起来很轻。
+
+**我的原句:**
+
+> no - ==let's do not push== the screenshots and ==stop the update README task==. But we can keep these screenshots ==at local== and add them to .gitignore
+
+- ❌ [动词] ==let's do not push== → **let's not push** —— *let's* 的否定直接加 *not*,不用 *do*。
+- ⚠️ [结构] ==stop the update README task== → **drop the README update** —— 把动词 *update* 塞进名词串里,读起来卡。
+- ❌ [直译] ==at local== → **locally** —— 「在本地」的直译;英文用副词 *locally*,或说 *keep them local*。
