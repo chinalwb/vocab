@@ -243,7 +243,7 @@
 - **App 全部文字用 Atkinson Hyperlegible**(用户从十种字体的并排对比里选的,"tidy and neat")。走 Google 可下载字体(依赖 `ui-text-google-fonts`,证书在 `res/values/font_certs.xml`),APK 不变大;没下载到之前或首次离线时显示系统字体。中文没有字形,用系统字体。这个字体只有 400 / 700 两档,Medium / SemiBold 会落到最近的一档。
 - **只在一处定义**:`ui/Fonts.kt` 的 `APP_FONT_NAME` / `AppFont`,`AppTypography` 把它套进所有 Material 文字样式;原来写死的 `FontFamily.Serif` 全换成了 `AppFont`。用户说以后可能换字体、真有需要时再做「字体设置」,所以**不要再在别处写死字体**。
 - **字号整体放大 8%**:`FONT_SCALE = 1.08f`,在 `VocabTheme` 里乘到 `LocalDensity.fontScale` 上,叠加在手机系统字号之上,Material 样式和写死的 `fontSize` 一起变。要再调大小只改这个数。
-- 网页还是 Newsreader(英文)+ Noto Sans SC(中文),还没跟着换。
+- **网页跟 App 一致**(用户 2026-10-15):英文 Atkinson Hyperlegible,中文 Noto Sans SC(Android 系统中文字体就是 Noto Sans CJK,两边中文看起来一样)。只在 `template.html` 的 `:root` 里定义一次 `--font`,所有地方都写 `font-family:var(--font)`(代码块的等宽字体除外);换字体时同时改这里和 `Fonts.kt`。
 
 ### 朗读(用户 2026-10-12 要求,网页和 App 一致)
 

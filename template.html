@@ -9,10 +9,13 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
 <style>
 :root{
   color-scheme: light;
+  /* Same as the App: Atkinson Hyperlegible for Latin; Chinese falls through to Noto Sans SC,
+     the face Android draws Chinese in (Noto Sans CJK), so both read alike on every screen. */
+  --font:"Atkinson Hyperlegible","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
   --ground:#f7f6f2;
   --ink:#1f1f1e;
   --ink-2:#4a4944;
@@ -118,7 +121,7 @@
 body{
   background:var(--ground);
   color:var(--ink);
-  font-family:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  font-family:var(--font);
   font-size:15px;
   line-height:1.65;
   -webkit-font-smoothing:antialiased;
@@ -145,7 +148,7 @@ body{
 .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
 .tab:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
 h1{
-  font-family:Newsreader,Georgia,"Songti SC",serif;
+  font-family:var(--font);
   font-weight:600;font-size:26px;line-height:1.15;margin:0;letter-spacing:-.01em;
 }
 .tally{color:var(--ink-3);font-size:12.5px;letter-spacing:.04em}
@@ -234,7 +237,7 @@ h1{
 .sect{margin-top:34px}
 .sect-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;flex-wrap:wrap}
 .sect-head .badge{
-  font-family:Newsreader,Georgia,serif;font-weight:600;font-size:17px;
+  font-family:var(--font);font-weight:600;font-size:17px;
   background:var(--sw);color:var(--card-ink);
   border:1px solid var(--card-edge);
   border-radius:8px;padding:2px 11px;letter-spacing:.02em;
@@ -258,7 +261,7 @@ h1{
 .card:hover{box-shadow:var(--shadow-lift);transform:translateY(-1px)}
 .card:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .hw{
-  font-family:Newsreader,Georgia,"Songti SC",serif;
+  font-family:var(--font);
   font-weight:600;font-size:19px;line-height:1.25;margin:0 0 5px;
   letter-spacing:-.005em;text-wrap:balance;
 }
@@ -351,7 +354,7 @@ h1{
 .wb-ans{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:72px;box-sizing:border-box;padding:10px;margin-top:10px;border:1.5px solid var(--card-ink-2);border-radius:12px;background:color-mix(in srgb, var(--chip) 55%, transparent);position:relative}
 .wb-ans:has(.wb-clear){padding-right:60px}
 .wb-ph{color:var(--card-ink-2);font-size:14px;padding:4px}
-.wchip{font-family:Newsreader,Georgia,serif;font-size:16px;line-height:1.2;padding:5px 10px;border-radius:10px;border:1px solid var(--card-edge);background:var(--chip);color:var(--card-ink);cursor:pointer}
+.wchip{font-family:var(--font);font-size:16px;line-height:1.2;padding:5px 10px;border-radius:10px;border:1px solid var(--card-edge);background:var(--chip);color:var(--card-ink);cursor:pointer}
 .wb-ans .wchip{background:var(--card-ink);border-color:var(--card-ink);color:var(--sw)}
 .wchip.used{background:color-mix(in srgb, var(--card-ink) 8%, transparent);border-color:transparent;color:transparent;cursor:default}
 .wb-clear{position:absolute;top:6px;right:6px;font:inherit;font-size:12.5px;color:var(--card-ink-2);background:none;border:0;padding:6px 8px;cursor:pointer;border-radius:8px}
@@ -390,7 +393,7 @@ h1{
 .sheet .body ol.ex > li[data-key]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .exm-back{position:fixed;inset:0;z-index:70;background:var(--scrim)}
 .exm{position:fixed;z-index:71;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;background:var(--ground);color:var(--ink);border-radius:20px 20px 0 0;box-shadow:var(--shadow-lift);padding:18px 0 calc(10px + env(safe-area-inset-bottom,0px))}
-.exm-en{margin:0 24px;font-family:Newsreader,serif;font-size:18px;line-height:1.4}
+.exm-en{margin:0 24px;font-family:var(--font);font-size:18px;line-height:1.4}
 .exm-zh{margin:4px 24px 0;font-size:14px;color:var(--ink-2)}
 .exm button{display:block;width:100%;text-align:left;font:inherit;font-size:15px;color:inherit;background:none;border:0;padding:14px 24px;cursor:pointer}
 .exm button:first-of-type{margin-top:10px;border-top:1px solid var(--rule)}
@@ -398,7 +401,7 @@ h1{
 .flash{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;background:var(--chip-on);color:var(--chip-on-ink);font-size:13px;padding:9px 16px;border-radius:999px;box-shadow:var(--shadow-lift);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
 .flash.on{opacity:1}
 .sheet h2{
-  font-family:Newsreader,Georgia,"Songti SC",serif;
+  font-family:var(--font);
   font-weight:600;font-size:25px;line-height:1.2;margin:0 0 8px;padding-right:40px;
   text-wrap:balance;
 }
@@ -440,7 +443,7 @@ h1{
 .body ol.ex{margin:0 0 13px;padding-left:19px}
 .body ol.ex li{margin-bottom:9px}
 .body ol.ex .en{
-  display:block;font-family:Newsreader,Georgia,serif;font-size:15.5px;line-height:1.45;
+  display:block;font-family:var(--font);font-size:15.5px;line-height:1.45;
 }
 .body ol.ex .zh{display:block;font-size:13px;color:var(--card-ink-2);margin-top:2px}
 .body del{opacity:.65}
@@ -457,7 +460,7 @@ h1{
   margin:0 0 13px;padding:9px 14px;
   border-left:3px solid var(--card-ink-2);
   background:var(--card-edge);border-radius:0 7px 7px 0;
-  font-family:Newsreader,Georgia,serif;font-size:15px;line-height:1.5;
+  font-family:var(--font);font-size:15px;line-height:1.5;
 }
 
 /* ── 错题本 ─────────────────────────────── */
@@ -490,7 +493,7 @@ h1{
 .mk .what .sv{color:var(--sev);font-weight:700;margin-right:4px;font-size:12px}
 .mk .orig{
   margin:8px 0 0;padding-left:10px;border-left:2px solid var(--rule);
-  font-family:Newsreader,Georgia,serif;font-size:14px;line-height:1.45;color:var(--ink-2);
+  font-family:var(--font);font-size:14px;line-height:1.45;color:var(--ink-2);
 }
 .mk .src{
   display:flex;justify-content:space-between;gap:8px;margin-top:9px;
@@ -526,7 +529,7 @@ h1{
 
 /* ── 复习 / 练习 panes ─────────────────── */
 .pane{max-width:720px;margin:26px auto 0}
-.pane h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:22px;margin:0 0 4px}
+.pane h2{font-family:var(--font);font-weight:600;font-size:22px;margin:0 0 4px}
 .pane .note{color:var(--ink-3);font-size:13px;margin:0 0 16px;max-width:62ch}
 .sync{margin:28px 0 0;padding:14px 16px;border:1px solid var(--rule);border-radius:12px;background:var(--mk);max-width:62ch}
 .sync h3{font-size:14px;margin:0 0 4px}
@@ -537,7 +540,7 @@ h1{
 .sync a{color:inherit}
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
 .stat{background:var(--mk);border:1px solid var(--rule);border-radius:10px;padding:12px 14px}
-.stat b{display:block;font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat b{display:block;font-family:var(--font);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
 .stat span{font-size:12.5px;color:var(--ink-3)}
 .btn{
   font:inherit;font-size:14px;font-weight:500;cursor:pointer;
@@ -557,17 +560,17 @@ h1{
   border-radius:14px;box-shadow:var(--shadow);padding:20px 22px;margin:12px 0 14px;
 }
 .rcard .lab{font-size:12px;letter-spacing:.06em;color:var(--card-ink-2);margin:0 0 6px;font-weight:500}
-.rcard .big{font-family:Newsreader,Georgia,"Songti SC",serif;font-weight:600;font-size:26px;line-height:1.2;margin:0 0 6px;text-wrap:balance}
+.rcard .big{font-family:var(--font);font-weight:600;font-size:26px;line-height:1.2;margin:0 0 6px;text-wrap:balance}
 .rcard .prompt{font-size:16px;line-height:1.6;margin:0 0 6px}
 .rcard .hint{font-size:13px;color:var(--card-ink-2);margin:6px 0 0}
 .rcard hr{border:0;border-top:1px solid var(--card-edge);margin:18px 0}
 .rcard .mine{
   margin:0 0 14px;padding:9px 12px;border-radius:8px;background:var(--card-edge);
-  font-family:Newsreader,Georgia,serif;font-size:15px;white-space:pre-wrap;
+  font-family:var(--font);font-size:15px;white-space:pre-wrap;
 }
 textarea.draft{
   width:100%;min-height:92px;resize:vertical;margin-top:12px;
-  font:inherit;font-family:Newsreader,Georgia,serif;font-size:16px;line-height:1.5;
+  font:inherit;font-family:var(--font);font-size:16px;line-height:1.5;
   background:var(--chip);color:var(--ink);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;
 }
 textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
@@ -591,9 +594,9 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .st-res .verdict{font-weight:700;margin:0 0 8px}
 .st-res .line{
   margin:0 0 8px;padding:8px 12px;border-radius:8px;background:var(--card-edge);
-  font-family:Newsreader,Georgia,serif;font-size:16px;line-height:1.5;
+  font-family:var(--font);font-size:16px;line-height:1.5;
 }
-.st-res .line b{font-family:"Noto Sans SC",system-ui,sans-serif;font-size:11.5px;font-weight:500;color:var(--card-ink-2);display:block}
+.st-res .line b{font-family:var(--font);font-size:11.5px;font-weight:500;color:var(--card-ink-2);display:block}
 .st-res .st-x{color:var(--err);text-decoration:line-through;text-decoration-thickness:1.5px}
 .st-res .st-m{background:color-mix(in srgb, var(--warn) 30%, transparent);border-radius:3px;padding:0 2px}
 .st-res .fine{font-size:12px;color:var(--card-ink-2);margin:0}
@@ -603,7 +606,7 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .st-hist ol{list-style:none;margin:8px 0 0;padding:0}
 .st-hist li{display:grid;grid-template-columns:auto auto 1fr;gap:8px;padding:5px 0;border-top:1px solid var(--card-edge);align-items:baseline}
 .st-hist .when{font-variant-numeric:tabular-nums;color:var(--card-ink-2);font-size:12px;white-space:nowrap}
-.st-hist .txt{font-family:Newsreader,Georgia,serif;font-size:14.5px;overflow-wrap:anywhere}
+.st-hist .txt{font-family:var(--font);font-size:14.5px;overflow-wrap:anywhere}
 .foot .stc{font-weight:500}
 
 /* ── 进度:学习中 → 自测 → 已掌握 ─────────── */
@@ -659,11 +662,11 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .stage .btn{font-size:12.5px;padding:5px 13px}
 /* the 自测 quiz inside an entry borrows the review card's prompt styles */
 .sheet .st .lab{font-size:12px;letter-spacing:.06em;color:var(--card-ink-2);margin:0 0 6px;font-weight:500}
-.sheet .st .big{font-family:Newsreader,Georgia,"Songti SC",serif;font-weight:600;font-size:22px;line-height:1.2;margin:0 0 6px}
+.sheet .st .big{font-family:var(--font);font-weight:600;font-size:22px;line-height:1.2;margin:0 0 6px}
 .sheet .st .prompt{font-size:16px;line-height:1.6;margin:0 0 6px}
 .sheet .st .hint{font-size:13px;color:var(--card-ink-2);margin:6px 0 10px}
 .st-res .lab{font-size:12px;color:var(--card-ink-2);margin:0 0 6px}
-.st-res .mine{margin:0 0 8px;padding:9px 12px;border-radius:8px;background:var(--card-edge);font-family:Newsreader,Georgia,serif;font-size:15px;white-space:pre-wrap}
+.st-res .mine{margin:0 0 8px;padding:9px 12px;border-radius:8px;background:var(--card-edge);font-family:var(--font);font-size:15px;white-space:pre-wrap}
 
 @media (max-width:640px){
   .grid{columns:2 150px;column-gap:10px}
@@ -770,7 +773,7 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .vbar b{display:block;font-size:15px;line-height:1.35}
 .vbar small{display:block;font-size:12px;opacity:.75}
 .vl{display:block;font-size:12px;font-weight:700;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
-.vmine p,.vwell p{margin:2px 0 0;font-family:Newsreader,Georgia,serif;font-size:18px;line-height:1.55}
+.vmine p,.vwell p{margin:2px 0 0;font-family:var(--font);font-size:18px;line-height:1.55}
 .vwell{display:flex;align-items:center;gap:4px;background:var(--well);border-radius:16px;padding:10px 6px 12px 14px}
 .vwell>div{flex:1;min-width:0}
 .st-res .fine{font-size:12px;color:color-mix(in srgb,var(--card-ink) 76%,transparent);margin:0}
@@ -791,7 +794,7 @@ body.running{overflow:hidden}
 .scard{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--sw);color:var(--card-ink);border-radius:24px;overflow:hidden}
 .shead{padding:16px 20px 0;flex:none}
 .shead .lab{font-size:12.5px;margin:0;color:color-mix(in srgb,var(--card-ink) 72%,transparent)}
-.shead .big{font-family:Newsreader,Georgia,"Songti SC",serif;font-weight:700;font-size:28px;line-height:1.2;margin:2px 0}
+.shead .big{font-family:var(--font);font-weight:700;font-size:28px;line-height:1.2;margin:2px 0}
 .shead .ipa{font-size:13px;margin:0;color:color-mix(in srgb,var(--card-ink) 72%,transparent)}
 .scard .body.fillb{flex:1;min-height:0;display:flex;flex-direction:column}
 .sfoot{padding:0 10px 10px;flex:none}
@@ -2089,7 +2092,7 @@ function maskTitle(text, title){
 function askHtml(t, k){
   const it = t.it;
   return {
-    sentence: `<p class="lab">我的原句</p><blockquote class="prompt" style="margin:0;font-family:Newsreader,Georgia,serif;font-size:18px">${esc(it.original).replace(/\n/g, "<br>")}</blockquote><p class="hint">哪里不对、哪里不地道?先自己改一遍,再看答案。</p>`,
+    sentence: `<p class="lab">我的原句</p><blockquote class="prompt" style="margin:0;font-family:var(--font);font-size:18px">${esc(it.original).replace(/\n/g, "<br>")}</blockquote><p class="hint">哪里不对、哪里不地道?先自己改一遍,再看答案。</p>`,
     selftest: `<p class="lab">自测 · 中译英</p><p class="prompt" style="font-size:19px">${esc(it.title.replace(/^自测[::]\s*/, ""))}</p><p class="hint">不看笔记,直接写出英文。</p>`,
     translate: `<p class="lab">中译英</p><p class="prompt">${esc(plainMd(it.gloss).replace(/^中译英练习[——-]*/, ""))}</p><p class="hint">先写出你的英文,再和几种译法对照。</p>`,
     grammar: `<p class="lab">语法规则</p><p class="big">${it.title}</p><p class="hint">回想这条规则,以及正反例句。</p>`,
