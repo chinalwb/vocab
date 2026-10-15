@@ -271,3 +271,37 @@
 
 - ⚠️ [搭配] ==according to how SRS works== → **given how SRS works** —— *according to* 引出信息来源,表示"考虑到这个原理"用 *given*。
 - ⚠️ [直译] ==what is your advice for== → **how would you suggest we** —— "你的建议是什么"直译成名词结构,问做法时用 *how would you suggest we + 动词原形* 更自然。
+
+<a id="r-didnt-pick-up"></a>
+## 我在新浏览器里打开网页版,发现它没有同步我的进度。我猜是因为它没有我的 GitHub PAT,所以找不到进度文件了。可我想填 PAT 的时候,却找不到原来那个输入框。
+
+- 日期:2026-10-15
+- 关键词:didn't pick up · lost track of · the input field that used to be there
+
+**常用说法:**
+
+> I opened the web app at chinalwb.github.io/vocab in a new browser, but it wasn't in sync with my progress. I think it couldn't find the progress file because it didn't have my GitHub PAT. When I tried to enter the PAT, I couldn't find the input field.
+
+**C1 说法:**
+
+> I opened the web app at chinalwb.github.io/vocab in a new browser, and it **didn't pick up** my progress. I **suspect** it **lost track of** the progress file because it didn't have my GitHub PAT. But when I went to enter the PAT, I couldn't find **the input field that used to be there**.
+
+**差别:**
+
+- **didn't pick up my progress** —— *pick up* 是"(自动)获取、接上",说的是新浏览器根本没拿到进度;对应 *wasn't in sync with*,只描述状态。
+- **I suspect** —— 猜测一件不太好的事、还算有把握时用 *suspect*,比 *I think / I guess* 更书面、更精确。
+- **lost track of** —— 固定搭配"不再掌握……的下落",不加 *the*;对应 *couldn't find*。
+- **the input field that used to be there** —— *used to be there* 点出"原来有、现在不见了",正是要说的意思;对应常用说法里只说 *the input field*。
+
+**我的原句:**
+
+> I opened ==https://chinalwb.github.io/vocab/ web app== in a new browser, but I found it ==didn't stay in sync== with my progress. I guess it was because it lost ==the track of== the ==rogress== file ==as it may not have== the PAT for my ==Github==. When I tried to fill in the PAT, I ==didn't find== the input ==which previously worked well==.
+
+- ⚠️ [冠词] ==https://chinalwb.github.io/vocab/ web app== → **the web app at https://…** —— 网址当修饰语时前面要有冠词,更自然的是 *the web app at + 网址*。
+- ⚠️ [逻辑] ==didn't stay in sync== → **didn't pick up my progress** —— *stay in sync* 暗示原来同步、后来断了;新浏览器从没同步过。
+- ❌ [冠词] ==the track of== → **lost track of** —— 固定搭配 *lose track of*,不加 *the*。
+- ❌ [词形] ==rogress== → **progress** —— 拼写。
+- ⚠️ [动词] ==as it may not have== → **because it didn't have** —— 前文是过去时,这里也用过去时;*as* 表原因容易有歧义,用 *because*。
+- ⚠️ [词形] ==Github== → **GitHub** —— 专有名词大小写。
+- ⚠️ [动词] ==didn't find== → **couldn't find** —— 表示"找不到"用 *couldn't*,强调能力 / 结果。
+- ⚠️ [逻辑] ==which previously worked well== → **that used to be there** —— 要说的是"原来有、现在不见了",不是"原来好用"。
