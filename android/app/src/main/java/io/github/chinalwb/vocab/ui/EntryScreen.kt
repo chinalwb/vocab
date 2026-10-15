@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.PROMOTE_REPS
+import io.github.chinalwb.vocab.review.MemoryPoint
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.next
 
@@ -95,6 +96,9 @@ fun EntryScreen(
     excluded: Set<String> = emptySet(),
     /** the SM-2 card's right answers in a row: 复习 → 考核 needs [PROMOTE_REPS] of them */
     reps: Int = 0,
+    /** 记忆: the graded days its forgetting curve is replayed from, and the SM-2 card's next day in 复习 */
+    memory: List<MemoryPoint> = emptyList(),
+    due: Long? = null,
     onToggleExample: (String) -> Unit = {},
     /** long-press → 收藏 / 取消收藏 on an example (its plain English) */
     onFav: (String) -> Unit = {},
@@ -188,6 +192,8 @@ fun EntryScreen(
                             Icon(if (full) CloseFullscreenIcon else OpenInFullIcon, if (full) "退出全屏" else "全屏", Modifier.size(20.dp))
                         }
                     },
+                    // the 记忆 card after the notes, once there is a graded day or the entry is past 学习中
+                    extra = if (memory.isNotEmpty() || stage != Stage.Learn) "记忆" to { MemoryCard(memory, stage, due, band) } else null,
                 )
                 CardFoot(
                     hint = progressHint(entry, stage, attempts, since, excluded, reps),

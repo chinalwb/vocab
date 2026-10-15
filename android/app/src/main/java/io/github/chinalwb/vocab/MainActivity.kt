@@ -135,6 +135,7 @@ import io.github.chinalwb.vocab.ui.VocabTheme
 import io.github.chinalwb.vocab.ui.AppFont
 import io.github.chinalwb.vocab.ui.VocabViewModel
 import io.github.chinalwb.vocab.review.Stage
+import io.github.chinalwb.vocab.review.memoryOf
 import io.github.chinalwb.vocab.review.stageOf
 
 class MainActivity : ComponentActivity() {
@@ -242,6 +243,8 @@ private fun VocabNav() {
                             onStage = { vm.setStage(anchor, it) },
                             excluded = quizOptOut[anchor].orEmpty(),
                             reps = reviewCards.cards[anchor]?.reps ?: 0,
+                            memory = remember(selfTests[anchor], reviewCards.resetAt) { memoryOf(selfTests[anchor].orEmpty(), reviewCards.resetAt) },
+                            due = reviewCards.cards[anchor]?.due?.takeIf { entry != null && stages.stageOf(entry) == Stage.Review },
                             onToggleExample = { en -> if (entry != null) vm.toggleQuizExample(entry, en) },
                             onFav = { en -> vm.toggleFav(anchor, en) },
                             nextLabel = if (next != null) "${pos + 1} / ${list.size}" else null,
