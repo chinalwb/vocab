@@ -2486,9 +2486,9 @@ function renderStageTab(stage, el){
     const later = mine.filter(t => !planned.has(t.it.anchor)).sort((a, b) => (due(a) || 1e9) - (due(b) || 1e9));
     const dueLine = t => { const d = due(t); return d === undefined ? "" : d <= today ? "今天到期" : d === today + 1 ? "明天到期" : `${d - today} 天后到期`; };
     const sub = t => [tried(t), dueLine(t)].filter(Boolean).join(" · ") || gloss(t);
-    groups = [["今天到期", p.due, sub], ["还没排期", p.fresh, t => tried(t) || gloss(t)], ["以后到期", later, sub]];
+    groups = [["今天到期", p.due, sub], ["新加入", p.fresh, t => tried(t) || gloss(t)], ["以后到期", later, sub]];
     sum = summaryHtml(queue.length, !mine.length ? "条 · 还没有复习中的条目" : !queue.length ? "条 · 今天的都复习完了" : "条 · 今天要复习",
-      [`今天到期 ${p.due.length}`, `还没排期 ${p.fresh.length}`], null, `开始复习 ${queue.length} 条`, queue.length > 0,
+      [`今天到期 ${p.due.length}`, `新加入 ${p.fresh.length}`], null, `开始复习 ${queue.length} 条`, queue.length > 0,
       "先看一遍笔记,再翻面把每句例句都做一遍(先选词、再打字)。全部答对了下次隔得更久,答错了明天再来;连续答对 3 次(隔开几天)、例句也都答对过,就自动移到考核。");
   } else {
     // 没做过 / 上次没对 (wrong or peeked) / 上次答对, in the order the run takes them

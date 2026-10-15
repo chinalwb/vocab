@@ -207,7 +207,7 @@ private fun StageList(
             }
             listOf(
                 Group("今天到期", plan.due) { e -> listOfNotNull(counts(e), dueLine(e)).joinToString(" · ").ifEmpty { gloss(e) } },
-                Group("还没排期", plan.fresh) { e -> counts(e) ?: gloss(e) },
+                Group("新加入", plan.fresh) { e -> counts(e) ?: gloss(e) },
                 Group("以后到期", later) { e -> listOfNotNull(counts(e), dueLine(e)).joinToString(" · ").ifEmpty { gloss(e) } },
             )
         } else {
@@ -227,7 +227,7 @@ private fun StageList(
                 Summary(
                     big = "${queue.size}",
                     caption = if (mine.isEmpty()) "条 · 还没有复习中的条目" else if (queue.isEmpty()) "条 · 今天的都复习完了" else "条 · 今天要复习",
-                    chips = listOf("今天到期 ${plan.due.size}", "还没排期 ${plan.fresh.size}"),
+                    chips = listOf("今天到期 ${plan.due.size}", "新加入 ${plan.fresh.size}"),
                     bar = null,
                     button = "开始复习 ${queue.size} 条",
                     enabled = queue.isNotEmpty(),
