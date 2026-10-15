@@ -213,6 +213,7 @@
 - **左栏** `#side`(`SIDE` / `paintSide()`):学习阶段(学习中 = 浏览 + 进度筛选 learn;复习 / 考核 / 已掌握 = 原来的 tab)、分类(全部、A1–C2、术语、语法、句子订正、自测题,点了设置 `typeF` / `cefrF` 并回到浏览)、其他(错题本、练习与同步)。数字随进度变。
 - **浏览**:`.col.ents` 两列,左边 380px 是紧凑的条目行(级别色小方块 + 标题 + 一行释义),右边是停靠的条目:还是 `show()` 那个弹层,只是加了 `.scrim.docked`(固定在右栏、不模糊、点空白不关、`aria-modal=false`),当前条目在列表里加 `.sel`(`markSel()`)。进入浏览时自动打开列表第一条(`autoOpen`,不抢焦点)。快捷键:`/` 搜索,J / K 上下换条(只在停靠时)。
 - **错题本**:桌面上是单独的视图 `view = "mistakes"`(窄屏仍在「更多」里和练习、同步放一起);左边是十类错误的条形图(`.mk-types .mbar`,宽度按最多那类算)和「发消息前 30 秒自检」,右边两列错题卡。
+- **左栏和列表都能收起**(用户 2026-10-15):顶栏 VoCab 左边两个按钮 `#sidetog` / `#listtog`,或快捷键 `[`(分类栏)/ `]`(列表,只在浏览时)。状态存 `vk.sideOff` / `vk.listOff`,`paintPanels()` 给 body 加 `side-off` / `list-off`。宽度是 `--sidew` / `--listw` 两个变量,收起就是 0,停靠条目的 `left` 跟着变。收起的列表只是看不见(`visibility:hidden` + `max-height:0`),卡片还在,J / K 和「下一个」照常能用。
 - **复习 / 考核做题**照旧是全屏 `.run`,本身就是设计稿里的专注模式。
 
 ### 今天的练习 · 导出 PDF(用户 2026-10-14,只做了 App)
@@ -258,6 +259,7 @@
 - **只在一处定义**:`ui/Fonts.kt` 的 `APP_FONT_NAME` / `AppFont`,`AppTypography` 把它套进所有 Material 文字样式;原来写死的 `FontFamily.Serif` 全换成了 `AppFont`。用户说以后可能换字体、真有需要时再做「字体设置」,所以**不要再在别处写死字体**。
 - **字号整体放大 8%**:`FONT_SCALE = 1.08f`,在 `VocabTheme` 里乘到 `LocalDensity.fontScale` 上,叠加在手机系统字号之上,Material 样式和写死的 `fontSize` 一起变。要再调大小只改这个数。
 - **网页跟 App 一致**(用户 2026-10-15):英文 Atkinson Hyperlegible,中文 Noto Sans SC(Android 系统中文字体就是 Noto Sans CJK,两边中文看起来一样)。只在 `template.html` 的 `:root` 里定义一次 `--font`,所有地方都写 `font-family:var(--font)`(代码块的等宽字体除外);换字体时同时改这里和 `Fonts.kt`。
+- **网页字号整体放大 25%**(用户 2026-10-15,先 10% 后改 25%):所有 `font-size` 都写成 `calc(Npx * var(--fs))`,`:root` 里 `--fs:1.25`,相当于 App 的 `FONT_SCALE`。要再调大小只改 `--fs`;新加的样式也照这个写法,不要直接写 px。
 
 ### 朗读(用户 2026-10-12 要求,网页和 App 一致)
 
