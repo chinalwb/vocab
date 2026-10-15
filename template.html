@@ -749,6 +749,28 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .card-foot{display:flex;align-items:center;gap:8px;padding:6px 10px 10px 18px;flex:none}
 .card-foot .hint{flex:1;min-width:0;font-size:calc(12.5px * var(--fs));color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
 .card-foot .btn{padding:12px 18px;font-weight:700}
+/* 记忆曲线: the estimated forgetting curve, a card after the notes (用户 2026-10-15) */
+.mem-top{display:flex;align-items:baseline;gap:10px;margin:2px 0}
+.mem-big{font-size:calc(30px * var(--fs));font-weight:700;color:var(--card-ink)}
+.mem-sub,.mem-when{font-size:calc(13px * var(--fs));color:var(--card-ink-2)}
+.mem-when{margin:0 0 12px}
+.mem{position:relative;margin:30px 0 12px}
+.mem svg{display:block;overflow:visible}
+.mem .g{stroke:var(--card-ink);stroke-opacity:.14;stroke-width:1}
+.mem .t{fill:var(--card-ink-2);font-family:var(--font);font-size:calc(11px * var(--fs))}
+.mem .area{fill:var(--card-ink);fill-opacity:.07}
+.mem .ln{fill:none;stroke:var(--card-ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.mem .ln.fut{stroke-opacity:.5;stroke-dasharray:4 5}
+.mem .now{stroke:var(--card-ink);stroke-opacity:.3;stroke-width:1}
+.mem .xh{stroke:var(--card-ink);stroke-opacity:.55;stroke-width:1}
+.mem .pt{fill:var(--card-ink);stroke:var(--sw);stroke-width:2}
+.mem .pt.miss{fill:var(--err)}
+.mem-tip{position:absolute;top:-8px;transform:translateY(-100%);padding:5px 10px;border-radius:8px;background:var(--card-ink);color:var(--sw);font-size:calc(12.5px * var(--fs));white-space:nowrap;pointer-events:none}
+.mem-log{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:calc(13px * var(--fs));color:var(--card-ink-2);margin:0 0 10px}
+.mem-log b{flex:0 0 100%;color:var(--card-ink);font-weight:600}
+.mem-log i{font-style:normal;font-weight:700;color:var(--card-ink)}
+.mem-log i.miss{color:var(--err)}
+.mem-note,.mem-empty{font-size:calc(12.5px * var(--fs));color:var(--card-ink-2);line-height:1.6}
 /* the answer sheet */
 .face.bk{background:transparent;border-radius:0;overflow:visible;display:flex;flex-direction:column}
 .qsheet{flex:1;min-height:0;display:flex;flex-direction:column}
@@ -1798,9 +1820,10 @@ function addSpeakButtons(){
 const speakText = (it, level) => level === "SELFTEST" ? ((it.answer || "").split("\n").find(l => l.trim()) || "").trim()
   : (it.title.match(/^(.+?)\s*[((].+[))]$/) || [, it.title])[1];
 
-// [fill]: on the entry card, where the notes take the face's height (and get the ⤢ button)
-function notesHtml(it, fill = false, withFull = true){
-  const sl = it.slides;
+// [fill]: on the entry card, where the notes take the face's height (and get the ⤢ button);
+// [extra]: one more [label, html] card after the sections there (记忆)
+function notesHtml(it, fill = false, withFull = true, extra = null){
+  const sl = fill && extra ? [...it.slides, extra] : it.slides;
   if (!fill) return sl.length < 2 ? `<div class="notes-h">笔记</div>${it.html}` :
     `<div class="nv${notesAll ? " all" : ""}">` +
     `<div class="nv-h"><span>笔记</span><span class="ln"></span><button type="button" class="nv-all">${notesAll ? "分卡显示" : "全部展开"}</button></div>` +
@@ -1810,7 +1833,7 @@ function notesHtml(it, fill = false, withFull = true){
   // on a card (V2): one row on top — the section tabs, 卡片 / 全部 as an icon, ⤢ — and each page scrolling
   const fullBtn = withFull ? `<button type="button" class="full ib" aria-label="${cardFull ? "退出全屏" : "全屏"}">${cardFull ? ICON_UNFULL : ICON_FULL}</button>` : "";
   if (sl.length < 2) return `<div class="nv fill v2"><div class="nv-bar"><div class="nv-tabs">` +
-    (sl.length ? `<span class="nv-tab" aria-selected="true">${esc(sl[0][0])}</span>` : "") + `</div>${fullBtn}</div><div class="scrollq">${it.html}</div></div>`;
+    (sl.length ? `<span class="nv-tab" aria-selected="true">${esc(sl[0][0])}</span>` : "") + `</div>${fullBtn}</div><div class="scrollq">${sl.map(x => x[1]).join("") || it.html}</div></div>`;
   return `<div class="nv fill v2${notesAll ? " all" : ""}"><div class="nv-bar">` +
     `<div class="nv-tabs" role="tablist">${sl.map(([l], k) => `<button type="button" class="nv-tab" role="tab" aria-selected="${!k}" data-k="${k}">${esc(l)}</button>`).join("")}</div>` +
     `<button type="button" class="nv-all ib" aria-label="${notesAll ? "分卡显示" : "全部展开"}">${notesAll ? ICON_CARDS : ICON_LIST}</button>${fullBtn}</div>` +
@@ -2020,7 +2043,7 @@ function show(it, level, i, o = {}){
     : ex ? `<p class="qprompt">${esc(plainMd(ex.zh))}</p>` : askHtml({ it, level, i }, kind({ it, level, i }));
   // the card: the notes on the front, with what's left in this stage and 自测这条 at its foot; the
   // answer sheet on the back. 学习中 / 复习 may look at the notes first; 考核 only after answering.
-  const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true)}</div>` +
+  const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true, true, memorySlide(it, stage))}</div>` +
     `<div class="card-foot"><span class="hint" id="cf-hint">${esc(progressHint(it, level, stage))}</span>` +
     `<button class="btn" type="button" id="to-quiz">${selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
   const backFace = `<div class="face bk">` + qsheetHtml({
@@ -2051,6 +2074,8 @@ function show(it, level, i, o = {}){
   if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => flip(wantBack)));
   markQuizExamples(sheet, it);
   markExamples(sheet, it);
+  memRO.disconnect();
+  sheet.querySelectorAll(".mem").forEach(el => memRO.observe(el));
   // a cross-reference opens the note it points at, keeping a trail to come back
   wireXrefsIn(sheet, follow);
   if (back) sheet.querySelector(".back").addEventListener("click", goBack);
@@ -2241,6 +2266,103 @@ function scheduleReview(anchor, ok){
   rev.cards[anchor] = { ...schedule(existing || { ease: 2.5, interval: 0, reps: 0, lapses: 0, due: 0 }, ok ? 4 : 1, today), t: Date.now() };
   saveRev(); syncSoon();
 }
+// ── 记忆曲线 (用户 2026-10-15): an entry's estimated forgetting curve (Ebbinghaus), replayed from its
+// 复习 / 考核 history — the entry page's 自测 doesn't count, as it doesn't grade SM-2 either. An estimate,
+// not a measurement: SM-2 sets the next review for when recall would be down to about RECALL_AT_DUE,
+// so after each graded day the memory's stability is S = interval / ln(1 / RECALL_AT_DUE) and recall
+// decays as e^(−t/S). A day counts as right only if every sentence answered that day was.
+// Same model as review/Memory.kt. ──
+const RECALL_AT_DUE = 0.9;
+const dayOf = t => { const d = new Date(t); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); };
+const fmtDay = day => { const d = new Date(day * 864e5); return `${d.getUTCMonth() + 1}/${d.getUTCDate()}`; };
+function memoryOf(anchor){
+  const days = new Map();
+  for (const a of stLog[anchor] || []) {
+    if (a.via === "entry" || a.t < (rev.resetAt || 0)) continue;
+    const d = dayOf(a.t);
+    days.set(d, (days.has(d) ? days.get(d) : true) && a.ok);
+  }
+  let c = { ease: 2.5, interval: 0, reps: 0, lapses: 0, due: 0 };
+  return [...days].sort((a, b) => a[0] - b[0]).map(([day, ok]) => { c = schedule(c, ok ? 4 : 1, day); return { day, ok, interval: c.interval }; });
+}
+const recallOn = (pts, day) => {
+  const p = [...pts].reverse().find(p => p.day <= day);
+  return p ? Math.exp(-(day - p.day) / (p.interval / Math.log(1 / RECALL_AT_DUE))) : 1;
+};
+// The 记忆 card after the notes: shown once the entry has a graded day, or is past 学习中
+function memorySlide(it, stage){
+  const pts = memoryOf(it.anchor);
+  if (!pts.length && stage === "learn") return null;
+  const head = `<p><strong>记忆曲线:</strong></p>`;
+  if (!pts.length) return ["记忆", head + `<p class="mem-empty">还没在复习或考核里做过这一条。做过一次之后,这里会画出它的遗忘曲线:每复习一次回到顶上,答对了往后掉得更慢。</p>`];
+  const today = dayNo(), now = recallOn(pts, today), card = rev.cards[it.anchor];
+  const due = stage === "review" && card ? card.due : null;
+  const when = due === null ? (stage === "test" ? "考核中,不按日子排" : stage === "done" ? "已掌握,不再排期" : "")
+    : due > today ? `下次复习:${fmtDay(due)}(${due - today} 天后)` : due === today ? "今天到期" : `已经过了 ${today - due} 天`;
+  const lapses = pts.filter(p => !p.ok).length;
+  return ["记忆", head +
+    `<div class="mem-top"><span class="mem-big">约 ${Math.round(now * 100)}%</span><span class="mem-sub">现在大概还记得</span></div>` +
+    (when ? `<p class="mem-when">${esc(when)}</p>` : "") +
+    `<div class="mem" data-anchor="${esc(it.anchor)}" data-due="${due ?? ""}" role="img" aria-label="遗忘曲线:现在约 ${Math.round(now * 100)}%"></div>` +
+    `<p class="mem-log"><b>复习 ${pts.length} 天 · 忘过 ${lapses} 次</b>` +
+    pts.map(p => `<span>${fmtDay(p.day)} <i${p.ok ? "" : ' class="miss"'}>${p.ok ? "✓" : "✗"}</i></span>`).join("") + `</p>` +
+    `<p class="mem-note">按每次复习 / 考核的对错估算:SM-2 在估计还记得 90% 左右时安排下一次复习,答对一次,下一段就掉得更慢。只是模型推算,不是测出来的;条目页的自测不算。</p>`];
+}
+// Draws the curve into .mem at its current width: solid up to today, dashed after (if I don't
+// review it), a dot per graded day on the top line (✗ in the error colour), today's dot on the curve.
+function paintMemory(el){
+  const pts = memoryOf(el.dataset.anchor);
+  const W = el.clientWidth;
+  if (!pts.length || !W) return;
+  const today = dayNo(), due = el.dataset.due === "" ? null : +el.dataset.due;
+  const last = pts[pts.length - 1], horizon = Math.max(today, last.day + last.interval, due ?? 0);
+  const x0 = pts[0].day, x1 = Math.max(x0 + 4, horizon + Math.max(1, Math.ceil((horizon - x0) * 0.15)));
+  const H = 190, L = 40, R = 14, T = 12, B = 26;
+  // samples: every quarter day, plus each graded day's moment before (the bottom of the tooth) and after
+  const xs = [];
+  for (let d = x0; d <= x1; d += 0.25) xs.push(d);
+  const pre = pts.slice(1).map(p => ({ d: p.day, r: recallOn(pts, p.day - 1e-6) }));
+  const lo = Math.min(0.5, Math.floor(Math.min(...xs.map(d => recallOn(pts, d)), ...pre.map(p => p.r)) * 10) / 10);
+  const X = d => L + (d - x0) / (x1 - x0) * (W - L - R), Y = r => T + (1 - r) / (1 - lo) * (H - T - B);
+  const path = (from, to) => {
+    let s = "";
+    for (const d of xs.filter(d => d >= from && d <= to).concat(to).filter((d, i, a) => a.indexOf(d) === i)) {
+      const jump = pre.find(p => p.d > from && Math.abs(p.d - d) < 1e-9);
+      if (jump) s += `L${X(d).toFixed(1)},${Y(jump.r).toFixed(1)}`;
+      s += (s ? "L" : "M") + `${X(d).toFixed(1)},${Y(recallOn(pts, d)).toFixed(1)}`;
+    }
+    return s;
+  };
+  const past = path(x0, Math.min(today, x1)), future = today < x1 ? path(today, x1) : "";
+  const grid = [[1, "100%"], [RECALL_AT_DUE, "90%"], [lo, Math.round(lo * 100) + "%"]];
+  const labels = [];
+  for (const l of [[today, "今天"], ...(due !== null && due > today ? [[due, fmtDay(due)]] : []), [x0, fmtDay(x0)]])
+    if (labels.every(k => Math.abs(X(k[0]) - X(l[0])) > 44)) labels.push(l);
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true">` +
+    grid.map(([r, t]) => `<line class="g" x1="${L}" x2="${W - R}" y1="${Y(r)}" y2="${Y(r)}"/><text class="t" x="${L - 6}" y="${Y(r) + 4}" text-anchor="end">${t}</text>`).join("") +
+    `<path class="area" d="${past}L${X(Math.min(today, x1))},${Y(lo)}L${X(x0)},${Y(lo)}Z"/>` +
+    `<path class="ln" d="${past}"/>` + (future ? `<path class="ln fut" d="${future}"/>` : "") +
+    `<line class="now" x1="${X(today)}" x2="${X(today)}" y1="${T}" y2="${H - B}"/>` +
+    pts.map(p => `<circle class="pt${p.ok ? "" : " miss"}" cx="${X(p.day)}" cy="${Y(1)}" r="4.5"/>`).join("") +
+    `<circle class="pt nowpt" cx="${X(today)}" cy="${Y(recallOn(pts, today))}" r="5"/>` +
+    labels.map(([d, t]) => `<text class="t" x="${X(d)}" y="${H - 8}" text-anchor="middle">${t}</text>`).join("") +
+    `<line class="xh" y1="${T}" y2="${H - B}" visibility="hidden"/></svg><div class="mem-tip" hidden></div>`;
+  // the crosshair snaps to a day; the readout says what the curve says there
+  const svg = el.firstChild, xh = svg.querySelector(".xh"), tip = el.querySelector(".mem-tip");
+  const at = cx => Math.max(x0, Math.min(x1, Math.round(x0 + (cx - L) / (W - L - R) * (x1 - x0))));
+  svg.onpointerdown = svg.onpointermove = e => {
+    const d = at(e.clientX - svg.getBoundingClientRect().left), p = pts.find(p => p.day === d);
+    xh.setAttribute("x1", X(d)); xh.setAttribute("x2", X(d)); xh.setAttribute("visibility", "visible");
+    tip.textContent = "";
+    const b = document.createElement("b"); b.textContent = `约 ${Math.round(recallOn(pts, d) * 100)}%`;
+    tip.append(b, ` · ${d === today ? "今天" : fmtDay(d)}` + (p ? ` · 复习${p.ok ? "答对" : "没对"}` : d > today ? " · 不复习的话" : ""));
+    tip.hidden = false;
+    tip.style.left = Math.max(0, Math.min(W - tip.offsetWidth, X(d) - tip.offsetWidth / 2)) + "px";
+  };
+  // a touch keeps its readout until the next one; a mouse's goes when it leaves
+  svg.onpointerleave = e => { if (e.pointerType !== "touch") { xh.setAttribute("visibility", "hidden"); tip.hidden = true; } };
+}
+const memRO = new ResizeObserver(es => es.forEach(e => paintMemory(e.target)));
 // What the front of a card asks: 会写 entries — and anything I moved to 自测 — are produced
 // (中→英); the other 认识 entries are recognised (英→中).
 function kind(t){
@@ -2486,9 +2608,9 @@ function renderStageTab(stage, el){
     const later = mine.filter(t => !planned.has(t.it.anchor)).sort((a, b) => (due(a) || 1e9) - (due(b) || 1e9));
     const dueLine = t => { const d = due(t); return d === undefined ? "" : d <= today ? "今天到期" : d === today + 1 ? "明天到期" : `${d - today} 天后到期`; };
     const sub = t => [tried(t), dueLine(t)].filter(Boolean).join(" · ") || gloss(t);
-    groups = [["今天到期", p.due, sub], ["还没排期", p.fresh, t => tried(t) || gloss(t)], ["以后到期", later, sub]];
+    groups = [["今天到期", p.due, sub], ["新加入", p.fresh, t => tried(t) || gloss(t)], ["以后到期", later, sub]];
     sum = summaryHtml(queue.length, !mine.length ? "条 · 还没有复习中的条目" : !queue.length ? "条 · 今天的都复习完了" : "条 · 今天要复习",
-      [`今天到期 ${p.due.length}`, `还没排期 ${p.fresh.length}`], null, `开始复习 ${queue.length} 条`, queue.length > 0,
+      [`今天到期 ${p.due.length}`, `新加入 ${p.fresh.length}`], null, `开始复习 ${queue.length} 条`, queue.length > 0,
       "先看一遍笔记,再翻面把每句例句都做一遍(先选词、再打字)。全部答对了下次隔得更久,答错了明天再来;连续答对 3 次(隔开几天)、例句也都答对过,就自动移到考核。");
   } else {
     // 没做过 / 上次没对 (wrong or peeked) / 上次答对, in the order the run takes them

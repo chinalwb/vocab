@@ -24,3 +24,6 @@ android/keystore.properties
 android/apk/
 android/.idea/
 *.iml
+
+# local screenshots (not published)
+screenshots/
