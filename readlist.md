@@ -305,3 +305,29 @@
 - ⚠️ [词形] ==Github== → **GitHub** —— 专有名词大小写。
 - ⚠️ [动词] ==didn't find== → **couldn't find** —— 表示"找不到"用 *couldn't*,强调能力 / 结果。
 - ⚠️ [逻辑] ==which previously worked well== → **that used to be there** —— 要说的是"原来有、现在不见了",不是"原来好用"。
+
+<a id="r-what-do-you-call"></a>
+## 用一个短语里各个词的首字母组成的那种词,叫什么?
+
+- 日期:2026-10-15
+- 关键词:what do you call · formed from the initial letters
+
+**常用说法:**
+
+> What's the word for a short form made from the first letters of a phrase?
+
+**C1 说法:**
+
+> **What do you call** a word **formed from the initial letters** of a phrase?
+
+**差别:**
+
+- **What do you call …?** —— 问"这个东西叫什么"最地道的句型;对应 *What's the word for …?*,后者也自然,但没这么口语化。
+- **a word formed from the initial letters** —— *formed from* 说清这个词是"由首字母组成的",*initial letters* 比 *first letters* 更书面;答案是 [acronym](#acronym)。
+
+**我的原句:**
+
+> What is the word ==which means it is== ==the short form of the initial letters== of a phrase?
+
+- ⚠️ [直译] ==which means it is== → **for** —— "意思是它是……"逐字翻译,绕了一圈;*the word for + 名词* 就够了。
+- ⚠️ [逻辑] ==the short form of the initial letters== → **a short form made from the first letters** —— 缩写是"由首字母组成的短形式",不是"首字母的短形式"。
