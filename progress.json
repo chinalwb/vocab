@@ -4928,6 +4928,13 @@
     "peek": false,
     "via": "entry",
     "ex": "The server was briefly down while I was running the test cases just now."
+   },
+   {
+    "t": 1792048791178,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "We hit a transient outage on the server during the test run."
    }
   ]
  },
