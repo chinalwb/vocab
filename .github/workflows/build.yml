@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - vocabulary.md
+      - readlist.md
       - template.html
       - build.py
       - .github/workflows/build.yml
