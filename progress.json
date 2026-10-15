@@ -4997,6 +4997,13 @@
     "peek": false,
     "via": "entry",
     "ex": "The company deferred the tax payment to the next fiscal quarter."
+   },
+   {
+    "t": 1792055651583,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "I'll defer to your judgment on this — you know the client better than I do."
    }
   ]
  },
