@@ -136,6 +136,7 @@ import io.github.chinalwb.vocab.ui.AppFont
 import io.github.chinalwb.vocab.ui.VocabViewModel
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.memoryOf
+import io.github.chinalwb.vocab.review.today
 import io.github.chinalwb.vocab.review.stageOf
 
 class MainActivity : ComponentActivity() {
@@ -245,6 +246,14 @@ private fun VocabNav() {
                             reps = reviewCards.cards[anchor]?.reps ?: 0,
                             memory = remember(selfTests[anchor], reviewCards.resetAt) { memoryOf(selfTests[anchor].orEmpty(), reviewCards.resetAt) },
                             due = reviewCards.cards[anchor]?.due?.takeIf { entry != null && stages.stageOf(entry) == Stage.Review },
+                            reviewNow = entry != null && stages.stageOf(entry) == Stage.Review &&
+                                (reviewCards.cards[anchor]?.let { it.due <= today() } ?: true),
+                            onReviewRun = {
+                                if (entry != null) {
+                                    vm.startReviewOf(entry)
+                                    nav.popBackStack("home", inclusive = false)
+                                }
+                            },
                             onToggleExample = { en -> if (entry != null) vm.toggleQuizExample(entry, en) },
                             onFav = { en -> vm.toggleFav(anchor, en) },
                             nextLabel = if (next != null) "${pos + 1} / ${list.size}" else null,
@@ -280,6 +289,9 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     var activeFilters by remember { mutableIntStateOf(0) }
     var menuOpen by remember { mutableStateOf(false) }
     var tab by rememberSaveable { mutableIntStateOf(0) }
+    // 复习这一条 on an entry page brings me back here on the 复习 tab, its run already on
+    val tabRequest by vm.tabRequest.collectAsStateWithLifecycle()
+    LaunchedEffect(tabRequest) { tabRequest?.let { tab = it; vm.tabShown() } }
     // a 复习 / 考核 run takes the whole screen: no top bar, no tab bar; back ends the run
     val running = quiz != null && quiz?.stage == when (tab) { 1 -> Stage.Review; 2 -> Stage.Test; else -> null }
     BackHandler(enabled = running) { vm.endQuiz() }

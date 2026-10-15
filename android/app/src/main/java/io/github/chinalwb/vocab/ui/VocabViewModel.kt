@@ -226,6 +226,22 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         _quiz.value = if (q.isEmpty()) null else QuizSession(stage, q).withExample(quizOptOut.value)
     }
 
+    /**
+     * 复习这一条 (用户 2026-10-16): an entry due for 复习 today, reviewed from its own page as a run of
+     * one — the same rules as 开始复习 (every sentence, the SM-2 card graded once, the moves) — where
+     * the page's own 自测 never grades. Its notes were just on screen, so it starts on the question.
+     * Same as reviewOne() in template.html.
+     */
+    fun startReviewOf(e: Entry) {
+        _quiz.value = QuizSession(Stage.Review, listOf(e), studied = true).withExample(quizOptOut.value)
+        _tabRequest.value = 1
+    }
+
+    /** The home tab to switch to (复习, for a run started from an entry page); cleared once shown. */
+    private val _tabRequest = MutableStateFlow<Int?>(null)
+    val tabRequest = _tabRequest.asStateFlow()
+    fun tabShown() { _tabRequest.value = null }
+
     /** 复习: the notes are read, on to the question. */
     fun studiedQuiz() {
         _quiz.value = _quiz.value?.copy(studied = true)

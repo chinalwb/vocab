@@ -99,6 +99,12 @@ fun EntryScreen(
     /** 记忆: the graded days its forgetting curve is replayed from, and the SM-2 card's next day in 复习 */
     memory: List<MemoryPoint> = emptyList(),
     due: Long? = null,
+    /**
+     * due for 复习 today: the card's button reviews it as a run of one ([onReviewRun]) instead of the
+     * page's 自测 — not before it's due, as reviewing early stretches its intervals
+     */
+    reviewNow: Boolean = false,
+    onReviewRun: () -> Unit = {},
     onToggleExample: (String) -> Unit = {},
     /** long-press → 收藏 / 取消收藏 on an example (its plain English) */
     onFav: (String) -> Unit = {},
@@ -198,11 +204,12 @@ fun EntryScreen(
                 CardFoot(
                     hint = progressHint(entry, stage, attempts, since, excluded, reps),
                     label = when {
+                        reviewNow -> "复习这一条"
                         revealed -> "回到自测"
                         selfTest -> "自测一下"
                         else -> "自测这条"
                     },
-                ) { quizUp = true }
+                ) { if (reviewNow) onReviewRun() else quizUp = true }
             }
         } else {
             QuizTop(
