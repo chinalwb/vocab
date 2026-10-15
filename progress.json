@@ -4990,6 +4990,13 @@
     "peek": false,
     "via": "entry",
     "ex": "Students can defer their admission to the following academic year."
+   },
+   {
+    "t": 1792055582871,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The company deferred the tax payment to the next fiscal quarter."
    }
   ]
  },
