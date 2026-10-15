@@ -781,7 +781,10 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .qmeta .amode{background:color-mix(in srgb,var(--card-ink) 8%,transparent);border:0;padding:3px}
 .qmeta .amode button{padding:7px 14px;font-size:calc(13px * var(--fs))}
 .qcard .st{display:flex;flex-direction:column;gap:12px}
-.qprompt{font-size:calc(22px * var(--fs));line-height:1.5;font-weight:700;margin:0}
+.qprompt{font-size:calc(22px * var(--fs));line-height:1.5;font-weight:700;margin:0;transition:font-size .2s ease}
+/* once the answer box has something in it, the question steps down so a long answer keeps its room (用户 2026-10-16) */
+.qcard.building .qprompt{font-size:calc(18px * var(--fs))}
+@media (prefers-reduced-motion: reduce){.qprompt{transition:none}}
 .qcard .st-prompt>:last-child{margin-bottom:0}
 .qstats{display:flex;align-items:center;gap:12px;font-size:calc(12.5px * var(--fs));color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
 .qstats .linkish{color:var(--card-ink);font-size:calc(13px * var(--fs))}
@@ -1560,7 +1563,9 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
     if (ctl.clear) ctl.clear.hidden = !picks.length;
     if (ctl.bs) ctl.bs.disabled = !picks.length;
     if (ctl.hint) ctl.hint.hidden = !picks.length;
-    if (focus) (bankEl.querySelector(".wchip") || ansEl.querySelector(".wchip.last"))?.focus();
+    if (focus) (bankEl.querySelector(".wchip") || ansEl.querySelector(".wchip.last"))?.focus({ preventScroll: true });
+    // the box grows a row at a time: keep its last row (and the hint under it) in sight (用户 2026-10-16)
+    if (picks.length) requestAnimationFrame(() => (ctl.hint && !ctl.hint.hidden ? ctl.hint : ansEl).scrollIntoView({ block: "nearest", behavior: "smooth" }));
   };
   ansEl.onclick = e => { if (e.target.closest(".wchip.last")) { picks.pop(); paint(); } };
   bankEl.onclick = e => { const b = e.target.closest(".wchip[data-w]"); if (!b) return; picks.push(b.dataset.w); paint(true); };
@@ -1975,7 +1980,12 @@ function wireAnswer(root, a){
       clear.onclick = () => { input.value = ""; input.dispatchEvent(new Event("input")); input.focus(); };
     }
   };
-  input.addEventListener("input", () => { if (!chips()) { a.typed = input.value; clear.hidden = !input.value; } if (a.onInput) a.onInput(input.value); });
+  const card = root.querySelector(".qcard");
+  input.addEventListener("input", () => {
+    if (!chips()) { a.typed = input.value; clear.hidden = !input.value; }
+    if (card) card.classList.toggle("building", !!input.value.trim());     // the question steps down
+    if (a.onInput) a.onInput(input.value);
+  });
   input.addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) a.onReveal(); });
   if (mode) mode.addEventListener("click", e => {
     const b = e.target.closest("button[data-chips]");

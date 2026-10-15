@@ -242,7 +242,7 @@ fun EntryScreen(
                         }) else null,
                     )
                     if (!revealed) {
-                        Question(entry, ex)
+                        Question(entry, ex, compact = if (bank != null) bank.picked.isNotEmpty() else typed.isNotBlank())
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub, modifier = Modifier.weight(1f, fill = false))
                             if (toNotes) Text(
@@ -498,10 +498,10 @@ private fun QuizTop(entry: Entry, ex: QuizExample?, icon: androidx.compose.ui.gr
 
 /** The question: a 自测题's Chinese title, an example's Chinese, or — with none — a review card. */
 @Composable
-private fun Question(entry: Entry, ex: QuizExample?) {
+private fun Question(entry: Entry, ex: QuizExample?, compact: Boolean = false) {
     when {
-        entry.level == "SELFTEST" -> Text(entry.title.removePrefix("自测:").removePrefix("自测:"), fontSize = 24.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
-        ex != null -> Text(ex.zh, fontSize = 24.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
+        entry.level == "SELFTEST" -> QuestionText(entry.title.removePrefix("自测:").removePrefix("自测:"), compact)
+        ex != null -> QuestionText(ex.zh, compact)
         else -> ReviewFront(entry, kindOf(entry, inTest = true))
     }
 }

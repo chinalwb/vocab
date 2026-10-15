@@ -509,9 +509,10 @@ private fun QuizCard(
                             }) else null,
                         )
                         if (!session.revealed) {
+                            val compact = if (bank != null) bank.picked.isNotEmpty() else typed.isNotBlank()
                             when {
-                                exam -> Text(entry.title.removePrefix("自测:").removePrefix("自测:"), fontSize = 24.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
-                                ex != null -> Text(ex.zh, fontSize = 24.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
+                                exam -> QuestionText(entry.title.removePrefix("自测:").removePrefix("自测:"), compact)
+                                ex != null -> QuestionText(ex.zh, compact)
                                 else -> ReviewFront(entry, kindOf(entry, inTest = true))
                             }
                             Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub)

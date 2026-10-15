@@ -1,6 +1,10 @@
 package io.github.chinalwb.vocab.ui
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -37,6 +41,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -197,13 +205,29 @@ private fun BoxHeader(onClear: (() -> Unit)?) {
 
 private val BOX_MIN = 140.dp
 
+/**
+ * The question on the sheet (a 自测题's title or an example's Chinese): 24sp, stepping down to 19sp
+ * once the answer box has something in it, so a long answer keeps its room (用户 2026-10-16). Same
+ * as .qcard.building .qprompt in template.html.
+ */
+@Composable
+fun QuestionText(text: String, compact: Boolean) {
+    val size by animateFloatAsState(if (compact) 19f else 24f, label = "question")
+    Text(text, fontSize = size.sp, lineHeight = (size * 1.4f).sp, fontWeight = FontWeight.Bold)
+}
+
 /** 选词: the picked words in the box, the last one outlined — tap it to take it back. */
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun ChipsAnswerBox(st: WordBankState) {
     val c = sheetColors()
     val ink = MaterialTheme.colorScheme.onSurface
     val picked = st.picked
+    // the box grows a row at a time: keep its last row (and the hint under it) in sight (用户 2026-10-16)
+    val bottom = remember { BringIntoViewRequester() }
+    LaunchedEffect(picked.size) {
+        if (picked.isNotEmpty()) { withFrameNanos { }; bottom.bringIntoView() }
+    }
     Column(
         Modifier
             .fillMaxWidth()
@@ -231,7 +255,12 @@ fun ChipsAnswerBox(st: WordBankState) {
             }
             if (picked.isNotEmpty()) Box(Modifier.padding(start = 2.dp, top = 7.dp).size(2.dp, 24.dp).background(ink))
         }
-        if (picked.isNotEmpty()) Text("点最后一个词或右下角的 ⌫ 撤回", style = MaterialTheme.typography.labelSmall, color = c.sub)
+        if (picked.isNotEmpty()) Text(
+            "点最后一个词或右下角的 ⌫ 撤回",
+            style = MaterialTheme.typography.labelSmall,
+            color = c.sub,
+            modifier = Modifier.bringIntoViewRequester(bottom),
+        )
     }
 }
 
