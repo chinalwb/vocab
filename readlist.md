@@ -382,3 +382,32 @@
 - ⚠️ [词形] ==registerer== → **`register()`** —— 方法名照代码原样写,加上括号和反引号。
 - ⚠️ [语气] ==Subsequently== → **which in turn** —— *subsequently* 偏书面;MR 评论里用 *which in turn* 或 *That then* 更自然,也点出因果。
 - ⚠️ [搭配] ==clear off== → **clear** —— 清除通知说 *clear* 或 *dismiss*,不说 *clear off*。
+
+<a id="r-sanitize-so-that"></a>
+## 把记忆脱敏后推到 GitHub,这样我在别的电脑上工作时也适用同样的规则。
+
+- 日期:2026-10-15
+- 关键词:sanitize · so that
+
+**常用说法:**
+
+> Remove the private details from the memory and upload it to GitHub, so I can use the same rules on other computers.
+
+**C1 说法:**
+
+> **Sanitize** the memory **and push it to GitHub, so that** the same rules apply when I work on other computers.
+
+**差别:**
+
+- **sanitize** —— 去掉数据里的敏感信息(人名、公司名、账号等)再交出去,工程里的标准说法;对应 *remove the private details*。不要用 *desensitize*,它是"使脱敏、使麻木"(过敏治疗、对暴力麻木)。
+- **push it to GitHub** —— 代码、文件进远程仓库用 *push*,比 *upload* 更贴近 git 的实际操作。
+- **, so that** —— 引出目的"以便……";*Therefore* 只引出结论"因此",不能表示目的。口语里也可以只说 *so*。
+- **the same rules apply** —— 规则"适用、生效"用 *apply*(不及物),主语是规则本身;对应 *I can use the same rules*。
+
+**我的原句:**
+
+> ==Desensitize== the memory==, upload== it to GitHub. ==Therefore== the same rules still apply when I work on other computers.
+
+- ⚠️ [搭配] ==Desensitize== → **Sanitize** —— 去掉敏感信息用 *sanitize* 或 *strip out sensitive details*;*desensitize* 是"使脱敏、使麻木"。
+- ⚠️ [标点] ==, upload== → **and upload** —— 两个祈使句只用逗号连起来是逗号拼接,用 *and* 连接。
+- ⚠️ [逻辑] ==Therefore== → **so that** —— *therefore* 引出结论,这里要表达的是目的。
