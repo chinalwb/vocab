@@ -395,6 +395,9 @@ h1{
 .st-title{display:none}
 .sheet.full .st-title{display:block}
 .sheet.full .mpill,.sheet.full .mdet,.sheet.full .lv{display:none}
+/* ⤢ 全屏: the card takes the whole screen it has, not the sheet's reading width */
+.scrim:has(.sheet.full){padding:8px}
+.sheet.full{width:100%;height:calc(100dvh - 16px)}
 .sheet.full h2{font-size:calc(17px * var(--fs));margin:0 0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-wrap:unset}
 .sheet textarea.draft{border:1.5px solid var(--card-ink-2);background:color-mix(in srgb, var(--chip) 55%, transparent);margin-top:10px;border-radius:12px;color:var(--card-ink)}
 .sheet textarea.draft:focus-visible{outline:none;border-color:var(--card-ink)}
@@ -729,7 +732,8 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .face{background:var(--sw);color:var(--card-ink);border:0;border-radius:24px;padding:0;overflow:hidden}
 .face.fr .body.fillb{padding:0}
 .nv-bar{display:flex;align-items:center;gap:2px;padding:6px 4px 0 10px;flex:none}
-.nv-bar .nv-tabs{flex:1;min-width:0;margin:0;padding:4px 2px;gap:4px}
+/* the tabs take the row, so 卡片/全部 and ⤢ sit at its right end (.nv.fill .nv-tabs would pin them at flex:none) */
+.nv-bar .nv-tabs,.nv.fill .nv-bar .nv-tabs{flex:1 1 auto;min-width:0;margin:0;padding:4px 2px;gap:4px}
 .nv-bar .nv-tab{border:0;padding:8px 13px;font-size:calc(13.5px * var(--fs));color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
 .nv-bar .nv-tab[aria-selected="true"]{background:var(--card-ink);color:var(--sw);font-weight:700}
 .nv.v2.all .nv-bar .nv-tabs{display:flex;visibility:hidden}
@@ -920,6 +924,9 @@ body.running{overflow:hidden}
     background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;padding:20px 28px 24px;overflow:hidden;display:block}
   .scrim.docked .sheet{width:100%;max-width:860px;height:100%;margin:0 auto;box-shadow:none;border:1px solid var(--rule);background:var(--chip)}
   .scrim.docked .sheet .lvl .node{background:var(--chip)}
+  /* docked and ⤢: over the sidebar and the list too, the whole width under the header */
+  .scrim.docked:has(.sheet.full){left:0;z-index:25;padding:12px 16px 16px;background:var(--ground)}
+  .scrim.docked .sheet.full{max-width:none;height:100%}
   .scrim.docked .sheet .lvl.passed .node{background:var(--card-ink);color:var(--chip)}
   /* 错题本: the types as a bar chart and the 自检 on the left, the mistakes on the right */
   #mistakes:not([hidden]){display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;column-gap:32px;align-items:start;padding-top:8px}
