@@ -258,6 +258,7 @@
 - **只在一处定义**:`ui/Fonts.kt` 的 `APP_FONT_NAME` / `AppFont`,`AppTypography` 把它套进所有 Material 文字样式;原来写死的 `FontFamily.Serif` 全换成了 `AppFont`。用户说以后可能换字体、真有需要时再做「字体设置」,所以**不要再在别处写死字体**。
 - **字号整体放大 8%**:`FONT_SCALE = 1.08f`,在 `VocabTheme` 里乘到 `LocalDensity.fontScale` 上,叠加在手机系统字号之上,Material 样式和写死的 `fontSize` 一起变。要再调大小只改这个数。
 - **网页跟 App 一致**(用户 2026-10-15):英文 Atkinson Hyperlegible,中文 Noto Sans SC(Android 系统中文字体就是 Noto Sans CJK,两边中文看起来一样)。只在 `template.html` 的 `:root` 里定义一次 `--font`,所有地方都写 `font-family:var(--font)`(代码块的等宽字体除外);换字体时同时改这里和 `Fonts.kt`。
+- **网页字号整体放大 10%**(用户 2026-10-15):所有 `font-size` 都写成 `calc(Npx * var(--fs))`,`:root` 里 `--fs:1.1`,相当于 App 的 `FONT_SCALE`。要再调大小只改 `--fs`;新加的样式也照这个写法,不要直接写 px。
 
 ### 朗读(用户 2026-10-12 要求,网页和 App 一致)
 
