@@ -244,3 +244,30 @@
 
 - ⚠️ [逻辑] ==sync it== → **merge main back** —— *it* 指 this branch 还是 main 不清楚。
 - ⚠️ [词形] ==new version apk== → **new APK** —— 缩写要大写;*new* 已经表示新版本。
+
+<a id="r-given-how-it-works"></a>
+## 按照 SRS 的原理,你建议怎么把条目从「复习」自动移到「考核」?
+
+- 日期:2026-10-15
+- 关键词:given how … works · how would you suggest we
+
+**常用说法:**
+
+> According to how SRS works, what is your advice for moving entries from Review to Test automatically?
+
+**C1 说法:**
+
+> **Given how SRS works**, **how would you suggest we automatically promote** entries from Review to Test?
+
+**差别:**
+
+- **Given how SRS works** —— *given* 是"考虑到……、既然……",把原理当作前提;*according to* 多用于"据某人 / 某来源说",后面接 *how it works* 不太贴切。
+- **how would you suggest we …** —— 直接问"你建议我们怎么做",*would* 让语气更客气;对应 *what is your advice for moving*,名词化的问法更绕。
+- **automatically promote** —— *promote* 是"升级、晋级",比 *move* 更准确地说出"进到下一阶段";副词放在动词前面,不用拖到句尾。
+
+**我的原句:**
+
+> So, ==according to how SRS works==, ==what is your advice for== moving entries from 复习 to 考核 automatically?
+
+- ⚠️ [搭配] ==according to how SRS works== → **given how SRS works** —— *according to* 引出信息来源,表示"考虑到这个原理"用 *given*。
+- ⚠️ [直译] ==what is your advice for== → **how would you suggest we** —— "你的建议是什么"直译成名词结构,问做法时用 *how would you suggest we + 动词原形* 更自然。
