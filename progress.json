@@ -4880,6 +4880,20 @@
     "peek": false,
     "via": "entry",
     "ex": "This solution is inexpensive. That said, it's hard to maintain."
+   },
+   {
+    "t": 1792046891988,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We're swamped this week. That being said, I can still take a look at your PR."
+   },
+   {
+    "t": 1792046929188,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "The PR looks good overall. That said, I'd split the second commit before we merge."
    }
   ]
  },
