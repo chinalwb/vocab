@@ -529,3 +529,60 @@
 - ❌ [动词] ==let's do not push== → **let's not push** —— *let's* 的否定直接加 *not*,不用 *do*。
 - ⚠️ [结构] ==stop the update README task== → **drop the README update** —— 把动词 *update* 塞进名词串里,读起来卡。
 - ❌ [直译] ==at local== → **locally** —— 「在本地」的直译;英文用副词 *locally*,或说 *keep them local*。
+
+<a id="r-heard-of-the-curve"></a>
+## 我听说过艾宾浩斯遗忘曲线。能给每个条目都显示这条曲线吗?
+
+- 日期:2026-10-15
+- 关键词:I've heard of · show it for each item
+
+**常用说法:**
+
+> I know the Ebbinghaus forgetting curve. Can we draw this curve for every item?
+
+**C1 说法:**
+
+> **I've heard of** the Ebbinghaus forgetting curve. **Could we** show it **for each item**?
+
+**差别:**
+
+- **I've heard of** —— 「听说过、知道有这么个东西」,用现在完成时讲经历;对应 *I know*(听起来像很熟)。*hear of* = 知道它存在,*hear about* = 听到关于它的具体内容。例句:
+  - *Have you heard of FSRS?* 你听说过 FSRS 吗?
+  - *I've never heard of that library.* 我从没听说过那个库。
+- **Could we …?** —— 提议、请求时比 *Can we* 更客气一点。
+- **show it for each item** —— *show* 本身就是「给人看」,不用再加 *visually*;*for each item* 强调一个一个都有。对应 *draw this curve for every item*。
+- **the Ebbinghaus forgetting curve** —— 是通用名词,小写,前面加 *the*;不写成专有名词 *Forgetting Curve*。
+
+**我的原句:**
+
+> I ==heard about== this: 艾宾浩斯遗忘曲线(Forgetting Curve). Can we show the curve visually for each item?
+
+- ⚠️ [动词] ==heard about== → **'ve heard of** —— 讲「听说过」的经历用现在完成时;*hear of* 指知道它存在。
+
+<a id="r-feel-free-for-testing"></a>
+## 手机已经连上了,你可以用它来测试。
+
+- 日期:2026-10-15
+- 关键词:feel free to · for testing
+
+**常用说法:**
+
+> My phone is connected. You can use it to test.
+
+**C1 说法:**
+
+> My phone is connected **— feel free to** use it **for testing**.
+
+**差别:**
+
+- **— feel free to** —— 「尽管、随便用」,让对方放心去做,语气友好;对应 *You can*。用破折号把两句接成一句。例句:
+  - *Feel free to reach out if anything's unclear.* 有不清楚的地方随时找我。
+  - *Feel free to push it to dev once it's done.* 弄好了直接推到 dev 就行。
+- **for testing** —— 「用来测试」说的是这件事,用动名词 *testing*,或者说 *to test*;对应 *to test*。*for test* 不成立。
+
+**我的原句:**
+
+> The phone (S10+) is ==conneted== - you can use it ==for test==
+
+- ❌ [词形] ==conneted== → **connected** —— 拼写漏了一个 c。
+- ❌ [动词] ==for test== → **for testing** —— 说「测试」这件事用动名词,或者写成 *to test*。
