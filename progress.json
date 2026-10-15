@@ -4949,6 +4949,13 @@
     "peek": false,
     "via": "entry",
     "ex": "The server went down intermittently while the tests were running, so a couple of runs failed."
+   },
+   {
+    "t": 1792049106272,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The server was temporarily unreachable during the test run, which caused some failures."
    }
   ]
  },
