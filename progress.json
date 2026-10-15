@@ -5018,6 +5018,13 @@
     "peek": false,
     "via": "entry",
     "ex": "The PR looks good overall. That said, I'd split the second commit before we merge."
+   },
+   {
+    "t": 1792079858405,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We're swamped this week. That being said, I can still take a look at your PR."
    }
   ],
   "intermittent-outage": [
