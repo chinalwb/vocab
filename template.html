@@ -859,15 +859,14 @@ body.running{overflow:hidden}
      widths are tokens so the docked entry follows */
   :root{--sidew:220px;--listw:380px}
   body.side-off{--sidew:48px}
-  body.list-off{--listw:48px}
+  body.list-off{--listw:0px}
   #board>.phead{display:flex;align-items:center;gap:8px;position:sticky;top:calc(var(--toph,64px) + env(safe-area-inset-top,0px));z-index:2;
     background:var(--ground);margin:0 -10px;padding:10px 10px 6px 18px;border-bottom:1px solid var(--rule)}
   #board>.phead .pn{flex:1;font-size:calc(12.5px * var(--fs));color:var(--ink-3)}
   #board>.phead+.sect{margin-top:12px}
-  .sgrp>span.sh{display:flex;align-items:center;justify-content:space-between;min-height:34px;padding-bottom:2px}
-  .sgrp>span.sh .pbtn{margin-right:-6px}
-  body.list-off #board>.phead{justify-content:center;padding:10px 0 6px;margin:0;border-bottom:0}
-  body.list-off #board>.phead .pn{display:none}
+  .sgrp>span.sh{display:flex;align-items:center;gap:2px;min-height:34px;padding-bottom:2px}
+  .sgrp>span.sh .pbtn:first-of-type{margin-left:auto}
+  .sgrp>span.sh .pbtn:last-of-type{margin-right:-6px}
   .pbtn{display:grid;place-items:center;width:32px;height:32px;padding:0;border-radius:8px;border:0;background:none;color:var(--ink-3);cursor:pointer;flex:none;letter-spacing:0}
   .pbtn svg{width:19px;height:19px}
   .pbtn:hover{background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink)}
@@ -878,7 +877,8 @@ body.running{overflow:hidden}
   .desk{display:grid;grid-template-columns:var(--sidew) minmax(0,1fr);align-items:start}
   body.side-off .side{padding:10px 4px;overflow:hidden}
   body.side-off .side>.sgrp:not(:first-child),body.side-off .side .sbtn{display:none}
-  body.side-off .sgrp>span.sh{font-size:0;justify-content:center;padding:0}
+  /* folded panels' buttons stack in the one rail on the left */
+  body.side-off .sgrp>span.sh{font-size:0;flex-direction:column;gap:6px;padding:0}
   body.side-off .sgrp>span.sh .pbtn{margin:0}
   .side{display:flex;flex-direction:column;gap:20px;position:sticky;top:calc(var(--toph,64px) + env(safe-area-inset-top,0px));
     height:calc(100dvh - var(--toph,64px) - env(safe-area-inset-top,0px));overflow-y:auto;border-right:1px solid var(--rule);padding:18px 12px 24px 16px}
@@ -898,9 +898,7 @@ body.running{overflow:hidden}
   /* 浏览: the list on the left of the column, the entry docked on the right */
   .col.ents{display:grid;grid-template-columns:var(--listw) minmax(0,1fr);padding:0}
   /* folded, the list keeps its cards (J / K and 下一个 still walk them), just out of sight */
-  body.list-off .col.ents #board{padding:0 4px}
-  body.list-off .col.ents #board>.sect{visibility:hidden;height:0;margin:0;overflow:hidden}
-  body.list-off .col.ents #empty{visibility:hidden;max-height:0;overflow:hidden;padding:0}
+  body.list-off .col.ents #board,body.list-off .col.ents #empty{visibility:hidden;max-height:0;min-height:0;overflow:hidden;padding:0;border:0}
   .col.ents #board,.col.ents #empty{grid-column:1}
   .col.ents #board{border-right:1px solid var(--rule);padding:0 10px 64px;min-height:calc(100dvh - var(--toph,64px))}
   .col.ents #empty{border-right:1px solid var(--rule);margin:0}
@@ -2694,6 +2692,9 @@ function paintPanels(){
     b.title = `${off ? "展开" : "收起"}${name}  ${key}`;
   };
   paint(sideTog, sideOff, "分类栏", "["); paint(listTog, listOff, "列表", "]");
+  // the folded list's button joins the sidebar's, on its heading row (or the rail, stacked under it)
+  const home = listOff && view === "entries" ? sideTog.parentNode : board.querySelector(".phead");
+  if (listTog.parentNode !== home) home.append(listTog);
 }
 const togglePanel = k => { store.set(k, store.get(k, "0") === "1" ? "0" : "1"); paintPanels(); };
 sideTog.addEventListener("click", () => togglePanel("vk.sideOff"));
