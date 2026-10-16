@@ -5669,6 +5669,20 @@
     "peek": false,
     "via": "review",
     "ex": "Don't agonize over the wording — just send it."
+   },
+   {
+    "t": 1792137087005,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She agonized for days about whether she should take the job."
+   },
+   {
+    "t": 1792137104499,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "It was an agonizing decision."
    }
   ],
   "practitioner": [
