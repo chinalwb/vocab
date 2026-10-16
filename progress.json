@@ -5129,6 +5129,13 @@
     "peek": false,
     "via": "entry",
     "ex": "We shouldn't start writing the code until we've got everything straight."
+   },
+   {
+    "t": 1792164669855,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "There's no need to rush into writing code — let's get everything straight first."
    }
   ],
   "s-chase-for": [
