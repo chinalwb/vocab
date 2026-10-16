@@ -670,6 +670,14 @@
    "lapses": 1,
    "due": 20743,
    "t": 1792164347499
+  },
+  "s-align-ux": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20743,
+   "t": 1792164615022
   }
  },
  "newDay": 20742,
@@ -5650,6 +5658,13 @@
     "peek": false,
     "via": "review",
     "ex": "We want the UX to feel like DeepSeek's."
+   },
+   {
+    "t": 1792164615020,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "We're using DeepSeek's UX as the benchmark."
    }
   ],
   "s-better-at": [
@@ -5957,6 +5972,11 @@
   }
  },
  "history": [
+  {
+   "a": "s-rush-into-get-straight",
+   "t": 1792164618954,
+   "via": "review"
+  },
   {
    "a": "s-align-ux",
    "t": 1792164357449,
