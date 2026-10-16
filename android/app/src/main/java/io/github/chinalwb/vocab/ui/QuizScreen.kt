@@ -352,7 +352,7 @@ private fun ReadyBanner(n: Int, stage: Stage, onClick: () -> Unit) {
 
 /** One line of a stage's list: the title, the line under it, the level as a pill. */
 @Composable
-private fun StageRow(e: Entry, sub: String, onClick: () -> Unit) {
+internal fun StageRow(e: Entry, sub: String, onClick: () -> Unit) {
     val ink = MaterialTheme.colorScheme.onSurface
     Row(
         Modifier

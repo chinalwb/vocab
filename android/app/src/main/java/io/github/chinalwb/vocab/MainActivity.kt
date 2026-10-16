@@ -207,6 +207,12 @@ private fun VocabNav() {
                     val anchor = back.arguments?.getString("anchor").orEmpty()
                     SubPage("阅读", onBack = { nav.popBackStack() }) { pad -> ReadDetail(lib, anchor, onXref = { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) }
                 }
+                composable("history") {
+                    val history by vm.history.collectAsStateWithLifecycle()
+                    SubPage("学习历史", onBack = { nav.popBackStack() }) { pad ->
+                        io.github.chinalwb.vocab.ui.HistoryScreen(lib, history, onOpen = openIn, onClear = { vm.clearHistory() }, modifier = Modifier.padding(pad))
+                    }
+                }
                 composable("practice") { SubPage("练习", onBack = { nav.popBackStack() }) { pad -> PracticeScreen(lib, openAlone, modifier = Modifier.padding(pad)) } }
                 composable("today") {
                     val day by vm.practiceToday.collectAsStateWithLifecycle()
@@ -224,6 +230,9 @@ private fun VocabNav() {
                 }
                 composable("entry/{anchor}") { back ->
                     val anchor = back.arguments?.getString("anchor").orEmpty()
+                    // 学习历史: once per visit — saved with the page, so coming back to it doesn't count again
+                    var logged by rememberSaveable { mutableStateOf(false) }
+                    LaunchedEffect(anchor) { if (!logged) { logged = true; vm.visit(anchor, "entry") } }
                     CompositionLocalProvider(LocalNavAnimatedScope provides this) {
                         val entry = lib.data?.byAnchor?.get(anchor)
                         // 下一个 walks the list from the entry opened from it; it replaces this page
@@ -398,6 +407,11 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                                     onClick = { menuOpen = false; vm.toggleTiles() },
                                 )
                                 // what used to be tabs, or lived under 复习: not part of the lifecycle
+                                DropdownMenuItem(
+                                    text = { Text("学习历史") },
+                                    leadingIcon = { Icon(io.github.chinalwb.vocab.ui.HistoryIcon, null) },
+                                    onClick = { menuOpen = false; nav.navigate("history") },
+                                )
                                 DropdownMenuItem(
                                     text = { Text("错题本") },
                                     leadingIcon = { Icon(Icons.Default.Warning, null) },
