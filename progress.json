@@ -5268,6 +5268,13 @@
     "peek": false,
     "via": "review",
     "ex": "This solution is inexpensive. That said, it's hard to maintain."
+   },
+   {
+    "t": 1792134474192,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We're swamped this week. That being said, I can still take a look at your PR."
    }
   ],
   "intermittent-outage": [
