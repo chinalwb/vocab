@@ -5599,6 +5599,13 @@
     "peek": false,
     "via": "entry",
     "ex": "There was a brief service interruption on the server just now while the test cases were executing."
+   },
+   {
+    "t": 1792165028821,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "The server was briefly down while I was running the test cases just now."
    }
   ],
   "defer": [
