@@ -598,6 +598,14 @@
    "lapses": 1,
    "due": 20743,
    "t": 1792134575844
+  },
+  "agonize-over": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20743,
+   "t": 1792137237724
   }
  },
  "newDay": 20742,
@@ -5683,6 +5691,13 @@
     "peek": false,
     "via": "review",
     "ex": "It was an agonizing decision."
+   },
+   {
+    "t": 1792137237722,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "There was an agonizing wait for the test results."
    }
   ],
   "practitioner": [
