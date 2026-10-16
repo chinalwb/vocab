@@ -606,6 +606,14 @@
    "lapses": 1,
    "due": 20743,
    "t": 1792137237724
+  },
+  "s-skills-refresh": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20743,
+   "t": 1792137612309
   }
  },
  "newDay": 20742,
@@ -5565,6 +5573,13 @@
     "ok": true,
     "peek": false,
     "via": "entry",
+    "ex": "In a Cowork chat session, typing / opens the skills selector. This generally works fine, but custom skills created on the fly don't show up in the selector. It looks like the skill list isn't being refreshed."
+   },
+   {
+    "t": 1792137612306,
+    "ok": false,
+    "peek": false,
+    "via": "review",
     "ex": "In a Cowork chat session, typing / opens the skills selector. This generally works fine, but custom skills created on the fly don't show up in the selector. It looks like the skill list isn't being refreshed."
    }
   ],
