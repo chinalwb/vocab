@@ -5606,6 +5606,13 @@
     "peek": false,
     "via": "review",
     "ex": "The server was briefly down while I was running the test cases just now."
+   },
+   {
+    "t": 1792165093100,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "We hit a transient outage on the server during the test run."
    }
   ],
   "defer": [
