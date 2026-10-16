@@ -76,6 +76,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     private val favStore = (app as VocabApp).favs
     /** ⭐ example sentences: {anchor: {plain English: Fav}}, unstars included — read through starred(). */
     val favs = favStore.data
+    private val historyStore = (app as VocabApp).history
+    /** 学习历史: newest first, one row per entry. */
+    val history = historyStore.data
     private val progress = (app as VocabApp).progress
     private val practice = (app as VocabApp).practice
     /** 今天的练习: today's practised sentences, each with what I wrote and the answer. */
@@ -173,6 +176,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             selfTestLog.load()
             stageStore.load()
             favStore.load()
+            historyStore.load()
             practice.load()
             progress.ready.complete(Unit)
             progress.now()
@@ -219,11 +223,21 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
 
     fun resetReview() = viewModelScope.launch { reviews.reset(); progress.soon() }
 
+    /** 学习历史: I'm on [anchor] — opened ("entry"), or met in a run ("review" / "test"). */
+    fun visit(anchor: String, via: String) = viewModelScope.launch { historyStore.visit(anchor, via); progress.soon() }
+    fun clearHistory() = viewModelScope.launch { historyStore.clear(); progress.soon() }
+
+    /** Sets the run, and logs the entry it's now on in 学习历史 (once per entry). */
+    private fun setRun(s: QuizSession?) {
+        _quiz.value = s
+        s?.current?.let { visit(it.anchor, s.stage.key) }
+    }
+
     /** 开始复习 / 开始考核: the stage's entries, in the order the tab lists them. */
     fun startQuiz(stage: Stage) {
         val entries = library.value.data?.entries ?: return
         val q = quizQueue(stage, entries, stages.value, selfTests.value, review.value)
-        _quiz.value = if (q.isEmpty()) null else QuizSession(stage, q).withExample(quizOptOut.value)
+        setRun(if (q.isEmpty()) null else QuizSession(stage, q).withExample(quizOptOut.value))
     }
 
     /**
@@ -233,7 +247,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
      * Same as reviewOne() in template.html.
      */
     fun startReviewOf(e: Entry) {
-        _quiz.value = QuizSession(Stage.Review, listOf(e), studied = true).withExample(quizOptOut.value)
+        setRun(QuizSession(Stage.Review, listOf(e), studied = true).withExample(quizOptOut.value))
         _tabRequest.value = 1
     }
 
@@ -326,11 +340,11 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
                 progress.soon()
             }
         }
-        _quiz.value = s.copy(
+        setRun(s.copy(
             index = s.index + 1, studied = false, revealed = false, graded = null, missed = false, done = s.done + 1,
             advanced = s.advanced + if (moved) 1 else 0, promoted = promoted, demoted = demoted,
             k = 0, step = 1, bankOk = false, typedOk = false, helped = false, entryOk = true,
-        ).withExample(quizOptOut.value)
+        ).withExample(quizOptOut.value))
     }
 
     /** 撤销 on the last page: put back what this run moved by itself (the schedule stays as graded). */

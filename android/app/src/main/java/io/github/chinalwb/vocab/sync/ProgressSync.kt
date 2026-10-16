@@ -7,6 +7,10 @@ import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Card
 import io.github.chinalwb.vocab.review.FavStore
 import io.github.chinalwb.vocab.review.Favs
+import io.github.chinalwb.vocab.review.HistoryData
+import io.github.chinalwb.vocab.review.HistoryStore
+import io.github.chinalwb.vocab.review.Visit
+import io.github.chinalwb.vocab.review.trimHistory
 import io.github.chinalwb.vocab.review.MAX_PER_ENTRY
 import io.github.chinalwb.vocab.review.ReviewData
 import io.github.chinalwb.vocab.review.ReviewStore
@@ -48,6 +52,9 @@ data class Progress(
     val attempts: Map<String, List<PAttempt>> = emptyMap(),
     /** ⭐ example sentences, unstars included: {anchor: {plain English: Fav}} */
     val favs: Favs = emptyMap(),
+    /** 学习历史: newest first, one per entry; [historyClearAt] = the last 清空 */
+    val history: List<Visit> = emptyList(),
+    val historyClearAt: Long = 0,
 )
 
 @Serializable
@@ -67,7 +74,8 @@ private const val API = BuildConfig.PROGRESS_API
 /**
  * 同步: pull progress.json, merge it into the local stores, push back if this device knew
  * something GitHub didn't. Same format and merge rules as syncNow() in template.html:
- * newest wins per entry (per sentence for ⭐), a reset drops older cards, 自测 attempts are a union.
+ * newest wins per entry (per sentence for ⭐, per entry for 学习历史), a reset drops older cards
+ * (a 清空 older visits), 自测 attempts are a union.
  */
 class ProgressSync(
     context: Context,
@@ -75,6 +83,7 @@ class ProgressSync(
     private val selfTests: SelfTestLog,
     private val stages: StageStore,
     private val favs: FavStore,
+    private val history: HistoryStore,
 ) {
     // encodeDefaults: the page compares field by field, so every field must be written
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
@@ -174,6 +183,10 @@ class ProgressSync(
                 mine + r.favs[a].orEmpty().filter { (en, f) -> f.t > (mine[en]?.t ?: 0) }
             }
         }
+        history.replace { l ->
+            val clearAt = maxOf(l.clearAt, r.historyClearAt)
+            HistoryData(trimHistory(l.visits + r.history, clearAt), clearAt)
+        }
         selfTests.replace { l ->
             l + r.attempts.map { (a, list) ->
                 val mine = l[a].orEmpty()
@@ -195,6 +208,8 @@ class ProgressSync(
             resetAt = r.resetAt,
             attempts = selfTests.state.value.mapValues { (_, l) -> l.map { PAttempt(it.t, it.ok, it.text.isEmpty(), it.via, it.ex) } },
             favs = favs.data.value,
+            history = history.data.value.visits,
+            historyClearAt = history.data.value.clearAt,
         )
     }
 

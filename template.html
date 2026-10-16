@@ -871,6 +871,8 @@ body.running{overflow:hidden}
 .ready{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;font-size:calc(14px * var(--fs));color:var(--ink);background:var(--chip);border:1px solid var(--rule);border-radius:16px;padding:12px 14px;cursor:pointer;margin:0 0 8px}
 .ready .ck{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--ground);display:grid;place-items:center;flex:none;font-weight:700}
 .ready .t{flex:1}
+.histgo{max-width:720px;margin:16px auto 0}
+.hist-clear{margin-top:20px}
 .ready svg{width:18px;height:18px;flex:none}
 .grp-h{font-size:calc(13px * var(--fs));font-weight:700;color:var(--ink-3);margin:14px 8px 6px}
 .srows{display:flex;flex-direction:column;gap:8px}
@@ -1003,6 +1005,7 @@ body.running{overflow:hidden}
       <main id="board"></main>
       <p class="empty" id="empty" hidden>没有匹配的条目。</p>
       <div class="dock-ph" aria-hidden="true"><p>选一条看笔记<br><small>J / K 上下切换 · / 搜索</small></p></div>
+      <button type="button" class="ready histgo" id="histgo" hidden></button>
       <section id="mistakes" hidden>
         <div class="check" id="check"></div>
         <p class="mk-intro">只收我自己写错的地方。<b style="color:var(--err)">❌</b> 是语法错误,<b style="color:var(--warn)">⚠️</b> 是能用但不是最常见的写法。点卡片打开原条目。</p>
@@ -1012,6 +1015,7 @@ body.running{overflow:hidden}
       <section id="review" class="pane" hidden></section>
       <section id="selftest" class="pane" hidden></section>
       <section id="done" class="pane" hidden></section>
+      <section id="history" class="pane" hidden></section>
       <section id="extras" class="pane" hidden></section>
       <div id="practice"></div>
     </div>
@@ -1380,12 +1384,14 @@ function render(){
   // "12" or "#12" jumps to entry #12
   const numQ = (term.match(/^#?(\d+)$/) || [])[1];
   // 错题本 is its own view on wide screens (the sidebar); on narrow ones it sits in 更多
-  [...tabs.children].forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === view || (view === "mistakes" && t.dataset.k === "more"))));
+  [...tabs.children].forEach(t => t.setAttribute("aria-selected", String(t.dataset.k === view || ((view === "mistakes" || view === "history") && t.dataset.k === "more"))));
   colEl.classList.toggle("ents", view === "entries");
   if (scrim && scrim.classList.contains("docked") && !dockable()) close();
   paintSide(); paintChrome(); paintPanels();
   mistakesEl.hidden = !(view === "mistakes" || (view === "more" && !deskMQ.matches));
   extrasEl.hidden = view !== "more";
+  historyEl.hidden = view !== "history";
+  histGo.hidden = !(view === "more" && !deskMQ.matches);   // wide screens have it in the sidebar
   tools.hidden = view !== "entries" && mistakesEl.hidden;     // the search also filters the 错题本
   fbtn.hidden = fsum.hidden = view !== "entries";
   if (view !== "entries") closeFilters();
@@ -1394,7 +1400,8 @@ function render(){
   selftestEl.hidden = view !== "selftest";
   doneEl.hidden = view !== "done";
   empty.hidden = true;
-  if (view === "more" || view === "mistakes") { if (view === "more") renderExtras(); empty.hidden = mistakesEl.hidden || renderMistakes(term) > 0; return; }
+  if (view === "history") { renderHistory(); return; }
+  if (view === "more" || view === "mistakes") { if (view === "more") paintHistGo(); if (view === "more") renderExtras(); empty.hidden = mistakesEl.hidden || renderMistakes(term) > 0; return; }
   if (view === "review") { renderStageTab("review", reviewEl); return; }
   if (view === "selftest") { renderStageTab("test", selftestEl); return; }
   if (view === "done") { renderStageTab("done", doneEl); return; }
@@ -1437,7 +1444,7 @@ function render(){
   if (autoOpen && dockable() && !scrim) {
     autoOpen = false;
     const c = visibleCards()[0];
-    if (c) { const t = byAnchor[c.dataset.anchor]; open(t.it, t.level, t.i, listOf(c), { noFocus: true }); }
+    if (c) { const t = byAnchor[c.dataset.anchor]; open(t.it, t.level, t.i, listOf(c), { noFocus: true, auto: true }); }
   }
 }
 q.addEventListener("input", render);
@@ -1605,6 +1612,22 @@ let favs = {};
 try { favs = JSON.parse(store.get("vk.favs", "{}")) || {}; } catch(e){}
 const isFav = (anchor, en) => !!(favs[anchor] && favs[anchor][en] && favs[anchor][en].on);
 const hasFav = anchor => Object.values(favs[anchor] || {}).some(f => f.on);
+// 学习历史 (用户 2026-10-16): the last HIST_MAX entries I've been on — opened, or met in a 复习 /
+// 考核 run — one row per entry, newest first. 同步 carries it ({a, t, via}, newest wins per entry);
+// 清空 sets histClearAt so the other devices drop the older rows too. App: review/HistoryStore.kt.
+const HIST_MAX = 100;
+let hist = [], histClearAt = 0;
+try { hist = JSON.parse(store.get("vk.hist", "[]")) || []; histClearAt = +store.get("vk.hist.clear", "0") || 0; } catch(e){}
+function trimHist(list){
+  const seen = new Set();
+  return list.filter(v => v.t > histClearAt).sort((x, y) => y.t - x.t)
+    .filter(v => !seen.has(v.a) && seen.add(v.a)).slice(0, HIST_MAX);
+}
+const saveHist = () => { store.set("vk.hist", JSON.stringify(hist)); store.set("vk.hist.clear", String(histClearAt)); };
+function visit(anchor, via){
+  hist = trimHist([{ a: anchor, t: Date.now(), via }, ...hist]);
+  saveHist(); syncSoon();
+}
 function toggleFav(anchor, en){
   const on = !isFav(anchor, en);
   (favs[anchor] = favs[anchor] || {})[en] = { on, t: Date.now() };
@@ -1780,10 +1803,12 @@ function open(it, level, i, list = [], o = {}){   // opened from a card — star
   trail = [];
   cardFull = false;
   openList = list; openAt = it.anchor;
+  if (!o.auto) visit(it.anchor, "entry");     // not the one a wide screen opens by itself
   show(it, level, i, o);
 }
 function follow(t){                   // opened from a cross-reference
   trail.push(scrim._entry);
+  visit(t.it.anchor, "entry");
   show(t.it, t.level, t.i);
 }
 function goBack(){
@@ -2209,6 +2234,7 @@ function close(){
   if (!scrim) return;
   scrim.remove(); scrim = null; trail = []; openList = [];
   markSel("");
+  if (view === "history") renderHistory();            // what I just opened is on top now
   if (lastFocus) lastFocus.focus();
 }
 document.addEventListener("keydown", e => {
@@ -2426,12 +2452,13 @@ try { syncState = JSON.parse(store.get("vk.sync", "{}")) || {}; } catch(e){}
 const stable = v => JSON.stringify(v, (k, x) => x && typeof x === "object" && !Array.isArray(x)
   ? Object.fromEntries(Object.keys(x).sort().map(k2 => [k2, x[k2]])) : x);
 const normProgress = r => ({ v: 1, stages: r.stages || {}, cards: r.cards || {}, newDay: r.newDay || 0,
-  newToday: r.newToday || 0, resetAt: r.resetAt || 0, attempts: r.attempts || {}, favs: r.favs || {} });
+  newToday: r.newToday || 0, resetAt: r.resetAt || 0, attempts: r.attempts || {}, favs: r.favs || {},
+  history: r.history || [], historyClearAt: r.historyClearAt || 0 });
 function progressOut(){
   const st = {}, at = {};
   for (const a in stages) st[a] = { s: stages[a], t: stageT[a] || 0 };
   for (const a in stLog) at[a] = stLog[a].map(x => ({ t: x.t, ok: x.ok, peek: !x.text, via: x.via, ex: x.ex || "" }));
-  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs });
+  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs, history: hist, historyClearAt: histClearAt });
 }
 // Newest wins per entry (per sentence for ⭐); a reset drops every card graded before it; 自测 attempts are a union.
 function applyRemote(r){
@@ -2464,6 +2491,9 @@ function applyRemote(r){
     if (o.t > ((m[en] || {}).t || 0)) m[en] = { on: !!o.on, t: o.t };
   }
   store.set("vk.favs", JSON.stringify(favs));
+  histClearAt = Math.max(histClearAt, r.historyClearAt);
+  hist = trimHist([...hist, ...r.history]);
+  saveHist();
 }
 const b64 = t => btoa(unescape(encodeURIComponent(t)));
 const unb64 = t => decodeURIComponent(escape(atob(t.replace(/\s/g, ""))));
@@ -2678,6 +2708,7 @@ function renderStageTab(stage, el){
 // (s.entryOk) — that grades the SM-2 card and decides the moves, once, after its last sentence.
 function renderQuizCard(el){
   const s = quiz, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST", stage = s.stage;
+  if (s.seen !== s.index) { s.seen = s.index; visit(it.anchor, stage); }   // once per entry of the run
   if (!exam && s.ex === undefined) s.ex = quizEx(it, s.k);  // this sentence, fixed for it
   const ex = exam ? null : s.ex, exEn = ex ? plainMd(ex.en) : null;
   const qAns = answerOf(it, t.level, ex), step = qAns ? s.step : 2;
@@ -2780,6 +2811,47 @@ function renderQuizCard(el){
   const ab = res.querySelector("#adv"); if (ab) ab.addEventListener("click", () => next(true));
 }
 // ── 更多: the 错题本 (above, its own section), 练习 and 同步 — what left the tabs ──
+// ── 学习历史: the rows under a heading per day, the time and where I met it on each. ──
+const historyEl = document.getElementById("history"), histGo = document.getElementById("histgo");
+const ICON_CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="width:15px;height:15px"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
+const HIST_VIA = { entry: "打开", review: "复习", test: "考核" };
+const histRows = () => hist.filter(v => byAnchor[v.a]);        // an entry gone from the notes drops out
+const hhmm = ms => { const d = new Date(ms); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); };
+function histDay(ms){
+  const d = new Date(ms), n = Math.round((new Date().setHours(0, 0, 0, 0) - new Date(ms).setHours(0, 0, 0, 0)) / 864e5);
+  return n === 0 ? "今天" : n === 1 ? "昨天" : `${d.getMonth() + 1} 月 ${d.getDate()} 日 · 周${"日一二三四五六"[d.getDay()]}`;
+}
+function paintHistGo(){
+  const n = histRows().length;
+  histGo.innerHTML = `<span class="ck">${ICON_CLOCK}</span><span class="t">学习历史 · ${n ? `最近 ${n} 条` : "还没有"}</span>${ICON_CHEV}`;
+}
+histGo.addEventListener("click", () => setView("history"));
+let histArmed = false;
+function renderHistory(){
+  const rows = histRows();
+  const gloss = t => t.level === "SELFTEST" ? "先说出英文,再点开对答案" : textOf(t.it.gloss || "").replace(/^释义\s*[::]\s*/, "");
+  const days = [];
+  rows.forEach(v => { const d = histDay(v.t); if (!days.length || days[days.length - 1][0] !== d) days.push([d, []]); days[days.length - 1][1].push(v); });
+  historyEl.innerHTML = `<h2>学习历史</h2><p class="note">` +
+    (rows.length ? `最近看过的 ${rows.length} 条,最新的在最上面。` : "还没有看过的条目。") +
+    `打开一条、或在复习 / 考核里做到它,都会记在这里;同一条再看会移到最上面,最多留 ${HIST_MAX} 条。开了同步的话,网页和 App 共用这份历史。</p>` +
+    days.map(([d, list]) => `<h3 class="grp-h">${d} · ${list.length}</h3><div class="srows">` + list.map(v => {
+      const t = byAnchor[v.a];
+      return `<button type="button" class="srow" data-anchor="${v.a}" style="--sw:var(${LV[t.level].sw[t.i % 3]})">` +
+        `<span class="t"><b>${stTitle(t.it)}</b><small>${esc([hhmm(v.t) + " " + (HIST_VIA[v.via] || "打开"), gloss(t)].filter(Boolean).join(" · "))}</small></span>` +
+        `<span class="tg">${lvShort(t.level)}</span></button>`;
+    }).join("") + `</div>`).join("") +
+    (rows.length ? `<p class="hist-clear"><button class="linkish" type="button" id="hist-clear">清空学习历史</button></p>` : "");
+  const order = rows.map(v => v.a);
+  historyEl.querySelectorAll(".srow").forEach(b => b.addEventListener("click", () => { const t = byAnchor[b.dataset.anchor]; open(t.it, t.level, t.i, order); }));
+  histArmed = false;
+  const clr = historyEl.querySelector("#hist-clear");
+  if (clr) clr.addEventListener("click", () => {
+    if (!histArmed) { histArmed = true; clr.textContent = "确定清空?再点一次确认(其他设备同步后也会清空)"; return; }
+    histClearAt = Date.now(); hist = []; saveHist(); syncSoon(); render();
+  });
+}
+
 function renderExtras(){
   if (extrasEl.dataset.built) { paintSync(); renderPractice(); return; }
   extrasEl.dataset.built = "1";
@@ -2864,7 +2936,7 @@ const SIDE = [
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
   ["分类", [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"], ["SELFTEST", "自测题"]]
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])],
-  ["其他", [["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
+  ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];
 const ICON_SIDE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg>';
 const ICON_ROWS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>';
@@ -2878,7 +2950,7 @@ board.insertAdjacentHTML("afterbegin", `<div class="phead"><span class="pn" id="
 function paintSide(){
   const n = { learn: 0, review: 0, test: 0, done: 0 };
   DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));
-  const cnt = { learn: n.learn, review: n.review, selftest: n.test, done: n.done, "c:ALL": total, mistakes: mkTotal };
+  const cnt = { learn: n.learn, review: n.review, selftest: n.test, done: n.done, "c:ALL": total, mistakes: mkTotal, history: histRows().length };
   DATA.forEach(g => { cnt["c:" + g.level] = g.items.length; });
   const cur = view !== "entries" ? view : stageF === "learn" && typeF === "ALL" ? "learn" : stageF ? ""
     : typeF === "WORD" ? (cefrF ? "c:" + cefrF : "") : "c:" + typeF;

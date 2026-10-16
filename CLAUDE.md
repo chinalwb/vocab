@@ -201,6 +201,13 @@
 - 只存「移动过的」条目:网页 localStorage `vk.stage`,App `filesDir/stage.json`,记 `{anchor: key}` 和每次移动的时间。两边规则一致(`stageOf()` 在 template.html 和 `review/StageStore.kt`)。
 - 将来的方向(用户说的):按这些数据自动流转——看过就进复习(还没做)、连续答对就升级(复习 → 考核已做,见上)、答错就退回(考核 → 复习已做)。考核 → 掌握仍然手动。
 
+### 学习历史(用户 2026-10-16,网页和 App 一致,App 2.8)
+
+- 最近看过的 **100 条**(`HIST_MAX` / `HISTORY_MAX`),**最新的在最上面**,按天分组(今天 / 昨天 / 10 月 14 日 · 周二),每行是条目标题、「时间 + 打开 / 复习 / 考核」和释义,点开条目,「下一个」按这份历史的顺序走。同一条再看会移到最上面(每条只留一行,时间取最近一次)。
+- **算一次「看过」**:从任何地方打开条目页(列表、搜索、交叉引用、下一个、错题本……,`via: "entry"`);复习 / 考核做题时轮到这一条(每条一次,`via` 是 `review` / `test`)。**不算**:宽屏打开页面时自动停靠的第一条(`open()` 的 `o.auto`);App 从后面的页面返回到条目页(`rememberSaveable` 记过了)。
+- 入口:App ⋮ →「学习历史」(路由 `history`,`ui/HistoryScreen.kt`);网页宽屏左栏「其他 → 学习历史」,窄屏在「更多」顶上一行(`view = "history"`,`renderHistory()`)。底部「清空学习历史」要确认。
+- 存储:App `review/HistoryStore.kt`(`filesDir/history.json`,`{visits: [{a, t, via}], clearAt}`),网页 localStorage `vk.hist` / `vk.hist.clear`。**同步**:`progress.json` 的 `history` / `historyClearAt`,合并 = 两边并起来、每条取最新、丢掉清空之前的、截到 100 条(`trimHistory()` / `trimHist()`)。条目从笔记里删了就不显示。
+
 ### 记忆曲线(用户 2026-10-15,网页和 App 一致,App 2.5)
 
 - 条目页笔记卡片的**最后一个分节「记忆」**:卡片模式是最后一个 tab,全部模式排在最后。条目有过打分的日子、或者已经不在学习中时才出现;还没做过的显示一句说明。
@@ -309,7 +316,7 @@
 
 ### 同步到 GitHub(用户 2026-10-09 要求)
 
-进度、SM-2 复习卡、自测结果、⭐ 收藏的例句在网页和 App 之间同步,存在本仓库的**孤立分支 `progress`** 的 `progress.json` 里(和 main / dev 没有共同历史,不触发构建,也不进 dev → main 的 MR)。
+进度、SM-2 复习卡、自测结果、⭐ 收藏的例句、学习历史在网页和 App 之间同步,存在本仓库的**孤立分支 `progress`** 的 `progress.json` 里(和 main / dev 没有共同历史,不触发构建,也不进 dev → main 的 MR)。
 
 - 读写走 GitHub Contents API,用户自己的 fine-grained token(只给 chinalwb/vocab 的 Contents 读写),在「复习」页底部「同步到 GitHub」里填;网页存 localStorage `vk.gh`,App 存 SharedPreferences `sync`。**token 由用户自己填,我不经手。**
 - **自测里写的句子原文不上传**(公开仓库,原文没经过我脱敏):只同步时间、对错、是否偷看、来源;别的设备上显示为「(在另一台设备上写的)」。
