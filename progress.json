@@ -5577,6 +5577,13 @@
     "peek": false,
     "via": "entry",
     "ex": "If the global flag is disabled, none of the other flags take effect, regardless of their own settings."
+   },
+   {
+    "t": 1792163809987,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "When the global flag is off, the other flags have no effect, even if they're on."
    }
   ],
   "s-align-ux": [
