@@ -590,6 +590,14 @@
    "lapses": 1,
    "due": 20743,
    "t": 1792112611068
+  },
+  "that-said": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20743,
+   "t": 1792134575844
   }
  },
  "newDay": 20742,
@@ -5275,6 +5283,13 @@
     "peek": false,
     "via": "review",
     "ex": "We're swamped this week. That being said, I can still take a look at your PR."
+   },
+   {
+    "t": 1792134575842,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "The PR looks good overall. That said, I'd split the second commit before we merge."
    }
   ],
   "intermittent-outage": [
