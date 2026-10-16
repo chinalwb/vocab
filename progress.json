@@ -686,6 +686,14 @@
    "lapses": 0,
    "due": 20743,
    "t": 1792164766385
+  },
+  "s-chase-for": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20743,
+   "t": 1792164832064
   }
  },
  "newDay": 20742,
@@ -5216,6 +5224,13 @@
     "peek": false,
     "via": "review",
     "ex": "I'm after a simpler approach."
+   },
+   {
+    "t": 1792164832063,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Is there a simpler way to do this?"
    }
   ],
   "s-expected-to-work": [
@@ -6015,6 +6030,11 @@
   }
  },
  "history": [
+  {
+   "a": "s-expected-to-work",
+   "t": 1792164832826,
+   "via": "review"
+  },
   {
    "a": "s-chase-for",
    "t": 1792164767682,
