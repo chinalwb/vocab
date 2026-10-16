@@ -5202,6 +5202,13 @@
     "peek": false,
     "via": "entry",
     "ex": "I'm after a simpler approach."
+   },
+   {
+    "t": 1792164792259,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I'm looking for an easier approach."
    }
   ],
   "s-expected-to-work": [
