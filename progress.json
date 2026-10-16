@@ -5766,5 +5766,23 @@
     "t": 1791959206224
    }
   }
- }
+ },
+ "history": [
+  {
+   "a": "bakery",
+   "t": 1792146965496,
+   "via": "entry"
+  },
+  {
+   "a": "check-out",
+   "t": 1792146964746,
+   "via": "entry"
+  },
+  {
+   "a": "name-verb",
+   "t": 1792146946095,
+   "via": "entry"
+  }
+ ],
+ "historyClearAt": 0
 }
