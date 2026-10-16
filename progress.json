@@ -678,6 +678,14 @@
    "lapses": 1,
    "due": 20743,
    "t": 1792164615022
+  },
+  "s-rush-into-get-straight": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20743,
+   "t": 1792164766385
   }
  },
  "newDay": 20742,
@@ -5143,6 +5151,13 @@
     "peek": false,
     "via": "review",
     "ex": "Let's not rush into writing the code before we've got everything straight."
+   },
+   {
+    "t": 1792164766383,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We shouldn't start writing the code until we've got everything straight."
    }
   ],
   "s-chase-for": [
@@ -5986,6 +6001,11 @@
   }
  },
  "history": [
+  {
+   "a": "s-chase-for",
+   "t": 1792164767682,
+   "via": "review"
+  },
   {
    "a": "s-rush-into-get-straight",
    "t": 1792164618954,
