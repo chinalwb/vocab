@@ -5636,6 +5636,13 @@
     "peek": false,
     "via": "review",
     "ex": "The goal is to align our UX with DeepSeek's."
+   },
+   {
+    "t": 1792164476117,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The goal is to match DeepSeek's UX."
    }
   ],
   "s-better-at": [
