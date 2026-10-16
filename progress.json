@@ -694,6 +694,14 @@
    "lapses": 0,
    "due": 20743,
    "t": 1792164832064
+  },
+  "s-expected-to-work": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20743,
+   "t": 1792164936157
   }
  },
  "newDay": 20742,
@@ -5275,6 +5283,13 @@
     "peek": false,
     "via": "review",
     "ex": "That function should still work as expected after the refactor."
+   },
+   {
+    "t": 1792164936156,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The refactor shouldn't change that function's behavior."
    }
   ],
   "s-rate-limit-error": [
@@ -6044,6 +6059,11 @@
   }
  },
  "history": [
+  {
+   "a": "intermittent-outage",
+   "t": 1792164936775,
+   "via": "review"
+  },
   {
    "a": "s-expected-to-work",
    "t": 1792164832826,
