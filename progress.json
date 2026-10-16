@@ -662,6 +662,14 @@
    "lapses": 0,
    "due": 20743,
    "t": 1792153781998
+  },
+  "s-global-flag": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20743,
+   "t": 1792164347499
   }
  },
  "newDay": 20742,
@@ -5591,6 +5599,13 @@
     "peek": false,
     "via": "review",
     "ex": "If the global flag is disabled, none of the other flags take effect, regardless of their own settings."
+   },
+   {
+    "t": 1792164347497,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "The global flag acts as a master switch: turn it off, and all the other flags are ignored."
    }
   ],
   "s-align-ux": [
@@ -5921,6 +5936,11 @@
   }
  },
  "history": [
+  {
+   "a": "s-align-ux",
+   "t": 1792164357449,
+   "via": "review"
+  },
   {
    "a": "s-global-flag",
    "t": 1792163684925,
