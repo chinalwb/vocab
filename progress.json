@@ -448,12 +448,12 @@
    "t": 1792023662506
   },
   "conversely-vs-on-the-contrary": {
-   "ease": 1.42,
+   "ease": 1.3,
    "interval": 1,
    "reps": 0,
-   "lapses": 2,
-   "due": 20743,
-   "t": 1792111633679
+   "lapses": 3,
+   "due": 20744,
+   "t": 1792244428256
   },
   "safety-net": {
    "ease": 2.5,
@@ -4692,6 +4692,13 @@
     "peek": false,
     "via": "review",
     "ex": "Some people think this task is easy. On the contrary, it's extremely difficult."
+   },
+   {
+    "t": 1792244428254,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think he's lazy — on the contrary, he's one of the hardest workers I know."
    }
   ],
   "contraceptive": [
@@ -6122,6 +6129,11 @@
   }
  },
  "history": [
+  {
+   "a": "make-the-most-of",
+   "t": 1792244428834,
+   "via": "review"
+  },
   {
    "a": "conversely-vs-on-the-contrary",
    "t": 1792243593589,
