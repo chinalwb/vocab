@@ -4325,6 +4325,13 @@
     "peek": false,
     "via": "review",
     "ex": "He polished the chrome fixtures in the bathroom until they sparkled."
+   },
+   {
+    "t": 1792243486790,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The design team stripped away most of the browser chrome to make the reading experience feel more immersive."
    }
   ],
   "stand": [
