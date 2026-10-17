@@ -4318,6 +4318,13 @@
     "peek": false,
     "via": "review",
     "ex": "The old motorcycle's chrome exhaust pipe was gleaming in the sun."
+   },
+   {
+    "t": 1792243394266,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "He polished the chrome fixtures in the bathroom until they sparkled."
    }
   ],
   "stand": [
