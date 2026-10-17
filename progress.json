@@ -4685,6 +4685,13 @@
     "peek": false,
     "via": "review",
     "ex": "Higher prices tend to reduce demand. Conversely, lower prices often increase it."
+   },
+   {
+    "t": 1792244363909,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Some people think this task is easy. On the contrary, it's extremely difficult."
    }
   ],
   "contraceptive": [
