@@ -4311,6 +4311,13 @@
     "peek": false,
     "via": "review",
     "ex": "Before automating the flow, we need to recon the dialog chrome — its buttons, title bar, and layout."
+   },
+   {
+    "t": 1792243353250,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The old motorcycle's chrome exhaust pipe was gleaming in the sun."
    }
   ],
   "stand": [
