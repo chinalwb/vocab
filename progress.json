@@ -538,10 +538,10 @@
   "chrome": {
    "ease": 1.42,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 2,
-   "due": 20743,
-   "t": 1792110912130
+   "due": 20744,
+   "t": 1792243588102
   },
   "stall": {
    "ease": 2.5,
@@ -4332,6 +4332,13 @@
     "peek": false,
     "via": "review",
     "ex": "The design team stripped away most of the browser chrome to make the reading experience feel more immersive."
+   },
+   {
+    "t": 1792243588100,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Before automating the flow, we need to recon the dialog chrome — its buttons, title bar, and layout."
    }
   ],
   "stand": [
@@ -6094,6 +6101,11 @@
   }
  },
  "history": [
+  {
+   "a": "conversely-vs-on-the-contrary",
+   "t": 1792243593589,
+   "via": "review"
+  },
   {
    "a": "chrome",
    "t": 1792243316279,
