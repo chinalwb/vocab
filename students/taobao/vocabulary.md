@@ -5,7 +5,7 @@
 ## 目录
 
 1. [its / their 指的是谁](#s-its-their)
-2. [列几件事时,每件事用同一个样子](#s-same-shape-list)
+2. [并列结构:列几件事时,每件事用同一个样子](#s-same-shape-list)
 3. [文章"讲了"什么,用 describes](#s-tell-describe)
 4. [be witness to something](#c-be-witness-to)
 5. [be displaced by something](#c-be-displaced-by)
@@ -55,7 +55,7 @@
 1. Our nature club has started its own bee project. It's small, but it aims to count the bees in the garden and learn about their favourite flowers.
    我们的自然社团开展了自己的蜜蜂项目。项目不大,但它的目标是数清花园里的蜜蜂,了解它们最喜欢的花。
 
-相关条目:[列几件事时,每件事用同一个样子](#s-same-shape-list) · [文章"讲了"什么,用 describes](#s-tell-describe) —— 同一篇火山总结里的另外两处,每条只练一个点。
+相关条目:[并列结构:列几件事时,每件事用同一个样子](#s-same-shape-list) · [文章"讲了"什么,用 describes](#s-tell-describe) —— 同一篇火山总结里的另外两处,每条只练一个点。
 
 **提升:也可以这样说**
 
@@ -73,7 +73,7 @@
 ---
 
 <a id="s-same-shape-list"></a>
-## 列几件事时,每件事用同一个样子
+## 并列结构:列几件事时,每件事用同一个样子
 
 - 日期:2026-10-18
 - 掌握:会写
@@ -92,7 +92,9 @@
 
 **问题:**
 
-- ❌ [结构] **and most important of all, is to prepare** —— 这句话里列了三件事,前两件都是用 predict、learn 这样的词开头(predict…、learn…),第三件中间多了 is to,样子就不一样了。去掉 is to,写成 **and, most important of all, prepare for an eruption**。
+- ❌ [结构] **and most important of all, is to prepare** —— 这是**并列结构**出了错。这句话里列了三件事,前两件都是用 predict、learn 这样的词开头(predict…、learn…),第三件中间多了 is to,样子就不一样了。去掉 is to,写成 **and, most important of all, prepare for an eruption**。
+
+什么是并列结构?一句话里把几件事并排列出来,就叫并列结构。并排的几件事,要用同一个样子。
 
 一步一步看:
 
@@ -165,7 +167,7 @@
 1. This book describes a trip to the mountains in detail.
    这本书详细讲了一次去山里的旅行。
 
-相关条目:[its / their 指的是谁](#s-its-their) · [列几件事时,每件事用同一个样子](#s-same-shape-list) —— 同一篇火山总结里的另外两处,每条只练一个点。
+相关条目:[its / their 指的是谁](#s-its-their) · [并列结构:列几件事时,每件事用同一个样子](#s-same-shape-list) —— 同一篇火山总结里的另外两处,每条只练一个点。
 
 **提升:别的用法**
 
