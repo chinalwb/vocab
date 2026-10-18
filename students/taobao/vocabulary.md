@@ -8,6 +8,7 @@
 2. [列几件事时,每件事用同一个样子](#s-same-shape-list)
 3. [文章"讲了"什么,用 describes](#s-tell-describe)
 4. [be witness to something](#c-be-witness-to)
+5. [be displaced by something](#c-be-displaced-by)
 
 ---
 
@@ -190,3 +191,27 @@
 - 所以要说 **be witness to**:前面用 be 动词,后面接 **to**,再接被见证的事情。
 - 原句里是 **have been witness to**:从几百年前到现在一直在见证,所以用 have been(现在完成时)。
 - 别和动词 witness 弄混:witness 当动词用时,后面直接接事情,不加 to,比如 *witness the change*(见证这个变化)。
+
+---
+
+<a id="c-be-displaced-by"></a>
+## be displaced by something
+
+- 日期:2026-10-18
+- 掌握:会写
+- 类型:固定搭配
+
+**原句:**
+
+这是在阅读里看到的句子。
+
+1. Sections of earth are often displaced by a sudden jolt.
+   大地的一些部分常常会被一次突然的震动推离原来的位置。
+
+**固定搭配:be displaced by something**
+
+- 意思:被某个东西挪开,离开原来的位置。
+- displace 可以拆开记:dis(离开)+ place(位置)= 让东西离开原来的位置。
+- 这是"被"的说法:大地自己不会动,是被震动推开的,所以用 **be + displaced**。
+- **by** 后面接"是什么把它挪开的":原句里是 *a sudden jolt*(一次突然的震动)。
+- 它也常用来说人被迫离开自己的家,比如 *people displaced by the flood*(因为洪水离开家园的人)。读新闻和考试文章时经常会看到。
