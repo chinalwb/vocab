@@ -409,6 +409,7 @@ SITE = {
     "app": True,                     # the Android app reads this notebook too
     "categories": True,              # 分类 in the sidebar, 类型 / 级别 rows in 筛选
     "cardColor": "level",            # or "stage": cards coloured by 学习中 / 复习中 / 考核中 / 已掌握
+    "logo": "",                      # a picture next to the page's index.html, shown in front of the name
     "sync": {"repo": "chinalwb/vocab", "branch": "progress", "path": "progress.json"},
     # optional colour overrides: {"light": {"--accent": "#…", …}, "dark": {…}}, laid over the
     # template's own :root blocks (light, dark by system setting, dark by the theme button)
@@ -439,6 +440,8 @@ def main():
         site.update(json.loads((src / "site.json").read_text(encoding="utf-8")))
     if src != ROOT and site["prefix"] == SITE["prefix"]:
         raise SystemExit(f"{src / 'site.json'}: needs its own \"prefix\" — it shares localStorage with the main page")
+    if site["logo"] and not (src / site["logo"]).exists():
+        raise SystemExit(f"{src / 'site.json'}: logo {site['logo']} is missing")
     if src != ROOT and site["sync"]["path"] == SITE["sync"]["path"]:
         raise SystemExit(f"{src / 'site.json'}: needs its own sync \"path\" — it would overwrite progress.json")
 

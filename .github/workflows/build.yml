@@ -51,6 +51,8 @@ jobs:
             [ -f "$d/index.html" ] || continue
             mkdir -p "_site/$(basename "$d")"
             cp "$d/index.html" "_site/$(basename "$d")/"
+            # pictures the page uses (site.json "logo")
+            find "$d" -maxdepth 1 \( -name '*.jpg' -o -name '*.png' -o -name '*.webp' \) -exec cp {} "_site/$(basename "$d")/" \;
           done
 
       - uses: actions/upload-pages-artifact@v3

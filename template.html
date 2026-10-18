@@ -185,6 +185,8 @@ h1{
 }
 /* a notebook's site.json theme can colour its name (--brand); mine stays ink */
 .brand h1{color:var(--brand, var(--ink))}
+/* site.json "logo": a picture in front of the name (taobao's page) */
+.brand .logo{width:calc(40px * var(--fs));height:calc(40px * var(--fs));border-radius:12px;object-fit:cover;object-position:40% 75%;align-self:center;flex:none;box-shadow:0 0 0 1px var(--rule)}
 .tally{color:var(--ink-3);font-size:calc(12.5px * var(--fs));letter-spacing:.04em}
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .search{
@@ -1095,6 +1097,11 @@ const mkTotal = MISTAKES.reduce((n,g)=>n+g.items.length,0);
 const writeTotal = DATA.reduce((n,g)=>n+g.items.filter(it=>it.mastery==="write").length,0);
 document.title = VK.title;
 document.querySelector(".brand h1").textContent = VK.brand;
+if (VK.logo) {
+  const logo = new Image();
+  logo.src = VK.logo; logo.alt = ""; logo.className = "logo";
+  document.querySelector(".brand h1").before(logo);
+}
 document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 错题 " + mkTotal;
 const store = {
   get(k, d){ try { const v = localStorage.getItem(vkKey(k)); return v === null ? d : v; } catch(e){ return d; } },
