@@ -7,6 +7,7 @@
 1. [its / their 指的是谁](#s-its-their)
 2. [列几件事时,每件事用同一个样子](#s-same-shape-list)
 3. [文章"讲了"什么,用 describes](#s-tell-describe)
+4. [be witness to something](#c-be-witness-to)
 
 ---
 
@@ -165,3 +166,27 @@
    这个故事讲了一个男孩是怎么找到他的狗的。
 
 相关条目:[its / their 指的是谁](#s-its-their) · [列几件事时,每件事用同一个样子](#s-same-shape-list) —— 同一篇火山总结里的另外两处,每条只练一个点。
+
+---
+
+<a id="c-be-witness-to"></a>
+## be witness to something
+
+- 日期:2026-10-18
+- 掌握:会写
+- 类型:固定搭配
+
+**原句:**
+
+这是在阅读里看到的句子。
+
+1. Local islanders have been witness to its evolving shape over hundreds of years.
+   几百年来,当地的岛民一直见证着它不断变化的样子。
+
+**固定搭配:be witness to something**
+
+- 意思:见证某事,就是亲眼看着一件事发生、变化。
+- 这里的 witness 是名词,意思是"见证人"。
+- 所以要说 **be witness to**:前面用 be 动词,后面接 **to**,再接被见证的事情。
+- 原句里是 **have been witness to**:从几百年前到现在一直在见证,所以用 have been(现在完成时)。
+- 别和动词 witness 弄混:witness 当动词用时,后面直接接事情,不加 to,比如 *witness the change*(见证这个变化)。

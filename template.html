@@ -47,6 +47,7 @@
   --tm-1:#ddd9f2; --tm-2:#cec9ea; --tm-3:#e9e6f7;
   --gr-1:#f2d5e4; --gr-2:#ebc2d7; --gr-3:#f7e4ee;
   --sn-1:#e8d7c3; --sn-2:#dfcaaf; --sn-3:#f1e5d7;
+  --cl-1:#dfe9c8; --cl-2:#d2e0b4; --cl-3:#eaf1d8;
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
 
   --accent:#2b4acb; --accent-ink:#ffffff; --st-learn:#8a8f9c; --st-test:#e0812f; --st-done:#3e9b5b;
@@ -87,6 +88,7 @@
     --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
     --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
     --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
+    --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
     --accent:#8ea2ff; --accent-ink:#10142a;
@@ -122,6 +124,7 @@
   --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
   --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
   --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
+  --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
   --accent:#8ea2ff; --accent-ink:#10142a;
@@ -1054,9 +1057,12 @@ const LV = {
   TERM:{nm:"术语与固定搭配(无 CEFR 分级)", sw:["--tm-1","--tm-2","--tm-3"]},
   GRAMMAR:{nm:"语法与语域笔记", sw:["--gr-1","--gr-2","--gr-3"]},
   SENTENCE:{nm:"整句订正:我的原句 → 更地道的说法", sw:["--sn-1","--sn-2","--sn-3"]},
+  // 固定搭配 (`- 类型:固定搭配`): a phrase met in reading, quizzed on the sentence it came in.
+  // Only taobao's notes use it so far; the App doesn't know this group.
+  COLLOC:{nm:"阅读里看到的地道写法", sw:["--cl-1","--cl-2","--cl-3"]},
   SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", SELFTEST:"自测题"};
+const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题"};
 
 // ── theme toggle ─────────────────────────
 const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.4M12 19v2.4M21.4 12H19M5 12H2.6M18.6 5.4l-1.7 1.7M7.1 16.9l-1.7 1.7M18.6 18.6l-1.7-1.7M7.1 7.1L5.4 5.4"/></svg>';
@@ -1131,7 +1137,8 @@ if (!STAGE_NAME[stageF]) stageF = "";
 // 筛选: two labelled rows — 类型 (with a CEFR sub-row under 单词) and 进度 + 只看会写.
 // Each row is single-choice and starts at 全部; the rows narrow each other.
 const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
-const TYPES = [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"], ["SELFTEST", "自测题"]];
+const TYPES = [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
+  ...(DATA.some(g => g.level === "COLLOC") ? [["COLLOC", "固定搭配"]] : []), ["SELFTEST", "自测题"]];
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
   const old = store.get("vk.level", "ALL");
