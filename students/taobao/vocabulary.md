@@ -49,12 +49,8 @@
 
 **记住这个小规则:**
 
-- 用 its / their 之前,先问自己:它指的是谁?前面写过这个名字吗?没写过,就先把名字写出来。
-- **its** = 它的(一个东西)。**their** = 它们的 / 他们的(很多个)。
-- 别把 **it's** 和 **its** 弄混。
-- **it's** = it is(它是 / 它正在)。
-- **its** = 它的。
-- 你原句开头的 *It's aiming*,就是 *It is aiming*,所以这里用 it's 是对的。
+- 写 its 或 their 之前,先问自己:它指的是谁?前面写过它的名字吗?
+- 没写过,就先把名字写出来。
 
 1. Our nature club has started its own bee project. It's small, but it aims to count the bees in the garden and learn about their favourite flowers.
    我们的自然社团开展了自己的蜜蜂项目。项目不大,但它的目标是数清花园里的蜜蜂,了解它们最喜欢的花。
