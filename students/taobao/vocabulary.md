@@ -208,7 +208,7 @@
 
 - witness 也可以当动词用,意思还是"见证",但后面直接接事情,**不加 to**。
 - 例子:*Local people witnessed the change.*(当地人见证了这个变化。)
-- 别写成 *witnessed to*:只有名词 witness 才和 to 搭配(*be witness to*)。
+- 别写成 *witnessed to*:只有当"见证人"讲的 witness 才和 to 连在一起(*be witness to*)。
 
 ---
 
