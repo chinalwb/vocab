@@ -1,0 +1,7 @@
+{
+  "title": "taobao 的词汇笔记",
+  "brand": "taobao",
+  "prefix": "vk.taobao.",
+  "app": false,
+  "sync": {"repo": "chinalwb/vocab", "branch": "progress", "path": "progress-taobao.json"}
+}

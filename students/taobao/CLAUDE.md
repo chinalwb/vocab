@@ -18,6 +18,12 @@
 - **讲解对象是学生。** 先讲清错在哪、为什么错,再给改法;一条要点一句话,少用术语。
 - **FCE 的评分角度**:写作看 Content(该写的信息写全没有)、Communicative Achievement(语气、文体对不对)、Organisation(衔接、指代清楚)、Language(用词和语法)。批改时可以顺带说属于哪一项。
 
+## 他的网页
+
+- 地址:**https://chinalwb.github.io/vocab/taobao/**(dev 合进 main 之后才更新,和主页一样)。只有网页,没有 App。
+- 页面配置在 `site.json`:localStorage 前缀 `vk.taobao.`,进度同步到 `progress` 分支的 `progress-taobao.json`。
+- 本地预览:在仓库根目录 `python3 build.py --src students/taobao`,打开 `students/taobao/index.html`。
+
 ## 写入规则
 
 - **只有用户确认后才写进 `students/taobao/vocabulary.md`**,不要写进根目录的 `vocabulary.md`;反过来,用户自己的句子也不要写到这里。

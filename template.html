@@ -1,9 +1,14 @@
 <!--HEAD-->
 <title>词汇便签墙</title>
 <script>
+  // which notebook this page is (build.py, from site.json): its title, its storage namespace and
+  // where it syncs. Every localStorage key goes through vkKey(), so a student's page on the same
+  // origin (/vocab/taobao/) never reads or overwrites mine.
+  var VK = /*__CONFIG__*/;
+  function vkKey(k){ return VK.prefix + k.slice(3); }
   // stamp the saved theme before paint so there's no flash of the wrong palette
   try {
-    var t = localStorage.getItem("vk.theme");
+    var t = localStorage.getItem(vkKey("vk.theme"));
     if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
   } catch (e) {}
 </script>
@@ -1063,7 +1068,7 @@ function paintTheme(){
 themeBtn.addEventListener("click", () => {
   const next = effective() === "dark" ? "light" : "dark";
   document.documentElement.dataset.theme = next;
-  try { localStorage.setItem("vk.theme", next); } catch(e){}
+  try { localStorage.setItem(vkKey("vk.theme"), next); } catch(e){}
   paintTheme();
 });
 darkMQ.addEventListener("change", () => { if (!document.documentElement.dataset.theme) paintTheme(); });
@@ -1076,10 +1081,12 @@ const empty = document.getElementById("empty");
 const total = DATA.reduce((n,g)=>n+g.items.length,0);
 const mkTotal = MISTAKES.reduce((n,g)=>n+g.items.length,0);
 const writeTotal = DATA.reduce((n,g)=>n+g.items.filter(it=>it.mastery==="write").length,0);
+document.title = VK.title;
+document.querySelector(".brand h1").textContent = VK.brand;
 document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 错题 " + mkTotal;
 const store = {
-  get(k, d){ try { const v = localStorage.getItem(k); return v === null ? d : v; } catch(e){ return d; } },
-  set(k, v){ try { localStorage.setItem(k, v); } catch(e){} },
+  get(k, d){ try { const v = localStorage.getItem(vkKey(k)); return v === null ? d : v; } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem(vkKey(k), v); } catch(e){} },
 };
 
 // ── 进度: 学习中 → 自测 → 已掌握, like 百词斩's 斩. I move entries along with the buttons;
@@ -1313,7 +1320,7 @@ const mistakesEl = document.getElementById("mistakes");
 const mtypes = document.getElementById("mtypes");
 const mboard = document.getElementById("mboard");
 let mtype = "ALL";
-try { const s = localStorage.getItem("vk.mtype"); if (s) mtype = s; } catch(e){}
+try { const s = localStorage.getItem(vkKey("vk.mtype")); if (s) mtype = s; } catch(e){}
 if (mtype !== "ALL" && !MISTAKES.some(g => g.type === mtype)) mtype = "ALL";
 const esc = t => t.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
@@ -1325,7 +1332,7 @@ const mkType = (key, text, n) => {
   b.innerHTML = `${text} <i class="mbar" style="--w:${key === "ALL" ? 0 : n / mkMax}"></i><span class="n">${n}</span>`;
   b.addEventListener("click", () => {
     mtype = key;
-    try { localStorage.setItem("vk.mtype", key); } catch(e){}
+    try { localStorage.setItem(vkKey("vk.mtype"), key); } catch(e){}
     [...mtypes.children].forEach(c => c.setAttribute("aria-pressed", String(c.dataset.k === key)));
     render();
   });
@@ -1818,7 +1825,7 @@ function goBack(){
 
 // The notes as a carousel: one section per card (build.py's sections()), a tab per section,
 // swipe or tap to move, never auto-advancing. 全部展开 stacks the cards back into one page.
-let notesAll = (() => { try { return localStorage.getItem("vk.notesAll") === "1"; } catch { return false; } })();
+let notesAll = (() => { try { return localStorage.getItem(vkKey("vk.notesAll")) === "1"; } catch { return false; } })();
 const ICON_FULL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 11V3h-8l3.29 3.29-10 10L3 13v8h8l-3.29-3.29 10-10z"/></svg>';
 const ICON_UNFULL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 3.41 16.71 8.7 20 12h-8V4l3.29 3.29L20.59 2 22 3.41zM3.41 22l5.29-5.29L12 20v-8H4l3.29 3.29L2 20.59 3.41 22z"/></svg>';
 const ICON_BS = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"/></svg>';
@@ -1920,7 +1927,7 @@ document.addEventListener("click", e => {
   if (tab) nvGo(nv, +tab.dataset.k);
   else if (e.target.closest(".nv-all")) {
     notesAll = !notesAll;
-    try { localStorage.setItem("vk.notesAll", notesAll ? "1" : "0"); } catch {}
+    try { localStorage.setItem(vkKey("vk.notesAll"), notesAll ? "1" : "0"); } catch {}
     document.querySelectorAll(".nv").forEach(n => {
       n.classList.toggle("all", notesAll);
       const b = n.querySelector(".nv-all"), track = n.querySelector(".nv-track");
@@ -2442,7 +2449,8 @@ function askHtml(t, k){
 // ── 同步: progress.json on the repo's orphan `progress` branch, read and written through the
 // GitHub API with my own token — same format and merge rules as sync/ProgressSync.kt.
 // Moves, review cards and 自测 results sync; what I typed in a 自测 never leaves the device.
-const GH = "https://api.github.com/repos/chinalwb/vocab/contents/progress.json";
+const GH = `https://api.github.com/repos/${VK.sync.repo}/contents/${VK.sync.path}`;
+const SHARED = VK.app ? "网页和 App 共用一份" : "换浏览器、换设备都能接着用";
 const ELSEWHERE = "(在另一台设备上写的)";               // a synced 自测 attempt: result only, no text
 const ghToken = () => store.get("vk.gh", "");
 let syncState = {}, syncing = null, syncAgain = false, syncTimer = 0;
@@ -2498,13 +2506,16 @@ function applyRemote(r){
 const b64 = t => btoa(unescape(encodeURIComponent(t)));
 const unb64 = t => decodeURIComponent(escape(atob(t.replace(/\s/g, ""))));
 async function gh(method, body){
-  const r = await fetch(GH + (method === "GET" ? "?ref=progress" : ""), {
+  const r = await fetch(GH + (method === "GET" ? "?ref=" + VK.sync.branch : ""), {
     method, cache: "no-store", body: body && JSON.stringify(body),
     headers: { Authorization: "Bearer " + ghToken(), Accept: "application/vnd.github+json" },
   });
   if (r.status === 409 || r.status === 422) return null;    // someone wrote first: pull again
+  // a new notebook's file isn't there yet: start from nothing; the first PUT (no sha) creates it,
+  // and a token that can't see the repo fails there with the same 404
+  if (method === "GET" && r.status === 404) return { content: b64("{}") };
   if (!r.ok) throw new Error(r.status === 401 ? "token 无效或已过期" :
-    r.status === 403 || r.status === 404 ? "token 没有 chinalwb/vocab 的读写权限" : "GitHub 返回 " + r.status);
+    r.status === 403 || r.status === 404 ? `token 没有 ${VK.sync.repo} 的读写权限` : "GitHub 返回 " + r.status);
   return r.json();
 }
 function syncNow(){
@@ -2519,7 +2530,7 @@ function syncNow(){
       applyRemote(remote);
       const out = progressOut();
       if (stable(out) === stable(normProgress(remote))) return;
-      if (await gh("PUT", { message: "sync: progress from web", branch: "progress", sha: got.sha,
+      if (await gh("PUT", { message: "sync: progress from web", branch: VK.sync.branch, sha: got.sha,
         content: b64(JSON.stringify(out, null, 1) + "\n") })) return;
     }
     throw new Error("连续冲突,稍后再试");
@@ -2546,9 +2557,9 @@ function paintSync(){
   if (!el) return;
   if (!ghToken()) {
     el.innerHTML = `<h3>同步到 GitHub</h3>` +
-      `<p>进度、复习记录和自测结果存进本仓库的 <code>progress</code> 分支,网页和 App 共用一份。自测里写的句子原文不上传。` +
+      `<p>进度、复习记录和自测结果存进 ${esc(VK.sync.repo)} 的 <code>${esc(VK.sync.branch)}</code> 分支,${SHARED}。自测里写的句子原文不上传。` +
       `需要一个 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a>:` +
-      `Repository access 只选 chinalwb/vocab,Permissions 里 Contents 设为 Read and write。token 只存在这个浏览器里。</p>` +
+      `Repository access 只选 ${esc(VK.sync.repo)},Permissions 里 Contents 设为 Read and write。token 只存在这个浏览器里。</p>` +
       `<div class="row"><input type="password" id="gh-token" placeholder="github_pat_…" autocomplete="off"><button class="btn" type="button" id="gh-save">连接</button></div>`;
     el.querySelector("#gh-save").addEventListener("click", () => {
       const v = el.querySelector("#gh-token").value.trim();
@@ -2559,7 +2570,7 @@ function paintSync(){
   }
   const st = syncState.busy ? "同步中…" : syncState.err ? "同步失败:" + syncState.err
     : syncState.ok ? "已同步 · " + fmtWhen(syncState.ok) : "还没同步过";
-  el.innerHTML = `<h3>同步到 GitHub</h3><p>chinalwb/vocab · progress 分支。改动攒 15 秒提交一次,切走页面时立即提交。</p>` +
+  el.innerHTML = `<h3>同步到 GitHub</h3><p>${esc(VK.sync.repo)} · ${esc(VK.sync.branch)} 分支 · ${esc(VK.sync.path)}。改动攒 15 秒提交一次,切走页面时立即提交。</p>` +
     `<div class="row"><span class="st${syncState.err ? " err" : ""}">${esc(st)}</span>` +
     `<button class="btn ghost" type="button" id="gh-now"${syncState.busy ? " disabled" : ""}>立即同步</button>` +
     `<button class="linkish" type="button" id="gh-off">断开</button></div>`;
@@ -2834,7 +2845,7 @@ function renderHistory(){
   rows.forEach(v => { const d = histDay(v.t); if (!days.length || days[days.length - 1][0] !== d) days.push([d, []]); days[days.length - 1][1].push(v); });
   historyEl.innerHTML = `<h2>学习历史</h2><p class="note">` +
     (rows.length ? `最近看过的 ${rows.length} 条,最新的在最上面。` : "还没有看过的条目。") +
-    `打开一条、或在复习 / 考核里做到它,都会记在这里;同一条再看会移到最上面,最多留 ${HIST_MAX} 条。开了同步的话,网页和 App 共用这份历史。</p>` +
+    `打开一条、或在复习 / 考核里做到它,都会记在这里;同一条再看会移到最上面,最多留 ${HIST_MAX} 条。开了同步的话,${VK.app ? "网页和 App 共用这份历史" : "换浏览器也能看到这份历史"}。</p>` +
     days.map(([d, list]) => `<h3 class="grp-h">${d} · ${list.length}</h3><div class="srows">` + list.map(v => {
       const t = byAnchor[v.a];
       return `<button type="button" class="srow" data-anchor="${v.a}" style="--sw:var(${LV[t.level].sw[t.i % 3]})">` +
