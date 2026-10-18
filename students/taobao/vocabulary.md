@@ -45,14 +45,7 @@
 1. The project aims to predict the volcanoes' future activity and learn about their history.
    这个项目的目的是预测火山以后的活动,了解它们的历史。
 
-为什么这里用 aims to,不用 is aiming to?
-
-- 两种都对。你原句里的 *It's aiming to* 没有写错。
-- **aims to** 说的是一直不变的目标:这个项目本来就是为这件事建的。
-- **is aiming to** 说的是"这段时间正在争取",听起来像暂时的打算,过几天可能就变了。
-- 项目的目的不是这两天才有的,所以介绍项目的目的时,**aims to** 更好。
-- 对比一:*My school aims to help every student love reading.*(学校的目标,一直都是这样。)
-- 对比二:*This week, I'm aiming to read two books.*(只是这一周的打算。)
+这里用的是 aims to,不是你原句里的 is aiming to。两个都对,为什么 aims to 更好?看最后的「选读」。
 
 **记住这个小规则:**
 
@@ -67,6 +60,19 @@
    我们的自然社团开展了自己的蜜蜂项目。项目不大,但它的目标是数清花园里的蜜蜂,了解它们最喜欢的花。
 
 相关条目:[列几件事时,每件事用同一个样子](#s-same-shape-list) · [文章"讲了"什么,用 describes](#s-tell-describe) —— 同一篇火山总结里的另外两处,每条只练一个点。
+
+**选读:也可以这样说**
+
+这一页不看也没关系,是让你多知道一点的。
+
+为什么这里用 aims to,不用 is aiming to?
+
+- 两种都对。你原句里的 *It's aiming to* 没有写错。
+- **aims to** 说的是一直不变的目标:这个项目本来就是为这件事建的。
+- **is aiming to** 说的是"这段时间正在争取",听起来像暂时的打算,过几天可能就变了。
+- 项目的目的不是这两天才有的,所以介绍项目的目的时,**aims to** 更好。
+- 对比一:*My school aims to help every student love reading.*(学校的目标,一直都是这样。)
+- 对比二:*This week, I'm aiming to read two books.*(只是这一周的打算。)
 
 ---
 
@@ -161,12 +167,19 @@
 
 - **tell** + 人 / 故事:*My grandma told me a story.*(奶奶给我讲了一个故事。)
 - **describe** + 东西 / 事情:说"书里、文章里讲了什么",就用它。
-- 想说"讲了某人是怎么做某件事的",用 **describes how + 人 + 做了什么**。
 
-1. The story describes how a boy found his dog.
-   这个故事讲了一个男孩是怎么找到他的狗的。
+1. This book describes a trip to the mountains in detail.
+   这本书详细讲了一次去山里的旅行。
 
 相关条目:[its / their 指的是谁](#s-its-their) · [列几件事时,每件事用同一个样子](#s-same-shape-list) —— 同一篇火山总结里的另外两处,每条只练一个点。
+
+**选读:别的用法**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- describe 后面也可以接 **how**,讲"一件事是怎么发生的"。
+- 例子:*The story describes how a boy found his dog.*(这个故事讲了一个男孩是怎么找到他的狗的。)
+- 你的原句里是 describes + 一件事(an attempt),这是另一种用法,先认识就好。
 
 ---
 
@@ -190,7 +203,14 @@
 - 这里的 witness 是名词,意思是"见证人"。
 - 所以要说 **be witness to**:前面用 be 动词,后面接 **to**,再接被见证的事情。
 - 原句里是 **have been witness to**:从几百年前到现在一直在见证,所以用 have been(现在完成时)。
-- 别和动词 witness 弄混:witness 当动词用时,后面直接接事情,不加 to,比如 *witness the change*(见证这个变化)。
+
+**选读:别的用法**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- witness 也可以当动词用,意思还是"见证",但后面直接接事情,**不加 to**。
+- 例子:*Local people witnessed the change.*(当地人见证了这个变化。)
+- 别写成 *witnessed to*:只有名词 witness 才和 to 搭配(*be witness to*)。
 
 ---
 
@@ -214,4 +234,11 @@
 - displace 可以拆开记:dis(离开)+ place(位置)= 让东西离开原来的位置。
 - 这是"被"的说法:大地自己不会动,是被震动推开的,所以用 **be + displaced**。
 - **by** 后面接"是什么把它挪开的":原句里是 *a sudden jolt*(一次突然的震动)。
-- 它也常用来说人被迫离开自己的家,比如 *Many people **were displaced by** the flood.*(很多人因为洪水被迫离开了家。)读新闻和考试文章时经常会看到。
+
+**选读:别的意思**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- be displaced by 还有一个意思:**人**被迫离开自己的家。
+- 例子:*Many people **were displaced by** the flood.*(很多人因为洪水被迫离开了家。)
+- 读新闻和考试文章时经常会看到这个意思。
