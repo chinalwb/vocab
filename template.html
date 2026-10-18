@@ -816,6 +816,10 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .ybox .wb-ans .wchip.last{box-shadow:inset 0 0 0 2px var(--card-ink)}
 .ybox .wb-ans .caret{display:inline-block;width:2px;height:24px;background:var(--card-ink);margin-left:2px}
 .ybox .wb-ph{color:color-mix(in srgb,var(--card-ink) 70%,transparent);padding:6px 0}
+/* site.json "fillBlanks" (taobao): in 打字 only the bold key part is typed, the rest is filled in */
+.ybox .fillin{font-size:calc(19px * var(--fs));line-height:1.9;color:var(--card-ink);padding:2px 0 4px}
+.ybox .fillin input{font:inherit;color:inherit;background:var(--panel);border:0;border-bottom:2px solid var(--card-ink);border-radius:6px 6px 0 0;padding:0 6px;margin:0 2px;min-width:3ch;outline:none;box-sizing:content-box}
+.ybox .fillin input:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 45%,transparent)}
 .ybox-hint{font-size:calc(11.5px * var(--fs));margin:0;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
 .qpanel{flex:none;background:var(--panel);color:var(--ink);border-radius:0 0 24px 24px;border-top:1px solid var(--rule);padding:14px;display:flex;flex-direction:column;gap:12px}
 .qpanel [hidden]{display:none!important}
@@ -1569,6 +1573,12 @@ const stepsHtml = (bankOk, typedOk, helped) => `<p class="steps${bankOk && typed
   `${bankOk && typedOk ? "两步都对,这一句算答对" : "两步都对才算答对,这次记为没对"}</p>`;
 // what a question checks against: a 自测题's first 答案 line, a moved entry's example; else none
 const answerOf = (it, level, ex) => level === "SELFTEST" ? ((it.answer || "").split("\n").find(l => l.trim()) || null) : ex ? plainMd(ex.en) : null;
+// site.json "fillBlanks": the sentence split at its **bold** key parts — [{key, t}] — so 打字 asks for
+// just those (the rest is filled in); null when the page doesn't do it or the sentence has no bold
+const blanksOf = ex => {
+  if (!VK.fillBlanks || !ex || !/\*\*(.+?)\*\*/.test(ex.en)) return null;
+  return ex.en.split(/\*\*(.+?)\*\*/).map((t, k) => ({ key: k % 2 === 1, t: k % 2 ? t : plainMd(t) })).filter(x => x.key || x.t);
+};
 const othersOf = (it, answer) => [...quizExamples(it).map(x => plainMd(x.en)), ...(it.answer || "").split("\n")].filter(l => l.trim() && l !== answer);
 // 选词, four at a time (用户 2026-10-13, same as ui/SelfTest.kt WordBankState): after k picks the
 // chips are the answer's word k+1, two words from later in the answer (so order is what's tested)
@@ -2036,12 +2046,33 @@ function wireAnswer(root, a){
     hint = root.querySelector("#yb-hint"), box = root.querySelector("#ybox"), mode = root.querySelector(".qmeta .amode");
   a.typed = a.typed || "";
   const chips = () => !!a.answer && (a.step === 1 || !!a.help);
+  // [a.blanks] (blanksOf): 打字 is a line of the sentence with an input per key part; what it reads
+  // as a whole goes into the hidden text box, so a reveal and its diff work as for a typed sentence
+  let fill = null;
+  const compose = () => a.blanks.map((p, k) => p.key ? (a.fill[k] || "").trim() : p.t).join("").replace(/\s+/g, " ").trim();
+  const mountFill = () => {
+    a.fill = a.fill || {};
+    if (!fill) { fill = document.createElement("div"); fill.className = "fillin"; input.after(fill); }
+    fill.innerHTML = a.blanks.map((p, k) => p.key
+      ? `<input type="text" data-k="${k}" aria-label="填空" autocomplete="off" autocapitalize="off" spellcheck="false" size="${Math.max(3, p.t.length)}" value="${esc(a.fill[k] || "")}">`
+      : `<span>${esc(p.t)}</span>`).join("");
+    fill.querySelectorAll("input").forEach(b => {
+      b.addEventListener("input", () => { a.fill[b.dataset.k] = b.value; input.value = compose(); input.dispatchEvent(new Event("input")); });
+      b.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); a.onReveal(); } });
+    });
+    input.value = compose();
+    clear.hidden = !Object.values(a.fill).some(v => v.trim());
+    clear.onclick = () => { a.fill = {}; mountFill(); input.dispatchEvent(new Event("input")); focusFirst(); };
+  };
+  const focusFirst = () => { const b = fill && [...fill.querySelectorAll("input")].find(x => !x.value) || fill && fill.querySelector("input"); if (b) b.focus(); };
   const apply = () => {
     const on = chips();
-    input.hidden = on; ansEl.hidden = keys.hidden = !on;
+    input.hidden = on || !!a.blanks; ansEl.hidden = keys.hidden = !on;
+    if (fill) fill.hidden = on;
     box.classList.toggle("typing", !on);
     if (mode) mode.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", (b.dataset.chips === "1") === on));
     if (on) mountBank(ansEl, bank, input, a.answer, a.others, a.seed, a.picks, { clear, bs, hint });
+    else if (a.blanks) { hint.hidden = true; mountFill(); }
     else {
       if (a.answer) { input.value = a.typed; input.dispatchEvent(new Event("input")); }
       hint.hidden = true; clear.hidden = !input.value;
@@ -2050,7 +2081,7 @@ function wireAnswer(root, a){
   };
   const card = root.querySelector(".qcard");
   input.addEventListener("input", () => {
-    if (!chips()) { a.typed = input.value; clear.hidden = !input.value; }
+    if (!chips()) { a.typed = input.value; clear.hidden = a.blanks ? !Object.values(a.fill || {}).some(v => v.trim()) : !input.value; }
     if (card) card.classList.toggle("building", !!input.value.trim());     // the question steps down
     if (a.onInput) a.onInput(input.value);
   });
@@ -2061,11 +2092,12 @@ function wireAnswer(root, a){
     a.help = b.dataset.chips === "1";
     if (a.help) a.picks.length = 0;                       // a fresh hint each time
     apply();
-    if (!a.help) input.focus();
+    if (!a.help) focus();
   });
   root.querySelector("#q-show").addEventListener("click", () => a.onReveal());
+  const focus = () => { if (chips()) return; if (a.blanks) focusFirst(); else input.focus(); };
   apply();
-  return { input, apply };
+  return { input, apply, focus };
 }
 // Under a reveal: the notes for what was just asked — the section its example comes from, that
 // sentence highlighted (decorateNotes) — or all of them for a 自测题 or an entry without one.
@@ -2191,7 +2223,7 @@ function show(it, level, i, o = {}){
   // the answer sheet
   const res = sheet.querySelector("#q-res"), after = sheet.querySelector("#q-after");
   let revealed = false;
-  const cfg = { answer: answerOf(it, level, ex), step, seed: hashStr(it.anchor) + (stLog[it.anchor] || []).length, picks: [], onReveal: () => reveal() };
+  const cfg = { answer: answerOf(it, level, ex), blanks: step === 2 ? blanksOf(ex) : null, step, seed: hashStr(it.anchor) + (stLog[it.anchor] || []).length, picks: [], onReveal: () => reveal() };
   cfg.others = othersOf(it, cfg.answer);
   const api = wireAnswer(sheet.querySelector(".face.bk"), cfg), input = api.input;
   // a click on an example toggles it in or out of 自测; an unanswered question follows
@@ -2203,7 +2235,8 @@ function show(it, level, i, o = {}){
     sheet.querySelector(".st-prompt").innerHTML = promptHtml();
     sheet.querySelector(".qmeta span").textContent = qMeta();
     sheet.querySelector("#q-stats").textContent = stStatsLine(it.anchor, curEx());
-    cfg.answer = answerOf(it, level, ex); cfg.others = othersOf(it, cfg.answer); cfg.picks.length = 0;
+    cfg.answer = answerOf(it, level, ex); cfg.blanks = step === 2 ? blanksOf(ex) : null; cfg.fill = {};
+    cfg.others = othersOf(it, cfg.answer); cfg.picks.length = 0;
     if (step === 2) { show(it, level, i, { face: "back" }); return; }   // a new sentence starts at ①
     api.apply();
   };
@@ -2817,10 +2850,10 @@ function renderQuizCard(el){
     s.revealed = true; renderQuizCard(el);
   };
   const api = wireAnswer(el.querySelector(".qsheet"), Object.assign(s.ans = s.ans || { typed: s.draft }, {
-    answer: s.revealed ? null : qAns, step, others: othersOf(it, qAns), seed: hashStr(it.anchor) + s.index + 7 * s.k,
+    answer: s.revealed ? null : qAns, blanks: s.revealed || step !== 2 ? null : blanksOf(ex), step, others: othersOf(it, qAns), seed: hashStr(it.anchor) + s.index + 7 * s.k,
     picks: s.picks = s.picks || [], onReveal: () => { if (!s.revealed) reveal(); }, onInput: v => { s.draft = v; },
   }));
-  if (!s.revealed) { if (!api.input.hidden) api.input.focus(); return; }
+  if (!s.revealed) { api.focus(); return; }
   const res = el.querySelector("#q-res"), after = el.querySelector("#q-after");
   const stats = stStatsLine(it.anchor, exEn);
   const quiet = exam ? stTitle(it) : ex ? plainMd(ex.zh) : "";

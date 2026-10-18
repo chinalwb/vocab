@@ -42,7 +42,7 @@
 
 **改好的句子:**
 
-1. The project aims to predict the volcanoes' future activity and learn about their history.
+1. The project aims to predict **the volcanoes'** future activity and learn about **their** history.
    这个项目的目的是预测火山以后的活动,了解它们的历史。
 
 这里用的是 aims to,不是你原句里的 is aiming to。两个都对,为什么 aims to 更好?看最后的「提升」。
@@ -52,7 +52,7 @@
 - 写 its 或 their 之前,先问自己:它指的是谁?前面写过它的名字吗?
 - 没写过,就先把名字写出来。
 
-1. Our nature club has started its own bee project. It's small, but it aims to count the bees in the garden and learn about their favourite flowers.
+1. Our nature club has started **its** own bee project. It's small, but it aims to count **the bees** in the garden and learn about **their** favourite flowers.
    我们的自然社团开展了自己的蜜蜂项目。项目不大,但它的目标是数清花园里的蜜蜂,了解它们最喜欢的花。
 
 相关条目:[并列结构:列几件事时,每件事用同一个样子](#s-same-shape-list) · [文章"讲了"什么,用 describes](#s-tell-describe) —— 同一篇火山总结里的另外两处,每条只练一个点。
@@ -104,14 +104,14 @@
 
 **改好的句子:**
 
-1. The project aims to predict the volcanoes' future activity, learn about their history and, most important of all, prepare for an eruption.
+1. The project aims to predict the volcanoes' future activity, learn about their history and, most important of all, **prepare for an eruption**.
    这个项目的目的是预测火山以后的活动,了解它们的历史,最重要的是为火山喷发做好准备。
 
 **记住这个小规则:**
 
 - 列几件事时,问自己:每件事的开头是不是同一个样子?比如 *predict… / learn… / prepare…*
 
-1. On Saturday, I want to clean my room, finish my homework and, most important of all, play football with my friends.
+1. On Saturday, I want to clean my room, finish my homework and, most important of all, **play football with my friends**.
    星期六我想打扫房间、写完作业,最最重要的是,和朋友们踢足球。
 
 相关条目:[its / their 指的是谁](#s-its-their) · [文章"讲了"什么,用 describes](#s-tell-describe) —— 同一篇火山总结里的另外两处,每条只练一个点。
@@ -157,14 +157,14 @@
 
 **改好的句子:**
 
-1. Then the passage describes an attempt to protect a town from lava in detail.
+1. Then the passage **describes** an attempt to protect a town from lava in detail.
    接着,文章详细讲了一次保护小镇、不让熔岩冲进来的尝试。
 
 **记住这个小规则:**
 
 - 想说"书里、文章里讲了什么",用 **describes**,不用 tell。
 
-1. This book describes a trip to the mountains in detail.
+1. This book **describes** a trip to the mountains in detail.
    这本书详细讲了一次去山里的旅行。
 
 相关条目:[its / their 指的是谁](#s-its-their) · [并列结构:列几件事时,每件事用同一个样子](#s-same-shape-list) —— 同一篇火山总结里的另外两处,每条只练一个点。
@@ -190,7 +190,7 @@
 
 这是在阅读里看到的句子。
 
-1. Local islanders have been witness to its evolving shape over hundreds of years.
+1. Local islanders **have been witness to** its evolving shape over hundreds of years.
    几百年来,当地的岛民一直见证着它不断变化的样子。
 
 **固定搭配:be witness to something**
@@ -201,7 +201,7 @@
 
 再练一句,用法和原句一模一样:
 
-1. The old tree in our playground has been witness to many happy moments over the years.
+1. The old tree in our playground **has been witness to** many happy moments over the years.
    我们操场上的那棵老树,这些年来见证了许多快乐的时刻。
 
 **提升:别的用法**
@@ -225,19 +225,19 @@
 
 这是在阅读里看到的句子。
 
-1. Sections of earth are often displaced by a sudden jolt.
+1. Sections of earth **are often displaced by** a sudden jolt.
    大地的一些部分常常会被一次突然的震动推离原来的位置。
 
 **固定搭配:be displaced by something**
 
 - 意思:被某个东西挪开,离开原来的位置。
 - displace 可以拆开记:dis(离开)+ place(位置)= 让东西离开原来的位置。
-- 这是"被"的说法:大地自己不会动,是被震动推开的,所以写成 **are displaced**(被推开)。
+- 这是**被动语态**:大地自己不会动,是被震动推开的,所以写成 **are displaced**(被推开)。
 - **by** 后面接"是什么把它挪开的":原句里是 *a sudden jolt*(一次突然的震动)。
 
 再练一句,用法和原句一模一样:
 
-1. Small stones on the beach are often displaced by a big wave.
+1. Small stones on the beach **are often displaced by** a big wave.
    沙滩上的小石头常常会被一个大浪冲离原来的位置。
 
 **提升:别的意思**
