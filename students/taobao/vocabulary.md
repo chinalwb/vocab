@@ -49,8 +49,8 @@
 - **its** = 它的(一个东西)。**their** = 它们的 / 他们的(很多个)。
 - 别把 **it's** 和 **its** 弄混:**it's** = it is(它是 / 它正在),**its** = 它的。你原句开头的 *It's aiming* 就是 *It is aiming*,这个写法是对的。
 
-1. The cat is cleaning its paws, and the kittens are playing with their ball.
-   猫在清理它的爪子,小猫们在玩它们的球。
+1. The school nature club has started its own bee project. It's aiming to count the bees in the garden and learn about their favourite flowers.
+   学校的自然社团开展了自己的蜜蜂项目。它的目标是数清花园里的蜜蜂,了解它们最喜欢的花。
 
 相关条目:[列几件事时,每件事用同一个样子](#s-same-shape-list) · [文章"讲了"什么,用 describes](#s-tell-describe) —— 同一篇火山总结里的另外两处,每条只练一个点。
 
