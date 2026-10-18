@@ -111,6 +111,15 @@
 
 相关条目:[its / their 指的是谁](#s-its-their) · [文章"讲了"什么,用 describes](#s-tell-describe) —— 同一篇火山总结里的另外两处,每条只练一个点。
 
+**选读:也可以这样说**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- 也可以说 **most importantly**,两个都对。
+- 在一句话里列几件事,放在最后一件前面:两个都可以。**most important of all** 更强调"最最重要",你用得很好。
+- 新起一句话、放在句子开头时,**Most importantly,** 更常见。
+- 例子:*Most importantly, we need to stay safe.*(最重要的是,我们要注意安全。)
+
 ---
 
 <a id="s-tell-describe"></a>
