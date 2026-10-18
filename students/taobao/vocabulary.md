@@ -214,4 +214,4 @@
 - displace 可以拆开记:dis(离开)+ place(位置)= 让东西离开原来的位置。
 - 这是"被"的说法:大地自己不会动,是被震动推开的,所以用 **be + displaced**。
 - **by** 后面接"是什么把它挪开的":原句里是 *a sudden jolt*(一次突然的震动)。
-- 它也常用来说人被迫离开自己的家,比如 *people displaced by the flood*(因为洪水离开家园的人)。读新闻和考试文章时经常会看到。
+- 它也常用来说人被迫离开自己的家,比如 *Many people **were displaced by** the flood.*(很多人因为洪水被迫离开了家。)读新闻和考试文章时经常会看到。
