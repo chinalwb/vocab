@@ -92,13 +92,13 @@
 
 **问题:**
 
-- ❌ [结构] **and most important of all, is to prepare** —— 这句话里列了三件事,前两件都是动词原形开头(predict…、learn…),第三件中间多了 is to,样子就不一样了。去掉 is to,写成 **and, most important of all, prepare for an eruption**。
+- ❌ [结构] **and most important of all, is to prepare** —— 这句话里列了三件事,前两件都是用 predict、learn 这样的词开头(predict…、learn…),第三件中间多了 is to,样子就不一样了。去掉 is to,写成 **and, most important of all, prepare for an eruption**。
 
 一步一步看:
 
 - 第 1 步:找到句子里的 aims to(或 is aiming to)。它后面要接"要做的事"。
 - 第 2 步:把这三件事排成一列,看它们是不是同一个样子:**predict** the volcanoes' future activity(预测……)→ **learn** about their history(了解……)→ **prepare** for an eruption(准备……)。
-- 第 3 步:三件事都是动词原形开头,样子一样,句子就对了。most important of all 只是插在中间的一个"提醒",前后加逗号,不改变后面的样子。
+- 第 3 步:三件事开头的样子都一样,句子就对了。most important of all 只是插在中间的一个"提醒",前后加逗号,不改变后面的样子。
 
 **改好的句子:**
 
@@ -107,8 +107,7 @@
 
 **记住这个小规则:**
 
-- 列两件、三件事的时候,每件事都用同一个样子:都是动词原形、都是 -ing,或者都是名词。
-- 想强调最后一件,就在它前面加 **, most important of all,**(前后各一个逗号)。
+- 列几件事时,问自己:每件事的开头是不是同一个样子?比如 *predict… / learn… / prepare…*
 
 1. On Saturday, I want to clean my room, finish my homework and, most important of all, play football with my friends.
    星期六我想打扫房间、写完作业,最最重要的是,和朋友们踢足球。
@@ -161,8 +160,7 @@
 
 **记住这个小规则:**
 
-- **tell** + 人 / 故事:*My grandma told me a story.*(奶奶给我讲了一个故事。)
-- **describe** + 东西 / 事情:说"书里、文章里讲了什么",就用它。
+- 想说"书里、文章里讲了什么",用 **describes**,不用 tell。
 
 1. This book describes a trip to the mountains in detail.
    这本书详细讲了一次去山里的旅行。
@@ -196,9 +194,8 @@
 **固定搭配:be witness to something**
 
 - 意思:见证某事,就是亲眼看着一件事发生、变化。
-- 这里的 witness 是名词,意思是"见证人"。
-- 所以要说 **be witness to**:前面用 be 动词,后面接 **to**,再接被见证的事情。
-- 原句里是 **have been witness to**:从几百年前到现在一直在见证,所以用 have been(现在完成时)。
+- **be witness to** = 是……的见证人:be(是)+ witness(见证人)+ to(……的)。
+- 原句里的 **have been witness to**,意思是从几百年前到现在,一直都是见证人。
 
 再练一句,用法和原句一模一样:
 
@@ -233,7 +230,7 @@
 
 - 意思:被某个东西挪开,离开原来的位置。
 - displace 可以拆开记:dis(离开)+ place(位置)= 让东西离开原来的位置。
-- 这是"被"的说法:大地自己不会动,是被震动推开的,所以用 **be + displaced**。
+- 这是"被"的说法:大地自己不会动,是被震动推开的,所以写成 **are displaced**(被推开)。
 - **by** 后面接"是什么把它挪开的":原句里是 *a sudden jolt*(一次突然的震动)。
 
 再练一句,用法和原句一模一样:
