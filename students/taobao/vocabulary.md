@@ -14,38 +14,45 @@
 - 日期:2026-10-18
 - 掌握:会写
 
-**题目:** 读一篇短文,用英文写总结。短文讲的是一个研究太平洋里 30 头蓝鲸的项目:记录鲸鱼的歌声,追踪它们游过的路线。
+**题目:** 读一篇短文,用英文写总结。短文讲的是"十年火山计划":预测火山以后的活动,了解火山过去的历史,为火山喷发做准备;后面还详细讲了一次保护小镇、不让熔岩冲进来的行动。
 
 **我的原句:**
 
-> This passage is mainly about the Ocean Whale Project. It aims to record its songs and track their routes.
+> This passage is mainly about The Decade Volcano Project. It's aiming to predict its future activity, learn their historical timeline, and most important of all, is to prepare for an eruption. Then, it tells anaction to "protect" a town from lava in detail.
 
 **问题:**
 
-- ❌ [逻辑] **its songs** —— its 是"它的",在这里只能指前面的 the project(项目)。项目不会唱歌,唱歌的是鲸鱼,要写 **the whales' songs**。
-- ❌ [逻辑] **their routes** —— 总结里一次都没写到 whales,读的人不知道 their(它们的)是谁的。先写出 **the whales**,后面才能用 their。
-- ⚠️ [逻辑] **It aims to** —— It 可能是"这篇文章",也可能是"这个项目"。写成 **The project aims to**,一看就懂。
+- ❌ [逻辑] **its future activity** —— its 是"它的",在这里只能指前面的 the project(项目)。项目不会喷发,会喷发的是火山,要写 **the volcanoes' future activity**。
+- ❌ [逻辑] **their historical timeline** —— 前面一次都没写到 volcanoes,读的人不知道 their(它们的)是谁的。先写出 **the volcanoes**,后面才能用 their。
+- ⚠️ [搭配] **learn their historical timeline** —— 能看懂,但更常说 **learn about their history**(了解它们的历史)。
+- ❌ [结构] **and most important of all, is to prepare** —— 前面两件事是 predict…、learn…,第三件事也要用动词原形,去掉 is to:**and, most important of all, prepare for an eruption**。
+- ❌ [搭配] **it tells an action** —— tell 后面接 a story(讲故事),不接 action。说文章讲了什么,用 **describes**:**describes an attempt to protect a town**。
+- ⚠️ [逻辑] **Then, it tells** —— 上一句的 It 是项目,这一句的 it 又变成了文章,读的人会糊涂。写成 **Then the passage describes…**。
+- ⚠️ [动词] **It's aiming to** —— 说一个项目的目标,一般用 **aims to**:**The project aims to…**。
+- ❌ [词形] **The Decade Volcano Project** —— 句子中间的 the 不用大写:**the Decade Volcano Project**。
 
 **做得好:**
 
-- **aims to** —— 原文是 wants to,你换成了 aims to(目的是……)。用自己的话来说,正是写总结该做的!
+- **This passage is mainly about…** —— 总结这样开头,又清楚又标准。
+- **most important of all** —— 把最重要的一件事放在最后,还用了这个短语,很棒!只要把后面的 is to 去掉就对了。
+- **Then** —— 用 Then 告诉读者"文章接下来讲什么",总结的条理一下子就清楚了。
 
 **写总结的小提醒:**
 
-- 总结要写出最重要的信息。这个项目在研究什么?→ **30 头蓝鲸**。原句漏掉了这一点。
+- 一句话里列三件事时,三件事要用同一个样子:**predict… , learn… and prepare…**,都是动词原形开头,中间不要插 is to。
 
 **更地道的说法:**
 
-1. The project aims to record the whales' songs and track their routes.
-   这个项目的目的是记录鲸鱼的歌声,追踪它们的路线。
+1. The project aims to predict the volcanoes' future activity and learn about their history.
+   这个项目的目的是预测火山以后的活动,了解它们的历史。
 
 整段可以这样写:
 
-> This passage is about the Ocean Whale Project. The project is studying 30 blue whales in the Pacific. It aims to record the whales' songs and track their routes.
+> This passage is mainly about the Decade Volcano Project. The project aims to predict the volcanoes' future activity, learn about their history and, most important of all, prepare for an eruption. Then the passage describes, in detail, an attempt to protect a town from lava.
 
-(这篇文章讲的是海洋鲸鱼项目。这个项目正在研究太平洋里的 30 头蓝鲸,目的是记录鲸鱼的歌声,追踪它们的路线。)
+(这篇文章主要讲"十年火山计划"。这个项目的目的是预测火山以后的活动,了解它们的历史,最重要的是为火山喷发做好准备。接着,文章详细讲了一次保护小镇、不让熔岩冲进来的尝试。)
 
-这里的 It 没问题:前一句的主语就是 The project,所以 It 只能指项目。
+第二句用 The project 开头,第三句用 the passage 开头,读的人一看就知道在说谁。
 
 **记住这个小规则:**
 
