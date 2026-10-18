@@ -19,7 +19,7 @@ import re
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
-GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "SELFTEST"]
+GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "COLLOC", "SELFTEST"]
 SCHEMA = 1  # bump when data.json changes shape in a way the app must know about
 
 # 错题本: a bullet like `- ❌ [介词] **...** —— ...` (or ⚠️) marks a mistake the
@@ -61,15 +61,16 @@ def split_entries(src):
 
 # `- 类型:句子` (or 自测 / 语法) sets the group without the title prefix, so a title can be just
 # the point it practises (taobao's notes); the prefixes below still work as before
-KIND = {"句子": "SENTENCE", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR"}
+KIND = {"句子": "SENTENCE", "固定搭配": "COLLOC", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR"}
 
 
 def detect_level(title, raw):
     kind = meta_field(raw, "类型")
     if kind:
-        if kind[:2] not in KIND:
+        level = next((v for k, v in KIND.items() if kind.startswith(k)), None)
+        if not level:
             raise SystemExit(f"{title}: unknown 类型 '{kind}' — use one of {', '.join(KIND)}")
-        return KIND[kind[:2]]
+        return level
     if title.startswith("句子"):
         return "SENTENCE"
     if title.startswith("自测"):
@@ -95,6 +96,10 @@ def gloss(raw, level):
     # a 句子 entry previews best as the original sentence being corrected
     m = re.search(r"^>\s*(.+)$", raw, re.M)
     if m and level == "SENTENCE" and "**我的原句" in raw:
+        return m.group(1).strip()
+    # a 固定搭配 entry previews as the sentence it was met in: its one numbered example
+    m = re.search(r"^1\.\s*(.+)$", raw, re.M)
+    if m and level == "COLLOC":
         return m.group(1).strip()
     for pat in (r"\*\*含义[:：]?\*\*[:：]?\s*(.+)", r"\*\*规则[^*]*\*\*[:：]?\s*(.+)"):
         m = re.search(pat, raw)
@@ -234,7 +239,7 @@ def mastery(raw, level):
     v = meta_field(raw, "掌握")
     if v:
         return "write" if v.startswith("会写") else "read"
-    return "write" if level in ("SENTENCE", "GRAMMAR", "SELFTEST") else "read"
+    return "write" if level in ("SENTENCE", "COLLOC", "GRAMMAR", "SELFTEST") else "read"
 
 
 def quote_after(blocks, label):
@@ -403,6 +408,8 @@ SITE = {
     "prefix": "vk.",
     "app": True,                     # the Android app reads this notebook too
     "categories": True,              # 分类 in the sidebar, 类型 / 级别 rows in 筛选
+    "cardColor": "level",            # or "stage": cards coloured by 学习中 / 复习中 / 考核中 / 已掌握
+    "logo": "",                      # a picture next to the page's index.html, shown in front of the name
     "sync": {"repo": "chinalwb/vocab", "branch": "progress", "path": "progress.json"},
     # optional colour overrides: {"light": {"--accent": "#…", …}, "dark": {…}}, laid over the
     # template's own :root blocks (light, dark by system setting, dark by the theme button)
@@ -433,6 +440,8 @@ def main():
         site.update(json.loads((src / "site.json").read_text(encoding="utf-8")))
     if src != ROOT and site["prefix"] == SITE["prefix"]:
         raise SystemExit(f"{src / 'site.json'}: needs its own \"prefix\" — it shares localStorage with the main page")
+    if site["logo"] and not (src / site["logo"]).exists():
+        raise SystemExit(f"{src / 'site.json'}: logo {site['logo']} is missing")
     if src != ROOT and site["sync"]["path"] == SITE["sync"]["path"]:
         raise SystemExit(f"{src / 'site.json'}: needs its own sync \"path\" — it would overwrite progress.json")
 

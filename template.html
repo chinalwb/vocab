@@ -47,9 +47,14 @@
   --tm-1:#ddd9f2; --tm-2:#cec9ea; --tm-3:#e9e6f7;
   --gr-1:#f2d5e4; --gr-2:#ebc2d7; --gr-3:#f7e4ee;
   --sn-1:#e8d7c3; --sn-2:#dfcaaf; --sn-3:#f1e5d7;
+  --cl-1:#dfe9c8; --cl-2:#d2e0b4; --cl-3:#eaf1d8;
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
 
   --accent:#2b4acb; --accent-ink:#ffffff; --st-learn:#8a8f9c; --st-test:#e0812f; --st-done:#3e9b5b;
+  /* card colours by stage (site.json "cardColor": "stage"): the stage dots' colours, washed into the
+     card ground; they follow --chip and --accent, so the dark themes need no copies */
+  --sg-learn:color-mix(in srgb,var(--st-learn) 22%,var(--chip)); --sg-review:color-mix(in srgb,var(--accent) 20%,var(--chip));
+  --sg-test:color-mix(in srgb,var(--st-test) 24%,var(--chip)); --sg-done:color-mix(in srgb,var(--st-done) 22%,var(--chip));
   --err:#c2412d; --warn:#b7791f; --mk:#ffffff; --tag:#e9ebef; --tag-ink:#4b5060;
   /* liquid glass (after iOS 26): frosted controls floating over the cards */
   --glass:rgba(243,244,246,.72); --glass-strong:rgba(243,244,246,.86);
@@ -83,6 +88,7 @@
     --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
     --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
     --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
+    --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
     --accent:#8ea2ff; --accent-ink:#10142a;
@@ -118,6 +124,7 @@
   --tm-1:#3b3364; --tm-2:#473d76; --tm-3:#312a54;
   --gr-1:#562a44; --gr-2:#663251; --gr-3:#472238;
   --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
+  --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
 
   --accent:#8ea2ff; --accent-ink:#10142a;
@@ -178,6 +185,8 @@ h1{
 }
 /* a notebook's site.json theme can colour its name (--brand); mine stays ink */
 .brand h1{color:var(--brand, var(--ink))}
+/* site.json "logo": a picture in front of the name (taobao's page) */
+.brand .logo{width:calc(40px * var(--fs));height:calc(40px * var(--fs));border-radius:12px;object-fit:cover;object-position:40% 75%;align-self:center;flex:none;box-shadow:0 0 0 1px var(--rule)}
 .tally{color:var(--ink-3);font-size:calc(12.5px * var(--fs));letter-spacing:.04em}
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .search{
@@ -954,7 +963,7 @@ body.running{overflow:hidden}
   .col.ents .card:hover{background:color-mix(in srgb,var(--ink) 5%,transparent);transform:none;box-shadow:none}
   .col.ents .card.sel{background:var(--chip);box-shadow:0 0 0 1.5px var(--accent)}
   .col.ents .card .hw{font-size:calc(16px * var(--fs));margin:0 0 1px}
-  .col.ents .card .hw::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--sw);border:1px solid var(--card-edge);margin-right:8px;vertical-align:1px}
+  .col.ents .card .hw::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--swd, var(--sw));border:1px solid var(--card-edge);margin-right:8px;vertical-align:1px}
   .col.ents .card .meta{display:none}
   .col.ents .card .gloss{-webkit-line-clamp:1;font-size:calc(13px * var(--fs));color:var(--ink-2)}
   .col.ents .card .foot{border-top:0;padding-top:0;margin-top:3px;color:var(--ink-3)}
@@ -1050,9 +1059,12 @@ const LV = {
   TERM:{nm:"术语与固定搭配(无 CEFR 分级)", sw:["--tm-1","--tm-2","--tm-3"]},
   GRAMMAR:{nm:"语法与语域笔记", sw:["--gr-1","--gr-2","--gr-3"]},
   SENTENCE:{nm:"整句订正:我的原句 → 更地道的说法", sw:["--sn-1","--sn-2","--sn-3"]},
+  // 固定搭配 (`- 类型:固定搭配`): a phrase met in reading, quizzed on the sentence it came in.
+  // Only taobao's notes use it so far; the App doesn't know this group.
+  COLLOC:{nm:"阅读里看到的地道写法", sw:["--cl-1","--cl-2","--cl-3"]},
   SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", SELFTEST:"自测题"};
+const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题"};
 
 // ── theme toggle ─────────────────────────
 const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.4M12 19v2.4M21.4 12H19M5 12H2.6M18.6 5.4l-1.7 1.7M7.1 16.9l-1.7 1.7M18.6 18.6l-1.7-1.7M7.1 7.1L5.4 5.4"/></svg>';
@@ -1085,6 +1097,11 @@ const mkTotal = MISTAKES.reduce((n,g)=>n+g.items.length,0);
 const writeTotal = DATA.reduce((n,g)=>n+g.items.filter(it=>it.mastery==="write").length,0);
 document.title = VK.title;
 document.querySelector(".brand h1").textContent = VK.brand;
+if (VK.logo) {
+  const logo = new Image();
+  logo.src = VK.logo; logo.alt = ""; logo.className = "logo";
+  document.querySelector(".brand h1").before(logo);
+}
 document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 错题 " + mkTotal;
 const store = {
   get(k, d){ try { const v = localStorage.getItem(vkKey(k)); return v === null ? d : v; } catch(e){ return d; } },
@@ -1103,6 +1120,16 @@ let stages = {}, stageT = {};               // stageT: when each move was made, 
 try { stages = JSON.parse(store.get("vk.stage", "{}")) || {}; } catch(e){}
 try { stageT = JSON.parse(store.get("vk.stage.t", "{}")) || {}; } catch(e){}
 const stageOf = (it, level) => stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
+// a card's colour: its level, cycling the level's three shades (mine), or its stage (site.json
+// "cardColor": "stage", a student's page, where the colour says how far along an entry is).
+// Whatever carries data-swl is repainted by refreshStages() when an entry moves.
+const swOf = (it, level, i) => VK.cardColor === "stage" ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
+// by stage, the desktop list's little square takes the stage dot's full colour (--swd); the wash is too pale there
+const SG_DOT = { learn: "--st-learn", review: "--accent", test: "--st-test", done: "--st-done" };
+function paintSw(el, it, level, i){
+  el.style.setProperty("--sw", `var(${swOf(it, level, i)})`);
+  if (VK.cardColor === "stage") el.style.setProperty("--swd", `var(${SG_DOT[stageOf(it, level)]})`);
+}
 function setStage(it, stage){
   stages[it.anchor] = stage;
   stageT[it.anchor] = Date.now();
@@ -1117,7 +1144,8 @@ if (!STAGE_NAME[stageF]) stageF = "";
 // 筛选: two labelled rows — 类型 (with a CEFR sub-row under 单词) and 进度 + 只看会写.
 // Each row is single-choice and starts at 全部; the rows narrow each other.
 const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
-const TYPES = [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"], ["SELFTEST", "自测题"]];
+const TYPES = [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
+  ...(DATA.some(g => g.level === "COLLOC") ? [["COLLOC", "固定搭配"]] : []), ["SELFTEST", "自测题"]];
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
   const old = store.get("vk.level", "ALL");
@@ -1295,7 +1323,7 @@ const sections = DATA.map(g => {
   const cards = g.items.map((it, i) => {
     const c = document.createElement("button");
     c.className = "card"; c.type = "button"; c.dataset.anchor = it.anchor;
-    c.style.setProperty("--sw", `var(${LV[g.level].sw[i % 3]})`);
+    paintSw(c, it, g.level, i); c.dataset.swl = g.level;
     const n = (it.html.match(/<li><span class="en">/g) || []).length;
     const meta = [it.pos && `<span class="pos">${it.pos}</span>`, it.ipa && `<span class="ipa">${it.ipa}</span>`]
       .filter(Boolean).join("");
@@ -1789,6 +1817,8 @@ function refreshStages(){
     el.textContent = st === "done" ? " · ✓ 已掌握" : st === "test" && el.dataset.level !== "SELFTEST" ? " · 考核中" : st === "review" ? " · 复习中" : "";
     el.classList.toggle("done", st === "done");
   });
+  if (VK.cardColor === "stage") document.querySelectorAll("[data-swl]").forEach(el =>
+    paintSw(el, { anchor: el.dataset.swa || el.dataset.anchor }, el.dataset.swl, 0));
   const n = { learn: 0, review: 0, test: 0, done: 0 };
   DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));   // pill counts come from render()
   document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 已掌握 " + n.done + " · 错题 " + mkTotal;
@@ -2077,7 +2107,7 @@ function show(it, level, i, o = {}){
   sheet.setAttribute("role", "dialog");
   sheet.setAttribute("aria-modal", String(!docked));
   sheet.setAttribute("aria-label", it.title);
-  sheet.style.setProperty("--sw", `var(${LV[level].sw[i % 3]})`);
+  sheet.style.setProperty("--sw", `var(${swOf(it, level, i)})`); sheet.dataset.swa = it.anchor; sheet.dataset.swl = level;
   const back = trail[trail.length - 1];
   const stage = stageOf(it, level);
   const selfTest = level === "SELFTEST";
@@ -2706,7 +2736,7 @@ function renderStageTab(stage, el){
   el.innerHTML = sum +
     (ready.length ? `<button type="button" class="ready" id="qz-ready"><span class="ck" aria-hidden="true">✓</span><span class="t">${ready.length} 条的题都答对过了,可以移到${STAGE_TAB[nextStage(stage)]}</span>${ICON_CHEV}</button>` : "") +
     groups.map(([title, list, sub]) => `<h3 class="grp-h">${title} · ${list.length}</h3><div class="srows">` +
-      list.map(t => `<button type="button" class="srow" data-anchor="${t.it.anchor}" style="--sw:var(${LV[t.level].sw[t.i % 3]})">` +
+      list.map(t => `<button type="button" class="srow" data-anchor="${t.it.anchor}" data-swl="${t.level}" style="--sw:var(${swOf(t.it, t.level, t.i)})">` +
         `<span class="t"><b>${stTitle(t.it)}</b><small>${esc(sub(t))}</small></span><span class="tg">${lvShort(t.level)}</span></button>`).join("") + `</div>`).join("");
   const start = el.querySelector("#qz-start");
   if (start) start.addEventListener("click", () => {
@@ -2732,7 +2762,7 @@ function renderQuizCard(el){
   const lastQ = exam || !ex || ex.k + 1 >= ex.of;           // the entry's last sentence
   const final = s.revealed && step === 2 && lastQ;           // the entry is done
   const pct = Math.round((s.index + (final ? 1 : 0)) / s.queue.length * 100);
-  const sw = `var(${LV[t.level].sw[t.i % 3]})`;
+  const sw = `var(${swOf(t.it, t.level, t.i)})`;
   const top = `<div class="runbar"><button type="button" class="x2" id="qz-stop" aria-label="结束这一轮">✕</button>` +
     `<div class="bar" role="img" aria-label="进度 ${s.index + 1} / ${s.queue.length}"><i style="width:${pct}%"></i></div><span>${s.index + 1} / ${s.queue.length}</span></div>`;
   const stop = () => { quiz = null; render(); };
@@ -2854,7 +2884,7 @@ function renderHistory(){
     `打开一条、或在复习 / 考核里做到它,都会记在这里;同一条再看会移到最上面,最多留 ${HIST_MAX} 条。开了同步的话,${VK.app ? "网页和 App 共用这份历史" : "换浏览器也能看到这份历史"}。</p>` +
     days.map(([d, list]) => `<h3 class="grp-h">${d} · ${list.length}</h3><div class="srows">` + list.map(v => {
       const t = byAnchor[v.a];
-      return `<button type="button" class="srow" data-anchor="${v.a}" style="--sw:var(${LV[t.level].sw[t.i % 3]})">` +
+      return `<button type="button" class="srow" data-anchor="${v.a}" data-swl="${t.level}" style="--sw:var(${swOf(t.it, t.level, t.i)})">` +
         `<span class="t"><b>${stTitle(t.it)}</b><small>${esc([hhmm(v.t) + " " + (HIST_VIA[v.via] || "打开"), gloss(t)].filter(Boolean).join(" · "))}</small></span>` +
         `<span class="tg">${lvShort(t.level)}</span></button>`;
     }).join("") + `</div>`).join("") +

@@ -1,9 +1,11 @@
 {
   "title": "taobao 的词汇笔记",
   "brand": "taobao",
+  "logo": "avatar.jpg",
   "prefix": "vk.taobao.",
   "app": false,
   "categories": false,
+  "cardColor": "stage",
   "sync": {
     "repo": "chinalwb/vocab",
     "branch": "progress",

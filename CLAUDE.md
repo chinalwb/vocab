@@ -16,7 +16,7 @@
 
 **每个学生有自己的网页**(只有网页,App 只读根目录的笔记):`python3 build.py --src students/taobao` 读那个目录的 `vocabulary.md` 和 `site.json`,把 `index.html` 写在同一个目录(gitignore)。Action 在 main 上给每个有 `vocabulary.md` 的 `students/<名字>/` 都生成一页,发布到 `https://chinalwb.github.io/vocab/<名字>/`。
 
-- `site.json`:`title`、`brand`(左上角)、`prefix`(localStorage 前缀)、`app`(false = 页面上不提 App)、`categories`(false = 没有左栏的「分类」和筛选里的「类型 / 级别」,左栏「学习阶段」最上面多一个「全部条目」)、`sync`(`repo` / `branch` / `path`)、`theme`(`light` / `dark` 各一组 CSS 变量,盖在 template.html 的三个主题块上;`--brand` 是左上角名字的颜色)。build.py 把它和默认值合并后注入 template.html 的 `/*__CONFIG__*/`(`VK`),主题变量写成 `<!--/HEAD-->` 前的一个 `<style>`。
+- `site.json`:`title`、`brand`(左上角)、`logo`(和 index.html 同目录的一张图,显示在名字前面;Action 会把学生目录里的 jpg / png / webp 一起发布)、`prefix`(localStorage 前缀)、`app`(false = 页面上不提 App)、`categories`(false = 没有左栏的「分类」和筛选里的「类型 / 级别」,左栏「学习阶段」最上面多一个「全部条目」)、`cardColor`(默认 `level` = 按类型上色、同类型轮流用三个深浅;`stage` = 按学习阶段上色,卡片是阶段色的浅底 `--sg-*`,桌面列表的小方块是阶段点的实色 `--swd`,移动阶段时 `refreshStages()` 重画带 `data-swl` 的元素)、`sync`(`repo` / `branch` / `path`)、`theme`(`light` / `dark` 各一组 CSS 变量,盖在 template.html 的三个主题块上;`--brand` 是左上角名字的颜色)。build.py 把它和默认值合并后注入 template.html 的 `/*__CONFIG__*/`(`VK`),主题变量写成 `<!--/HEAD-->` 前的一个 `<style>`。
 - **和主页在同一个域名下**,localStorage 是共用的,所以学生页的所有键都走 `vkKey()` 换成自己的前缀(taobao 是 `vk.taobao.`);新加 localStorage 读写时一律用 `store` 或 `vkKey()`,不要直接写 `"vk.xxx"`。build.py 会拒绝和主页同前缀、同同步文件的 `site.json`。
 - **同步**:taobao 的进度在 `progress` 分支的 `progress-taobao.json`,规则和我的 `progress.json` 一样;文件不存在时第一次同步会创建它。同样不要手动改。
 - 新加一个学生:建 `students/<名字>/`,放 `vocabulary.md`(标题 + 空的 `## 目录`)、`site.json`(新的 prefix 和 path)、`CLAUDE.md`。
@@ -377,7 +377,7 @@ python3 build.py --artifact out.html    # 额外输出用于发布 Claude artifa
 build.py 没用 markdown 库,而是用正则按行解析,所以下面这些格式约定是**硬性的**,不是风格偏好:
 
 - **切分条目**靠单独成行的 `<a id="..."></a>`(前后各一个换行),紧跟一行 `## 标题`。`id="toc"` 会被跳过。锚点不在单独一行,这个条目就会整个消失。
-- **分组**(决定卡片颜色和分区):有 `- 类型:句子 / 自测 / 语法` 这一行时按它分(标题就不用带前缀,学生的笔记这么用);否则标题以 `句子` 开头 → SENTENCE;以 `自测` 开头 → SELFTEST;以 `语法笔记` 或 `语域笔记` 开头 → GRAMMAR;其余看 `- CEFR:` 行里第一个 `A1`–`C2`,没有 CEFR 就归为 TERM(术语)。
+- **分组**(决定卡片颜色和分区):有 `- 类型:句子 / 固定搭配 / 自测 / 语法` 这一行时按它分(固定搭配 → COLLOC,目前只有学生的笔记用,App 不认识这一组)(标题就不用带前缀,学生的笔记这么用);否则标题以 `句子` 开头 → SENTENCE;以 `自测` 开头 → SELFTEST;以 `语法笔记` 或 `语域笔记` 开头 → GRAMMAR;其余看 `- CEFR:` 行里第一个 `A1`–`C2`,没有 CEFR 就归为 TERM(术语)。
 - **元信息**:`- 音标:` / `- 词性:` / `- CEFR:` / `- 日期:` / `- 掌握:` 这几行(全角半角冒号都认)会被抽成卡片上的标签,并从正文里去掉。
 - **例句**:`1. English` 下一行**以 3 个空格缩进**的中文会被识别成这句的翻译;缩进不对,中文就会被当成独立段落。
 - **卡片预览**:句子条目取第一个 `> ` 引用行(要求正文里有 `**我的原句`;其他分组即使有"我的原句"也不用它做预览);其他条目取 `**含义:**` 或 `**规则…**` 后面的文字,截到 150 字。
