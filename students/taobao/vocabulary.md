@@ -200,6 +200,11 @@
 - 所以要说 **be witness to**:前面用 be 动词,后面接 **to**,再接被见证的事情。
 - 原句里是 **have been witness to**:从几百年前到现在一直在见证,所以用 have been(现在完成时)。
 
+再练一句,用法和原句一模一样:
+
+1. The old tree in our playground has been witness to many happy moments over the years.
+   我们操场上的那棵老树,这些年来见证了许多快乐的时刻。
+
 **提升:别的用法**
 
 这一页不看也没关系,是让你多知道一点的。
@@ -230,6 +235,11 @@
 - displace 可以拆开记:dis(离开)+ place(位置)= 让东西离开原来的位置。
 - 这是"被"的说法:大地自己不会动,是被震动推开的,所以用 **be + displaced**。
 - **by** 后面接"是什么把它挪开的":原句里是 *a sudden jolt*(一次突然的震动)。
+
+再练一句,用法和原句一模一样:
+
+1. Small stones on the beach are often displaced by a big wave.
+   沙滩上的小石头常常会被一个大浪冲离原来的位置。
 
 **提升:别的意思**
 
