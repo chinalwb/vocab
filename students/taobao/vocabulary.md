@@ -45,23 +45,19 @@
 1. The project aims to predict the volcanoes' future activity and learn about their history.
    这个项目的目的是预测火山以后的活动,了解它们的历史。
 
-这里用的是 aims to,不是你原句里的 is aiming to。两个都对,为什么 aims to 更好?看最后的「选读」。
+这里用的是 aims to,不是你原句里的 is aiming to。两个都对,为什么 aims to 更好?看最后的「提升」。
 
 **记住这个小规则:**
 
-- 用 its / their 之前,先问自己:它指的是谁?前面写过这个名字吗?没写过,就先把名字写出来。
-- **its** = 它的(一个东西)。**their** = 它们的 / 他们的(很多个)。
-- 别把 **it's** 和 **its** 弄混。
-- **it's** = it is(它是 / 它正在)。
-- **its** = 它的。
-- 你原句开头的 *It's aiming*,就是 *It is aiming*,所以这里用 it's 是对的。
+- 写 its 或 their 之前,先问自己:它指的是谁?前面写过它的名字吗?
+- 没写过,就先把名字写出来。
 
 1. Our nature club has started its own bee project. It's small, but it aims to count the bees in the garden and learn about their favourite flowers.
    我们的自然社团开展了自己的蜜蜂项目。项目不大,但它的目标是数清花园里的蜜蜂,了解它们最喜欢的花。
 
 相关条目:[列几件事时,每件事用同一个样子](#s-same-shape-list) · [文章"讲了"什么,用 describes](#s-tell-describe) —— 同一篇火山总结里的另外两处,每条只练一个点。
 
-**选读:也可以这样说**
+**提升:也可以这样说**
 
 这一页不看也没关系,是让你多知道一点的。
 
@@ -96,13 +92,13 @@
 
 **问题:**
 
-- ❌ [结构] **and most important of all, is to prepare** —— 这句话里列了三件事,前两件都是动词原形开头(predict…、learn…),第三件中间多了 is to,样子就不一样了。去掉 is to,写成 **and, most important of all, prepare for an eruption**。
+- ❌ [结构] **and most important of all, is to prepare** —— 这句话里列了三件事,前两件都是用 predict、learn 这样的词开头(predict…、learn…),第三件中间多了 is to,样子就不一样了。去掉 is to,写成 **and, most important of all, prepare for an eruption**。
 
 一步一步看:
 
 - 第 1 步:找到句子里的 aims to(或 is aiming to)。它后面要接"要做的事"。
 - 第 2 步:把这三件事排成一列,看它们是不是同一个样子:**predict** the volcanoes' future activity(预测……)→ **learn** about their history(了解……)→ **prepare** for an eruption(准备……)。
-- 第 3 步:三件事都是动词原形开头,样子一样,句子就对了。most important of all 只是插在中间的一个"提醒",前后加逗号,不改变后面的样子。
+- 第 3 步:三件事开头的样子都一样,句子就对了。most important of all 只是插在中间的一个"提醒",前后加逗号,不改变后面的样子。
 
 **改好的句子:**
 
@@ -111,15 +107,14 @@
 
 **记住这个小规则:**
 
-- 列两件、三件事的时候,每件事都用同一个样子:都是动词原形、都是 -ing,或者都是名词。
-- 想强调最后一件,就在它前面加 **, most important of all,**(前后各一个逗号)。
+- 列几件事时,问自己:每件事的开头是不是同一个样子?比如 *predict… / learn… / prepare…*
 
 1. On Saturday, I want to clean my room, finish my homework and, most important of all, play football with my friends.
    星期六我想打扫房间、写完作业,最最重要的是,和朋友们踢足球。
 
 相关条目:[its / their 指的是谁](#s-its-their) · [文章"讲了"什么,用 describes](#s-tell-describe) —— 同一篇火山总结里的另外两处,每条只练一个点。
 
-**选读:也可以这样说**
+**提升:也可以这样说**
 
 这一页不看也没关系,是让你多知道一点的。
 
@@ -165,15 +160,14 @@
 
 **记住这个小规则:**
 
-- **tell** + 人 / 故事:*My grandma told me a story.*(奶奶给我讲了一个故事。)
-- **describe** + 东西 / 事情:说"书里、文章里讲了什么",就用它。
+- 想说"书里、文章里讲了什么",用 **describes**,不用 tell。
 
 1. This book describes a trip to the mountains in detail.
    这本书详细讲了一次去山里的旅行。
 
 相关条目:[its / their 指的是谁](#s-its-their) · [列几件事时,每件事用同一个样子](#s-same-shape-list) —— 同一篇火山总结里的另外两处,每条只练一个点。
 
-**选读:别的用法**
+**提升:别的用法**
 
 这一页不看也没关系,是让你多知道一点的。
 
@@ -200,11 +194,15 @@
 **固定搭配:be witness to something**
 
 - 意思:见证某事,就是亲眼看着一件事发生、变化。
-- 这里的 witness 是名词,意思是"见证人"。
-- 所以要说 **be witness to**:前面用 be 动词,后面接 **to**,再接被见证的事情。
-- 原句里是 **have been witness to**:从几百年前到现在一直在见证,所以用 have been(现在完成时)。
+- **be witness to** = 是……的见证人:be(是)+ witness(见证人)+ to(……的)。
+- 原句里的 **have been witness to**,意思是从几百年前到现在,一直都是见证人。
 
-**选读:别的用法**
+再练一句,用法和原句一模一样:
+
+1. The old tree in our playground has been witness to many happy moments over the years.
+   我们操场上的那棵老树,这些年来见证了许多快乐的时刻。
+
+**提升:别的用法**
 
 这一页不看也没关系,是让你多知道一点的。
 
@@ -232,10 +230,15 @@
 
 - 意思:被某个东西挪开,离开原来的位置。
 - displace 可以拆开记:dis(离开)+ place(位置)= 让东西离开原来的位置。
-- 这是"被"的说法:大地自己不会动,是被震动推开的,所以用 **be + displaced**。
+- 这是"被"的说法:大地自己不会动,是被震动推开的,所以写成 **are displaced**(被推开)。
 - **by** 后面接"是什么把它挪开的":原句里是 *a sudden jolt*(一次突然的震动)。
 
-**选读:别的意思**
+再练一句,用法和原句一模一样:
+
+1. Small stones on the beach are often displaced by a big wave.
+   沙滩上的小石头常常会被一个大浪冲离原来的位置。
+
+**提升:别的意思**
 
 这一页不看也没关系,是让你多知道一点的。
 
