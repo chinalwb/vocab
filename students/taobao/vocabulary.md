@@ -47,7 +47,7 @@
 
 - 用 its / their 之前,先问自己:它指的是谁?前面写过这个名字吗?没写过,就先把名字写出来。
 - **its** = 它的(一个东西)。**their** = 它们的 / 他们的(很多个)。
-- 别把 **it's** 和 **its** 弄混:**it's** = it is(它是 / 它正在),**its** = 它的。你原句开头的 *It's aiming* 就是 *It is aiming*,这个写法是对的。不过介绍一个项目的目的时,**It aims to** 更好(改好的句子里就是这么写的)。
+- 别把 **it's** 和 **its** 弄混:**it's** = it is(它是 / 它正在),**its** = 它的。你原句开头的 *It's aiming* 就是 *It is aiming*,这个写法是对的。不过介绍一个项目的目的时,**It aims to** 更好(改好的句子里就是这么写的)。为什么?**aims to** 说的是一直不变的目标:这个项目本来就是为这件事建的。**is aiming to** 说的是「这段时间正在争取」,听起来像暂时的打算,过几天可能就变了。项目的目的不是这两天才有的,所以用 aims to。对比一下:*My school aims to help every student love reading.*(学校的目标,一直都是这样。)*This week, I'm aiming to read two books.*(只是这一周的打算。)
 
 1. Our nature club has started its own bee project. It's small, but it aims to count the bees in the garden and learn about their favourite flowers.
    我们的自然社团开展了自己的蜜蜂项目。项目不大,但它的目标是数清花园里的蜜蜂,了解它们最喜欢的花。
