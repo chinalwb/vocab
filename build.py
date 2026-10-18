@@ -59,7 +59,17 @@ def split_entries(src):
     return out
 
 
+# `- 类型:句子` (or 自测 / 语法) sets the group without the title prefix, so a title can be just
+# the point it practises (taobao's notes); the prefixes below still work as before
+KIND = {"句子": "SENTENCE", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR"}
+
+
 def detect_level(title, raw):
+    kind = meta_field(raw, "类型")
+    if kind:
+        if kind[:2] not in KIND:
+            raise SystemExit(f"{title}: unknown 类型 '{kind}' — use one of {', '.join(KIND)}")
+        return KIND[kind[:2]]
     if title.startswith("句子"):
         return "SENTENCE"
     if title.startswith("自测"):
@@ -113,8 +123,8 @@ def inline(t):
 
 
 def strip_meta(raw):
-    # the 音标/词性/CEFR/日期/掌握 bullets are rendered as chips, not body text
-    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握|关键词)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
+    # the 音标/词性/CEFR/日期/掌握/类型 bullets are rendered as chips, not body text
+    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握|类型|关键词)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
 
 
 def parse_blocks(raw):
