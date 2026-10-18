@@ -3,5 +3,30 @@
   "brand": "taobao",
   "prefix": "vk.taobao.",
   "app": false,
-  "sync": {"repo": "chinalwb/vocab", "branch": "progress", "path": "progress-taobao.json"}
+  "categories": false,
+  "sync": {
+    "repo": "chinalwb/vocab",
+    "branch": "progress",
+    "path": "progress-taobao.json"
+  },
+  "theme": {
+    "light": {
+      "--accent": "#0b7a75",
+      "--accent-ink": "#ffffff",
+      "--ground": "#e4f1ed",
+      "--chip-on-ink": "#e4f1ed",
+      "--glass": "rgba(228,241,237,.72)",
+      "--glass-strong": "rgba(228,241,237,.86)",
+      "--brand": "#0b7a75"
+    },
+    "dark": {
+      "--accent": "#5ccfc3",
+      "--accent-ink": "#062120",
+      "--ground": "#0e1c1a",
+      "--chip-on-ink": "#0e1c1a",
+      "--glass": "rgba(14,28,26,.72)",
+      "--glass-strong": "rgba(14,28,26,.86)",
+      "--brand": "#5ccfc3"
+    }
+  }
 }

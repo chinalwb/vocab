@@ -392,8 +392,23 @@ SITE = {
     "brand": "VoCab",
     "prefix": "vk.",
     "app": True,                     # the Android app reads this notebook too
+    "categories": True,              # 分类 in the sidebar, 类型 / 级别 rows in 筛选
     "sync": {"repo": "chinalwb/vocab", "branch": "progress", "path": "progress.json"},
+    # optional colour overrides: {"light": {"--accent": "#…", …}, "dark": {…}}, laid over the
+    # template's own :root blocks (light, dark by system setting, dark by the theme button)
+    "theme": {},
 }
+
+
+def theme_css(theme):
+    decl = lambda d: "".join(f"{k}:{v};" for k, v in d.items())
+    css = ""
+    if theme.get("light"):
+        css += f":root{{{decl(theme['light'])}}}\n"
+    if theme.get("dark"):
+        css += (f"@media (prefers-color-scheme: dark){{ :root:not([data-theme=\"light\"]){{{decl(theme['dark'])}}} }}\n"
+                f":root[data-theme=\"dark\"]{{{decl(theme['dark'])}}}\n")
+    return f"<style>\n{css}</style>\n" if css else ""
 
 
 def main():
@@ -420,6 +435,7 @@ def main():
         "/*__DATA__*/", json.dumps(data, ensure_ascii=False)).replace(
         "/*__MISTAKES__*/", json.dumps(mistakes, ensure_ascii=False)).replace(
         "/*__CONFIG__*/", json.dumps(site, ensure_ascii=False))
+    page = page.replace("<!--/HEAD-->", theme_css(site["theme"]) + "<!--/HEAD-->", 1)
     if "__DATA__" in page or "__MISTAKES__" in page or "__CONFIG__" in page:
         raise SystemExit("template.html is missing its /*__DATA__*/, /*__MISTAKES__*/ or /*__CONFIG__*/ placeholder")
 

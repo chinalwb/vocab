@@ -176,6 +176,8 @@ h1{
   font-family:var(--font);
   font-weight:600;font-size:calc(26px * var(--fs));line-height:1.15;margin:0;letter-spacing:-.01em;
 }
+/* a notebook's site.json theme can colour its name (--brand); mine stays ink */
+.brand h1{color:var(--brand, var(--ink))}
 .tally{color:var(--ink-3);font-size:calc(12.5px * var(--fs));letter-spacing:.04em}
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .search{
@@ -1124,6 +1126,9 @@ if (typeF === null) {                       // from the old single row (vk.level
 }
 if (!TYPES.some(t => t[0] === typeF)) typeF = "ALL";
 if (!CEFR.includes(cefrF)) cefrF = "";
+// a notebook without categories (site.json "categories": false, e.g. a student's): no 类型 / 级别
+// rows in 筛选 and no 分类 group in the sidebar, so the type filter is always 全部
+if (!VK.categories) { typeF = "ALL"; cefrF = ""; }
 const levelShown = lv => typeF === "ALL" || typeF === lv || (typeF === "WORD" && CEFR.includes(lv) && (!cefrF || cefrF === lv));
 // the 错题本 used to be a level pill; it is a tab now
 let view = store.get("vk.view", store.get("vk.level", "") === "MISTAKES" ? "mistakes" : "entries");
@@ -1147,6 +1152,7 @@ const row = (label, cls = "") => {
   return r.lastChild;                       // the pills go in here; the label keeps its own column
 };
 const typeRow = row("类型"), cefrRow = row("级别", "sub"), stageRow = row("进度"), optRow = row("选项");
+if (!VK.categories) typeRow.parentNode.hidden = true;
 const clearAll = () => { typeF = "ALL"; cefrF = ""; stageF = ""; writeOnly = false; favOnly = false; saveFilters(); };
 const clearBtn = document.getElementById("freset");
 clearBtn.addEventListener("click", clearAll);
@@ -2941,12 +2947,14 @@ function markSel(anchor){
 const toFilter = (t, c, st) => { typeF = t; cefrF = c; stageF = st; saveFilters(); setView("entries"); };
 const SIDE = [
   ["学习阶段", [
+    // without the 分类 group, 全部条目 is how the sidebar gets back to every entry
+    ...(VK.categories ? [] : [["c:ALL", "全部条目", "", () => toFilter("ALL", "", "")]]),
     ["learn", "学习中", "var(--st-learn)", () => toFilter("ALL", "", "learn")],
     ["review", "复习", "var(--accent)", () => setView("review")],
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
-  ["分类", [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"], ["SELFTEST", "自测题"]]
-    .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])],
+  ...(VK.categories ? [["分类", [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"], ["SELFTEST", "自测题"]]
+    .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];
 const ICON_SIDE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg>';

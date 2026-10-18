@@ -28,7 +28,7 @@
 ## 他的网页
 
 - 地址:**https://chinalwb.github.io/vocab/taobao/**(dev 合进 main 之后才更新,和主页一样)。只有网页,没有 App。
-- 页面配置在 `site.json`:localStorage 前缀 `vk.taobao.`,进度同步到 `progress` 分支的 `progress-taobao.json`。
+- 页面配置在 `site.json`:localStorage 前缀 `vk.taobao.`,进度同步到 `progress` 分支的 `progress-taobao.json`;主题色是青绿色(用户 2026-10-18 要求和主页不同);**没有分类**(用户 2026-10-18:他不需要 A1–C2、术语这些分类,`categories: false`)。
 - 本地预览:在仓库根目录 `python3 build.py --src students/taobao`,打开 `students/taobao/index.html`。
 
 ## 写入规则

@@ -16,7 +16,7 @@
 
 **每个学生有自己的网页**(只有网页,App 只读根目录的笔记):`python3 build.py --src students/taobao` 读那个目录的 `vocabulary.md` 和 `site.json`,把 `index.html` 写在同一个目录(gitignore)。Action 在 main 上给每个有 `vocabulary.md` 的 `students/<名字>/` 都生成一页,发布到 `https://chinalwb.github.io/vocab/<名字>/`。
 
-- `site.json`:`title`、`brand`(左上角)、`prefix`(localStorage 前缀)、`app`(false = 页面上不提 App)、`sync`(`repo` / `branch` / `path`)。build.py 把它和默认值合并后注入 template.html 的 `/*__CONFIG__*/`(`VK`)。
+- `site.json`:`title`、`brand`(左上角)、`prefix`(localStorage 前缀)、`app`(false = 页面上不提 App)、`categories`(false = 没有左栏的「分类」和筛选里的「类型 / 级别」,左栏「学习阶段」最上面多一个「全部条目」)、`sync`(`repo` / `branch` / `path`)、`theme`(`light` / `dark` 各一组 CSS 变量,盖在 template.html 的三个主题块上;`--brand` 是左上角名字的颜色)。build.py 把它和默认值合并后注入 template.html 的 `/*__CONFIG__*/`(`VK`),主题变量写成 `<!--/HEAD-->` 前的一个 `<style>`。
 - **和主页在同一个域名下**,localStorage 是共用的,所以学生页的所有键都走 `vkKey()` 换成自己的前缀(taobao 是 `vk.taobao.`);新加 localStorage 读写时一律用 `store` 或 `vkKey()`,不要直接写 `"vk.xxx"`。build.py 会拒绝和主页同前缀、同同步文件的 `site.json`。
 - **同步**:taobao 的进度在 `progress` 分支的 `progress-taobao.json`,规则和我的 `progress.json` 一样;文件不存在时第一次同步会创建它。同样不要手动改。
 - 新加一个学生:建 `students/<名字>/`,放 `vocabulary.md`(标题 + 空的 `## 目录`)、`site.json`(新的 prefix 和 path)、`CLAUDE.md`。
