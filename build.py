@@ -403,6 +403,7 @@ SITE = {
     "prefix": "vk.",
     "app": True,                     # the Android app reads this notebook too
     "categories": True,              # 分类 in the sidebar, 类型 / 级别 rows in 筛选
+    "cardColor": "level",            # or "stage": cards coloured by 学习中 / 复习中 / 考核中 / 已掌握
     "sync": {"repo": "chinalwb/vocab", "branch": "progress", "path": "progress.json"},
     # optional colour overrides: {"light": {"--accent": "#…", …}, "dark": {…}}, laid over the
     # template's own :root blocks (light, dark by system setting, dark by the theme button)

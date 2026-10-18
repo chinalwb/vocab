@@ -50,6 +50,10 @@
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
 
   --accent:#2b4acb; --accent-ink:#ffffff; --st-learn:#8a8f9c; --st-test:#e0812f; --st-done:#3e9b5b;
+  /* card colours by stage (site.json "cardColor": "stage"): the stage dots' colours, washed into the
+     card ground; they follow --chip and --accent, so the dark themes need no copies */
+  --sg-learn:color-mix(in srgb,var(--st-learn) 22%,var(--chip)); --sg-review:color-mix(in srgb,var(--accent) 20%,var(--chip));
+  --sg-test:color-mix(in srgb,var(--st-test) 24%,var(--chip)); --sg-done:color-mix(in srgb,var(--st-done) 22%,var(--chip));
   --err:#c2412d; --warn:#b7791f; --mk:#ffffff; --tag:#e9ebef; --tag-ink:#4b5060;
   /* liquid glass (after iOS 26): frosted controls floating over the cards */
   --glass:rgba(243,244,246,.72); --glass-strong:rgba(243,244,246,.86);
@@ -954,7 +958,7 @@ body.running{overflow:hidden}
   .col.ents .card:hover{background:color-mix(in srgb,var(--ink) 5%,transparent);transform:none;box-shadow:none}
   .col.ents .card.sel{background:var(--chip);box-shadow:0 0 0 1.5px var(--accent)}
   .col.ents .card .hw{font-size:calc(16px * var(--fs));margin:0 0 1px}
-  .col.ents .card .hw::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--sw);border:1px solid var(--card-edge);margin-right:8px;vertical-align:1px}
+  .col.ents .card .hw::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--swd, var(--sw));border:1px solid var(--card-edge);margin-right:8px;vertical-align:1px}
   .col.ents .card .meta{display:none}
   .col.ents .card .gloss{-webkit-line-clamp:1;font-size:calc(13px * var(--fs));color:var(--ink-2)}
   .col.ents .card .foot{border-top:0;padding-top:0;margin-top:3px;color:var(--ink-3)}
@@ -1103,6 +1107,16 @@ let stages = {}, stageT = {};               // stageT: when each move was made, 
 try { stages = JSON.parse(store.get("vk.stage", "{}")) || {}; } catch(e){}
 try { stageT = JSON.parse(store.get("vk.stage.t", "{}")) || {}; } catch(e){}
 const stageOf = (it, level) => stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
+// a card's colour: its level, cycling the level's three shades (mine), or its stage (site.json
+// "cardColor": "stage", a student's page, where the colour says how far along an entry is).
+// Whatever carries data-swl is repainted by refreshStages() when an entry moves.
+const swOf = (it, level, i) => VK.cardColor === "stage" ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
+// by stage, the desktop list's little square takes the stage dot's full colour (--swd); the wash is too pale there
+const SG_DOT = { learn: "--st-learn", review: "--accent", test: "--st-test", done: "--st-done" };
+function paintSw(el, it, level, i){
+  el.style.setProperty("--sw", `var(${swOf(it, level, i)})`);
+  if (VK.cardColor === "stage") el.style.setProperty("--swd", `var(${SG_DOT[stageOf(it, level)]})`);
+}
 function setStage(it, stage){
   stages[it.anchor] = stage;
   stageT[it.anchor] = Date.now();
@@ -1295,7 +1309,7 @@ const sections = DATA.map(g => {
   const cards = g.items.map((it, i) => {
     const c = document.createElement("button");
     c.className = "card"; c.type = "button"; c.dataset.anchor = it.anchor;
-    c.style.setProperty("--sw", `var(${LV[g.level].sw[i % 3]})`);
+    paintSw(c, it, g.level, i); c.dataset.swl = g.level;
     const n = (it.html.match(/<li><span class="en">/g) || []).length;
     const meta = [it.pos && `<span class="pos">${it.pos}</span>`, it.ipa && `<span class="ipa">${it.ipa}</span>`]
       .filter(Boolean).join("");
@@ -1789,6 +1803,8 @@ function refreshStages(){
     el.textContent = st === "done" ? " · ✓ 已掌握" : st === "test" && el.dataset.level !== "SELFTEST" ? " · 考核中" : st === "review" ? " · 复习中" : "";
     el.classList.toggle("done", st === "done");
   });
+  if (VK.cardColor === "stage") document.querySelectorAll("[data-swl]").forEach(el =>
+    paintSw(el, { anchor: el.dataset.swa || el.dataset.anchor }, el.dataset.swl, 0));
   const n = { learn: 0, review: 0, test: 0, done: 0 };
   DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));   // pill counts come from render()
   document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 已掌握 " + n.done + " · 错题 " + mkTotal;
@@ -2077,7 +2093,7 @@ function show(it, level, i, o = {}){
   sheet.setAttribute("role", "dialog");
   sheet.setAttribute("aria-modal", String(!docked));
   sheet.setAttribute("aria-label", it.title);
-  sheet.style.setProperty("--sw", `var(${LV[level].sw[i % 3]})`);
+  sheet.style.setProperty("--sw", `var(${swOf(it, level, i)})`); sheet.dataset.swa = it.anchor; sheet.dataset.swl = level;
   const back = trail[trail.length - 1];
   const stage = stageOf(it, level);
   const selfTest = level === "SELFTEST";
@@ -2706,7 +2722,7 @@ function renderStageTab(stage, el){
   el.innerHTML = sum +
     (ready.length ? `<button type="button" class="ready" id="qz-ready"><span class="ck" aria-hidden="true">✓</span><span class="t">${ready.length} 条的题都答对过了,可以移到${STAGE_TAB[nextStage(stage)]}</span>${ICON_CHEV}</button>` : "") +
     groups.map(([title, list, sub]) => `<h3 class="grp-h">${title} · ${list.length}</h3><div class="srows">` +
-      list.map(t => `<button type="button" class="srow" data-anchor="${t.it.anchor}" style="--sw:var(${LV[t.level].sw[t.i % 3]})">` +
+      list.map(t => `<button type="button" class="srow" data-anchor="${t.it.anchor}" data-swl="${t.level}" style="--sw:var(${swOf(t.it, t.level, t.i)})">` +
         `<span class="t"><b>${stTitle(t.it)}</b><small>${esc(sub(t))}</small></span><span class="tg">${lvShort(t.level)}</span></button>`).join("") + `</div>`).join("");
   const start = el.querySelector("#qz-start");
   if (start) start.addEventListener("click", () => {
@@ -2732,7 +2748,7 @@ function renderQuizCard(el){
   const lastQ = exam || !ex || ex.k + 1 >= ex.of;           // the entry's last sentence
   const final = s.revealed && step === 2 && lastQ;           // the entry is done
   const pct = Math.round((s.index + (final ? 1 : 0)) / s.queue.length * 100);
-  const sw = `var(${LV[t.level].sw[t.i % 3]})`;
+  const sw = `var(${swOf(t.it, t.level, t.i)})`;
   const top = `<div class="runbar"><button type="button" class="x2" id="qz-stop" aria-label="结束这一轮">✕</button>` +
     `<div class="bar" role="img" aria-label="进度 ${s.index + 1} / ${s.queue.length}"><i style="width:${pct}%"></i></div><span>${s.index + 1} / ${s.queue.length}</span></div>`;
   const stop = () => { quiz = null; render(); };
@@ -2854,7 +2870,7 @@ function renderHistory(){
     `打开一条、或在复习 / 考核里做到它,都会记在这里;同一条再看会移到最上面,最多留 ${HIST_MAX} 条。开了同步的话,${VK.app ? "网页和 App 共用这份历史" : "换浏览器也能看到这份历史"}。</p>` +
     days.map(([d, list]) => `<h3 class="grp-h">${d} · ${list.length}</h3><div class="srows">` + list.map(v => {
       const t = byAnchor[v.a];
-      return `<button type="button" class="srow" data-anchor="${v.a}" style="--sw:var(${LV[t.level].sw[t.i % 3]})">` +
+      return `<button type="button" class="srow" data-anchor="${v.a}" data-swl="${t.level}" style="--sw:var(${swOf(t.it, t.level, t.i)})">` +
         `<span class="t"><b>${stTitle(t.it)}</b><small>${esc([hhmm(v.t) + " " + (HIST_VIA[v.via] || "打开"), gloss(t)].filter(Boolean).join(" · "))}</small></span>` +
         `<span class="tg">${lvShort(t.level)}</span></button>`;
     }).join("") + `</div>`).join("") +

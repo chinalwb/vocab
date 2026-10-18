@@ -4,6 +4,7 @@
   "prefix": "vk.taobao.",
   "app": false,
   "categories": false,
+  "cardColor": "stage",
   "sync": {
     "repo": "chinalwb/vocab",
     "branch": "progress",
