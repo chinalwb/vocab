@@ -6,6 +6,7 @@
   "app": false,
   "categories": false,
   "cardColor": "stage",
+  "fillBlanks": true,
   "sync": {
     "repo": "chinalwb/vocab",
     "branch": "progress",
