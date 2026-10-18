@@ -4,6 +4,8 @@
   python build.py                       -> index.html (standalone, for GitHub Pages)
   python build.py --artifact out.html   -> also write the body-only variant used
                                            when publishing as a Claude artifact
+  python build.py --src students/taobao -> a student's notebook: reads its vocabulary.md and
+                                           site.json, writes the page next to them
 Every run also writes data.json + meta.json, which the Android app (android/)
 fetches from Pages.
 """
@@ -383,25 +385,63 @@ STANDALONE = """<!doctype html>
 """
 
 
+# The page's VK config (template.html). A notebook's site.json overrides any of it; a student's
+# needs its own prefix (same origin, so localStorage is shared) and its own sync file.
+SITE = {
+    "title": "词汇便签墙",
+    "brand": "VoCab",
+    "prefix": "vk.",
+    "app": True,                     # the Android app reads this notebook too
+    "categories": True,              # 分类 in the sidebar, 类型 / 级别 rows in 筛选
+    "sync": {"repo": "chinalwb/vocab", "branch": "progress", "path": "progress.json"},
+    # optional colour overrides: {"light": {"--accent": "#…", …}, "dark": {…}}, laid over the
+    # template's own :root blocks (light, dark by system setting, dark by the theme button)
+    "theme": {},
+}
+
+
+def theme_css(theme):
+    decl = lambda d: "".join(f"{k}:{v};" for k, v in d.items())
+    css = ""
+    if theme.get("light"):
+        css += f":root{{{decl(theme['light'])}}}\n"
+    if theme.get("dark"):
+        css += (f"@media (prefers-color-scheme: dark){{ :root:not([data-theme=\"light\"]){{{decl(theme['dark'])}}} }}\n"
+                f":root[data-theme=\"dark\"]{{{decl(theme['dark'])}}}\n")
+    return f"<style>\n{css}</style>\n" if css else ""
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--artifact", metavar="PATH", help="also write the body-only variant here")
+    ap.add_argument("--src", metavar="DIR", help="the notebook to build (default: the repo root)")
     args = ap.parse_args()
 
-    entries = build_entries((ROOT / "vocabulary.md").read_text(encoding="utf-8"))
-    read_md = ROOT / "readlist.md"
+    src = (ROOT / args.src).resolve() if args.src else ROOT
+    site = dict(SITE)
+    if (src / "site.json").exists():
+        site.update(json.loads((src / "site.json").read_text(encoding="utf-8")))
+    if src != ROOT and site["prefix"] == SITE["prefix"]:
+        raise SystemExit(f"{src / 'site.json'}: needs its own \"prefix\" — it shares localStorage with the main page")
+    if src != ROOT and site["sync"]["path"] == SITE["sync"]["path"]:
+        raise SystemExit(f"{src / 'site.json'}: needs its own sync \"path\" — it would overwrite progress.json")
+
+    entries = build_entries((src / "vocabulary.md").read_text(encoding="utf-8"))
+    read_md = src / "readlist.md"
     reads = build_reads(read_md.read_text(encoding="utf-8")) if read_md.exists() else []
     data = page_data(entries)
     mistakes = mistake_data(entries)
     page = (ROOT / "template.html").read_text(encoding="utf-8").replace(
         "/*__DATA__*/", json.dumps(data, ensure_ascii=False)).replace(
-        "/*__MISTAKES__*/", json.dumps(mistakes, ensure_ascii=False))
-    if "__DATA__" in page or "__MISTAKES__" in page:
-        raise SystemExit("template.html is missing its /*__DATA__*/ or /*__MISTAKES__*/ placeholder")
+        "/*__MISTAKES__*/", json.dumps(mistakes, ensure_ascii=False)).replace(
+        "/*__CONFIG__*/", json.dumps(site, ensure_ascii=False))
+    page = page.replace("<!--/HEAD-->", theme_css(site["theme"]) + "<!--/HEAD-->", 1)
+    if "__DATA__" in page or "__MISTAKES__" in page or "__CONFIG__" in page:
+        raise SystemExit("template.html is missing its /*__DATA__*/, /*__MISTAKES__*/ or /*__CONFIG__*/ placeholder")
 
     head = page.split("<!--HEAD-->", 1)[1].split("<!--/HEAD-->", 1)[0].strip()
     body = page.split("<!--/HEAD-->", 1)[1].strip()
-    (ROOT / "index.html").write_text(STANDALONE.format(head=head, body=body), encoding="utf-8")
+    (src / "index.html").write_text(STANDALONE.format(head=head, body=body), encoding="utf-8")
 
     # The Android app polls meta.json (tiny) and only downloads data.json when
     # the hash differs from what it last fetched. Keep SCHEMA in sync with the app.
@@ -412,8 +452,8 @@ def main():
         "count": len(entries),
         "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
-    (ROOT / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
-    (ROOT / "data.json").write_text(
+    (src / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
+    (src / "data.json").write_text(
         json.dumps({**meta, "mistakeTypes": [{"key": k, "desc": d, "check": c} for k, d, c in MISTAKE_TYPES],
                     "entries": entries, "reads": reads}, ensure_ascii=False), encoding="utf-8")
 
@@ -426,6 +466,8 @@ def main():
     print(f"{sum(len(g['items']) for g in mistakes)} mistakes -> "
           + ", ".join(f"{g['type']}:{len(g['items'])}" for g in mistakes))
     print(f"{len(reads)} reads (readlist.md)")
+    if src != ROOT:
+        print(f"-> {(src / 'index.html').relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

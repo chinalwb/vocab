@@ -6,6 +6,21 @@
 
 先看 **`SESSION-NOTES.md`**:每次长会话结束时记下改了什么、版本、没做完的事和已知问题,最新的在最上面。
 
+## 学生的笔记(`students/`)
+
+用户也会拿学生写的句子来问。每个学生一个目录,有自己的 `vocabulary.md` 和 `CLAUDE.md`(目标水平、讲解方式、隐私规则以那里为准)。
+
+**按启动目录区分是谁的会话**:在仓库根目录启动的会话,句子默认是用户自己的;在 `students/<名字>/` 里启动的,默认是那个学生的(规则见那个目录的 `CLAUDE.md`)。根目录会话里用户明确说是某个学生的,也按那个学生的规则处理。
+
+- **`students/taobao/`** —— 备考 FCE(B2)。讲他的句子时给 B2 写法,不给 C1;确认后写进他自己的 `vocabulary.md`,不要写进根目录的。
+
+**每个学生有自己的网页**(只有网页,App 只读根目录的笔记):`python3 build.py --src students/taobao` 读那个目录的 `vocabulary.md` 和 `site.json`,把 `index.html` 写在同一个目录(gitignore)。Action 在 main 上给每个有 `vocabulary.md` 的 `students/<名字>/` 都生成一页,发布到 `https://chinalwb.github.io/vocab/<名字>/`。
+
+- `site.json`:`title`、`brand`(左上角)、`prefix`(localStorage 前缀)、`app`(false = 页面上不提 App)、`categories`(false = 没有左栏的「分类」和筛选里的「类型 / 级别」,左栏「学习阶段」最上面多一个「全部条目」)、`sync`(`repo` / `branch` / `path`)、`theme`(`light` / `dark` 各一组 CSS 变量,盖在 template.html 的三个主题块上;`--brand` 是左上角名字的颜色)。build.py 把它和默认值合并后注入 template.html 的 `/*__CONFIG__*/`(`VK`),主题变量写成 `<!--/HEAD-->` 前的一个 `<style>`。
+- **和主页在同一个域名下**,localStorage 是共用的,所以学生页的所有键都走 `vkKey()` 换成自己的前缀(taobao 是 `vk.taobao.`);新加 localStorage 读写时一律用 `store` 或 `vkKey()`,不要直接写 `"vk.xxx"`。build.py 会拒绝和主页同前缀、同同步文件的 `site.json`。
+- **同步**:taobao 的进度在 `progress` 分支的 `progress-taobao.json`,规则和我的 `progress.json` 一样;文件不存在时第一次同步会创建它。同样不要手动改。
+- 新加一个学生:建 `students/<名字>/`,放 `vocabulary.md`(标题 + 空的 `## 目录`)、`site.json`(新的 prefix 和 path)、`CLAUDE.md`。
+
 ## 对话方式
 
 - **始终用中文回复解释部分**,无论用户用中文还是英文提问。

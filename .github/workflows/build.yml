@@ -10,6 +10,7 @@ on:
       - readlist.md
       - template.html
       - build.py
+      - students/**
       - .github/workflows/build.yml
   workflow_dispatch:
 
@@ -35,10 +36,22 @@ jobs:
       - name: Generate the page
         run: python build.py
 
+      # each students/<name>/ with a vocabulary.md is its own page at /vocab/<name>/
+      - name: Generate the students' pages
+        run: |
+          for d in students/*/; do
+            [ -f "$d/vocabulary.md" ] && python build.py --src "$d"
+          done
+
       - name: Stage the site
         run: |
           mkdir -p _site
           cp index.html data.json meta.json _site/
+          for d in students/*/; do
+            [ -f "$d/index.html" ] || continue
+            mkdir -p "_site/$(basename "$d")"
+            cp "$d/index.html" "_site/$(basename "$d")/"
+          done
 
       - uses: actions/upload-pages-artifact@v3
         with:

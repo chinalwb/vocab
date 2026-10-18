@@ -586,3 +586,40 @@
 
 - ❌ [词形] ==conneted== → **connected** —— 拼写漏了一个 c。
 - ❌ [动词] ==for test== → **for testing** —— 说「测试」这件事用动名词,或者写成 *to test*。
+
+<a id="r-by-simple-i-dont-mean"></a>
+## 这一条只留第 1 点;「简单」不是少写字,而是讲得清楚,一条只练一个点。
+
+- 日期:2026-10-18
+- 关键词:By "X", I don't mean … · focus on
+
+**常用说法:**
+
+> Only keep point 1 in this entry, so it is about pronouns. And create two more entries for 4 and 5. My student is only 10, so make every entry simple. Simple doesn't mean fewer words. It means clear and easy to follow. One entry is for one point. Is this clear?
+
+**C1 说法:**
+
+> Keep only point 1 (it's / its / their) in this entry, **so that it focuses on** pronouns. Then create two more entries for points 4 and 5. **Since** my student is only 10, let's keep every entry as simple as possible. **By "simple", I don't mean** cutting the word count; **I mean** making each entry **as clear and easy to follow as possible**. Each entry should **focus on just one point**. **Is that clear?**
+
+**差别:**
+
+- **so that it focuses on** —— 「好让它专门讲……」,说目的;对应 *so it is about*。*focus on* 比 *be about* 更明确地表示「只讲这一个」。
+- **Since …** —— 先把原因放在句首,再说要做什么;对应 *…, so …*。
+- **By "simple", I don't mean …; I mean …** —— 先排除对方可能的误解,再说真正的意思,专门用来澄清一个词;对应 *Simple doesn't mean … It means …*。例句:
+  - *By "soon", I don't mean today; I mean this week.* 我说的「尽快」不是今天,是这周内。
+  - *By "short", I mean under 200 words.* 我说的「短」是指 200 词以内。
+- **as clear and easy to follow as possible** —— 两个要求合进一个 *as … as possible*,不用说两次 *make*;对应 *clear and easy to follow*。
+- **Each entry should focus on just one point.** —— 用 *should* 把它说成一条规则;对应 *One entry is for one point*。
+- **Is that clear?** —— *that* 指刚刚说完的那些话;对应 *Is this clear?*
+
+**我的原句:**
+
+> Only keep point 1 (it's / its / their) for this item. ==Makes== it ==dedicated for== the pronoun ==praticing==. And create two other items for 4 and 5. Note: Since the student is just a ==10 years old kid==, let's make every entry as simple as possible. ==With respect to== "Simple", it doesn't mean ==we are to reduce== the word count for each item==, instead,== we want to make it as clear as possible to make it easy to follow. And one item is just for practicing one point. Is this clear?
+
+- ❌ [结构] ==Makes== → **so that it focuses on …** —— 这是没有主语的半句话;说目的,用 *so that* 接一个完整的句子。
+- ⚠️ [介词] ==dedicated for== → **dedicated to** —— 标准搭配是 *dedicated to*(前一天也写过一次 *dedicated for*)。
+- ❌ [词形] ==praticing== → **practicing** —— 漏了一个 c。
+- ❌ [词形] ==10 years old kid== → **10-year-old kid** —— 放在名词前面要用连字符连起来,*year* 不加 s。
+- ⚠️ [语气] ==With respect to== → **By "simple", I don't mean …** —— *with respect to* 是公文腔,口语里澄清一个词用 *By "X", I mean …*。
+- ⚠️ [动词] ==we are to reduce== → **cutting** —— *be to do* 是「按规定要做」,用在这里太正式。
+- ❌ [标点] ==, instead,== → **; instead,** —— 逗号连接了两个完整的句子,改成分号或断成两句。
