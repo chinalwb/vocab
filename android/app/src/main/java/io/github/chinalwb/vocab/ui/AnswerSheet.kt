@@ -43,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
@@ -51,6 +52,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -268,6 +271,53 @@ fun ChipsAnswerBox(st: WordBankState) {
     }
 }
 
+/**
+ * A text field that keeps its cursor in sight while it's typed into (用户 2026-10-19): after every edit
+ * or cursor move, the sheet scrolls so the cursor's line is on screen above the keyboard — at the
+ * end, or in the middle if that's where I'm typing. Takes the text as a String like BasicTextField.
+ */
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun FollowingTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    textStyle: androidx.compose.ui.text.TextStyle,
+    modifier: Modifier = Modifier,
+    singleLine: Boolean = false,
+    minLines: Int = 1,
+    keyboardOptions: androidx.compose.foundation.text.KeyboardOptions = androidx.compose.foundation.text.KeyboardOptions.Default,
+    keyboardActions: androidx.compose.foundation.text.KeyboardActions = androidx.compose.foundation.text.KeyboardActions.Default,
+    decorationBox: @Composable (@Composable () -> Unit) -> Unit = { it() },
+) {
+    var field by remember { androidx.compose.runtime.mutableStateOf(androidx.compose.ui.text.input.TextFieldValue(value, androidx.compose.ui.text.TextRange(value.length))) }
+    // set from outside (清空, back from the 选词 hint): take the new text, cursor at its end
+    val shown = if (field.text == value) field else androidx.compose.ui.text.input.TextFieldValue(value, androidx.compose.ui.text.TextRange(value.length))
+    var layout by remember { androidx.compose.runtime.mutableStateOf<androidx.compose.ui.text.TextLayoutResult?>(null) }
+    var focused by remember { androidx.compose.runtime.mutableStateOf(false) }
+    val follow = remember { BringIntoViewRequester() }
+    val margin = with(androidx.compose.ui.platform.LocalDensity.current) { 24.dp.toPx() }
+    LaunchedEffect(shown.text, shown.selection, focused) {
+        if (!focused) return@LaunchedEffect
+        withFrameNanos { }                                   // the new text is laid out by then
+        val l = layout ?: return@LaunchedEffect
+        val at = shown.selection.end.coerceIn(0, l.layoutInput.text.length)
+        follow.bringIntoView(l.getCursorRect(at).inflate(margin))
+    }
+    BasicTextField(
+        value = shown,
+        onValueChange = { field = it; if (it.text != value) onValueChange(it.text) },
+        textStyle = textStyle,
+        cursorBrush = SolidColor(textStyle.color),
+        singleLine = singleLine,
+        minLines = minLines,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        onTextLayout = { layout = it },
+        modifier = modifier.bringIntoViewRequester(follow).onFocusChanged { focused = it.isFocused },
+        decorationBox = decorationBox,
+    )
+}
+
 /** 打字: the same box with a cursor in it, outlined; a long answer grows it downward. */
 @Composable
 fun TypingAnswerBox(value: String, onChange: (String) -> Unit) {
@@ -284,11 +334,10 @@ fun TypingAnswerBox(value: String, onChange: (String) -> Unit) {
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         BoxHeader(if (value.isEmpty()) null else ({ onChange("") }))
-        BasicTextField(
+        FollowingTextField(
             value = value,
             onValueChange = onChange,
             textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = AppFont, fontSize = 19.sp, lineHeight = 28.sp, color = ink),
-            cursorBrush = SolidColor(ink),
             minLines = 2,
             modifier = Modifier.fillMaxWidth().heightIn(min = 76.dp),
             decorationBox = { field ->
@@ -335,14 +384,12 @@ fun FillAnswerBox(parts: List<Blank>, fills: List<String>, onChange: (List<Strin
                 } else {
                     val i = k++
                     val last = i == keys - 1
-                    // about as wide as the words it stands for; a long part takes the whole row
-                    val wide = p.text.length > 24
-                    BasicTextField(
+                    // at least as wide as the words it stands for, wider as it's typed into, and onto
+                    // more lines once it reaches the row's width (用户 2026-10-19)
+                    FollowingTextField(
                         value = fills.getOrElse(i) { "" },
                         onValueChange = { v -> onChange(List(keys) { j -> if (j == i) v else fills.getOrElse(j) { "" } }) },
                         textStyle = style,
-                        cursorBrush = SolidColor(ink),
-                        singleLine = !wide,
                         keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                             autoCorrectEnabled = false,
                             imeAction = if (last) androidx.compose.ui.text.input.ImeAction.Done else androidx.compose.ui.text.input.ImeAction.Next,
@@ -351,7 +398,7 @@ fun FillAnswerBox(parts: List<Blank>, fills: List<String>, onChange: (List<Strin
                             onNext = { focus.moveFocus(androidx.compose.ui.focus.FocusDirection.Next) },
                             onDone = { focus.clearFocus() },
                         ),
-                        modifier = (if (wide) Modifier.fillMaxWidth() else Modifier.width((p.text.length.coerceAtLeast(3) * 10 + 16).dp))
+                        modifier = Modifier.widthIn(min = (p.text.length.coerceAtLeast(3) * 10 + 16).dp)
                             .then(if (i == 0) Modifier.focusRequester(first) else Modifier)
                             .clip(RoundedCornerShape(8.dp))
                             .background(c.keyBg)

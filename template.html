@@ -829,7 +829,7 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .ybox-h{display:flex;align-items:center;min-height:30px;font-size:calc(12px * var(--fs));color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
 .ybox-h span{flex:1}
 .ybox-h button{font:inherit;font-size:calc(13px * var(--fs));color:inherit;background:none;border:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px 6px;border-radius:6px}
-.sheet .ybox textarea.draft,.ybox textarea.draft{border:0;background:transparent;margin:0;padding:0;min-height:76px;resize:none;font-size:calc(19px * var(--fs));line-height:28px;color:var(--card-ink);outline:none;border-radius:0}
+.sheet .ybox textarea.draft,.ybox textarea.draft{border:0;background:transparent;margin:0;padding:0;min-height:76px;resize:none;overflow:hidden;font-size:calc(19px * var(--fs));line-height:28px;color:var(--card-ink);outline:none;border-radius:0}
 .ybox textarea.draft::placeholder{color:color-mix(in srgb,var(--card-ink) 60%,transparent)}
 .ybox .wb-ans{border:0;background:none;margin:0;padding:0;min-height:0;gap:6px}
 .ybox .wb-ans .wchip{background:var(--panel);color:var(--card-ink);border:0;box-shadow:0 1px 0 var(--key);font-size:calc(17px * var(--fs));padding:7px 12px;opacity:1}
@@ -839,7 +839,7 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .ybox .wb-ph{color:color-mix(in srgb,var(--card-ink) 70%,transparent);padding:6px 0}
 /* site.json "fillBlanks" (taobao): in 打字 only the bold key part is typed, the rest is filled in */
 .ybox .fillin{font-size:calc(19px * var(--fs));line-height:1.9;color:var(--card-ink);padding:2px 0 4px}
-.ybox .fillin input{font:inherit;color:inherit;background:var(--panel);border:0;border-bottom:2px solid var(--card-ink);border-radius:6px 6px 0 0;padding:0 6px;margin:0 2px;min-width:3ch;outline:none;box-sizing:content-box}
+.ybox .fillin input{font:inherit;color:inherit;background:var(--panel);border:0;border-bottom:2px solid var(--card-ink);border-radius:6px 6px 0 0;padding:0 6px;margin:0 2px;min-width:3ch;max-width:calc(100% - 16px);outline:none;box-sizing:content-box}
 .ybox .fillin input:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 45%,transparent)}
 .ybox-hint{font-size:calc(11.5px * var(--fs));margin:0;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
 .qpanel{flex:none;background:var(--panel);color:var(--ink);border-radius:0 0 24px 24px;border-top:1px solid var(--rule);padding:14px;display:flex;flex-direction:column;gap:12px}
@@ -2165,7 +2165,10 @@ function wireAnswer(root, a){
       ? `<input type="text" data-k="${k}" aria-label="填空" autocomplete="off" autocapitalize="off" spellcheck="false" size="${Math.max(3, p.t.length)}" value="${esc(a.fill[k] || "")}">`
       : `<span>${esc(p.t)}</span>`).join("");
     fill.querySelectorAll("input").forEach(b => {
-      b.addEventListener("input", () => { a.fill[b.dataset.k] = b.value; input.value = compose(); input.dispatchEvent(new Event("input")); });
+      const base = b.size;                                // as wide as the words it stands for; wider as typed (用户 2026-10-19)
+      const fit = () => { b.size = Math.max(base, b.value.length + 1); };
+      fit();
+      b.addEventListener("input", () => { fit(); a.fill[b.dataset.k] = b.value; input.value = compose(); input.dispatchEvent(new Event("input")); });
       b.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); a.onReveal(); } });
     });
     input.value = compose();
@@ -2183,11 +2186,15 @@ function wireAnswer(root, a){
     else if (a.blanks) { hint.hidden = true; mountFill(); }
     else {
       if (a.answer) { input.value = a.typed; input.dispatchEvent(new Event("input")); }
+      requestAnimationFrame(grow);
       hint.hidden = true; clear.hidden = !input.value;
       clear.onclick = () => { input.value = ""; input.dispatchEvent(new Event("input")); input.focus(); };
     }
   };
   const card = root.querySelector(".qcard");
+  // the box grows with the sentence instead of scrolling inside itself (用户 2026-10-19)
+  const grow = () => { if (input.hidden) return; input.style.height = "auto"; input.style.height = input.scrollHeight + "px"; };
+  input.addEventListener("input", grow);
   input.addEventListener("input", () => {
     if (!chips()) { a.typed = input.value; clear.hidden = a.blanks ? !Object.values(a.fill || {}).some(v => v.trim()) : !input.value; }
     if (card) card.classList.toggle("building", !!input.value.trim());     // the question steps down
