@@ -3810,6 +3810,13 @@
     "peek": false,
     "via": "review",
     "ex": "The fix works, but long titles are still truncated. Can we allow the title to wrap to multiple lines?"
+   },
+   {
+    "t": 1792393568784,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Looks like the bug is fixed, but the title is truncated. Can we wrap it onto multiple lines when it doesn't fit?"
    }
   ],
   "s-testflight": [
