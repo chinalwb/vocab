@@ -4186,6 +4186,13 @@
     "peek": false,
     "via": "review",
     "ex": "How much is the company worth now?"
+   },
+   {
+    "t": 1792381882446,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The book is worth reading."
    }
   ],
   "unstoppable-irresistible-inexorable": [
