@@ -146,8 +146,8 @@
    "t": 1791855035378
   },
   "bookkeeping": {
-   "s": "review",
-   "t": 1791850742144
+   "s": "test",
+   "t": 1792393974964
   },
   "postpone": {
    "s": "test",
@@ -561,11 +561,11 @@
   },
   "bookkeeping": {
    "ease": 1.96,
-   "interval": 3,
-   "reps": 2,
+   "interval": 6,
+   "reps": 3,
    "lapses": 1,
-   "due": 20745,
-   "t": 1792110305187
+   "due": 20751,
+   "t": 1792393974169
   },
   "deserted": {
    "ease": 1.3,
@@ -3504,6 +3504,27 @@
    },
    {
     "t": 1792110305186,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Manually tracking retry counts and timestamps is just bookkeeping — it shouldn't live in your core algorithm."
+   },
+   {
+    "t": 1792393954230,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She took a bookkeeping course before starting her own small business."
+   },
+   {
+    "t": 1792393963746,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The framework handles all the state bookkeeping for you, so you can focus on the actual logic."
+   },
+   {
+    "t": 1792393974168,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -7061,6 +7082,11 @@
  },
  "history": [
   {
+   "a": "stall",
+   "t": 1792393975127,
+   "via": "review"
+  },
+  {
    "a": "bookkeeping",
    "t": 1792393946400,
    "via": "review"
@@ -7153,11 +7179,6 @@
   {
    "a": "tinker",
    "t": 1792320867320,
-   "via": "review"
-  },
-  {
-   "a": "stall",
-   "t": 1792320403509,
    "via": "review"
   },
   {
