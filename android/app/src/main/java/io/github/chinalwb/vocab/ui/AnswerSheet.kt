@@ -50,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -296,6 +297,80 @@ fun TypingAnswerBox(value: String, onChange: (String) -> Unit) {
         )
     }
 }
+
+/**
+ * 打字 with the key part only (用户 2026-10-19, blanksOf()): the sentence in the box, the words around
+ * the key part written out and a field for each **bold** part; Next moves to the following field,
+ * Done on the last one. [fills]: what's typed in each, in order. Same as .fillin in template.html.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun FillAnswerBox(parts: List<Blank>, fills: List<String>, onChange: (List<String>) -> Unit) {
+    val c = sheetColors()
+    val ink = MaterialTheme.colorScheme.onSurface
+    val keys = parts.count { it.key }
+    val focus = androidx.compose.ui.platform.LocalFocusManager.current
+    val first = remember { androidx.compose.ui.focus.FocusRequester() }
+    LaunchedEffect(parts) { withFrameNanos { }; runCatching { first.requestFocus() } }
+    val style = MaterialTheme.typography.bodyLarge.copy(fontFamily = AppFont, fontSize = 19.sp, lineHeight = 28.sp, color = ink)
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .heightIn(min = BOX_MIN)
+            .clip(RoundedCornerShape(16.dp))
+            .background(c.well)
+            .border(1.5.dp, ink, RoundedCornerShape(16.dp))
+            .padding(start = 14.dp, end = 10.dp, top = 6.dp, bottom = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        BoxHeader(if (fills.all { it.isBlank() }) null else ({ onChange(List(keys) { "" }) }))
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            var k = 0
+            parts.forEach { p ->
+                if (!p.key) p.text.split(" ").filter { it.isNotEmpty() }.forEach {
+                    Text(it, style = style, modifier = Modifier.padding(vertical = 4.dp))
+                } else {
+                    val i = k++
+                    val last = i == keys - 1
+                    // about as wide as the words it stands for; a long part takes the whole row
+                    val wide = p.text.length > 24
+                    BasicTextField(
+                        value = fills.getOrElse(i) { "" },
+                        onValueChange = { v -> onChange(List(keys) { j -> if (j == i) v else fills.getOrElse(j) { "" } }) },
+                        textStyle = style,
+                        cursorBrush = SolidColor(ink),
+                        singleLine = !wide,
+                        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                            autoCorrectEnabled = false,
+                            imeAction = if (last) androidx.compose.ui.text.input.ImeAction.Done else androidx.compose.ui.text.input.ImeAction.Next,
+                        ),
+                        keyboardActions = androidx.compose.foundation.text.KeyboardActions(
+                            onNext = { focus.moveFocus(androidx.compose.ui.focus.FocusDirection.Next) },
+                            onDone = { focus.clearFocus() },
+                        ),
+                        modifier = (if (wide) Modifier.fillMaxWidth() else Modifier.width((p.text.length.coerceAtLeast(3) * 10 + 16).dp))
+                            .then(if (i == 0) Modifier.focusRequester(first) else Modifier)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(c.keyBg)
+                            .drawBehind { drawLine(ink, Offset(0f, size.height - 1.dp.toPx()), Offset(size.width, size.height - 1.dp.toPx()), 2.dp.toPx()) }
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                    )
+                }
+            }
+        }
+    }
+}
+
+/** 算我对 under a verdict that only differs in a way that isn't a mistake (tense, contraction, synonym). */
+@Composable
+fun RightMeRow(onClick: () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        androidx.compose.material3.OutlinedButton(onClick = onClick) { Text("算我对") }
+        Text("时态、缩写、同义词这类差别不算错", style = MaterialTheme.typography.bodySmall, color = sheetColors().sub, modifier = Modifier.weight(1f))
+    }
+}
+
+const val RIGHTED = "算我对 · 这一句记为答对"
 
 /** A key on the panel: a 3dp lip along the bottom so it reads as something to press. */
 @Composable

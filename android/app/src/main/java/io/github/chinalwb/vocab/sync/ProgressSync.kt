@@ -189,7 +189,9 @@ class ProgressSync(
         }
         selfTests.replace { l ->
             l + r.attempts.map { (a, list) ->
-                val mine = l[a].orEmpty()
+                // ok is "either side said right": 算我对 only ever turns a wrong into a right
+                val right = list.filter { it.ok }.map { it.t }.toSet()
+                val mine = l[a].orEmpty().map { if (!it.ok && it.t in right) it.copy(ok = true) else it }
                 val seen = mine.map { it.t }.toSet()
                 a to (mine + list.filter { it.t !in seen }.map { Attempt(it.t, if (it.peek) "" else ELSEWHERE, it.ok, it.via, it.ex) })
                     .sortedBy { it.t }.takeLast(MAX_PER_ENTRY)

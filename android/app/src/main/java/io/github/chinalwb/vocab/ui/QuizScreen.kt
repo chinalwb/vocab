@@ -119,6 +119,8 @@ fun QuizScreen(
     onEnd: () -> Unit,
     /** 撤销 on the last page: put back what the run moved by itself */
     onUndo: () -> Unit,
+    /** 算我对: this sentence was right after all */
+    onRight: () -> Unit = {},
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
 ) {
@@ -126,7 +128,7 @@ fun QuizScreen(
     when {
         session != null && session.stage == stage && current != null -> QuizCard(
             session, current, selfTests[current.anchor].orEmpty(), stageTimes[current.anchor] ?: 0L, excluded[current.anchor].orEmpty(),
-            review.cards[current.anchor]?.reps ?: 0, onStudied, onReveal, onGrade, onOnward, onNext, onEnd, { onOpen(it, emptyList()) }, modifier,
+            review.cards[current.anchor]?.reps ?: 0, onStudied, onReveal, onGrade, onOnward, onNext, onEnd, { onOpen(it, emptyList()) }, onRight, modifier,
         )
         session != null && session.stage == stage -> Column(
             modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility).padding(24.dp),
@@ -445,6 +447,7 @@ private fun QuizCard(
     onNext: (Boolean) -> Unit,
     onEnd: () -> Unit,
     onXref: (String) -> Unit,
+    onRight: () -> Unit,
     modifier: Modifier,
 ) {
     val exam = entry.level == "SELFTEST"
@@ -457,6 +460,7 @@ private fun QuizCard(
     var typed by rememberSaveable(key) { mutableStateOf("") }
     var help by rememberSaveable(key) { mutableStateOf(false) }
     var draft by rememberSaveable(key) { mutableStateOf("") }
+    var fills by rememberSaveable(key) { mutableStateOf("") }
     val bank = if (answer != null && (step == 1 || help) && !session.revealed && !studying) {
         val seed = entry.anchor.hashCode() + session.index + 7 * session.k
         val others = remember(entry.anchor) { entry.quizExamples().map { plain(it.en) } + entry.selfTestAnswer.lines() }
@@ -516,7 +520,12 @@ private fun QuizCard(
                                 else -> ReviewFront(entry, kindOf(entry, inTest = true))
                             }
                             Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub)
-                            if (bank != null) ChipsAnswerBox(bank) else TypingAnswerBox(typed) { typed = it }
+                            val blanks = if (step == 2 && !studying) blanksOf(ex?.raw) else null
+                            when {
+                                bank != null -> ChipsAnswerBox(bank)
+                                blanks != null -> FillAnswerBox(blanks, fillsOf(fills)) { fills = it.joinToString(FILL_SEP.toString()); typed = composeBlanks(blanks, it) }
+                                else -> TypingAnswerBox(typed) { typed = it }
+                            }
                         } else {
                             val q = if (exam) entry.title.removePrefix("自测:").removePrefix("自测:") else ex?.zh
                             if (q != null) Text(q, style = MaterialTheme.typography.bodyLarge, color = sheetColors().sub)
@@ -525,11 +534,13 @@ private fun QuizCard(
                                 RevealVerdict(draft, full, STEP1_NOTE)
                                 return@AnswerSheet
                             }
-                            if (full != null) StepsLine(stepsText(session.bankOk, session.typedOk, session.helped), session.bankOk && session.typedOk)
+                            val right = session.bankOk && session.typedOk
+                            if (full != null) StepsLine(if (session.righted) RIGHTED else stepsText(session.bankOk, session.typedOk, session.helped), session.righted || right)
                             when {
                                 full != null -> RevealVerdict(draft, full, stats)
                                 else -> MovedResult(draft, session.graded) { onGrade(draft, it) }
                             }
+                            if (full != null && !session.righted && !right && draft.isNotBlank()) RightMeRow(onRight)
                             if (final && ex != null && ex.of > 1) StepsLine(
                                 "这一条的 ${ex.of} 句都做完了:" + if (session.entryOk) "全部答对" else "有没答对的,整条记为没对", session.entryOk,
                             )

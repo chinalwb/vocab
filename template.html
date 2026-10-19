@@ -891,6 +891,8 @@ body.running{overflow:hidden}
 .ready{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;font-size:calc(14px * var(--fs));color:var(--ink);background:var(--chip);border:1px solid var(--rule);border-radius:16px;padding:12px 14px;cursor:pointer;margin:0 0 8px}
 .ready .ck{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--ground);display:grid;place-items:center;flex:none;font-weight:700}
 .ready .t{flex:1}
+.rightme{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0}
+.rightme small{color:var(--ink-3);font-size:calc(12.5px * var(--fs))}
 .histgo{max-width:720px;margin:16px auto 0}
 .hist-clear{margin-top:20px}
 .ready svg{width:18px;height:18px;flex:none}
@@ -1594,6 +1596,22 @@ function bankOptions(words, strays, seed, k){
   const fill = shuffled(strays, s + 1).filter(fresh).slice(0, BANK_CHIPS - 1 - later.length);
   return shuffled([right, ...later, ...fill], s + 2);
 }
+// The chips as laid out after k picks (用户 2026-10-19): a word still there from the last set keeps
+// its slot — above all the one that's right next, which was usually on screen already — so the
+// thumb doesn't hunt for it; the new ones fill the free slots. Replayed from the first set, so it
+// is the same after ⌫. Same as WordBankState.options in SelfTest.kt.
+function bankLayout(words, strays, seed, k){
+  let prev = [];
+  for (let j = 0; j <= k; j++) {
+    const opts = bankOptions(words, strays, seed, j), out = new Array(opts.length).fill(null), rest = [];
+    opts.forEach(w => {
+      const at = prev.findIndex(p => p && bareWord(p) === bareWord(w));
+      if (at >= 0 && at < out.length && !out[at]) out[at] = w; else rest.push(w);
+    });
+    prev = out.map(w => w || rest.shift());
+  }
+  return prev;
+}
 // the word bank on screen: the keyboard's Delete / Backspace takes its last word back, like ⌫
 // (用户 2026-10-15) — not while a text field has the focus, and not once the bank is hidden
 let liveBank = null;
@@ -1614,7 +1632,7 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
           ? `<button type="button" class="wchip last" aria-label="撤回 ${esc(w)}">${esc(w)}</button>`
           : `<span class="wchip">${esc(w)}</span>`).join("") + `<i class="caret" aria-hidden="true"></i>`
       : `<span class="wb-ph">点下面的词,一个一个拼出英文…</span>`;
-    const opts = bankOptions(words, strays, seed, picks.length);
+    const opts = bankLayout(words, strays, seed, picks.length);
     bankEl.innerHTML = opts.length
       ? opts.map(w => `<button type="button" class="wchip" data-w="${esc(w)}">${esc(w)}</button>`).join("")
       : `<span class="wb-done">拼完了,点「显示答案」对照</span>`;
@@ -1781,6 +1799,20 @@ function logAttempt(anchor, text, ok, via, ex = ""){     // the verdict is alrea
   refreshStCounts();
   syncSoon();
 }
+// 算我对 (用户 2026-10-19): a reveal judged wrong for a difference that isn't a mistake — a tense the
+// Chinese doesn't give away, a contraction, a synonym — counts as right after all: the last attempt
+// (it has to be a written one) turns ok. 同步 merges ok as "either side said right". Same as
+// SelfTestLog.markRight() in the app.
+function markRight(anchor){
+  const l = stLog[anchor] || [], a = l[l.length - 1];
+  if (!a || !a.text) return false;
+  a.ok = true;
+  store.set("vk.selftest", JSON.stringify(stLog));
+  refreshStCounts(); syncSoon();
+  return true;
+}
+const RIGHTED = `<p class="steps ok">算我对 · 这一句记为答对</p>`;
+const RIGHT_BTN = `<p class="rightme"><button class="btn ghost" type="button" id="st-right">算我对</button><small>时态、缩写、同义词这类差别不算错</small></p>`;
 // After 显示答案 on a moved entry: the word-by-word compare with the example, or — with no
 // example to compare against — 我写对了 / 没写对 until I've graded it.
 function movedHtml(ex, mine, graded){
@@ -2284,9 +2316,11 @@ function show(it, level, i, o = {}){
       return;
     }
     if (ans !== null) {                                   // ②: right only if ① was too
-      const typedOk = !cfg.help && !!v.trim() && bestDiff(v, ans).same;
-      logAttempt(it.anchor, v, !!o.bankOk && typedOk, "entry", ex ? plainMd(ex.en) : "");
-      paint(stepsHtml(!!o.bankOk, typedOk, !!cfg.help) + verdictHtml(v, ans, stats()));
+      const typedOk = !cfg.help && !!v.trim() && bestDiff(v, ans).same, ok = !!o.bankOk && typedOk;
+      logAttempt(it.anchor, v, ok, "entry", ex ? plainMd(ex.en) : "");
+      paint(stepsHtml(!!o.bankOk, typedOk, !!cfg.help) + verdictHtml(v, ans, stats()) + (!ok && v.trim() ? RIGHT_BTN : ""));
+      const rb = res.querySelector("#st-right");
+      if (rb) rb.addEventListener("click", () => { if (markRight(it.anchor)) paint(RIGHTED + verdictHtml(v, ans, stats())); });
     }
     else { if (!v.trim()) logAttempt(it.anchor, "", false, "entry"); paint(movedHtml(null, v)); }
     // 再试一次 asks the same sentence again; with more than one, 下一句 goes on to the next
@@ -2558,7 +2592,7 @@ function applyRemote(r){
   store.set("vk.stage.t", JSON.stringify(stageT));
   for (const a in r.attempts) {
     const list = stLog[a] || [], seen = new Set(list.map(x => x.t));
-    r.attempts[a].forEach(x => { if (!seen.has(x.t)) list.push({ t: x.t, text: x.peek ? "" : ELSEWHERE, ok: x.ok, via: x.via, ex: x.ex || "" }); });
+    r.attempts[a].forEach(x => { if (seen.has(x.t)) { if (x.ok) list.find(y => y.t === x.t).ok = true; return; } list.push({ t: x.t, text: x.peek ? "" : ELSEWHERE, ok: x.ok, via: x.via, ex: x.ex || "" }); });
     list.sort((x, y) => x.t - y.t);
     stLog[a] = list.slice(-ST_MAX);
   }
@@ -2823,13 +2857,13 @@ function renderQuizCard(el){
     if (adv || auto) { setStage(it, nextStage(stage)); s.advanced++; if (stage === "review") s.promoted.push(it.anchor); }
     else if (back) { setStage(it, "review"); scheduleReview(it.anchor, false); s.demoted.push(it.anchor); }
     s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; s.studied = false; s.picks = undefined; s.missed = false;
-    s.k = 0; s.step = 1; s.entryOk = true; s.ans = undefined;
+    s.k = 0; s.step = 1; s.entryOk = true; s.ans = undefined; s.righted = false;
     render(); window.scrollTo(0, 0);
   };
   // within the entry: ① → ②, then its next sentence
   const onward = nextK => {
     if (nextK) { s.k++; s.ex = undefined; s.step = 1; } else s.step = 2;
-    s.revealed = false; s.draft = ""; s.picks = undefined; s.ans = undefined;
+    s.revealed = false; s.draft = ""; s.picks = undefined; s.ans = undefined; s.righted = false;
     renderQuizCard(el); window.scrollTo(0, 0);
   };
   const reveal = () => {
@@ -2840,6 +2874,7 @@ function renderQuizCard(el){
       s.typedOk = !s.ans.help && tried && bestDiff(s.draft, ans).same; s.helped = !!s.ans.help;
       ok = s.bankOk && s.typedOk;
       logAttempt(it.anchor, s.draft, ok, via, exEn || "");
+      s.entryOkBefore = s.entryOk; s.cardBefore = rev.cards[it.anchor] || null;   // for 算我对
     }
     else if (!tried) { logAttempt(it.anchor, "", false, via); ok = false; }
     if (ok !== null) {
@@ -2867,11 +2902,27 @@ function renderQuizCard(el){
     return;
   }
   const whole = final && ex && ex.of > 1 ? `<p class="steps${s.entryOk ? " ok" : ""}">这一条的 ${ex.of} 句都做完了:${s.entryOk ? "全部答对" : "有没答对的,整条记为没对"}</p>` : "";
-  res.innerHTML = (quiet ? `<p class="qquiet">${esc(quiet)}</p>` : "") + (qAns ? stepsHtml(s.bankOk, s.typedOk, s.helped) : "") +
-    (exam ? verdictHtml(s.draft, it.answer || "", stats) : ex ? verdictHtml(s.draft, exEn, stats) : movedHtml(null, s.draft, s.graded)) + whole +
+  const canRight = qAns && !s.righted && !!s.draft.trim() && !(s.bankOk && s.typedOk);
+  res.innerHTML = (quiet ? `<p class="qquiet">${esc(quiet)}</p>` : "") + (qAns ? s.righted ? RIGHTED : stepsHtml(s.bankOk, s.typedOk, s.helped) : "") +
+    (exam ? verdictHtml(s.draft, it.answer || "", stats) : ex ? verdictHtml(s.draft, exEn, stats) : movedHtml(null, s.draft, s.graded)) + (canRight ? RIGHT_BTN : "") + whole +
     (auto ? `<div class="adv"><span>复习里连续答对 ${PROMOTE_REPS} 次了,下一题时自动移到考核</span></div>` :
       back ? `<div class="adv"><span>没答对,下一题时退回复习,排期从明天重新开始</span></div>` : ready ? advanceHtml(stage) : "") + notesForQuestionHtml(it, ex) + stHistoryHtml(it.anchor, exEn);
   decorateNotes(res, it, ex, go, () => go(t));
+  // 算我对: this sentence was right after all — the entry's result, and on its last sentence the
+  // SM-2 grade (back to the card before it) and the 考核 miss, are worked out again
+  const rb = res.querySelector("#st-right");
+  if (rb) rb.addEventListener("click", () => {
+    if (!markRight(it.anchor)) return;
+    s.righted = true; s.ok++; s.entryOk = s.entryOkBefore;
+    if (lastQ) {
+      if (stage === "review") {
+        if (s.cardBefore) rev.cards[it.anchor] = s.cardBefore; else delete rev.cards[it.anchor];
+        scheduleReview(it.anchor, s.entryOk);
+      }
+      s.missed = !s.entryOk;
+    }
+    renderQuizCard(el);
+  });
   if (!lastQ) {
     after.innerHTML = `<button class="btn" type="button" id="qz-nextk">下一句 › <small>${ex.k + 2} / ${ex.of}</small></button>`;
     const b = after.querySelector("#qz-nextk"); b.addEventListener("click", () => onward(true)); b.focus();
