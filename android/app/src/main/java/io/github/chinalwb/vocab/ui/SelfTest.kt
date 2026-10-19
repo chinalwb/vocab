@@ -296,9 +296,42 @@ fun StepsLine(text: String, ok: Boolean) {
     )
 }
 
-fun stepsText(bankOk: Boolean, typedOk: Boolean, helped: Boolean) =
-    "选词 ${if (bankOk) "✓" else "✗"} · 打字 ${if (typedOk) "✓" else if (helped) "✗(用选词交的)" else "✗"} — " +
+fun stepsText(bankOk: Boolean, typedOk: Boolean, helped: Boolean, skipped: Boolean = false) =
+    if (skipped) "打字 ${if (typedOk) "✓" else if (helped) "✗(用选词交的)" else "✗"} — 这一句以前答对过,跳过了选词;" +
+        if (typedOk) "这一句算答对" else "这次记为没对"
+    else "选词 ${if (bankOk) "✓" else "✗"} · 打字 ${if (typedOk) "✓" else if (helped) "✗(用选词交的)" else "✗"} — " +
         if (bankOk && typedOk) "两步都对,这一句算答对" else "两步都对才算答对,这次记为没对"
+
+/**
+ * The help fades as a sentence is learnt (用户 2026-10-19): once this sentence ([ex], plain English;
+ * "" for a 自测题) has been answered right, ① 选词 is skipped; in 考核 打字 takes the whole sentence.
+ * Same as rightBefore() in template.html.
+ */
+fun List<Attempt>.rightBefore(ex: String) = any { it.ok && it.ex == ex }
+
+/** How many of an entry's sentences one 复习 / 考核 run asks (用户 2026-10-19; it was all of them). */
+const val RUN_SENTENCES = 3
+
+/**
+ * The sentences a run asks, as indexes into quizExamples(): up to [RUN_SENTENCES] — first the ones
+ * not yet right in this stage (since [since]), then the ones last answered wrong, then the longest
+ * unasked — asked in note order. The rest come round on later days; moving on still needs every one
+ * right. Same as runSentences() in template.html.
+ */
+fun Entry.runSentences(attempts: List<Attempt>, since: Long, excluded: Set<String>): List<Int> {
+    val xs = quizExamples(excluded).map { plain(it.en) }
+    val group = { k: Int ->
+        val mine = attempts.filter { it.ex == xs[k] }
+        val last = mine.lastOrNull()
+        when {
+            mine.none { it.t >= since && it.ok } -> 0
+            last != null && (last.text.isEmpty() || !last.ok) -> 1
+            else -> 2
+        }
+    }
+    val lastT = { k: Int -> attempts.lastOrNull { it.ex == xs[k] }?.t ?: 0L }
+    return xs.indices.sortedWith(compareBy<Int>({ group(it) }, { lastT(it) }, { it })).take(RUN_SENTENCES).sorted()
+}
 
 /** The 选词 | 打字 switch, a small pill at the end of its row; [lockSecond] greys out the second. */
 @Composable

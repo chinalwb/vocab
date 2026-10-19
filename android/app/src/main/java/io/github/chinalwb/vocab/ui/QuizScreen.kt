@@ -506,8 +506,12 @@ private fun QuizCard(
                     Modifier.fillMaxSize(),
                     card = {
                         SheetMetaRow(
-                            (if (exam) "自测题" else entry.title) + (ex?.let { " · 例句 ${it.k + 1} / ${it.of}" } ?: "") + " · 中译英" +
-                                (if (answer != null) stepLabel(step) else ""),
+                            // the headword stays hidden until the reveal (用户 2026-10-19): it is often the very answer
+                            listOfNotNull(
+                                if (exam) "自测题" else entry.title.takeIf { session.revealed },
+                                ex?.let { "第 ${session.k + 1} / ${session.qs.size} 句" },
+                                "中译英",
+                            ).joinToString(" · ") + (if (answer != null) stepLabel(step) else ""),
                             toggle = if (answer != null && !session.revealed) ({
                                 AnswerModeToggle(step == 1 || help, { if (step == 2) help = it }, lockSecond = step == 1)
                             }) else null,
@@ -520,7 +524,7 @@ private fun QuizCard(
                                 else -> ReviewFront(entry, kindOf(entry, inTest = true))
                             }
                             Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub)
-                            val blanks = if (step == 2 && !studying) blanksOf(ex?.raw) else null
+                            val blanks = if (step == 2 && !studying && session.stage != Stage.Test) blanksOf(ex?.raw) else null
                             when {
                                 bank != null -> ChipsAnswerBox(bank)
                                 blanks != null -> FillAnswerBox(blanks, fillsOf(fills)) { fills = it.joinToString(FILL_SEP.toString()); typed = composeBlanks(blanks, it) }
@@ -535,14 +539,14 @@ private fun QuizCard(
                                 return@AnswerSheet
                             }
                             val right = session.bankOk && session.typedOk
-                            if (full != null) StepsLine(if (session.righted) RIGHTED else stepsText(session.bankOk, session.typedOk, session.helped), session.righted || right)
+                            if (full != null) StepsLine(if (session.righted) RIGHTED else stepsText(session.bankOk, session.typedOk, session.helped, session.skipped), session.righted || right)
                             when {
                                 full != null -> RevealVerdict(draft, full, stats)
                                 else -> MovedResult(draft, session.graded) { onGrade(draft, it) }
                             }
                             if (full != null && !session.righted && !right && draft.isNotBlank()) RightMeRow(onRight)
-                            if (final && ex != null && ex.of > 1) StepsLine(
-                                "这一条的 ${ex.of} 句都做完了:" + if (session.entryOk) "全部答对" else "有没答对的,整条记为没对", session.entryOk,
+                            if (final && ex != null && session.qs.size > 1) StepsLine(
+                                "这次的 ${session.qs.size} 句都做完了:" + if (session.entryOk) "全部答对" else "有没答对的,整条记为没对", session.entryOk,
                             )
                             when {
                                 auto -> AutoMoveNote("复习里连续答对 $PROMOTE_REPS 次了,下一题时自动移到考核")
@@ -558,7 +562,7 @@ private fun QuizCard(
                             if (bank != null) WordKeys(bank)
                             SheetButton("显示答案", onClick = reveal)
                         } else if (answer != null && step == 1) SheetButton("下一步:打字 ›") { onOnward(false) }
-                        else if (!session.lastQ) SheetButton("下一句 › ${(ex?.k ?: 0) + 2} / ${ex?.of}") { onOnward(true) }
+                        else if (!session.lastQ) SheetButton("下一句 › ${session.k + 2} / ${session.qs.size}") { onOnward(true) }
                         else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                             if (ready && !auto) SheetButton("移到${session.stage.next?.tab}", Modifier.weight(1f), filled = false) { onNext(true) }
                             SheetButton(if (session.index + 1 < session.queue.size) "下一题 ›" else "完成", Modifier.weight(1f)) { onNext(false) }
