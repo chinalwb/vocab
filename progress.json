@@ -648,12 +648,12 @@
    "t": 1792289240906
   },
   "s-rate-limit-error": {
-   "ease": 1.96,
+   "ease": 1.42,
    "interval": 1,
-   "reps": 1,
-   "lapses": 1,
-   "due": 20745,
-   "t": 1792287787832
+   "reps": 0,
+   "lapses": 2,
+   "due": 20746,
+   "t": 1792395997057
   },
   "s-error-message": {
    "ease": 1.96,
@@ -6384,6 +6384,13 @@
     "peek": false,
     "via": "review",
     "ex": "I'd like to understand what triggers the \"Rate limit reached\" error for users."
+   },
+   {
+    "t": 1792395997054,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "When exactly do users run into the \"Rate limit reached\" error?"
    }
   ],
   "s-error-message": [
@@ -6470,6 +6477,13 @@
     "peek": false,
     "via": "review",
     "ex": "What copy do we display for this error?"
+   },
+   {
+    "t": 1792396028085,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "What message do users see when they hit this error?"
    }
   ],
   "that-said": [
@@ -7285,6 +7299,11 @@
  },
  "history": [
   {
+   "a": "s-error-message",
+   "t": 1792396011878,
+   "via": "review"
+  },
+  {
    "a": "s-rate-limit-error",
    "t": 1792394896469,
    "via": "review"
@@ -7483,11 +7502,6 @@
    "a": "coalesce",
    "t": 1792288011575,
    "via": "entry"
-  },
-  {
-   "a": "s-error-message",
-   "t": 1792287792030,
-   "via": "review"
   },
   {
    "a": "intermittent-outage",
