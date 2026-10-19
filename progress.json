@@ -4137,6 +4137,13 @@
     "peek": false,
     "via": "entry",
     "ex": "I bought ten dollars' worth of snacks."
+   },
+   {
+    "t": 1792380945514,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This old guitar is worth about $2,000."
    }
   ],
   "unstoppable-irresistible-inexorable": [
