@@ -440,12 +440,12 @@
    "t": 1792023873553
   },
   "implication-vs-indication": {
-   "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
-   "lapses": 0,
-   "due": 20744,
-   "t": 1792023662506
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20746,
+   "t": 1792389676771
   },
   "conversely-vs-on-the-contrary": {
    "ease": 1.3,
@@ -5356,6 +5356,20 @@
     "peek": false,
     "via": "review",
     "ex": "There was no indication that the server was about to crash."
+   },
+   {
+    "t": 1792389666771,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "This is a simple exercise, but the implications are profound."
+   },
+   {
+    "t": 1792389676768,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "There was no indication that the server was about to crash."
    }
   ],
   "when-it-comes-to": [
@@ -6948,6 +6962,11 @@
   }
  },
  "history": [
+  {
+   "a": "tilt-bias",
+   "t": 1792389678334,
+   "via": "review"
+  },
   {
    "a": "implication-vs-indication",
    "t": 1792389574499,
