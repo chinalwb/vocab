@@ -576,20 +576,20 @@
    "t": 1792290524077
   },
   "make-use-of": {
-   "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
-   "lapses": 0,
-   "due": 20745,
-   "t": 1792111797951
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20746,
+   "t": 1792394313011
   },
   "make-the-most-of": {
    "ease": 1.42,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 2,
-   "due": 20745,
-   "t": 1792287095820
+   "due": 20746,
+   "t": 1792394341347
   },
   "that-said": {
    "ease": 1.42,
@@ -5619,6 +5619,20 @@
     "peek": false,
     "via": "review",
     "ex": "We should make use of the tools we already have."
+   },
+   {
+    "t": 1792394302744,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "She made good use of her time between meetings."
+   },
+   {
+    "t": 1792394313010,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "The new design makes full use of the available screen space."
    }
   ],
   "orthogonal": [
@@ -5835,6 +5849,27 @@
     "peek": false,
     "via": "review",
     "ex": "He knows how to make the best use of his team's strengths."
+   },
+   {
+    "t": 1792394323977,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We only have one weekend here, so let's make the most of it."
+   },
+   {
+    "t": 1792394331811,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How can we make the best use of the budget we've been given?"
+   },
+   {
+    "t": 1792394341345,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This layout makes the best use of the limited screen space."
    }
   ],
   "deserted": [
@@ -7110,6 +7145,16 @@
  },
  "history": [
   {
+   "a": "deserted",
+   "t": 1792394342390,
+   "via": "review"
+  },
+  {
+   "a": "make-the-most-of",
+   "t": 1792394316624,
+   "via": "review"
+  },
+  {
    "a": "make-use-of",
    "t": 1792394260476,
    "via": "review"
@@ -7235,11 +7280,6 @@
    "via": "review"
   },
   {
-   "a": "deserted",
-   "t": 1792290378133,
-   "via": "review"
-  },
-  {
    "a": "s-testflight",
    "t": 1792289664726,
    "via": "review"
@@ -7302,11 +7342,6 @@
   {
    "a": "s-chase-for",
    "t": 1792287133263,
-   "via": "review"
-  },
-  {
-   "a": "make-the-most-of",
-   "t": 1792286772876,
    "via": "review"
   },
   {
