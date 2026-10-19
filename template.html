@@ -401,6 +401,7 @@ h1{
 .wb-bank .wchip.only{outline:2px solid var(--card-ink);outline-offset:2px}
 
 .wb-ans span.wchip{opacity:.75;cursor:default}
+.wb-ans .wchip.typing{opacity:1;background:transparent;color:var(--card-ink);border:1.5px dashed var(--card-ink)}
 .wb-done{color:var(--card-ink-2);font-size:calc(13px * var(--fs));padding:8px 0}
 .face .cta .wb-bank{margin:0 0 10px}
 .wchip:focus-visible,.wb-clear:focus-visible,.amode button:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px}
@@ -833,6 +834,7 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .ybox .wb-ans{border:0;background:none;margin:0;padding:0;min-height:0;gap:6px}
 .ybox .wb-ans .wchip{background:var(--panel);color:var(--card-ink);border:0;box-shadow:0 1px 0 var(--key);font-size:calc(17px * var(--fs));padding:7px 12px;opacity:1}
 .ybox .wb-ans .wchip.last{box-shadow:inset 0 0 0 2px var(--card-ink)}
+.ybox .wb-ans .wchip.typing{background:transparent;box-shadow:none;outline:1.5px dashed var(--card-ink);outline-offset:-1.5px}
 .ybox .wb-ans .caret{display:inline-block;width:2px;height:24px;background:var(--card-ink);margin-left:2px}
 .ybox .wb-ph{color:color-mix(in srgb,var(--card-ink) 70%,transparent);padding:6px 0}
 /* site.json "fillBlanks" (taobao): in 打字 only the bold key part is typed, the rest is filled in */
@@ -1675,21 +1677,26 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
   const narrow = () => {
     const chips = [...bankEl.querySelectorAll(".wchip[data-w]")], on = hits();
     chips.forEach(b => { const hit = on.includes(b); b.classList.toggle("dim", !hit); b.disabled = !hit; b.classList.toggle("only", !!typed && hit && on.length === 1); });
-    // what was typed shows on the box's hint line (the chips' grid has no room for it)
+    // what was typed sits in the box after the last word, where the next one goes (用户 2026-10-19);
+    // the hint line under it says what Tab / Esc do
+    renderAns();
     if (!ctl.hint) return;
-    ctl.hint.textContent = typed ? `键入“${typed}” · ` + (on.length === 1 ? "按 Tab 选中" : on.length ? `还剩 ${on.length} 个` : "没有这样开头的词") + " · Esc 清除" : hint0;
+    ctl.hint.textContent = typed ? (on.length === 1 ? "按 Tab 选中" : on.length ? `还剩 ${on.length} 个` : "没有这样开头的词") + " · Esc 清除" : hint0;
     ctl.hint.hidden = !typed && !picks.length;
+  };
+  const renderAns = () => {
+    const tail = (typed ? `<span class="wchip typing">${esc(typed)}</span>` : "") + `<i class="caret" aria-hidden="true"></i>`;
+    ansEl.innerHTML = picks.length || typed
+      ? picks.map((w, k) => k === picks.length - 1
+          ? `<button type="button" class="wchip last" aria-label="撤回 ${esc(w)}">${esc(w)}</button>`
+          : `<span class="wchip">${esc(w)}</span>`).join("") + tail
+      : `<span class="wb-ph">点下面的词,一个一个拼出英文…</span>`;
   };
   const hint0 = ctl.hint ? ctl.hint.textContent : "";
   const pick = w => { typed = ""; picks.push(w); paint(true); };
   const paint = focus => {
     input.value = picks.join(" ");
     input.dispatchEvent(new Event("input"));
-    ansEl.innerHTML = picks.length
-      ? picks.map((w, k) => k === picks.length - 1
-          ? `<button type="button" class="wchip last" aria-label="撤回 ${esc(w)}">${esc(w)}</button>`
-          : `<span class="wchip">${esc(w)}</span>`).join("") + `<i class="caret" aria-hidden="true"></i>`
-      : `<span class="wb-ph">点下面的词,一个一个拼出英文…</span>`;
     const opts = bankLayout(words, strays, seed, picks.length);
     bankEl.innerHTML = opts.length
       ? opts.map(w => `<button type="button" class="wchip" data-w="${esc(w)}">${esc(w)}</button>`).join("")
