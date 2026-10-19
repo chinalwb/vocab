@@ -690,10 +690,10 @@
   "s-chase-for": {
    "ease": 1.96,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 1,
-   "due": 20745,
-   "t": 1792287252198
+   "due": 20746,
+   "t": 1792394665241
   },
   "s-expected-to-work": {
    "ease": 1.96,
@@ -6198,6 +6198,13 @@
     "peek": false,
     "via": "review",
     "ex": "I'm after a simpler approach."
+   },
+   {
+    "t": 1792394665241,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Is there a simpler way to do this?"
    }
   ],
   "s-expected-to-work": [
@@ -7243,6 +7250,11 @@
  },
  "history": [
   {
+   "a": "s-expected-to-work",
+   "t": 1792394666188,
+   "via": "review"
+  },
+  {
    "a": "s-chase-for",
    "t": 1792394591588,
    "via": "review"
@@ -7440,11 +7452,6 @@
   {
    "a": "s-rate-limit-error",
    "t": 1792287589639,
-   "via": "review"
-  },
-  {
-   "a": "s-expected-to-work",
-   "t": 1792287252753,
    "via": "review"
   },
   {
