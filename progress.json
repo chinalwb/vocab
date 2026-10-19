@@ -166,8 +166,8 @@
    "t": 1791854264610
   },
   "for-what-its-worth": {
-   "s": "review",
-   "t": 1791889618770
+   "s": "test",
+   "t": 1792393351369
   },
   "t-worth-a-shot": {
    "s": "done",
@@ -409,11 +409,11 @@
   },
   "for-what-its-worth": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20744,
-   "t": 1792024048716
+   "due": 20753,
+   "t": 1792393350064
   },
   "stray": {
    "ease": 2.5,
@@ -3958,6 +3958,20 @@
     "peek": false,
     "via": "review",
     "ex": "For what it's worth, I think you made the right call."
+   },
+   {
+    "t": 1792393339419,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "For what it's worth, I had the same issue last year and restarting fixed it."
+   },
+   {
+    "t": 1792393350063,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I'm not an expert, but for what it's worth, I'd go with option B."
    }
   ],
   "t-worth-a-shot": [
@@ -7026,6 +7040,11 @@
  },
  "history": [
   {
+   "a": "s-title-wrap",
+   "t": 1792393351532,
+   "via": "review"
+  },
+  {
    "a": "for-what-its-worth",
    "t": 1792393182455,
    "via": "review"
@@ -7058,11 +7077,6 @@
   {
    "a": "etiquette",
    "t": 1792388986696,
-   "via": "review"
-  },
-  {
-   "a": "s-title-wrap",
-   "t": 1792388981852,
    "via": "review"
   },
   {
