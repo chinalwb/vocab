@@ -3394,6 +3394,20 @@
     "peek": false,
     "via": "review",
     "ex": "We booked seats in the stalls for tonight's show."
+   },
+   {
+    "t": 1792394218929,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "He's just stalling — he doesn't want to give us an answer."
+   },
+   {
+    "t": 1792394225111,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The car stalled at the intersection and wouldn't restart."
    }
   ],
   "bookkeeping": [
