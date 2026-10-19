@@ -654,3 +654,33 @@
 
 - ⚠️ [逻辑] ==the candidate's position if that candidate shows up now== → **If the correct next word is already among the current candidates, I'd like it to stay in the same position** —— 先说「哪个词」,再说要求;原句读到句尾才知道指的是哪个候选词,*shows up now* 也说不清是哪一组。
 - ❌ [冠词] ==user== → **users** / **the user** —— 可数名词单数前要有冠词,泛指用户用复数最自然。
+
+<a id="r-grow-and-follow-the-cursor"></a>
+## 效果很好。还有一点:内容放不下时输入框要变大;在安卓上,用户一直打字时,框要跟着光标滚——一般在末尾,也可能在中间。
+
+- 日期:2026-10-19
+- 关键词:no longer fits · scroll to follow the cursor · if that's where …
+
+**常用说法:**
+
+> It works well. Another thing: the input box should become bigger when the text is too long. And on Android, when the user keeps typing, the box should scroll with the cursor. The cursor is usually at the end, but it can be in the middle if the user types there.
+
+**C1 说法:**
+
+> It works great. **One more thing:** the input box should **grow** when the text **no longer fits**. And on Android, **as the user keeps typing**, the box should **scroll to follow the cursor** — **usually at the end, but sometimes in the middle if that's where they're typing**.
+
+**差别:**
+
+- **One more thing:** —— 补充一个问题时的固定开头,语气轻;对应 *Another thing*。
+- **grow** —— 一个词说「变大」,比 *become bigger* 简洁;对应 *become bigger*。
+- **no longer fits** —— 「已经放不下了」,*no longer* 带出「原来放得下、现在不行」的变化;对应 *is too long*。
+- **as the user keeps typing** —— *as* 表示「随着……」,两件事同时进行;对应 *when the user keeps typing*。
+- **scroll to follow the cursor** —— *follow* 说出「跟着走」;界面上的输入位置叫 *cursor*;对应 *scroll with the cursor*。
+- **— usually at the end, but sometimes in the middle if that's where they're typing** —— 用破折号接一个补充说明,不用另起一句;*if that's where …* 是「如果……就在那里」;对应 *The cursor is usually at the end, but it can be in the middle if the user types there*。
+
+**我的原句:**
+
+> It works great. Another issue: the input box should expand its size if the typed content can't fit in. And on Android, if ==user== keeps typing, the input box should auto-scroll to ==follow the focus==, which usually stays at the bottom, but it could be in the middle too if ==user== types there.
+
+- ❌ [冠词] ==user== → **the user** —— 可数名词单数前要有冠词(两处都是)。
+- ⚠️ [搭配] ==follow the focus== → **follow the cursor** —— *focus* 指哪个控件被选中,输入位置叫 *cursor*。
