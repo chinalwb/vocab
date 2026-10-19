@@ -696,12 +696,12 @@
    "t": 1792394665241
   },
   "s-expected-to-work": {
-   "ease": 1.96,
+   "ease": 1.42,
    "interval": 1,
    "reps": 0,
-   "lapses": 1,
-   "due": 20745,
-   "t": 1792287570446
+   "lapses": 2,
+   "due": 20746,
+   "t": 1792394891174
   }
  },
  "newDay": 20745,
@@ -6291,6 +6291,13 @@
     "peek": false,
     "via": "review",
     "ex": "That function should still work as expected after the refactor."
+   },
+   {
+    "t": 1792394886968,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The refactor shouldn't change that function's behavior."
    }
   ],
   "s-rate-limit-error": [
@@ -7264,6 +7271,11 @@
  },
  "history": [
   {
+   "a": "s-rate-limit-error",
+   "t": 1792394896469,
+   "via": "review"
+  },
+  {
    "a": "s-expected-to-work",
    "t": 1792394666188,
    "via": "review"
@@ -7461,11 +7473,6 @@
   {
    "a": "s-error-message",
    "t": 1792287792030,
-   "via": "review"
-  },
-  {
-   "a": "s-rate-limit-error",
-   "t": 1792287589639,
    "via": "review"
   },
   {
