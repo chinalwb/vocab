@@ -673,11 +673,11 @@
   },
   "s-align-ux": {
    "ease": 1.96,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 1,
-   "due": 20745,
-   "t": 1792288503594
+   "due": 20748,
+   "t": 1792398153846
   },
   "s-rush-into-get-straight": {
    "ease": 1.96,
@@ -6956,6 +6956,13 @@
     "peek": false,
     "via": "review",
     "ex": "The goal is to match DeepSeek's UX."
+   },
+   {
+    "t": 1792398153843,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We're using DeepSeek's UX as the benchmark."
    }
   ],
   "s-better-at": [
@@ -7348,6 +7355,11 @@
  },
  "history": [
   {
+   "a": "s-better-at",
+   "t": 1792398154836,
+   "via": "review"
+  },
+  {
    "a": "s-align-ux",
    "t": 1792397866020,
    "via": "review"
@@ -7535,11 +7547,6 @@
   {
    "a": "s-long-term-project",
    "t": 1792288558247,
-   "via": "review"
-  },
-  {
-   "a": "s-better-at",
-   "t": 1792288504231,
    "via": "review"
   },
   {
