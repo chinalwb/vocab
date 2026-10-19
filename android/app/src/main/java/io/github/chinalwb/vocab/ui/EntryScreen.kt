@@ -141,8 +141,12 @@ fun EntryScreen(
         var exNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
         val ex = remember(entry.anchor, exNo, excluded) { if (selfTest) null else entry.quizExample(exNo, excluded) }
         // 两步: ① 选词 then ② 打字 (stepLabel() in SelfTest.kt); the step's own state resets with it
-        var step by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(1) }
-        var bankOk by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
+        // a sentence answered right before skips ① (rightBefore()); read once, as the try starts
+        val skipBank = remember(entry.anchor, stage, tryNo, exNo) {
+            (if (selfTest) entry.selfTestAnswer.isNotBlank() else ex != null) && attempts.rightBefore(ex?.en ?: "")
+        }
+        var step by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(if (skipBank) 2 else 1) }
+        var bankOk by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(skipBank) }
         var typedOk by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
         var helped by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
         var typed by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf("") }
@@ -256,7 +260,7 @@ fun EntryScreen(
                                 modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { quizUp = false }.padding(horizontal = 6.dp, vertical = 4.dp),
                             )
                         }
-                        val blanks = if (step == 2) blanksOf(ex?.raw) else null
+                        val blanks = if (step == 2 && stage != Stage.Test) blanksOf(ex?.raw) else null
                         when {
                             bank != null -> ChipsAnswerBox(bank)
                             blanks != null -> FillAnswerBox(blanks, fillsOf(fills)) { fills = it.joinToString(FILL_SEP.toString()); typed = composeBlanks(blanks, it) }
@@ -269,7 +273,7 @@ fun EntryScreen(
                             RevealVerdict(draft, key, STEP1_NOTE)
                             return@AnswerSheet
                         }
-                        if (key != null) StepsLine(if (righted) RIGHTED else stepsText(bankOk, typedOk, helped), righted || bankOk && typedOk)
+                        if (key != null) StepsLine(if (righted) RIGHTED else stepsText(bankOk, typedOk, helped, skipBank), righted || bankOk && typedOk)
                         when {
                             key != null -> RevealVerdict(draft, key, stats)
                             else -> MovedResult(draft, graded) { graded = it; onGrade(draft, it, "") }

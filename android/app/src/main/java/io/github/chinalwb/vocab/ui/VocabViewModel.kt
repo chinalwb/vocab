@@ -58,14 +58,28 @@ data class QuizSession(
     val entryOkBefore: Boolean = true,
     val cardBefore: io.github.chinalwb.vocab.review.Card? = null,
     val righted: Boolean = false,
+    /** the sentences this run asks of the entry (indexes into quizExamples()), and ① skipped for this one */
+    val qs: List<Int> = emptyList(),
+    val skipped: Boolean = false,
 ) {
     val current get() = queue.getOrNull(index)
 
-    /** the entry's last sentence (a 自测题 or an entry without examples has one question) */
-    val lastQ get() = example == null || example.k + 1 >= example.of
+    /** the entry's last sentence this run (a 自测题 or an entry without examples has one question) */
+    val lastQ get() = example == null || k + 1 >= qs.size
 
-    fun withExample(optOut: Map<String, Set<String>>) =
-        copy(example = current?.takeIf { it.level != "SELFTEST" }?.let { it.quizExample(k, optOut[it.anchor].orEmpty()) })
+    /**
+     * A sentence starts: on the entry's first, the sentences this run asks ([qs], runSentences());
+     * then this one — straight to ② 打字 if it has been answered right before ([skipped]).
+     */
+    fun withExample(optOut: Map<String, Set<String>>, attempts: Map<String, List<Attempt>>, since: Map<String, Long>): QuizSession {
+        val e = current ?: return copy(example = null)
+        val mine = attempts[e.anchor].orEmpty()
+        val asks = e.level != "SELFTEST"
+        val qs = if (!asks) emptyList() else if (k == 0) e.runSentences(mine, since[e.anchor] ?: 0L, optOut[e.anchor].orEmpty()) else qs
+        val ex = if (asks) qs.getOrNull(k)?.let { e.quizExample(it, optOut[e.anchor].orEmpty()) } else null
+        val skip = (if (asks) ex != null else e.selfTestAnswer.isNotBlank()) && mine.rightBefore(ex?.en ?: "")
+        return copy(qs = qs, example = ex, step = if (skip) 2 else 1, bankOk = skip, skipped = skip)
+    }
 }
 
 class VocabViewModel(app: Application) : AndroidViewModel(app) {
@@ -241,7 +255,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun startQuiz(stage: Stage) {
         val entries = library.value.data?.entries ?: return
         val q = quizQueue(stage, entries, stages.value, selfTests.value, review.value)
-        setRun(if (q.isEmpty()) null else QuizSession(stage, q).withExample(quizOptOut.value))
+        setRun(if (q.isEmpty()) null else QuizSession(stage, q).withExample(quizOptOut.value, selfTests.value, stageTimes.value.t))
     }
 
     /**
@@ -251,7 +265,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
      * Same as reviewOne() in template.html.
      */
     fun startReviewOf(e: Entry) {
-        setRun(QuizSession(Stage.Review, listOf(e), studied = true).withExample(quizOptOut.value))
+        setRun(QuizSession(Stage.Review, listOf(e), studied = true).withExample(quizOptOut.value, selfTests.value, stageTimes.value.t))
         _tabRequest.value = 1
     }
 
@@ -302,7 +316,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     /** Within the entry: ① → ② 打字, or ([nextSentence]) on to its next sentence's ①. */
     fun onwardQuiz(nextSentence: Boolean) {
         val s = _quiz.value ?: return
-        _quiz.value = if (nextSentence) s.copy(k = s.k + 1, step = 1, revealed = false, righted = false).withExample(quizOptOut.value)
+        _quiz.value = if (nextSentence) s.copy(k = s.k + 1, step = 1, revealed = false, righted = false).withExample(quizOptOut.value, selfTests.value, stageTimes.value.t)
         else s.copy(step = 2, revealed = false, righted = false)
     }
 
@@ -387,7 +401,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             index = s.index + 1, studied = false, revealed = false, graded = null, missed = false, done = s.done + 1,
             advanced = s.advanced + if (moved) 1 else 0, promoted = promoted, demoted = demoted,
             k = 0, step = 1, bankOk = false, typedOk = false, helped = false, entryOk = true, righted = false,
-        ).withExample(quizOptOut.value))
+        ).withExample(quizOptOut.value, selfTests.value, stageTimes.value.t))
     }
 
     /** 撤销 on the last page: put back what this run moved by itself (the schedule stays as graded). */

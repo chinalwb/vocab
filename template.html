@@ -1570,9 +1570,27 @@ const modeToggleHtml = step => `<span class="amode" role="group" aria-label="作
     (step === 1 && v === "0" ? ` disabled title="先选词,再打字"` : "") + `>${l}</button>`).join("") + `</span>`;
 const stepLabel = step => step === 1 ? " · ① 选词" : " · ② 打字";
 const STEP1_NOTE = "第 1 步 · 选词;接着把它打出来";
-const stepsHtml = (bankOk, typedOk, helped) => `<p class="steps${bankOk && typedOk ? " ok" : ""}">` +
-  `选词 ${bankOk ? "✓" : "✗"} · 打字 ${typedOk ? "✓" : helped ? "✗(用选词交的)" : "✗"} — ` +
-  `${bankOk && typedOk ? "两步都对,这一句算答对" : "两步都对才算答对,这次记为没对"}</p>`;
+const stepsHtml = (bankOk, typedOk, helped, skipped) => `<p class="steps${bankOk && typedOk ? " ok" : ""}">` + (skipped
+  ? `打字 ${typedOk ? "✓" : helped ? "✗(用选词交的)" : "✗"} — 这一句以前答对过,跳过了选词;${typedOk ? "这一句算答对" : "这次记为没对"}</p>`
+  : `选词 ${bankOk ? "✓" : "✗"} · 打字 ${typedOk ? "✓" : helped ? "✗(用选词交的)" : "✗"} — ` +
+    `${bankOk && typedOk ? "两步都对,这一句算答对" : "两步都对才算答对,这次记为没对"}</p>`);
+// The help fades as a sentence is learnt (用户 2026-10-19): once it has been answered right, ① 选词 is
+// skipped; in 考核 打字 takes the whole sentence (no blanks). Same as rightBefore() in SelfTest.kt.
+const rightBefore = (anchor, en) => (stLog[anchor] || []).some(a => a.ok && (a.ex || "") === en);
+// A run asks up to RUN_SENTENCES of an entry's sentences (用户 2026-10-19; it was all of them): first
+// the ones not yet right in this stage, then the ones last answered wrong, then the longest unasked —
+// asked in note order. The rest come round on later days; moving on still needs every one right.
+// Same as Entry.runSentences() in SelfTest.kt.
+const RUN_SENTENCES = 3;
+function runSentences(it){
+  const xs = quizExamples(it), log = stLog[it.anchor] || [], since = stageT[it.anchor] || 0;
+  const rank = (x, k) => {
+    const en = plainMd(x.en), mine = log.filter(a => (a.ex || "") === en), last = mine[mine.length - 1];
+    return [!mine.some(a => a.t >= since && a.ok) ? 0 : last && (!last.text || !last.ok) ? 1 : 2, last ? last.t : 0, k];
+  };
+  return xs.map((x, k) => rank(x, k)).sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2])
+    .slice(0, RUN_SENTENCES).map(r => r[2]).sort((a, b) => a - b);
+}
 // what a question checks against: a 自测题's first 答案 line, a moved entry's example; else none
 const answerOf = (it, level, ex) => level === "SELFTEST" ? ((it.answer || "").split("\n").find(l => l.trim()) || null) : ex ? plainMd(ex.en) : null;
 // site.json "fillBlanks": the sentence split at its **bold** key parts — [{key, t}] — so 打字 asks for
@@ -2189,7 +2207,8 @@ function show(it, level, i, o = {}){
       `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`;
   }).join("") + `</div>`;
   const curEx = () => ex ? plainMd(ex.en) : null;      // stats and history are this sentence's own
-  let step = o.step || 1;
+  let step = o.step || 1, skipped = false;
+  if (!o.step && answerOf(it, level, ex) && rightBefore(it.anchor, ex ? plainMd(ex.en) : "")) { step = 2; o.bankOk = true; skipped = true; }
   const qMeta = () => (selfTest ? "自测题 · 中译英" : ex ? `例句 ${ex.k + 1} / ${ex.of} · 中译英` : "回想并写出来") +
     (answerOf(it, level, ex) ? stepLabel(step) : "");
   const promptHtml = () => selfTest ? `<p class="qprompt">${esc(stTitle(it))}</p>`
@@ -2255,7 +2274,7 @@ function show(it, level, i, o = {}){
   // the answer sheet
   const res = sheet.querySelector("#q-res"), after = sheet.querySelector("#q-after");
   let revealed = false;
-  const cfg = { answer: answerOf(it, level, ex), blanks: step === 2 ? blanksOf(ex) : null, step, seed: hashStr(it.anchor) + (stLog[it.anchor] || []).length, picks: [], onReveal: () => reveal() };
+  const cfg = { answer: answerOf(it, level, ex), blanks: step === 2 && stage !== "test" ? blanksOf(ex) : null, step, seed: hashStr(it.anchor) + (stLog[it.anchor] || []).length, picks: [], onReveal: () => reveal() };
   cfg.others = othersOf(it, cfg.answer);
   const api = wireAnswer(sheet.querySelector(".face.bk"), cfg), input = api.input;
   // a click on an example toggles it in or out of 自测; an unanswered question follows
@@ -2267,7 +2286,7 @@ function show(it, level, i, o = {}){
     sheet.querySelector(".st-prompt").innerHTML = promptHtml();
     sheet.querySelector(".qmeta span").textContent = qMeta();
     sheet.querySelector("#q-stats").textContent = stStatsLine(it.anchor, curEx());
-    cfg.answer = answerOf(it, level, ex); cfg.blanks = step === 2 ? blanksOf(ex) : null; cfg.fill = {};
+    cfg.answer = answerOf(it, level, ex); cfg.blanks = step === 2 && stage !== "test" ? blanksOf(ex) : null; cfg.fill = {};
     cfg.others = othersOf(it, cfg.answer); cfg.picks.length = 0;
     if (step === 2) { show(it, level, i, { face: "back" }); return; }   // a new sentence starts at ①
     api.apply();
@@ -2318,7 +2337,7 @@ function show(it, level, i, o = {}){
     if (ans !== null) {                                   // ②: right only if ① was too
       const typedOk = !cfg.help && !!v.trim() && bestDiff(v, ans).same, ok = !!o.bankOk && typedOk;
       logAttempt(it.anchor, v, ok, "entry", ex ? plainMd(ex.en) : "");
-      paint(stepsHtml(!!o.bankOk, typedOk, !!cfg.help) + verdictHtml(v, ans, stats()) + (!ok && v.trim() ? RIGHT_BTN : ""));
+      paint(stepsHtml(!!o.bankOk, typedOk, !!cfg.help, skipped) + verdictHtml(v, ans, stats()) + (!ok && v.trim() ? RIGHT_BTN : ""));
       const rb = res.querySelector("#st-right");
       if (rb) rb.addEventListener("click", () => { if (markRight(it.anchor)) paint(RIGHTED + verdictHtml(v, ans, stats())); });
     }
@@ -2823,10 +2842,17 @@ function renderStageTab(stage, el){
 function renderQuizCard(el){
   const s = quiz, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST", stage = s.stage;
   if (s.seen !== s.index) { s.seen = s.index; visit(it.anchor, stage); }   // once per entry of the run
-  if (!exam && s.ex === undefined) s.ex = quizEx(it, s.k);  // this sentence, fixed for it
+  if (!exam && s.qs === undefined) s.qs = runSentences(it);  // the sentences this run asks
+  if (!exam && s.ex === undefined) s.ex = quizEx(it, s.qs[s.k]);  // this sentence, fixed for it
   const ex = exam ? null : s.ex, exEn = ex ? plainMd(ex.en) : null;
+  if (s.sid !== s.index + "/" + s.k) {                       // a sentence starts: answered right before → straight to ②
+    s.sid = s.index + "/" + s.k;
+    s.skipped = !!answerOf(it, t.level, ex) && rightBefore(it.anchor, exEn || "");
+    if (s.skipped) { s.step = 2; s.bankOk = true; }
+  }
   const qAns = answerOf(it, t.level, ex), step = qAns ? s.step : 2;
-  const lastQ = exam || !ex || ex.k + 1 >= ex.of;           // the entry's last sentence
+  const nQ = exam || !ex ? 1 : s.qs.length;
+  const lastQ = s.k + 1 >= nQ;                               // the entry's last sentence this run
   const final = s.revealed && step === 2 && lastQ;           // the entry is done
   const pct = Math.round((s.index + (final ? 1 : 0)) / s.queue.length * 100);
   const sw = `var(${swOf(t.it, t.level, t.i)})`;
@@ -2846,7 +2872,8 @@ function renderQuizCard(el){
   const ready = final && advanceReady(it, t.level, stage);
   // 复习 → 考核 happens by itself on 下一题; 考核 sends a miss back to 复习 — say so, no button
   const auto = ready && stage === "review", back = final && stage === "test" && s.missed && !ready;
-  const meta = (exam ? "自测题" : plainMd(textOf(it.title))) + (ex ? ` · 例句 ${ex.k + 1} / ${ex.of}` : "") + " · 中译英" + (qAns ? stepLabel(step) : "");
+  // the headword stays hidden until the reveal (用户 2026-10-19): it is often the very answer
+  const meta = [exam ? "自测题" : s.revealed ? plainMd(textOf(it.title)) : "", ex ? `第 ${s.k + 1} / ${nQ} 句` : "", "中译英"].filter(Boolean).join(" · ") + (qAns ? stepLabel(step) : "");
   const prompt = exam ? `<p class="qprompt">${esc(stTitle(it))}</p>` : ex ? `<p class="qprompt">${esc(plainMd(ex.zh))}</p>` : askHtml(t, k);
   el.innerHTML = `<div class="run">${top}<div class="qsheet" style="--sw:${sw}">` +
     qsheetHtml({ meta, toggle: qAns && !s.revealed ? modeToggleHtml(step) : "", prompt, stats: stStatsLine(it.anchor, exEn), draft: s.draft }) + `</div></div>`;
@@ -2857,7 +2884,7 @@ function renderQuizCard(el){
     if (adv || auto) { setStage(it, nextStage(stage)); s.advanced++; if (stage === "review") s.promoted.push(it.anchor); }
     else if (back) { setStage(it, "review"); scheduleReview(it.anchor, false); s.demoted.push(it.anchor); }
     s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; s.studied = false; s.picks = undefined; s.missed = false;
-    s.k = 0; s.step = 1; s.entryOk = true; s.ans = undefined; s.righted = false;
+    s.k = 0; s.step = 1; s.entryOk = true; s.ans = undefined; s.righted = false; s.qs = undefined;
     render(); window.scrollTo(0, 0);
   };
   // within the entry: ① → ②, then its next sentence
@@ -2885,7 +2912,7 @@ function renderQuizCard(el){
     s.revealed = true; renderQuizCard(el);
   };
   const api = wireAnswer(el.querySelector(".qsheet"), Object.assign(s.ans = s.ans || { typed: s.draft }, {
-    answer: s.revealed ? null : qAns, blanks: s.revealed || step !== 2 ? null : blanksOf(ex), step, others: othersOf(it, qAns), seed: hashStr(it.anchor) + s.index + 7 * s.k,
+    answer: s.revealed ? null : qAns, blanks: s.revealed || step !== 2 || stage === "test" ? null : blanksOf(ex), step, others: othersOf(it, qAns), seed: hashStr(it.anchor) + s.index + 7 * s.k,
     picks: s.picks = s.picks || [], onReveal: () => { if (!s.revealed) reveal(); }, onInput: v => { s.draft = v; },
   }));
   if (!s.revealed) { api.focus(); return; }
@@ -2901,9 +2928,9 @@ function renderQuizCard(el){
     const b = after.querySelector("#qz-step2"); b.addEventListener("click", () => onward(false)); b.focus();
     return;
   }
-  const whole = final && ex && ex.of > 1 ? `<p class="steps${s.entryOk ? " ok" : ""}">这一条的 ${ex.of} 句都做完了:${s.entryOk ? "全部答对" : "有没答对的,整条记为没对"}</p>` : "";
+  const whole = final && nQ > 1 ? `<p class="steps${s.entryOk ? " ok" : ""}">这次的 ${nQ} 句都做完了:${s.entryOk ? "全部答对" : "有没答对的,整条记为没对"}</p>` : "";
   const canRight = qAns && !s.righted && !!s.draft.trim() && !(s.bankOk && s.typedOk);
-  res.innerHTML = (quiet ? `<p class="qquiet">${esc(quiet)}</p>` : "") + (qAns ? s.righted ? RIGHTED : stepsHtml(s.bankOk, s.typedOk, s.helped) : "") +
+  res.innerHTML = (quiet ? `<p class="qquiet">${esc(quiet)}</p>` : "") + (qAns ? s.righted ? RIGHTED : stepsHtml(s.bankOk, s.typedOk, s.helped, s.skipped) : "") +
     (exam ? verdictHtml(s.draft, it.answer || "", stats) : ex ? verdictHtml(s.draft, exEn, stats) : movedHtml(null, s.draft, s.graded)) + (canRight ? RIGHT_BTN : "") + whole +
     (auto ? `<div class="adv"><span>复习里连续答对 ${PROMOTE_REPS} 次了,下一题时自动移到考核</span></div>` :
       back ? `<div class="adv"><span>没答对,下一题时退回复习,排期从明天重新开始</span></div>` : ready ? advanceHtml(stage) : "") + notesForQuestionHtml(it, ex) + stHistoryHtml(it.anchor, exEn);
@@ -2924,7 +2951,7 @@ function renderQuizCard(el){
     renderQuizCard(el);
   });
   if (!lastQ) {
-    after.innerHTML = `<button class="btn" type="button" id="qz-nextk">下一句 › <small>${ex.k + 2} / ${ex.of}</small></button>`;
+    after.innerHTML = `<button class="btn" type="button" id="qz-nextk">下一句 › <small>${s.k + 2} / ${nQ}</small></button>`;
     const b = after.querySelector("#qz-nextk"); b.addEventListener("click", () => onward(true)); b.focus();
     return;
   }
