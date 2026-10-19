@@ -1991,7 +1991,9 @@ function nvPaint(nv, k){
   nv.querySelectorAll(".nv-tab").forEach((t, j) => t.setAttribute("aria-selected", j === k));
   nv.querySelectorAll(".nv-dots i").forEach((d, j) => d.classList.toggle("on", j === k));
   const tab = nv.querySelectorAll(".nv-tab")[k];
-  if (tab) tab.parentNode.scrollTo({ left: tab.offsetLeft - 40, behavior: "smooth" });
+  // measured against the tab row itself: offsetLeft counts from the nearest positioned ancestor,
+  // which in a 复习 run is the whole .run, so the row scrolled to the wrong place (用户 2026-10-19)
+  if (tab) { const row = tab.parentNode; row.scrollTo({ left: row.scrollLeft + tab.getBoundingClientRect().left - row.getBoundingClientRect().left - 40, behavior: "smooth" }); }
   if (!nv.classList.contains("all") && !nv.classList.contains("fill")) track.style.height = cards[k].offsetHeight ? cards[k].offsetHeight + "px" : "";
 }
 function nvGo(nv, k){
