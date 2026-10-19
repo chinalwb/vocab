@@ -481,11 +481,11 @@
   },
   "tilt-bias": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20744,
-   "t": 1792023744587
+   "due": 20753,
+   "t": 1792391040871
   },
   "etiquette": {
    "ease": 2.5,
@@ -3217,6 +3217,13 @@
     "peek": false,
     "via": "review",
     "ex": "She tilted her head to one side and listened."
+   },
+   {
+    "t": 1792391040869,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The training data was biased toward English-language sources."
    }
   ],
   "stall": [
@@ -6976,6 +6983,11 @@
   }
  },
  "history": [
+  {
+   "a": "when-it-comes-to",
+   "t": 1792391042732,
+   "via": "review"
+  },
   {
    "a": "tilt-bias",
    "t": 1792390815873,
