@@ -162,8 +162,8 @@
    "t": 1791852525332
   },
   "s-title-wrap": {
-   "s": "review",
-   "t": 1791854264610
+   "s": "test",
+   "t": 1792393937365
   },
   "for-what-its-worth": {
    "s": "test",
@@ -433,11 +433,11 @@
   },
   "s-title-wrap": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20744,
-   "t": 1792023873553
+   "due": 20753,
+   "t": 1792393935698
   },
   "implication-vs-indication": {
    "ease": 1.96,
@@ -3824,6 +3824,13 @@
     "peek": false,
     "via": "review",
     "ex": "The bug's fixed 👍 One more thing: the title gets truncated. Could we let it wrap instead of cutting it off?"
+   },
+   {
+    "t": 1792393935697,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The fix works, but long titles are still truncated. Can we allow the title to wrap to multiple lines?"
    }
   ],
   "s-testflight": [
@@ -7053,6 +7060,11 @@
   }
  },
  "history": [
+  {
+   "a": "bookkeeping",
+   "t": 1792393937530,
+   "via": "review"
+  },
   {
    "a": "s-title-wrap",
    "t": 1792393489100,
