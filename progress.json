@@ -4144,6 +4144,13 @@
     "peek": false,
     "via": "review",
     "ex": "This old guitar is worth about $2,000."
+   },
+   {
+    "t": 1792380964915,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How much is the company worth now?"
    }
   ],
   "unstoppable-irresistible-inexorable": [
