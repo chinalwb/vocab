@@ -6761,6 +6761,13 @@
     "peek": false,
     "via": "review",
     "ex": "The server was temporarily unreachable during the test run, which caused some failures."
+   },
+   {
+    "t": 1792402842737,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The server was briefly down while I was running the test cases just now."
    }
   ],
   "defer": [
