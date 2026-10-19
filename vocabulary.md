@@ -150,6 +150,7 @@
 144. [that said / that being said](#that-said)
 145. [acronym](#acronym)
 146. [convoluted](#convoluted)
+147. [hardly anyone / barely anyone](#hardly-anyone)
 
 ---
 
@@ -4778,3 +4779,30 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **roundabout** —— 强调"绕远路、不直接",不一定复杂:*That's a rather roundabout way to do it.*(这个做法有点绕。)
 - **tangled** —— 缠成一团:*The control flow is pretty tangled.*(控制流缠成一团了。)说代码还常说更重的 *spaghetti code*(面条代码)。
 - 易混:**circular logic / circular reasoning** 是"循环论证"(用结论证明结论),不是"绕"。
+
+---
+
+<a id="hardly-anyone"></a>
+## hardly anyone / barely anyone
+
+- 词性:phrase
+- CEFR:B2
+- 日期:2026-10-19
+- 掌握:会写
+
+**English definition:** Almost no one; only a very small number of people.
+
+**含义:** 几乎没有人(会这样做)。用来说某种操作、某个情况很少有人碰到,比如解释为什么一个小概率问题不急着修。
+
+**例句**
+1. Hardly anyone uses the app that way.
+   几乎没有人会那样用这个 App。
+2. Barely anyone does that.
+   几乎没人那样操作。
+
+**要点:**
+
+- **hardly anyone** 最常用,口语、书面都行;**barely anyone** 意思一样,偏口语、语气略强。
+- hardly / barely 本身带否定意思,后面接 **anyone**,不接 *nobody*(否则是双重否定)。
+- "操作"这里不用 *operate*(那是操作机器、设备),说 **do that** / **use it that way** 即可。
+- 写报告、工单时更客观的说法是 **very few users**。
