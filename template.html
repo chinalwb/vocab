@@ -397,6 +397,9 @@ h1{
 .wb-clear{position:absolute;top:6px;right:6px;font:inherit;font-size:calc(12.5px * var(--fs));color:var(--card-ink-2);background:none;border:0;padding:6px 8px;cursor:pointer;border-radius:8px}
 .wb-bank{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
 .wb-bank .wchip{font-size:calc(17px * var(--fs));padding:8px 14px}
+.wb-bank .wchip.dim{opacity:.25;cursor:default}
+.wb-bank .wchip.only{outline:2px solid var(--card-ink);outline-offset:2px}
+
 .wb-ans span.wchip{opacity:.75;cursor:default}
 .wb-done{color:var(--card-ink-2);font-size:calc(13px * var(--fs));padding:8px 0}
 .face .cta .wb-bank{margin:0 0 10px}
@@ -1648,16 +1651,37 @@ function bankLayout(words, strays, seed, k){
 }
 // the word bank on screen: the keyboard's Delete / Backspace takes its last word back, like ⌫
 // (用户 2026-10-15) — not while a text field has the focus, and not once the bank is hidden
+// Typing narrows the chips (用户 2026-10-19): letters filter them by how the word starts, the rest
+// fade; with one left it is outlined and Tab (or Enter) takes it. Backspace drops a typed letter
+// first, then takes the last word back; Esc clears what was typed. Registered before the page's
+// other shortcuts (J / K, Esc closing the entry), so a key used here stops there.
 let liveBank = null;
 document.addEventListener("keydown", e => {
-  if ((e.key !== "Backspace" && e.key !== "Delete") || e.metaKey || e.ctrlKey || e.altKey || !liveBank) return;
+  if (e.metaKey || e.ctrlKey || e.altKey || !liveBank) return;
   if (e.target instanceof Element && e.target.closest("input, textarea, select, [contenteditable]")) return;
   const b = liveBank.bankEl;
   if (!b.isConnected || !(b.checkVisibility ? b.checkVisibility() : b.offsetParent)) return;
-  if (liveBank.undo()) e.preventDefault();
+  let used = false;
+  if (e.key === "Backspace" || e.key === "Delete") used = liveBank.back();
+  else if (e.key === "Tab" || e.key === "Enter") used = liveBank.take();
+  else if (e.key === "Escape") used = liveBank.esc();
+  else if (e.key.length === 1 && /[\p{L}\p{N}'’$-]/u.test(e.key)) { liveBank.type(e.key.toLowerCase()); used = true; }
+  if (used) { e.preventDefault(); e.stopImmediatePropagation(); }
 });
 function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
   const words = chipWords(answer), strays = strayWords(answer, others, seed, 6);
+  let typed = "";                                         // the letters typed to narrow the chips
+  const hits = () => [...bankEl.querySelectorAll(".wchip[data-w]")].filter(b => !typed || bareWord(b.dataset.w).startsWith(typed));
+  const narrow = () => {
+    const chips = [...bankEl.querySelectorAll(".wchip[data-w]")], on = hits();
+    chips.forEach(b => { const hit = on.includes(b); b.classList.toggle("dim", !hit); b.disabled = !hit; b.classList.toggle("only", !!typed && hit && on.length === 1); });
+    // what was typed shows on the box's hint line (the chips' grid has no room for it)
+    if (!ctl.hint) return;
+    ctl.hint.textContent = typed ? `键入“${typed}” · ` + (on.length === 1 ? "按 Tab 选中" : on.length ? `还剩 ${on.length} 个` : "没有这样开头的词") + " · Esc 清除" : hint0;
+    ctl.hint.hidden = !typed && !picks.length;
+  };
+  const hint0 = ctl.hint ? ctl.hint.textContent : "";
+  const pick = w => { typed = ""; picks.push(w); paint(true); };
   const paint = focus => {
     input.value = picks.join(" ");
     input.dispatchEvent(new Event("input"));
@@ -1672,16 +1696,22 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
       : `<span class="wb-done">拼完了,点「显示答案」对照</span>`;
     if (ctl.clear) ctl.clear.hidden = !picks.length;
     if (ctl.bs) ctl.bs.disabled = !picks.length;
-    if (ctl.hint) ctl.hint.hidden = !picks.length;
+    narrow();
     if (focus) (bankEl.querySelector(".wchip") || ansEl.querySelector(".wchip.last"))?.focus({ preventScroll: true });
     // the box grows a row at a time: keep its last row (and the hint under it) in sight (用户 2026-10-16)
     if (picks.length) requestAnimationFrame(() => (ctl.hint && !ctl.hint.hidden ? ctl.hint : ansEl).scrollIntoView({ block: "nearest", behavior: "smooth" }));
   };
-  ansEl.onclick = e => { if (e.target.closest(".wchip.last")) { picks.pop(); paint(); } };
-  bankEl.onclick = e => { const b = e.target.closest(".wchip[data-w]"); if (!b) return; picks.push(b.dataset.w); paint(true); };
-  if (ctl.clear) ctl.clear.onclick = () => { picks.length = 0; paint(); };
-  if (ctl.bs) ctl.bs.onclick = () => { picks.pop(); paint(); };       // ⌫: the last word back, without reaching up
-  liveBank = { bankEl, undo: () => { if (!picks.length) return false; picks.pop(); paint(); return true; } };
+  ansEl.onclick = e => { if (e.target.closest(".wchip.last")) { typed = ""; picks.pop(); paint(); } };
+  bankEl.onclick = e => { const b = e.target.closest(".wchip[data-w]"); if (b) pick(b.dataset.w); };
+  if (ctl.clear) ctl.clear.onclick = () => { typed = ""; picks.length = 0; paint(); };
+  if (ctl.bs) ctl.bs.onclick = () => { typed = ""; picks.pop(); paint(); };       // ⌫: the last word back, without reaching up
+  liveBank = {
+    bankEl,
+    type: ch => { typed += ch; narrow(); },
+    back: () => { if (typed) { typed = typed.slice(0, -1); narrow(); return true; } if (!picks.length) return false; picks.pop(); paint(); return true; },
+    take: () => { if (!typed) return false; const on = hits(); if (on.length === 1) pick(on[0].dataset.w); return true; },
+    esc: () => { if (!typed) return false; typed = ""; narrow(); return true; },
+  };
   paint();
 }
 
