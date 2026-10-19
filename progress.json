@@ -6277,6 +6277,13 @@
     "peek": false,
     "via": "review",
     "ex": "The refactor shouldn't change that function's behavior."
+   },
+   {
+    "t": 1792394829974,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "That function is expected to work correctly after the refactor."
    }
   ],
   "s-rate-limit-error": [
