@@ -3817,6 +3817,13 @@
     "peek": false,
     "via": "review",
     "ex": "Looks like the bug is fixed, but the title is truncated. Can we wrap it onto multiple lines when it doesn't fit?"
+   },
+   {
+    "t": 1792393764332,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The bug's fixed 👍 One more thing: the title gets truncated. Could we let it wrap instead of cutting it off?"
    }
   ],
   "s-testflight": [
