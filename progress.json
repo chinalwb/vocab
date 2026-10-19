@@ -417,11 +417,11 @@
   },
   "stray": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20744,
-   "t": 1792023991317
+   "due": 20753,
+   "t": 1792393170163
   },
   "when-it-comes-to": {
    "ease": 2.5,
@@ -4512,6 +4512,13 @@
     "peek": false,
     "via": "review",
     "ex": "A stray console.log slipped into the commit."
+   },
+   {
+    "t": 1792393170161,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The kids strayed from the path."
    }
   ],
   "chrome": [
@@ -7011,6 +7018,11 @@
   }
  },
  "history": [
+  {
+   "a": "for-what-its-worth",
+   "t": 1792393182455,
+   "via": "review"
+  },
   {
    "a": "stray",
    "t": 1792393058807,
