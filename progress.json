@@ -6377,6 +6377,13 @@
     "peek": false,
     "via": "review",
     "ex": "I'd like to know in what situations users would hit the \"Rate limit reached\" error."
+   },
+   {
+    "t": 1792395969281,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "I'd like to understand what triggers the \"Rate limit reached\" error for users."
    }
   ],
   "s-error-message": [
