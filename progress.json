@@ -702,6 +702,14 @@
    "lapses": 2,
    "due": 20746,
    "t": 1792394891174
+  },
+  "intermittent-outage": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20746,
+   "t": 1792402991689
   }
  },
  "newDay": 20745,
@@ -6775,6 +6783,13 @@
     "peek": false,
     "via": "review",
     "ex": "We hit a transient outage on the server during the test run."
+   },
+   {
+    "t": 1792402991686,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "There was a brief service interruption on the server just now while the test cases were executing."
    }
   ],
   "defer": [
@@ -7410,6 +7425,11 @@
   }
  },
  "history": [
+  {
+   "a": "practitioner",
+   "t": 1792403002131,
+   "via": "review"
+  },
   {
    "a": "intermittent-outage",
    "t": 1792402826854,
