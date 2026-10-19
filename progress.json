@@ -4158,6 +4158,13 @@
     "peek": false,
     "via": "review",
     "ex": "The book is worth reading."
+   },
+   {
+    "t": 1792381006510,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Is it worth upgrading to the new version?"
    }
   ],
   "unstoppable-irresistible-inexorable": [
