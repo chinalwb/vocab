@@ -4165,6 +4165,13 @@
     "peek": false,
     "via": "review",
     "ex": "Is it worth upgrading to the new version?"
+   },
+   {
+    "t": 1792381027913,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "It's not worth arguing about."
    }
   ],
   "unstoppable-irresistible-inexorable": [
