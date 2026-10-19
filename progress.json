@@ -4193,6 +4193,13 @@
     "peek": false,
     "via": "review",
     "ex": "The book is worth reading."
+   },
+   {
+    "t": 1792389233776,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "For what it's worth, I think you made the right call."
    }
   ],
   "unstoppable-irresistible-inexorable": [
