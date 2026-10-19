@@ -7499,6 +7499,11 @@
  },
  "history": [
   {
+   "a": "that-said",
+   "t": 1792403283350,
+   "via": "entry"
+  },
+  {
    "a": "shelve",
    "t": 1792403253780,
    "via": "review"
@@ -7576,11 +7581,6 @@
   {
    "a": "agonize-over",
    "t": 1792394402872,
-   "via": "review"
-  },
-  {
-   "a": "that-said",
-   "t": 1792394379123,
    "via": "review"
   },
   {
