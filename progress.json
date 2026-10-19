@@ -625,11 +625,11 @@
   },
   "s-better-at": {
    "ease": 1.96,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 1,
-   "due": 20745,
-   "t": 1792288557634
+   "due": 20748,
+   "t": 1792398172742
   },
   "s-long-term-project": {
    "ease": 2.5,
@@ -6986,6 +6986,13 @@
     "peek": false,
     "via": "review",
     "ex": "Is GPT-6 Astra better at coding than Opus 5.5?"
+   },
+   {
+    "t": 1792398172738,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Is GPT-6 Astra better at coding than Opus 5.5?"
    }
   ],
   "s-long-term-project": [
@@ -7355,6 +7362,11 @@
  },
  "history": [
   {
+   "a": "s-play-it-safe",
+   "t": 1792398173825,
+   "via": "review"
+  },
+  {
    "a": "s-better-at",
    "t": 1792398154836,
    "via": "review"
@@ -7537,11 +7549,6 @@
   {
    "a": "s-skills-refresh",
    "t": 1792289375734,
-   "via": "review"
-  },
-  {
-   "a": "s-play-it-safe",
-   "t": 1792288650090,
    "via": "review"
   },
   {
