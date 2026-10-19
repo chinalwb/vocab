@@ -623,3 +623,34 @@
 - ⚠️ [语气] ==With respect to== → **By "simple", I don't mean …** —— *with respect to* 是公文腔,口语里澄清一个词用 *By "X", I mean …*。
 - ⚠️ [动词] ==we are to reduce== → **cutting** —— *be to do* 是「按规定要做」,用在这里太正式。
 - ❌ [标点] ==, instead,== → **; instead,** —— 逗号连接了两个完整的句子,改成分号或断成两句。
+
+<a id="r-already-among-the-candidates"></a>
+## 1 和 2 照做,3 先不做;选词时,如果下一个正确的词已经在候选里,就让它留在原来的位置,好点得更快。
+
+- 日期:2026-10-19
+- 关键词:If X is already among …, I'd like it to stay … · tap through
+
+**常用说法:**
+
+> Please do 1 and 2, and don't do 3 yet. I have another request for the word bank: now we show 4 words each time. If the next correct word is already shown, please keep it in the same place, so users can tap faster. Tell me if something is not clear.
+
+**C1 说法:**
+
+> **Go ahead with** 1 and 2, and **skip 3 for now**. **One more request for** the word bank: we show four candidates for the next word each time. **If the correct next word is already among the current candidates, I'd like it to stay in the same position**, so users can **tap through** faster. **Let me know if anything's unclear.**
+
+**差别:**
+
+- **Go ahead with …** —— 「那就照……做吧」,同意对方的方案时用;对应 *Please do*。
+- **skip 3 for now** —— 「3 先跳过」,*for now* 表示以后可能再做;对应 *don't do 3 yet*。
+- **One more request for …:** —— 用冒号引出要说的事,比完整句子更利落;对应 *I have another request for*。
+- **If … is already among the current candidates** —— 先把条件说清楚,*be among* 是「在……之中」;对应 *is already shown*。
+- **I'd like it to stay in the same position** —— *would like sth to do*,说希望它怎样;对应 *please keep it in the same place*。
+- **tap through** —— 「一路点下去」,比 *tap* 多了连续点完的意思;对应 *tap faster*。
+- **Let me know if anything's unclear.** —— 结尾的固定客气话;对应 *Tell me if something is not clear*。
+
+**我的原句:**
+
+> Go ahead with 1 and 2, skip 3 for now. Another improvement request on the word-bank mode: currently, we show 4 candidates for the next word each time. I'd like to keep ==the candidate's position if that candidate shows up now== and it will be the right one for the next word. That way, ==user== can tap on words faster. -- Let me know if this is unclear to you
+
+- ⚠️ [逻辑] ==the candidate's position if that candidate shows up now== → **If the correct next word is already among the current candidates, I'd like it to stay in the same position** —— 先说「哪个词」,再说要求;原句读到句尾才知道指的是哪个候选词,*shows up now* 也说不清是哪一组。
+- ❌ [冠词] ==user== → **users** / **the user** —— 可数名词单数前要有冠词,泛指用户用复数最自然。
