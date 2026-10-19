@@ -43,6 +43,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -127,8 +129,7 @@ fun QuizScreen(
     val current = session?.current
     when {
         session != null && session.stage == stage && current != null -> QuizCard(
-            session, current, selfTests[current.anchor].orEmpty(), stageTimes[current.anchor] ?: 0L, excluded[current.anchor].orEmpty(),
-            review.cards[current.anchor]?.reps ?: 0, onStudied, onReveal, onGrade, onOnward, onNext, onEnd, { onOpen(it, emptyList()) }, onRight, modifier,
+            session, selfTests, stageTimes, excluded, review, onStudied, onReveal, onGrade, onOnward, onNext, onEnd, { onOpen(it, emptyList()) }, onRight, modifier,
         )
         session != null && session.stage == stage -> Column(
             modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility).padding(24.dp),
@@ -435,6 +436,54 @@ private fun DoneList(
 @Composable
 private fun QuizCard(
     session: QuizSession,
+    selfTests: Map<String, List<Attempt>>,
+    stageTimes: Map<String, Long>,
+    excluded: Map<String, Set<String>>,
+    review: ReviewData,
+    onStudied: () -> Unit,
+    onReveal: (String, Boolean) -> Unit,
+    onGrade: (String, Boolean) -> Unit,
+    onOnward: (Boolean) -> Unit,
+    onNext: (Boolean) -> Unit,
+    onEnd: () -> Unit,
+    onXref: (String) -> Unit,
+    onRight: () -> Unit,
+    modifier: Modifier,
+) {
+    val cur = session.current ?: return
+    val hasAnswer = if (cur.level == "SELFTEST") cur.selfTestAnswer.isNotBlank() else session.example != null
+    val final = session.revealed && (!hasAnswer || session.step == 2) && session.lastQ
+    Column(modifier.fillMaxSize()) {
+        RunTopBar(
+            onEnd,
+            progress = (session.index + if (final) 1 else 0).toFloat() / session.queue.size,
+            label = "${session.index + 1} / ${session.queue.size}",
+        )
+        // 换条 (用户 2026-10-19): the next item slides in from the right like the next card of a deck, the
+        // last one out to the left; the entry's next sentence only fades its question in (QuizCardBody).
+        // Same as runAnimIn() in template.html. The system's animation scale (off = none) applies.
+        androidx.compose.animation.AnimatedContent(
+            targetState = session,
+            contentKey = { it.index },
+            transitionSpec = {
+                (androidx.compose.animation.slideInHorizontally(tween(300)) { it / 6 } + androidx.compose.animation.fadeIn(tween(300))) togetherWith
+                    (androidx.compose.animation.slideOutHorizontally(tween(160)) { -it / 6 } + androidx.compose.animation.fadeOut(tween(160)))
+            },
+            modifier = Modifier.weight(1f).fillMaxWidth(),
+            label = "item",
+        ) { s ->
+            val e = s.current ?: return@AnimatedContent
+            QuizCardBody(
+                s, e, selfTests[e.anchor].orEmpty(), stageTimes[e.anchor] ?: 0L, excluded[e.anchor].orEmpty(), review.cards[e.anchor]?.reps ?: 0,
+                onStudied, onReveal, onGrade, onOnward, onNext, onXref, onRight,
+            )
+        }
+    }
+}
+
+@Composable
+private fun QuizCardBody(
+    session: QuizSession,
     entry: Entry,
     attempts: List<Attempt>,
     since: Long,
@@ -445,10 +494,8 @@ private fun QuizCard(
     onGrade: (String, Boolean) -> Unit,
     onOnward: (Boolean) -> Unit,
     onNext: (Boolean) -> Unit,
-    onEnd: () -> Unit,
     onXref: (String) -> Unit,
     onRight: () -> Unit,
-    modifier: Modifier,
 ) {
     val exam = entry.level == "SELFTEST"
     val ex = session.example
@@ -481,12 +528,10 @@ private fun QuizCard(
     val front = session.stage == Stage.Review && angle <= 90f
     val density = androidx.compose.ui.platform.LocalDensity.current.density
     val stats = statsLine(attempts.at(ex), one = ex != null)
-    Column(modifier.fillMaxSize()) {
-        RunTopBar(
-            onEnd,
-            progress = (session.index + if (final) 1 else 0).toFloat() / session.queue.size,
-            label = "${session.index + 1} / ${session.queue.size}",
-        )
+    // 换句: the next sentence of the same entry fades its question in; the card stays put
+    val sentIn = remember(session.k) { androidx.compose.animation.core.Animatable(if (session.k == 0) 1f else 0f) }
+    LaunchedEffect(session.k) { sentIn.animateTo(1f, tween(240)) }
+    Column(Modifier.fillMaxSize()) {
         Box(
             Modifier
                 .weight(1f)
@@ -509,14 +554,18 @@ private fun QuizCard(
                             // the headword stays hidden until the reveal (用户 2026-10-19): it is often the very answer
                             listOfNotNull(
                                 if (exam) "自测题" else entry.title.takeIf { session.revealed },
-                                ex?.let { "第 ${session.k + 1} / ${session.qs.size} 句" },
-                                "中译英",
+                                // with the sentence and its bars the row is full on a phone: 中译英 goes
+                                ex?.let { "第 ${session.k + 1} / ${session.qs.size} 句" } ?: "中译英",
                             ).joinToString(" · ") + (if (answer != null) stepLabel(step) else ""),
+                            bars = if (ex != null) ({ SentenceBars(session.k, session.qs.size, done = session.k + if (session.revealed && step == 2) 1 else 0) }) else null,
                             toggle = if (answer != null && !session.revealed) ({
                                 AnswerModeToggle(step == 1 || help, { if (step == 2) help = it }, lockSecond = step == 1)
                             }) else null,
                         )
-                        if (!session.revealed) {
+                        if (!session.revealed) Column(
+                            Modifier.graphicsLayer { alpha = sentIn.value; translationY = (1f - sentIn.value) * 12.dp.toPx() },
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
                             val compact = if (bank != null) bank.picked.isNotEmpty() else typed.isNotBlank()
                             when {
                                 exam -> QuestionText(entry.title.removePrefix("自测:").removePrefix("自测:"), compact)
@@ -530,7 +579,8 @@ private fun QuizCard(
                                 blanks != null -> FillAnswerBox(blanks, fillsOf(fills)) { fills = it.joinToString(FILL_SEP.toString()); typed = composeBlanks(blanks, it) }
                                 else -> TypingAnswerBox(typed) { typed = it }
                             }
-                        } else {
+                        }
+                        if (session.revealed) {
                             val q = if (exam) entry.title.removePrefix("自测:").removePrefix("自测:") else ex?.zh
                             if (q != null) Text(q, style = MaterialTheme.typography.bodyLarge, color = sheetColors().sub)
                             val full = if (exam) entry.selfTestAnswer else ex?.en
@@ -549,8 +599,8 @@ private fun QuizCard(
                                 "这次的 ${session.qs.size} 句都做完了:" + if (session.entryOk) "全部答对" else "有没答对的,整条记为没对", session.entryOk,
                             )
                             when {
-                                auto -> AutoMoveNote("复习里连续答对 $PROMOTE_REPS 次了,下一题时自动移到考核")
-                                back -> AutoMoveNote("没答对,下一题时退回复习,排期从明天重新开始")
+                                auto -> AutoMoveNote("复习里连续答对 $PROMOTE_REPS 次了,下一条时自动移到考核")
+                                back -> AutoMoveNote("没答对,下一条时退回复习,排期从明天重新开始")
                                 ready -> AdvanceBanner(session.stage) { onNext(true) }
                             }
                             NotesForQuestion(entry, ex, onXref, onAll = { onXref(entry.anchor) })
@@ -565,7 +615,7 @@ private fun QuizCard(
                         else if (!session.lastQ) SheetButton("下一句 › ${session.k + 2} / ${session.qs.size}") { onOnward(true) }
                         else Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                             if (ready && !auto) SheetButton("移到${session.stage.next?.tab}", Modifier.weight(1f), filled = false) { onNext(true) }
-                            SheetButton(if (session.index + 1 < session.queue.size) "下一题 ›" else "完成", Modifier.weight(1f)) { onNext(false) }
+                            SheetButton(if (session.index + 1 < session.queue.size) "下一条 ›" else "完成", Modifier.weight(1f)) { onNext(false) }
                         }
                     },
                 )

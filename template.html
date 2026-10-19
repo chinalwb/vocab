@@ -794,6 +794,18 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .qcard [hidden]{display:none!important}
 .qmeta{display:flex;align-items:center;gap:8px;font-size:calc(12.5px * var(--fs));font-weight:700;color:color-mix(in srgb,var(--card-ink) 76%,transparent)}
 .qmeta>span:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbars{display:inline-flex;gap:3px;margin-left:10px;vertical-align:middle}
+.sbars i{width:16px;height:5px;border-radius:3px;background:currentColor;opacity:.22}
+.sbars i.done{opacity:.55}
+.sbars i.on{opacity:1}
+@keyframes itemIn{from{transform:translateX(56px);opacity:0}to{transform:none;opacity:1}}
+@keyframes itemOut{to{transform:translateX(-56px);opacity:0}}
+@keyframes sentIn{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.run .in-item{animation:itemIn .3s cubic-bezier(.2,.7,.2,1)}
+.run .out-item{animation:itemOut .16s ease-in forwards}
+.run .qcard.in-sent #q-ask{animation:sentIn .24s ease-out}
+@media (prefers-reduced-motion: reduce){.run .in-item,.run .qcard.in-sent #q-ask{animation:fadeIn .2s}.run .out-item{animation:none}}
 .qmeta .amode{background:color-mix(in srgb,var(--card-ink) 8%,transparent);border:0;padding:3px}
 .qmeta .amode button{padding:7px 14px;font-size:calc(13px * var(--fs))}
 .qcard .st{display:flex;flex-direction:column;gap:12px}
@@ -2078,7 +2090,7 @@ function progressHint(it, level, stage){
 }
 // the answer sheet's markup; [o.extra] goes after the stats line (看笔记)
 function qsheetHtml(o){
-  return `<div class="qcard"><div class="qmeta"><span>${esc(o.meta)}</span>${o.toggle || ""}</div>` +
+  return `<div class="qcard"><div class="qmeta"><span>${esc(o.meta)}${o.bars || ""}</span>${o.toggle || ""}</div>` +
     `<div class="st" id="q-ask"><div class="st-prompt">${o.prompt}</div>` +
     `<div class="qstats"><span id="q-stats">${esc(o.stats)}</span>${o.extra || ""}</div>` +
     `<div class="ybox" id="ybox"><div class="ybox-h"><span>你的句子</span><button type="button" id="yb-clear" hidden>清空</button></div>` +
@@ -2835,6 +2847,18 @@ function renderStageTab(stage, el){
   if (rd) rd.addEventListener("click", () => { const t = ready[0]; open(t.it, t.level, t.i, ready.map(x => x.it.anchor)); });
   el.querySelectorAll(".srow").forEach(b => b.addEventListener("click", () => { const t = byAnchor[b.dataset.anchor]; open(t.it, t.level, t.i, order); }));
 }
+// 换条 / 换句 (用户 2026-10-19): a new item slides in from the right like the next card of a deck
+// (the last one slides out to the left on 下一条); the entry's next sentence only fades its question
+// in — so it's clear at a glance which one happened. Same as QuizCard's AnimatedContent in QuizScreen.kt.
+function runAnimIn(el, s){
+  const item = s.animIdx !== s.index, sent = !item && s.animK !== s.k;
+  s.animIdx = s.index; s.animK = s.k;
+  if (item) el.querySelector(".qsheet, .scard")?.classList.add("in-item");
+  else if (sent) el.querySelector(".qcard")?.classList.add("in-sent");
+}
+// the entry's sentences this run as short bars after the meta: done, this one, still to come
+const sentBars = (k, n, done) => n < 2 ? "" : `<span class="sbars" aria-hidden="true">` +
+  Array.from({ length: n }, (_, j) => `<i class="${j < k || (j === k && done) ? "done" : j === k ? "on" : ""}"></i>`).join("") + `</span>`;
 // One card of a run: ✕, the progress bar and "3 / 32" on top, then 复习's notes (翻面做题) or the
 // answer sheet; after the reveal, the verdict, the notes the sentence comes from, and 下一题 — with
 // the move to the next stage offered once it's earned.
@@ -2866,6 +2890,7 @@ function renderQuizCard(el){
     el.innerHTML = `<div class="run">${top}<div class="scard" style="--sw:${sw}"><div class="shead"><p class="lab">${lvShort(t.level)} · 先看一遍</p>` +
       `<p class="big">${it.title}</p>${it.ipa ? `<p class="ipa">${it.ipa}</p>` : ""}</div>` +
       `<div class="body fillb">${notesHtml(it, true, false)}</div><div class="sfoot"><button class="btn" type="button" id="qz-studied">翻面做题</button></div></div></div>`;
+    runAnimIn(el, s);
     el.querySelector("#qz-stop").addEventListener("click", stop);
     el.querySelector("#qz-studied").addEventListener("click", () => { s.studied = true; renderQuizCard(el); });
     markExamples(el, it); wireXrefsIn(el, go);
@@ -2875,19 +2900,24 @@ function renderQuizCard(el){
   // 复习 → 考核 happens by itself on 下一题; 考核 sends a miss back to 复习 — say so, no button
   const auto = ready && stage === "review", back = final && stage === "test" && s.missed && !ready;
   // the headword stays hidden until the reveal (用户 2026-10-19): it is often the very answer
-  const meta = [exam ? "自测题" : s.revealed ? plainMd(textOf(it.title)) : "", ex ? `第 ${s.k + 1} / ${nQ} 句` : "", "中译英"].filter(Boolean).join(" · ") + (qAns ? stepLabel(step) : "");
+  const meta = [exam ? "自测题" : s.revealed ? plainMd(textOf(it.title)) : "", ex ? `第 ${s.k + 1} / ${nQ} 句` : "", ex ? "" : "中译英"].filter(Boolean).join(" · ") + (qAns ? stepLabel(step) : "");
   const prompt = exam ? `<p class="qprompt">${esc(stTitle(it))}</p>` : ex ? `<p class="qprompt">${esc(plainMd(ex.zh))}</p>` : askHtml(t, k);
   el.innerHTML = `<div class="run">${top}<div class="qsheet" style="--sw:${sw}">` +
-    qsheetHtml({ meta, toggle: qAns && !s.revealed ? modeToggleHtml(step) : "", prompt, stats: stStatsLine(it.anchor, exEn), draft: s.draft }) + `</div></div>`;
+    qsheetHtml({ meta, bars: ex ? sentBars(s.k, nQ, s.revealed && step === 2) : "", toggle: qAns && !s.revealed ? modeToggleHtml(step) : "", prompt, stats: stStatsLine(it.anchor, exEn), draft: s.draft }) + `</div></div>`;
+  runAnimIn(el, s);
   el.querySelector("#qz-stop").addEventListener("click", stop);
   const via = stage;                                        // "review" / "test" in the history
-  // 下一题: the move I tapped, or the one the run makes by itself (see nextQuiz() in VocabViewModel.kt)
+  // 下一条: the move I tapped, or the one the run makes by itself (see nextQuiz() in VocabViewModel.kt)
   const next = adv => {
+    if (s.leaving) return;
     if (adv || auto) { setStage(it, nextStage(stage)); s.advanced++; if (stage === "review") s.promoted.push(it.anchor); }
     else if (back) { setStage(it, "review"); scheduleReview(it.anchor, false); s.demoted.push(it.anchor); }
     s.index++; s.done++; s.revealed = false; s.draft = ""; s.graded = undefined; s.ex = undefined; s.studied = false; s.picks = undefined; s.missed = false;
     s.k = 0; s.step = 1; s.entryOk = true; s.ans = undefined; s.righted = false; s.qs = undefined;
-    render(); window.scrollTo(0, 0);
+    const on = () => { s.leaving = false; render(); window.scrollTo(0, 0); };
+    const card = el.querySelector(".qsheet");            // this card slides out first, then the next one in
+    if (card && !matchMedia("(prefers-reduced-motion: reduce)").matches) { s.leaving = true; card.classList.add("out-item"); setTimeout(on, 160); }
+    else on();
   };
   // within the entry: ① → ②, then its next sentence
   const onward = nextK => {
@@ -2934,8 +2964,8 @@ function renderQuizCard(el){
   const canRight = qAns && !s.righted && !!s.draft.trim() && !(s.bankOk && s.typedOk);
   res.innerHTML = (quiet ? `<p class="qquiet">${esc(quiet)}</p>` : "") + (qAns ? s.righted ? RIGHTED : stepsHtml(s.bankOk, s.typedOk, s.helped, s.skipped) : "") +
     (exam ? verdictHtml(s.draft, it.answer || "", stats) : ex ? verdictHtml(s.draft, exEn, stats) : movedHtml(null, s.draft, s.graded)) + (canRight ? RIGHT_BTN : "") + whole +
-    (auto ? `<div class="adv"><span>复习里连续答对 ${PROMOTE_REPS} 次了,下一题时自动移到考核</span></div>` :
-      back ? `<div class="adv"><span>没答对,下一题时退回复习,排期从明天重新开始</span></div>` : ready ? advanceHtml(stage) : "") + notesForQuestionHtml(it, ex) + stHistoryHtml(it.anchor, exEn);
+    (auto ? `<div class="adv"><span>复习里连续答对 ${PROMOTE_REPS} 次了,下一条时自动移到考核</span></div>` :
+      back ? `<div class="adv"><span>没答对,下一条时退回复习,排期从明天重新开始</span></div>` : ready ? advanceHtml(stage) : "") + notesForQuestionHtml(it, ex) + stHistoryHtml(it.anchor, exEn);
   decorateNotes(res, it, ex, go, () => go(t));
   // 算我对: this sentence was right after all — the entry's result, and on its last sentence the
   // SM-2 grade (back to the card before it) and the 考核 miss, are worked out again
@@ -2958,7 +2988,7 @@ function renderQuizCard(el){
     return;
   }
   after.innerHTML = (ready && !auto ? `<button class="btn ghost" type="button" id="qz-adv">移到${STAGE_TAB[nextStage(stage)]}</button>` : "") +
-    `<button class="btn" type="button" id="qz-next">${s.index + 1 < s.queue.length ? "下一题 ›" : "完成"}</button>`;
+    `<button class="btn" type="button" id="qz-next">${s.index + 1 < s.queue.length ? "下一条 ›" : "完成"}</button>`;
   res.querySelectorAll("[data-ok]").forEach(b => b.addEventListener("click", () => {   // graded by me
     s.graded = b.dataset.ok === "1";
     logAttempt(it.anchor, s.draft, s.graded, via);

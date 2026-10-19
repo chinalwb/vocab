@@ -173,17 +173,20 @@ fun AnswerSheet(
 
 /** "make use of · 例句 1 / 3 · 中译英" with the 选词 | 打字 switch at its end. */
 @Composable
-fun SheetMetaRow(meta: String, toggle: (@Composable () -> Unit)?) {
+fun SheetMetaRow(meta: String, toggle: (@Composable () -> Unit)?, bars: (@Composable () -> Unit)? = null) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(
-            meta,
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.Bold,
-            color = sheetColors().sub,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f),
-        )
+        Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(
+                meta,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+                color = sheetColors().sub,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false),
+            )
+            bars?.invoke()
+        }
         toggle?.invoke()
     }
 }
@@ -553,10 +556,11 @@ fun NotesForQuestion(entry: Entry, ex: QuizExample?, onXref: (String) -> Unit, o
 
 /** The entry's sentences as short bars (the one asked filled), up to 10 — more and they'd be specks. */
 @Composable
-fun SentenceBars(at: Int, of: Int) {
+fun SentenceBars(at: Int, of: Int, done: Int = 0) {
     if (of !in 2..10) return
     val ink = MaterialTheme.colorScheme.onSurface
     Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        repeat(of) { i -> Box(Modifier.size(16.dp, 5.dp).background(if (i == at) ink else ink.copy(alpha = 0.18f), RoundedCornerShape(3.dp))) }
+        // [done]: how many are answered (a run's bars: done, this one, still to come)
+        repeat(of) { i -> Box(Modifier.size(16.dp, 5.dp).background(if (i < done) ink.copy(alpha = 0.5f) else if (i == at) ink else ink.copy(alpha = 0.18f), RoundedCornerShape(3.dp))) }
     }
 }
