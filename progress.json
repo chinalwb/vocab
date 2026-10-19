@@ -544,12 +544,12 @@
    "t": 1792371961046
   },
   "stall": {
-   "ease": 1.96,
+   "ease": 1.42,
    "interval": 1,
    "reps": 0,
-   "lapses": 1,
-   "due": 20745,
-   "t": 1792320865713
+   "lapses": 2,
+   "due": 20746,
+   "t": 1792394258535
   },
   "tinker": {
    "ease": 2.5,
@@ -3408,6 +3408,13 @@
     "peek": false,
     "via": "review",
     "ex": "The car stalled at the intersection and wouldn't restart."
+   },
+   {
+    "t": 1792394258533,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "She bought fresh vegetables from a stall at the farmers' market."
    }
   ],
   "bookkeeping": [
@@ -5605,6 +5612,13 @@
     "peek": false,
     "via": "review",
     "ex": "The new design makes full use of the available screen space."
+   },
+   {
+    "t": 1792394267695,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We should make use of the tools we already have."
    }
   ],
   "orthogonal": [
@@ -7095,6 +7109,11 @@
   }
  },
  "history": [
+  {
+   "a": "make-use-of",
+   "t": 1792394260476,
+   "via": "review"
+  },
   {
    "a": "stall",
    "t": 1792393975127,
