@@ -401,11 +401,11 @@
   },
   "worth": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20744,
-   "t": 1792024009186
+   "due": 20753,
+   "t": 1792389304338
   },
   "for-what-its-worth": {
    "ease": 2.5,
@@ -4207,6 +4207,13 @@
     "peek": false,
     "via": "review",
     "ex": "For what it's worth, the old version never had this bug."
+   },
+   {
+    "t": 1792389304336,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Learning to write well is a worthwhile investment."
    }
   ],
   "unstoppable-irresistible-inexorable": [
@@ -6943,8 +6950,8 @@
  "history": [
   {
    "a": "worth",
-   "t": 1792389193922,
-   "via": "review"
+   "t": 1792389319397,
+   "via": "entry"
   },
   {
    "a": "implication-vs-indication",
