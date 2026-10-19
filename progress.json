@@ -6184,6 +6184,13 @@
     "peek": false,
     "via": "review",
     "ex": "Is there a simpler way to do this?"
+   },
+   {
+    "t": 1792394618149,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I'm looking for an easier approach."
    }
   ],
   "s-expected-to-work": [
