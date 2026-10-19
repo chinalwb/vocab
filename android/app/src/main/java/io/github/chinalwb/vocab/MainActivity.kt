@@ -248,6 +248,7 @@ private fun VocabNav() {
                             attempts = selfTests[anchor].orEmpty(),
                             onAttempt = { text, ok -> if (entry != null) vm.recordSelfTest(entry, text, "entry", ok) },
                             onGrade = { text, ok, ex -> if (entry != null) vm.recordAttempt(entry, text, ok, "entry", ex) },
+                            onRight = { vm.markRight(anchor) },
                             stage = entry?.let { stages.stageOf(it) } ?: Stage.Learn,
                             since = stageData.t[anchor] ?: 0L,
                             onStage = { vm.setStage(anchor, it) },
@@ -525,6 +526,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onNext = vm::nextQuiz,
                 onEnd = vm::endQuiz,
                 onUndo = vm::undoQuizMoves,
+                onRight = vm::rightQuiz,
                 // a run draws its own top row under the status bar and keeps above the navigation bar
                 modifier = if (quiz?.stage == stage) Modifier.imePadding() else Modifier,
                 contentPadding = pad,

@@ -54,6 +54,10 @@ data class QuizSession(
     val helped: Boolean = false,
     /** every sentence so far right: grades the SM-2 card and the moves after the last one */
     val entryOk: Boolean = true,
+    /** 算我对: entryOk before this sentence and the SM-2 card before its grade, to work them out again */
+    val entryOkBefore: Boolean = true,
+    val cardBefore: io.github.chinalwb.vocab.review.Card? = null,
+    val righted: Boolean = false,
 ) {
     val current get() = queue.getOrNull(index)
 
@@ -281,9 +285,11 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
                 val ok = s.bankOk && typedOk
                 if (ex == null) recordSelfTest(e, draft, via, ok) else recordAttempt(e, draft, ok, via, ex.en)
                 val all = s.entryOk && ok
+                val before = review.value.cards[e.anchor]          // read before schedule() grades it
                 if (s.lastQ) schedule(s, e, all)
                 _quiz.value = s.copy(
                     revealed = true, typedOk = typedOk, helped = helped, entryOk = all, missed = s.lastQ && !all,
+                    entryOkBefore = s.entryOk, cardBefore = before,
                     checked = s.checked + if (tried) 1 else 0, ok = s.ok + if (ok) 1 else 0,
                 )
             }
@@ -296,8 +302,45 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     /** Within the entry: ① → ② 打字, or ([nextSentence]) on to its next sentence's ①. */
     fun onwardQuiz(nextSentence: Boolean) {
         val s = _quiz.value ?: return
-        _quiz.value = if (nextSentence) s.copy(k = s.k + 1, step = 1, revealed = false).withExample(quizOptOut.value)
-        else s.copy(step = 2, revealed = false)
+        _quiz.value = if (nextSentence) s.copy(k = s.k + 1, step = 1, revealed = false, righted = false).withExample(quizOptOut.value)
+        else s.copy(step = 2, revealed = false, righted = false)
+    }
+
+    /**
+     * 算我对 in a run: this sentence was right after all — the entry's result, and on its last sentence
+     * the SM-2 grade (from the card as it was before) and the 考核 miss, are worked out again.
+     * Same as the #st-right handler in renderQuizCard() (template.html).
+     */
+    fun rightQuiz() {
+        val s = _quiz.value ?: return
+        val e = s.current ?: return
+        if (!s.revealed || s.righted) return
+        markRight(e.anchor)
+        val all = s.entryOkBefore
+        if (s.lastQ && s.stage == Stage.Review) viewModelScope.launch {
+            reviews.replace { r -> r.copy(cards = s.cardBefore?.let { r.cards + (e.anchor to it) } ?: (r.cards - e.anchor)) }
+            reviews.grade(e.anchor, if (all) Grade.Good else Grade.Again)
+            progress.soon()
+        }
+        _quiz.value = s.copy(righted = true, ok = s.ok + 1, entryOk = all, missed = s.lastQ && !all)
+    }
+
+    // the last 今天的练习 pair per entry, so 算我对 can mark it right too
+    private val lastPractice = mutableMapOf<String, io.github.chinalwb.vocab.review.PracticeItem>()
+
+    /**
+     * 算我对 (用户 2026-10-19): a reveal judged wrong for a difference that isn't a mistake — a tense
+     * the Chinese doesn't give away, a contraction, a synonym — counts as right: the last attempt
+     * (a written one) turns ok. Same as markRight() in template.html.
+     */
+    fun markRight(anchor: String) = viewModelScope.launch {
+        selfTestLog.replace { m ->
+            val l = m[anchor].orEmpty()
+            val a = l.lastOrNull()
+            if (a == null || a.text.isEmpty()) m else m + (anchor to (l.dropLast(1) + a.copy(ok = true)))
+        }
+        progress.soon()
+        lastPractice[anchor]?.let { practice.record(it.copy(ok = true)) }
     }
 
     /** 我写对了 / 没写对 on an entry that has no answer to check against. */
@@ -343,7 +386,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         setRun(s.copy(
             index = s.index + 1, studied = false, revealed = false, graded = null, missed = false, done = s.done + 1,
             advanced = s.advanced + if (moved) 1 else 0, promoted = promoted, demoted = demoted,
-            k = 0, step = 1, bankOk = false, typedOk = false, helped = false, entryOk = true,
+            k = 0, step = 1, bankOk = false, typedOk = false, helped = false, entryOk = true, righted = false,
         ).withExample(quizOptOut.value))
     }
 
@@ -369,7 +412,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         progress.soon()
         // an example sentence goes into 今天的练习 too; what I grade myself has no answer to pair with
         val zh = entry.quizExamples().firstOrNull { plain(it.en) == ex }?.let { plain(it.zh) }
-        if (ex.isNotEmpty() && zh != null) practice.record(practiceItem(entry, zh, t, ex, ok && t.isNotEmpty(), via))
+        if (ex.isNotEmpty() && zh != null) practiceItem(entry, zh, t, ex, ok && t.isNotEmpty(), via).let { lastPractice[entry.anchor] = it; practice.record(it) }
     }
 
     /** Records one reveal of a 自测 entry; ok = the words match the answer, unless [okAs] says (两步). */
@@ -381,7 +424,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         progress.soon()
         // the answer it was checked against: the closest of the accepted ones, or the first after a peek
         val answer = if (t.isEmpty()) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() }.orEmpty() else d.answer.joinToString(" ")
-        if (answer.isNotEmpty()) practice.record(practiceItem(entry, entry.title.removePrefix("自测:").removePrefix("自测:"), t, answer, ok, via))
+        if (answer.isNotEmpty()) practiceItem(entry, entry.title.removePrefix("自测:").removePrefix("自测:"), t, answer, ok, via).let { lastPractice[entry.anchor] = it; practice.record(it) }
     }
 
     private fun practiceItem(entry: Entry, zh: String, mine: String, answer: String, ok: Boolean, via: String) =

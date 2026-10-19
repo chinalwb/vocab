@@ -134,7 +134,31 @@ private fun Line(label: String, text: AnnotatedString, say: String? = null) {
  * compared word by word. Each try takes the next example in turn (attempt count % examples).
  * Entries without a translated example (grammar notes, quick references) I grade myself.
  */
-data class QuizExample(val en: String, val zh: String, val k: Int, val of: Int)
+data class QuizExample(val en: String, val zh: String, val k: Int, val of: Int, /** [en] as written, its key part in **bold** */ val raw: String = en)
+
+/** A piece of a quiz sentence: a **bold** key part to type ([key]), or the text around it. */
+data class Blank(val key: Boolean, val text: String)
+
+/**
+ * 打字 asks only for the key part (用户 2026-10-19): the sentence split at its **bold** parts, the rest
+ * filled in — so a long sentence isn't typed out whole, and its tense comes with the filled-in words.
+ * Null when nothing is bold (a 句子 entry's sentences, a 自测题): those are typed whole. Same as
+ * blanksOf() in template.html.
+ */
+fun blanksOf(raw: String?): List<Blank>? {
+    if (raw == null || !Regex("\\*\\*(.+?)\\*\\*").containsMatchIn(raw)) return null
+    return raw.split("**").mapIndexed { k, t -> Blank(k % 2 == 1, plain(t)) }.filter { it.key || it.text.isNotEmpty() }
+}
+
+/** What the filled-in sentence reads as a whole: [fills] by key part, in order. */
+fun composeBlanks(parts: List<Blank>, fills: List<String>): String {
+    var k = 0
+    return parts.joinToString("") { if (it.key) fills.getOrElse(k++) { "" }.trim() else it.text }.replace(Regex("\\s+"), " ").trim()
+}
+
+/** The typed key parts, kept as one saveable string. */
+const val FILL_SEP = '\u001F'
+fun fillsOf(saved: String): List<String> = saved.split(FILL_SEP)
 
 private val CJK = Regex("[\\u4e00-\\u9fff]")
 
@@ -150,7 +174,7 @@ fun Entry.quizExample(tries: Int, excluded: Set<String> = emptySet()): QuizExamp
     val xs = quizExamples(excluded)
     if (xs.isEmpty()) return null
     val k = tries % xs.size
-    return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size)
+    return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size, xs[k].en)
 }
 
 /**
@@ -314,7 +338,7 @@ class WordBankState(val words: List<String>, private val strays: List<String>, p
     val picked: List<String> get() = pickedText.split(" ").filter { it.isNotEmpty() }
     val draft: String get() = pickedText
     val done: Boolean get() = picked.size >= words.size
-    val options: List<String> get() = optionsAt(picked.size)
+    val options: List<String> get() = layoutAt(picked.size)
     fun pick(w: String) { pickedText = (picked + w).joinToString(" ") }
     fun undo() { pickedText = picked.dropLast(1).joinToString(" ") }
     fun clear() { pickedText = "" }
@@ -327,6 +351,27 @@ class WordBankState(val words: List<String>, private val strays: List<String>, p
         val later = words.drop(k + 1).shuffled(rnd).filter { seen.add(bareWord(it)) }.take(2)
         val fill = strays.shuffled(rnd).filter { seen.add(bareWord(it)) }.take(CHIPS - 1 - later.size)
         return (listOf(right) + later + fill).shuffled(rnd)
+    }
+
+    /**
+     * The chips as laid out after [k] picks (用户 2026-10-19): a word still there from the last set
+     * keeps its slot — above all the one that's right next, usually on screen already — so the thumb
+     * doesn't hunt for it; the new ones fill the free slots. Replayed from the first set, so ⌫ gives
+     * the same layout back. Same as bankLayout() in template.html.
+     */
+    private fun layoutAt(k: Int): List<String> {
+        var prev = emptyList<String>()
+        for (j in 0..k) {
+            val opts = optionsAt(j)
+            val out = arrayOfNulls<String>(opts.size)
+            val rest = ArrayDeque<String>()
+            for (w in opts) {
+                val at = prev.indexOfFirst { bareWord(it) == bareWord(w) }
+                if (at in out.indices && out[at] == null) out[at] = w else rest.addLast(w)
+            }
+            prev = out.map { it ?: rest.removeFirst() }
+        }
+        return prev
     }
 
     companion object { const val CHIPS = 4 }

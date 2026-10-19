@@ -410,7 +410,7 @@ SITE = {
     "categories": True,              # 分类 in the sidebar, 类型 / 级别 rows in 筛选
     "cardColor": "level",            # or "stage": cards coloured by 学习中 / 复习中 / 考核中 / 已掌握
     "logo": "",                      # a picture next to the page's index.html, shown in front of the name
-    "fillBlanks": False,             # 打字 asks only for the **bold** part of a quiz sentence, the rest filled in
+    "fillBlanks": True,              # 打字 asks only for the **bold** part of a quiz sentence, the rest filled in
     "sync": {"repo": "chinalwb/vocab", "branch": "progress", "path": "progress.json"},
     # optional colour overrides: {"light": {"--accent": "#…", …}, "dark": {…}}, laid over the
     # template's own :root blocks (light, dark by system setting, dark by the theme button)

@@ -88,6 +88,8 @@ fun EntryScreen(
     onAttempt: (String, Boolean) -> Unit = { _, _ -> },
     /** an attempt at an example sentence, with its verdict and the example (plain English) */
     onGrade: (String, Boolean, String) -> Unit = { _, _, _ -> },
+    /** 算我对: the last attempt counts as right after all */
+    onRight: () -> Unit = {},
     stage: Stage = Stage.Learn,
     /** when it entered [stage] (ms): only attempts since then count towards the next stage */
     since: Long = 0L,
@@ -144,6 +146,9 @@ fun EntryScreen(
         var typedOk by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
         var helped by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf(false) }
         var typed by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf("") }
+        // ② with a **bold** key part: just that part is typed, the rest is filled in (blanksOf())
+        var fills by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf("") }
+        var righted by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf(false) }
         var help by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf(false) }
         var draft by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf("") }
         var revealed by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf(false) }
@@ -251,7 +256,12 @@ fun EntryScreen(
                                 modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { quizUp = false }.padding(horizontal = 6.dp, vertical = 4.dp),
                             )
                         }
-                        if (bank != null) ChipsAnswerBox(bank) else TypingAnswerBox(typed) { typed = it }
+                        val blanks = if (step == 2) blanksOf(ex?.raw) else null
+                        when {
+                            bank != null -> ChipsAnswerBox(bank)
+                            blanks != null -> FillAnswerBox(blanks, fillsOf(fills)) { fills = it.joinToString(FILL_SEP.toString()); typed = composeBlanks(blanks, it) }
+                            else -> TypingAnswerBox(typed) { typed = it }
+                        }
                     } else {
                         // the question again, quietly, above the verdict
                         QuestionQuiet(entry, ex)
@@ -259,11 +269,12 @@ fun EntryScreen(
                             RevealVerdict(draft, key, STEP1_NOTE)
                             return@AnswerSheet
                         }
-                        if (key != null) StepsLine(stepsText(bankOk, typedOk, helped), bankOk && typedOk)
+                        if (key != null) StepsLine(if (righted) RIGHTED else stepsText(bankOk, typedOk, helped), righted || bankOk && typedOk)
                         when {
                             key != null -> RevealVerdict(draft, key, stats)
                             else -> MovedResult(draft, graded) { graded = it; onGrade(draft, it, "") }
                         }
+                        if (key != null && !righted && !(bankOk && typedOk) && draft.isNotBlank()) RightMeRow { righted = true; onRight() }
                         // 移到 X moves and goes on to the next one in the list; the track only moves
                         if (ready) AdvanceBanner(stage) { stage.next?.let(onStage); onNext?.invoke() }
                         NotesForQuestion(entry, ex, onXref, onAll = if (toNotes) ({ quizUp = false }) else null)
