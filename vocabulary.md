@@ -170,9 +170,9 @@
    矿工过去会带一只金丝雀下矿井,用来侦测有毒气体。—— 这句正好是引申义的来源典故。
 
 **义项二:预警测试 / 哨兵版本(引申义,技术语境常见)**
-1. We run a **canary** test before every deploy to catch regressions early.
+1. We run a **canary test** before every deploy to catch regressions early.
    我们每次部署前都会跑一个"哨兵测试",提前发现回归问题。
-2. They rolled out the update to a small **canary** group of users first.
+2. They rolled out the update to a small **canary group** of users first.
    他们先把更新推送给一小部分"金丝雀用户"试用。
 
 **常见搭配:**
@@ -190,15 +190,15 @@ canary test / canary release / canary deployment / canary build —— 都是"�
 - 掌握:认识
 
 **义项一:数学/几何 —— 正交的、成直角的**
-1. In a Cartesian coordinate system, the x-axis and y-axis are **orthogonal** to each other.
+1. In a Cartesian coordinate system, the x-axis and y-axis are **orthogonal to** each other.
    在笛卡尔坐标系中,x 轴和 y 轴互相垂直。
 2. These two vectors are **orthogonal**, so their dot product is zero.
    这两个向量是正交的,所以它们的点积为零。
 
 **义项二:逻辑/工程 —— 相互独立、互不影响**
-1. We designed the caching layer to be **orthogonal** to the authentication logic, so changing one doesn't break the other.
+1. We designed the caching layer to be **orthogonal to** the authentication logic, so changing one doesn't break the other.
    我们把缓存层设计得和身份验证逻辑相互独立,改一个不会影响另一个。
-2. Performance and readability are largely **orthogonal** concerns in this codebase.
+2. Performance and readability are largely **orthogonal concerns** in this codebase.
    在这个代码库里,性能和可读性在很大程度上是两个互不相关的考量维度。
 
 **常见搭配:**
@@ -301,11 +301,11 @@ orthogonal to (something) —— 最常见的介词搭配,表示"与……正交
 **释义:** 曾经强大、但现在已丧失影响力/竞争力的人或群体;"强弩之末,大势已去"。是"spent"(耗尽)在"影响力/实力"层面上的引申,比"quota is spent"这种用法自然、常见得多。
 
 **例句:**
-1. After several defeats in a row, people are starting to say that the team is a **spent** force.
+1. After several defeats in a row, people are starting to say that the team is a **spent force**.
    接连输了好几场之后,大家开始说这支球队已经大势已去了。
-2. Once a dominant force in the industry, the company is now widely seen as a **spent** force.
+2. Once a dominant force in the industry, the company is now widely seen as a **spent force**.
    这家公司曾是行业里的主导力量,但现在普遍被认为已经大势已去。
-3. Critics say the party is a **spent** force after losing three elections in a row.
+3. Critics say the party is a **spent force** after losing three elections in a row.
    评论人士说,这个政党接连输了三次选举后已经彻底失势了。
 
 **更克制、更留有余地的替代说法:** "a spent force" 语气偏强、偏绝对(暗示"基本没什么存在感/竞争力了"),如果实际情况没有那么极端,只是"不如从前"、但依然是个有实际业务/存在感的实体,用下面这两种说法更准确:
@@ -316,7 +316,7 @@ orthogonal to (something) —— 最常见的介词搭配,表示"与……正交
 
 **另一个更贴切的例子:BroadVision**
 BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星公司之一——2000 年泡沫顶峰时期市值一度高达 280 多亿美元,创始人是 **Pehong Chen(陈丕宏)**。泡沫破裂后市值几乎归零,虽然公司至今仍存在、仍在做企业软件/AI 相关业务,但早已从行业聚光灯下彻底消失。这是 "a spent force" 更典型的应用场景——一度极其强大,如今几乎不再有任何行业影响力。
-1. BroadVision was once a dot-com darling worth billions, but today it's widely seen as a **spent** force in the tech industry.
+1. BroadVision was once a dot-com darling worth billions, but today it's widely seen as a **spent force** in the tech industry.
    BroadVision 曾是价值数十亿美元的互联网泡沫宠儿,但如今在科技行业里已被普遍视为昨日黄花。
 
 ---
@@ -479,7 +479,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
    公司把税款缴纳推迟到了下一个财季。
 
 **义项二:defer to (sb/sth) = 听从、遵从(某人的意见/权威)—— 与"推迟"完全无关,勿混淆**
-1. I'll **defer** to your judgment on this — you know the client better than I do.
+1. I'll **defer to** your judgment on this — you know the client better than I do.
    这件事我听你的——你比我更了解这个客户。
 
 ---
@@ -609,9 +609,9 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 掌握:认识
 
 **义项一:动词(最常见,尤其在技术/编程语境)—— 随手摆弄、试验性地修改**
-1. Feel free to **tinker** with the code and see what happens if you change the temperature parameter.
+1. Feel free to **tinker with** the code and see what happens if you change the temperature parameter.
    你可以随便摆弄一下代码,看看改变 temperature 参数会发生什么。
-2. He spent the weekend **tinkering** with an old motorcycle in the garage.
+2. He spent the weekend **tinkering with** an old motorcycle in the garage.
    他周末在车库里摆弄一辆旧摩托车。
 
 **义项二:名词(较老/字面义)—— 补锅匠**
@@ -688,9 +688,9 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 **例句(翻译"鉴于 AI 编程时代势不可挡地来了,我们需要学会如何构建 AI 智能体"):**
 1. Given that the era of AI-driven programming is **arriving unstoppably**, we need to learn how to build AI agents.
    鉴于 AI 编程时代势不可挡地来了,我们需要学会如何构建 AI 智能体。
-2. With the AI programming era coming on with **unstoppable** momentum, we need to learn how to build AI agents.
+2. With the AI programming era coming on with **unstoppable momentum**, we need to learn how to build AI agents.
    随着 AI 编程时代以不可阻挡的势头到来,我们需要学会如何构建 AI 智能体。
-3. Given the **inexorable** rise of AI-driven programming, we need to learn how to build AI agents.
+3. Given the **inexorable rise** of AI-driven programming, we need to learn how to build AI agents.
    鉴于 AI 编程势不可挡的崛起,我们需要学会如何构建 AI 智能体。(更书面、更有分量感)
 
 ---
@@ -812,7 +812,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 **例句:**
 1. Before writing the automation script, let's **recon** the app's login flow manually to understand all the edge cases.
    在写自动化脚本之前,我们先手动探查一下 App 的登录流程,搞清楚所有的边界情况。
-2. The team did a quick **recon** of the competitor's product before starting the redesign.
+2. The team did **a quick recon of** the competitor's product before starting the redesign.
    团队在开始重新设计之前,先快速调研了一下竞品。
 3. Then **recon** the dialog chrome on-device before writing the test steps.
    然后在真机上摸查一下这个对话框的界面结构,再写测试步骤。
@@ -879,13 +879,13 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
    这个国家在 1960 年获得独立,成为一个独立国家。
 
 **义项二:不受……影响、与……无关(常搭配 independent of)**
-1. The results of the experiment should be **independent** of who conducts it.
+1. The results of the experiment should be **independent of** who conducts it.
    实验结果应该跟由谁来做无关。
-2. In this study, age and income were treated as **independent** variables.
+2. In this study, age and income were treated as **independent variables**.
    在这项研究中,年龄和收入被当作自变量(相互独立的变量)。
 
 **义项三:自由职业的 / 非隶属于大机构的**
-1. He works as an **independent** contractor rather than a full-time employee.
+1. He works as an **independent contractor** rather than a full-time employee.
    他是自由职业的承包商,而不是全职员工。
 2. The film festival showcases **independent** films made outside the major studios.
    这个电影节展映的是在大制片厂体系之外制作的独立电影。
@@ -939,13 +939,13 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 **释义:** (若干分散的部分)融合、汇聚成一个整体——可以是具体的物质,也可以是抽象的想法/群体/意见。
 
 **义项一:字面义 —— (液体、颗粒等物质)融合、凝聚在一起**
-1. The small droplets of oil **coalesced** into a single large blob on the water's surface.
+1. The small droplets of oil **coalesced into** a single large blob on the water's surface.
    水面上那些小油滴渐渐融合成了一大团。
 
 **义项二:引申义 —— (想法、团体、意见等)汇聚、形成一致**
-1. Over the course of the meeting, everyone's ideas began to **coalesce** into a clear plan.
+1. Over the course of the meeting, everyone's ideas began to **coalesce into** a clear plan.
    会议过程中,大家的想法逐渐汇聚成了一个清晰的计划。
-2. The various protest groups eventually **coalesced** into a single unified movement.
+2. The various protest groups eventually **coalesced into** a single unified movement.
    各个抗议团体最终汇聚成了一个统一的运动。
 
 ---
@@ -1381,7 +1381,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
    一位富有的校友向这所大学捐赠了一大笔资金。(这里是"资金被捐赠给机构"的用法)
 
 **完整搭配结构:endow sb/sth with sth —— 赋予某人/某物某种特质或资源**
-1. Nature has **endowed** this region with abundant natural resources.
+1. Nature has **endowed** this region **with** abundant natural resources.
    大自然赋予了这个地区丰富的自然资源。
 
 ---
@@ -1546,11 +1546,11 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 **释义:** 明确说出/指定(自己想要什么),常用于"对方主动给你选择权,让你自己提条件"这种场景。
 
 **例句:**
-1. The emperor was so impressed and grateful that he invited the inventor to **name** his reward.
+1. The emperor was so impressed and grateful that he invited the inventor to **name his reward**.
    皇帝对这个发明印象深刻、非常感激,于是邀请发明者自己说出想要什么样的奖赏。(经典的"棋盘麦粒问题"故事开头)
-2. The buyer was so eager that he told the seller to **name** her price.
+2. The buyer was so eager that he told the seller to **name her price**.
    买家太想要了,直接让卖家开个价。
-3. "**Name** your reward," the king said, "and it shall be yours."
+3. "**Name your reward**," the king said, "and it shall be yours."
    国王说:"你说吧,想要什么奖赏,我都给你。"
 
 **常见固定搭配:name your price —— 开个价吧,你说多少就多少**
@@ -1665,9 +1665,9 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 **例句:**
 1. This policy **supersedes** all previous versions.
    本政策取代之前所有版本。
-2. The old API has been **superseded** by a newer, more efficient one.
+2. The old API has been **superseded by** a newer, more efficient one.
    旧的 API 已经被一个更新、更高效的版本取代了。
-3. Steam engines were eventually **superseded** by diesel and electric ones.
+3. Steam engines were eventually **superseded by** diesel and electric ones.
    蒸汽机最终被柴油机和电动机所取代。
 
 **常见搭配:be superseded by sth —— 被……取代(几乎总是被动语态使用)**
@@ -1918,7 +1918,7 @@ platform 等于 10,就代表请求来自 web,对吧?
    准时参加会议被认为是一种良好的礼仪。
 2. There's a certain **etiquette** around replying to emails promptly.
    及时回复邮件是有一定的礼仪规范的。
-3. Cutting in line is a serious breach of **etiquette**.
+3. Cutting in line is a serious **breach of etiquette**.
    插队是严重违反礼仪的行为。
 
 **常见搭配:** business etiquette(商务礼仪)、email/phone etiquette(邮件/电话礼仪)、social etiquette(社交礼仪)、dining etiquette(餐桌礼仪)、a breach of etiquette(违反礼仪的行为)。
@@ -1942,7 +1942,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 1. She's a general **practitioner** at a local clinic.
    她是当地一家诊所的全科医生。
-2. He's a longtime **practitioner** of traditional Chinese medicine.
+2. He's a longtime **practitioner of** traditional Chinese medicine.
    他是一位长期从事中医的从业者。
 3. As a **practitioner** in this field, I can tell you this approach actually works.
    作为这个领域的一名从业者,我可以告诉你这个方法确实有效。
@@ -2028,11 +2028,11 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **含义:** 不情愿的、勉强的——几乎总是用在固定句型 **be loath to do sth**(不愿意做某事)里,语域偏正式/书面。
 
-1. Neural networks are **loath** to give up their secrets when asked to explain their actions.
+1. Neural networks are **loath to** give up their secrets when asked to explain their actions.
    当被要求解释自己的行为时,神经网络不愿吐露它们的秘密。
-2. I'm **loath** to admit it, but he was right.
+2. I'm **loath to** admit it, but he was right.
    我不太愿意承认,但他是对的。
-3. Management is **loath** to raise prices in this market.
+3. Management is **loath to** raise prices in this market.
    管理层不愿意在当前市场环境下涨价。
 
 **⚠️ 关键辨析:loath(形容词)vs loathe(动词)**
@@ -2105,9 +2105,9 @@ platform 等于 10,就代表请求来自 web,对吧?
    她把头歪向一边听着。
 
 **义项二(引申):(制度、环境)偏向某一方、不公平地倾斜**
-1. The tax system is **tilted** in favor of the wealthy.
+1. The tax system is **tilted in favor of** the wealthy.
    这套税收制度偏向富人。
-2. The playing field is **tilted** against small businesses.
+2. The playing field is **tilted against** small businesses.
    这个竞争环境对小企业不利。
 
 **义项三(游戏/扑克俚语):上头、情绪失控**
@@ -2119,15 +2119,15 @@ platform 等于 10,就代表请求来自 web,对吧?
 **② bias / biased —— 核心是"系统性的偏向"**
 
 **义项一(日常义):偏见、成见**
-1. The report showed a clear **bias** against younger applicants.
+1. The report showed a clear **bias against** younger applicants.
    这份报告对年轻求职者有明显的偏见。
 2. I might be **biased**, since he's a friend of mine.
    我的看法可能有偏向,因为他是我朋友。
 
 **义项二(统计/机器学习):系统性偏差;样本不具代表性**
-1. The training data was **biased** toward English-language sources.
+1. The training data was **biased toward** English-language sources.
    训练数据过度偏向英文语料。
-2. Sampling **bias** makes the survey results unreliable.
+2. **Sampling bias** makes the survey results unreliable.
    抽样偏差让这份调查结果不可靠。
 
 **义项三(神经网络专有术语,中性无贬义):偏置项**
@@ -2168,7 +2168,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **含义:** 表示、指代、记作——尤其常用于"**某个符号/记号代表某个含义**"的技术、数学、学术语境。
 
-1. In this paper, the learning rate is **denoted** by α.
+1. In this paper, the learning rate is **denoted by** α.
    在本文中,学习率用 α 表示。
 2. Let n **denote** the number of training samples.
    设 n 表示训练样本的数量。
@@ -2385,9 +2385,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **义项三:催促、跟进(职场高频)**
 
-1. Can you **chase** the design team for the final mockups?
+1. Can you **chase** the design team **for** the final mockups?
    你能去催一下设计团队要最终稿吗?
-2. I'll **chase** this up with the vendor tomorrow.
+2. I'll **chase** this **up** with the vendor tomorrow.
    我明天找供应商跟进一下这件事。
 
 **常见搭配:**
@@ -2521,19 +2521,19 @@ platform 等于 10,就代表请求来自 web,对吧?
 **含义:** 严重程度;严厉程度。技术语境里最常指 bug / 事故的**严重级别**。
 
 **义项一:严重程度(问题、疾病、灾害)**
-1. Treatment depends on the **severity** of the symptoms.
+1. Treatment depends on **the severity of** the symptoms.
    治疗方案取决于症状的严重程度。
-2. Nobody realised the **severity** of the outage until customers started calling.
+2. Nobody realised **the severity of** the outage until customers started calling.
    直到客户开始打电话来,大家才意识到这次宕机有多严重。
 
 **义项二:(技术)严重级别,可数**
-1. We classify every incident by **severity**, from Sev 1 (critical) to Sev 4 (minor).
+1. We classify every incident **by severity**, from Sev 1 (critical) to Sev 4 (minor).
    每个事故都按严重级别分类,从 Sev 1(致命)到 Sev 4(轻微)。
 2. This crash is only a low-**severity** issue because it happens on an obsolete device.
    这个崩溃只算低严重级别的问题,因为它只出现在一款淘汰的设备上。
 
 **义项三:严厉、苛刻(惩罚、态度、风格)**
-1. The judge was criticised for the **severity** of the sentence.
+1. The judge was criticised for **the severity of** the sentence.
    法官因判得过重而受到批评。
 2. She dresses with a certain **severity**: all black, no jewellery.
    她穿着风格很冷峻:一身黑,不戴首饰。
@@ -3210,7 +3210,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 **义项一:empowering(adj.)让人有力量 / 掌控感**
 1. Learning to code was an **empowering** experience for her.
    学会写代码对她来说是一段让人很有底气的经历。
-2. It's **empowering** to realize you don't need anyone's permission to start.
+2. **It's empowering to** realize you don't need anyone's permission to start.
    意识到自己不需要任何人的许可就能开始,这让人觉得很有力量。
 
 **义项二:empower sb (to do sth)(v.)授权、使有能力(偏正式)**
@@ -3345,7 +3345,7 @@ platform 等于 10,就代表请求来自 web,对吧?
    雾里我只能勉强看出一栋楼的轮廓。
 
 **discern(v.)义项二:辨别、区分**
-1. A good reviewer can **discern** real issues from mere style preferences.
+1. A good reviewer can **discern** real issues **from** mere style preferences.
    好的评审能分清哪些是真正的问题,哪些只是风格偏好。
 
 **常见搭配:** a discerning customer / eye / reader · discern a pattern / trend / difference · hard to discern · barely discern · discern A from B / between A and B。
@@ -3374,7 +3374,7 @@ platform 等于 10,就代表请求来自 web,对吧?
    周五下午办公室空荡荡的。
 
 **义项二:被抛弃的(人)/ desert 离开**
-1. She felt **deserted** by her friends when she needed them most.
+1. She felt **deserted by** her friends when she needed them most.
    在她最需要的时候,她觉得被朋友们抛弃了。
 2. Many users **deserted** the platform after the price increase.
    涨价后很多用户离开了这个平台。
@@ -3465,11 +3465,11 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **含义:** 支持者、拥护者、倡导者——多指**公开、有立场地**支持某种观点 / 理论 / 做法的人。词源:拉丁语 *proponere*"提出",与 propose 同源。
 
-1. She is a strong **proponent** of test-driven development.
+1. She is a strong **proponent of** test-driven development.
    她是测试驱动开发的坚定拥护者。
-2. **Proponents** of remote work argue that it improves focus and reduces commuting time.
+2. **Proponents of** remote work argue that it improves focus and reduces commuting time.
    远程办公的支持者认为,它能提高专注度、减少通勤时间。
-3. Early **proponents** of neural networks were largely ignored for decades.
+3. Early **proponents of** neural networks were largely ignored for decades.
    神经网络的早期倡导者几十年来基本上都被忽视了。
 
 **常见搭配:** a proponent **of** sth · a strong / leading / vocal / early proponent · proponents and opponents。
@@ -3501,9 +3501,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 **含义:** (重要事物的)出现、到来、问世——多指**一项技术、一个时代或一种潮流的来临**,并带来重大改变。词源:拉丁语 *adventus*"到来",与 adventure、venue 同源。
 
 **义项一:重要事物的出现(最常用)**
-1. With the **advent** of smartphones, people stopped carrying separate cameras.
+1. With **the advent of** smartphones, people stopped carrying separate cameras.
    随着智能手机的出现,人们不再单独带相机了。
-2. The **advent** of large language models has changed how developers write code.
+2. **The advent of** large language models has changed how developers write code.
    大语言模型的出现改变了开发者写代码的方式。
 
 **义项二:Advent(大写)基督教的"将临期"** —— 圣诞节前约四周。
@@ -4398,9 +4398,9 @@ platform 等于 10,就代表请求来自 web,对吧?
    夜里街上有流浪狗游荡。
 
 **义项三:动词 —— 偏离、走散(stray from)**
-1. Let's not **stray** too far from the topic.
+1. Let's not **stray** too far **from** the topic.
    别离题太远。
-2. The kids **strayed** from the path.
+2. The kids **strayed from** the path.
    孩子们走出了小路。
 
 **常见搭配:**
@@ -4516,21 +4516,21 @@ platform 等于 10,就代表请求来自 web,对吧?
    这家公司现在值多少钱?
 
 **义项二:值得做某事(be worth + doing)**
-1. The book is **worth** reading.
+1. The book is **worth reading**.
    这本书值得一读。
-2. Is it **worth** upgrading to the new version?
+2. Is it **worth upgrading** to the new version?
    值得升级到新版本吗?
-3. It's not **worth** arguing about.
+3. It's not **worth arguing about**.
    这不值得争。
 
 例 1 注意:主语就是被读的东西,也不用 *to do* 或被动:❌ *worth to read*、❌ *worth being read*。
 
 **义项三:值得(be worth + 名词 / it)**
-1. The trip was long, but the view was **worth** it.
+1. The trip was long, but the view was **worth it**.
    路很远,但那风景值了。
-2. It's **worth** a try.
+2. It's **worth a try**.
    值得一试。
-3. Was it **worth** the money?
+3. Was it **worth the money**?
    花这个钱值吗?
 
 **义项四:名词 —— 价值;相当于……的量**
@@ -4550,9 +4550,9 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **worth your while** —— 值得你花时间。*Come to the demo; it'll be worth your while.*(来看演示吧,不会让你白跑。)
 
 **for what it's worth:说一句供参考(语气谦虚,不保证有用)**
-1. For what it's **worth**, I think you made the right call.
+1. **For what it's worth**, I think you made the right call.
    不管有没有用,我觉得你的决定是对的。
-2. For what it's **worth**, the old version never had this bug.
+2. **For what it's worth**, the old version never had this bug.
    说一句供参考,旧版本从来没有这个 bug。
 
 详见独立条目 [for what it's worth](#for-what-its-worth)(语境、场景和 make the right call)。
@@ -4732,7 +4732,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **abbreviation** /əˌbriːviˈeɪʃn/(B2):所有缩短写法的总称,包括上面两种,也包括 *Dr.*、*e.g.*、*approx.*。
 
 **例句:**
-1. "SRS" is an **acronym** for "spaced repetition system".
+1. "SRS" is an **acronym for** "spaced repetition system".
    SRS 是 spaced repetition system 的首字母缩写。
 2. Strictly speaking, "PR" is an initialism, not an **acronym**.
    严格来说,PR 是逐字母读的缩写,不算 acronym。
