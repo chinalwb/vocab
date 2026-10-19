@@ -570,10 +570,10 @@
   "deserted": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 3,
-   "due": 20745,
-   "t": 1792290524077
+   "due": 20746,
+   "t": 1792394377879
   },
   "make-use-of": {
    "ease": 1.96,
@@ -594,18 +594,18 @@
   "that-said": {
    "ease": 1.42,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 2,
-   "due": 20745,
-   "t": 1792320401671
+   "due": 20746,
+   "t": 1792394402045
   },
   "agonize-over": {
    "ease": 1.42,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 2,
-   "due": 20745,
-   "t": 1792294402731
+   "due": 20746,
+   "t": 1792394435312
   },
   "s-skills-refresh": {
    "ease": 1.42,
@@ -5984,6 +5984,27 @@
     "peek": false,
     "via": "review",
     "ex": "Many users deserted the platform after the price increase."
+   },
+   {
+    "t": 1792394359861,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The streets were completely deserted at 3 a.m."
+   },
+   {
+    "t": 1792394368077,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The office was deserted on Friday afternoon."
+   },
+   {
+    "t": 1792394377877,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Many users deserted the platform after the price increase."
    }
   ],
   "s-rush-into-get-straight": [
@@ -6503,6 +6524,27 @@
    },
    {
     "t": 1792320401671,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The PR looks good overall. That said, I'd split the second commit before we merge."
+   },
+   {
+    "t": 1792394387294,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This solution is inexpensive. That said, it's hard to maintain."
+   },
+   {
+    "t": 1792394393411,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We're swamped this week. That being said, I can still take a look at your PR."
+   },
+   {
+    "t": 1792394402043,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -7089,6 +7131,27 @@
     "peek": false,
     "via": "review",
     "ex": "There was an agonizing wait for the test results."
+   },
+   {
+    "t": 1792394415094,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I agonized for weeks over whether to accept the offer."
+   },
+   {
+    "t": 1792394424644,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Don't agonize over the wording — just send it."
+   },
+   {
+    "t": 1792394435310,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "There was an agonizing wait for the test results."
    }
   ],
   "practitioner": [
@@ -7144,6 +7207,21 @@
   }
  },
  "history": [
+  {
+   "a": "s-rush-into-get-straight",
+   "t": 1792394436422,
+   "via": "review"
+  },
+  {
+   "a": "agonize-over",
+   "t": 1792394402872,
+   "via": "review"
+  },
+  {
+   "a": "that-said",
+   "t": 1792394379123,
+   "via": "review"
+  },
   {
    "a": "deserted",
    "t": 1792394342390,
@@ -7260,18 +7338,8 @@
    "via": "review"
   },
   {
-   "a": "that-said",
-   "t": 1792296107418,
-   "via": "review"
-  },
-  {
    "a": "vice-versa",
    "t": 1792295731892,
-   "via": "review"
-  },
-  {
-   "a": "agonize-over",
-   "t": 1792293738020,
    "via": "review"
   },
   {
@@ -7342,11 +7410,6 @@
   {
    "a": "s-chase-for",
    "t": 1792287133263,
-   "via": "review"
-  },
-  {
-   "a": "s-rush-into-get-straight",
-   "t": 1792286444446,
    "via": "review"
   },
   {
