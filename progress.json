@@ -710,6 +710,30 @@
    "lapses": 0,
    "due": 20746,
    "t": 1792402991689
+  },
+  "practitioner": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20746,
+   "t": 1792403224822
+  },
+  "defer": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20746,
+   "t": 1792403252420
+  },
+  "shelve": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20746,
+   "t": 1792403262261
   }
  },
  "newDay": 20745,
@@ -6827,6 +6851,27 @@
     "peek": false,
     "via": "entry",
     "ex": "I'll defer to your judgment on this — you know the client better than I do."
+   },
+   {
+    "t": 1792403236100,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Students can defer their admission to the following academic year."
+   },
+   {
+    "t": 1792403244304,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The company deferred the tax payment to the next fiscal quarter."
+   },
+   {
+    "t": 1792403252418,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I'll defer to your judgment on this — you know the client better than I do."
    }
   ],
   "s-global-flag": [
@@ -7214,6 +7259,13 @@
     "peek": false,
     "via": "entry",
     "ex": "The merger plan was shelved after the market crashed."
+   },
+   {
+    "t": 1792403262259,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The merger plan was shelved after the market crashed."
    }
   ],
   "agonize-over": [
@@ -7407,6 +7459,27 @@
     "peek": false,
     "via": "entry",
     "ex": "She's a general practitioner at a local clinic."
+   },
+   {
+    "t": 1792403200880,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "She's a general practitioner at a local clinic."
+   },
+   {
+    "t": 1792403214602,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "He's a longtime practitioner of traditional Chinese medicine."
+   },
+   {
+    "t": 1792403224820,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "As a practitioner in this field, I can tell you this approach actually works."
    }
   ]
  },
@@ -7426,8 +7499,18 @@
  },
  "history": [
   {
+   "a": "shelve",
+   "t": 1792403253780,
+   "via": "review"
+  },
+  {
+   "a": "defer",
+   "t": 1792403226166,
+   "via": "review"
+  },
+  {
    "a": "practitioner",
-   "t": 1792403002131,
+   "t": 1792403187052,
    "via": "review"
   },
   {
