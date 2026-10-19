@@ -222,8 +222,8 @@
    "t": 1791979810430
   },
   "when-it-comes-to": {
-   "s": "review",
-   "t": 1791962584401
+   "s": "test",
+   "t": 1792393046928
   },
   "tilt-bias": {
    "s": "review",
@@ -425,11 +425,11 @@
   },
   "when-it-comes-to": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20744,
-   "t": 1792023955969
+   "due": 20753,
+   "t": 1792393043409
   },
   "s-title-wrap": {
    "ease": 2.5,
@@ -5421,6 +5421,20 @@
     "peek": false,
     "via": "review",
     "ex": "She's very patient when it comes to reviewing code."
+   },
+   {
+    "t": 1792393031578,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "When it comes to performance, the new version is much faster."
+   },
+   {
+    "t": 1792393043405,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She's very patient when it comes to reviewing code."
    }
   ],
   "make-use-of": [
@@ -6984,8 +6998,13 @@
  },
  "history": [
   {
+   "a": "stray",
+   "t": 1792393058807,
+   "via": "review"
+  },
+  {
    "a": "when-it-comes-to",
-   "t": 1792391042732,
+   "t": 1792393017422,
    "via": "review"
   },
   {
