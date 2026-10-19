@@ -1667,21 +1667,24 @@ document.addEventListener("keydown", e => {
   if (e.key === "Backspace" || e.key === "Delete") used = liveBank.back();
   else if (e.key === "Tab" || e.key === "Enter") used = liveBank.take();
   else if (e.key === "Escape") used = liveBank.esc();
-  else if (e.key.length === 1 && /[\p{L}\p{N}'’$-]/u.test(e.key)) { liveBank.type(e.key.toLowerCase()); used = true; }
+  else if (e.key.length === 1 && /[\p{L}\p{N}'’$-]/u.test(e.key)) { liveBank.type(e.key.toLowerCase().replace("’", "'")); used = true; }
   if (used) { e.preventDefault(); e.stopImmediatePropagation(); }
 });
 function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
   const words = chipWords(answer), strays = strayWords(answer, others, seed, 6);
   let typed = "";                                         // the letters typed to narrow the chips
-  const hits = () => [...bankEl.querySelectorAll(".wchip[data-w]")].filter(b => !typed || bareWord(b.dataset.w).startsWith(typed));
+  const norm = w => bareWord(w).replace(/’/g, "'");          // I’d and I'd type the same
+  const hits = () => [...bankEl.querySelectorAll(".wchip[data-w]")].filter(b => !typed || norm(b.dataset.w).startsWith(typed));
+  // what Tab / Enter takes: the one left, or — with several left — the one typed in full ("i" → I, not I'd)
+  const target = on => !typed ? null : on.length === 1 ? on[0] : on.find(b => norm(b.dataset.w) === typed) || null;
   const narrow = () => {
-    const chips = [...bankEl.querySelectorAll(".wchip[data-w]")], on = hits();
-    chips.forEach(b => { const hit = on.includes(b); b.classList.toggle("dim", !hit); b.disabled = !hit; b.classList.toggle("only", !!typed && hit && on.length === 1); });
+    const chips = [...bankEl.querySelectorAll(".wchip[data-w]")], on = hits(), aim = target(on);
+    chips.forEach(b => { const hit = on.includes(b); b.classList.toggle("dim", !hit); b.disabled = !hit; b.classList.toggle("only", b === aim); });
     // what was typed sits in the box after the last word, where the next one goes (用户 2026-10-19);
     // the hint line under it says what Tab / Esc do
     renderAns();
     if (!ctl.hint) return;
-    ctl.hint.textContent = typed ? (on.length === 1 ? "按 Tab 选中" : on.length ? `还剩 ${on.length} 个` : "没有这样开头的词") + " · Esc 清除" : hint0;
+    ctl.hint.textContent = typed ? (on.length === 1 ? "按 Tab 选中" : aim ? `按 Tab 选中「${aim.dataset.w}」· 还剩 ${on.length} 个` : on.length ? `还剩 ${on.length} 个` : "没有这样开头的词") + " · Esc 清除" : hint0;
     ctl.hint.hidden = !typed && !picks.length;
   };
   const renderAns = () => {
@@ -1716,7 +1719,7 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
     bankEl,
     type: ch => { typed += ch; narrow(); },
     back: () => { if (typed) { typed = typed.slice(0, -1); narrow(); return true; } if (!picks.length) return false; picks.pop(); paint(); return true; },
-    take: () => { if (!typed) return false; const on = hits(); if (on.length === 1) pick(on[0].dataset.w); return true; },
+    take: () => { if (!typed) return false; const aim = target(hits()); if (aim) pick(aim.dataset.w); return true; },
     esc: () => { if (!typed) return false; typed = ""; narrow(); return true; },
   };
   paint();
