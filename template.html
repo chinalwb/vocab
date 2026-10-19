@@ -802,10 +802,14 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 @keyframes itemOut{to{transform:translateX(-56px);opacity:0}}
 @keyframes sentIn{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes flipOut{to{transform:perspective(1600px) rotateY(90deg)}}
+@keyframes flipIn{from{transform:perspective(1600px) rotateY(-90deg)}to{transform:perspective(1600px) rotateY(0)}}
 .run .in-item{animation:itemIn .3s cubic-bezier(.2,.7,.2,1)}
 .run .out-item{animation:itemOut .16s ease-in forwards}
 .run .qcard.in-sent #q-ask{animation:sentIn .24s ease-out}
-@media (prefers-reduced-motion: reduce){.run .in-item,.run .qcard.in-sent #q-ask{animation:fadeIn .2s}.run .out-item{animation:none}}
+.run .flip-out{animation:flipOut .25s ease-in forwards}
+.run .flip-in{animation:flipIn .3s ease-out}
+@media (prefers-reduced-motion: reduce){.run .in-item,.run .flip-in,.run .qcard.in-sent #q-ask{animation:fadeIn .2s}.run .out-item,.run .flip-out{animation:none}}
 .qmeta .amode{background:color-mix(in srgb,var(--card-ink) 8%,transparent);border:0;padding:3px}
 .qmeta .amode button{padding:7px 14px;font-size:calc(13px * var(--fs))}
 .qcard .st{display:flex;flex-direction:column;gap:12px}
@@ -2853,6 +2857,7 @@ function renderStageTab(stage, el){
 function runAnimIn(el, s){
   const item = s.animIdx !== s.index, sent = !item && s.animK !== s.k;
   s.animIdx = s.index; s.animK = s.k;
+  if (s.flipIn) { s.flipIn = false; el.querySelector(".qsheet")?.classList.add("flip-in"); return; }   // 翻面做题
   if (item) el.querySelector(".qsheet, .scard")?.classList.add("in-item");
   else if (sent) el.querySelector(".qcard")?.classList.add("in-sent");
 }
@@ -2892,7 +2897,13 @@ function renderQuizCard(el){
       `<div class="body fillb">${notesHtml(it, true, false)}</div><div class="sfoot"><button class="btn" type="button" id="qz-studied">翻面做题</button></div></div></div>`;
     runAnimIn(el, s);
     el.querySelector("#qz-stop").addEventListener("click", stop);
-    el.querySelector("#qz-studied").addEventListener("click", () => { s.studied = true; renderQuizCard(el); });
+    // 翻面做题 turns the card over like the app's (rotationY): the notes turn edge-on, the sheet turns in
+    el.querySelector("#qz-studied").addEventListener("click", () => {
+      if (s.leaving) return;
+      const card = el.querySelector(".scard"), turn = () => { s.leaving = false; s.studied = true; s.flipIn = true; renderQuizCard(el); };
+      if (card && !matchMedia("(prefers-reduced-motion: reduce)").matches) { s.leaving = true; card.classList.remove("in-item"); card.classList.add("flip-out"); setTimeout(turn, 250); }
+      else turn();
+    });
     markExamples(el, it); wireXrefsIn(el, go);
     return;
   }
