@@ -684,3 +684,31 @@
 
 - ❌ [冠词] ==user== → **the user** —— 可数名词单数前要有冠词(两处都是)。
 - ⚠️ [搭配] ==follow the focus== → **follow the cursor** —— *focus* 指哪个控件被选中,输入位置叫 *cursor*。
+
+<a id="r-the-only-ones-that"></a>
+## 只有这三种通知会触发这个 bug 吗?
+
+- 日期:2026-10-20
+- 关键词:the only ones that … · Is it only … that …?
+
+**常用说法:**
+
+> Do only these three types of notifications trigger the bug?
+
+**C1 说法:**
+
+> Are these three notification types **the only ones that** trigger the bug?
+> **Is it only** these three notification types **that** trigger the bug?
+
+**差别:**
+
+- **notification types** —— 名词修饰名词,比 *types of notifications* 更紧凑;对应 *types of notifications*。
+- **the only ones that …** —— 把「只有」放进 *the only ones* 里,问句结构简单清楚;对应 *Do only these … trigger*。
+- **Is it only … that …?** —— 强调句,把「只有这三种」推到前面,语气是「真的就只有这几种吗?」;对应 *Do only these …*。
+
+**我的原句:**
+
+> Only these 3 ==types notification== ==triggers== the bug?
+
+- ❌ [结构] ==types notification== → **types of notifications** / **notification types** —— *type* 后面要用 *of* 连接,或者把 *notification* 放前面当修饰语。
+- ❌ [动词] ==triggers== → **trigger** —— 主语核心词是复数 *types*,动词用原形。
