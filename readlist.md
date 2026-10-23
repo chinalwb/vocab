@@ -712,3 +712,45 @@
 
 - ❌ [结构] ==types notification== → **types of notifications** / **notification types** —— *type* 后面要用 *of* 连接,或者把 *notification* 放前面当修饰语。
 - ❌ [动词] ==triggers== → **trigger** —— 主语核心词是复数 *types*,动词用原形。
+
+<a id="r-set-up-as-a-new-user"></a>
+## 把她设成新用户,预置一条 Note;再按她的情况(雅思 7 分)建四个分类,每类一两条,而且都能自测。
+
+- 日期:2026-10-23
+- 关键词:go ahead and pick · aiming for · support self-testing
+
+**常用说法:**
+
+> Please make my friend a new user and add this as a preset entry: "…" Put it in a category called Note. Please also make four more categories for her. She is an advanced learner and wants to get 7.0 in IELTS, so you can choose names that are good for her. Add one or two entries to each. Put my message in Note, with my original and your better versions. I want her to see her own list in that folder on the web app. All entries should be testable, the same as the other ones.
+
+**C1 说法:**
+
+> **Set up** my friend **as a new user**, with this as a preset entry: "…" Put it in a category called Note. Also, please create **four more** preset categories for her — she's an advanced learner **aiming for IELTS 7.0**, so **go ahead and pick** names **that make sense for her**, with one or two entries in each. **As before**, put my message in Note, with my original and your **improved versions**. **The goal is for her to** browse her own list under that directory on the web app. And every entry should **support self-testing, just like the others**.
+
+**差别:**
+
+- **Set up … as a new user** —— 「把……设成新用户」,开账号、建目录都能用;对应 *make my friend a new user*。
+- **four more** —— 「再加四个」,*more* 放在数字后面;对应 *four more*(常用说法里已经对了),而不是 *another four*。
+- **— she's …** —— 用破折号插进对她的介绍,说明为什么这样选分类;对应 *She is …*(另起一句)。
+- **aiming for IELTS 7.0** —— 「目标是雅思 7 分」,*aim for* 接目标分数;对应 *wants to get 7.0 in IELTS*。
+- **go ahead and pick** —— 「你直接选就行」,把决定权交给对方;对应 *you can choose*。
+- **that make sense for her** —— 「对她来说合适的」;对应 *that are good for her*。
+- **As before** —— 「和之前一样」,提醒对方沿用刚才的做法;对应 *Put my message …*(没说明是沿用)。
+- **improved versions** —— 说改好的句子用 *improved*,*optimized* 多用于程序和流程;对应 *better versions*。
+- **The goal is for her to …** —— 「目的是让她能……」,*for sb to do* 把目的和人连在一起;对应 *I want her to …*。
+- **support self-testing, just like the others** —— 「和其他条目一样能自测」,*support* 说功能上支持;对应 *should be testable, the same as the other ones*。
+
+**我的原句:**
+
+> Create a new entry for my friend as a new user. Add this as ==preset item==: "…" / Put it in a category: Note. BTW, please also create ==another 4 preset categories== for her, who is an ==andvanced== English ==leanrer== ==targeting to== IELTS 7.0. You can ==go ahead to pick== any category ==names make sense== to her. Add one or two entries for each of these categories. Again, put mine into the Note category, with my original sentence and the ones that you optimized. ==The goal is she can== browse the vocab list under that directory on the web app. All of the entries in these categories should ==be able for self-test== ==as the other general ones==.
+
+- ❌ [冠词] ==preset item== → **a preset item** —— 可数名词单数前要有冠词。
+- ⚠️ [结构] ==another 4 preset categories== → **four more preset categories** —— *another* 后面一般接单数名词。
+- ❌ [词形] ==andvanced== → **advanced** —— 拼写错误。
+- ❌ [词形] ==leanrer== → **learner** —— 拼写错误。
+- ❌ [动词] ==targeting to== → **targeting** / **aiming for** —— *target* 是及物动词,后面不加 *to*。
+- ⚠️ [搭配] ==go ahead to pick== → **go ahead and pick** —— *go ahead* 后面接 *and* + 动词原形。
+- ❌ [结构] ==names make sense== → **names that make sense** —— 定语从句里 *that* 做主语,不能省。
+- ⚠️ [结构] ==The goal is she can== → **The goal is for her to** —— 书面里 *that* 不宜省,或者用 *for sb to do*。
+- ❌ [结构] ==be able for self-test== → **support self-testing** —— *be able* 后面要接 *to do*,而且条目自己「能」做不了什么。
+- ⚠️ [介词] ==as the other general ones== → **like the others** —— 表示「和……一样」用 *like*。
