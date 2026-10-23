@@ -152,6 +152,7 @@
 146. [convoluted](#convoluted)
 147. [hardly anyone / barely anyone](#hardly-anyone)
 148. [句子:look into / mismatch between](#s-look-into-mismatch)
+149. [语法笔记:once 后面用一般现在时(is merged / has been merged)](#once-is-merged)
 
 ---
 
@@ -4834,3 +4835,24 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **look into sth** —— 调查、查一查(原因、问题)。
 - **a mismatch between A and B** —— A 和 B 对不上;也可以直接说 *A and B don't match*。
+
+---
+
+<a id="once-is-merged"></a>
+## 语法笔记:once 后面用一般现在时(is merged / has been merged)
+
+- 日期:2026-10-23
+- 掌握:会写
+
+**规则:** *once*、*when*、*after* 这类表示时间的连词后面,用一般现在时表示将来的事,这是英语的固定规则:说 *once it is merged*,不说 *once it will be merged*。
+
+**例句**
+1. Can I delete the source branch once the MR **is merged**?
+   MR 合并之后,我可以删掉源分支吗?
+2. Can I delete the source branch once the MR **has been merged**?
+   等 MR 合并完以后,我可以删掉源分支吗?
+
+**两种说法的区别:**
+
+- **once … is merged** —— 被动语态,表示合并这件事发生之后;口语和技术沟通里用得最多,也更短。
+- **once … has been merged** —— 现在完成时,更强调「已经合并完了」;想特别说明要等它彻底完成再删时用。日常里两者基本可以互换。
