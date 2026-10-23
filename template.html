@@ -49,6 +49,7 @@
   --sn-1:#e8d7c3; --sn-2:#dfcaaf; --sn-3:#f1e5d7;
   --cl-1:#dfe9c8; --cl-2:#d2e0b4; --cl-3:#eaf1d8;
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
+  --kn-1:#e2e0d0; --kn-2:#d8d5c0; --kn-3:#ece9dc;
 
   --accent:#2b4acb; --accent-ink:#ffffff; --st-learn:#8a8f9c; --st-test:#e0812f; --st-done:#3e9b5b;
   /* card colours by stage (site.json "cardColor": "stage"): the stage dots' colours, washed into the
@@ -90,6 +91,7 @@
     --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
     --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
+    --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
 
     --accent:#8ea2ff; --accent-ink:#10142a;
     --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db;
@@ -126,6 +128,7 @@
   --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
   --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
+  --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
 
   --accent:#8ea2ff; --accent-ink:#10142a;
   --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db;
@@ -1089,9 +1092,11 @@ const LV = {
   // 固定搭配 (`- 类型:固定搭配`): a phrase met in reading, quizzed on the sentence it came in.
   // Only taobao's notes use it so far; the App doesn't know this group.
   COLLOC:{nm:"阅读里看到的地道写法", sw:["--cl-1","--cl-2","--cl-3"]},
-  SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]}
+  SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]},
+  // Knowledge (`- 类型:Knowledge`, 用户 2026-10-23): writing know-how — punctuation, sentence structure
+  KNOWLEDGE:{nm:"Knowledge:写作通用知识(标点、句子结构……)", sw:["--kn-1","--kn-2","--kn-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题"};
+const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge"};
 // site.json "groups" (用户 2026-10-23, so's): a notebook's own categories, each picked by an entry's
 // `- 类型:` line and coloured with one of the palettes above; with any, 分类 and the 类型 row list only these
 const OWN = VK.groups || [];
@@ -1176,6 +1181,7 @@ if (!STAGE_NAME[stageF]) stageF = "";
 // Each row is single-choice and starts at 全部; the rows narrow each other.
 const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
+  ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []),
   ...(DATA.some(g => g.level === "COLLOC") ? [["COLLOC", "固定搭配"]] : []), ["SELFTEST", "自测题"]];
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
@@ -1740,19 +1746,31 @@ try { stLog = JSON.parse(store.get("vk.selftest", "{}")) || {}; } catch(e){}
 // translated example (grammar notes, quick references) I grade myself.
 // Examples I've opted out of 自测, by anchor: the plain English of each (vk.quizopt; the app
 // keeps the same in SharedPreferences "quizopt", neither is synced). One example always stays in.
-let quizOpt = {};
-try { quizOpt = JSON.parse(store.get("vk.quizopt", "{}")) || {}; } catch(e){}
-const quizExamples = it => (it.examples || []).filter(x => !(quizOpt[it.anchor] || []).includes(plainMd(x.en)));
+// 不再考这句 (long-press; 用户 2026-10-12 as 移出自测, 2026-10-23 renamed, synced and in the runs too):
+// {anchor: {plain English: {on: left out, t}}}; 恢复考这句 keeps {on: false} so 同步 carries it,
+// newest wins per sentence — the app keeps the same in quizopt.json. The old vk.quizopt
+// ({anchor: [plain English]}) is taken over once, at t = 1, so any later change wins.
+let quizOut = null;
+try { quizOut = JSON.parse(store.get("vk.quizout", "null")); } catch(e){}
+if (!quizOut) {
+  quizOut = {};
+  try { const old = JSON.parse(store.get("vk.quizopt", "{}")) || {}; for (const a in old) for (const en of old[a]) (quizOut[a] = quizOut[a] || {})[en] = { on: true, t: 1 }; } catch(e){}
+  store.set("vk.quizout", JSON.stringify(quizOut));
+}
+const isOut = (anchor, en) => !!(quizOut[anchor] && quizOut[anchor][en] && quizOut[anchor][en].on);
+// never none: one always stays in, but a sync from two devices could leave every one out
+const quizExamples = it => { const xs = it.examples || [], kept = xs.filter(x => !isOut(it.anchor, plainMd(x.en))); return kept.length ? kept : xs; };
 const quizEx = (it, n = (stLog[it.anchor] || []).length) => { const xs = quizExamples(it); return xs.length ? { ...xs[n % xs.length], k: n % xs.length, of: xs.length } : null; };
 function toggleQuizEx(it, en){
-  const cur = quizOpt[it.anchor] || [];
-  if (cur.includes(en)) quizOpt[it.anchor] = cur.filter(x => x !== en);
-  else if (quizExamples(it).length <= 1) { flash("至少要留一句例句用于自测"); return false; }
-  else quizOpt[it.anchor] = [...cur, en];
-  if (!quizOpt[it.anchor].length) delete quizOpt[it.anchor];
-  store.set("vk.quizopt", JSON.stringify(quizOpt));
+  const out = !isOut(it.anchor, en);
+  if (out && quizExamples(it).length <= 1) { flash("至少要留一句例句来考"); return false; }
+  (quizOut[it.anchor] = quizOut[it.anchor] || {})[en] = { on: out, t: Date.now() };
+  store.set("vk.quizout", JSON.stringify(quizOut));
+  syncSoon();
   return true;
 }
+// the example with this plain English among the ones still asked, numbered as quizEx() does; null if left out
+const quizExOf = (it, en) => { const xs = quizExamples(it), k = xs.findIndex(x => plainMd(x.en) === en); return k < 0 ? null : { ...xs[k], k, of: xs.length }; };
 // ⭐ example sentences (long-press → 收藏): {anchor: {plain English: {on, t}}}; an unstar is kept
 // (on: false) so 同步 carries it too, newest wins per sentence — the app keeps the same in favs.json.
 let favs = {};
@@ -1800,7 +1818,7 @@ function markExamples(root, it){
     if (!on && star) star.remove();
   });
 }
-// The long-press menu on an example: 复制, 收藏 / 取消收藏, and 加入 / 移出自测 when it can be asked.
+// The long-press menu on an example: 复制, 收藏 / 取消收藏, and 不再考这句 / 恢复考这句 when it can be asked.
 function exMenu(it, li, onQuiz){
   const key = li.dataset.key, zh = li.querySelector(".zh"), qz = li.classList.contains("qz");
   const back = document.createElement("div"), m = document.createElement("div");
@@ -1809,7 +1827,7 @@ function exMenu(it, li, onQuiz){
   m.innerHTML = `<p class="exm-en">${esc(key)}</p>` + (zh ? `<p class="exm-zh">${esc(zh.textContent)}</p>` : "") +
     `<button type="button" data-a="copy">复制</button>` +
     `<button type="button" data-a="fav">${isFav(it.anchor, key) ? "取消收藏" : "收藏"}</button>` +
-    (qz ? `<button type="button" data-a="quiz">${li.classList.contains("out") ? "加入自测" : "移出自测"}</button>` : "");
+    (qz ? `<button type="button" data-a="quiz">${li.classList.contains("out") ? "恢复考这句" : "不再考这句"}</button>` : "");
   const done = () => { back.remove(); m.remove(); document.removeEventListener("keydown", esc_, true); };
   const esc_ = e => { if (e.key === "Escape") { e.stopPropagation(); done(); } };
   document.addEventListener("keydown", esc_, true);
@@ -1850,8 +1868,9 @@ function flash(msg){
 }
 // the rendered sentence and the data's markdown, made comparable
 const exKey = t => t.replace(/\[(.+?)\]\(#[^)]+\)/g, "$1").replace(/[*`~]/g, "").trim();
-// Marks the sheet's quizzable examples (the ones in it.examples): a click toggles one out of 自测.
-function markQuizExamples(sheet, it){
+// Marks the sheet's quizzable examples (the ones in it.examples): a click toggles one out (the entry
+// page; [tapToggles] false in a 复习 / 考核 run, where only the long-press menu does).
+function markQuizExamples(sheet, it, tapToggles = true){
   if (it.level === "SELFTEST") return;
   const xs = it.examples || [];
   sheet.querySelectorAll(".body ol.ex").forEach(ol => {
@@ -1863,9 +1882,13 @@ function markQuizExamples(sheet, it){
       any = true;
       li.classList.add("qz");
       li.dataset.en = plainMd(x.en);
-      li.classList.toggle("out", (quizOpt[it.anchor] || []).includes(li.dataset.en));
+      li.classList.toggle("out", isOut(it.anchor, li.dataset.en));
     });
-    if (any) { const cap = document.createElement("p"); cap.className = "qz-cap"; cap.textContent = "● 自测会考这些例句,点一句可以排除(至少留一句);长按复制或收藏"; ol.after(cap); }
+    if (any && !ol.nextElementSibling?.classList.contains("qz-cap")) {
+      const cap = document.createElement("p"); cap.className = "qz-cap";
+      cap.textContent = tapToggles ? "● 自测、复习和考核都会考这些例句;点一句或长按选「不再考这句」(至少留一句);长按也能复制、收藏" : "● 长按一句:不再考这句、复制、收藏";
+      ol.after(cap);
+    }
   });
 }
 const exPrompt = ex => `<p class="lab">例句 ${ex.k + 1} / ${ex.of} · 中译英</p><p class="prompt" style="font-size:calc(19px * var(--fs))">${esc(plainMd(ex.zh))}</p><p class="hint">把这句写成英文,写完和例句原文逐词对照。</p>`;
@@ -2360,7 +2383,7 @@ function show(it, level, i, o = {}){
     if (step === 2) { show(it, level, i, { face: "back" }); return; }   // a new sentence starts at ①
     api.apply();
   };
-  // long-press: 复制 / 收藏 / 加入或移出自测
+  // long-press: 复制 / 收藏 / 不再考这句
   const afterLongPress = wireExMenu(sheet, it, toggleLi);
   sheet.addEventListener("click", e => {
     if (afterLongPress()) return;
@@ -2652,12 +2675,16 @@ const stable = v => JSON.stringify(v, (k, x) => x && typeof x === "object" && !A
   ? Object.fromEntries(Object.keys(x).sort().map(k2 => [k2, x[k2]])) : x);
 const normProgress = r => ({ v: 1, stages: r.stages || {}, cards: r.cards || {}, newDay: r.newDay || 0,
   newToday: r.newToday || 0, resetAt: r.resetAt || 0, attempts: r.attempts || {}, favs: r.favs || {},
-  history: r.history || [], historyClearAt: r.historyClearAt || 0 });
+  history: r.history || [], historyClearAt: r.historyClearAt || 0, readsHidden: r.readsHidden || {}, quizOut: r.quizOut || {} });
+// 阅读 items removed from the list in the app ({anchor: {on, t}}, 用户 2026-10-23). The page has no
+// 阅读 yet; it only carries them through 同步 so a sync from here doesn't drop them.
+let readsHidden = {};
+try { readsHidden = JSON.parse(store.get("vk.readsHidden", "{}")) || {}; } catch(e){}
 function progressOut(){
   const st = {}, at = {};
   for (const a in stages) st[a] = { s: stages[a], t: stageT[a] || 0 };
   for (const a in stLog) at[a] = stLog[a].map(x => ({ t: x.t, ok: x.ok, peek: !x.text, via: x.via, ex: x.ex || "" }));
-  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs, history: hist, historyClearAt: histClearAt });
+  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs, history: hist, historyClearAt: histClearAt, readsHidden, quizOut });
 }
 // Newest wins per entry (per sentence for ⭐); a reset drops every card graded before it; 自测 attempts are a union.
 function applyRemote(r){
@@ -2690,6 +2717,13 @@ function applyRemote(r){
     if (o.t > ((m[en] || {}).t || 0)) m[en] = { on: !!o.on, t: o.t };
   }
   store.set("vk.favs", JSON.stringify(favs));
+  for (const a in r.readsHidden) if (r.readsHidden[a].t > ((readsHidden[a] || {}).t || 0)) readsHidden[a] = { on: !!r.readsHidden[a].on, t: r.readsHidden[a].t };
+  store.set("vk.readsHidden", JSON.stringify(readsHidden));
+  for (const a in r.quizOut) for (const en in r.quizOut[a]) {
+    const o = r.quizOut[a][en], m = quizOut[a] = quizOut[a] || {};
+    if (o.t > ((m[en] || {}).t || 0)) m[en] = { on: !!o.on, t: o.t };
+  }
+  store.set("vk.quizout", JSON.stringify(quizOut));
   histClearAt = Math.max(histClearAt, r.historyClearAt);
   hist = trimHist([...hist, ...r.history]);
   saveHist();
@@ -2924,8 +2958,9 @@ const sentBars = (k, n, done) => n < 2 ? "" : `<span class="sbars" aria-hidden="
 function renderQuizCard(el){
   const s = quiz, t = s.queue[s.index], it = t.it, k = kind(t), exam = t.level === "SELFTEST", stage = s.stage;
   if (s.seen !== s.index) { s.seen = s.index; visit(it.anchor, stage); }   // once per entry of the run
-  if (!exam && s.qs === undefined) s.qs = runSentences(it);  // the sentences this run asks
-  if (!exam && s.ex === undefined) s.ex = quizEx(it, s.qs[s.k]);  // this sentence, fixed for it
+  // the sentences this run asks, as their text, so leaving one out mid-run doesn't shift the rest
+  if (!exam && s.qs === undefined) { const xs = quizExamples(it); s.qs = runSentences(it).map(k => plainMd(xs[k].en)); }
+  if (!exam && s.ex === undefined) s.ex = s.qs[s.k] !== undefined ? quizExOf(it, s.qs[s.k]) || quizEx(it, 0) : null;  // this sentence, fixed for it
   const ex = exam ? null : s.ex, exEn = ex ? plainMd(ex.en) : null;
   if (s.sid !== s.index + "/" + s.k) {                       // a sentence starts: answered right before → straight to ②
     s.sid = s.index + "/" + s.k;
@@ -2941,6 +2976,16 @@ function renderQuizCard(el){
   const top = `<div class="runbar"><button type="button" class="x2" id="qz-stop" aria-label="结束这一轮">✕</button>` +
     `<div class="bar" role="img" aria-label="进度 ${s.index + 1} / ${s.queue.length}"><i style="width:${pct}%"></i></div><span>${s.index + 1} / ${s.queue.length}</span></div>`;
   const stop = () => { quiz = null; render(); };
+  // long-press in the run's notes: 不再考这句 / 恢复考这句. A sentence still to come leaves this run at
+  // once; the one on screen keeps going, unless it's still behind 先看一遍 (same as toggleQuizExample()).
+  const wireRunMenu = root => wireExMenu(root, it, li => {
+    if (!toggleQuizEx(it, li.dataset.en)) return;
+    li.classList.toggle("out");
+    const en = li.dataset.en, j = s.qs ? s.qs.indexOf(en) : -1;
+    if (!isOut(it.anchor, en) || j < 0) return;
+    if (j > s.k) s.qs.splice(j, 1);
+    else if (j === s.k && stage === "review" && !s.studied) { s.qs.splice(j, 1); s.ex = undefined; if (!s.qs.length) s.qs = undefined; renderQuizCard(el); }
+  });
   const go = x => open(x.it, x.level, x.i);
   if (stage === "review" && !s.studied) {                   // 复习: read it again first
     el.innerHTML = `<div class="run">${top}<div class="scard" style="--sw:${sw}"><div class="shead"><p class="lab">${lvShort(t.level)} · 先看一遍</p>` +
@@ -2955,7 +3000,7 @@ function renderQuizCard(el){
       if (card && !matchMedia("(prefers-reduced-motion: reduce)").matches) { s.leaving = true; card.classList.remove("in-item"); card.classList.add("flip-out"); setTimeout(turn, 250); }
       else turn();
     });
-    markExamples(el, it); wireXrefsIn(el, go);
+    markExamples(el, it); markQuizExamples(el, it, false); wireXrefsIn(el, go); wireRunMenu(el);
     return;
   }
   const ready = final && advanceReady(it, t.level, stage);
@@ -3029,6 +3074,7 @@ function renderQuizCard(el){
     (auto ? `<div class="adv"><span>复习里连续答对 ${PROMOTE_REPS} 次了,下一条时自动移到考核</span></div>` :
       back ? `<div class="adv"><span>没答对,下一条时退回复习,排期从明天重新开始</span></div>` : ready ? advanceHtml(stage) : "") + notesForQuestionHtml(it, ex) + stHistoryHtml(it.anchor, exEn);
   decorateNotes(res, it, ex, go, () => go(t));
+  markQuizExamples(res, it, false); wireRunMenu(res);
   // 算我对: this sentence was right after all — the entry's result, and on its last sentence the
   // SM-2 grade (back to the card before it) and the 考核 miss, are worked out again
   const rb = res.querySelector("#st-right");
@@ -3188,7 +3234,8 @@ const SIDE = [
     ["review", "复习", "var(--accent)", () => setView("review")],
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
-  ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"], ["SELFTEST", "自测题"]])
+  ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"],
+    ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []), ["SELFTEST", "自测题"]])
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];

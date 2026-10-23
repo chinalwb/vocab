@@ -151,6 +151,17 @@
 145. [acronym](#acronym)
 146. [convoluted](#convoluted)
 147. [hardly anyone / barely anyone](#hardly-anyone)
+148. [句子:look into / mismatch between](#s-look-into-mismatch)
+149. [语法笔记:once 后面用一般现在时(is merged / has been merged)](#once-is-merged)
+150. [句子:Should I keep going, or …? / Would you suggest](#s-should-i-keep-going)
+151. [likely / unlikely](#likely-unlikely)
+152. [句子:the version with the survey / starting from](#s-version-with-the-survey)
+153. [句子:test it against the test environment / start with](#s-test-against-env)
+154. [come back to sth](#come-back-to)
+155. [句子:redraft / the message to sb](#s-redraft-message-to)
+156. [tend toward / lean toward / focus mostly on](#tend-lean-focus)
+157. [given that / with that in mind](#given-that)
+158. [comma splice:怎么一眼判断](#comma-splice)
 
 ---
 
@@ -414,14 +425,22 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 掌握:会写
 
 **义项一:先不做某事,暂缓/搁置(等条件更合适再说,不一定有具体新时间点)**
-1. Let's **hold off** on the Feedback modal issue until we get more user reports.
+1. Let's **hold off on** the Feedback modal issue until we get more user reports.
    我们先搁置一下 Feedback modal 这个问题,等收到更多用户反馈再说。
-2. I'd **hold off** on deploying until the tests are green.
+2. I'd **hold off on** deploying until the tests are green.
    我建议先别部署,等测试全绿了再说。
 
 **义项二:阻挡、推迟(某种不好的事情的到来)**
 1. The rain **held off** just long enough for us to finish the match.
    雨一直没下,刚好让我们把比赛打完。
+
+**我的原句:**
+
+> I'd like to add the comment but will hold off to change the status.
+
+- ❌ [搭配] **hold off to change** —— *hold off* 后面不接不定式,要用 *on* + 动名词(或直接接动名词) → **hold off on changing**:*I'll add the comment, but I'll hold off on changing the status for now.*
+
+**相关条目:** [come back to sth](#come-back-to) —— 回头再处理;先 *hold off*,之后 *come back to it*。
 
 ---
 
@@ -4715,6 +4734,10 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **我犯过的错:** 把它当成"所以"用。*They know little about this product. ~~That said~~, the message should be detailed.* 这里是因果,应改用 **so**。见 [自测:按团队里新来的产品经理来写](#t-write-for-new-pms)。
 
+**相关条目:** [given that / with that in mind](#given-that) —— 那两个是「鉴于这一点」,顺着前面往下说;*that said* 是转折,别混。
+
+---
+
 <a id="acronym"></a>
 ## acronym
 
@@ -4806,3 +4829,305 @@ platform 等于 10,就代表请求来自 web,对吧?
 - hardly / barely 本身带否定意思,后面接 **anyone**,不接 *nobody*(否则是双重否定)。
 - "操作"这里不用 *operate*(那是操作机器、设备),说 **do that** / **use it that way** 即可。
 - 写报告、工单时更客观的说法是 **very few users**。
+
+---
+
+<a id="s-look-into-mismatch"></a>
+## 句子:look into / mismatch between
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> can you check out what causes the mismatch of the number on the review section
+
+**问题:**
+
+- ⚠️ [搭配] **check out** —— 多指「随便看看、去看一下」(*Check out this café.*);要说「查一下原因」用 **look into** 或 **figure out**。
+- ⚠️ [介词] **the mismatch of the number** —— 两样东西对不上用 **mismatch between**,而且是两个数字,要用复数 → **the mismatch between the numbers**。
+- ⚠️ [介词] **on the review section** —— 页面里的一个区域用 **in** → **in the review section**。
+
+**更地道的说法:**
+
+1. Could you look into why the numbers in the review section don't match?
+   你能查一下复习那一栏的数字为什么对不上吗?
+
+**涉及的搭配:**
+
+- **look into sth** —— 调查、查一查(原因、问题)。
+- **a mismatch between A and B** —— A 和 B 对不上;也可以直接说 *A and B don't match*。
+
+---
+
+<a id="once-is-merged"></a>
+## 语法笔记:once 后面用一般现在时(is merged / has been merged)
+
+- 日期:2026-10-23
+- 掌握:会写
+
+**规则:** *once*、*when*、*after* 这类表示时间的连词后面,用一般现在时表示将来的事,这是英语的固定规则:说 *once it is merged*,不说 *once it will be merged*。
+
+**例句**
+1. Can I delete the source branch once the MR **is merged**?
+   MR 合并之后,我可以删掉源分支吗?
+2. Can I delete the source branch once the MR **has been merged**?
+   等 MR 合并完以后,我可以删掉源分支吗?
+
+**两种说法的区别:**
+
+- **once … is merged** —— 被动语态,表示合并这件事发生之后;口语和技术沟通里用得最多,也更短。
+- **once … has been merged** —— 现在完成时,更强调「已经合并完了」;想特别说明要等它彻底完成再删时用。日常里两者基本可以互换。
+
+---
+
+<a id="s-should-i-keep-going"></a>
+## 句子:Should I keep going, or …? / Would you suggest
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> Do you suggest I continue to do it in this session?
+
+**问题:**
+
+- ⚠️ [语气] **Do you suggest I …?** —— 一般现在时听起来像在确认「你刚才的意思是建议我……吗?」;征求建议用 **Would you suggest …?** 或 **Should I …?**。
+- ✅ **continue to do it** —— 意思清楚,日常使用完全够用;口语里 **keep going** 更简洁。
+
+**更地道的说法:**
+
+1. Should I keep going in this session, or start a new one?
+   我是在这个会话里继续,还是开一个新的?(把两个选项都摆出来,对方更好回答。)
+
+**涉及的搭配:**
+
+- **keep going** —— 接着做下去,别停。
+- **Should I A, or B?** —— 拿不定主意时请对方在两个选项里帮你选。
+
+---
+
+<a id="likely-unlikely"></a>
+## likely / unlikely
+
+- 音标:likely /ˈlaɪkli/ · unlikely /ʌnˈlaɪkli/
+- 词性:adj.
+- CEFR:B1
+- 日期:2026-10-23
+- 掌握:会写
+
+**English definition:** *likely*: probably going to happen or be true. *unlikely*: not likely to happen or be true.
+
+**含义:** 很可能 / 不太可能(发生或成立)。「几率很小」最自然的说法就是 *unlikely*。它说的是主观判断,不是数字;要说具体的概率才用 *a low / high probability*。
+
+**unlikely:不太可能**
+1. That's **unlikely**.
+   不太可能。
+2. The bug **is unlikely to** happen again.
+   这个 bug 不太会再出现。
+3. **It's unlikely that** they'll ask for it.
+   他们不太可能提这个要求。
+
+**likely:很可能**
+1. **It's likely to** rain.
+   很可能会下雨。
+
+**常见用法:**
+
+- **sb / sth is (un)likely to do** —— 主语放前面,比 *it's (un)likely that …* 更简洁,也更常用。
+- **highly / very unlikely** —— 非常不可能;*fairly unlikely* —— 不太可能。
+- **in the unlikely event that …** —— 偏正式,「万一……」:*In the unlikely event that it fails, we'll roll back.*
+
+**易错:** 「几率很小」不要直译成 *the probability is small*,说 *unlikely*、*rarely* 或 *I doubt …*。
+
+---
+
+<a id="s-version-with-the-survey"></a>
+## 句子:the version with the survey / starting from
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> We count the active days from the first day they install this with-survey version.
+
+**问题:**
+
+- ⚠️ [直译] **this with-survey version** —— 「带问卷的版本」直译;英语不把 *with + 名词* 连起来放在名词前面 → **the version with the survey** / **the version that includes the survey**。
+- ✅ **from the first day they install** —— 意思清楚,日常使用完全够用;安装只有一次,*first* 可以去掉 → *from the day they install*。
+
+**更地道的说法:**
+
+1. We count active days starting from the day users install the version that includes the survey.
+   我们从用户安装带问卷功能的版本那天开始计算活跃天数。
+
+**涉及的搭配:**
+
+- **the version with / that includes X** —— 带有 X 功能的版本。
+- **starting from** —— 从……开始(计数、计算的起点)。
+
+---
+
+<a id="s-test-against-env"></a>
+## 句子:test it against the test environment / start with
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> We can work on it against the test env first.
+
+**问题:**
+
+- ⚠️ [搭配] **work on it against** —— *against* 搭配「运行、测试、验证」(*run the tests against staging*);*work on* 是「开发、处理」,接不上 → **test it against the test environment**,或 **work on it in the test environment**。
+- ✅ **env** —— 意思清楚,日常使用完全够用;聊天里常见,文档和工单里写全 *environment*。
+
+**更地道的说法:**
+
+1. Let's start with the test environment.
+   我们先从测试环境开始吧。
+
+**涉及的搭配:**
+
+- **test / run sth against an environment** —— 在某个环境上测试、运行。
+- **start with** —— 先从……开始。
+
+---
+
+<a id="come-back-to"></a>
+## come back to sth
+
+- 词性:phrasal verb
+- CEFR:B1
+- 日期:2026-10-23
+- 掌握:会写
+
+**English definition:** To return to a topic, task or question later.
+
+**含义:** 回头再处理、回头再讨论某件事(现在先放一放)。介词用 **to**,不用 *on*。
+
+**例句**
+1. We'll **come back to** this later.
+   我们回头再处理这个。
+
+**我的原句:**
+
+> So we will come back on this one later.
+
+- ❌ [介词] **come back on this one** —— 「回头再处理某事」的固定搭配是 *come back to sth* → **come back to this one**。
+
+**相关条目:** [hold off (on sth)](#hold-off) —— 先不做、暂缓;常和 *come back to* 连着说:先放一放,回头再弄。
+
+---
+
+<a id="s-redraft-message-to"></a>
+## 句子:redraft / the message to sb
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> Can you draft the message for posting to the frontend team again?
+
+**问题:**
+
+- ⚠️ [逻辑] **again 放在句末** —— 句末副词默认修饰离它最近的动作 *posting*,会被读成「再发一次」;想说「再起草一次」→ **redraft the message**。
+
+**更地道的说法:**
+
+1. Can you redraft the message to the frontend team?
+   你能把发给前端团队的那条消息重新起草一下吗?
+
+**涉及的搭配:**
+
+- **redraft sth** —— 重新起草;一个词说清「再起草一次」,不会和「再发一次」混淆。
+- **a message to sb** —— 发给某人的消息;收件人用 *to*。*a message for the team* 放在动词后面时,可能被理解成「替团队起草」。
+
+---
+
+<a id="tend-lean-focus"></a>
+## tend toward / lean toward / focus mostly on
+
+- 词性:phrasal verb / phrase
+- CEFR:B2
+- 日期:2026-10-23
+- 掌握:会写
+
+**含义:** 三个都能说「偏向……」,但偏的方式不同:*tend toward* 是天生、通常的倾向(性格、风格);*lean toward* 是做选择或立场上偏向某一边;*focus mostly on* 最直白,说内容主要讲什么。
+
+**tend toward:通常倾向于(某种状态、风格)**
+1. He **tends toward** pessimism.
+   他比较容易悲观。
+2. Her designs **tend toward** simplicity.
+   她的设计偏向简洁。
+
+**lean toward:(选择、立场)偏向**
+1. I'm **leaning toward** the blue one.
+   我比较倾向蓝色那个。
+2. The doc **leans toward** iOS.
+   这份文档偏向 iOS。
+
+**focus mostly on:主要关注、主要讲**
+1. The doc **focuses mostly on** iOS.
+   这份文档主要讲 iOS。
+2. This week, we'll **focus mostly on** testing.
+   这周我们主要做测试。
+
+**怎么选:**
+
+- 说一份文档、一个方案的内容偏向哪边 —— **focus mostly on** 最清楚,**lean toward** 也可以。
+- 说自己还没定、但更倾向某个选项 —— **lean toward**,常用进行时:*I'm leaning toward …*。
+- 说人或作品一贯的特点 —— **tend toward**。
+- *toward* 英式常写作 *towards*,意思一样。
+
+**我的原句:**
+
+> Seems like it tends toward to iOS.
+
+- ❌ [介词] **tends toward to** —— *toward* 和 *to* 都是介词,只留一个 → **tends toward iOS**;说文档内容偏向,更自然的是 **focuses mostly on iOS**。
+
+---
+
+<a id="given-that"></a>
+## given that / with that in mind
+
+- 词性:phrase
+- CEFR:B2
+- 日期:2026-10-23
+- 掌握:会写
+
+**含义:** 都是「鉴于这一点、考虑到这一点」,把前面的事实和后面的结论或行动连起来,方向是**顺着说**。*Given that* 偏推理(鉴于这个事实,可以得出……);*with that in mind* 偏行动(记着这一点去做下一步),后面常接 *let's …*、*we'll …*、*I suggest …*。
+
+**given that:鉴于(这个事实)**
+1. **Given that** the API is deprecated, we should migrate.
+   鉴于这个 API 已经弃用,我们应该迁移。
+
+**with that in mind:考虑到这一点(去做下一步)**
+1. Most users are on Android. **With that in mind**, let's fix Android first.
+   大部分用户用安卓。考虑到这一点,我们先修安卓。
+
+**两种 given that:**
+
+- **Given that + 句子** —— *that* 是连词,引出原因:「鉴于……」(上面的例句)。
+- **Given that,** 单独用 —— *that* 指前面说过的事:「鉴于此;既然这样」,如 *Given that, what's the right fix?*
+
+**别和 that said 搞混:** *that said / that being said* 是「话虽如此」,后面接**转折**(相当于 *however*);*given that* 和 *with that in mind* 是**顺着**前面的事实往下说。见 [that said / that being said](#that-said)。
+
+---
+
+<a id="comma-splice"></a>
+## comma splice:怎么一眼判断
+
+- 类型:Knowledge
+- 日期:2026-10-23
+- 掌握:会写
+
+**含义:** comma splice(逗号粘连):两个**独立分句**(各有主语和谓语、能单独成句)只用一个逗号连起来。
+
+**快速判断:** 看逗号两边,如果两边都能单独成句,又没有 *and*、*but*、*so*、*though* 这类连词,就是 comma splice。
+
+**怎么改:** 换成句号或分号,或者加一个连词。
+
+- 是:*Let's add a new entry for this, each phrase has one sample sentence.* —— 逗号后面有主语 *each phrase* 和谓语 *has*,能单独成句。
+- 改:*Let's add a new entry for this; each phrase has one sample sentence.* 或 *…, and each phrase gets one sample sentence.*
+- 不是:*Let's add a new entry for this, with one sample sentence each.* —— 逗号后面是介词短语,不能单独成句。
+- 不是:*…, though I know …* —— *though* 引出的是从句,有连词就不算。

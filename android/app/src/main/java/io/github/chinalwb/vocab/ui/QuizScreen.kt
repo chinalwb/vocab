@@ -123,13 +123,17 @@ fun QuizScreen(
     onUndo: () -> Unit,
     /** 算我对: this sentence was right after all */
     onRight: () -> Unit = {},
+    /** long-press on an example in a run's notes: 不再考这句 / 恢复考这句, and 收藏 */
+    onToggleExample: (Entry, String) -> Unit = { _, _ -> },
+    onFav: (String, String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
 ) {
     val current = session?.current
     when {
         session != null && session.stage == stage && current != null -> QuizCard(
-            session, selfTests, stageTimes, excluded, review, onStudied, onReveal, onGrade, onOnward, onNext, onEnd, { onOpen(it, emptyList()) }, onRight, modifier,
+            session, selfTests, stageTimes, excluded, review, onStudied, onReveal, onGrade, onOnward, onNext, onEnd, { onOpen(it, emptyList()) }, onRight,
+            onToggleExample, onFav, modifier,
         )
         session != null && session.stage == stage -> Column(
             modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility).padding(24.dp),
@@ -448,6 +452,8 @@ private fun QuizCard(
     onEnd: () -> Unit,
     onXref: (String) -> Unit,
     onRight: () -> Unit,
+    onToggleExample: (Entry, String) -> Unit,
+    onFav: (String, String) -> Unit,
     modifier: Modifier,
 ) {
     val cur = session.current ?: return
@@ -476,6 +482,8 @@ private fun QuizCard(
             QuizCardBody(
                 s, e, selfTests[e.anchor].orEmpty(), stageTimes[e.anchor] ?: 0L, excluded[e.anchor].orEmpty(), review.cards[e.anchor]?.reps ?: 0,
                 onStudied, onReveal, onGrade, onOnward, onNext, onXref, onRight,
+                // the notes' examples: long-press only (不再考这句 / 收藏), no tap toggling mid-run
+                ExampleQuiz(excluded[e.anchor].orEmpty(), { en -> onToggleExample(e, en) }, { en -> onFav(e.anchor, en) }, tapToggles = false),
             )
         }
     }
@@ -496,6 +504,7 @@ private fun QuizCardBody(
     onNext: (Boolean) -> Unit,
     onXref: (String) -> Unit,
     onRight: () -> Unit,
+    notesQuiz: ExampleQuiz,
 ) {
     val exam = entry.level == "SELFTEST"
     val ex = session.example
@@ -544,7 +553,7 @@ private fun QuizCardBody(
                     }
                 }
         ) {
-            if (front) StudyCard(entry, color, onXref, onStudied)
+            if (front) StudyCard(entry, color, onXref, onStudied, notesQuiz)
             else Box(Modifier.fillMaxSize().graphicsLayer { if (session.stage == Stage.Review) rotationY = 180f }) {
                 AnswerSheet(
                     color,
@@ -603,7 +612,7 @@ private fun QuizCardBody(
                                 back -> AutoMoveNote("没答对,下一条时退回复习,排期从明天重新开始")
                                 ready -> AdvanceBanner(session.stage) { onNext(true) }
                             }
-                            NotesForQuestion(entry, ex, onXref, onAll = { onXref(entry.anchor) })
+                            NotesForQuestion(entry, ex, onXref, onAll = { onXref(entry.anchor) }, quiz = notesQuiz)
                             SelfTestHistory(attempts.at(ex), one = ex != null)
                         }
                     },
@@ -639,7 +648,7 @@ private fun AutoMoveNote(text: String) {
 
 /** 复习's front: the notes on a card in the level colour, with 翻面做题 at its foot. */
 @Composable
-private fun StudyCard(entry: Entry, color: Color, onXref: (String) -> Unit, onStudied: () -> Unit) {
+private fun StudyCard(entry: Entry, color: Color, onXref: (String) -> Unit, onStudied: () -> Unit, quiz: ExampleQuiz) {
     val sub = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f)
     Column(
         Modifier
@@ -656,7 +665,7 @@ private fun StudyCard(entry: Entry, color: Color, onXref: (String) -> Unit, onSt
             )
             if (entry.ipa.isNotEmpty()) Text(entry.ipa, style = MaterialTheme.typography.bodyMedium, color = sub)
         }
-        NotesPage(entry, onXref, quiz = null, modifier = Modifier.weight(1f), inCard = true)
+        NotesPage(entry, onXref, quiz = quiz, modifier = Modifier.weight(1f), inCard = true)
         Box(Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
             SheetButton("翻面做题", onClick = onStudied)
         }

@@ -9,6 +9,10 @@ import io.github.chinalwb.vocab.review.FavStore
 import io.github.chinalwb.vocab.review.Favs
 import io.github.chinalwb.vocab.review.HistoryData
 import io.github.chinalwb.vocab.review.HistoryStore
+import io.github.chinalwb.vocab.review.ReadHideStore
+import io.github.chinalwb.vocab.review.QuizOut
+import io.github.chinalwb.vocab.review.QuizOutStore
+import io.github.chinalwb.vocab.review.ReadsHidden
 import io.github.chinalwb.vocab.review.Visit
 import io.github.chinalwb.vocab.review.trimHistory
 import io.github.chinalwb.vocab.review.MAX_PER_ENTRY
@@ -55,6 +59,10 @@ data class Progress(
     /** 学习历史: newest first, one per entry; [historyClearAt] = the last 清空 */
     val history: List<Visit> = emptyList(),
     val historyClearAt: Long = 0,
+    /** 阅读 items removed from the list: {anchor: Fav(on = removed, t)}, restores included */
+    val readsHidden: ReadsHidden = emptyMap(),
+    /** 不再考这句: {anchor: {plain English: Fav(on = left out, t)}}, restores included */
+    val quizOut: QuizOut = emptyMap(),
 )
 
 @Serializable
@@ -84,6 +92,8 @@ class ProgressSync(
     private val stages: StageStore,
     private val favs: FavStore,
     private val history: HistoryStore,
+    private val readsHidden: ReadHideStore,
+    private val quizOut: QuizOutStore,
 ) {
     // encodeDefaults: the page compares field by field, so every field must be written
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
@@ -183,6 +193,13 @@ class ProgressSync(
                 mine + r.favs[a].orEmpty().filter { (en, f) -> f.t > (mine[en]?.t ?: 0) }
             }
         }
+        readsHidden.replace { l -> l + r.readsHidden.filter { (a, f) -> f.t > (l[a]?.t ?: 0) } }
+        quizOut.replace { l ->
+            (l.keys + r.quizOut.keys).associateWith { a ->
+                val mine = l[a].orEmpty()
+                mine + r.quizOut[a].orEmpty().filter { (en, f) -> f.t > (mine[en]?.t ?: 0) }
+            }
+        }
         history.replace { l ->
             val clearAt = maxOf(l.clearAt, r.historyClearAt)
             HistoryData(trimHistory(l.visits + r.history, clearAt), clearAt)
@@ -212,6 +229,8 @@ class ProgressSync(
             favs = favs.data.value,
             history = history.data.value.visits,
             historyClearAt = history.data.value.clearAt,
+            readsHidden = readsHidden.data.value,
+            quizOut = quizOut.data.value,
         )
     }
 

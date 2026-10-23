@@ -19,7 +19,7 @@ import re
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
-GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "COLLOC", "SELFTEST"]
+GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "COLLOC", "SELFTEST"]
 SCHEMA = 1  # bump when data.json changes shape in a way the app must know about
 
 # 错题本: a bullet like `- ❌ [介词] **...** —— ...` (or ⚠️) marks a mistake the
@@ -61,7 +61,8 @@ def split_entries(src):
 
 # `- 类型:句子` (or 自测 / 语法) sets the group without the title prefix, so a title can be just
 # the point it practises (taobao's notes); the prefixes below still work as before
-KIND = {"句子": "SENTENCE", "固定搭配": "COLLOC", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR"}
+# Knowledge (用户 2026-10-23): general writing know-how — punctuation, sentence structure — not tied to one word
+KIND = {"句子": "SENTENCE", "固定搭配": "COLLOC", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR", "Knowledge": "KNOWLEDGE"}
 
 
 def detect_level(title, raw, own=None):

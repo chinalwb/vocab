@@ -6,6 +6,11 @@ import io.github.chinalwb.vocab.data.Block
 import io.github.chinalwb.vocab.data.Section
 import io.github.chinalwb.vocab.data.splitSections
 import androidx.compose.runtime.remember
+import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -46,13 +51,26 @@ import androidx.compose.ui.unit.dp
  * tell whether to open it; the detail page is [ReadDetail].
  */
 @Composable
-fun ReadScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifier = Modifier) {
+fun ReadScreen(
+    lib: LibraryState,
+    onOpen: (String) -> Unit,
+    /** removed from the list (long-press → 从阅读清单移除, 用户 2026-10-23); readlist.md keeps them */
+    removed: Set<String> = emptySet(),
+    onRemove: (String, Boolean) -> Unit = { _, _ -> },
+    modifier: Modifier = Modifier,
+) {
     val data = lib.data
     if (data == null) {
         Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
     }
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    val shown = data.reads.filter { it.anchor !in removed }
+    val gone = data.reads.filter { it.anchor in removed }
+    var showGone by rememberSaveable { mutableStateOf(false) }
+    // the one just removed, for 撤销 at the top until the next removal
+    var justRemoved by rememberSaveable { mutableStateOf<String?>(null) }
+    val undo = justRemoved?.takeIf { it in removed }?.let { a -> data.reads.firstOrNull { it.anchor == a } }
     LazyColumn(
         modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
@@ -66,21 +84,48 @@ fun ReadScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifier =
                 modifier = Modifier.padding(bottom = 4.dp),
             )
         }
-        if (data.reads.isEmpty()) item {
-            Text("还没有内容。", style = MaterialTheme.typography.bodyLarge, color = muted, modifier = Modifier.padding(top = 24.dp))
+        if (undo != null) item(key = "undo") {
+            Row(
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(MaterialTheme.colorScheme.surfaceContainerHigh).padding(start = 14.dp, end = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    "已移除「${undo.keywords.firstOrNull() ?: undo.title}」",
+                    style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f),
+                )
+                TextButton(onClick = { onRemove(undo.anchor, false); justRemoved = null }) { Text("撤销") }
+            }
         }
-        items(data.reads, key = { it.anchor }) { r -> ReadRow(r) { onOpen(r.anchor) } }
+        if (shown.isEmpty()) item {
+            Text(if (gone.isEmpty()) "还没有内容。" else "都移除了。", style = MaterialTheme.typography.bodyLarge, color = muted, modifier = Modifier.padding(top = 24.dp))
+        }
+        items(shown, key = { it.anchor }) { r ->
+            ReadRow(r, menu = "从阅读清单移除", onMenu = { onRemove(r.anchor, true); justRemoved = r.anchor }) { onOpen(r.anchor) }
+        }
+        // what was removed stays reachable: shown faded, long-press → 恢复
+        if (gone.isNotEmpty()) item(key = "gone") {
+            TextButton(onClick = { showGone = !showGone }) { Text(if (showGone) "收起已移除的 ${gone.size} 条" else "已移除 ${gone.size} 条 · 显示") }
+        }
+        if (showGone) items(gone, key = { "gone:" + it.anchor }) { r ->
+            ReadRow(r, menu = "恢复", faded = true, onMenu = { onRemove(r.anchor, false) }) { onOpen(r.anchor) }
+        }
     }
 }
 
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
-private fun ReadRow(r: Read, onClick: () -> Unit) {
+private fun ReadRow(r: Read, menu: String, onMenu: () -> Unit, faded: Boolean = false, onClick: () -> Unit) {
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    var open by remember { mutableStateOf(false) }
     // the C1 colour (用户 2026-10-14): these are C1 phrasings, and the cards stand off the page
+    Box {
     Surface(
         shape = RoundedCornerShape(16.dp),
         color = levelColor("C1"),
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (faded) 0.5f else 1f)
+            .combinedClickable(onClick = onClick, onLongClick = { open = true }),
     ) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(
@@ -97,6 +142,10 @@ private fun ReadRow(r: Read, onClick: () -> Unit) {
             )
             if (r.date.isNotEmpty()) Text(r.date, style = MaterialTheme.typography.labelSmall, color = muted)
         }
+    }
+    androidx.compose.material3.DropdownMenu(open, { open = false }) {
+        androidx.compose.material3.DropdownMenuItem(text = { Text(menu) }, onClick = { open = false; onMenu() })
+    }
     }
 }
 

@@ -47,7 +47,7 @@ private val Dark = darkColorScheme(
 
 data class LevelStyle(val short: String, val name: String, val light: Color, val dark: Color)
 
-val GROUP_ORDER = listOf("A1", "A2", "B1", "B2", "C1", "C2", "TERM", "GRAMMAR", "SENTENCE", "SELFTEST")
+val GROUP_ORDER = listOf("A1", "A2", "B1", "B2", "C1", "C2", "TERM", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "SELFTEST")
 
 val LEVELS = mapOf(
     "A1" to LevelStyle("A1", "入门", Color(0xFFDCECD4), Color(0xFF2E4A2A)),
@@ -60,6 +60,8 @@ val LEVELS = mapOf(
     "GRAMMAR" to LevelStyle("语法", "语法与语域笔记", Color(0xFFF2D5E4), Color(0xFF562A44)),
     "SENTENCE" to LevelStyle("句子", "整句订正", Color(0xFFE8D7C3), Color(0xFF4A3626)),
     "SELFTEST" to LevelStyle("自测题", "简单高频,不复习也要能写对", Color(0xFFD6E0E6), Color(0xFF2C3A43)),
+    // `- 类型:Knowledge` (用户 2026-10-23): writing know-how — punctuation, sentence structure
+    "KNOWLEDGE" to LevelStyle("Knowledge", "写作通用知识(标点、句子结构……)", Color(0xFFE2E0D0), Color(0xFF45432F)),
 )
 
 fun levelStyle(level: String) = LEVELS[level] ?: LEVELS.getValue("TERM")

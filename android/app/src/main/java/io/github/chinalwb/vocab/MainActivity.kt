@@ -119,6 +119,7 @@ import androidx.navigation.compose.rememberNavController
 import io.github.chinalwb.vocab.ui.BrowseScreen
 import io.github.chinalwb.vocab.ui.LocalStarred
 import io.github.chinalwb.vocab.review.starred
+import io.github.chinalwb.vocab.review.removed
 import io.github.chinalwb.vocab.ui.EntryScreen
 import io.github.chinalwb.vocab.ui.LocalNavAnimatedScope
 import io.github.chinalwb.vocab.ui.LocalSharedTransitionScope
@@ -202,7 +203,18 @@ private fun VocabNav() {
                     )
                 }
                 composable("mistakes") { SubPage("错题本", onBack = { nav.popBackStack() }) { pad -> MistakesScreen(lib, onOpen = openAlone, modifier = Modifier.padding(pad)) } }
-                composable("read") { SubPage("阅读 · C1 对比", onBack = { nav.popBackStack() }) { pad -> ReadScreen(lib, onOpen = { nav.navigate("read/$it") }, modifier = Modifier.padding(pad)) } }
+                composable("read") {
+                    val hidden by vm.readsHidden.collectAsStateWithLifecycle()
+                    SubPage("阅读 · C1 对比", onBack = { nav.popBackStack() }) { pad ->
+                        ReadScreen(
+                            lib,
+                            onOpen = { nav.navigate("read/$it") },
+                            removed = remember(hidden) { hidden.removed() },
+                            onRemove = vm::setReadRemoved,
+                            modifier = Modifier.padding(pad),
+                        )
+                    }
+                }
                 composable("read/{anchor}") { back ->
                     val anchor = back.arguments?.getString("anchor").orEmpty()
                     SubPage("阅读", onBack = { nav.popBackStack() }) { pad -> ReadDetail(lib, anchor, onXref = { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) }
@@ -502,7 +514,13 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
             vm.openedFrom(list, anchor)
             nav.navigate("entry/$anchor")
         }
-        if (tab == 0) {
+        // swipe left / right between the four tabs (用户 2026-10-23); the pager follows a tab tap (and
+        // tabRequest), the tab follows the page once a swipe settles; no swiping during a run
+        val pager = androidx.compose.foundation.pager.rememberPagerState(initialPage = tab) { 4 }
+        LaunchedEffect(tab) { if (pager.currentPage != tab) pager.animateScrollToPage(tab) }
+        LaunchedEffect(pager) { androidx.compose.runtime.snapshotFlow { pager.settledPage }.collect { tab = it } }
+        androidx.compose.foundation.pager.HorizontalPager(pager, userScrollEnabled = !running, modifier = Modifier.fillMaxSize()) { page ->
+        if (page == 0) {
             BrowseScreen(
                 lib, checking, { vm.check() }, open, { vm.markAllSeen() }, tiles,
                 contentPadding = pad,
@@ -514,7 +532,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onActiveCount = { activeFilters = it },
             )
         } else {
-            val stage = when (tab) { 1 -> Stage.Review; 2 -> Stage.Test; else -> Stage.Done }
+            val stage = when (page) { 1 -> Stage.Review; 2 -> Stage.Test; else -> Stage.Done }
             QuizScreen(
                 stage, lib, quiz, stages, stageData.t, selfTests, review, quizOptOut, tiles,
                 onOpen = open,
@@ -527,10 +545,13 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onEnd = vm::endQuiz,
                 onUndo = vm::undoQuizMoves,
                 onRight = vm::rightQuiz,
+                onToggleExample = vm::toggleQuizExample,
+                onFav = { a, en -> vm.toggleFav(a, en) },
                 // a run draws its own top row under the status bar and keeps above the navigation bar
                 modifier = if (quiz?.stage == stage) Modifier.imePadding() else Modifier,
                 contentPadding = pad,
             )
+        }
         }
         }
     }

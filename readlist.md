@@ -712,3 +712,105 @@
 
 - ❌ [结构] ==types notification== → **types of notifications** / **notification types** —— *type* 后面要用 *of* 连接,或者把 *notification* 放前面当修饰语。
 - ❌ [动词] ==triggers== → **trigger** —— 主语核心词是复数 *types*,动词用原形。
+
+<a id="r-set-up-as-a-new-user"></a>
+## 把她设成新用户,预置一条 Note;再按她的情况(雅思 7 分)建四个分类,每类一两条,而且都能自测。
+
+- 日期:2026-10-23
+- 关键词:go ahead and pick · aiming for · support self-testing
+
+**常用说法:**
+
+> Please make my friend a new user and add this as a preset entry: "…" Put it in a category called Note. Please also make four more categories for her. She is an advanced learner and wants to get 7.0 in IELTS, so you can choose names that are good for her. Add one or two entries to each. Put my message in Note, with my original and your better versions. I want her to see her own list in that folder on the web app. All entries should be testable, the same as the other ones.
+
+**C1 说法:**
+
+> **Set up** my friend **as a new user**, with this as a preset entry: "…" Put it in a category called Note. Also, please create **four more** preset categories for her — she's an advanced learner **aiming for IELTS 7.0**, so **go ahead and pick** names **that make sense for her**, with one or two entries in each. **As before**, put my message in Note, with my original and your **improved versions**. **The goal is for her to** browse her own list under that directory on the web app. And every entry should **support self-testing, just like the others**.
+
+**差别:**
+
+- **Set up … as a new user** —— 「把……设成新用户」,开账号、建目录都能用;对应 *make my friend a new user*。
+- **four more** —— 「再加四个」,*more* 放在数字后面;对应 *four more*(常用说法里已经对了),而不是 *another four*。
+- **— she's …** —— 用破折号插进对她的介绍,说明为什么这样选分类;对应 *She is …*(另起一句)。
+- **aiming for IELTS 7.0** —— 「目标是雅思 7 分」,*aim for* 接目标分数;对应 *wants to get 7.0 in IELTS*。
+- **go ahead and pick** —— 「你直接选就行」,把决定权交给对方;对应 *you can choose*。
+- **that make sense for her** —— 「对她来说合适的」;对应 *that are good for her*。
+- **As before** —— 「和之前一样」,提醒对方沿用刚才的做法;对应 *Put my message …*(没说明是沿用)。
+- **improved versions** —— 说改好的句子用 *improved*,*optimized* 多用于程序和流程;对应 *better versions*。
+- **The goal is for her to …** —— 「目的是让她能……」,*for sb to do* 把目的和人连在一起;对应 *I want her to …*。
+- **support self-testing, just like the others** —— 「和其他条目一样能自测」,*support* 说功能上支持;对应 *should be testable, the same as the other ones*。
+
+**我的原句:**
+
+> Create a new entry for my friend as a new user. Add this as ==preset item==: "…" / Put it in a category: Note. BTW, please also create ==another 4 preset categories== for her, who is an ==andvanced== English ==leanrer== ==targeting to== IELTS 7.0. You can ==go ahead to pick== any category ==names make sense== to her. Add one or two entries for each of these categories. Again, put mine into the Note category, with my original sentence and the ones that you optimized. ==The goal is she can== browse the vocab list under that directory on the web app. All of the entries in these categories should ==be able for self-test== ==as the other general ones==.
+
+- ❌ [冠词] ==preset item== → **a preset item** —— 可数名词单数前要有冠词。
+- ⚠️ [结构] ==another 4 preset categories== → **four more preset categories** —— *another* 后面一般接单数名词。
+- ❌ [词形] ==andvanced== → **advanced** —— 拼写错误。
+- ❌ [词形] ==leanrer== → **learner** —— 拼写错误。
+- ❌ [动词] ==targeting to== → **targeting** / **aiming for** —— *target* 是及物动词,后面不加 *to*。
+- ⚠️ [搭配] ==go ahead to pick== → **go ahead and pick** —— *go ahead* 后面接 *and* + 动词原形。
+- ❌ [结构] ==names make sense== → **names that make sense** —— 定语从句里 *that* 做主语,不能省。
+- ⚠️ [结构] ==The goal is she can== → **The goal is for her to** —— 书面里 *that* 不宜省,或者用 *for sb to do*。
+- ❌ [结构] ==be able for self-test== → **support self-testing** —— *be able* 后面要接 *to do*,而且条目自己「能」做不了什么。
+- ⚠️ [介词] ==as the other general ones== → **like the others** —— 表示「和……一样」用 *like*。
+
+<a id="r-one-or-two-each"></a>
+## 给这三个短语建一个新条目,每个配一两句例句;句子照旧要短,好让我专注在短语的用法上。
+
+- 日期:2026-10-23
+- 关键词:one or two … each · how the phrases are used
+
+**常用说法:**
+
+> Please add a new entry for these phrases: tend toward, lean toward and focus mostly on. Add one or two sample sentences for each one. Like last time, make the sentences short, so I can focus on the usage of the phrases. Thanks.
+
+**C1 说法:**
+
+> **Could you** add a new entry for *tend toward*, *lean toward* and *focus mostly on*, **with one or two sample sentences each**? **As before**, keep the sentences short so I can focus on **how the phrases are used**. Thanks.
+
+**差别:**
+
+- **Could you …?** —— 用问句提请求,比祈使句 *Please add* 更客气;对应 *Please add*。
+- **with one or two sample sentences each** —— 把要求接在同一句后面,*each* 放句末表示「每个各……」;对应 *Add one or two sample sentences for each one*(另起一句)。
+- **As before** —— 「和之前一样」,比 *Like last time* 更利落;对应 *Like last time*。
+- **how the phrases are used** —— 用一个从句说「用法」,比名词堆叠更自然;对应 *the usage of the phrases*。
+
+**我的原句:**
+
+> tend toward / lean toward / focus mostly -- I'd like to have a new entry for these phrases. Add ==one sentence or two sample sentences== for each. Again, please try to make the sentences short so I can focus on ==the phrases usage==. Thanks.
+
+- ⚠️ [结构] ==one sentence or two sample sentences== → **one or two sample sentences** —— *sentence* 重复了,两边结构也不一致。
+- ❌ [词形] ==the phrases usage== → **how the phrases are used** —— 缺所有格撇号(*the phrases' usage*);用从句说更自然。
+
+<a id="r-get-through"></a>
+## 给网页和 App 加个功能:长按一句会弹出菜单,我们想在里面加一项,把这句从所有阶段的考试里去掉。有些条目多达十来句例句,做完要很久。
+
+- 日期:2026-10-23
+- 关键词:both the web and mobile apps · get through
+
+**常用说法:**
+
+> Please add a feature to the web app and the mobile app. When you press a sentence for a long time, a menu appears. We want to add an item to the menu that removes the sentence from tests in all stages. Some entries have about twelve sample sentences, so it takes a long time to finish them.
+
+**C1 说法:**
+
+> Please add a new feature to **both the web and mobile apps**. **When you long-press a sentence, a menu pops up**; we'd like a new item in it **that removes the sentence from tests in all stages**. Some entries have **as many as a dozen** sample sentences, **which take a long time to get through**.
+
+**差别:**
+
+- **both the web and mobile apps** —— *both* 后面直接并列两个东西,不加 *of*;对应 *the web app and the mobile app*。
+- **When you long-press a sentence, a menu pops up** —— *long-press* 是界面操作的固定说法;*pop up* 说菜单弹出;对应 *press a sentence for a long time, a menu appears*。
+- **that removes the sentence from tests in all stages** —— 用定语从句说清这一项做什么,*the sentence* 不用 *it*,免得指代不清;对应 *an item … that removes the sentence*。
+- **as many as a dozen** —— 「多达十来个」,强调数量多;*a dozen* 后面不加 *of*;对应 *about twelve*。
+- **which take a long time to get through** —— *get through* 是「一项项做完」;对应 *so it takes a long time to finish them*。
+
+**我的原句:**
+
+> Add a new feature for ==both of the web and mobile apps==: ==When long pressing on a sentence, an action list will pop up== now. We want to add a new item to that list for removing it from tests in all phases. That is because I found ==some entry== contains as many as ==a dozen of sample sentences==, which ==takes long== to finish.
+
+- ⚠️ [结构] ==both of the web and mobile apps== → **both the web and mobile apps** —— 并列两个东西时 *both* 后面不加 *of*。
+- ⚠️ [逻辑] ==When long pressing on a sentence, an action list will pop up== → **When you long-press a sentence, a menu pops up** —— *long pressing* 的主语是用户,不是 *action list*(悬垂修饰)。
+- ❌ [冠词] ==some entry== → **some entries** —— 「有些条目」用复数。
+- ❌ [结构] ==a dozen of sample sentences== → **a dozen sample sentences** —— *a dozen* 直接接名词。
+- ⚠️ [结构] ==takes long== → **take a long time** —— 肯定句里 *long* 单独作副词不自然;主语是 *sentences*,动词用复数。

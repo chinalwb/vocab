@@ -167,8 +167,18 @@ val Example.quizable: Boolean
     get() = zh.isNotBlank() && Regex("[A-Za-z]").containsMatchIn(en) && CJK.containsMatchIn(zh)
 
 /** The examples a moved entry can be quizzed on, in note order; [excluded] holds the plain English of the ones I opted out. */
-fun Entry.quizExamples(excluded: Set<String> = emptySet()): List<Example> =
-    blocks.filterIsInstance<Block.Examples>().flatMap { it.items }.filter { it.quizable && plain(it.en) !in excluded }
+fun Entry.quizExamples(excluded: Set<String> = emptySet()): List<Example> {
+    val all = blocks.filterIsInstance<Block.Examples>().flatMap { it.items }.filter { it.quizable }
+    // never none: one always stays in, but a sync from two devices could leave every one out
+    return all.filter { plain(it.en) !in excluded }.ifEmpty { all }
+}
+
+/** The example with this plain English, numbered within the ones still asked; null if it's left out now. */
+fun Entry.quizExampleOf(en: String, excluded: Set<String> = emptySet()): QuizExample? {
+    val xs = quizExamples(excluded)
+    val k = xs.indexOfFirst { plain(it.en) == en }
+    return if (k < 0) null else QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size, xs[k].en)
+}
 
 fun Entry.quizExample(tries: Int, excluded: Set<String> = emptySet()): QuizExample? {
     val xs = quizExamples(excluded)
