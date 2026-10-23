@@ -1092,6 +1092,10 @@ const LV = {
   SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]}
 };
 const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题"};
+// site.json "groups" (用户 2026-10-23, so's): a notebook's own categories, each picked by an entry's
+// `- 类型:` line and coloured with one of the palettes above; with any, 分类 and the 类型 row list only these
+const OWN = VK.groups || [];
+OWN.forEach(g => { LV[g.key] = { nm: g.name, sw: [1, 2, 3].map(n => `--${g.swatch}-${n}`) }; LABEL[g.key] = g.label; });
 
 // ── theme toggle ─────────────────────────
 const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.4M12 19v2.4M21.4 12H19M5 12H2.6M18.6 5.4l-1.7 1.7M7.1 16.9l-1.7 1.7M18.6 18.6l-1.7-1.7M7.1 7.1L5.4 5.4"/></svg>';
@@ -1171,7 +1175,7 @@ if (!STAGE_NAME[stageF]) stageF = "";
 // 筛选: two labelled rows — 类型 (with a CEFR sub-row under 单词) and 进度 + 只看会写.
 // Each row is single-choice and starts at 全部; the rows narrow each other.
 const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
-const TYPES = [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
+const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
   ...(DATA.some(g => g.level === "COLLOC") ? [["COLLOC", "固定搭配"]] : []), ["SELFTEST", "自测题"]];
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
@@ -3184,7 +3188,7 @@ const SIDE = [
     ["review", "复习", "var(--accent)", () => setView("review")],
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
-  ...(VK.categories ? [["分类", [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"], ["SELFTEST", "自测题"]]
+  ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"], ["SELFTEST", "自测题"]])
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];

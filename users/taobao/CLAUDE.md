@@ -6,7 +6,7 @@
 
 ## taobao 专用会话
 
-用户在这个目录里启动 Claude Code(`cd students/taobao && claude`)时,就是 taobao 的会话:
+用户在这个目录里启动 Claude Code(`cd users/taobao && claude`)时,就是 taobao 的会话:
 
 - 用户贴来的英文句子、作文、总结**默认都是 taobao 写的**,按下面的 B2 规则讲,不用再问是谁写的。
 - 要存的内容写进**这个目录的 `vocabulary.md`**。根目录 `CLAUDE.md` 里「写入 vocabulary.md」指的是根目录那份,在这个会话里一律换成这里的。
@@ -72,11 +72,11 @@
 
 - 地址:**https://chinalwb.github.io/vocab/taobao/**(dev 合进 main 之后才更新,和主页一样)。只有网页,没有 App。
 - 页面配置在 `site.json`:localStorage 前缀 `vk.taobao.`,进度同步到 `progress` 分支的 `progress-taobao.json`;主题色是青绿色(用户 2026-10-18 要求和主页不同);**没有分类**(用户 2026-10-18:他不需要 A1–C2、术语这些分类,`categories: false`)。**卡片按学习阶段上色**(用户 2026-10-18,`cardColor: stage`):灰 = 学习中,青绿 = 复习中,橙 = 考核中,绿 = 已掌握,和左栏阶段点的颜色一样。原来同类型卡片轮流用三个深浅,三条句子颜色不同却没有意思,容易让孩子误会。
-- 本地预览:在仓库根目录 `python3 build.py --src students/taobao`,打开 `students/taobao/index.html`。
+- 本地预览:在仓库根目录 `python3 build.py --src users/taobao`,打开 `users/taobao/index.html`。
 
 ## 写入规则
 
-- **只有用户确认后才写进 `students/taobao/vocabulary.md`**,不要写进根目录的 `vocabulary.md`;反过来,用户自己的句子也不要写到这里。
+- **只有用户确认后才写进 `users/taobao/vocabulary.md`**,不要写进根目录的 `vocabulary.md`;反过来,用户自己的句子也不要写到这里。
 - 条目格式、错题标签(10 个类型)、`- 日期:` / `- 掌握:` 行、目录编号、交叉引用,全部和根目录 `vocabulary.md` 一样,将来可以用同一个 build.py 生成页面。
 - `**我的原句:**` 这个小标题照旧用(build.py 和错题本靠它识别),这里的「我」指 taobao。
 - 写入后提交并推送到 `dev`,提交信息带上 `taobao:` 前缀,例如 `taobao: Add entry: its / their`。

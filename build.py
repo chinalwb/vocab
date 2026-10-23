@@ -4,7 +4,7 @@
   python build.py                       -> index.html (standalone, for GitHub Pages)
   python build.py --artifact out.html   -> also write the body-only variant used
                                            when publishing as a Claude artifact
-  python build.py --src students/taobao -> a student's notebook: reads its vocabulary.md and
+  python build.py --src users/taobao -> a student's notebook: reads its vocabulary.md and
                                            site.json, writes the page next to them
 Every run also writes data.json + meta.json, which the Android app (android/)
 fetches from Pages.
@@ -64,12 +64,14 @@ def split_entries(src):
 KIND = {"句子": "SENTENCE", "固定搭配": "COLLOC", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR"}
 
 
-def detect_level(title, raw):
+def detect_level(title, raw, own=None):
+    """[own]: a notebook's own categories from site.json "groups", {类型 value: group key}."""
+    own = own or {}
     kind = meta_field(raw, "类型")
     if kind:
-        level = next((v for k, v in KIND.items() if kind.startswith(k)), None)
+        level = own.get(kind) or next((v for k, v in KIND.items() if kind.startswith(k)), None)
         if not level:
-            raise SystemExit(f"{title}: unknown 类型 '{kind}' — use one of {', '.join(KIND)}")
+            raise SystemExit(f"{title}: unknown 类型 '{kind}' — use one of {', '.join([*own, *KIND])}")
         return level
     if title.startswith("句子"):
         return "SENTENCE"
@@ -282,13 +284,13 @@ def toc_numbers(src):
     return {a: int(n) for n, a in re.findall(r"^(\d+)\. \[.*?\]\(#([^)]+)\)\s*$", src, re.M)}
 
 
-def build_entries(src):
+def build_entries(src, own=None):
     out = []
     numbers = toc_numbers(src)
     for e in split_entries(src):
         if e["anchor"] not in numbers:
             raise SystemExit(f"{e['anchor']}: missing from ## 目录 — add a 'N. [title](#{e['anchor']})' line")
-        level = detect_level(e["title"], e["raw"])
+        level = detect_level(e["title"], e["raw"], own)
         blocks = parse_blocks(e["raw"])
         entry = {
             "anchor": e["anchor"],
@@ -350,7 +352,7 @@ def digest(obj):
     return hashlib.sha256(json.dumps(obj, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
 
 
-def page_data(entries):
+def page_data(entries, order=GROUP_ORDER):
     grouped = {}
     for e in entries:
         item = {k: e[k] for k in ("anchor", "no", "title", "ipa", "pos", "cefr", "date", "gloss", "mastery")}
@@ -364,7 +366,7 @@ def page_data(entries):
         item["slides"] = [[label, to_html(bs)] for label, bs in sections(e["blocks"])]
         item["level"] = e["level"]
         grouped.setdefault(e["level"], []).append(item)
-    return [{"level": l, "items": grouped[l]} for l in GROUP_ORDER if l in grouped]
+    return [{"level": l, "items": grouped[l]} for l in order if l in grouped]
 
 
 def mistake_data(entries):
@@ -411,6 +413,10 @@ SITE = {
     "cardColor": "level",            # or "stage": cards coloured by 学习中 / 复习中 / 考核中 / 已掌握
     "logo": "",                      # a picture next to the page's index.html, shown in front of the name
     "fillBlanks": True,              # 打字 asks only for the **bold** part of a quiz sentence, the rest filled in
+    # a notebook's own categories (用户 2026-10-23, so's): [{"kind": the `- 类型:` value, "key": the group
+    # key (A–Z), "label": its short name, "name": its section heading, "swatch": a palette in template.html
+    # (a1 a2 b1 b2 c1 c2 tm gr sn cl st)}]. With any, 分类 and the 类型 row list only these.
+    "groups": [],
     "sync": {"repo": "chinalwb/vocab", "branch": "progress", "path": "progress.json"},
     # optional colour overrides: {"light": {"--accent": "#…", …}, "dark": {…}}, laid over the
     # template's own :root blocks (light, dark by system setting, dark by the theme button)
@@ -446,10 +452,15 @@ def main():
     if src != ROOT and site["sync"]["path"] == SITE["sync"]["path"]:
         raise SystemExit(f"{src / 'site.json'}: needs its own sync \"path\" — it would overwrite progress.json")
 
-    entries = build_entries((src / "vocabulary.md").read_text(encoding="utf-8"))
+    swatches = {"a1", "a2", "b1", "b2", "c1", "c2", "tm", "gr", "sn", "cl", "st"}
+    for g in site["groups"]:
+        if not re.fullmatch(r"[A-Z]+", g.get("key", "")) or g["key"] in GROUP_ORDER or g.get("swatch") not in swatches or not g.get("kind"):
+            raise SystemExit(f"{src / 'site.json'}: group {g} needs a kind, a new key in A–Z and a swatch from {sorted(swatches)}")
+    own = {g["kind"]: g["key"] for g in site["groups"]}
+    entries = build_entries((src / "vocabulary.md").read_text(encoding="utf-8"), own)
     read_md = src / "readlist.md"
     reads = build_reads(read_md.read_text(encoding="utf-8")) if read_md.exists() else []
-    data = page_data(entries)
+    data = page_data(entries, [g["key"] for g in site["groups"]] + GROUP_ORDER)
     mistakes = mistake_data(entries)
     page = (ROOT / "template.html").read_text(encoding="utf-8").replace(
         "/*__DATA__*/", json.dumps(data, ensure_ascii=False)).replace(

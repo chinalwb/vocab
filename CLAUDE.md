@@ -6,20 +6,21 @@
 
 先看 **`SESSION-NOTES.md`**:每次长会话结束时记下改了什么、版本、没做完的事和已知问题,最新的在最上面。想做但还没排进来的改进在 **`BACKLOG.md`**(每项按「为什么 / 预期结果 / 方案与取舍 / 步骤 / 验证 / 最终结果」写)。
 
-## 学生的笔记(`students/`)
+## 学生的笔记(`users/`)
 
 用户也会拿学生写的句子来问。每个学生一个目录,有自己的 `vocabulary.md` 和 `CLAUDE.md`(目标水平、讲解方式、隐私规则以那里为准)。
 
-**按启动目录区分是谁的会话**:在仓库根目录启动的会话,句子默认是用户自己的;在 `students/<名字>/` 里启动的,默认是那个学生的(规则见那个目录的 `CLAUDE.md`)。根目录会话里用户明确说是某个学生的,也按那个学生的规则处理。
+**按启动目录区分是谁的会话**:在仓库根目录启动的会话,句子默认是用户自己的;在 `users/<名字>/` 里启动的,默认是那个学生的(规则见那个目录的 `CLAUDE.md`)。根目录会话里用户明确说是某个学生的,也按那个学生的规则处理。
 
-- **`students/taobao/`** —— 备考 FCE(B2)。讲他的句子时给 B2 写法,不给 C1;确认后写进他自己的 `vocabulary.md`,不要写进根目录的。
+- **`users/taobao/`** —— 备考 FCE(B2)。讲他的句子时给 B2 写法,不给 C1;确认后写进他自己的 `vocabulary.md`,不要写进根目录的。
+- **`users/so/`** —— 高级学习者,目标 IELTS 7.0(2026-10-23 建)。五个自己的分类(Note / 写作 / 口语 / 高分搭配 / 学术词汇,见 `site.json` 的 `groups`),每条都要能自测;规则见那个目录的 `CLAUDE.md`。
 
-**每个学生有自己的网页**(只有网页,App 只读根目录的笔记):`python3 build.py --src students/taobao` 读那个目录的 `vocabulary.md` 和 `site.json`,把 `index.html` 写在同一个目录(gitignore)。Action 在 main 上给每个有 `vocabulary.md` 的 `students/<名字>/` 都生成一页,发布到 `https://chinalwb.github.io/vocab/<名字>/`。
+**每个学生有自己的网页**(只有网页,App 只读根目录的笔记):`python3 build.py --src users/taobao` 读那个目录的 `vocabulary.md` 和 `site.json`,把 `index.html` 写在同一个目录(gitignore)。Action 在 main 上给每个有 `vocabulary.md` 的 `users/<名字>/` 都生成一页,发布到 `https://chinalwb.github.io/vocab/<名字>/`。
 
-- `site.json`:`title`、`brand`(左上角)、`logo`(和 index.html 同目录的一张图,显示在名字前面;Action 会把学生目录里的 jpg / png / webp 一起发布)、`prefix`(localStorage 前缀)、`app`(false = 页面上不提 App)、`categories`(false = 没有左栏的「分类」和筛选里的「类型 / 级别」,左栏「学习阶段」最上面多一个「全部条目」)、`fillBlanks`(true = 打字时只填自测题里**加粗**的部分,其余预先填好,`blanksOf()` / `wireAnswer()` 的 `a.blanks`;选词不变)、`cardColor`(默认 `level` = 按类型上色、同类型轮流用三个深浅;`stage` = 按学习阶段上色,卡片是阶段色的浅底 `--sg-*`,桌面列表的小方块是阶段点的实色 `--swd`,移动阶段时 `refreshStages()` 重画带 `data-swl` 的元素)、`sync`(`repo` / `branch` / `path`)、`theme`(`light` / `dark` 各一组 CSS 变量,盖在 template.html 的三个主题块上;`--brand` 是左上角名字的颜色)。build.py 把它和默认值合并后注入 template.html 的 `/*__CONFIG__*/`(`VK`),主题变量写成 `<!--/HEAD-->` 前的一个 `<style>`。
+- `site.json`:`title`、`brand`(左上角)、`logo`(和 index.html 同目录的一张图,显示在名字前面;Action 会把学生目录里的 jpg / png / webp 一起发布)、`prefix`(localStorage 前缀)、`app`(false = 页面上不提 App)、`categories`(false = 没有左栏的「分类」和筛选里的「类型 / 级别」,左栏「学习阶段」最上面多一个「全部条目」)、`fillBlanks`(true = 打字时只填自测题里**加粗**的部分,其余预先填好,`blanksOf()` / `wireAnswer()` 的 `a.blanks`;选词不变)、`groups`(用户 2026-10-23,so 的:这个笔记**自己的分类**,`[{kind, key, label, name, swatch}]`。条目写 `- 类型:<kind>` 就归到 `key` 这一组;`label` 是左栏 / 筛选里的短名,`name` 是分区标题,`swatch` 选 template.html 里现成的一套配色:a1 a2 b1 b2 c1 c2 tm gr sn cl st。有 groups 时,左栏「分类」和筛选的「类型」只列这些,不再列 A1–C2 / 术语…;build.py 的 `detect_level(…, own)` 先认这些,分区顺序 groups 在前;网页 `OWN`)、`cardColor`(默认 `level` = 按类型上色、同类型轮流用三个深浅;`stage` = 按学习阶段上色,卡片是阶段色的浅底 `--sg-*`,桌面列表的小方块是阶段点的实色 `--swd`,移动阶段时 `refreshStages()` 重画带 `data-swl` 的元素)、`sync`(`repo` / `branch` / `path`)、`theme`(`light` / `dark` 各一组 CSS 变量,盖在 template.html 的三个主题块上;`--brand` 是左上角名字的颜色)。build.py 把它和默认值合并后注入 template.html 的 `/*__CONFIG__*/`(`VK`),主题变量写成 `<!--/HEAD-->` 前的一个 `<style>`。
 - **和主页在同一个域名下**,localStorage 是共用的,所以学生页的所有键都走 `vkKey()` 换成自己的前缀(taobao 是 `vk.taobao.`);新加 localStorage 读写时一律用 `store` 或 `vkKey()`,不要直接写 `"vk.xxx"`。build.py 会拒绝和主页同前缀、同同步文件的 `site.json`。
 - **同步**:taobao 的进度在 `progress` 分支的 `progress-taobao.json`,规则和我的 `progress.json` 一样;文件不存在时第一次同步会创建它。同样不要手动改。
-- 新加一个学生:建 `students/<名字>/`,放 `vocabulary.md`(标题 + 空的 `## 目录`)、`site.json`(新的 prefix 和 path)、`CLAUDE.md`。
+- 新加一个学生:建 `users/<名字>/`,放 `vocabulary.md`(标题 + 空的 `## 目录`)、`site.json`(新的 prefix 和 path)、`CLAUDE.md`。
 
 ## 对话方式
 
