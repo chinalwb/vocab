@@ -4,7 +4,7 @@
   python build.py                       -> index.html (standalone, for GitHub Pages)
   python build.py --artifact out.html   -> also write the body-only variant used
                                            when publishing as a Claude artifact
-  python build.py --src students/taobao -> a student's notebook: reads its vocabulary.md and
+  python build.py --src users/taobao -> a student's notebook: reads its vocabulary.md and
                                            site.json, writes the page next to them
 Every run also writes data.json + meta.json, which the Android app (android/)
 fetches from Pages.

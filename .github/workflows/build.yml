@@ -10,7 +10,7 @@ on:
       - readlist.md
       - template.html
       - build.py
-      - students/**
+      - users/**
       - .github/workflows/build.yml
   workflow_dispatch:
 
@@ -36,10 +36,10 @@ jobs:
       - name: Generate the page
         run: python build.py
 
-      # each students/<name>/ with a vocabulary.md is its own page at /vocab/<name>/
-      - name: Generate the students' pages
+      # each users/<name>/ with a vocabulary.md is its own page at /vocab/<name>/
+      - name: Generate the users' pages
         run: |
-          for d in students/*/; do
+          for d in users/*/; do
             [ -f "$d/vocabulary.md" ] && python build.py --src "$d"
           done
 
@@ -47,7 +47,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html data.json meta.json _site/
-          for d in students/*/; do
+          for d in users/*/; do
             [ -f "$d/index.html" ] || continue
             mkdir -p "_site/$(basename "$d")"
             cp "$d/index.html" "_site/$(basename "$d")/"
