@@ -314,6 +314,22 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     // 复习这一条 on an entry page brings me back here on the 复习 tab, its run already on
     val tabRequest by vm.tabRequest.collectAsStateWithLifecycle()
     LaunchedEffect(tabRequest) { tabRequest?.let { tab = it; vm.tabShown() } }
+    // swipe left / right between the four tabs (用户 2026-10-23); the pager follows a tab tap (and
+    // tabRequest), the tab follows the page once a swipe settles; no swiping during a run. The bottom
+    // bar's highlight follows the pager as it moves, not just once it settles.
+    val pager = androidx.compose.foundation.pager.rememberPagerState(initialPage = tab) { 4 }
+    LaunchedEffect(tab) { if (pager.currentPage != tab) pager.animateScrollToPage(tab) }
+    // once the pager stops: select its page, and finish the snap if something cut it short — leaving
+    // 浏览 brings the status bar back and drops the top bar's collapsing, and that relayout could stop
+    // the pager half a page off (seen on the S23)
+    LaunchedEffect(pager) {
+        androidx.compose.runtime.snapshotFlow { pager.isScrollInProgress }.collect { moving ->
+            if (moving) return@collect
+            tab = pager.currentPage
+            if (pager.currentPageOffsetFraction != 0f) pager.animateScrollToPage(pager.currentPage)
+        }
+    }
+    val tabPos by remember { androidx.compose.runtime.derivedStateOf { (pager.currentPage + pager.currentPageOffsetFraction).coerceIn(0f, 3f) } }
     // a 复习 / 考核 run takes the whole screen: no top bar, no tab bar; back ends the run
     val running = quiz != null && quiz?.stage == when (tab) { 1 -> Stage.Review; 2 -> Stage.Test; else -> null }
     BackHandler(enabled = running) { vm.endQuiz() }
@@ -489,20 +505,32 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                     .windowInsetsPadding(WindowInsets.navigationBars)
                     .padding(horizontal = 20.dp, vertical = 10.dp),
             ) {
-                Row(
+                Box(
                     Modifier
                         .fillMaxWidth()
                         .height(64.dp)
                         .glass(RoundedCornerShape(50))
                         .padding(6.dp)
                         .graphicsLayer { alpha = (1 - bars.state.collapsedFraction * 1.6f).coerceIn(0f, 1f) },
-                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    // the lifecycle, left to right: 学习中 (浏览) → 复习 → 考核 → 掌握
-                    GlassTab(tab == 0, { tab = 0 }, Icons.AutoMirrored.Filled.List, "浏览")
-                    GlassTab(tab == 1, { tab = 1 }, Icons.Default.Refresh, "复习")
-                    GlassTab(tab == 2, { tab = 2 }, Icons.Default.Edit, "考核")
-                    GlassTab(tab == 3, { tab = 3 }, Icons.Default.Star, "掌握")
+                    // the soft pill under the selected tab, one for all four: it slides with a swipe
+                    // (用户 2026-10-23), a tab's width per page, read in the layer so it doesn't recompose
+                    val ink = MaterialTheme.colorScheme.onSurface
+                    Box(
+                        Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth(0.25f)
+                            .graphicsLayer { translationX = (pager.currentPage + pager.currentPageOffsetFraction).coerceIn(0f, 3f) * size.width }
+                            .clip(RoundedCornerShape(50))
+                            .background(ink.copy(alpha = 0.09f)),
+                    )
+                    Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                        // the lifecycle, left to right: 学习中 (浏览) → 复习 → 考核 → 掌握
+                        GlassTab(tabPos, 0, { tab = 0 }, Icons.AutoMirrored.Filled.List, "浏览")
+                        GlassTab(tabPos, 1, { tab = 1 }, Icons.Default.Refresh, "复习")
+                        GlassTab(tabPos, 2, { tab = 2 }, Icons.Default.Edit, "考核")
+                        GlassTab(tabPos, 3, { tab = 3 }, Icons.Default.Star, "掌握")
+                    }
                 }
             }
         },
@@ -514,11 +542,6 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
             vm.openedFrom(list, anchor)
             nav.navigate("entry/$anchor")
         }
-        // swipe left / right between the four tabs (用户 2026-10-23); the pager follows a tab tap (and
-        // tabRequest), the tab follows the page once a swipe settles; no swiping during a run
-        val pager = androidx.compose.foundation.pager.rememberPagerState(initialPage = tab) { 4 }
-        LaunchedEffect(tab) { if (pager.currentPage != tab) pager.animateScrollToPage(tab) }
-        LaunchedEffect(pager) { androidx.compose.runtime.snapshotFlow { pager.settledPage }.collect { tab = it } }
         androidx.compose.foundation.pager.HorizontalPager(pager, userScrollEnabled = !running, modifier = Modifier.fillMaxSize()) { page ->
         if (page == 0) {
             BrowseScreen(
@@ -574,20 +597,24 @@ private fun SubPage(title: String, onBack: () -> Unit, content: @Composable (Pad
 
 /** One slot of the glass tab bar: the selected one sits in a soft pill. */
 @Composable
-private fun RowScope.GlassTab(selected: Boolean, onClick: () -> Unit, icon: ImageVector, label: String) {
+private fun RowScope.GlassTab(pos: Float, index: Int, onClick: () -> Unit, icon: ImageVector, label: String) {
     val ink = MaterialTheme.colorScheme.onSurface
+    // how close the pager is to this tab: 1 on it, 0 a page or more away — the icon and label
+    // brighten as the highlight slides under them
+    val near = 1f - kotlin.math.min(1f, kotlin.math.abs(pos - index))
+    val selected = near > 0.5f
     Column(
         Modifier
             .weight(1f)
             .fillMaxHeight()
             .clip(RoundedCornerShape(50))
-            .background(if (selected) ink.copy(alpha = 0.09f) else Color.Transparent)
             .selectable(selected, onClick = onClick, role = Role.Tab),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Icon(icon, null, Modifier.size(22.dp), tint = if (selected) ink else ink.copy(alpha = 0.6f))
-        Text(label, style = MaterialTheme.typography.labelSmall, color = if (selected) ink else ink.copy(alpha = 0.6f),
+        val tint = ink.copy(alpha = 0.6f + 0.4f * near)
+        Icon(icon, null, Modifier.size(22.dp), tint = tint)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = tint,
             fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal)
     }
 }
