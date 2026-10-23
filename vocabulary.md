@@ -156,6 +156,7 @@
 150. [句子:Should I keep going, or …? / Would you suggest](#s-should-i-keep-going)
 151. [likely / unlikely](#likely-unlikely)
 152. [句子:the version with the survey / starting from](#s-version-with-the-survey)
+153. [句子:test it against the test environment / start with](#s-test-against-env)
 
 ---
 
@@ -4952,3 +4953,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **the version with / that includes X** —— 带有 X 功能的版本。
 - **starting from** —— 从……开始(计数、计算的起点)。
+
+---
+
+<a id="s-test-against-env"></a>
+## 句子:test it against the test environment / start with
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> We can work on it against the test env first.
+
+**问题:**
+
+- ⚠️ [搭配] **work on it against** —— *against* 搭配「运行、测试、验证」(*run the tests against staging*);*work on* 是「开发、处理」,接不上 → **test it against the test environment**,或 **work on it in the test environment**。
+- ✅ **env** —— 意思清楚,日常使用完全够用;聊天里常见,文档和工单里写全 *environment*。
+
+**更地道的说法:**
+
+1. Let's start with the test environment.
+   我们先从测试环境开始吧。
+
+**涉及的搭配:**
+
+- **test / run sth against an environment** —— 在某个环境上测试、运行。
+- **start with** —— 先从……开始。
