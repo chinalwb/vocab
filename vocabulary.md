@@ -162,6 +162,7 @@
 156. [tend toward / lean toward / focus mostly on](#tend-lean-focus)
 157. [given that / with that in mind](#given-that)
 158. [comma splice:怎么一眼判断](#comma-splice)
+159. [Does it have to be this complicated? / overcomplicate](#this-complicated)
 
 ---
 
@@ -5131,3 +5132,33 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 改:*Let's add a new entry for this; each phrase has one sample sentence.* 或 *…, and each phrase gets one sample sentence.*
 - 不是:*Let's add a new entry for this, with one sample sentence each.* —— 逗号后面是介词短语,不能单独成句。
 - 不是:*…, though I know …* —— *though* 引出的是从句,有连词就不算。
+
+---
+
+<a id="this-complicated"></a>
+## Does it have to be this complicated? / overcomplicate
+
+- 词性:phrase
+- CEFR:B2
+- 日期:2026-10-23
+- 掌握:会写
+
+**含义:** 「这件事需要这么复杂吗?」在讨论方案时提出质疑,语气从直接到委婉都有。
+
+**直接问:需要这么复杂吗**
+1. Does this **need to be so complicated**?
+   这件事需要这么复杂吗?
+2. Does it **have to be this complicated**?
+   非得这么复杂吗?
+
+**委婉说:是不是搞复杂了**
+1. **Are we overcomplicating** this?
+   我们是不是把这事搞复杂了?
+2. **I wonder if** there's a simpler way.
+   我在想有没有更简单的办法。
+
+**要点:**
+
+- **this complicated** —— 「眼前这种复杂程度」,比 *so complicated* 更常用;语气稍直接。
+- **Are we overcomplicating this?** —— 用 *we*,不怪对方,像是一起反思,适合团队讨论。
+- *Why is this so complicated?* 听起来像抱怨或质问;想提建议时用上面两句委婉的说法。
