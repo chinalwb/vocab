@@ -4733,6 +4733,10 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **我犯过的错:** 把它当成"所以"用。*They know little about this product. ~~That said~~, the message should be detailed.* 这里是因果,应改用 **so**。见 [自测:按团队里新来的产品经理来写](#t-write-for-new-pms)。
 
+**相关条目:** [given that / with that in mind](#given-that) —— 那两个是「鉴于这一点」,顺着前面往下说;*that said* 是转折,别混。
+
+---
+
 <a id="acronym"></a>
 ## acronym
 
@@ -4770,8 +4774,6 @@ platform 等于 10,就代表请求来自 web,对吧?
 - *spell out an acronym*:写出缩写的全称
 
 **相关条目:** [阅读:用首字母组成的词叫什么?](#r-what-do-you-call) —— 问这个词时的原句和 C1 改法(在 ⋮ → 阅读)。
-
-**相关条目:** [given that / with that in mind](#given-that) —— 那两个是「鉴于这一点」,顺着前面往下说;*that said* 是转折,别混。
 
 ---
 
