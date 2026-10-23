@@ -1,0 +1,41 @@
+{
+  "title": "Sophia 的英语笔记",
+  "brand": "Sophia",
+  "prefix": "vk.sophia.",
+  "app": false,
+  "categories": true,
+  "cardColor": "level",
+  "fillBlanks": true,
+  "groups": [
+    {"kind": "Note", "key": "NOTE", "label": "Note", "name": "Note:写给别人的话,原句 → 更地道的说法", "swatch": "sn"},
+    {"kind": "写作", "key": "WRITING", "label": "写作", "name": "IELTS 写作 Task 2:论证、让步、留余地", "swatch": "b1"},
+    {"kind": "口语", "key": "SPEAKING", "label": "口语", "name": "IELTS 口语:Part 2 / 3 里自然的说法", "swatch": "a2"},
+    {"kind": "高分搭配", "key": "COLLOCATION", "label": "高分搭配", "name": "高分搭配:动词 + 名词,7 分作文常见", "swatch": "cl"},
+    {"kind": "学术词汇", "key": "ACADEMIC", "label": "学术词汇", "name": "学术词汇:写作里常用的 C1 词", "swatch": "c1"}
+  ],
+  "sync": {
+    "repo": "chinalwb/vocab",
+    "branch": "progress",
+    "path": "progress-sophia.json"
+  },
+  "theme": {
+    "light": {
+      "--accent": "#6b3fa0",
+      "--accent-ink": "#ffffff",
+      "--ground": "#f1ecf6",
+      "--chip-on-ink": "#f1ecf6",
+      "--glass": "rgba(241,236,246,.72)",
+      "--glass-strong": "rgba(241,236,246,.86)",
+      "--brand": "#6b3fa0"
+    },
+    "dark": {
+      "--accent": "#c4a6f0",
+      "--accent-ink": "#1d1229",
+      "--ground": "#18131f",
+      "--chip-on-ink": "#18131f",
+      "--glass": "rgba(24,19,31,.72)",
+      "--glass-strong": "rgba(24,19,31,.86)",
+      "--brand": "#c4a6f0"
+    }
+  }
+}
