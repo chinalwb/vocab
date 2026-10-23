@@ -49,6 +49,7 @@
   --sn-1:#e8d7c3; --sn-2:#dfcaaf; --sn-3:#f1e5d7;
   --cl-1:#dfe9c8; --cl-2:#d2e0b4; --cl-3:#eaf1d8;
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
+  --kn-1:#e2e0d0; --kn-2:#d8d5c0; --kn-3:#ece9dc;
 
   --accent:#2b4acb; --accent-ink:#ffffff; --st-learn:#8a8f9c; --st-test:#e0812f; --st-done:#3e9b5b;
   /* card colours by stage (site.json "cardColor": "stage"): the stage dots' colours, washed into the
@@ -90,6 +91,7 @@
     --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
     --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
+    --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
 
     --accent:#8ea2ff; --accent-ink:#10142a;
     --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db;
@@ -126,6 +128,7 @@
   --sn-1:#4a3626; --sn-2:#58402d; --sn-3:#3d2d20;
   --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
+  --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
 
   --accent:#8ea2ff; --accent-ink:#10142a;
   --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db;
@@ -1089,9 +1092,11 @@ const LV = {
   // 固定搭配 (`- 类型:固定搭配`): a phrase met in reading, quizzed on the sentence it came in.
   // Only taobao's notes use it so far; the App doesn't know this group.
   COLLOC:{nm:"阅读里看到的地道写法", sw:["--cl-1","--cl-2","--cl-3"]},
-  SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]}
+  SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]},
+  // Knowledge (`- 类型:Knowledge`, 用户 2026-10-23): writing know-how — punctuation, sentence structure
+  KNOWLEDGE:{nm:"Knowledge:写作通用知识(标点、句子结构……)", sw:["--kn-1","--kn-2","--kn-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题"};
+const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge"};
 // site.json "groups" (用户 2026-10-23, so's): a notebook's own categories, each picked by an entry's
 // `- 类型:` line and coloured with one of the palettes above; with any, 分类 and the 类型 row list only these
 const OWN = VK.groups || [];
@@ -1176,6 +1181,7 @@ if (!STAGE_NAME[stageF]) stageF = "";
 // Each row is single-choice and starts at 全部; the rows narrow each other.
 const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
+  ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []),
   ...(DATA.some(g => g.level === "COLLOC") ? [["COLLOC", "固定搭配"]] : []), ["SELFTEST", "自测题"]];
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
@@ -3228,7 +3234,8 @@ const SIDE = [
     ["review", "复习", "var(--accent)", () => setView("review")],
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
-  ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"], ["SELFTEST", "自测题"]])
+  ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"],
+    ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []), ["SELFTEST", "自测题"]])
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];

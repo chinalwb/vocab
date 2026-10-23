@@ -161,6 +161,7 @@
 155. [句子:redraft / the message to sb](#s-redraft-message-to)
 156. [tend toward / lean toward / focus mostly on](#tend-lean-focus)
 157. [given that / with that in mind](#given-that)
+158. [comma splice:怎么一眼判断](#comma-splice)
 
 ---
 
@@ -5110,3 +5111,23 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **Given that,** 单独用 —— *that* 指前面说过的事:「鉴于此;既然这样」,如 *Given that, what's the right fix?*
 
 **别和 that said 搞混:** *that said / that being said* 是「话虽如此」,后面接**转折**(相当于 *however*);*given that* 和 *with that in mind* 是**顺着**前面的事实往下说。见 [that said / that being said](#that-said)。
+
+---
+
+<a id="comma-splice"></a>
+## comma splice:怎么一眼判断
+
+- 类型:Knowledge
+- 日期:2026-10-23
+- 掌握:会写
+
+**含义:** comma splice(逗号粘连):两个**独立分句**(各有主语和谓语、能单独成句)只用一个逗号连起来。
+
+**快速判断:** 看逗号两边,如果两边都能单独成句,又没有 *and*、*but*、*so*、*though* 这类连词,就是 comma splice。
+
+**怎么改:** 换成句号或分号,或者加一个连词。
+
+- 是:*Let's add a new entry for this, each phrase has one sample sentence.* —— 逗号后面有主语 *each phrase* 和谓语 *has*,能单独成句。
+- 改:*Let's add a new entry for this; each phrase has one sample sentence.* 或 *…, and each phrase gets one sample sentence.*
+- 不是:*Let's add a new entry for this, with one sample sentence each.* —— 逗号后面是介词短语,不能单独成句。
+- 不是:*…, though I know …* —— *though* 引出的是从句,有连词就不算。
