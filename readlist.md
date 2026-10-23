@@ -754,3 +754,31 @@
 - ⚠️ [结构] ==The goal is she can== → **The goal is for her to** —— 书面里 *that* 不宜省,或者用 *for sb to do*。
 - ❌ [结构] ==be able for self-test== → **support self-testing** —— *be able* 后面要接 *to do*,而且条目自己「能」做不了什么。
 - ⚠️ [介词] ==as the other general ones== → **like the others** —— 表示「和……一样」用 *like*。
+
+<a id="r-one-or-two-each"></a>
+## 给这三个短语建一个新条目,每个配一两句例句;句子照旧要短,好让我专注在短语的用法上。
+
+- 日期:2026-10-23
+- 关键词:one or two … each · how the phrases are used
+
+**常用说法:**
+
+> Please add a new entry for these phrases: tend toward, lean toward and focus mostly on. Add one or two sample sentences for each one. Like last time, make the sentences short, so I can focus on the usage of the phrases. Thanks.
+
+**C1 说法:**
+
+> **Could you** add a new entry for *tend toward*, *lean toward* and *focus mostly on*, **with one or two sample sentences each**? **As before**, keep the sentences short so I can focus on **how the phrases are used**. Thanks.
+
+**差别:**
+
+- **Could you …?** —— 用问句提请求,比祈使句 *Please add* 更客气;对应 *Please add*。
+- **with one or two sample sentences each** —— 把要求接在同一句后面,*each* 放句末表示「每个各……」;对应 *Add one or two sample sentences for each one*(另起一句)。
+- **As before** —— 「和之前一样」,比 *Like last time* 更利落;对应 *Like last time*。
+- **how the phrases are used** —— 用一个从句说「用法」,比名词堆叠更自然;对应 *the usage of the phrases*。
+
+**我的原句:**
+
+> tend toward / lean toward / focus mostly -- I'd like to have a new entry for these phrases. Add ==one sentence or two sample sentences== for each. Again, please try to make the sentences short so I can focus on ==the phrases usage==. Thanks.
+
+- ⚠️ [结构] ==one sentence or two sample sentences== → **one or two sample sentences** —— *sentence* 重复了,两边结构也不一致。
+- ❌ [词形] ==the phrases usage== → **how the phrases are used** —— 缺所有格撇号(*the phrases' usage*);用从句说更自然。
