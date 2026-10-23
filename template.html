@@ -1092,7 +1092,7 @@ const LV = {
   SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]}
 };
 const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题"};
-// site.json "groups" (用户 2026-10-23, sophia's): a notebook's own categories, each picked by an entry's
+// site.json "groups" (用户 2026-10-23, so's): a notebook's own categories, each picked by an entry's
 // `- 类型:` line and coloured with one of the palettes above; with any, 分类 and the 类型 row list only these
 const OWN = VK.groups || [];
 OWN.forEach(g => { LV[g.key] = { nm: g.name, sw: [1, 2, 3].map(n => `--${g.swatch}-${n}`) }; LABEL[g.key] = g.label; });

@@ -413,7 +413,7 @@ SITE = {
     "cardColor": "level",            # or "stage": cards coloured by 学习中 / 复习中 / 考核中 / 已掌握
     "logo": "",                      # a picture next to the page's index.html, shown in front of the name
     "fillBlanks": True,              # 打字 asks only for the **bold** part of a quiz sentence, the rest filled in
-    # a notebook's own categories (用户 2026-10-23, sophia's): [{"kind": the `- 类型:` value, "key": the group
+    # a notebook's own categories (用户 2026-10-23, so's): [{"kind": the `- 类型:` value, "key": the group
     # key (A–Z), "label": its short name, "name": its section heading, "swatch": a palette in template.html
     # (a1 a2 b1 b2 c1 c2 tm gr sn cl st)}]. With any, 分类 and the 类型 row list only these.
     "groups": [],

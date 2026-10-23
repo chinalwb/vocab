@@ -1,21 +1,21 @@
-# CLAUDE.md(Sophia 的笔记)
+# CLAUDE.md(so 的笔记)
 
-这个目录是用户 **Sophia** 的英语笔记,独立于仓库根目录的 `vocabulary.md`(那是用户自己的)。Sophia 是**高级学习者,目标 IELTS 7.0**(写作、口语大约 C1)。她在网页 `https://chinalwb.github.io/vocab/sophia/` 上浏览和自测(只有网页,App 只读根目录的笔记)。
+这个目录是用户 **so** 的英语笔记,独立于仓库根目录的 `vocabulary.md`(那是用户自己的)。so 是**高级学习者,目标 IELTS 7.0**(写作、口语大约 C1)。她在网页 `https://chinalwb.github.io/vocab/so/` 上浏览和自测(只有网页,App 只读根目录的笔记)。
 
 没写到的规则一律照仓库根目录的 `CLAUDE.md`,下面只写不一样的地方。
 
-## Sophia 专用会话
+## so 专用会话
 
-用户在这个目录里启动 Claude Code(`cd users/sophia && claude`)时,就是 Sophia 的会话:
+用户在这个目录里启动 Claude Code(`cd users/so && claude`)时,就是 so 的会话:
 
-- 要存的内容写进**这个目录的 `vocabulary.md`**,不要写进根目录的;反过来,用户自己的句子也不要写到这里(除非用户明确要求,比如 Note 分类里那条写给 Sophia 的留言)。
+- 要存的内容写进**这个目录的 `vocabulary.md`**,不要写进根目录的;反过来,用户自己的句子也不要写到这里(除非用户明确要求,比如 Note 分类里那条写给 so 的留言)。
 - 用户自己用英文提需求时,照旧在末尾做「英文检查」(按根目录的 C1 规则)。
 
 ## 分类(site.json 的 `groups`)
 
 每个条目都要有一行 `- 类型:…`,值是下面五个之一(build.py 遇到别的值会报错):
 
-- **Note** —— 写给别人的话:原句 → 改了哪些地方 → 更地道的说法。原句是谁写的就照实写;**改动不打 `❌ [类型]` 标签**(那不是 Sophia 自己的错,打了标签就会进她的错题本),写成 `- **原写法** → **改法** —— 原因`。
+- **Note** —— 写给别人的话:原句 → 改了哪些地方 → 更地道的说法。原句是谁写的就照实写;**改动不打 `❌ [类型]` 标签**(那不是 so 自己的错,打了标签就会进她的错题本),写成 `- **原写法** → **改法** —— 原因`。
 - **写作** —— IELTS Task 2 的论证、让步、留余地、衔接句型。
 - **口语** —— Part 2 / 3 里自然、地道的说法。
 - **高分搭配** —— 动词 + 名词这类书面搭配,写清楚易错的动词。
@@ -31,5 +31,5 @@
 
 ## 页面
 
-- 本地预览:在仓库根目录 `python3 build.py --src users/sophia`,打开 `users/sophia/index.html`(要经 `python3 -m http.server`)。
-- 进度同步在 `progress` 分支的 `progress-sophia.json`(Sophia 在网页的「同步」里填她自己的 token;我不经手)。
+- 本地预览:在仓库根目录 `python3 build.py --src users/so`,打开 `users/so/index.html`(要经 `python3 -m http.server`)。
+- 进度同步在 `progress` 分支的 `progress-so.json`(so 在网页的「同步」里填她自己的 token;我不经手)。

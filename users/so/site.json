@@ -1,7 +1,7 @@
 {
-  "title": "Sophia 的英语笔记",
-  "brand": "Sophia",
-  "prefix": "vk.sophia.",
+  "title": "so 的英语笔记",
+  "brand": "so",
+  "prefix": "vk.so.",
   "app": false,
   "categories": true,
   "cardColor": "level",
@@ -16,7 +16,7 @@
   "sync": {
     "repo": "chinalwb/vocab",
     "branch": "progress",
-    "path": "progress-sophia.json"
+    "path": "progress-so.json"
   },
   "theme": {
     "light": {
