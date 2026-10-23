@@ -160,6 +160,7 @@
 154. [come back to sth](#come-back-to)
 155. [句子:redraft / the message to sb](#s-redraft-message-to)
 156. [tend toward / lean toward / focus mostly on](#tend-lean-focus)
+157. [given that / with that in mind](#given-that)
 
 ---
 
@@ -4770,6 +4771,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **相关条目:** [阅读:用首字母组成的词叫什么?](#r-what-do-you-call) —— 问这个词时的原句和 C1 改法(在 ⋮ → 阅读)。
 
+**相关条目:** [given that / with that in mind](#given-that) —— 那两个是「鉴于这一点」,顺着前面往下说;*that said* 是转折,别混。
+
 ---
 
 <a id="convoluted"></a>
@@ -5078,3 +5081,30 @@ platform 等于 10,就代表请求来自 web,对吧?
 > Seems like it tends toward to iOS.
 
 - ❌ [介词] **tends toward to** —— *toward* 和 *to* 都是介词,只留一个 → **tends toward iOS**;说文档内容偏向,更自然的是 **focuses mostly on iOS**。
+
+---
+
+<a id="given-that"></a>
+## given that / with that in mind
+
+- 词性:phrase
+- CEFR:B2
+- 日期:2026-10-23
+- 掌握:会写
+
+**含义:** 都是「鉴于这一点、考虑到这一点」,把前面的事实和后面的结论或行动连起来,方向是**顺着说**。*Given that* 偏推理(鉴于这个事实,可以得出……);*with that in mind* 偏行动(记着这一点去做下一步),后面常接 *let's …*、*we'll …*、*I suggest …*。
+
+**given that:鉴于(这个事实)**
+1. **Given that** the API is deprecated, we should migrate.
+   鉴于这个 API 已经弃用,我们应该迁移。
+
+**with that in mind:考虑到这一点(去做下一步)**
+1. Most users are on Android. **With that in mind**, let's fix Android first.
+   大部分用户用安卓。考虑到这一点,我们先修安卓。
+
+**两种 given that:**
+
+- **Given that + 句子** —— *that* 是连词,引出原因:「鉴于……」(上面的例句)。
+- **Given that,** 单独用 —— *that* 指前面说过的事:「鉴于此;既然这样」,如 *Given that, what's the right fix?*
+
+**别和 that said 搞混:** *that said / that being said* 是「话虽如此」,后面接**转折**(相当于 *however*);*given that* 和 *with that in mind* 是**顺着**前面的事实往下说。见 [that said / that being said](#that-said)。
