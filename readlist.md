@@ -814,3 +814,32 @@
 - ❌ [冠词] ==some entry== → **some entries** —— 「有些条目」用复数。
 - ❌ [结构] ==a dozen of sample sentences== → **a dozen sample sentences** —— *a dozen* 直接接名词。
 - ⚠️ [结构] ==takes long== → **take a long time** —— 肯定句里 *long* 单独作副词不自然;主语是 *sentences*,动词用复数。
+
+<a id="r-move-along-with-it"></a>
+## 横滑切换 tab 的功能挺好用,不过有一点可以改进:用户滑动时,底部 tab 的指示器应该跟着动。
+
+- 日期:2026-10-23
+- 关键词:one thing could be better · move along with it
+
+**常用说法:**
+
+> The feature for swiping to switch tabs works well, but it can be better: when the user swipes, the bottom tab indicator should move too.
+
+**C1 说法:**
+
+> The **tab-swiping feature** works well, but **one thing could be better**: **as the user swipes**, the bottom tab indicator should **move along with it**.
+
+**差别:**
+
+- **tab-swiping feature** —— 用一个复合词放在 *feature* 前面,短而清楚;对应 *The feature for swiping to switch tabs*。
+- **one thing could be better** —— 先肯定再提一点改进,*could* 让语气更客气;对应 *it can be better*。
+- **as the user swipes** —— *as* 表示「一边……一边……」,两件事同时发生;对应 *when the user swipes*。
+- **move along with it** —— 「跟着一起动」,*along with* 说出「同步」;对应 *move too*。
+
+**我的原句:**
+
+> ==The swipe to switch tabs feature== works fine but it can be improved ==as follow==: when ==user== is swiping, the bottom tab indicator should be moved accordingly
+
+- ⚠️ [结构] ==The swipe to switch tabs feature== → **the tab-swiping feature** —— 一长串词放在名词前当修饰语,读起来吃力。
+- ❌ [词形] ==as follow== → **as follows** —— 固定说法,*follows* 要加 *s*。
+- ❌ [冠词] ==user== → **the user** —— 单数可数名词前要有冠词。
