@@ -153,6 +153,7 @@
 147. [hardly anyone / barely anyone](#hardly-anyone)
 148. [句子:look into / mismatch between](#s-look-into-mismatch)
 149. [语法笔记:once 后面用一般现在时(is merged / has been merged)](#once-is-merged)
+150. [句子:Should I keep going, or …? / Would you suggest](#s-should-i-keep-going)
 
 ---
 
@@ -4862,3 +4863,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **once … is merged** —— 被动语态,表示合并这件事发生之后;口语和技术沟通里用得最多,也更短。
 - **once … has been merged** —— 现在完成时,更强调「已经合并完了」;想特别说明要等它彻底完成再删时用。日常里两者基本可以互换。
+
+---
+
+<a id="s-should-i-keep-going"></a>
+## 句子:Should I keep going, or …? / Would you suggest
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> Do you suggest I continue to do it in this session?
+
+**问题:**
+
+- ⚠️ [语气] **Do you suggest I …?** —— 一般现在时听起来像在确认「你刚才的意思是建议我……吗?」;征求建议用 **Would you suggest …?** 或 **Should I …?**。
+- ✅ **continue to do it** —— 意思清楚,日常使用完全够用;口语里 **keep going** 更简洁。
+
+**更地道的说法:**
+
+1. Should I keep going in this session, or start a new one?
+   我是在这个会话里继续,还是开一个新的?(把两个选项都摆出来,对方更好回答。)
+
+**涉及的搭配:**
+
+- **keep going** —— 接着做下去,别停。
+- **Should I A, or B?** —— 拿不定主意时请对方在两个选项里帮你选。
