@@ -416,14 +416,20 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 - 掌握:会写
 
 **义项一:先不做某事,暂缓/搁置(等条件更合适再说,不一定有具体新时间点)**
-1. Let's **hold off** on the Feedback modal issue until we get more user reports.
+1. Let's **hold off on** the Feedback modal issue until we get more user reports.
    我们先搁置一下 Feedback modal 这个问题,等收到更多用户反馈再说。
-2. I'd **hold off** on deploying until the tests are green.
+2. I'd **hold off on** deploying until the tests are green.
    我建议先别部署,等测试全绿了再说。
 
 **义项二:阻挡、推迟(某种不好的事情的到来)**
 1. The rain **held off** just long enough for us to finish the match.
    雨一直没下,刚好让我们把比赛打完。
+
+**我的原句:**
+
+> I'd like to add the comment but will hold off to change the status.
+
+- ❌ [搭配] **hold off to change** —— *hold off* 后面不接不定式,要用 *on* + 动名词(或直接接动名词) → **hold off on changing**:*I'll add the comment, but I'll hold off on changing the status for now.*
 
 ---
 
