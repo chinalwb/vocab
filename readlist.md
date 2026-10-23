@@ -782,3 +782,35 @@
 
 - ⚠️ [结构] ==one sentence or two sample sentences== → **one or two sample sentences** —— *sentence* 重复了,两边结构也不一致。
 - ❌ [词形] ==the phrases usage== → **how the phrases are used** —— 缺所有格撇号(*the phrases' usage*);用从句说更自然。
+
+<a id="r-get-through"></a>
+## 给网页和 App 加个功能:长按一句会弹出菜单,我们想在里面加一项,把这句从所有阶段的考试里去掉。有些条目多达十来句例句,做完要很久。
+
+- 日期:2026-10-23
+- 关键词:both the web and mobile apps · get through
+
+**常用说法:**
+
+> Please add a feature to the web app and the mobile app. When you press a sentence for a long time, a menu appears. We want to add an item to the menu that removes the sentence from tests in all stages. Some entries have about twelve sample sentences, so it takes a long time to finish them.
+
+**C1 说法:**
+
+> Please add a new feature to **both the web and mobile apps**. **When you long-press a sentence, a menu pops up**; we'd like a new item in it **that removes the sentence from tests in all stages**. Some entries have **as many as a dozen** sample sentences, **which take a long time to get through**.
+
+**差别:**
+
+- **both the web and mobile apps** —— *both* 后面直接并列两个东西,不加 *of*;对应 *the web app and the mobile app*。
+- **When you long-press a sentence, a menu pops up** —— *long-press* 是界面操作的固定说法;*pop up* 说菜单弹出;对应 *press a sentence for a long time, a menu appears*。
+- **that removes the sentence from tests in all stages** —— 用定语从句说清这一项做什么,*the sentence* 不用 *it*,免得指代不清;对应 *an item … that removes the sentence*。
+- **as many as a dozen** —— 「多达十来个」,强调数量多;*a dozen* 后面不加 *of*;对应 *about twelve*。
+- **which take a long time to get through** —— *get through* 是「一项项做完」;对应 *so it takes a long time to finish them*。
+
+**我的原句:**
+
+> Add a new feature for ==both of the web and mobile apps==: ==When long pressing on a sentence, an action list will pop up== now. We want to add a new item to that list for removing it from tests in all phases. That is because I found ==some entry== contains as many as ==a dozen of sample sentences==, which ==takes long== to finish.
+
+- ⚠️ [结构] ==both of the web and mobile apps== → **both the web and mobile apps** —— 并列两个东西时 *both* 后面不加 *of*。
+- ⚠️ [逻辑] ==When long pressing on a sentence, an action list will pop up== → **When you long-press a sentence, a menu pops up** —— *long pressing* 的主语是用户,不是 *action list*(悬垂修饰)。
+- ❌ [冠词] ==some entry== → **some entries** —— 「有些条目」用复数。
+- ❌ [结构] ==a dozen of sample sentences== → **a dozen sample sentences** —— *a dozen* 直接接名词。
+- ⚠️ [结构] ==takes long== → **take a long time** —— 肯定句里 *long* 单独作副词不自然;主语是 *sentences*,动词用复数。
