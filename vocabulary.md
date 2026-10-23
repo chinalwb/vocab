@@ -151,6 +151,7 @@
 145. [acronym](#acronym)
 146. [convoluted](#convoluted)
 147. [hardly anyone / barely anyone](#hardly-anyone)
+148. [句子:look into / mismatch between](#s-look-into-mismatch)
 
 ---
 
@@ -4806,3 +4807,30 @@ platform 等于 10,就代表请求来自 web,对吧?
 - hardly / barely 本身带否定意思,后面接 **anyone**,不接 *nobody*(否则是双重否定)。
 - "操作"这里不用 *operate*(那是操作机器、设备),说 **do that** / **use it that way** 即可。
 - 写报告、工单时更客观的说法是 **very few users**。
+
+---
+
+<a id="s-look-into-mismatch"></a>
+## 句子:look into / mismatch between
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> can you check out what causes the mismatch of the number on the review section
+
+**问题:**
+
+- ⚠️ [搭配] **check out** —— 多指「随便看看、去看一下」(*Check out this café.*);要说「查一下原因」用 **look into** 或 **figure out**。
+- ⚠️ [介词] **the mismatch of the number** —— 两样东西对不上用 **mismatch between**,而且是两个数字,要用复数 → **the mismatch between the numbers**。
+- ⚠️ [介词] **on the review section** —— 页面里的一个区域用 **in** → **in the review section**。
+
+**更地道的说法:**
+
+1. Could you look into why the numbers in the review section don't match?
+   你能查一下复习那一栏的数字为什么对不上吗?
+
+**涉及的搭配:**
+
+- **look into sth** —— 调查、查一查(原因、问题)。
+- **a mismatch between A and B** —— A 和 B 对不上;也可以直接说 *A and B don't match*。
