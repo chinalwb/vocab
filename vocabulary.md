@@ -154,6 +154,7 @@
 148. [句子:look into / mismatch between](#s-look-into-mismatch)
 149. [语法笔记:once 后面用一般现在时(is merged / has been merged)](#once-is-merged)
 150. [句子:Should I keep going, or …? / Would you suggest](#s-should-i-keep-going)
+151. [likely / unlikely](#likely-unlikely)
 
 ---
 
@@ -4889,3 +4890,38 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **keep going** —— 接着做下去,别停。
 - **Should I A, or B?** —— 拿不定主意时请对方在两个选项里帮你选。
+
+---
+
+<a id="likely-unlikely"></a>
+## likely / unlikely
+
+- 音标:likely /ˈlaɪkli/ · unlikely /ʌnˈlaɪkli/
+- 词性:adj.
+- CEFR:B1
+- 日期:2026-10-23
+- 掌握:会写
+
+**English definition:** *likely*: probably going to happen or be true. *unlikely*: not likely to happen or be true.
+
+**含义:** 很可能 / 不太可能(发生或成立)。「几率很小」最自然的说法就是 *unlikely*。它说的是主观判断,不是数字;要说具体的概率才用 *a low / high probability*。
+
+**unlikely:不太可能**
+1. That's **unlikely**.
+   不太可能。
+2. The bug **is unlikely to** happen again.
+   这个 bug 不太会再出现。
+3. **It's unlikely that** they'll ask for it.
+   他们不太可能提这个要求。
+
+**likely:很可能**
+1. **It's likely to** rain.
+   很可能会下雨。
+
+**常见用法:**
+
+- **sb / sth is (un)likely to do** —— 主语放前面,比 *it's (un)likely that …* 更简洁,也更常用。
+- **highly / very unlikely** —— 非常不可能;*fairly unlikely* —— 不太可能。
+- **in the unlikely event that …** —— 偏正式,「万一……」:*In the unlikely event that it fails, we'll roll back.*
+
+**易错:** 「几率很小」不要直译成 *the probability is small*,说 *unlikely*、*rarely* 或 *I doubt …*。
