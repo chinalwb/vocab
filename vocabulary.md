@@ -157,6 +157,7 @@
 151. [likely / unlikely](#likely-unlikely)
 152. [句子:the version with the survey / starting from](#s-version-with-the-survey)
 153. [句子:test it against the test environment / start with](#s-test-against-env)
+154. [come back to sth](#come-back-to)
 
 ---
 
@@ -434,6 +435,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 > I'd like to add the comment but will hold off to change the status.
 
 - ❌ [搭配] **hold off to change** —— *hold off* 后面不接不定式,要用 *on* + 动名词(或直接接动名词) → **hold off on changing**:*I'll add the comment, but I'll hold off on changing the status for now.*
+
+**相关条目:** [come back to sth](#come-back-to) —— 回头再处理;先 *hold off*,之后 *come back to it*。
 
 ---
 
@@ -4979,3 +4982,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **test / run sth against an environment** —— 在某个环境上测试、运行。
 - **start with** —— 先从……开始。
+
+---
+
+<a id="come-back-to"></a>
+## come back to sth
+
+- 词性:phrasal verb
+- CEFR:B1
+- 日期:2026-10-23
+- 掌握:会写
+
+**English definition:** To return to a topic, task or question later.
+
+**含义:** 回头再处理、回头再讨论某件事(现在先放一放)。介词用 **to**,不用 *on*。
+
+**例句**
+1. We'll **come back to** this later.
+   我们回头再处理这个。
+
+**我的原句:**
+
+> So we will come back on this one later.
+
+- ❌ [介词] **come back on this one** —— 「回头再处理某事」的固定搭配是 *come back to sth* → **come back to this one**。
+
+**相关条目:** [hold off (on sth)](#hold-off) —— 先不做、暂缓;常和 *come back to* 连着说:先放一放,回头再弄。
