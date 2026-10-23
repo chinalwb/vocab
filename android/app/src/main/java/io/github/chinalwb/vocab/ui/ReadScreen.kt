@@ -6,6 +6,9 @@ import io.github.chinalwb.vocab.data.Block
 import io.github.chinalwb.vocab.data.Section
 import io.github.chinalwb.vocab.data.splitSections
 import androidx.compose.runtime.remember
+import androidx.compose.material3.IconButton
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.material3.TextButton
@@ -166,15 +169,33 @@ fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modi
     var showOriginal by rememberSaveable(anchor) { mutableStateOf(false) }
     // 我的原句 with its mistakes on a red wash, then what each should have been
     val mine = remember(r) { listOf(Block.Quote(r.original)) + listOfNotNull(r.originalNotes.takeIf { it.isNotEmpty() }?.let { Block.Bullets(it) }) }
+    // ⤢ (用户 2026-10-23, like the entry page): the Chinese and the date fold away, the card takes the page
+    var full by rememberSaveable(anchor) { mutableStateOf(false) }
     Column(modifier.fillMaxSize()) {
-        Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        if (!full) Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 4.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(r.title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             if (r.date.isNotEmpty()) Text(r.date, style = MaterialTheme.typography.labelMedium, color = muted)
         }
+        // the comparison on a card in the C1 colour, the same as the list's cards (用户 2026-10-23)
+        Column(
+            Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(start = 8.dp, end = 8.dp, top = if (full) 4.dp else 8.dp, bottom = 10.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .background(levelColor("C1")),
+        ) {
         NotesPager(
             r.anchor, sections, r.blocks, onXref, quiz = null,
             modifier = Modifier.weight(1f),
             title = "对比",
+            inCard = true,
+            trailing = {
+                IconButton(onClick = { full = !full }) {
+                    Icon(if (full) CloseFullscreenIcon else OpenInFullIcon, if (full) "退出全屏" else "全屏", Modifier.size(20.dp))
+                }
+            },
             // 我的原句: its own tab in 卡片 mode (用户 2026-10-14), folded at the end of the long page
             lastCard = if (r.original.isEmpty()) null else Section("我的原句", mine),
             footer = if (r.original.isEmpty()) null else { {
@@ -191,5 +212,6 @@ fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modi
                 }
             } },
         )
+        }
     }
 }
