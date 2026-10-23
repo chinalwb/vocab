@@ -514,7 +514,13 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
             vm.openedFrom(list, anchor)
             nav.navigate("entry/$anchor")
         }
-        if (tab == 0) {
+        // swipe left / right between the four tabs (用户 2026-10-23); the pager follows a tab tap (and
+        // tabRequest), the tab follows the page once a swipe settles; no swiping during a run
+        val pager = androidx.compose.foundation.pager.rememberPagerState(initialPage = tab) { 4 }
+        LaunchedEffect(tab) { if (pager.currentPage != tab) pager.animateScrollToPage(tab) }
+        LaunchedEffect(pager) { androidx.compose.runtime.snapshotFlow { pager.settledPage }.collect { tab = it } }
+        androidx.compose.foundation.pager.HorizontalPager(pager, userScrollEnabled = !running, modifier = Modifier.fillMaxSize()) { page ->
+        if (page == 0) {
             BrowseScreen(
                 lib, checking, { vm.check() }, open, { vm.markAllSeen() }, tiles,
                 contentPadding = pad,
@@ -526,7 +532,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onActiveCount = { activeFilters = it },
             )
         } else {
-            val stage = when (tab) { 1 -> Stage.Review; 2 -> Stage.Test; else -> Stage.Done }
+            val stage = when (page) { 1 -> Stage.Review; 2 -> Stage.Test; else -> Stage.Done }
             QuizScreen(
                 stage, lib, quiz, stages, stageData.t, selfTests, review, quizOptOut, tiles,
                 onOpen = open,
@@ -545,6 +551,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 modifier = if (quiz?.stage == stage) Modifier.imePadding() else Modifier,
                 contentPadding = pad,
             )
+        }
         }
         }
     }
