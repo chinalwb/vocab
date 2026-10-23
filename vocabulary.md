@@ -158,6 +158,7 @@
 152. [句子:the version with the survey / starting from](#s-version-with-the-survey)
 153. [句子:test it against the test environment / start with](#s-test-against-env)
 154. [come back to sth](#come-back-to)
+155. [句子:redraft / the message to sb](#s-redraft-message-to)
 
 ---
 
@@ -5008,3 +5009,28 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [介词] **come back on this one** —— 「回头再处理某事」的固定搭配是 *come back to sth* → **come back to this one**。
 
 **相关条目:** [hold off (on sth)](#hold-off) —— 先不做、暂缓;常和 *come back to* 连着说:先放一放,回头再弄。
+
+---
+
+<a id="s-redraft-message-to"></a>
+## 句子:redraft / the message to sb
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> Can you draft the message for posting to the frontend team again?
+
+**问题:**
+
+- ⚠️ [逻辑] **again 放在句末** —— 句末副词默认修饰离它最近的动作 *posting*,会被读成「再发一次」;想说「再起草一次」→ **redraft the message**。
+
+**更地道的说法:**
+
+1. Can you redraft the message to the frontend team?
+   你能把发给前端团队的那条消息重新起草一下吗?
+
+**涉及的搭配:**
+
+- **redraft sth** —— 重新起草;一个词说清「再起草一次」,不会和「再发一次」混淆。
+- **a message to sb** —— 发给某人的消息;收件人用 *to*。*a message for the team* 放在动词后面时,可能被理解成「替团队起草」。
