@@ -159,6 +159,7 @@
 153. [句子:test it against the test environment / start with](#s-test-against-env)
 154. [come back to sth](#come-back-to)
 155. [句子:redraft / the message to sb](#s-redraft-message-to)
+156. [tend toward / lean toward / focus mostly on](#tend-lean-focus)
 
 ---
 
@@ -5034,3 +5035,46 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **redraft sth** —— 重新起草;一个词说清「再起草一次」,不会和「再发一次」混淆。
 - **a message to sb** —— 发给某人的消息;收件人用 *to*。*a message for the team* 放在动词后面时,可能被理解成「替团队起草」。
+
+---
+
+<a id="tend-lean-focus"></a>
+## tend toward / lean toward / focus mostly on
+
+- 词性:phrasal verb / phrase
+- CEFR:B2
+- 日期:2026-10-23
+- 掌握:会写
+
+**含义:** 三个都能说「偏向……」,但偏的方式不同:*tend toward* 是天生、通常的倾向(性格、风格);*lean toward* 是做选择或立场上偏向某一边;*focus mostly on* 最直白,说内容主要讲什么。
+
+**tend toward:通常倾向于(某种状态、风格)**
+1. He **tends toward** pessimism.
+   他比较容易悲观。
+2. Her designs **tend toward** simplicity.
+   她的设计偏向简洁。
+
+**lean toward:(选择、立场)偏向**
+1. I'm **leaning toward** the blue one.
+   我比较倾向蓝色那个。
+2. The doc **leans toward** iOS.
+   这份文档偏向 iOS。
+
+**focus mostly on:主要关注、主要讲**
+1. The doc **focuses mostly on** iOS.
+   这份文档主要讲 iOS。
+2. This week, we'll **focus mostly on** testing.
+   这周我们主要做测试。
+
+**怎么选:**
+
+- 说一份文档、一个方案的内容偏向哪边 —— **focus mostly on** 最清楚,**lean toward** 也可以。
+- 说自己还没定、但更倾向某个选项 —— **lean toward**,常用进行时:*I'm leaning toward …*。
+- 说人或作品一贯的特点 —— **tend toward**。
+- *toward* 英式常写作 *towards*,意思一样。
+
+**我的原句:**
+
+> Seems like it tends toward to iOS.
+
+- ❌ [介词] **tends toward to** —— *toward* 和 *to* 都是介词,只留一个 → **tends toward iOS**;说文档内容偏向,更自然的是 **focuses mostly on iOS**。
