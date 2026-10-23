@@ -155,6 +155,7 @@
 149. [语法笔记:once 后面用一般现在时(is merged / has been merged)](#once-is-merged)
 150. [句子:Should I keep going, or …? / Would you suggest](#s-should-i-keep-going)
 151. [likely / unlikely](#likely-unlikely)
+152. [句子:the version with the survey / starting from](#s-version-with-the-survey)
 
 ---
 
@@ -4925,3 +4926,29 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **in the unlikely event that …** —— 偏正式,「万一……」:*In the unlikely event that it fails, we'll roll back.*
 
 **易错:** 「几率很小」不要直译成 *the probability is small*,说 *unlikely*、*rarely* 或 *I doubt …*。
+
+---
+
+<a id="s-version-with-the-survey"></a>
+## 句子:the version with the survey / starting from
+
+- 日期:2026-10-23
+
+**我的原句:**
+
+> We count the active days from the first day they install this with-survey version.
+
+**问题:**
+
+- ⚠️ [直译] **this with-survey version** —— 「带问卷的版本」直译;英语不把 *with + 名词* 连起来放在名词前面 → **the version with the survey** / **the version that includes the survey**。
+- ✅ **from the first day they install** —— 意思清楚,日常使用完全够用;安装只有一次,*first* 可以去掉 → *from the day they install*。
+
+**更地道的说法:**
+
+1. We count active days starting from the day users install the version that includes the survey.
+   我们从用户安装带问卷功能的版本那天开始计算活跃天数。
+
+**涉及的搭配:**
+
+- **the version with / that includes X** —— 带有 X 功能的版本。
+- **starting from** —— 从……开始(计数、计算的起点)。
