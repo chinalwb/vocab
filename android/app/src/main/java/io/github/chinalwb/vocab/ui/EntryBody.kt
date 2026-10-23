@@ -72,10 +72,11 @@ fun Chip(text: String, color: androidx.compose.ui.graphics.Color) {
 private val LABEL_ONLY = Regex("""^\*\*[^*]+[:：]\s*\*\*$""")
 
 /**
- * On the entry page: which examples 自测 may ask ([excluded]: the plain English of the ones opted
- * out), the tap that toggles one, and [onFav] for the long-press menu's 收藏.
+ * Which examples are asked ([excluded]: the plain English of the ones left out — 不再考这句, in every
+ * stage), the toggle, and [onFav] for the long-press menu's 收藏. [tapToggles]: a tap toggles too
+ * (the entry page); in a 复习 / 考核 run only the long-press menu does, so a stray tap can't.
  */
-class ExampleQuiz(val excluded: Set<String>, val onToggle: (String) -> Unit, val onFav: (String) -> Unit = {})
+class ExampleQuiz(val excluded: Set<String>, val onToggle: (String) -> Unit, val onFav: (String) -> Unit = {}, val tapToggles: Boolean = true)
 
 /** The ⭐ example sentences by anchor (their plain English), shown wherever notes are. */
 val LocalStarred = androidx.compose.runtime.compositionLocalOf<Map<String, Set<String>>> { emptyMap() }
@@ -84,9 +85,9 @@ val LocalStarred = androidx.compose.runtime.compositionLocalOf<Map<String, Set<S
 @Composable
 fun EntryBody(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) = Blocks(entry.anchor, entry.blocks, onXref, quiz)
 
-/** Notes blocks outside the entry page (阅读, under a reveal): same rendering, no quiz; [highlight] marks one example (its plain English). */
+/** Notes blocks outside the entry page (阅读, under a reveal); [highlight] marks one example (its plain English), [quiz] gives the long-press menu. */
 @Composable
-fun NoteBlocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, highlight: String? = null) = Blocks(anchor, blocks, onXref, highlight = highlight)
+fun NoteBlocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, highlight: String? = null, quiz: ExampleQuiz? = null) = Blocks(anchor, blocks, onXref, quiz, highlight = highlight)
 
 /** A section's blocks without its label-only title ("**常见搭配:**"), which a tab or heading already says. */
 fun sectionBlocks(s: Section): List<Block> =
@@ -96,7 +97,7 @@ fun sectionBlocks(s: Section): List<Block> =
 @Composable
 private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQuiz? = null, highlight: String? = null) {
     val starred = LocalStarred.current[anchor].orEmpty()
-    // long-press on an example (entry page only): 复制 / 收藏 / 加入或移出自测, in a bottom sheet
+    // long-press on an example (entry page, and a run's notes): 复制 / 收藏 / 不再考这句, in a bottom sheet
     var menuFor by remember { mutableStateOf<io.github.chinalwb.vocab.data.Example?>(null) }
     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
     val link = MaterialTheme.colorScheme.primary
@@ -129,7 +130,7 @@ private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit
                             .then(
                                 if (quiz != null) Modifier.clip(RoundedCornerShape(8.dp)).combinedClickable(
                                     onLongClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); menuFor = ex },
-                                    onClick = { if (asks) quiz.onToggle(plain(ex.en)) },
+                                    onClick = { if (asks && quiz.tapToggles) quiz.onToggle(plain(ex.en)) },
                                 ) else Modifier
                             )
                             .alpha(if (out) 0.45f else 1f),
@@ -157,7 +158,8 @@ private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit
                     }
                 }
                 if (quiz != null && block.items.any { it.quizable }) Text(
-                    "● 自测会考这些例句,点一句可以排除(至少留一句);长按复制或收藏",
+                    if (quiz.tapToggles) "● 自测、复习和考核都会考这些例句;点一句或长按选「不再考这句」(至少留一句);长按也能复制、收藏"
+                    else "● 长按一句:不再考这句、复制、收藏",
                     style = MaterialTheme.typography.labelSmall,
                     color = muted,
                     modifier = Modifier.padding(start = 22.dp),
@@ -177,7 +179,7 @@ private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit
     )
 }
 
-/** The long-press menu on an example: 复制, 收藏 / 取消收藏, and 加入 / 移出自测 when it can be asked ([inQuiz] non-null). */
+/** The long-press menu on an example: 复制, 收藏 / 取消收藏, and 不再考这句 / 恢复考这句 when it can be asked ([inQuiz] non-null). */
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 private fun ExampleMenu(ex: io.github.chinalwb.vocab.data.Example, starred: Boolean, inQuiz: Boolean?, onFav: () -> Unit, onToggle: () -> Unit, onDismiss: () -> Unit) {
@@ -199,7 +201,7 @@ private fun ExampleMenu(ex: io.github.chinalwb.vocab.data.Example, starred: Bool
             MenuRow(if (starred) androidx.compose.material.icons.Icons.Default.Star else StarBorderIcon, if (starred) "取消收藏" else "收藏") { onFav(); onDismiss() }
             if (inQuiz != null) MenuRow(
                 if (inQuiz) androidx.compose.material.icons.Icons.Default.Clear else androidx.compose.material.icons.Icons.Default.Add,
-                if (inQuiz) "移出自测" else "加入自测",
+                if (inQuiz) "不再考这句" else "恢复考这句",
             ) { onToggle(); onDismiss() }
         }
     }

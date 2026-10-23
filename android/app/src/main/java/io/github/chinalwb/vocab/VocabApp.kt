@@ -20,7 +20,9 @@ class VocabApp : Application() {
     val history by lazy { io.github.chinalwb.vocab.review.HistoryStore(this) }
     /** 阅读 items removed from the list (hidden, synced). */
     val readsHidden by lazy { io.github.chinalwb.vocab.review.ReadHideStore(this) }
-    val progress by lazy { ProgressSync(this, reviews, selfTests, stages, favs, history, readsHidden) }
+    /** 不再考这句: examples no stage asks (synced). */
+    val quizOut by lazy { io.github.chinalwb.vocab.review.QuizOutStore(this) }
+    val progress by lazy { ProgressSync(this, reviews, selfTests, stages, favs, history, readsHidden, quizOut) }
     val updater by lazy { io.github.chinalwb.vocab.update.AppUpdater(this) }
     val speaker by lazy { io.github.chinalwb.vocab.ui.Speaker(this) }
 

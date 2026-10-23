@@ -8,6 +8,9 @@ import io.github.chinalwb.vocab.data.CheckResult
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.review.Attempt
 import io.github.chinalwb.vocab.review.Grade
+import io.github.chinalwb.vocab.review.leftOut
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.map
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.next
 import io.github.chinalwb.vocab.review.stageOf
@@ -59,7 +62,7 @@ data class QuizSession(
     val cardBefore: io.github.chinalwb.vocab.review.Card? = null,
     val righted: Boolean = false,
     /** the sentences this run asks of the entry (indexes into quizExamples()), and ① skipped for this one */
-    val qs: List<Int> = emptyList(),
+    val qs: List<String> = emptyList(),
     val skipped: Boolean = false,
 ) {
     val current get() = queue.getOrNull(index)
@@ -71,12 +74,14 @@ data class QuizSession(
      * A sentence starts: on the entry's first, the sentences this run asks ([qs], runSentences());
      * then this one — straight to ② 打字 if it has been answered right before ([skipped]).
      */
-    fun withExample(optOut: Map<String, Set<String>>, attempts: Map<String, List<Attempt>>, since: Map<String, Long>): QuizSession {
+    fun withExample(optOut: Map<String, Set<String>>, attempts: Map<String, List<Attempt>>, since: Map<String, Long>, keepQs: Boolean = false): QuizSession {
         val e = current ?: return copy(example = null)
         val mine = attempts[e.anchor].orEmpty()
         val asks = e.level != "SELFTEST"
-        val qs = if (!asks) emptyList() else if (k == 0) e.runSentences(mine, since[e.anchor] ?: 0L, optOut[e.anchor].orEmpty()) else qs
-        val ex = if (asks) qs.getOrNull(k)?.let { e.quizExample(it, optOut[e.anchor].orEmpty()) } else null
+        val left = optOut[e.anchor].orEmpty()
+        // kept as the sentences themselves, so leaving one out mid-run doesn't shift the rest
+        val qs = if (!asks) emptyList() else if (k == 0 && !keepQs) e.quizExamples(left).let { xs -> e.runSentences(mine, since[e.anchor] ?: 0L, left).map { plain(xs[it].en) } } else qs
+        val ex = if (asks) qs.getOrNull(k)?.let { e.quizExampleOf(it, left) } else null
         val skip = (if (asks) ex != null else e.selfTestAnswer.isNotBlank()) && mine.rightBefore(ex?.en ?: "")
         return copy(qs = qs, example = ex, step = if (skip) 2 else 1, bankOk = skip, skipped = skip)
     }
@@ -120,22 +125,32 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
         prefs.edit().putBoolean("tiles", _tiles.value).apply()
     }
 
-    // Example sentences I've opted out of 自测, by anchor: the plain English of each. Lives on this
-    // device only (SharedPreferences "quizopt"); at least one example per entry always stays in.
-    private val optPrefs = app.getSharedPreferences("quizopt", android.content.Context.MODE_PRIVATE)
-    private val _quizOptOut = MutableStateFlow(optPrefs.all.mapValues { (_, v) -> (v as? Set<*>)?.filterIsInstance<String>()?.toSet().orEmpty() })
-    val quizOptOut = _quizOptOut.asStateFlow()
+    // 不再考这句: the examples no stage asks any more, by anchor (their plain English). Synced
+    // (review/QuizOutStore.kt); at least one example per entry always stays in.
+    private val quizOutStore = (app as VocabApp).quizOut
+    val quizOptOut = quizOutStore.data
+        .map { it.leftOut() }
+        .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, emptyMap())
 
-    /** Tap on an example in the notes: toggles whether 自测 may ask it. Refused when it is the last one in. */
+    /**
+     * 不再考这句 / 恢复考这句 (long-press, or a tap on the entry page): whether any stage may ask this
+     * example. Refused when it is the last one in. In a run on this entry, a sentence still to come
+     * leaves the run at once (the one on screen keeps going, unless it's still behind 先看一遍).
+     */
     fun toggleQuizExample(entry: Entry, en: String) {
-        val cur = _quizOptOut.value[entry.anchor].orEmpty()
-        val next = if (en in cur) cur - en else {
-            // a toast, not _messages: the snackbar host is on Home and this happens on the entry page
-            if (entry.quizExamples(cur).size <= 1) { android.widget.Toast.makeText(getApplication(), "至少要留一句例句用于自测", android.widget.Toast.LENGTH_SHORT).show(); return }
-            cur + en
+        val cur = quizOptOut.value[entry.anchor].orEmpty()
+        val out = en !in cur
+        // a toast, not _messages: the snackbar host is on Home and this happens on the entry page
+        if (out && entry.quizExamples(cur).size <= 1) { android.widget.Toast.makeText(getApplication(), "至少要留一句例句来考", android.widget.Toast.LENGTH_SHORT).show(); return }
+        viewModelScope.launch { quizOutStore.set(entry.anchor, en, out); progress.soon() }
+        val s = _quiz.value ?: return
+        if (!out || s.current?.anchor != entry.anchor) return
+        val j = s.qs.indexOf(en)
+        val notYet = j > s.k || (j == s.k && s.stage == Stage.Review && !s.studied)
+        if (j >= 0 && notYet) {
+            val qs = s.qs - en
+            _quiz.value = if (j == s.k) s.copy(qs = qs).withExample(quizOptOut.value + (entry.anchor to (cur + en)), selfTests.value, stageTimes.value.t, keepQs = true) else s.copy(qs = qs)
         }
-        _quizOptOut.value = _quizOptOut.value + (entry.anchor to next)
-        optPrefs.edit().apply { if (next.isEmpty()) remove(entry.anchor) else putStringSet(entry.anchor, next) }.apply()
     }
 
     private var busy = false
@@ -199,6 +214,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             favStore.load()
             historyStore.load()
             readHideStore.load()
+            quizOutStore.load()
             practice.load()
             progress.ready.complete(Unit)
             progress.now()

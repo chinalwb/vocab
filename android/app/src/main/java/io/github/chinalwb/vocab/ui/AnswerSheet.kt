@@ -577,7 +577,7 @@ private fun AnswerWell(label: String, text: AnnotatedString, say: String) {
  * [onAll] goes to the whole notes (the entry page, or its notes side).
  */
 @Composable
-fun NotesForQuestion(entry: Entry, ex: QuizExample?, onXref: (String) -> Unit, onAll: (() -> Unit)?) {
+fun NotesForQuestion(entry: Entry, ex: QuizExample?, onXref: (String) -> Unit, onAll: (() -> Unit)?, quiz: ExampleQuiz? = null) {
     val c = sheetColors()
     val section = ex?.let { q ->
         entry.sections.firstOrNull { s -> s.blocks.any { b -> b is Block.Examples && b.items.any { plain(it.en) == q.en } } }
@@ -596,8 +596,8 @@ fun NotesForQuestion(entry: Entry, ex: QuizExample?, onXref: (String) -> Unit, o
                 modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onAll).padding(horizontal = 6.dp, vertical = 6.dp),
             )
         }
-        if (section != null) NoteBlocks(entry.anchor, sectionBlocks(section), onXref, highlight = ex.en)
-        else EntryBody(entry, onXref)
+        if (section != null) NoteBlocks(entry.anchor, sectionBlocks(section), onXref, highlight = ex.en, quiz = quiz)
+        else EntryBody(entry, onXref, quiz)
     }
 }
 

@@ -539,6 +539,8 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onEnd = vm::endQuiz,
                 onUndo = vm::undoQuizMoves,
                 onRight = vm::rightQuiz,
+                onToggleExample = vm::toggleQuizExample,
+                onFav = { a, en -> vm.toggleFav(a, en) },
                 // a run draws its own top row under the status bar and keeps above the navigation bar
                 modifier = if (quiz?.stage == stage) Modifier.imePadding() else Modifier,
                 contentPadding = pad,
