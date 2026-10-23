@@ -94,6 +94,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     private val favStore = (app as VocabApp).favs
     /** ⭐ example sentences: {anchor: {plain English: Fav}}, unstars included — read through starred(). */
     val favs = favStore.data
+    private val readHideStore = (app as VocabApp).readsHidden
+    /** 阅读 items removed from the list: {anchor: Fav(on = removed, t)} — read through removed(). */
+    val readsHidden = readHideStore.data
     private val historyStore = (app as VocabApp).history
     /** 学习历史: newest first, one row per entry. */
     val history = historyStore.data
@@ -195,6 +198,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             stageStore.load()
             favStore.load()
             historyStore.load()
+            readHideStore.load()
             practice.load()
             progress.ready.complete(Unit)
             progress.now()
@@ -244,6 +248,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     /** 学习历史: I'm on [anchor] — opened ("entry"), or met in a run ("review" / "test"). */
     fun visit(anchor: String, via: String) = viewModelScope.launch { historyStore.visit(anchor, via); progress.soon() }
     fun clearHistory() = viewModelScope.launch { historyStore.clear(); progress.soon() }
+
+    /** 阅读: remove an item from the list ([removed] = true) or bring it back. */
+    fun setReadRemoved(anchor: String, removed: Boolean) = viewModelScope.launch { readHideStore.set(anchor, removed); progress.soon() }
 
     /** Sets the run, and logs the entry it's now on in 学习历史 (once per entry). */
     private fun setRun(s: QuizSession?) {

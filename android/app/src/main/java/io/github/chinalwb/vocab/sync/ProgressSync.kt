@@ -9,6 +9,8 @@ import io.github.chinalwb.vocab.review.FavStore
 import io.github.chinalwb.vocab.review.Favs
 import io.github.chinalwb.vocab.review.HistoryData
 import io.github.chinalwb.vocab.review.HistoryStore
+import io.github.chinalwb.vocab.review.ReadHideStore
+import io.github.chinalwb.vocab.review.ReadsHidden
 import io.github.chinalwb.vocab.review.Visit
 import io.github.chinalwb.vocab.review.trimHistory
 import io.github.chinalwb.vocab.review.MAX_PER_ENTRY
@@ -55,6 +57,8 @@ data class Progress(
     /** 学习历史: newest first, one per entry; [historyClearAt] = the last 清空 */
     val history: List<Visit> = emptyList(),
     val historyClearAt: Long = 0,
+    /** 阅读 items removed from the list: {anchor: Fav(on = removed, t)}, restores included */
+    val readsHidden: ReadsHidden = emptyMap(),
 )
 
 @Serializable
@@ -84,6 +88,7 @@ class ProgressSync(
     private val stages: StageStore,
     private val favs: FavStore,
     private val history: HistoryStore,
+    private val readsHidden: ReadHideStore,
 ) {
     // encodeDefaults: the page compares field by field, so every field must be written
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
@@ -183,6 +188,7 @@ class ProgressSync(
                 mine + r.favs[a].orEmpty().filter { (en, f) -> f.t > (mine[en]?.t ?: 0) }
             }
         }
+        readsHidden.replace { l -> l + r.readsHidden.filter { (a, f) -> f.t > (l[a]?.t ?: 0) } }
         history.replace { l ->
             val clearAt = maxOf(l.clearAt, r.historyClearAt)
             HistoryData(trimHistory(l.visits + r.history, clearAt), clearAt)
@@ -212,6 +218,7 @@ class ProgressSync(
             favs = favs.data.value,
             history = history.data.value.visits,
             historyClearAt = history.data.value.clearAt,
+            readsHidden = readsHidden.data.value,
         )
     }
 

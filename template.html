@@ -2652,12 +2652,16 @@ const stable = v => JSON.stringify(v, (k, x) => x && typeof x === "object" && !A
   ? Object.fromEntries(Object.keys(x).sort().map(k2 => [k2, x[k2]])) : x);
 const normProgress = r => ({ v: 1, stages: r.stages || {}, cards: r.cards || {}, newDay: r.newDay || 0,
   newToday: r.newToday || 0, resetAt: r.resetAt || 0, attempts: r.attempts || {}, favs: r.favs || {},
-  history: r.history || [], historyClearAt: r.historyClearAt || 0 });
+  history: r.history || [], historyClearAt: r.historyClearAt || 0, readsHidden: r.readsHidden || {} });
+// 阅读 items removed from the list in the app ({anchor: {on, t}}, 用户 2026-10-23). The page has no
+// 阅读 yet; it only carries them through 同步 so a sync from here doesn't drop them.
+let readsHidden = {};
+try { readsHidden = JSON.parse(store.get("vk.readsHidden", "{}")) || {}; } catch(e){}
 function progressOut(){
   const st = {}, at = {};
   for (const a in stages) st[a] = { s: stages[a], t: stageT[a] || 0 };
   for (const a in stLog) at[a] = stLog[a].map(x => ({ t: x.t, ok: x.ok, peek: !x.text, via: x.via, ex: x.ex || "" }));
-  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs, history: hist, historyClearAt: histClearAt });
+  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs, history: hist, historyClearAt: histClearAt, readsHidden });
 }
 // Newest wins per entry (per sentence for ⭐); a reset drops every card graded before it; 自测 attempts are a union.
 function applyRemote(r){
@@ -2690,6 +2694,8 @@ function applyRemote(r){
     if (o.t > ((m[en] || {}).t || 0)) m[en] = { on: !!o.on, t: o.t };
   }
   store.set("vk.favs", JSON.stringify(favs));
+  for (const a in r.readsHidden) if (r.readsHidden[a].t > ((readsHidden[a] || {}).t || 0)) readsHidden[a] = { on: !!r.readsHidden[a].on, t: r.readsHidden[a].t };
+  store.set("vk.readsHidden", JSON.stringify(readsHidden));
   histClearAt = Math.max(histClearAt, r.historyClearAt);
   hist = trimHist([...hist, ...r.history]);
   saveHist();

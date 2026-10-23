@@ -119,6 +119,7 @@ import androidx.navigation.compose.rememberNavController
 import io.github.chinalwb.vocab.ui.BrowseScreen
 import io.github.chinalwb.vocab.ui.LocalStarred
 import io.github.chinalwb.vocab.review.starred
+import io.github.chinalwb.vocab.review.removed
 import io.github.chinalwb.vocab.ui.EntryScreen
 import io.github.chinalwb.vocab.ui.LocalNavAnimatedScope
 import io.github.chinalwb.vocab.ui.LocalSharedTransitionScope
@@ -202,7 +203,18 @@ private fun VocabNav() {
                     )
                 }
                 composable("mistakes") { SubPage("错题本", onBack = { nav.popBackStack() }) { pad -> MistakesScreen(lib, onOpen = openAlone, modifier = Modifier.padding(pad)) } }
-                composable("read") { SubPage("阅读 · C1 对比", onBack = { nav.popBackStack() }) { pad -> ReadScreen(lib, onOpen = { nav.navigate("read/$it") }, modifier = Modifier.padding(pad)) } }
+                composable("read") {
+                    val hidden by vm.readsHidden.collectAsStateWithLifecycle()
+                    SubPage("阅读 · C1 对比", onBack = { nav.popBackStack() }) { pad ->
+                        ReadScreen(
+                            lib,
+                            onOpen = { nav.navigate("read/$it") },
+                            removed = remember(hidden) { hidden.removed() },
+                            onRemove = vm::setReadRemoved,
+                            modifier = Modifier.padding(pad),
+                        )
+                    }
+                }
                 composable("read/{anchor}") { back ->
                     val anchor = back.arguments?.getString("anchor").orEmpty()
                     SubPage("阅读", onBack = { nav.popBackStack() }) { pad -> ReadDetail(lib, anchor, onXref = { nav.navigate("entry/$it") }, modifier = Modifier.padding(pad)) }
