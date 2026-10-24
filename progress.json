@@ -9921,6 +9921,11 @@
  },
  "history": [
   {
+   "a": "intermittent-outage",
+   "t": 1792813591975,
+   "via": "review"
+  },
+  {
    "a": "tend-lean-focus",
    "t": 1792812823513,
    "via": "entry"
@@ -9934,11 +9939,6 @@
    "a": "come-back-to",
    "t": 1792812818731,
    "via": "entry"
-  },
-  {
-   "a": "intermittent-outage",
-   "t": 1792812668425,
-   "via": "review"
   },
   {
    "a": "that-said",
