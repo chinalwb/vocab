@@ -238,6 +238,13 @@
 - 入口:App ⋮ →「学习历史」(路由 `history`,`ui/HistoryScreen.kt`);网页宽屏左栏「其他 → 学习历史」,窄屏在「更多」顶上一行(`view = "history"`,`renderHistory()`)。底部「清空学习历史」要确认。
 - 存储:App `review/HistoryStore.kt`(`filesDir/history.json`,`{visits: [{a, t, via}], clearAt}`),网页 localStorage `vk.hist` / `vk.hist.clear`。**同步**:`progress.json` 的 `history` / `historyClearAt`,合并 = 两边并起来、每条取最新、丢掉清空之前的、截到 100 条(`trimHistory()` / `trimHist()`)。条目从笔记里删了就不显示。
 
+### 我的笔记(用户 2026-10-24,网页和 App 一致,App 2.19)
+
+- 每个条目都能写自己的笔记:条目页笔记卡片的**最后一个分节「我的笔记」**(排在「记忆」后面,任何阶段都有),一个随内容变高的输入框,打字停半秒、失焦、离开页面时自动保存。有笔记的条目在列表卡片上带「📝 笔记」;搜索也搜笔记内容。
+- 存储:`{anchor: {text, t}}`,清空也留一条 `text: ""`,这样清空也能同步。网页 localStorage `vk.notes`(`noteOf()` / `setNote()` / `myNoteSlide()` / `wireMyNote()`),App `review/NoteStore.kt`(`filesDir/notes.json`,`EntryScreen.kt` 的 `MyNote`,卡片上的胶囊读 `LocalNoted`)。
+- **同步**:`progress.json` 的 `notes`,按条目时间新者胜。**仓库是公开的,笔记会原样上传**(用户 2026-10-24 确认可以公开),输入框下面有一句提示。
+- 两边的 `notesHtml()` / `NotesPager` 的 `extra` 现在是一组卡片(记忆、我的笔记),空的跳过。
+
 ### 记忆曲线(用户 2026-10-15,网页和 App 一致,App 2.5)
 
 - 条目页笔记卡片的**最后一个分节「记忆」**:卡片模式是最后一个 tab,全部模式排在最后。条目有过打分的日子、或者已经不在学习中时才出现;还没做过的显示一句说明。

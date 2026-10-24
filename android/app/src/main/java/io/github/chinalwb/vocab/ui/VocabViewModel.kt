@@ -102,6 +102,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     private val readHideStore = (app as VocabApp).readsHidden
     /** 阅读 items removed from the list: {anchor: Fav(on = removed, t)} — read through removed(). */
     val readsHidden = readHideStore.data
+    private val noteStore = (app as VocabApp).notes
+    /** 我的笔记: {anchor: Note}, cleared ones included — read through written(). */
+    val notes = noteStore.data
     private val historyStore = (app as VocabApp).history
     /** 学习历史: newest first, one row per entry. */
     val history = historyStore.data
@@ -215,6 +218,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             historyStore.load()
             readHideStore.load()
             quizOutStore.load()
+            noteStore.load()
             practice.load()
             progress.ready.complete(Unit)
             progress.now()
@@ -254,6 +258,8 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Long-press → 收藏 / 取消收藏 on an example sentence. */
     fun toggleFav(anchor: String, en: String) = viewModelScope.launch { favStore.toggle(anchor, en); progress.soon() }
+
+    fun setNote(anchor: String, text: String) = viewModelScope.launch { if (noteStore.set(anchor, text)) progress.soon() }
 
     fun connectSync(token: String) = progress.connect(token)
     fun disconnectSync() = progress.disconnect()

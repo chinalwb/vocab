@@ -9,6 +9,8 @@ import io.github.chinalwb.vocab.review.FavStore
 import io.github.chinalwb.vocab.review.Favs
 import io.github.chinalwb.vocab.review.HistoryData
 import io.github.chinalwb.vocab.review.HistoryStore
+import io.github.chinalwb.vocab.review.NoteStore
+import io.github.chinalwb.vocab.review.Notes
 import io.github.chinalwb.vocab.review.ReadHideStore
 import io.github.chinalwb.vocab.review.QuizOut
 import io.github.chinalwb.vocab.review.QuizOutStore
@@ -63,6 +65,8 @@ data class Progress(
     val readsHidden: ReadsHidden = emptyMap(),
     /** 不再考这句: {anchor: {plain English: Fav(on = left out, t)}}, restores included */
     val quizOut: QuizOut = emptyMap(),
+    /** 我的笔记: {anchor: Note(text, t)}, cleared ones included (text = "") */
+    val notes: Notes = emptyMap(),
 )
 
 @Serializable
@@ -94,6 +98,7 @@ class ProgressSync(
     private val history: HistoryStore,
     private val readsHidden: ReadHideStore,
     private val quizOut: QuizOutStore,
+    private val notes: NoteStore,
 ) {
     // encodeDefaults: the page compares field by field, so every field must be written
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
@@ -200,6 +205,7 @@ class ProgressSync(
                 mine + r.quizOut[a].orEmpty().filter { (en, f) -> f.t > (mine[en]?.t ?: 0) }
             }
         }
+        notes.replace { l -> l + r.notes.filter { (a, n) -> n.t > (l[a]?.t ?: 0) } }
         history.replace { l ->
             val clearAt = maxOf(l.clearAt, r.historyClearAt)
             HistoryData(trimHistory(l.visits + r.history, clearAt), clearAt)
@@ -231,6 +237,7 @@ class ProgressSync(
             historyClearAt = history.data.value.clearAt,
             readsHidden = readsHidden.data.value,
             quizOut = quizOut.data.value,
+            notes = notes.data.value,
         )
     }
 

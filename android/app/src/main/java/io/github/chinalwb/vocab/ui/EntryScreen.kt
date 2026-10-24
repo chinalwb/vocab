@@ -38,7 +38,14 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.SolidColor
+import kotlinx.coroutines.delay
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -113,6 +120,9 @@ fun EntryScreen(
     /** 下一个 in the list this was opened from ("6 / 20"), when there is one */
     nextLabel: String? = null,
     onNext: (() -> Unit)? = null,
+    /** 我的笔记: what I've written on this entry, and the save (as I type) */
+    note: String = "",
+    onNote: (String) -> Unit = {},
 ) {
     if (entry != null) LaunchedEffect(entry.anchor) { onSeen(entry.anchor) }
     val band = entry?.let { levelColor(it.level) } ?: MaterialTheme.colorScheme.surfaceContainer
@@ -207,8 +217,12 @@ fun EntryScreen(
                             Icon(if (full) CloseFullscreenIcon else OpenInFullIcon, if (full) "退出全屏" else "全屏", Modifier.size(20.dp))
                         }
                     },
-                    // the 记忆 card after the notes, once there is a graded day or the entry is past 学习中
-                    extra = if (memory.isNotEmpty() || stage != Stage.Learn) "记忆" to { MemoryCard(memory, stage, due, band) } else null,
+                    // the 记忆 card after the notes, once there is a graded day or the entry is past 学习中;
+                    // 我的笔记 last, always there to write in
+                    extra = listOfNotNull(
+                        if (memory.isNotEmpty() || stage != Stage.Learn) "记忆" to { MemoryCard(memory, stage, due, band) } else null,
+                        "我的笔记" to @Composable { MyNote(entry.anchor, note, onNote) },
+                    ),
                 )
                 CardFoot(
                     hint = progressHint(entry, stage, attempts, since, excluded, reps),
@@ -531,6 +545,47 @@ private fun QuestionQuiet(entry: Entry, ex: QuizExample?) {
     }
     Text(text, style = MaterialTheme.typography.bodyLarge, color = sheetColors().sub)
 }
+
+/**
+ * 我的笔记 (用户 2026-10-24): a box on the card that grows with what I write and saves as I type
+ * (half a second after the last key, and on leaving the page). Same as myNoteSlide() on the page.
+ * A note that comes in through 同步 shows unless I'm typing in the box.
+ */
+@Composable
+private fun MyNote(anchor: String, note: String, onNote: (String) -> Unit) {
+    var text by rememberSaveable(anchor) { mutableStateOf(note) }
+    var focused by remember { mutableStateOf(false) }
+    LaunchedEffect(note) { if (!focused) text = note }
+    LaunchedEffect(text) { delay(500); onNote(text) }
+    val latest by rememberUpdatedState(text)
+    val save by rememberUpdatedState(onNote)
+    DisposableEffect(anchor) { onDispose { save(latest) } }
+    val ink = LocalContentColor.current
+    BasicTextField(
+        text, { text = it },
+        textStyle = MaterialTheme.typography.bodyLarge.copy(color = ink),
+        cursorBrush = SolidColor(ink),
+        modifier = Modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused; if (!it.isFocused) onNote(text) },
+        decorationBox = { field ->
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 160.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(ink.copy(alpha = 0.06f))
+                    .border(if (focused) 2.dp else 1.dp, ink.copy(alpha = if (focused) 0.9f else 0.2f), RoundedCornerShape(12.dp))
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+            ) {
+                if (text.isEmpty()) Text("写下自己的理解、例句、容易混的地方…", style = MaterialTheme.typography.bodyLarge, color = ink.copy(alpha = 0.5f))
+                field()
+            }
+        },
+    )
+    Text(NOTE_HINT, style = MaterialTheme.typography.labelMedium, color = ink.copy(alpha = 0.65f))
+}
+
+/** under the box — the page says the same (myNoteSlide()) */
+private const val NOTE_HINT = "自动保存。开了同步的话会存进 GitHub 的公开仓库,别写隐私内容。"
 
 /** The details sheet: type, number, IPA, part of speech, CEFR, 会写 / 认识, date. */
 @Composable

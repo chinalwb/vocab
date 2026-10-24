@@ -81,6 +81,9 @@ class ExampleQuiz(val excluded: Set<String>, val onToggle: (String) -> Unit, val
 /** The ⭐ example sentences by anchor (their plain English), shown wherever notes are. */
 val LocalStarred = androidx.compose.runtime.compositionLocalOf<Map<String, Set<String>>> { emptyMap() }
 
+/** The entries with a 我的笔记, by anchor → its text (the 📝 on a card). */
+val LocalNoted = androidx.compose.runtime.compositionLocalOf<Map<String, String>> { emptyMap() }
+
 /** Renders the blocks build.py produced; xref taps are handed to [onXref]. */
 @Composable
 fun EntryBody(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) = Blocks(entry.anchor, entry.blocks, onXref, quiz)
@@ -252,7 +255,7 @@ fun NotesPage(
     modifier: Modifier = Modifier,
     inCard: Boolean = false,
     trailing: @Composable () -> Unit = {},
-    extra: Pair<String, @Composable () -> Unit>? = null,
+    extra: List<Pair<String, @Composable () -> Unit>> = emptyList(),
 ) = NotesPager(entry.anchor, entry.sections, entry.blocks, onXref, quiz, modifier, inCard = inCard, trailing = trailing, extra = extra)
 
 /**
@@ -277,8 +280,8 @@ fun NotesPager(
      */
     inCard: Boolean = false,
     trailing: @Composable () -> Unit = {},
-    /** one more card after the notes, drawn by its own composable — the entry page's 记忆 — in both modes */
-    extra: Pair<String, @Composable () -> Unit>? = null,
+    /** more cards after the notes, each drawn by its own composable — the entry page's 记忆 and 我的笔记 — in both modes */
+    extra: List<Pair<String, @Composable () -> Unit>> = emptyList(),
 ) {
     // 分卡 (one section at a time) or 全部展开 (one long page): the user keeps both (用户 2026-10-14),
     // remembered across entries and launches — the same switch and key the carousel had
@@ -287,9 +290,9 @@ fun NotesPager(
     var all by remember { mutableStateOf(prefs.getBoolean("all", false)) }
     val scroll = rememberScrollState()
     val cards = if (lastCard == null) sections else sections + lastCard
-    val pageCount = cards.size + if (extra != null) 1 else 0
-    // on the long page [extra] comes after the sections, at index sections.size
-    val allLast = sections.lastIndex + if (extra != null) 1 else 0
+    val pageCount = cards.size + extra.size
+    // on the long page [extra] comes after the sections, from index sections.size
+    val allLast = sections.lastIndex + extra.size
     val pager = rememberPagerState { pageCount }
     val scope = rememberCoroutineScope()
     val tops = remember(anchor) { androidx.compose.runtime.mutableStateMapOf<Int, Int>() }
@@ -306,7 +309,7 @@ fun NotesPager(
     LaunchedEffect(pendingTop) { if (pendingTop != null) { scroll.scrollTo(pendingTop); pending = null } }
     val tabbed = pageCount > 1 && !all
     // the chips follow what's on screen: every card in 卡片 mode, the long page's sections in 全部
-    val tabs = (if (tabbed) cards else sections).map { it.label } + listOfNotNull(extra?.first)
+    val tabs = (if (tabbed) cards else sections).map { it.label } + extra.map { it.first }
     val current = if (tabbed) pager.currentPage else inView
     val chips = rememberLazyListState()
     LaunchedEffect(current) { if (tabs.size > 1) chips.animateScrollToItem((current - 1).coerceAtLeast(0)) }
@@ -397,7 +400,7 @@ fun NotesPager(
                 Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(start = 20.dp, end = 20.dp, top = if (inCard) 12.dp else 20.dp, bottom = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                if (page < cards.size) Section(anchor, cards[page], heading = false, onXref, quiz, muted) else extra?.second?.invoke()
+                if (page < cards.size) Section(anchor, cards[page], heading = false, onXref, quiz, muted) else extra.getOrNull(page - cards.size)?.second?.invoke()
             }
         } else Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(start = 20.dp, end = 20.dp, top = if (inCard) 12.dp else 20.dp, bottom = 32.dp),
@@ -410,12 +413,14 @@ fun NotesPager(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) { Section(anchor, s, heading = i > 0, onXref, quiz, muted) }
             }
-            if (extra != null) Column(
-                Modifier.onGloballyPositionedTop { tops[sections.size] = it },
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                Text(extra.first, style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp), fontWeight = FontWeight.Bold, color = muted)
-                extra.second()
+            extra.forEachIndexed { k, (label, body) ->
+                Column(
+                    Modifier.onGloballyPositionedTop { tops[sections.size + k] = it },
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    Text(label, style = MaterialTheme.typography.labelLarge.copy(letterSpacing = 1.sp), fontWeight = FontWeight.Bold, color = muted)
+                    body()
+                }
             }
             footer?.invoke()
         }
