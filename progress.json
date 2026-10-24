@@ -9641,6 +9641,11 @@
  },
  "history": [
   {
+   "a": "stall",
+   "t": 1792808862649,
+   "via": "review"
+  },
+  {
    "a": "supersede",
    "t": 1792800786453,
    "via": "entry"
@@ -9678,11 +9683,6 @@
   {
    "a": "s-rush-into-get-straight",
    "t": 1792757241902,
-   "via": "review"
-  },
-  {
-   "a": "stall",
-   "t": 1792757214586,
    "via": "review"
   },
   {
