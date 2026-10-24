@@ -219,7 +219,7 @@ fun BrowseScreen(
     var sortSaved by rememberPrefString("filters", "sort", SORT_LEVEL)
     val sortF = sortSaved.takeIf { k -> SORTS.any { it.first == k } } ?: SORT_LEVEL
     // 筛选, same as the page: 类型 (ALL / WORD / TERM …, with a CEFR sub-row under WORD) and
-    // 进度, each single-choice; 只看会写, 有收藏 and 有更新 are toggles that narrow the rest.
+    // 进度, each single-choice; 只看会写, 有收藏, 有笔记 and 有更新 are toggles that narrow the rest.
     var typeSaved by rememberPrefString("filters", "type", ALL)
     val typeF = typeSaved.takeIf { k -> TYPES.any { it.first == k } } ?: ALL
     var cefrSaved by rememberPrefString("filters", "cefr", null)
@@ -232,6 +232,10 @@ fun BrowseScreen(
     val entries = lib.data?.entries.orEmpty()
     // no ⭐ left (or not loaded yet): the toggle reads as off, but stays saved
     val favOnly = favSaved && entries.any { it.anchor in starred }
+    // entries with a 我的笔记 (用户 2026-10-24); saved the same way
+    var noteSaved by rememberPrefBool("filters", "noted", false)
+    val noted = LocalNoted.current
+    val noteOnly = noteSaved && entries.any { it.anchor in noted }
     val changed = lib.newAnchors + lib.updatedAnchors
     if (changedOnly && changed.isEmpty()) changedOnly = false
     val levelShown = { lvl: String ->
@@ -239,10 +243,13 @@ fun BrowseScreen(
     }
 
     // what the toggles leave; the chip rows and the list narrow it further (search has its own page)
-    val base = remember(entries, changed, changedOnly, writeOnly, favOnly, starred) {
-        entries.filter { e -> (!writeOnly || e.writes) && (!changedOnly || e.anchor in changed) && (!favOnly || e.anchor in starred) }
+    val base = remember(entries, changed, changedOnly, writeOnly, favOnly, starred, noteOnly, noted) {
+        entries.filter { e ->
+            (!writeOnly || e.writes) && (!changedOnly || e.anchor in changed) && (!favOnly || e.anchor in starred) && (!noteOnly || e.anchor in noted)
+        }
     }
     val favCount = entries.count { it.anchor in starred }
+    val noteCount = entries.count { it.anchor in noted }
     // (header label, entries): level groups, or month groups when sorted by date
     val groups = remember(base, typeF, cefrF, stageF, stages, sortF) {
         val shown = base.filter { e -> (stageF == null || stages.stageOf(e) == stageF) && levelShown(e.level) }
@@ -281,13 +288,14 @@ fun BrowseScreen(
     }
     val shownCount = groups.sumOf { it.second.size }
     val shownAnchors = remember(groups) { groups.flatMap { g -> g.second.map { it.anchor } } }
-    val clearAll = { typeSaved = ALL; cefrSaved = null; setStage(null); writeOnly = false; changedOnly = false; favSaved = false; sortSaved = SORT_LEVEL }
+    val clearAll = { typeSaved = ALL; cefrSaved = null; setStage(null); writeOnly = false; changedOnly = false; favSaved = false; noteSaved = false; sortSaved = SORT_LEVEL }
     // what's on, as removable chips under the search; the same list drives the button's badge
     val active = buildList {
         if (typeF != ALL) add((TYPES.first { it.first == typeF }.second + (cefrF?.let { " · $it" } ?: "")) to { typeSaved = ALL; cefrSaved = null })
         stageF?.let { add(it.label to { setStage(null) }) }
         if (writeOnly) add("只看会写" to { writeOnly = false })
         if (favOnly) add("⭐ 有收藏" to { favSaved = false })
+        if (noteOnly) add("📝 有笔记" to { noteSaved = false })
         if (changedOnly) add("有更新" to { changedOnly = false })
         if (sortF != SORT_LEVEL) add(SORTS.first { it.first == sortF }.second to { sortSaved = SORT_LEVEL })
     }
@@ -355,6 +363,7 @@ fun BrowseScreen(
                 FilterSection("选项") {
                     CheckToggle("只看会写", writeOnly) { writeOnly = !writeOnly }
                     if (favCount > 0) CheckToggle("⭐ 有收藏 $favCount", favOnly) { favSaved = !favOnly }
+                    if (noteCount > 0) CheckToggle("📝 有笔记 $noteCount", noteOnly) { noteSaved = !noteOnly }
                     if (changed.isNotEmpty()) CheckToggle("有更新 ${changed.size}", changedOnly) { changedOnly = !changedOnly }
                 }
                 androidx.compose.material3.Button(onClick = { onSheetOpen(false) }, modifier = Modifier.fillMaxWidth().height(48.dp)) {
