@@ -1915,11 +1915,11 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **更推荐的写法:**
 1. **That platform equals 10** means the request originated from the web.
-   加 that,语法最保险。
+   platform 等于 10,就代表请求来自 web。(用 that 从句做主语,语法最保险)
 2. **Platform equaling 10** means the request originated from the web.
-   把从句改成动名词短语做主语,英语里更常见、更地道。
+   platform 等于 10,就代表请求来自 web。(用动名词短语做主语,英语里更常见、更地道)
 3. **A platform value of 10** means the request originated from the web.
-   直接改写成名词短语做主语,技术写作里最干净利落。
+   platform 的值为 10,就代表请求来自 web。(用名词短语做主语,技术写作里最干净利落)
 
 ---
 
