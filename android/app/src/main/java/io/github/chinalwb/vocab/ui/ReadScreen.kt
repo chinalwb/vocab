@@ -15,6 +15,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -172,17 +177,21 @@ fun ReadDetail(lib: LibraryState, anchor: String, onXref: (String) -> Unit, modi
     // ⤢ (用户 2026-10-23, like the entry page): the Chinese and the date fold away, the card takes the page
     var full by rememberSaveable(anchor) { mutableStateOf(false) }
     Column(modifier.fillMaxSize()) {
-        if (!full) Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 4.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(r.title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            if (r.date.isNotEmpty()) Text(r.date, style = MaterialTheme.typography.labelMedium, color = muted)
+        // ⤢ / ⤡ animate (用户 2026-10-24), as on the entry page
+        AnimatedVisibility(!full, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
+            Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 4.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(r.title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                if (r.date.isNotEmpty()) Text(r.date, style = MaterialTheme.typography.labelMedium, color = muted)
+            }
         }
+        val cardTop by animateDpAsState(if (full) 4.dp else 8.dp, label = "cardTop")
         // the comparison on a card in the C1 colour, the same as the list's cards (用户 2026-10-23)
         Column(
             Modifier
                 .weight(1f)
                 .fillMaxWidth()
                 .navigationBarsPadding()
-                .padding(start = 8.dp, end = 8.dp, top = if (full) 4.dp else 8.dp, bottom = 10.dp)
+                .padding(start = 8.dp, end = 8.dp, top = cardTop, bottom = 10.dp)
                 .clip(RoundedCornerShape(24.dp))
                 .background(levelColor("C1")),
         ) {
