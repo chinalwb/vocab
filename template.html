@@ -1208,6 +1208,7 @@ let view = store.get("vk.view", store.get("vk.level", "") === "MISTAKES" ? "mist
 if (view === "practice") view = "review";
 let writeOnly = store.get("vk.write", "0") === "1";
 let favOnly = store.get("vk.fav", "0") === "1";             // entries with a ⭐ example
+let noteOnly = store.get("vk.noted", "0") === "1";          // entries with a 我的笔记 (用户 2026-10-24)
 
 const pill = (text, on, click, cls = "") => {
   const b = document.createElement("button");
@@ -1226,7 +1227,7 @@ const row = (label, cls = "") => {
 };
 const typeRow = row("类型"), cefrRow = row("级别", "sub"), stageRow = row("进度"), optRow = row("选项");
 if (!VK.categories) typeRow.parentNode.hidden = true;
-const clearAll = () => { typeF = "ALL"; cefrF = ""; stageF = ""; writeOnly = false; favOnly = false; saveFilters(); };
+const clearAll = () => { typeF = "ALL"; cefrF = ""; stageF = ""; writeOnly = false; favOnly = false; noteOnly = false; saveFilters(); };
 const clearBtn = document.getElementById("freset");
 clearBtn.addEventListener("click", clearAll);
 const fbtn = document.getElementById("fbtn"), fbn = document.getElementById("fbn"), fsum = document.getElementById("fsum");
@@ -1256,6 +1257,7 @@ addEventListener("resize", () => { if (!fsheet.hidden) openFilters(); });
 function saveFilters(){
   store.set("vk.type", typeF); store.set("vk.cefr", cefrF);
   store.set("vk.stagef", stageF); store.set("vk.write", writeOnly ? "1" : "0"); store.set("vk.fav", favOnly ? "1" : "0");
+  store.set("vk.noted", noteOnly ? "1" : "0");
   paintFilters(); render();
 }
 function paintFilters(){
@@ -1265,12 +1267,14 @@ function paintFilters(){
   stageRow.querySelectorAll("[data-s]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === stageF)));
   wr.setAttribute("aria-checked", String(writeOnly));
   fv.setAttribute("aria-checked", String(favOnly));
+  nt.setAttribute("aria-checked", String(noteOnly));
   // what's on stays visible after the panel closes: a removable chip per filter, a count on the button
   const on = [];
   if (typeF !== "ALL") on.push([TYPES.find(t => t[0] === typeF)[1] + (cefrF ? " · " + cefrF : ""), () => { typeF = "ALL"; cefrF = ""; }]);
   if (stageF) on.push([STAGE_NAME[stageF], () => { stageF = ""; }]);
   if (writeOnly) on.push(["只看会写", () => { writeOnly = false; }]);
   if (favOnly) on.push(["⭐ 有收藏", () => { favOnly = false; }]);
+  if (noteOnly) on.push(["📝 有笔记", () => { noteOnly = false; }]);
   fbn.hidden = !on.length; fbn.textContent = on.length;
   fbtn.classList.toggle("on", on.length > 0);
   clearBtn.hidden = !on.length;
@@ -1317,6 +1321,13 @@ fv.title = "只看有收藏例句的条目(在条目里长按例句收藏)";
 fv.innerHTML = '<span class="box" aria-hidden="true"></span>⭐ 有收藏 <span class="n"></span>';
 fv.addEventListener("click", () => { favOnly = !favOnly; saveFilters(); });
 optRow.append(fv);
+// 📝: entries I've written a 我的笔记 on; shown once there is one
+const nt = document.createElement("button");
+nt.className = "wr-box"; nt.type = "button"; nt.setAttribute("role", "checkbox");
+nt.title = "只看写了「我的笔记」的条目";
+nt.innerHTML = '<span class="box" aria-hidden="true"></span>📝 有笔记 <span class="n"></span>';
+nt.addEventListener("click", () => { noteOnly = !noteOnly; saveFilters(); });
+optRow.append(nt);
 paintFilters();
 
 // view tabs
@@ -1495,7 +1506,7 @@ function render(){
   // pill counts: each row counts what its pills would show with every other filter kept
   const nType = { ALL: 0, WORD: 0 }, nCefr = { "": 0 }, nStage = { learn: 0, review: 0, test: 0, done: 0 };
   sections.forEach(s => s.cards.forEach(c => {
-    if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term) || noteOf(c.it.anchor).toLowerCase().includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)))) return;
+    if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term) || noteOf(c.it.anchor).toLowerCase().includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)) && (!noteOnly || noteOf(c.it.anchor)))) return;
     const st = stageOf(c.it, s.level), word = CEFR.includes(s.level);
     if (!stageF || st === stageF) {
       nType.ALL++; nType[s.level] = (nType[s.level] || 0) + 1;
@@ -1506,6 +1517,9 @@ function render(){
   const nFav = sections.reduce((n, s) => n + s.cards.filter(c => hasFav(c.it.anchor)).length, 0);
   if (!nFav && favOnly) { favOnly = false; saveFilters(); return; }
   fv.hidden = !nFav; fv.querySelector(".n").textContent = nFav;
+  const nNote = sections.reduce((n, s) => n + s.cards.filter(c => noteOf(c.it.anchor)).length, 0);
+  if (!nNote && noteOnly) { noteOnly = false; saveFilters(); return; }
+  nt.hidden = !nNote; nt.querySelector(".n").textContent = nNote;
   typeRow.querySelectorAll("[data-t] .n").forEach(el => { el.textContent = nType[el.parentNode.dataset.t] || 0; });
   cefrRow.querySelectorAll("[data-c] .n").forEach(el => { el.textContent = nCefr[el.parentNode.dataset.c] || 0; });
   stageRow.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = el.parentNode.dataset.s ? nStage[el.parentNode.dataset.s] : Object.values(nStage).reduce((x, y) => x + y, 0); });
@@ -1513,7 +1527,7 @@ function render(){
     if (!levelShown(s.level)) { s.el.hidden = true; return; }
     let n = 0;
     s.cards.forEach(c => {
-      const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term) || noteOf(c.it.anchor).toLowerCase().includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)) &&
+      const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term) || noteOf(c.it.anchor).toLowerCase().includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)) && (!noteOnly || noteOf(c.it.anchor)) &&
         (!stageF || stageOf(c.it, s.level) === stageF);
       c.el.hidden = !hit;
       if (hit) n++;
@@ -3037,7 +3051,7 @@ function renderQuizCard(el){
   if (stage === "review" && !s.studied) {                   // 复习: read it again first
     el.innerHTML = `<div class="run">${top}<div class="scard" style="--sw:${sw}"><div class="shead"><p class="lab">${lvShort(t.level)} · 先看一遍</p>` +
       `<p class="big">${it.title}</p>${it.ipa ? `<p class="ipa">${it.ipa}</p>` : ""}</div>` +
-      `<div class="body fillb">${notesHtml(it, true, false)}</div><div class="sfoot"><button class="btn" type="button" id="qz-studied">翻面做题</button></div></div></div>`;
+      `<div class="body fillb">${notesHtml(it, true, false, [myNoteSlide(it)])}</div><div class="sfoot"><button class="btn" type="button" id="qz-studied">翻面做题</button></div></div></div>`;
     runAnimIn(el, s);
     el.querySelector("#qz-stop").addEventListener("click", stop);
     // 翻面做题 turns the card over like the app's (rotationY): the notes turn edge-on, the sheet turns in
@@ -3047,7 +3061,7 @@ function renderQuizCard(el){
       if (card && !matchMedia("(prefers-reduced-motion: reduce)").matches) { s.leaving = true; card.classList.remove("in-item"); card.classList.add("flip-out"); setTimeout(turn, 250); }
       else turn();
     });
-    markExamples(el, it); markQuizExamples(el, it, false); wireXrefsIn(el, go); wireRunMenu(el);
+    markExamples(el, it); markQuizExamples(el, it, false); wireXrefsIn(el, go); wireRunMenu(el); wireMyNote(el);
     return;
   }
   const ready = final && advanceReady(it, t.level, stage);

@@ -552,7 +552,7 @@ private fun QuestionQuiet(entry: Entry, ex: QuizExample?) {
  * A note that comes in through 同步 shows unless I'm typing in the box.
  */
 @Composable
-private fun MyNote(anchor: String, note: String, onNote: (String) -> Unit) {
+fun MyNote(anchor: String, note: String, onNote: (String) -> Unit) {
     var text by rememberSaveable(anchor) { mutableStateOf(note) }
     var focused by remember { mutableStateOf(false) }
     LaunchedEffect(note) { if (!focused) text = note }
