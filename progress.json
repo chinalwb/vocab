@@ -8894,6 +8894,13 @@
     "peek": false,
     "via": "review",
     "ex": "When the global flag is off, the other flags have no effect, even if they're on."
+   },
+   {
+    "t": 1792827552430,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "When the global flag is off, the other flags have no effect, even if they're on."
    }
   ],
   "s-align-ux": [
