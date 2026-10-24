@@ -240,7 +240,7 @@
 
 ### 我的笔记(用户 2026-10-24,网页和 App 一致,App 2.19)
 
-- 每个条目都能写自己的笔记:条目页笔记卡片的**最后一个分节「我的笔记」**(排在「记忆」后面,任何阶段都有),一个随内容变高的输入框,打字停半秒、失焦、离开页面时自动保存。有笔记的条目在列表卡片上带「📝 笔记」;搜索也搜笔记内容;筛选的「选项」里有「📝 有笔记 N」(用户 2026-10-24,App 2.20;和「⭐ 有收藏」一样,一条笔记都没有时不显示;网页存 `vk.noted`,App 存 SharedPreferences `filters`/`noted`)。
+- 每个条目都能写自己的笔记:条目页笔记卡片的**最后一个分节「我的笔记」**(排在「记忆」后面,任何阶段都有;复习做题「先看一遍」的笔记卡也有,用户 2026-10-24,App 2.21:网页 `renderQuizCard()` 里 `notesHtml(…, [myNoteSlide(it)])` + `wireMyNote(el)`,App `StudyCard` 经 `LocalNoted` / `LocalOnNote` 读写),一个随内容变高的输入框,打字停半秒、失焦、离开页面时自动保存。有笔记的条目在列表卡片上带「📝 笔记」;搜索也搜笔记内容;筛选的「选项」里有「📝 有笔记 N」(用户 2026-10-24,App 2.20;和「⭐ 有收藏」一样,一条笔记都没有时不显示;网页存 `vk.noted`,App 存 SharedPreferences `filters`/`noted`)。
 - 存储:`{anchor: {text, t}}`,清空也留一条 `text: ""`,这样清空也能同步。网页 localStorage `vk.notes`(`noteOf()` / `setNote()` / `myNoteSlide()` / `wireMyNote()`),App `review/NoteStore.kt`(`filesDir/notes.json`,`EntryScreen.kt` 的 `MyNote`,卡片上的胶囊读 `LocalNoted`)。
 - **同步**:`progress.json` 的 `notes`,按条目时间新者胜。**仓库是公开的,笔记会原样上传**(用户 2026-10-24 确认可以公开),输入框下面有一句提示。
 - 两边的 `notesHtml()` / `NotesPager` 的 `extra` 现在是一组卡片(记忆、我的笔记),空的跳过。

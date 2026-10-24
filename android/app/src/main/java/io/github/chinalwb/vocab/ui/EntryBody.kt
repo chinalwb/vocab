@@ -84,6 +84,9 @@ val LocalStarred = androidx.compose.runtime.compositionLocalOf<Map<String, Set<S
 /** The entries with a 我的笔记, by anchor → its text (the 📝 on a card). */
 val LocalNoted = androidx.compose.runtime.compositionLocalOf<Map<String, String>> { emptyMap() }
 
+/** Saves a 我的笔记 (anchor, text) — for the cards that show the box away from the entry page (复习's 先看一遍). */
+val LocalOnNote = androidx.compose.runtime.staticCompositionLocalOf<(String, String) -> Unit> { { _, _ -> } }
+
 /** Renders the blocks build.py produced; xref taps are handed to [onXref]. */
 @Composable
 fun EntryBody(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz? = null) = Blocks(entry.anchor, entry.blocks, onXref, quiz)

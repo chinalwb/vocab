@@ -118,6 +118,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.chinalwb.vocab.ui.BrowseScreen
 import io.github.chinalwb.vocab.ui.LocalNoted
+import io.github.chinalwb.vocab.ui.LocalOnNote
 import io.github.chinalwb.vocab.ui.LocalStarred
 import io.github.chinalwb.vocab.review.written
 import io.github.chinalwb.vocab.review.starred
@@ -180,6 +181,7 @@ private fun VocabNav() {
     val starred = remember(favs) { favs.starred() }
     val notes by vm.notes.collectAsStateWithLifecycle()
     val noted = remember(notes) { notes.written() }
+    val saveNote = remember(vm) { { anchor: String, text: String -> vm.setNote(anchor, text); Unit } }
     // from a list: remember it for 下一个; from anywhere else: no list
     val openIn = { anchor: String, list: List<String> -> vm.openedFrom(list, anchor); nav.navigate("entry/$anchor") }
     val openAlone = { anchor: String -> openIn(anchor, emptyList()) }
@@ -187,7 +189,7 @@ private fun VocabNav() {
     // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
     // the plain fades match the container transform's length so both sides finish together.
     SharedTransitionLayout {
-        CompositionLocalProvider(LocalSharedTransitionScope provides this, LocalStarred provides starred, LocalNoted provides noted) {
+        CompositionLocalProvider(LocalSharedTransitionScope provides this, LocalStarred provides starred, LocalNoted provides noted, LocalOnNote provides saveNote) {
             NavHost(
                 nav,
                 startDestination = "home",

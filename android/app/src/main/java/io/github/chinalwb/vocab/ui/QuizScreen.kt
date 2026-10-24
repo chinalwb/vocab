@@ -665,7 +665,13 @@ private fun StudyCard(entry: Entry, color: Color, onXref: (String) -> Unit, onSt
             )
             if (entry.ipa.isNotEmpty()) Text(entry.ipa, style = MaterialTheme.typography.bodyMedium, color = sub)
         }
-        NotesPage(entry, onXref, quiz = quiz, modifier = Modifier.weight(1f), inCard = true)
+        // 我的笔记 last, as on the entry page (用户 2026-10-24)
+        val note = LocalNoted.current[entry.anchor].orEmpty()
+        val onNote = LocalOnNote.current
+        NotesPage(
+            entry, onXref, quiz = quiz, modifier = Modifier.weight(1f), inCard = true,
+            extra = listOf("我的笔记" to @Composable { MyNote(entry.anchor, note) { onNote(entry.anchor, it) } }),
+        )
         Box(Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
             SheetButton("翻面做题", onClick = onStudied)
         }

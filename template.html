@@ -3051,7 +3051,7 @@ function renderQuizCard(el){
   if (stage === "review" && !s.studied) {                   // 复习: read it again first
     el.innerHTML = `<div class="run">${top}<div class="scard" style="--sw:${sw}"><div class="shead"><p class="lab">${lvShort(t.level)} · 先看一遍</p>` +
       `<p class="big">${it.title}</p>${it.ipa ? `<p class="ipa">${it.ipa}</p>` : ""}</div>` +
-      `<div class="body fillb">${notesHtml(it, true, false)}</div><div class="sfoot"><button class="btn" type="button" id="qz-studied">翻面做题</button></div></div></div>`;
+      `<div class="body fillb">${notesHtml(it, true, false, [myNoteSlide(it)])}</div><div class="sfoot"><button class="btn" type="button" id="qz-studied">翻面做题</button></div></div></div>`;
     runAnimIn(el, s);
     el.querySelector("#qz-stop").addEventListener("click", stop);
     // 翻面做题 turns the card over like the app's (rotationY): the notes turn edge-on, the sheet turns in
@@ -3061,7 +3061,7 @@ function renderQuizCard(el){
       if (card && !matchMedia("(prefers-reduced-motion: reduce)").matches) { s.leaving = true; card.classList.remove("in-item"); card.classList.add("flip-out"); setTimeout(turn, 250); }
       else turn();
     });
-    markExamples(el, it); markQuizExamples(el, it, false); wireXrefsIn(el, go); wireRunMenu(el);
+    markExamples(el, it); markQuizExamples(el, it, false); wireXrefsIn(el, go); wireRunMenu(el); wireMyNote(el);
     return;
   }
   const ready = final && advanceReady(it, t.level, stage);
