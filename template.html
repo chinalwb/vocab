@@ -361,8 +361,9 @@ h1{
 .sheet h2 .spk svg{width:20px;height:20px}
 .adv{display:flex;align-items:center;gap:10px;background:color-mix(in srgb, var(--card-ink) 6%, transparent);border-radius:12px;padding:6px 6px 6px 14px;margin:0 0 14px;font-size:calc(13.5px * var(--fs))}
 .adv span{flex:1}
-.lvl{font:inherit;font-size:calc(12.5px * var(--fs));color:var(--card-ink-2);background:none;border:0;padding:0 0 2px;cursor:pointer;position:relative;display:grid;justify-items:center;gap:6px;border-radius:10px}
+.lvl{font:inherit;font-size:calc(12.5px * var(--fs));color:var(--card-ink-2);background:none;border:0;padding:0 0 2px;cursor:pointer;position:relative;z-index:1;display:grid;justify-items:center;gap:6px;border-radius:10px}
 .lvl:disabled{cursor:default}
+/* the buttons sit above .lv::after (the filled track, painted after them), or it covers the ✓ */
 .lvl .node{width:28px;height:28px;border-radius:50%;border:2px solid var(--card-edge);background:var(--sw);display:grid;place-items:center;box-sizing:border-box;font-size:calc(13px * var(--fs));font-weight:700}
 .lvl.passed .node{background:var(--card-ink);border-color:var(--card-ink);color:var(--sw)}
 .lvl.on .node{border-color:var(--card-ink)}
