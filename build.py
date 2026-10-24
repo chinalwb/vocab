@@ -232,7 +232,7 @@ def sections(blocks):
             label = "释义"
         if label or not out:
             label = label or "概要"
-            out.append((label[:10] + "…" if len(label) > 11 else label, []))
+            out.append((label, []))           # the page cuts a long one short (.nv-tab max-width)
         out[-1][1].append(b)
     return out
 
