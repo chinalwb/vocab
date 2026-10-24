@@ -198,12 +198,12 @@
    "t": 1792373168338
   },
   "safety-net": {
-   "s": "review",
-   "t": 1791940539017
+   "s": "test",
+   "t": 1792809741745
   },
   "conversely-vs-on-the-contrary": {
-   "s": "review",
-   "t": 1791940936874
+   "s": "test",
+   "t": 1792809762624
   },
   "contraceptive": {
    "s": "review",
@@ -485,19 +485,19 @@
   },
   "conversely-vs-on-the-contrary": {
    "ease": 1.3,
-   "interval": 3,
-   "reps": 2,
+   "interval": 4,
+   "reps": 3,
    "lapses": 4,
-   "due": 20750,
-   "t": 1792581571928
+   "due": 20754,
+   "t": 1792809761886
   },
   "safety-net": {
    "ease": 1.96,
-   "interval": 3,
-   "reps": 2,
+   "interval": 6,
+   "reps": 3,
    "lapses": 1,
-   "due": 20750,
-   "t": 1792581534377
+   "due": 20756,
+   "t": 1792809740619
   },
   "rule-out": {
    "ease": 1.42,
@@ -5944,6 +5944,20 @@
     "peek": false,
     "via": "review",
     "ex": "Once you've posted it and closed the issue, that wraps this one — auto-reopen on any newer-version recurrence is the safety net."
+   },
+   {
+    "t": 1792809732777,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The trapeze artist performed without a safety net."
+   },
+   {
+    "t": 1792809740617,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Unemployment benefits act as a safety net for people who lose their jobs."
    }
   ],
   "conversely-vs-on-the-contrary": [
@@ -6121,6 +6135,27 @@
     "peek": false,
     "via": "review",
     "ex": "Some people think this task is easy. On the contrary, it's extremely difficult."
+   },
+   {
+    "t": 1792809748022,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Some students learn best through visual aids; conversely, others prefer hands-on practice."
+   },
+   {
+    "t": 1792809754300,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Higher prices tend to reduce demand. Conversely, lower prices often increase it."
+   },
+   {
+    "t": 1792809761883,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think he's lazy — on the contrary, he's one of the hardest workers I know."
    }
   ],
   "contraceptive": [
@@ -9753,6 +9788,16 @@
  },
  "history": [
   {
+   "a": "contraceptive",
+   "t": 1792809762786,
+   "via": "review"
+  },
+  {
+   "a": "conversely-vs-on-the-contrary",
+   "t": 1792809741908,
+   "via": "review"
+  },
+  {
    "a": "safety-net",
    "t": 1792809659646,
    "via": "review"
@@ -9998,11 +10043,6 @@
    "via": "review"
   },
   {
-   "a": "contraceptive",
-   "t": 1792715265768,
-   "via": "review"
-  },
-  {
    "a": "t-no-scale-just-fade",
    "t": 1792627265482,
    "via": "entry"
@@ -10025,11 +10065,6 @@
   {
    "a": "s-global-flag",
    "t": 1792582216596,
-   "via": "review"
-  },
-  {
-   "a": "conversely-vs-on-the-contrary",
-   "t": 1792581535061,
    "via": "review"
   },
   {
