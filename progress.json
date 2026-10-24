@@ -9900,13 +9900,18 @@
  },
  "history": [
   {
-   "a": "intermittent-outage",
-   "t": 1792810203059,
-   "via": "review"
+   "a": "given-that",
+   "t": 1792810260960,
+   "via": "entry"
   },
   {
    "a": "that-said",
-   "t": 1792810128049,
+   "t": 1792810252027,
+   "via": "entry"
+  },
+  {
+   "a": "intermittent-outage",
+   "t": 1792810203059,
    "via": "review"
   },
   {
