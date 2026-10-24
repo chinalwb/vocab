@@ -9921,6 +9921,21 @@
  },
  "history": [
   {
+   "a": "tend-lean-focus",
+   "t": 1792812823513,
+   "via": "entry"
+  },
+  {
+   "a": "likely-unlikely",
+   "t": 1792812821172,
+   "via": "entry"
+  },
+  {
+   "a": "come-back-to",
+   "t": 1792812818731,
+   "via": "entry"
+  },
+  {
    "a": "intermittent-outage",
    "t": 1792812668425,
    "via": "review"
@@ -10008,21 +10023,6 @@
   {
    "a": "supersede",
    "t": 1792800786453,
-   "via": "entry"
-  },
-  {
-   "a": "likely-unlikely",
-   "t": 1792762132620,
-   "via": "entry"
-  },
-  {
-   "a": "tend-lean-focus",
-   "t": 1792758491582,
-   "via": "entry"
-  },
-  {
-   "a": "come-back-to",
-   "t": 1792758487359,
    "via": "entry"
   },
   {
