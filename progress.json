@@ -190,8 +190,8 @@
    "t": 1792809606994
   },
   "assorted": {
-   "s": "review",
-   "t": 1791937354850
+   "s": "test",
+   "t": 1792809659484
   },
   "amateur-mature-immature": {
    "s": "test",
@@ -541,11 +541,11 @@
   },
   "assorted": {
    "ease": 1.96,
-   "interval": 3,
-   "reps": 2,
+   "interval": 6,
+   "reps": 3,
    "lapses": 1,
-   "due": 20750,
-   "t": 1792581499471
+   "due": 20756,
+   "t": 1792809658308
   },
   "amateur-mature-immature": {
    "ease": 2.5,
@@ -5625,6 +5625,13 @@
     "peek": false,
     "via": "review",
     "ex": "The store sells shirts in assorted colors and sizes."
+   },
+   {
+    "t": 1792809658305,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The gift basket contained assorted fruits, nuts, and cheeses."
    }
   ],
   "amateur-mature-immature": [
@@ -9746,6 +9753,11 @@
  },
  "history": [
   {
+   "a": "safety-net",
+   "t": 1792809659646,
+   "via": "review"
+  },
+  {
    "a": "assorted",
    "t": 1792809607157,
    "via": "review"
@@ -10018,11 +10030,6 @@
   {
    "a": "conversely-vs-on-the-contrary",
    "t": 1792581535061,
-   "via": "review"
-  },
-  {
-   "a": "safety-net",
-   "t": 1792581508541,
    "via": "review"
   },
   {
