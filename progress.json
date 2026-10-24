@@ -8526,6 +8526,20 @@
     "peek": false,
     "via": "review",
     "ex": "There was a brief service interruption on the server just now while the test cases were executing."
+   },
+   {
+    "t": 1792813747154,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The server went down intermittently while the tests were running, so a couple of runs failed."
+   },
+   {
+    "t": 1792813822201,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The server was temporarily unreachable during the test run, which caused some failures."
    }
   ],
   "defer": [
