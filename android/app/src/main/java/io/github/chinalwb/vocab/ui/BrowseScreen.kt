@@ -518,7 +518,8 @@ private fun Labels(e: Entry, badge: String?, foot: String?, modifier: Modifier =
     val doneInk = if (dark) Color(0xFFD7F0DB) else Color(0xFF1E4D27)
     FlowRow(modifier, horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         if (badge != null) Badge(badge)
-        (listOf(levelStyle(e.level).short) + foot.orEmpty().split(LABEL_SEP).filter { it.isNotBlank() }).forEach {
+        (listOf(levelStyle(e.level).short) + foot.orEmpty().split(LABEL_SEP).filter { it.isNotBlank() } +
+            listOfNotNull(if (e.anchor in LocalNoted.current) "📝 笔记" else null)).forEach {
             val mastered = it.startsWith("✓")
             Text(
                 it, style = MaterialTheme.typography.labelMedium,

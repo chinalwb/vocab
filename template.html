@@ -438,6 +438,12 @@ h1{
 .qz-cap{font-size:calc(11.5px * var(--fs));color:var(--card-ink-2);margin:-6px 0 12px 24px}
 /* ⭐ on a starred example; the long-press menu (a bottom sheet over the entry sheet) */
 .body ol.ex li .star::before{content:"⭐";font-size:.8em;margin-left:4px}
+/* 我的笔记: a box on the card that grows with what I write */
+textarea.mynote{display:block;width:100%;box-sizing:border-box;min-height:9em;resize:none;overflow:hidden;font:inherit;font-size:calc(15px * var(--fs));line-height:1.6;
+  color:var(--card-ink);background:color-mix(in srgb,var(--card-ink) 6%,transparent);border:1px solid var(--card-edge);border-radius:12px;padding:10px 12px}
+textarea.mynote:focus{outline:2px solid var(--card-ink);outline-offset:1px;background:color-mix(in srgb,var(--card-ink) 3%,transparent)}
+textarea.mynote::placeholder{color:var(--card-ink-2);opacity:.8}
+.mynote-h{font-size:calc(12px * var(--fs));color:var(--card-ink-2);margin:6px 2px 0}
 .sheet .body ol.ex > li[data-key]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .exm-back{position:fixed;inset:0;z-index:70;background:var(--scrim)}
 .exm{position:fixed;z-index:71;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;background:var(--ground);color:var(--ink);border-radius:20px 20px 0 0;box-shadow:var(--shadow-lift);padding:18px 0 calc(10px + env(safe-area-inset-bottom,0px))}
@@ -1375,7 +1381,7 @@ const sections = DATA.map(g => {
       `<div class="foot">` +
       `<span><span class="no">#${it.no}</span><span class="flv">${(it.cefr || "").match(/\b[ABC][12]\b/)?.[0] || LABEL[g.level] || g.level}</span>` +
       (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}<span class="stc" data-opt="1" data-anchor="${it.anchor}"></span>`) +
-      `<span class="stg" data-anchor="${it.anchor}" data-level="${g.level}"></span></span>` +
+      `<span class="stg" data-anchor="${it.anchor}" data-level="${g.level}"></span><span class="mnt" data-anchor="${it.anchor}"></span></span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
       `</div>`;
     c.addEventListener("click", () => open(it, g.level, i, listOf(c)));
@@ -1489,7 +1495,7 @@ function render(){
   // pill counts: each row counts what its pills would show with every other filter kept
   const nType = { ALL: 0, WORD: 0 }, nCefr = { "": 0 }, nStage = { learn: 0, review: 0, test: 0, done: 0 };
   sections.forEach(s => s.cards.forEach(c => {
-    if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)))) return;
+    if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term) || noteOf(c.it.anchor).toLowerCase().includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)))) return;
     const st = stageOf(c.it, s.level), word = CEFR.includes(s.level);
     if (!stageF || st === stageF) {
       nType.ALL++; nType[s.level] = (nType[s.level] || 0) + 1;
@@ -1507,7 +1513,7 @@ function render(){
     if (!levelShown(s.level)) { s.el.hidden = true; return; }
     let n = 0;
     s.cards.forEach(c => {
-      const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)) &&
+      const hit = (numQ ? c.no === +numQ : !term || c.hay.includes(term) || noteOf(c.it.anchor).toLowerCase().includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)) &&
         (!stageF || stageOf(c.it, s.level) === stageF);
       c.el.hidden = !hit;
       if (hit) n++;
@@ -1779,6 +1785,42 @@ let favs = {};
 try { favs = JSON.parse(store.get("vk.favs", "{}")) || {}; } catch(e){}
 const isFav = (anchor, en) => !!(favs[anchor] && favs[anchor][en] && favs[anchor][en].on);
 const hasFav = anchor => Object.values(favs[anchor] || {}).some(f => f.on);
+// 我的笔记 (用户 2026-10-24): my own note on an entry, {anchor: {text, t}}. Clearing it keeps
+// {text: "", t} so 同步 carries the clear too; newest wins per entry. App: review/NoteStore.kt.
+let myNotes = {};
+try { myNotes = JSON.parse(store.get("vk.notes", "{}")) || {}; } catch(e){}
+const noteOf = anchor => (myNotes[anchor] || {}).text || "";
+function setNote(anchor, text){
+  text = text.replace(/\s+$/, "");
+  if (text === noteOf(anchor)) return;
+  myNotes[anchor] = { text, t: Date.now() };
+  store.set("vk.notes", JSON.stringify(myNotes));
+  refreshNoteTags();
+  syncSoon();
+}
+// the 📝 on a list card
+function refreshNoteTags(){
+  document.querySelectorAll(".mnt[data-anchor]").forEach(el => { el.textContent = noteOf(el.dataset.anchor) ? " · 📝 笔记" : ""; });
+}
+// the 我的笔记 card, last on the entry card: a box that saves as I type
+function myNoteSlide(it){
+  return ["我的笔记", `<p><strong>我的笔记:</strong></p>` +
+    `<textarea class="mynote" data-anchor="${esc(it.anchor)}" rows="6" placeholder="写下自己的理解、例句、容易混的地方…" aria-label="我的笔记">${esc(noteOf(it.anchor))}</textarea>` +
+    `<p class="mynote-h">自动保存。开了同步的话会存进 GitHub 的公开仓库,别写隐私内容。</p>`];
+}
+function wireMyNote(root){
+  root.querySelectorAll("textarea.mynote").forEach(ta => {
+    const grow = () => { ta.style.height = "auto"; ta.style.height = ta.scrollHeight + 2 + "px"; };
+    let timer = 0;
+    const save = () => { clearTimeout(timer); setNote(ta.dataset.anchor, ta.value); };
+    ta.addEventListener("input", () => { grow(); clearTimeout(timer); timer = setTimeout(save, 500); });
+    ta.addEventListener("blur", save);
+    // the card's tabs and the page's keys stay out of the way while I type; Esc only leaves the box
+    ta.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Escape") { save(); ta.blur(); } });
+    requestAnimationFrame(grow);
+    new ResizeObserver(grow).observe(ta.parentNode);
+  });
+}
 // 学习历史 (用户 2026-10-16): the last HIST_MAX entries I've been on — opened, or met in a 复习 /
 // 考核 run — one row per entry, newest first. 同步 carries it ({a, t, via}, newest wins per entry);
 // 清空 sets histClearAt so the other devices drop the older rows too. App: review/HistoryStore.kt.
@@ -2050,9 +2092,9 @@ const speakText = (it, level) => level === "SELFTEST" ? ((it.answer || "").split
   : (it.title.match(/^(.+?)\s*[((].+[))]$/) || [, it.title])[1];
 
 // [fill]: on the entry card, where the notes take the face's height (and get the ⤢ button);
-// [extra]: one more [label, html] card after the sections there (记忆)
-function notesHtml(it, fill = false, withFull = true, extra = null){
-  const sl = fill && extra ? [...it.slides, extra] : it.slides;
+// [extra]: more [label, html] cards after the sections there (记忆, 我的笔记); empty ones are skipped
+function notesHtml(it, fill = false, withFull = true, extra = []){
+  const sl = fill ? [...it.slides, ...extra.filter(Boolean)] : it.slides;
   if (!fill) return sl.length < 2 ? `<div class="notes-h">笔记</div>${it.html}` :
     `<div class="nv${notesAll ? " all" : ""}">` +
     `<div class="nv-h"><span>笔记</span><span class="ln"></span><button type="button" class="nv-all">${notesAll ? "分卡显示" : "全部展开"}</button></div>` +
@@ -2311,7 +2353,7 @@ function show(it, level, i, o = {}){
   // answer sheet on the back. 学习中 / 复习 may look at the notes first; 考核 only after answering.
   // due for 复习 today: the button reviews it (a run of one) — not before, as reviewing early stretches its intervals
   const reviewNow = stage === "review" && reviewDue(it);
-  const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true, true, memorySlide(it, stage))}</div>` +
+  const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true, true, [memorySlide(it, stage), myNoteSlide(it)])}</div>` +
     `<div class="card-foot"><span class="hint" id="cf-hint">${esc(progressHint(it, level, stage))}</span>` +
     `<button class="btn" type="button" id="to-quiz">${reviewNow ? "复习这一条" : selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
   const backFace = `<div class="face bk">` + qsheetHtml({
@@ -2342,6 +2384,7 @@ function show(it, level, i, o = {}){
   if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => flip(wantBack)));
   markQuizExamples(sheet, it);
   markExamples(sheet, it);
+  wireMyNote(sheet);
   memRO.disconnect();
   sheet.querySelectorAll(".mem").forEach(el => memRO.observe(el));
   // a cross-reference opens the note it points at, keeping a trail to come back
@@ -2677,7 +2720,7 @@ const stable = v => JSON.stringify(v, (k, x) => x && typeof x === "object" && !A
   ? Object.fromEntries(Object.keys(x).sort().map(k2 => [k2, x[k2]])) : x);
 const normProgress = r => ({ v: 1, stages: r.stages || {}, cards: r.cards || {}, newDay: r.newDay || 0,
   newToday: r.newToday || 0, resetAt: r.resetAt || 0, attempts: r.attempts || {}, favs: r.favs || {},
-  history: r.history || [], historyClearAt: r.historyClearAt || 0, readsHidden: r.readsHidden || {}, quizOut: r.quizOut || {} });
+  history: r.history || [], historyClearAt: r.historyClearAt || 0, readsHidden: r.readsHidden || {}, quizOut: r.quizOut || {}, notes: r.notes || {} });
 // 阅读 items removed from the list in the app ({anchor: {on, t}}, 用户 2026-10-23). The page has no
 // 阅读 yet; it only carries them through 同步 so a sync from here doesn't drop them.
 let readsHidden = {};
@@ -2686,7 +2729,7 @@ function progressOut(){
   const st = {}, at = {};
   for (const a in stages) st[a] = { s: stages[a], t: stageT[a] || 0 };
   for (const a in stLog) at[a] = stLog[a].map(x => ({ t: x.t, ok: x.ok, peek: !x.text, via: x.via, ex: x.ex || "" }));
-  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs, history: hist, historyClearAt: histClearAt, readsHidden, quizOut });
+  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs, history: hist, historyClearAt: histClearAt, readsHidden, quizOut, notes: myNotes });
 }
 // Newest wins per entry (per sentence for ⭐); a reset drops every card graded before it; 自测 attempts are a union.
 function applyRemote(r){
@@ -2726,6 +2769,8 @@ function applyRemote(r){
     if (o.t > ((m[en] || {}).t || 0)) m[en] = { on: !!o.on, t: o.t };
   }
   store.set("vk.quizout", JSON.stringify(quizOut));
+  for (const a in r.notes) if (r.notes[a].t > ((myNotes[a] || {}).t || 0)) myNotes[a] = { text: String(r.notes[a].text || ""), t: r.notes[a].t };
+  store.set("vk.notes", JSON.stringify(myNotes));
   histClearAt = Math.max(histClearAt, r.historyClearAt);
   hist = trimHist([...hist, ...r.history]);
   saveHist();
@@ -2765,7 +2810,7 @@ function syncNow(){
     .finally(() => {
       syncing = null;
       store.set("vk.sync", JSON.stringify(syncState));
-      refreshStages(); refreshStCounts();
+      refreshStages(); refreshStCounts(); refreshNoteTags();
       if (view !== "review" || !session) render();   // never yank a card I'm answering
       if (syncAgain) { syncAgain = false; syncNow(); }
     });
@@ -3318,6 +3363,7 @@ document.addEventListener("keydown", e => {
 
 refreshStCounts();
 refreshStages();
+refreshNoteTags();
 render();
 syncNow();
 </script>

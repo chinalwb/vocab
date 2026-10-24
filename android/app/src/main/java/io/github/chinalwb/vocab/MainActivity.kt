@@ -117,7 +117,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.chinalwb.vocab.ui.BrowseScreen
+import io.github.chinalwb.vocab.ui.LocalNoted
 import io.github.chinalwb.vocab.ui.LocalStarred
+import io.github.chinalwb.vocab.review.written
 import io.github.chinalwb.vocab.review.starred
 import io.github.chinalwb.vocab.review.removed
 import io.github.chinalwb.vocab.ui.EntryScreen
@@ -176,6 +178,8 @@ private fun VocabNav() {
     val openList by vm.openList.collectAsStateWithLifecycle()
     val favs by vm.favs.collectAsStateWithLifecycle()
     val starred = remember(favs) { favs.starred() }
+    val notes by vm.notes.collectAsStateWithLifecycle()
+    val noted = remember(notes) { notes.written() }
     // from a list: remember it for 下一个; from anywhere else: no list
     val openIn = { anchor: String, list: List<String> -> vm.openedFrom(list, anchor); nav.navigate("entry/$anchor") }
     val openAlone = { anchor: String -> openIn(anchor, emptyList()) }
@@ -183,7 +187,7 @@ private fun VocabNav() {
     // Cards and the entry page share bounds across destinations (see SharedTransitions.kt);
     // the plain fades match the container transform's length so both sides finish together.
     SharedTransitionLayout {
-        CompositionLocalProvider(LocalSharedTransitionScope provides this, LocalStarred provides starred) {
+        CompositionLocalProvider(LocalSharedTransitionScope provides this, LocalStarred provides starred, LocalNoted provides noted) {
             NavHost(
                 nav,
                 startDestination = "home",
@@ -200,6 +204,7 @@ private fun VocabNav() {
                         onBack = { nav.popBackStack() },
                         selfTests = selfTests,
                         stages = stages,
+                        notes = noted,
                     )
                 }
                 composable("mistakes") { SubPage("错题本", onBack = { nav.popBackStack() }) { pad -> MistakesScreen(lib, onOpen = openAlone, modifier = Modifier.padding(pad)) } }
@@ -278,6 +283,8 @@ private fun VocabNav() {
                             },
                             onToggleExample = { en -> if (entry != null) vm.toggleQuizExample(entry, en) },
                             onFav = { en -> vm.toggleFav(anchor, en) },
+                            note = noted[anchor].orEmpty(),
+                            onNote = { vm.setNote(anchor, it) },
                             nextLabel = if (next != null) "${pos + 1} / ${list.size}" else null,
                             onNext = next?.let { n ->
                                 {

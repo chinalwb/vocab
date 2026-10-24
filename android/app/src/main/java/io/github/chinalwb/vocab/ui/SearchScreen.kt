@@ -57,6 +57,8 @@ fun SearchScreen(
     onBack: () -> Unit,
     selfTests: Map<String, List<Attempt>> = emptyMap(),
     stages: Map<String, String> = emptyMap(),
+    /** 我的笔记 by anchor: search finds what I wrote too */
+    notes: Map<String, String> = emptyMap(),
 ) {
     val prefs = LocalContext.current.getSharedPreferences("search", Context.MODE_PRIVATE)
     var recent by remember { mutableStateOf(prefs.getString("recent", "").orEmpty().split('\n').filter { it.isNotBlank() }) }
@@ -72,11 +74,11 @@ fun SearchScreen(
     LaunchedEffect(Unit) { focus.requestFocus() }
 
     val entries = lib.data?.entries.orEmpty()
-    val results = remember(entries, query) {
+    val results = remember(entries, query, notes) {
         val q = query.trim().lowercase()
         val numQ = Regex("^#?(\\d+)$").find(q)?.groupValues?.get(1)?.toInt()
         if (q.isEmpty()) emptyList()
-        else entries.filter { e -> if (numQ != null) e.no == numQ else q in e.searchText }
+        else entries.filter { e -> if (numQ != null) e.no == numQ else q in e.searchText || notes[e.anchor]?.lowercase()?.contains(q) == true }
     }
     val foot = { e: Entry -> listOfNotNull(selfTests.stFoot(e), stageFoot(e, stages.stageOf(e))).joinToString(LABEL_SEP).ifEmpty { null } }
 
