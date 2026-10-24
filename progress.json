@@ -182,12 +182,12 @@
    "t": 1791900886792
   },
   "chrome": {
-   "s": "review",
-   "t": 1791936691636
+   "s": "test",
+   "t": 1792809587518
   },
   "stand": {
-   "s": "review",
-   "t": 1791937074208
+   "s": "test",
+   "t": 1792809606994
   },
   "assorted": {
    "s": "review",
@@ -557,27 +557,27 @@
   },
   "stand": {
    "ease": 1.96,
-   "interval": 3,
-   "reps": 2,
+   "interval": 6,
+   "reps": 3,
    "lapses": 1,
-   "due": 20750,
-   "t": 1792581477965
+   "due": 20756,
+   "t": 1792809606345
   },
   "unstoppable-irresistible-inexorable": {
-   "ease": 1.96,
-   "interval": 3,
-   "reps": 2,
-   "lapses": 1,
-   "due": 20750,
-   "t": 1792581415737
+   "ease": 1.42,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 2,
+   "due": 20751,
+   "t": 1792809560904
   },
   "chrome": {
    "ease": 1.3,
-   "interval": 3,
-   "reps": 2,
+   "interval": 4,
+   "reps": 3,
    "lapses": 3,
-   "due": 20750,
-   "t": 1792581451279
+   "due": 20754,
+   "t": 1792809586994
   },
   "stall": {
    "ease": 1.3,
@@ -5043,6 +5043,13 @@
     "peek": false,
     "via": "review",
     "ex": "Given the inexorable rise of AI-driven programming, we need to learn how to build AI agents."
+   },
+   {
+    "t": 1792809560901,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "Given the inexorable rise of AI-driven programming, we need to learn how to build AI agents."
    }
   ],
   "stray": [
@@ -5334,6 +5341,27 @@
     "peek": false,
     "via": "review",
     "ex": "The design team stripped away most of the browser chrome to make the reading experience feel more immersive."
+   },
+   {
+    "t": 1792809580928,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The old motorcycle's chrome exhaust pipe was gleaming in the sun."
+   },
+   {
+    "t": 1792809583774,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "He polished the chrome fixtures in the bathroom until they sparkled."
+   },
+   {
+    "t": 1792809586993,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The design team stripped away most of the browser chrome to make the reading experience feel more immersive."
    }
   ],
   "stand": [
@@ -5437,6 +5465,27 @@
    },
    {
     "t": 1792581477962,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The verdict stands, despite the appeal."
+   },
+   {
+    "t": 1792809598051,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The signed-curl check from earlier stands ready when you want it."
+   },
+   {
+    "t": 1792809602664,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "My offer still stands — let me know if you change your mind."
+   },
+   {
+    "t": 1792809606343,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -5562,6 +5611,20 @@
     "peek": false,
     "via": "review",
     "ex": "The gift basket contained assorted fruits, nuts, and cheeses."
+   },
+   {
+    "t": 1792809613677,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She bought a box of assorted chocolates for the party."
+   },
+   {
+    "t": 1792809617636,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The store sells shirts in assorted colors and sizes."
    }
   ],
   "amateur-mature-immature": [
@@ -9683,6 +9746,21 @@
  },
  "history": [
   {
+   "a": "assorted",
+   "t": 1792809607157,
+   "via": "review"
+  },
+  {
+   "a": "stand",
+   "t": 1792809587681,
+   "via": "review"
+  },
+  {
+   "a": "chrome",
+   "t": 1792809571433,
+   "via": "review"
+  },
+  {
    "a": "unstoppable-irresistible-inexorable",
    "t": 1792809488467,
    "via": "review"
@@ -9945,21 +10023,6 @@
   {
    "a": "safety-net",
    "t": 1792581508541,
-   "via": "review"
-  },
-  {
-   "a": "assorted",
-   "t": 1792581478681,
-   "via": "review"
-  },
-  {
-   "a": "stand",
-   "t": 1792581456201,
-   "via": "review"
-  },
-  {
-   "a": "chrome",
-   "t": 1792581426207,
    "via": "review"
   },
   {
