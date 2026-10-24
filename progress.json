@@ -500,12 +500,12 @@
    "t": 1792581534377
   },
   "rule-out": {
-   "ease": 1.96,
-   "interval": 3,
-   "reps": 2,
-   "lapses": 1,
-   "due": 20750,
-   "t": 1792581366084
+   "ease": 1.42,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 2,
+   "due": 20751,
+   "t": 1792808953902
   },
   "postpone": {
    "ease": 2.5,
@@ -582,10 +582,10 @@
   "stall": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 4,
-   "due": 20750,
-   "t": 1792757240477
+   "due": 20751,
+   "t": 1792808925708
   },
   "tinker": {
    "ease": 2.5,
@@ -3773,6 +3773,27 @@
     "peek": false,
     "via": "review",
     "ex": "The horse was kept in a stall next to the barn door."
+   },
+   {
+    "t": 1792808867439,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "He's just stalling — he doesn't want to give us an answer."
+   },
+   {
+    "t": 1792808870705,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "(航空语境) The plane stalled and lost altitude rapidly."
+   },
+   {
+    "t": 1792808925705,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She bought fresh vegetables from a stall at the farmers' market."
    }
   ],
   "bookkeeping": [
@@ -4166,6 +4187,27 @@
     "peek": false,
     "via": "review",
     "ex": "She had a solid alibi, so the police ruled her out quickly."
+   },
+   {
+    "t": 1792808943819,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Doctors ran several tests to rule out a heart condition."
+   },
+   {
+    "t": 1792808948453,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We can't rule out the possibility that the bug is caused by a race condition."
+   },
+   {
+    "t": 1792808953899,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "We ruled him out as a suspect once his alibi checked out."
    }
   ],
   "s-title-wrap": [
@@ -9641,6 +9683,16 @@
  },
  "history": [
   {
+   "a": "unstoppable-irresistible-inexorable",
+   "t": 1792808955408,
+   "via": "review"
+  },
+  {
+   "a": "rule-out",
+   "t": 1792808935933,
+   "via": "review"
+  },
+  {
    "a": "stall",
    "t": 1792808862649,
    "via": "review"
@@ -9908,16 +9960,6 @@
   {
    "a": "chrome",
    "t": 1792581426207,
-   "via": "review"
-  },
-  {
-   "a": "unstoppable-irresistible-inexorable",
-   "t": 1792581367027,
-   "via": "review"
-  },
-  {
-   "a": "rule-out",
-   "t": 1792581336043,
    "via": "review"
   },
   {
