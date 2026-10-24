@@ -8237,6 +8237,13 @@
     "peek": false,
     "via": "review",
     "ex": "We're swamped this week. That being said, I can still take a look at your PR."
+   },
+   {
+    "t": 1792810159080,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This solution is inexpensive. That said, it's hard to maintain."
    }
   ],
   "intermittent-outage": [
