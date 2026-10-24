@@ -646,10 +646,10 @@
   "s-skills-refresh": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 3,
-   "due": 20750,
-   "t": 1792757561908
+   "due": 20751,
+   "t": 1792827850000
   },
   "s-testflight": {
    "ease": 1.3,
@@ -9247,6 +9247,13 @@
     "peek": false,
     "via": "review",
     "ex": "In a Cowork chat session, typing / opens the skills selector. This generally works fine, but custom skills created on the fly don't show up in the selector. It looks like the skill list isn't being refreshed."
+   },
+   {
+    "t": 1792827849997,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "In a Cowork chat session, typing / opens the skills selector. This generally works fine, but custom skills created on the fly don't show up in the selector. It looks like the skill list isn't being refreshed."
    }
   ],
   "table": [
@@ -10089,6 +10096,11 @@
  },
  "history": [
   {
+   "a": "s-testflight",
+   "t": 1792827851469,
+   "via": "review"
+  },
+  {
    "a": "s-skills-refresh",
    "t": 1792827735238,
    "via": "review"
@@ -10276,11 +10288,6 @@
   {
    "a": "deserted",
    "t": 1792755606538,
-   "via": "review"
-  },
-  {
-   "a": "s-testflight",
-   "t": 1792755160637,
    "via": "review"
   },
   {
