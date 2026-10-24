@@ -742,18 +742,18 @@
   "intermittent-outage": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 4,
-   "due": 20750,
-   "t": 1792757062193
+   "due": 20751,
+   "t": 1792814284110
   },
   "practitioner": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 3,
-   "due": 20750,
-   "t": 1792716213317
+   "due": 20751,
+   "t": 1792814321448
   },
   "defer": {
    "ease": 2.5,
@@ -8540,6 +8540,13 @@
     "peek": false,
     "via": "review",
     "ex": "The server was temporarily unreachable during the test run, which caused some failures."
+   },
+   {
+    "t": 1792814284108,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "There was a brief service interruption on the server just now while the test cases were executing."
    }
   ],
   "defer": [
@@ -9514,6 +9521,27 @@
     "peek": false,
     "via": "review",
     "ex": "As a practitioner in this field, I can tell you this approach actually works."
+   },
+   {
+    "t": 1792814299529,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She's a general practitioner at a local clinic."
+   },
+   {
+    "t": 1792814307328,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "He's a longtime practitioner of traditional Chinese medicine."
+   },
+   {
+    "t": 1792814321446,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "As a practitioner in this field, I can tell you this approach actually works."
    }
   ],
   "check-out": [
@@ -9935,6 +9963,16 @@
  },
  "history": [
   {
+   "a": "s-rush-into-get-straight",
+   "t": 1792814322124,
+   "via": "review"
+  },
+  {
+   "a": "practitioner",
+   "t": 1792814285582,
+   "via": "review"
+  },
+  {
    "a": "intermittent-outage",
    "t": 1792813591975,
    "via": "review"
@@ -10042,11 +10080,6 @@
   {
    "a": "s-skills-refresh",
    "t": 1792757413397,
-   "via": "review"
-  },
-  {
-   "a": "s-rush-into-get-straight",
-   "t": 1792757241902,
    "via": "review"
   },
   {
@@ -10192,11 +10225,6 @@
   {
    "a": "s-chase-for",
    "t": 1792716400528,
-   "via": "review"
-  },
-  {
-   "a": "practitioner",
-   "t": 1792715310953,
    "via": "review"
   },
   {
