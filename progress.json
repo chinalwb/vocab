@@ -774,10 +774,10 @@
   "t-came-out-of": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 3,
-   "due": 20750,
-   "t": 1792755991286
+   "due": 20751,
+   "t": 1792828131977
   },
   "t-write-for-new-pms": {
    "ease": 1.3,
@@ -9760,6 +9760,13 @@
     "peek": false,
     "via": "entry",
     "ex": ""
+   },
+   {
+    "t": 1792828131974,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": ""
    }
   ],
   "t-set-apart": [
@@ -10110,6 +10117,11 @@
  },
  "history": [
   {
+   "a": "t-write-for-new-pms",
+   "t": 1792828132709,
+   "via": "review"
+  },
+  {
    "a": "t-came-out-of",
    "t": 1792828032791,
    "via": "review"
@@ -10202,11 +10214,6 @@
   {
    "a": "given-that",
    "t": 1792812658300,
-   "via": "entry"
-  },
-  {
-   "a": "t-write-for-new-pms",
-   "t": 1792810900967,
    "via": "entry"
   },
   {
