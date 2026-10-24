@@ -4436,6 +4436,13 @@
     "peek": false,
     "via": "review",
     "ex": "I'd say iOS handles this better: beta builds live in a dedicated app, TestFlight, so testers never confuse them with the production version from the App Store."
+   },
+   {
+    "t": 1792827905556,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "When it comes to installing betas through the regular Play Store, I'd say the iOS ecosystem offers a better flow by keeping beta builds in a dedicated app, TestFlight."
    }
   ],
   "t-making-some-progress": [
