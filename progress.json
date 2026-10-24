@@ -10736,6 +10736,10 @@
   "s-global-flag": {
    "text": "",
    "t": 1792827310716
+  },
+  "t-iphone-or-android": {
+   "text": "Was the user on iPhone or Android? 非常简单。",
+   "t": 1792828421315
   }
  }
 }
