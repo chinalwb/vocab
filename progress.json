@@ -8887,6 +8887,13 @@
     "peek": false,
     "via": "review",
     "ex": "The global flag acts as a master switch: turn it off, and all the other flags are ignored."
+   },
+   {
+    "t": 1792816188627,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "When the global flag is off, the other flags have no effect, even if they're on."
    }
   ],
   "s-align-ux": [
