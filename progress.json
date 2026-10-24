@@ -8258,6 +8258,13 @@
     "peek": false,
     "via": "review",
     "ex": "The PR looks good overall. That said, I'd split the second commit before we merge."
+   },
+   {
+    "t": 1792810949616,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "This solution is inexpensive. That said, it's hard to maintain."
    }
   ],
   "intermittent-outage": [
