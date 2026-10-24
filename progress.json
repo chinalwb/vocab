@@ -478,10 +478,10 @@
   "implication-vs-indication": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 1,
-   "lapses": 3,
-   "due": 20750,
-   "t": 1792716276948
+   "reps": 0,
+   "lapses": 4,
+   "due": 20751,
+   "t": 1792809827359
   },
   "conversely-vs-on-the-contrary": {
    "ease": 1.3,
@@ -533,11 +533,11 @@
   },
   "contraceptive": {
    "ease": 1.3,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 3,
-   "due": 20750,
-   "t": 1792715303522
+   "due": 20753,
+   "t": 1792809807795
   },
   "assorted": {
    "ease": 1.96,
@@ -612,12 +612,12 @@
    "t": 1792755632485
   },
   "make-use-of": {
-   "ease": 1.96,
-   "interval": 3,
-   "reps": 2,
-   "lapses": 1,
-   "due": 20750,
-   "t": 1792581724446
+   "ease": 1.42,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 2,
+   "due": 20751,
+   "t": 1792809859142
   },
   "make-the-most-of": {
    "ease": 1.3,
@@ -6291,6 +6291,27 @@
     "peek": false,
     "via": "review",
     "ex": "Contraception has significantly impacted family planning worldwide."
+   },
+   {
+    "t": 1792809792864,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She started using contraceptive methods after getting married."
+   },
+   {
+    "t": 1792809800558,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Condoms are one of the most common contraceptives."
+   },
+   {
+    "t": 1792809807793,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Contraception has significantly impacted family planning worldwide."
    }
   ],
   "etiquette": [
@@ -6446,6 +6467,20 @@
    {
     "t": 1792716276948,
     "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "There was no indication that the server was about to crash."
+   },
+   {
+    "t": 1792809820236,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This is a simple exercise, but the implications are profound."
+   },
+   {
+    "t": 1792809827357,
+    "ok": false,
     "peek": false,
     "via": "review",
     "ex": "There was no indication that the server was about to crash."
@@ -6625,6 +6660,27 @@
    {
     "t": 1792581724445,
     "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The new design makes full use of the available screen space."
+   },
+   {
+    "t": 1792809837357,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We should make use of the tools we already have."
+   },
+   {
+    "t": 1792809846359,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "She made good use of her time between meetings."
+   },
+   {
+    "t": 1792809859140,
+    "ok": false,
     "peek": false,
     "via": "review",
     "ex": "The new design makes full use of the available screen space."
@@ -9788,6 +9844,21 @@
  },
  "history": [
   {
+   "a": "make-the-most-of",
+   "t": 1792809861729,
+   "via": "review"
+  },
+  {
+   "a": "make-use-of",
+   "t": 1792809830443,
+   "via": "review"
+  },
+  {
+   "a": "implication-vs-indication",
+   "t": 1792809808448,
+   "via": "review"
+  },
+  {
    "a": "contraceptive",
    "t": 1792809762786,
    "via": "review"
@@ -9943,11 +10014,6 @@
    "via": "entry"
   },
   {
-   "a": "make-use-of",
-   "t": 1792744175912,
-   "via": "entry"
-  },
-  {
    "a": "push-back",
    "t": 1792742774108,
    "via": "entry"
@@ -10025,16 +10091,6 @@
   {
    "a": "s-chase-for",
    "t": 1792716400528,
-   "via": "review"
-  },
-  {
-   "a": "make-the-most-of",
-   "t": 1792716358685,
-   "via": "review"
-  },
-  {
-   "a": "implication-vs-indication",
-   "t": 1792716217318,
    "via": "review"
   },
   {
