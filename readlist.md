@@ -843,3 +843,30 @@
 - ⚠️ [结构] ==The swipe to switch tabs feature== → **the tab-swiping feature** —— 一长串词放在名词前当修饰语,读起来吃力。
 - ❌ [词形] ==as follow== → **as follows** —— 固定说法,*follows* 要加 *s*。
 - ❌ [冠词] ==user== → **the user** —— 单数可数名词前要有冠词。
+
+<a id="r-so-they-dont-get-too-wide"></a>
+## 可以把标签加宽，让文字完整显示，但还是要设一个最大宽度，免得太宽。
+
+- 日期:2026-10-24
+- 关键词:widen · so they don't get too wide
+
+**常用说法:**
+
+> We can make the tabs wider so that the text is shown completely, but we still need a width limit so that they don't become too wide.
+
+**C1 说法:**
+
+> We **could widen** the tabs **so the full label shows**, but they still need **a max width** **so they don't get too wide**.
+
+**差别:**
+
+- **could widen** —— *widen* 一个词说「加宽」;*could* 是提建议的口气，比 *can* 客气;对应 *can make the tabs wider*。
+- **so the full label shows** —— *the full label* 比 *the text completely* 更具体;*show* 在这里作不及物动词，表示「显示出来」;对应 *to show the text completely*。
+- **a max width** —— 界面里「最大宽度」的常用说法;对应 *a width limit*。
+- **so they don't get too wide** —— 用 *so* 从句说出「免得……」,*they* 指 tabs;对应 *to avoid it getting too wide*。
+
+**我的原句:**
+
+> we can make the tabs wider to show the text completely. But a width limit is still necessary to avoid ==it getting too wide==.
+
+- ⚠️ [逻辑] ==it getting too wide== → **so they don't get too wide** —— 指的是 *tabs*,复数要用 *they / them*;*avoid sb doing* 能懂，但 *so they don't …* 或 *keep them from …* 更常见。
