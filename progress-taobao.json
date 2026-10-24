@@ -1,0 +1,51 @@
+{
+ "v": 1,
+ "stages": {},
+ "cards": {},
+ "newDay": 0,
+ "newToday": 0,
+ "resetAt": 0,
+ "attempts": {
+  "s-same-shape-list": [
+   {
+    "t": 1792340801234,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "The project aims to predict the volcanoes' future activity, learn about their history and, most important of all, prepare for an eruption."
+   }
+  ]
+ },
+ "favs": {},
+ "history": [
+  {
+   "a": "s-tell-describe",
+   "t": 1792340850222,
+   "via": "entry"
+  },
+  {
+   "a": "s-same-shape-list",
+   "t": 1792340849604,
+   "via": "entry"
+  },
+  {
+   "a": "c-be-displaced-by",
+   "t": 1792340834596,
+   "via": "entry"
+  },
+  {
+   "a": "c-be-witness-to",
+   "t": 1792340833314,
+   "via": "entry"
+  },
+  {
+   "a": "s-its-their",
+   "t": 1792340829669,
+   "via": "entry"
+  }
+ ],
+ "historyClearAt": 0,
+ "readsHidden": {},
+ "quizOut": {},
+ "notes": {}
+}
