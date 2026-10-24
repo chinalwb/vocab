@@ -621,11 +621,11 @@
   },
   "make-the-most-of": {
    "ease": 1.3,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 4,
-   "due": 20750,
-   "t": 1792716399957
+   "due": 20753,
+   "t": 1792810068189
   },
   "that-said": {
    "ease": 1.3,
@@ -6998,6 +6998,27 @@
     "peek": false,
     "via": "review",
     "ex": "He knows how to make the best use of his team's strengths."
+   },
+   {
+    "t": 1792810056410,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We only have one weekend here, so let's make the most of it."
+   },
+   {
+    "t": 1792810061833,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She made the most of the opportunity and turned it into a full-time offer."
+   },
+   {
+    "t": 1792810068187,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Make the most of your twenties — you'll never get this time back."
    }
   ],
   "deserted": [
@@ -8202,6 +8223,20 @@
     "peek": false,
     "via": "entry",
     "ex": "The PR looks good overall. That said, I'd split the second commit before we merge."
+   },
+   {
+    "t": 1792810075613,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This solution is inexpensive. That said, it's hard to maintain."
+   },
+   {
+    "t": 1792810085255,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We're swamped this week. That being said, I can still take a look at your PR."
    }
   ],
   "intermittent-outage": [
@@ -9844,14 +9879,19 @@
  },
  "history": [
   {
-   "a": "subject-clause-that",
-   "t": 1792809905168,
-   "via": "entry"
+   "a": "that-said",
+   "t": 1792810104388,
+   "via": "review"
   },
   {
    "a": "make-the-most-of",
-   "t": 1792809861729,
+   "t": 1792810048855,
    "via": "review"
+  },
+  {
+   "a": "subject-clause-that",
+   "t": 1792809905168,
+   "via": "entry"
   },
   {
    "a": "make-use-of",
@@ -9926,11 +9966,6 @@
   {
    "a": "come-back-to",
    "t": 1792758487359,
-   "via": "entry"
-  },
-  {
-   "a": "that-said",
-   "t": 1792757780045,
    "via": "entry"
   },
   {
