@@ -1,5 +1,11 @@
 package io.github.chinalwb.vocab.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -192,18 +198,22 @@ fun EntryScreen(
         val toNotes = quizUp && (stage != Stage.Test || revealed)
 
         if (!quizUp) {
-            TopRow(onBack, nextLabel, onNext, title = if (full) entry else null)
-            if (!full) {
-                Headword(entry)
-                MetaPill(entry) { details = true }
-                StageTrack(stage, onStage)
+            TopRow(onBack, nextLabel, onNext, title = entry, showTitle = full)
+            // ⤢ / ⤡ animate (用户 2026-10-24): the bands fold up and the card grows into the room
+            AnimatedVisibility(!full, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
+                Column {
+                    Headword(entry)
+                    MetaPill(entry) { details = true }
+                    StageTrack(stage, onStage)
+                }
             }
+            val cardTop by animateDpAsState(if (full) 4.dp else 0.dp, label = "cardTop")
             Column(
                 Modifier
                     .weight(1f)
                     .fillMaxWidth()
                     .navigationBarsPadding()
-                    .padding(start = 8.dp, end = 8.dp, top = if (full) 4.dp else 0.dp, bottom = 10.dp)
+                    .padding(start = 8.dp, end = 8.dp, top = cardTop, bottom = 10.dp)
                     .clip(RoundedCornerShape(24.dp))
                     .background(band),
             ) {
@@ -317,10 +327,10 @@ fun EntryScreen(
     }
 }
 
-/** ←, the headword with 🔊 while full screen ([title]), and the 下一个 pill. */
+/** ←, the headword with 🔊 while full screen ([title], fading in with [showTitle]), and the 下一个 pill. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun TopRow(onBack: () -> Unit, nextLabel: String?, onNext: (() -> Unit)?, title: Entry? = null) {
+private fun TopRow(onBack: () -> Unit, nextLabel: String?, onNext: (() -> Unit)?, title: Entry? = null, showTitle: Boolean = title != null) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -330,13 +340,18 @@ private fun TopRow(onBack: () -> Unit, nextLabel: String?, onNext: (() -> Unit)?
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") }
-        if (title != null) Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                title.title, fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = 19.sp,
-                maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false),
-            )
-            title.speakText().takeIf { it.isNotEmpty() }?.let { SpeakButton(it) }
-        } else Spacer(Modifier.weight(1f))
+        Box(Modifier.weight(1f)) {
+            // spelled out: inside the Row, the RowScope overload is picked and refuses the implicit receiver
+            if (title != null) androidx.compose.animation.AnimatedVisibility(showTitle, enter = fadeIn(), exit = fadeOut()) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        title.title, fontFamily = AppFont, fontWeight = FontWeight.Bold, fontSize = 19.sp,
+                        maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false),
+                    )
+                    title.speakText().takeIf { it.isNotEmpty() }?.let { SpeakButton(it) }
+                }
+            }
+        }
         if (onNext != null) NextPill(nextLabel.orEmpty(), onNext)
     }
 }

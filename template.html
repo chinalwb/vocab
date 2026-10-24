@@ -334,7 +334,7 @@ h1{
   background:var(--sw);color:var(--card-ink);
   border:1px solid var(--card-edge);border-radius:14px;
   box-shadow:var(--shadow-lift);
-  width:min(680px,100%);padding:22px 24px 22px;position:relative;
+  width:min(800px,100%);padding:22px 24px 22px;position:relative;
   /* three bands like the app's entry page — the headword, the levels, and a card that takes the
      rest of the height and scrolls inside — so the sheet is as tall as the viewport */
   height:calc(100dvh - 64px);display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;
@@ -419,11 +419,23 @@ h1{
 .face .st .st-prompt>:first-child{margin-top:0}
 .st-title{display:none}
 .sheet.full .st-title{display:block}
-.sheet.full .mpill,.sheet.full .mdet,.sheet.full .lv{display:none}
+.sheet.full .mdet{display:none}
+/* the pill and the track fold away (not display:none) so ⤢ / ⤡ can animate them; max-height is just
+   above their own height */
+.sheet .mpill{max-height:3em}
+.sheet .lv{max-height:90px}
+.sheet.full .mpill,.sheet.full .lv{max-height:0;margin-block:0;padding-block:0;opacity:0;visibility:hidden;overflow:hidden}
 /* ⤢ 全屏: the card takes the whole screen it has, not the sheet's reading width */
 .scrim:has(.sheet.full){padding:8px}
 .sheet.full{width:100%;height:calc(100dvh - 16px)}
 .sheet.full h2{font-size:calc(17px * var(--fs));margin:0 0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-wrap:unset}
+/* ⤢ / ⤡ animate (用户 2026-10-24): morph() puts .morph on the scrim just for the switch, so resizing
+   the window or folding the list doesn't animate the sheet */
+.scrim.morph{transition:padding .3s var(--morph-ease),left .3s var(--morph-ease),background-color .3s}
+.scrim.morph .sheet{transition:width .3s var(--morph-ease),max-width .3s var(--morph-ease),height .3s var(--morph-ease)}
+.scrim.morph .sheet h2{transition:font-size .3s var(--morph-ease),margin .3s var(--morph-ease)}
+.scrim.morph .sheet .mpill,.scrim.morph .sheet .lv{transition:max-height .3s var(--morph-ease),margin .3s var(--morph-ease),padding .3s var(--morph-ease),opacity .2s,visibility .3s}
+:root{--morph-ease:cubic-bezier(.2,.8,.2,1)}
 .sheet textarea.draft{border:1.5px solid var(--card-ink-2);background:color-mix(in srgb, var(--chip) 55%, transparent);margin-top:10px;border-radius:12px;color:var(--card-ink)}
 .sheet textarea.draft:focus-visible{outline:none;border-color:var(--card-ink)}
 /* examples in the sheet: every translated one is a 自测 question (number in a filled dot) unless
@@ -1011,7 +1023,7 @@ body.running{overflow:hidden}
   .scrim.docked .sheet .lvl .node{background:var(--chip)}
   /* docked and ⤢: over the list, the whole width right of the sidebar (which stays, folded or not) */
   .scrim.docked:has(.sheet.full){left:var(--sidew);z-index:25;padding:12px 16px 16px;background:var(--ground)}
-  .scrim.docked .sheet.full{max-width:none;height:100%}
+  .scrim.docked .sheet.full{max-width:100%;height:100%}
   .scrim.docked .sheet .lvl.passed .node{background:var(--card-ink);color:var(--chip)}
   /* 错题本: the types as a bar chart and the 自检 on the left, the mistakes on the right */
   #mistakes:not([hidden]){display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;column-gap:32px;align-items:start;padding-top:8px}
@@ -2124,6 +2136,14 @@ function notesHtml(it, fill = false, withFull = true, extra = []){
     `<button type="button" class="nv-all ib" aria-label="${notesAll ? "分卡显示" : "全部展开"}">${notesAll ? ICON_CARDS : ICON_LIST}</button>${fullBtn}</div>` +
     `<div class="nv-track" tabindex="0" aria-label="笔记卡片,左右滑动或用 ← → 切换">${sl.map(([, h]) => `<section class="nv-card">${h}</section>`).join("")}</div></div>`;
 }
+// ⤢ / ⤡: the transitions are on only while .morph is (see the CSS); none with reduced motion
+function morph(scrim, change){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return change();
+  clearTimeout(scrim._morph);
+  scrim.classList.add("morph");
+  change();
+  scrim._morph = setTimeout(() => scrim.classList.remove("morph"), 400);
+}
 function nvIndex(track){ return Math.round(track.scrollLeft / (track.clientWidth + 12)); }
 function nvPaint(nv, k){
   const track = nv.querySelector(".nv-track"), cards = track.children;
@@ -2415,7 +2435,7 @@ function show(it, level, i, o = {}){
   }));
   sheet.querySelectorAll(".full").forEach(b => b.addEventListener("click", () => {
     cardFull = !cardFull;
-    sheet.classList.toggle("full", cardFull);
+    morph(scrim, () => sheet.classList.toggle("full", cardFull));
     sheet.querySelectorAll(".full").forEach(f => { f.innerHTML = cardFull ? ICON_UNFULL : ICON_FULL; f.setAttribute("aria-label", cardFull ? "退出全屏" : "全屏"); });
   }));
   sheet.querySelector("#to-quiz").addEventListener("click", () => reviewNow ? reviewOne({ it, level, i }) : flip(true));
