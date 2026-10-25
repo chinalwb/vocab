@@ -870,3 +870,31 @@
 > we can make the tabs wider to show the text completely. But a width limit is still necessary to avoid ==it getting too wide==.
 
 - ⚠️ [逻辑] ==it getting too wide== → **so they don't get too wide** —— 指的是 *tabs*,复数要用 *they / them*;*avoid sb doing* 能懂，但 *so they don't …* 或 *keep them from …* 更常见。
+
+<a id="r-narrows-the-choices-down-to-one"></a>
+## 我打的字母把候选词筛到只剩一个时，按空格就应该选中它。
+
+- 日期:2026-10-25
+- 关键词:narrow the choices down to one · pressing Space should
+
+**常用说法:**
+
+> When the user's typed content has narrowed down the candidates to a single one, pressing Space should select the remaining option.
+
+**C1 说法:**
+
+> **Once** what I've typed **narrows the choices down to one**, **pressing Space** should **select it**.
+
+**差别:**
+
+- **Once** —— 「一旦……」,强调到了这一步就该发生;对应 *When*。
+- **narrows the choices down to one** —— *narrow sth down to …* 是「筛到只剩……」的固定说法,*one* 比 *a single one* 简洁;对应 *has narrowed down the candidates to a single one*。
+- **pressing Space** —— 动名词作主语，按键名首字母大写;对应 *press space*。
+- **select it** —— 前面已经说了只剩一个，用 *it* 指它就行;对应 *pick up the remaining option*。
+
+**我的原句:**
+
+> When the user's typed content has narrowed down the candidates to a single one, ==press space should== ==pick up== the remaining option.
+
+- ❌ [结构] ==press space should== → **pressing Space should** —— 动词原形不能直接作主语，要用动名词;也可以让 Space 作主语:*Space should …*。
+- ⚠️ [搭配] ==pick up== → **pick / select** —— *pick up* 多指「捡起、接人、学会」;从几个选项里挑一个，用 *pick* 或 *select*。
