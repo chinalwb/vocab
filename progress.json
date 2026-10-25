@@ -703,9 +703,9 @@
    "ease": 1.3,
    "interval": 1,
    "reps": 0,
-   "lapses": 4,
-   "due": 20751,
-   "t": 1792827626657
+   "lapses": 5,
+   "due": 20752,
+   "t": 1792902917384
   },
   "s-align-ux": {
    "ease": 1.96,
@@ -9118,6 +9118,13 @@
     "peek": false,
     "via": "review",
     "ex": "When the global flag is off, the other flags have no effect, even if they're on."
+   },
+   {
+    "t": 1792902917382,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "If the global flag is disabled, none of the other flags take effect, regardless of their own settings."
    }
   ],
   "s-align-ux": [
