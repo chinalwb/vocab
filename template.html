@@ -1698,7 +1698,8 @@ function bankLayout(words, strays, seed, k){
 // the word bank on screen: the keyboard's Delete / Backspace takes its last word back, like ⌫
 // (用户 2026-10-15) — not while a text field has the focus, and not once the bank is hidden
 // Typing narrows the chips (用户 2026-10-19): letters filter them by how the word starts, the rest
-// fade; with one left it is outlined and Tab (or Enter) takes it. Backspace drops a typed letter
+// fade; with one left it is outlined and Space or Tab (or Enter) takes it (Space: 用户 2026-10-25, the
+// key that ends a word anyway). Backspace drops a typed letter
 // first, then takes the last word back; Esc clears what was typed. Registered before the page's
 // other shortcuts (J / K, Esc closing the entry), so a key used here stops there.
 let liveBank = null;
@@ -1709,7 +1710,7 @@ document.addEventListener("keydown", e => {
   if (!b.isConnected || !(b.checkVisibility ? b.checkVisibility() : b.offsetParent)) return;
   let used = false;
   if (e.key === "Backspace" || e.key === "Delete") used = liveBank.back();
-  else if (e.key === "Tab" || e.key === "Enter") used = liveBank.take();
+  else if (e.key === "Tab" || e.key === "Enter" || e.key === " ") used = liveBank.take();
   else if (e.key === "Escape") used = liveBank.esc();
   else if (e.key.length === 1 && /[\p{L}\p{N}'’$-]/u.test(e.key)) { liveBank.type(e.key.toLowerCase().replace("’", "'")); used = true; }
   if (used) { e.preventDefault(); e.stopImmediatePropagation(); }
@@ -1719,7 +1720,7 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
   let typed = "";                                         // the letters typed to narrow the chips
   const norm = w => bareWord(w).replace(/’/g, "'");          // I’d and I'd type the same
   const hits = () => [...bankEl.querySelectorAll(".wchip[data-w]")].filter(b => !typed || norm(b.dataset.w).startsWith(typed));
-  // what Tab / Enter takes: the one left, or — with several left — the one typed in full ("i" → I, not I'd)
+  // what Space / Tab / Enter takes: the one left, or — with several left — the one typed in full ("i" → I, not I'd)
   const target = on => !typed ? null : on.length === 1 ? on[0] : on.find(b => norm(b.dataset.w) === typed) || null;
   const narrow = () => {
     const chips = [...bankEl.querySelectorAll(".wchip[data-w]")], on = hits(), aim = target(on);
@@ -1728,7 +1729,7 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
     // the hint line under it says what Tab / Esc do
     renderAns();
     if (!ctl.hint) return;
-    ctl.hint.textContent = typed ? (on.length === 1 ? "按 Tab 选中" : aim ? `按 Tab 选中「${aim.dataset.w}」· 还剩 ${on.length} 个` : on.length ? `还剩 ${on.length} 个` : "没有这样开头的词") + " · Esc 清除" : hint0;
+    ctl.hint.textContent = typed ? (on.length === 1 ? "按空格或 Tab 选中" : aim ? `按空格或 Tab 选中「${aim.dataset.w}」· 还剩 ${on.length} 个` : on.length ? `还剩 ${on.length} 个` : "没有这样开头的词") + " · Esc 清除" : hint0;
     ctl.hint.hidden = !typed && !picks.length;
   };
   const renderAns = () => {
