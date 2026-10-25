@@ -10355,6 +10355,11 @@
  },
  "history": [
   {
+   "a": "s-play-it-safe",
+   "t": 1792902929863,
+   "via": "review"
+  },
+  {
    "a": "s-global-flag",
    "t": 1792902817901,
    "via": "review"
@@ -10477,11 +10482,6 @@
   {
    "a": "s-skills-refresh",
    "t": 1792827735238,
-   "via": "review"
-  },
-  {
-   "a": "s-play-it-safe",
-   "t": 1792827631744,
    "via": "review"
   },
   {
