@@ -695,9 +695,9 @@
    "ease": 1.3,
    "interval": 1,
    "reps": 0,
-   "lapses": 4,
-   "due": 20751,
-   "t": 1792815937089
+   "lapses": 5,
+   "due": 20752,
+   "t": 1792902815170
   },
   "s-global-flag": {
    "ease": 1.3,
@@ -8256,6 +8256,13 @@
     "peek": false,
     "via": "review",
     "ex": "What's the error message shown to users in this case?"
+   },
+   {
+    "t": 1792902815167,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "What copy do we display for this error?"
    }
   ],
   "that-said": [
@@ -10334,6 +10341,11 @@
  },
  "history": [
   {
+   "a": "s-global-flag",
+   "t": 1792902817901,
+   "via": "review"
+  },
+  {
    "a": "s-error-message",
    "t": 1792902711069,
    "via": "review"
@@ -10456,11 +10468,6 @@
   {
    "a": "s-play-it-safe",
    "t": 1792827631744,
-   "via": "review"
-  },
-  {
-   "a": "s-global-flag",
-   "t": 1792827524822,
    "via": "review"
   },
   {
