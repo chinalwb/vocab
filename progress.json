@@ -10124,6 +10124,11 @@
  },
  "history": [
   {
+   "a": "stall",
+   "t": 1792894988049,
+   "via": "review"
+  },
+  {
    "a": "intermittent-outage",
    "t": 1792885980976,
    "via": "review"
@@ -10306,11 +10311,6 @@
   {
    "a": "rule-out",
    "t": 1792808935933,
-   "via": "review"
-  },
-  {
-   "a": "stall",
-   "t": 1792808862649,
    "via": "review"
   },
   {
