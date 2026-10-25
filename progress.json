@@ -677,11 +677,11 @@
   },
   "s-play-it-safe": {
    "ease": 1.3,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 6,
-   "due": 20751,
-   "t": 1792827734179
+   "due": 20754,
+   "t": 1792902986535
   },
   "s-rate-limit-error": {
    "ease": 1.3,
@@ -9392,6 +9392,13 @@
     "peek": false,
     "via": "review",
     "ex": "I meant to use *since* instead of *because* in that sentence, but I wasn't confident enough after the mistakes I'd made with it, so I played it safe and went with *because*."
+   },
+   {
+    "t": 1792902986533,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I meant to use *since* instead of *because* in that sentence, but I wasn't confident enough after the mistakes I'd made with it, so I played it safe and went with *because*."
    }
   ],
   "s-skills-refresh": [
@@ -10355,6 +10362,11 @@
  },
  "history": [
   {
+   "a": "s-skills-refresh",
+   "t": 1792902987289,
+   "via": "review"
+  },
+  {
    "a": "s-play-it-safe",
    "t": 1792902929863,
    "via": "review"
@@ -10477,11 +10489,6 @@
   {
    "a": "s-testflight",
    "t": 1792827851469,
-   "via": "review"
-  },
-  {
-   "a": "s-skills-refresh",
-   "t": 1792827735238,
    "via": "review"
   },
   {
