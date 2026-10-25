@@ -164,6 +164,7 @@
 158. [comma splice:怎么一眼判断](#comma-splice)
 159. [Does it have to be this complicated? / overcomplicate](#this-complicated)
 160. [句子:next year's / how many days are left until](#s-next-years-days-left)
+161. [句子:as we go / as the work progresses / sort out the details](#s-as-we-go)
 
 ---
 
@@ -5190,3 +5191,30 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **next year / the next year** —— 从现在算的「明年」不加冠词;*the next year* 指某件事之后的第二年。*He graduated in 2020 and found a job the next year.*(他 2020 年毕业,第二年找到了工作。)
 - **How many days are left until …?** —— 倒计时最常用的问法,也可以更短地说 *How many days until …?*
+
+---
+
+<a id="s-as-we-go"></a>
+## 句子:as we go / as the work progresses / sort out the details
+
+- 日期:2026-10-25
+
+**我的原句:**
+
+> No worries about this part for the moment. We'll make it straight with the work going on.
+
+**问题:**
+
+- ❌ [搭配] **make it straight** —— 英语里没有这个说法;「把事情理清楚、解决」说 **sort it out**(*get it straight* 是「弄明白」,意思不同)。
+- ⚠️ [直译] **with the work going on** —— 「随着工作进行」的直译,能懂但不自然;「边做边……」说 **as we go** 或 **as the work progresses**。
+- ✅ **No worries about this part** —— 意思清楚,日常使用完全够用;*No worries* 多用来回应道谢或道歉,叫人先别管某事常说 **Don't worry about** this part.
+
+**更地道的说法:**
+
+1. Let's not worry about that for now; we'll sort out the details as the work progresses.
+   这个先不用管,细节我们边做边理清楚。
+
+**涉及的搭配:**
+
+- **as we go / as the work progresses** —— 边做边……;*as we go* 更口语,*as the work progresses* 更正式。*We'll fix the small issues as we go.*(小问题我们边做边改。)
+- **sort out the details** —— 把细节理清楚、定下来。
