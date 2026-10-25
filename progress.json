@@ -687,9 +687,9 @@
    "ease": 1.3,
    "interval": 1,
    "reps": 0,
-   "lapses": 5,
-   "due": 20751,
-   "t": 1792815617798
+   "lapses": 6,
+   "due": 20752,
+   "t": 1792902703698
   },
   "s-error-message": {
    "ease": 1.3,
@@ -8044,6 +8044,13 @@
     "peek": false,
     "via": "review",
     "ex": "I'd like to know in what situations users would hit the \"Rate limit reached\" error."
+   },
+   {
+    "t": 1792902703695,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "Under what circumstances do users hit the \"Rate limit reached\" error?"
    }
   ],
   "s-error-message": [
