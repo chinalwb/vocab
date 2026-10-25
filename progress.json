@@ -342,8 +342,8 @@
    "t": 1792652830707
   },
   "push-back": {
-   "s": "review",
-   "t": 1792589813920
+   "s": "test",
+   "t": 1792895243075
   }
  },
  "cards": {
@@ -741,19 +741,19 @@
   },
   "intermittent-outage": {
    "ease": 1.3,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 4,
-   "due": 20751,
-   "t": 1792814284110
+   "due": 20754,
+   "t": 1792895213952
   },
   "practitioner": {
    "ease": 1.3,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 3,
-   "due": 20751,
-   "t": 1792814321448
+   "due": 20754,
+   "t": 1792895236948
   },
   "defer": {
    "ease": 2.5,
@@ -789,11 +789,11 @@
   },
   "push-back": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20751,
-   "t": 1792634015232
+   "due": 20759,
+   "t": 1792895242113
   }
  },
  "newDay": 20749,
@@ -8778,6 +8778,13 @@
     "peek": false,
     "via": "review",
     "ex": "We hit a transient outage on the server during the test run."
+   },
+   {
+    "t": 1792895213950,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The server went down intermittently while the tests were running, so a couple of runs failed."
    }
   ],
   "defer": [
@@ -9808,6 +9815,27 @@
     "peek": false,
     "via": "review",
     "ex": "As a practitioner in this field, I can tell you this approach actually works."
+   },
+   {
+    "t": 1792895224365,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She's a general practitioner at a local clinic."
+   },
+   {
+    "t": 1792895231633,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "He's a longtime practitioner of traditional Chinese medicine."
+   },
+   {
+    "t": 1792895236946,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "As a practitioner in this field, I can tell you this approach actually works."
    }
   ],
   "check-out": [
@@ -10101,6 +10129,13 @@
     "peek": false,
     "via": "review",
     "ex": "Can we push back the deadline to Friday?"
+   },
+   {
+    "t": 1792895242110,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Can we push back the deadline to Friday?"
    }
   ],
   "supersede": [
@@ -10243,6 +10278,21 @@
  },
  "history": [
   {
+   "a": "s-rush-into-get-straight",
+   "t": 1792895243237,
+   "via": "review"
+  },
+  {
+   "a": "push-back",
+   "t": 1792895237568,
+   "via": "review"
+  },
+  {
+   "a": "practitioner",
+   "t": 1792895216025,
+   "via": "review"
+  },
+  {
    "a": "intermittent-outage",
    "t": 1792895096047,
    "via": "review"
@@ -10378,16 +10428,6 @@
    "via": "review"
   },
   {
-   "a": "s-rush-into-get-straight",
-   "t": 1792814322124,
-   "via": "review"
-  },
-  {
-   "a": "practitioner",
-   "t": 1792814285582,
-   "via": "review"
-  },
-  {
    "a": "given-that",
    "t": 1792812658300,
    "via": "entry"
@@ -10475,11 +10515,6 @@
   {
    "a": "tilt-bias",
    "t": 1792753534099,
-   "via": "entry"
-  },
-  {
-   "a": "push-back",
-   "t": 1792742774108,
    "via": "entry"
   },
   {
