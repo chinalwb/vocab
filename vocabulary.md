@@ -163,6 +163,7 @@
 157. [given that / with that in mind](#given-that)
 158. [comma splice:怎么一眼判断](#comma-splice)
 159. [Does it have to be this complicated? / overcomplicate](#this-complicated)
+160. [句子:next year's / how many days are left until](#s-next-years-days-left)
 
 ---
 
@@ -5162,3 +5163,30 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **this complicated** —— 「眼前这种复杂程度」,比 *so complicated* 更常用;语气稍直接。
 - **Are we overcomplicating this?** —— 用 *we*,不怪对方,像是一起反思,适合团队讨论。
 - *Why is this so complicated?* 听起来像抱怨或质问;想提建议时用上面两句委婉的说法。
+
+---
+
+<a id="s-next-years-days-left"></a>
+## 句子:next year's / how many days are left until
+
+- 日期:2026-10-25
+
+**我的原句:**
+
+> How many days are there till the 高考 of the next year?
+
+**问题:**
+
+- ❌ [冠词] **the next year** —— 以「现在」为基准说「明年」不加 *the*,直接说 **next year**;*the next year* 是「(某件事之后的)第二年」。
+- ✅ **the 高考 of next year** —— 意思清楚,日常使用完全够用;用所有格 **next year's gaokao** 更简洁、更常见。
+- ✅ **till** —— 意思清楚,日常使用完全够用;书面一点用 **until**。
+
+**更地道的说法:**
+
+1. How many days are left until next year's gaokao?
+   离明年高考还有多少天?
+
+**涉及的搭配:**
+
+- **next year / the next year** —— 从现在算的「明年」不加冠词;*the next year* 指某件事之后的第二年。*He graduated in 2020 and found a job the next year.*(他 2020 年毕业,第二年找到了工作。)
+- **How many days are left until …?** —— 倒计时最常用的问法,也可以更短地说 *How many days until …?*
