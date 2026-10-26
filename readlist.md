@@ -898,3 +898,32 @@
 
 - ❌ [结构] ==press space should== → **pressing Space should** —— 动词原形不能直接作主语，要用动名词;也可以让 Space 作主语:*Space should …*。
 - ⚠️ [搭配] ==pick up== → **pick / select** —— *pick up* 多指「捡起、接人、学会」;从几个选项里挑一个，用 *pick* 或 *select*。
+
+<a id="r-in-production-does-that-mean"></a>
+## 部署之后，如果在生产环境能调通接口，是不是就说明一切正常了？
+
+- 日期:2026-10-26
+- 关键词:in production · So if …, does that mean …
+
+**常用说法:**
+
+> If I can call the endpoints on the production environment after the deployment, does it mean everything is working well?
+
+**C1 说法:**
+
+> **So if** I can call the endpoints **in production** after the deployment, **does that mean** **everything's working**?
+
+**差别:**
+
+- **So if** —— 用来确认对方的意思:「那照这么说，如果……」;对应 *If*。
+- **in production** —— 说「在某个环境里」用 *in*(*in staging*、*in the test environment*);说服务器才用 *on*(*on the server*);对应 *on the production environment*。
+- **does that mean** —— *that* 指前面整个条件;对应 *does it mean*。
+- **everything's working** —— 说「一切正常」不用加 *well*;对应 *everything is working well*。
+
+**我的原句:**
+
+> Does it mean if I can call the endpoints ==on production env== after the deployment, ==that'll mean== everything is working well? Am I right?
+
+- ❌ [结构] ==that'll mean== → **If …, does that mean …?** —— 开头的 *Does it mean* 和后面的 *that'll mean* 重复了，只留一个。
+- ⚠️ [冠词] ==on production env== → **in production** —— 少了 *the*;而且说环境时，*in production* 最常见。
+
