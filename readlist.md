@@ -994,6 +994,6 @@
 - ⚠️ [结构] ==All of these three versions== → **All three versions** —— *all of these three* 不自然;要么 *all three*,要么 *all of these*。
 - ⚠️ [搭配] ==zooming options== → **zoom options** —— 界面上的名称用名词 *zoom* 作定语。
 - ❌ [冠词] ==topbar== → **the top bar** —— 可数名词单数要加冠词，一般写成两个词。
-- ⚠️ [用词] ==the Student's side== → **the student side** —— 这里 *student* 是定语，不用所有格，也不大写。
-- ⚠️ [用词] ==Others== → **Everything else** —— *Others* 指代不清;说「其他都好」用 *everything else*。
-- ❌ [单复数] ==A/B testings== → **A/B testing** —— *testing* 在这里不可数;也可以说 *run A/B tests*。
+- ⚠️ [词形] ==the Student's side== → **the student side** —— 这里 *student* 是定语，不用所有格，也不大写。
+- ⚠️ [搭配] ==Others== → **Everything else** —— *Others* 指代不清;说「其他都好」用 *everything else*。
+- ❌ [冠词] ==A/B testings== → **A/B testing** —— *testing* 在这里不可数;也可以说 *run A/B tests*。
