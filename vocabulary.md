@@ -165,6 +165,7 @@
 159. [Does it have to be this complicated? / overcomplicate](#this-complicated)
 160. [句子:next year's / how many days are left until](#s-next-years-days-left)
 161. [句子:as we go / as the work progresses / sort out the details](#s-as-we-go)
+162. [from memory(默写 / 凭记忆)](#from-memory)
 
 ---
 
@@ -5218,3 +5219,39 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **as we go / as the work progresses** —— 边做边……;*as we go* 更口语,*as the work progresses* 更正式。*We'll fix the small issues as we go.*(小问题我们边做边改。)
 - **sort out the details** —— 把细节理清楚、定下来。
+
+---
+
+<a id="from-memory"></a>
+## from memory(默写 / 凭记忆)
+
+- 词性:phrase
+- CEFR:B1
+- 日期:2026-10-26
+- 掌握:会写
+
+**English definition:** Using only what you remember, without looking at the original.
+
+**含义:** 凭记忆、不看原文。「默写」就是 **write (it) from memory**。
+
+**例句**
+1. See? I can write it **from memory** now.
+   看吧?我现在能默写出来了。
+
+**常见搭配:** *from memory* 可以接不同的动词,共同的意思是「不看原文、只靠记忆」:
+
+- **write from memory** —— 默写
+- **recite from memory** —— 背诵(口头)
+- **draw from memory** —— 凭记忆画
+
+**别混淆:**
+
+- **dictation** —— 听写:别人念、你写。
+- **recite** —— 背诵:是嘴上说出来,不是写出来。
+
+**我的原句:**
+
+> See? I can write it without any assistace now.
+
+- ❌ [词形] **assistace** —— 拼写错误 → **assistance**。
+- ⚠️ [语气] **without any assistance** —— 偏正式;说自己凭记忆写出来,用 **from memory**,或者 **on my own**、**without any help**。
