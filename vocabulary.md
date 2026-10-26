@@ -163,6 +163,10 @@
 157. [given that / with that in mind](#given-that)
 158. [comma splice:怎么一眼判断](#comma-splice)
 159. [Does it have to be this complicated? / overcomplicate](#this-complicated)
+160. [句子:next year's / how many days are left until](#s-next-years-days-left)
+161. [句子:as we go / as the work progresses / sort out the details](#s-as-we-go)
+162. [from memory(默写 / 凭记忆)](#from-memory)
+163. [句子:reads so naturally / I doubt many …](#s-reads-naturally-doubt)
 
 ---
 
@@ -5162,3 +5166,122 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **this complicated** —— 「眼前这种复杂程度」,比 *so complicated* 更常用;语气稍直接。
 - **Are we overcomplicating this?** —— 用 *we*,不怪对方,像是一起反思,适合团队讨论。
 - *Why is this so complicated?* 听起来像抱怨或质问;想提建议时用上面两句委婉的说法。
+
+---
+
+<a id="s-next-years-days-left"></a>
+## 句子:next year's / how many days are left until
+
+- 日期:2026-10-25
+
+**我的原句:**
+
+> How many days are there till the 高考 of the next year?
+
+**问题:**
+
+- ❌ [冠词] **the next year** —— 以「现在」为基准说「明年」不加 *the*,直接说 **next year**;*the next year* 是「(某件事之后的)第二年」。
+- ✅ **the 高考 of next year** —— 意思清楚,日常使用完全够用;用所有格 **next year's gaokao** 更简洁、更常见。
+- ✅ **till** —— 意思清楚,日常使用完全够用;书面一点用 **until**。
+
+**更地道的说法:**
+
+1. How many days are left until next year's gaokao?
+   离明年高考还有多少天?
+
+**涉及的搭配:**
+
+- **next year / the next year** —— 从现在算的「明年」不加冠词;*the next year* 指某件事之后的第二年。*He graduated in 2020 and found a job the next year.*(他 2020 年毕业,第二年找到了工作。)
+- **How many days are left until …?** —— 倒计时最常用的问法,也可以更短地说 *How many days until …?*
+
+---
+
+<a id="s-as-we-go"></a>
+## 句子:as we go / as the work progresses / sort out the details
+
+- 日期:2026-10-25
+
+**我的原句:**
+
+> No worries about this part for the moment. We'll make it straight with the work going on.
+
+**问题:**
+
+- ❌ [搭配] **make it straight** —— 英语里没有这个说法;「把事情理清楚、解决」说 **sort it out**(*get it straight* 是「弄明白」,意思不同)。
+- ⚠️ [直译] **with the work going on** —— 「随着工作进行」的直译,能懂但不自然;「边做边……」说 **as we go** 或 **as the work progresses**。
+- ✅ **No worries about this part** —— 意思清楚,日常使用完全够用;*No worries* 多用来回应道谢或道歉,叫人先别管某事常说 **Don't worry about** this part.
+
+**更地道的说法:**
+
+1. Let's not worry about that for now; we'll sort out the details as the work progresses.
+   这个先不用管,细节我们边做边理清楚。
+
+**涉及的搭配:**
+
+- **as we go / as the work progresses** —— 边做边……;*as we go* 更口语,*as the work progresses* 更正式。*We'll fix the small issues as we go.*(小问题我们边做边改。)
+- **sort out the details** —— 把细节理清楚、定下来。
+
+---
+
+<a id="from-memory"></a>
+## from memory(默写 / 凭记忆)
+
+- 词性:phrase
+- CEFR:B1
+- 日期:2026-10-26
+- 掌握:会写
+
+**English definition:** Using only what you remember, without looking at the original.
+
+**含义:** 凭记忆、不看原文。「默写」就是 **write (it) from memory**。
+
+**例句**
+1. See? I can write it **from memory** now.
+   看吧?我现在能默写出来了。
+
+**常见搭配:** *from memory* 可以接不同的动词,共同的意思是「不看原文、只靠记忆」:
+
+- **write from memory** —— 默写
+- **recite from memory** —— 背诵(口头)
+- **draw from memory** —— 凭记忆画
+
+**别混淆:**
+
+- **dictation** —— 听写:别人念、你写。
+- **recite** —— 背诵:是嘴上说出来,不是写出来。
+
+**我的原句:**
+
+> See? I can write it without any assistace now.
+
+- ❌ [词形] **assistace** —— 拼写错误 → **assistance**。
+- ⚠️ [语气] **without any assistance** —— 偏正式;说自己凭记忆写出来,用 **from memory**,或者 **on my own**、**without any help**。
+
+---
+
+<a id="s-reads-naturally-doubt"></a>
+## 句子:reads so naturally / I doubt many …
+
+- 日期:2026-10-26
+
+**我的原句:**
+
+> But this sentence runs so smoothly that I doubt not that many kids in China can write it like this.
+
+**问题:**
+
+- ❌ [逻辑] **I doubt not that many kids** —— *I doubt not that…* 是古旧说法,意思是「我毫不怀疑」,意思反了;*doubt* 本身带否定,不用再加 *not* → **I doubt many kids…** 或 **I suspect not many kids…**。
+- ⚠️ [搭配] **runs so smoothly** —— *run smoothly* 说机器、流程运转顺利;说一句话读起来顺 → **reads so naturally / smoothly**。
+- ✅ **can write it** —— 意思清楚,日常使用完全够用;说「假如让他们写」用 **could** 更贴切。
+
+**更地道的说法:**
+
+1. But this sentence reads so naturally that I doubt many kids in China could write it this way.
+   但这句话读起来太自然了,我怀疑国内没几个孩子能这样写。
+2. But this sentence reads so naturally that I suspect not many kids in China could write it like this.
+   但这句话读起来太自然了,我猜国内没多少孩子能写成这样。
+
+**涉及的搭配:**
+
+- **read naturally / smoothly** —— (文字)读起来自然、通顺。
+- **I doubt (that) …** —— 我怀疑……(= 我觉得不太可能……),后面直接接肯定句。
