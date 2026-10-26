@@ -167,6 +167,7 @@
 161. [句子:as we go / as the work progresses / sort out the details](#s-as-we-go)
 162. [from memory(默写 / 凭记忆)](#from-memory)
 163. [句子:reads so naturally / I doubt many …](#s-reads-naturally-doubt)
+164. [go ahead and do / go ahead with](#go-ahead)
 
 ---
 
@@ -5285,3 +5286,43 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **read naturally / smoothly** —— (文字)读起来自然、通顺。
 - **I doubt (that) …** —— 我怀疑……(= 我觉得不太可能……),后面直接接肯定句。
+
+---
+
+<a id="go-ahead"></a>
+## go ahead and do / go ahead with
+
+- 词性:phrasal verb
+- CEFR:B1
+- 日期:2026-10-26
+- 掌握:会写
+
+**English definition:** To start or continue doing something, often after getting permission.
+
+**含义:** 「(你)直接去做吧」「可以继续了」。后面接动词用 **and**,接名词用 **with**。
+
+**go ahead and + 动词:直接去做**
+1. **Go ahead and** merge it.
+   你直接合并吧。
+
+**go ahead with + 名词:继续进行某事**
+1. We can **go ahead with** the release.
+   我们可以继续发布了。
+
+**别写成 go ahead to do:**
+
+- 表示「放手去做」时,*go ahead to do* 不是标准用法,母语者不这么说。
+- *go ahead to do* 只在字面意思「先走一步去做某事」时成立,而且很少用;想说「先走一步」,常说 **go on ahead**。
+- 常见的 *go-ahead to* 是名词:**the go-ahead** = 批准、许可,如 *We got the go-ahead to launch.*
+
+**我的原句:**
+
+> I signed in the app. You can go ahead to check it out.
+
+- ❌ [搭配] **go ahead to check it out** —— 「你直接去做吧」的固定搭配是 *go ahead and* + 动词 → **go ahead and check it out**。
+
+**我的原句:**
+
+> We can go ahead to advance it to the prod.
+
+- ❌ [搭配] **go ahead to advance** —— 同上 → **go ahead and promote it to prod**。
