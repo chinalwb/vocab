@@ -963,3 +963,37 @@
 - ❌ [搭配] ==dominant progress== → **significant / rapid progress** —— *dominant* 是「占主导地位的」,不修饰 *progress*。
 - ⚠️ [介词] ==on me== → **for me** —— 「对谁来说」用 *for*。
 
+
+<a id="r-revisit-them-later"></a>
+## 三套设计都不错，先都留着，以后可能还会再看。先用方案 B;学生端把缩放选项从顶栏挪到设置里，其他都挺好。以后可能要拿不同版本做 A/B 测试。
+
+- 日期:2026-10-27
+- 关键词:revisit them later · run A/B tests
+
+**常用说法:**
+
+> All three versions look good. Keep them all for now; we may come back to them later. Let's go with Option B first. Move the zoom options from the top bar to Settings on the student side. Everything else looks good. We may want different versions for A/B testing later.
+
+**C1 说法:**
+
+> **All three** look good — let's keep them for now, **since we may revisit them later**. We'll go with Option B first. **On the student side**, move the zoom options **from the top bar into Settings**; **everything else** looks good. **Later on**, we may want to **run A/B tests** with different versions.
+
+**差别:**
+
+- **All three** —— 前面说过是设计稿，直接说 *All three* 就够;对应 *All of these three versions*。
+- **since we may revisit them later** —— 用 *since* 把「先留着」和原因连成一句;*revisit* 是「回头再看、重新考虑」;对应 *We may come back to these designs later*。
+- **On the student side** —— 放在句首先交代范围;*student* 作定语，不用所有格、不大写;对应 *on the Student's side*。
+- **from the top bar into Settings** —— *top bar* 前加 *the*;*into* 强调放进设置页里面;对应 *from topbar to Settings*。
+- **everything else** —— 明确指「其余所有部分」;对应 *Others*。
+- **run A/B tests** —— 「做 A/B 测试」的常用搭配，可数的 *tests*;对应 *have different versions for A/B testings*。
+
+**我的原句:**
+
+> ==All of these three versions== look good. Keep them all for now. We may come back to these designs later. Let's go with Option B first. Move the ==zooming options== from ==topbar== to Settings on ==the Student's side==. ==Others== look good. We may want to have different versions for ==A/B testings== later.
+
+- ⚠️ [结构] ==All of these three versions== → **All three versions** —— *all of these three* 不自然;要么 *all three*,要么 *all of these*。
+- ⚠️ [搭配] ==zooming options== → **zoom options** —— 界面上的名称用名词 *zoom* 作定语。
+- ❌ [冠词] ==topbar== → **the top bar** —— 可数名词单数要加冠词，一般写成两个词。
+- ⚠️ [用词] ==the Student's side== → **the student side** —— 这里 *student* 是定语，不用所有格，也不大写。
+- ⚠️ [用词] ==Others== → **Everything else** —— *Others* 指代不清;说「其他都好」用 *everything else*。
+- ❌ [单复数] ==A/B testings== → **A/B testing** —— *testing* 在这里不可数;也可以说 *run A/B tests*。
