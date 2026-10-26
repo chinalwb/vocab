@@ -927,3 +927,39 @@
 - ❌ [结构] ==that'll mean== → **If …, does that mean …?** —— 开头的 *Does it mean* 和后面的 *that'll mean* 重复了，只留一个。
 - ⚠️ [冠词] ==on production env== → **in production** —— 少了 *the*;而且说环境时，*in production* 最常见。
 
+<a id="r-iron-out-known-mistakes"></a>
+## 我想稍微调整一下：每周五，你能根据我最近学的单词和短语给我布置一些翻译作业吗？目标是改掉我已经知道的错误，而不是找新的错误。你觉得呢？其实我在做一个帮人提高写作的产品，用户可能会像我这样用它：通过这些 app 从自己的错误中学习。所以我想听听你的建议，怎样才能进步得更快，不只是我，也包括我的用户。
+
+- 日期:2026-10-26
+- 关键词:iron out · the way I've been using · rapid progress
+
+**常用说法:**
+
+> I'd like to change it a little: every Friday, can you give me some translation homework about the words and phrases I studied recently? The goal is to fix the mistakes I already know, not to find new ones. What do you think? Actually, I'm making a product that helps people write better. Users may use it like I use this one, learning from my mistakes with the apps. So I want your advice on how to make big progress, for me and also for my users.
+
+**C1 说法:**
+
+> I'd like to **tweak** it a bit: every Friday, could you give me some translation homework **based on** the words and phrases I've studied recently? The goal is to **iron out** the mistakes I already know about, not to find new ones. What do you think? Actually, I'm building a product to help people improve their writing. Users may use it **the way I've been using this setup** — **learning from my mistakes** through the apps. So I'd like your advice on how to make **rapid progress**, **not only for me but for my users too**.
+
+**差别:**
+
+- **tweak** —— 小幅调整;对应 *change it a little*。
+- **based on** —— 「以……为依据」;对应 *about*。
+- **iron out** —— 把问题、错误逐个理顺、消除;对应 *fix*。
+- **the way I've been using this setup** —— *the way* + 从句表示「像……那样」,现在完成进行时说明一直在这么用;对应 *like I use this one*。
+- **learning from my mistakes** —— 「从错误中学习」的固定说法;对应 *learning from my mistakes with the apps*。
+- **rapid progress** —— 「快速的进步」;对应 *big progress*。
+- **not only for me but for my users too** —— 「对谁来说」用 *for*;对应 *for me and also for my users*。
+
+**我的原句:**
+
+> I'd like to change it a bit: Every Friday, you can assign ==a translation homework== to me, which can be ==related with== the words and phrases I studied recently. The goal is to ==resolve== all of the known mistakes but not the unknown ones. What do you think? -- Actually, I am working on a product for improving users' writing skills. They may use the app ==like how I have been doing here== and how I've been ==studying from the mistakes== with the apps. So I want to get some advice from you to make ==dominant progress== not only ==on me== but also on my users.
+
+- ❌ [冠词] ==a translation homework== → **some translation homework** —— *homework* 不可数，不加 *a*。
+- ❌ [介词] ==related with== → **related to** —— 固定搭配。
+- ⚠️ [搭配] ==resolve== → **fix / iron out** —— *resolve* 多搭配 *issue*、*conflict*。
+- ❌ [结构] ==like how I have been doing here== → **the way I've been using it here** —— *doing* 缺宾语,*like how* 太松散。
+- ⚠️ [直译] ==studying from the mistakes== → **learning from my mistakes** —— 固定说法。
+- ❌ [搭配] ==dominant progress== → **significant / rapid progress** —— *dominant* 是「占主导地位的」,不修饰 *progress*。
+- ⚠️ [介词] ==on me== → **for me** —— 「对谁来说」用 *for*。
+
