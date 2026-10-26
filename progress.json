@@ -10733,6 +10733,11 @@
  },
  "history": [
   {
+   "a": "given-that",
+   "t": 1792981349987,
+   "via": "entry"
+  },
+  {
    "a": "likely-unlikely",
    "t": 1792976450288,
    "via": "entry"
@@ -10825,11 +10830,6 @@
   {
    "a": "endowed-with",
    "t": 1792905581433,
-   "via": "entry"
-  },
-  {
-   "a": "given-that",
-   "t": 1792905562996,
    "via": "entry"
   },
   {
