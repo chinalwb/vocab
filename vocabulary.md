@@ -166,6 +166,7 @@
 160. [句子:next year's / how many days are left until](#s-next-years-days-left)
 161. [句子:as we go / as the work progresses / sort out the details](#s-as-we-go)
 162. [from memory(默写 / 凭记忆)](#from-memory)
+163. [句子:reads so naturally / I doubt many …](#s-reads-naturally-doubt)
 
 ---
 
@@ -5255,3 +5256,32 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - ❌ [词形] **assistace** —— 拼写错误 → **assistance**。
 - ⚠️ [语气] **without any assistance** —— 偏正式;说自己凭记忆写出来,用 **from memory**,或者 **on my own**、**without any help**。
+
+---
+
+<a id="s-reads-naturally-doubt"></a>
+## 句子:reads so naturally / I doubt many …
+
+- 日期:2026-10-26
+
+**我的原句:**
+
+> But this sentence runs so smoothly that I doubt not that many kids in China can write it like this.
+
+**问题:**
+
+- ❌ [逻辑] **I doubt not that many kids** —— *I doubt not that…* 是古旧说法,意思是「我毫不怀疑」,意思反了;*doubt* 本身带否定,不用再加 *not* → **I doubt many kids…** 或 **I suspect not many kids…**。
+- ⚠️ [搭配] **runs so smoothly** —— *run smoothly* 说机器、流程运转顺利;说一句话读起来顺 → **reads so naturally / smoothly**。
+- ✅ **can write it** —— 意思清楚,日常使用完全够用;说「假如让他们写」用 **could** 更贴切。
+
+**更地道的说法:**
+
+1. But this sentence reads so naturally that I doubt many kids in China could write it this way.
+   但这句话读起来太自然了,我怀疑国内没几个孩子能这样写。
+2. But this sentence reads so naturally that I suspect not many kids in China could write it like this.
+   但这句话读起来太自然了,我猜国内没多少孩子能写成这样。
+
+**涉及的搭配:**
+
+- **read naturally / smoothly** —— (文字)读起来自然、通顺。
+- **I doubt (that) …** —— 我怀疑……(= 我觉得不太可能……),后面直接接肯定句。
