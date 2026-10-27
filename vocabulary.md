@@ -5492,23 +5492,27 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 | 单词 | 词性 | 常见结构与用法 | 举例 |
 |---|---|---|---|
-| **hesitate** | 动词 | hesitate over / about + whether to do / doing<br>*(拿不定主意;介词只用 over / about,不用 of)* | I **hesitated over whether to** include "a".(我犹豫要不要加 "a"。) |
-| **hesitate** | 动词 | hesitate to do<br>*(有顾虑、不太敢做)* | I **hesitated to** include "a".(我当时不太敢加 "a"。) |
-| **hesitant** | 形容词 | be hesitant about + whether to do / doing<br>*(放在 be 后面,不能说 was hesitate)* | I **was hesitant about whether to** include "a".(我拿不准要不要加 "a"。) |
+| **hesitate** | 动词 | hesitate over / about + whether to do / doing<br>*(拿不定主意;介词只用 over / about,不用 of)* | We **hesitated over whether to** ship it on Friday.(我们犹豫要不要周五发布。) |
+| **hesitate** | 动词 | hesitate to do<br>*(有顾虑、不太敢做;Don't hesitate to … = 尽管……)* | **Don't hesitate to** ask if you get stuck.(卡住了就尽管问。) |
+| **hesitant** | 形容词 | be hesitant about + doing / be hesitant to do<br>*(放在 be 后面,不能说 was hesitate)* | He **was hesitant about** taking the job.(他对要不要接这份工作拿不准。) |
 
 **义项一:hesitate over / about —— 拿不定主意**
 
-1. I **hesitated over whether to** include "a" before "good shape".
-   我犹豫要不要在 good shape 前面加 a。
-2. I **hesitated about including** "a" before "good shape".
-   我对要不要在 good shape 前面加 a 犹豫不决。
+1. We **hesitated over whether to** ship it on Friday.
+   我们犹豫要不要周五发布。
+2. She **hesitated about asking** her manager for help.
+   她犹豫要不要找经理帮忙。
 
 **义项二:hesitate to do —— 有顾虑、不太敢做**
 
-1. I **hesitated to include** "a" before "good shape".
-   我当时不太敢在 good shape 前面加 a。
+1. **Don't hesitate to** ask if you get stuck.
+   卡住了就尽管问。
+2. I **hesitated to** merge it without a review.
+   没经过评审,我不太敢合并。
 
-**义项三:be hesitant about —— 犹豫的(形容词)**
+**义项三:be hesitant about / to —— 犹豫的(形容词)**
 
-1. I **was hesitant about whether to** include "a" before "good shape".
-   我拿不准要不要在 good shape 前面加 a。
+1. He **was hesitant about** taking the job.
+   他对要不要接这份工作拿不准。
+2. The team **is hesitant to** switch to a new tool.
+   团队不太愿意换新工具。
