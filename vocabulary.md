@@ -167,6 +167,8 @@
 161. [句子:as we go / as the work progresses / sort out the details](#s-as-we-go)
 162. [from memory(默写 / 凭记忆)](#from-memory)
 163. [句子:reads so naturally / I doubt many …](#s-reads-naturally-doubt)
+164. [go ahead and do / go ahead with](#go-ahead)
+165. [句子:hold off on / considering switching / put on hold](#s-hold-off-considering)
 
 ---
 
@@ -5285,3 +5287,77 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **read naturally / smoothly** —— (文字)读起来自然、通顺。
 - **I doubt (that) …** —— 我怀疑……(= 我觉得不太可能……),后面直接接肯定句。
+
+---
+
+<a id="go-ahead"></a>
+## go ahead and do / go ahead with
+
+- 词性:phrasal verb
+- CEFR:B1
+- 日期:2026-10-26
+- 掌握:会写
+
+**English definition:** To start or continue doing something, often after getting permission.
+
+**含义:** 「(你)直接去做吧」「可以继续了」。后面接动词用 **and**,接名词用 **with**。
+
+**go ahead and + 动词:直接去做**
+1. **Go ahead and** merge it.
+   你直接合并吧。
+
+**go ahead with + 名词:继续进行某事**
+1. We can **go ahead with** the release.
+   我们可以继续发布了。
+
+**别写成 go ahead to do:**
+
+- 表示「放手去做」时,*go ahead to do* 不是标准用法,母语者不这么说。
+- *go ahead to do* 只在字面意思「先走一步去做某事」时成立,而且很少用;想说「先走一步」,常说 **go on ahead**。
+- 常见的 *go-ahead to* 是名词:**the go-ahead** = 批准、许可,如 *We got the go-ahead to launch.*
+
+**我的原句:**
+
+> I signed in the app. You can go ahead to check it out.
+
+- ❌ [搭配] **go ahead to check it out** —— 「你直接去做吧」的固定搭配是 *go ahead and* + 动词 → **go ahead and check it out**。
+
+**我的原句:**
+
+> We can go ahead to advance it to the prod.
+
+- ❌ [搭配] **go ahead to advance** —— 同上 → **go ahead and promote it to prod**。
+
+---
+
+<a id="s-hold-off-considering"></a>
+## 句子:hold off on / considering switching / put on hold
+
+- 日期:2026-10-27
+
+**我的原句:**
+
+> Let's hold off on this task. PM team is considering to switch to another tool.
+
+**问题:**
+
+- ✅ **Let's hold off on this task.** —— 原句就很好。
+- ❌ [冠词] **PM team** —— 指的是自己公司那个具体的团队,要加定冠词 → **The PM team**。(第二次漏 the)
+- ❌ [动词] **considering to switch** —— *consider* 后面只接 -ing,不接 to do → **considering switching**。同类只接 -ing 的动词:suggest、avoid、finish、mind、keep。
+
+**改完是:**
+
+> Let's hold off on this task. The PM team is considering switching to another tool.
+> 这个任务先缓一缓。PM 团队在考虑换成另一个工具。
+
+**C1 写法:**
+
+> Let's put this on hold for now. The PM team is weighing a switch to another tool.
+> 这个先暂停。PM 团队正在权衡要不要换成另一个工具。
+
+**涉及的搭配:**
+
+- **hold off on sth** —— 推迟、先不做某事。
+- **put sth on hold** —— 把某事暂停、搁置,说任务时很常用。
+- **consider doing sth** —— 考虑做某事(不是 *consider to do*)。
+- **weigh a switch to sth** —— 权衡要不要换成某物,比 *consider* 更具体。
