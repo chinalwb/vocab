@@ -528,6 +528,15 @@ textarea.mynote::placeholder{color:var(--card-ink-2);opacity:.8}
   background:var(--card-edge);border-radius:0 7px 7px 0;
   font-family:var(--font);font-size:calc(15px * var(--fs));line-height:1.5;
 }
+/* a comparison table (worth / worthy / worthwhile): rules between rows only; scrolls on its own when too wide */
+.body .tbl{overflow-x:auto;margin:0 0 13px}
+.body table{border-collapse:collapse;font-size:calc(13.5px * var(--fs));line-height:1.5}
+/* Chinese breaks after any character: the floor keeps 形容词 on one line, as in the App */
+.body th,.body td{text-align:left;vertical-align:top;min-width:4em;padding:7px 12px 7px 0;border-bottom:1px solid var(--card-edge)}
+.body th:last-child,.body td:last-child{padding-right:0}
+.body th{font-weight:700;border-bottom-color:var(--card-ink-2)}
+.body tr:last-child td{border-bottom:0}
+.body td em{color:var(--card-ink-2)}
 
 /* ── 错题本 ─────────────────────────────── */
 .mtag{

@@ -55,7 +55,7 @@ private data class SyncState(
  * work out what was added or edited since the last fetch.
  */
 class VocabRepository(private val context: Context) {
-    private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json { ignoreUnknownKeys = true; serializersModule = BlocksModule }
     private val mutex = Mutex()
     private val dataFile = File(context.filesDir, "data.json")
     private val syncFile = File(context.filesDir, "sync.json")

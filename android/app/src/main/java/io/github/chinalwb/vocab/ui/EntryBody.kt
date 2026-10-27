@@ -176,6 +176,8 @@ private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit
                 )
             }
             is Block.Quote -> Quote(block.lines, link, onXref)
+            is Block.Table -> Table(block, link, onXref)
+            Block.Unknown -> {}
         }
     }
     val ex = menuFor
@@ -244,6 +246,65 @@ fun Quote(lines: List<String>, link: androidx.compose.ui.graphics.Color, onXref:
                     inline(it, link, onXref),
                     style = MaterialTheme.typography.bodyLarge.copy(fontFamily = AppFont, fontSize = 17.sp, lineHeight = 26.sp),
                 )
+            }
+        }
+    }
+}
+
+/**
+ * A comparison table (用户 2026-10-27; worth / worthy / worthwhile side by side), rules between rows
+ * only. Column widths work the way a browser's do: every column gets at least its longest word,
+ * the room left over goes to the columns with the most text, and the table fills the card.
+ * Chinese can break after any character, so a column is also kept at least four characters wide
+ * (or its whole text, if shorter): 形容词 stays on one line instead of stacking.
+ * If even the longest words don't fit, the columns shrink in step and long words wrap.
+ */
+@Composable
+private fun Table(table: Block.Table, link: androidx.compose.ui.graphics.Color, onXref: (String) -> Unit) {
+    val cols = table.head.size
+    val rows = listOf(table.head) + table.rows
+    val style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 21.sp)
+    val head = MaterialTheme.colorScheme.onSurfaceVariant
+    val rule = MaterialTheme.colorScheme.outlineVariant
+    androidx.compose.ui.layout.Layout(content = {
+        rows.forEachIndexed { r, row ->
+            row.forEachIndexed { c, cell ->
+                Text(
+                    inline(cell, link, onXref),
+                    style = if (r == 0) style.copy(fontWeight = FontWeight.Bold) else style,
+                    modifier = Modifier.padding(end = if (c < cols - 1) 12.dp else 0.dp, top = 7.dp, bottom = 7.dp),
+                )
+            }
+            // under the header a darker rule, then a light one between rows
+            if (r < rows.size - 1) Box(Modifier.background(if (r == 0) head else rule))
+        }
+    }) { measurables, constraints ->
+        val cells = measurables.chunked(cols + 1).map { it.take(cols) }
+        val rules = measurables.chunked(cols + 1).mapNotNull { it.getOrNull(cols) }
+        val floor = (style.fontSize * 4).roundToPx() + 12.dp.roundToPx()
+        val max = IntArray(cols) { c -> cells.maxOf { it[c].maxIntrinsicWidth(Int.MAX_VALUE) } }
+        val min = IntArray(cols) { c ->
+            cells.maxOf { maxOf(it[c].minIntrinsicWidth(Int.MAX_VALUE), minOf(it[c].maxIntrinsicWidth(Int.MAX_VALUE), floor)) }
+        }
+        val avail = if (constraints.hasBoundedWidth) constraints.maxWidth else max.sum()
+        val (minSum, maxSum) = min.sum() to max.sum()
+        val width = IntArray(cols) { c ->
+            when {
+                maxSum <= avail -> max[c] + (avail - maxSum) * max[c] / maxSum.coerceAtLeast(1)
+                minSum >= avail -> min[c] * avail / minSum.coerceAtLeast(1)
+                else -> min[c] + ((avail - minSum).toLong() * (max[c] - min[c]) / (maxSum - minSum)).toInt()
+            }
+        }
+        val placed = cells.map { row -> row.mapIndexed { c, m -> m.measure(androidx.compose.ui.unit.Constraints.fixedWidth(width[c])) } }
+        val line = rules.map { it.measure(androidx.compose.ui.unit.Constraints.fixed(avail, 1.dp.roundToPx())) }
+        val heights = placed.map { row -> row.maxOf { it.height } }
+        layout(avail, heights.sum() + line.sumOf { it.height }) {
+            var y = 0
+            placed.forEachIndexed { r, row ->
+                var x = 0
+                row.forEachIndexed { c, p -> p.place(x, y); x += width[c] }
+                y += heights[r]
+                line.getOrNull(r)?.let { it.place(0, y); y += it.height }
             }
         }
     }

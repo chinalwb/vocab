@@ -115,7 +115,7 @@ def gloss(raw, level):
     for line in raw.split("\n"):
         s = line.strip()
         # a bare "**我的原句:**" label says nothing; the quote under it does
-        if s and not s.startswith("-") and not s.startswith("**English definition") and not s.startswith("**我的原句"):
+        if s and not s.startswith(("-", "|")) and not s.startswith("**English definition") and not s.startswith("**我的原句"):
             return re.sub(r"\*\*(.+?)\*\*", r"\1", re.sub(r"^>\s*", "", s))
     return ""
 
@@ -148,6 +148,7 @@ def parse_blocks(raw):
       {"t": "ul", "items": [s, ...]}
       {"t": "ol", "items": [{"en": s, "zh": s}, ...]}   (zh may be "")
       {"t": "quote", "lines": [s, ...]}
+      {"t": "table", "head": [s, ...], "rows": [[s, ...], ...]}   (a cell's <br> becomes "\n")
     """
     lines = strip_meta(raw).split("\n")
     out, cur, i = [], None, 0
@@ -160,7 +161,17 @@ def parse_blocks(raw):
         mo = re.match(r"^(\d+)\.\s+(.*)$", s)
         mu = re.match(r"^[-*]\s+(.*)$", s)
         mq = re.match(r"^>\s?(.*)$", s)
-        if mq:
+        # a markdown table: a | row, then a |---| row; it runs while lines start with |
+        if s.startswith("|") and i + 1 < len(lines) and TABLE_RULE.match(lines[i + 1].strip()):
+            head = table_cells(s)
+            rows, i = [], i + 1
+            while i + 1 < len(lines) and lines[i + 1].strip().startswith("|"):
+                i += 1
+                cells = table_cells(lines[i].strip())
+                rows.append((cells + [""] * len(head))[:len(head)])
+            out.append({"t": "table", "head": head, "rows": rows})
+            cur = None
+        elif mq:
             quoted = [mq.group(1)]
             while i + 1 < len(lines) and re.match(r"^>\s?", lines[i + 1].strip()):
                 i += 1
@@ -189,6 +200,15 @@ def parse_blocks(raw):
     return out
 
 
+TABLE_RULE = re.compile(r"^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)*\|?$")
+
+
+def table_cells(row):
+    """'| a | b \\| c |' -> ['a', 'b | c']; <br> inside a cell is a line break."""
+    cells = re.split(r"(?<!\\)\|", row.strip().removeprefix("|").removesuffix("|"))
+    return [re.sub(r"<br\s*/?>", "\n", c.strip().replace("\\|", "|"), flags=re.I) for c in cells]
+
+
 def to_html(blocks):
     out = []
     for b in blocks:
@@ -201,6 +221,12 @@ def to_html(blocks):
                 f'<li><span class="en">{inline(x["en"])}</span>'
                 + (f'<span class="zh">{inline(x["zh"])}</span>' if x["zh"] else "") + "</li>"
                 for x in b["items"]) + "</ol>")
+        elif b["t"] == "table":
+            cell = lambda tag, x: f"<{tag}>{inline(x).replace(chr(10), '<br>')}</{tag}>"
+            out.append('<div class="tbl"><table><thead><tr>' + "".join(cell("th", x) for x in b["head"])
+                       + "</tr></thead><tbody>"
+                       + "".join("<tr>" + "".join(cell("td", x) for x in r) + "</tr>" for r in b["rows"])
+                       + "</tbody></table></div>")
         else:
             out.append("<blockquote>" + "<br>".join(inline(x) for x in b["lines"]) + "</blockquote>")
     return "".join(out)
