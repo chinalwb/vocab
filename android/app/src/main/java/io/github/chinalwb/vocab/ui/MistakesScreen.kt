@@ -186,7 +186,7 @@ private fun MistakeCard(m: Mistake, entry: Entry, onClick: () -> Unit) {
             Row {
                 Text(if (m.sev == "error") "❌ " else "⚠️ ", color = sev, fontSize = 12.sp)
                 // cross-references inside a mistake open the entry too, like a tap on the card
-                Text(inline(m.text, MaterialTheme.colorScheme.primary) { onClick() }, style = MaterialTheme.typography.bodyMedium)
+                Text(inline(m.text, MaterialTheme.colorScheme.primary, onXref = { onClick() }), style = MaterialTheme.typography.bodyMedium)
             }
             if (m.original.isNotEmpty()) {
                 Row(Modifier.height(IntrinsicSize.Min)) {
