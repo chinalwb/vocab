@@ -9,13 +9,17 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -38,20 +42,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
+import io.github.chinalwb.vocab.R
 import io.github.chinalwb.vocab.data.Entry
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 
 /*
  * 分享图片 (用户 2026-10-27): the entry's notes drawn as one long picture, to send to a WeChat
@@ -81,11 +88,30 @@ private fun ShareCard(entry: Entry, modifier: Modifier = Modifier) = LightTheme 
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)
             StillBlocks(entry.anchor, entry.blocks)
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)
-            Text(
-                listOfNotNull("VoCab", if (entry.no > 0) "#${entry.no}" else null, entry.date.ifBlank { null }).joinToString(" · "),
-                style = MaterialTheme.typography.labelMedium,
-                color = muted,
-            )
+            Footer(entry, muted)
+        }
+    }
+}
+
+// the user's own motto (2026-10-26), next to the app icon at the foot of every picture
+private const val SLOGAN = "Get it right. Then make it better."
+
+/** The app icon, VoCab and the slogan beside it; the entry's number and date on the right. */
+@Composable
+private fun Footer(entry: Entry, muted: androidx.compose.ui.graphics.Color) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        // the launcher foreground has a 9dp frame round the photo on its 108dp canvas: scaling by
+        // 108 / 90 crops it away, the way the launcher's mask does
+        Box(Modifier.size(36.dp).clip(RoundedCornerShape(9.dp))) {
+            Image(painterResource(R.mipmap.ic_launcher_foreground), null, Modifier.fillMaxSize().scale(1.2f))
+        }
+        Column(Modifier.weight(1f)) {
+            Text("VoCab", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+            Text(SLOGAN, style = MaterialTheme.typography.bodySmall, color = muted)
+        }
+        Column(horizontalAlignment = Alignment.End) {
+            if (entry.no > 0) Text("#${entry.no}", style = MaterialTheme.typography.labelMedium, color = muted)
+            if (entry.date.isNotBlank()) Text(entry.date, style = MaterialTheme.typography.labelMedium, color = muted)
         }
     }
 }
