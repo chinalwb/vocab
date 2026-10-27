@@ -171,6 +171,7 @@
 165. [句子:hold off on / considering switching / put on hold](#s-hold-off-considering)
 166. [翻译:jab the scoop into / chips of ice](#jab-chips-of-ice)
 167. [句子:share sth on WeChat / share sth with sb / settle on](#s-share-on-wechat)
+168. [hesitate / hesitant](#hesitate-hesitant)
 
 ---
 
@@ -5466,3 +5467,48 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **choose / decide between A and B** —— 在 A 和 B 之间选。
 - **settle on sth** —— 考虑之后选定;**go with sth** 更口语。
 - **be confident about sth** —— 对某事有把握。
+
+<a id="hesitate-hesitant"></a>
+## hesitate / hesitant
+
+- 音标:hesitate 英 /ˈhezɪteɪt/ 美 /ˈhezəteɪt/;hesitant 英 /ˈhezɪtənt/ 美 /ˈhezətənt/
+- 词性:v. / adj.
+- CEFR:B2(hesitate)
+- 日期:2026-10-27
+- 掌握:会写
+
+**English definition:** *hesitate* (verb): to pause before doing or saying something because you are unsure. *hesitant* (adjective): unsure, and so slow to act or speak.
+
+**含义:** 犹豫。**hesitate** 是动词(犹豫这个动作),**hesitant** 是形容词(犹豫的状态),要放在 be 后面。
+
+**我的原句:**
+
+> I was hesitate about whether to include the indefinite article "a" in front of "good shape"
+
+- ❌ [词形] **was hesitate** —— *hesitate* 是动词,不能放在 *was* 后面 → **was hesitant** 或 **hesitated**。
+- ⚠️ [搭配] **in front of** —— 说词序用 **before**;*in front of* 多指空间位置。
+
+**对比:hesitate / hesitant**
+
+| 单词 | 词性 | 常见结构与用法 | 举例 |
+|---|---|---|---|
+| **hesitate** | 动词 | hesitate over / about + whether to do / doing<br>*(拿不定主意;介词只用 over / about,不用 of)* | I **hesitated over whether to** include "a".(我犹豫要不要加 "a"。) |
+| **hesitate** | 动词 | hesitate to do<br>*(有顾虑、不太敢做)* | I **hesitated to** include "a".(我当时不太敢加 "a"。) |
+| **hesitant** | 形容词 | be hesitant about + whether to do / doing<br>*(放在 be 后面,不能说 was hesitate)* | I **was hesitant about whether to** include "a".(我拿不准要不要加 "a"。) |
+
+**义项一:hesitate over / about —— 拿不定主意**
+
+1. I **hesitated over whether to** include "a" before "good shape".
+   我犹豫要不要在 good shape 前面加 a。
+2. I **hesitated about including** "a" before "good shape".
+   我对要不要在 good shape 前面加 a 犹豫不决。
+
+**义项二:hesitate to do —— 有顾虑、不太敢做**
+
+1. I **hesitated to include** "a" before "good shape".
+   我当时不太敢在 good shape 前面加 a。
+
+**义项三:be hesitant about —— 犹豫的(形容词)**
+
+1. I **was hesitant about whether to** include "a" before "good shape".
+   我拿不准要不要在 good shape 前面加 a。
