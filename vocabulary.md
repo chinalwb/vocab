@@ -170,6 +170,7 @@
 164. [go ahead and do / go ahead with](#go-ahead)
 165. [句子:hold off on / considering switching / put on hold](#s-hold-off-considering)
 166. [翻译:jab the scoop into / chips of ice](#jab-chips-of-ice)
+167. [句子:share sth on WeChat / share sth with sb / settle on](#s-share-on-wechat)
 
 ---
 
@@ -5400,3 +5401,47 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 说话、给孩子讲 → *dug hard / got / pieces of ice*。
 - 写作、想写得生动 → *jabbed / came up with / chips of ice*。
 - 中间档 → *scooped out a few bits of ice*,书面口语都能用。
+
+---
+
+<a id="s-share-on-wechat"></a>
+## 句子:share sth on WeChat / share sth with sb / settle on
+
+- 日期:2026-10-27
+
+**我的原句:**
+
+> I was struggling to find the correct prepsition between "share sth. on WeChat" and "share sth. to WeChat". I think "share something to somebody" should a correct pattern, but when it comes to describing about sharing something on some platform, I wasn't that confident with it and finally came up with "share .. on WeChat".
+
+**问题:**
+
+- ❌ [词形] **prepsition** —— 拼写错误 → **preposition**。
+- ⚠️ [逻辑] **find the correct preposition between A and B** —— 二选一用 **choose between A and B**。
+- ❌ [结构] **should a correct pattern** —— 少了 *be*;陈述判断直接用 **is**。
+- ❌ [搭配] **share something to somebody** —— 和人分享用 **share something with somebody**。
+- ❌ [动词] **describing about** —— *describe* 直接跟宾语,不加 *about*。
+- ⚠️ [冠词] **some platform** —— 泛指「一个平台」用 **a platform**。
+- ⚠️ [介词] **confident with** —— 对某事有把握用 **confident about**。
+- ⚠️ [搭配] **came up with** —— 是「想出、发明」;在已有选项里挑一个用 **settled on**。
+
+**改完是:**
+
+> I was struggling to choose between "share sth on WeChat" and "share sth to WeChat". I think "share something with somebody" is a correct pattern, but when it comes to describing sharing something on a platform, I wasn't that confident about it and finally settled on "share … on WeChat".
+
+**C1 写法:**
+
+> I couldn't decide between "share sth on WeChat" and "share sth to WeChat". I know we say "share something with someone", but I wasn't sure which preposition goes with a platform, so I went with "on".
+> 我拿不准该用 share on WeChat 还是 share to WeChat。我知道「和某人分享」是 share with,但不确定平台该搭配哪个介词,最后选了 on。
+
+**介词怎么选:**
+
+- **share sth on WeChat** —— 在某个平台上分享;说平台用 *on*(on Facebook、on Moments)。写句子用这个。
+- **Share to WeChat** —— App 分享按钮上的常见文字,带「发送到」的方向感;做按钮可以,写句子用 *on* 更自然。
+- **share sth via WeChat** —— 通过微信分享,强调渠道。
+- **share sth with sb** —— 和某人分享,不是 *share sth to sb*。
+
+**涉及的搭配:**
+
+- **choose / decide between A and B** —— 在 A 和 B 之间选。
+- **settle on sth** —— 考虑之后选定;**go with sth** 更口语。
+- **be confident about sth** —— 对某事有把握。
