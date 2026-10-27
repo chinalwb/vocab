@@ -37,6 +37,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -149,6 +150,7 @@ fun EntryScreen(
         }
         val selfTest = entry.level == "SELFTEST"
         var details by rememberSaveable { mutableStateOf(false) }
+        var sharing by rememberSaveable { mutableStateOf(false) }
         // ⤢: the card takes the page (the headword, meta pill and track fold away)
         var full by rememberSaveable { mutableStateOf(false) }
         // the attempt lives out here, so going to the notes and back doesn't lose it; a new try
@@ -198,7 +200,7 @@ fun EntryScreen(
         val toNotes = quizUp && (stage != Stage.Test || revealed)
 
         if (!quizUp) {
-            TopRow(onBack, nextLabel, onNext, title = entry, showTitle = full)
+            TopRow(onBack, nextLabel, onNext, title = entry, showTitle = full, onShare = { sharing = true })
             // ⤢ / ⤡ animate (用户 2026-10-24): the bands fold up and the card grows into the room
             AnimatedVisibility(!full, enter = expandVertically() + fadeIn(), exit = shrinkVertically() + fadeOut()) {
                 Column {
@@ -323,6 +325,7 @@ fun EntryScreen(
             )
         }
         if (details) ModalBottomSheet(onDismissRequest = { details = false }) { Details(entry) }
+        if (sharing) ShareImageSheet(entry) { sharing = false }
     }
     }
 }
@@ -330,7 +333,7 @@ fun EntryScreen(
 /** ←, the headword with 🔊 while full screen ([title], fading in with [showTitle]), and the 下一个 pill. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun TopRow(onBack: () -> Unit, nextLabel: String?, onNext: (() -> Unit)?, title: Entry? = null, showTitle: Boolean = title != null) {
+private fun TopRow(onBack: () -> Unit, nextLabel: String?, onNext: (() -> Unit)?, title: Entry? = null, showTitle: Boolean = title != null, onShare: (() -> Unit)? = null) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -352,6 +355,7 @@ private fun TopRow(onBack: () -> Unit, nextLabel: String?, onNext: (() -> Unit)?
                 }
             }
         }
+        if (onShare != null) IconButton(onClick = onShare) { Icon(Icons.Default.Share, "分享图片", Modifier.size(20.dp)) }
         if (onNext != null) NextPill(nextLabel.orEmpty(), onNext)
     }
 }

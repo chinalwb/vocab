@@ -11,6 +11,8 @@
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
+        <!-- 分享图片 shows 发给微信好友 only when WeChat is installed -->
+        <package android:name="com.tencent.mm" />
     </queries>
 
     <application

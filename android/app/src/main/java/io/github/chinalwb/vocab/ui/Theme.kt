@@ -77,3 +77,8 @@ fun VocabTheme(content: @Composable () -> Unit) {
         MaterialTheme(colorScheme = if (isSystemInDarkTheme()) Dark else Light, typography = AppTypography, content = content)
     }
 }
+
+/** Always the light palette — 分享图片 looks the same whatever the phone's theme. */
+@Composable
+fun LightTheme(content: @Composable () -> Unit) =
+    MaterialTheme(colorScheme = Light, typography = AppTypography, content = content)
