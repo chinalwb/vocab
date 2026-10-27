@@ -95,14 +95,18 @@ fun EntryBody(entry: Entry, onXref: (String) -> Unit, quiz: ExampleQuiz? = null)
 @Composable
 fun NoteBlocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, highlight: String? = null, quiz: ExampleQuiz? = null) = Blocks(anchor, blocks, onXref, quiz, highlight = highlight)
 
+/** The blocks as a still picture (分享图片): no 🔊, no ⭐, nothing to tap. */
+@Composable
+fun StillBlocks(anchor: String, blocks: List<Block>) = Blocks(anchor, blocks, {}, still = true)
+
 /** A section's blocks without its label-only title ("**常见搭配:**"), which a tab or heading already says. */
 fun sectionBlocks(s: Section): List<Block> =
     if ((s.blocks.firstOrNull() as? Block.Para)?.text?.let(LABEL_ONLY::matches) == true) s.blocks.drop(1) else s.blocks
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
-private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQuiz? = null, highlight: String? = null) {
-    val starred = LocalStarred.current[anchor].orEmpty()
+private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit, quiz: ExampleQuiz? = null, highlight: String? = null, still: Boolean = false) {
+    val starred = if (still) emptySet() else LocalStarred.current[anchor].orEmpty()
     // long-press on an example (entry page, and a run's notes): 复制 / 收藏 / 不再考这句, in a bottom sheet
     var menuFor by remember { mutableStateOf<io.github.chinalwb.vocab.data.Example?>(null) }
     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
@@ -160,7 +164,7 @@ private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit
                                 Text(inline(ex.zh, link, onXref), style = MaterialTheme.typography.bodyMedium, color = muted)
                             }
                         }
-                        SpeakButton(plain(ex.en), Modifier.padding(start = 4.dp), size = 18.dp)
+                        if (!still) SpeakButton(plain(ex.en), Modifier.padding(start = 4.dp), size = 18.dp)
                     }
                 }
                 if (quiz != null && block.items.any { it.quizable }) Text(

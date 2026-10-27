@@ -299,6 +299,18 @@
 - **看和导出**:⋮ →「今天的练习 · 导出 PDF」(路由 `today`,`ui/TodayScreen.kt`):今天的每一对(点开条目),顶上「导出 PDF」→「保存到「下载」」(Android 10+,MediaStore,不要权限)或「分享…」(系统分享面板,FileProvider 的 `cache/exports/`)。
 - **PDF**(`review/PracticePdf.kt`,`PdfDocument` + `StaticLayout`,系统字体,中文不用打包字体):A4 一个文件,三部分各从新的一页开始——一、答案(中文 + 英文);二、对照(我写的里多写 / 写错的词红色划掉,答案里漏掉的高亮,标「答对 / 没对 / 没写」);三、只有中文(每句下面留 2–4 条横线,手写练习)。文件名 `vocab-practice-日期.pdf`。
 
+### 分享图片(用户 2026-10-27,只做了 App,App 2.23)
+
+- **入口**:条目页顶栏右上角的分享图标 → 底部弹出「分享图片」,上面是图片预览(可滚动),下面三个按钮。
+- **图片内容**(`ui/ShareCard.kt` 的 `ShareCard`):级别标签、词条名、词性和音标、笔记的全部内容(`StillBlocks`:和条目页同样的排版,但没有 🔊、⭐,也没有自测圆点)、页脚「VoCab · #编号 · 收录日期」。**不含「我的笔记」**。整条一张长图,宽度跟随屏幕(S23 约 1000 像素)。
+- **始终浅色**:图片用 `LightTheme`,手机开深色模式也一样。`Surface` 要写明 `contentColor = onSurface`:浅色主题里 `surfaceVariant` 和 `surfaceContainerHigh` 都是白色,不写的话 `contentColorFor` 会选成灰色的 `onSurfaceVariant`。
+- **怎么生成**:预览本身记录进 `GraphicsLayer`(`Modifier.recordInto`),点按钮时 `toImageBitmap()`,先复制成普通内存位图(硬件位图不能压缩),存 PNG 到 `cache/share/`(每次清空,FileProvider 的 `share` 路径)。
+- **三个按钮**:
+  - 「发给微信好友」:只在装了微信时显示(Manifest `<queries>` 里有 `com.tencent.mm`)。直接打开微信的「发送给朋友」(`com.tencent.mm.ui.tools.ShareImgUI`);这个界面找不到时,退回到只列微信自己分享选项的面板。没有接微信 OpenSDK(要注册 AppID、绑定签名)。
+  - 「保存到相册」:Android 10+,MediaStore,存到 `Pictures/VoCab`,不要权限;Android 8–9 不显示。
+  - 「其他…」:系统分享面板。
+- **朋友圈**:微信早就不接受其他 App 直接发朋友圈,所以弹层底部提示「先保存到相册,再在微信里从相册选这张图」。
+
 ### App 卡片:参照 Google Keep(用户 2026-10-10 要求)
 
 卡片保留级别底色,但排版照 Keep:标题无衬线 Medium(墙 17sp / 列表 19sp)、音标和释义逐级变浅(alpha 0.7 / 0.8)、圆角 16dp、内边距 16dp、卡片间距和左右边距 8dp。原来底部的「#49 · A1 · 自测中」改成一排浅色标签胶囊(级别、自测中 / 已掌握 / 试 N · 对 M、会写;新 / 已更新是深色胶囊排第一)。卡片上的释义去掉开头的「释义:」。「有 N 条新增或更新」那行不再显示(⋮ 菜单里有全部标为已读)。
