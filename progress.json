@@ -11907,8 +11907,8 @@
   },
   "worth": {
    "For what it's worth, I think you made the right call.": {
-    "on": true,
-    "t": 1
+    "on": false,
+    "t": 1793080003813
    },
    "Is it worth upgrading to the new version?": {
     "on": true,
