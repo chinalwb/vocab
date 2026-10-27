@@ -168,6 +168,7 @@
 162. [from memory(默写 / 凭记忆)](#from-memory)
 163. [句子:reads so naturally / I doubt many …](#s-reads-naturally-doubt)
 164. [go ahead and do / go ahead with](#go-ahead)
+165. [句子:hold off on / considering switching / put on hold](#s-hold-off-considering)
 
 ---
 
@@ -5326,3 +5327,37 @@ platform 等于 10,就代表请求来自 web,对吧?
 > We can go ahead to advance it to the prod.
 
 - ❌ [搭配] **go ahead to advance** —— 同上 → **go ahead and promote it to prod**。
+
+---
+
+<a id="s-hold-off-considering"></a>
+## 句子:hold off on / considering switching / put on hold
+
+- 日期:2026-10-27
+
+**我的原句:**
+
+> Let's hold off on this task. PM team is considering to switch to another tool.
+
+**问题:**
+
+- ✅ **Let's hold off on this task.** —— 原句就很好。
+- ❌ [冠词] **PM team** —— 指的是自己公司那个具体的团队,要加定冠词 → **The PM team**。(第二次漏 the)
+- ❌ [动词] **considering to switch** —— *consider* 后面只接 -ing,不接 to do → **considering switching**。同类只接 -ing 的动词:suggest、avoid、finish、mind、keep。
+
+**改完是:**
+
+> Let's hold off on this task. The PM team is considering switching to another tool.
+> 这个任务先缓一缓。PM 团队在考虑换成另一个工具。
+
+**C1 写法:**
+
+> Let's put this on hold for now. The PM team is weighing a switch to another tool.
+> 这个先暂停。PM 团队正在权衡要不要换成另一个工具。
+
+**涉及的搭配:**
+
+- **hold off on sth** —— 推迟、先不做某事。
+- **put sth on hold** —— 把某事暂停、搁置,说任务时很常用。
+- **consider doing sth** —— 考虑做某事(不是 *consider to do*)。
+- **weigh a switch to sth** —— 权衡要不要换成某物,比 *consider* 更具体。
