@@ -169,6 +169,7 @@
 163. [句子:reads so naturally / I doubt many …](#s-reads-naturally-doubt)
 164. [go ahead and do / go ahead with](#go-ahead)
 165. [句子:hold off on / considering switching / put on hold](#s-hold-off-considering)
+166. [翻译:jab the scoop into / chips of ice](#jab-chips-of-ice)
 
 ---
 
@@ -5361,3 +5362,41 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **put sth on hold** —— 把某事暂停、搁置,说任务时很常用。
 - **consider doing sth** —— 考虑做某事(不是 *consider to do*)。
 - **weigh a switch to sth** —— 权衡要不要换成某物,比 *consider* 更具体。
+
+---
+
+<a id="jab-chips-of-ice"></a>
+## 翻译:jab the scoop into / chips of ice
+
+- 日期:2026-10-26
+
+**含义:** 中译英练习——「我使劲地在制冰机里挖了几下,挖上来几块碎冰。」
+
+**译法:**
+
+1. I dug hard into the ice maker a few times and **scooped out** a few **bits of ice**.
+   我使劲在制冰机里挖了几下,舀出来几块碎冰。(常用说法)
+2. I **jabbed** the scoop **into** the ice maker a few times and **came up with** a few **chips of ice**.
+   我拿冰铲往制冰机里猛戳了几下,挖上来几块碎冰。(C1,书面叙述)
+3. I dug really hard in the ice maker and only **got** a few **little pieces of ice**.
+   我在制冰机里使劲挖,结果只挖到几小块冰。(母语孩子的说法)
+
+**要点:**
+
+- **使劲地挖了几下** —— *dug hard* 最直接;*hard* 是副词「用力地」,别写成 *hardly*(几乎不)。*jabbed … into* 是一下一下猛戳,画面感更强。
+- **挖上来** —— *scooped out* 是用勺、铲舀出来;*came up with* 是伸进去再带上来,带一点「费劲才捞到这么点」的语气;孩子会直接说 *got*。
+- **几块碎冰** —— *a few chips / bits of ice*、*a few little pieces of ice*。别用 *crushed ice*:那是机器专门打碎的碎冰这一品类,不是挖下来的几小块。
+- **制冰机** —— **ice maker**(家用、冰箱里的)或 **ice machine**(商用)。
+
+**CEFR(大致估计):**
+
+- **jab**(猛戳)—— C2
+- **scoop**(舀、铲)—— B2–C1
+- **a few chips of ice** —— C1(孩子先学到的 *chip* 是「薯片」,A2)
+- **a few bits of ice** —— A2–B1
+
+**怎么选:**
+
+- 说话、给孩子讲 → *dug hard / got / pieces of ice*。
+- 写作、想写得生动 → *jabbed / came up with / chips of ice*。
+- 中间档 → *scooped out a few bits of ice*,书面口语都能用。
