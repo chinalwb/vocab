@@ -5034,6 +5034,55 @@
     "peek": false,
     "via": "review",
     "ex": "This bug is hardly worthy of a hotfix."
+   },
+   {
+    "t": 1793079844394,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "The extra testing turned out to be worthwhile."
+   },
+   {
+    "t": 1793079851329,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The extra testing turned out to be worthwhile."
+   },
+   {
+    "t": 1793079857421,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Her proposal is worthy of serious consideration."
+   },
+   {
+    "t": 1793079864213,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "This bug is hardly worthy of a hotfix."
+   },
+   {
+    "t": 1793079873016,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "This old guitar is worth about $2,000."
+   },
+   {
+    "t": 1793079877406,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much is the company worth now?"
+   },
+   {
+    "t": 1793079883503,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The book is worth reading."
    }
   ],
   "unstoppable-irresistible-inexorable": [
