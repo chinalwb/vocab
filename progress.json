@@ -4763,41 +4763,6 @@
   ],
   "worth": [
    {
-    "t": 1791890498050,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "It's worth a try."
-   },
-   {
-    "t": 1791890505214,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Was it worth the money?"
-   },
-   {
-    "t": 1791890515783,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "She finally proved her worth to the team."
-   },
-   {
-    "t": 1791890534052,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "We lost a week's worth of work."
-   },
-   {
-    "t": 1791890552518,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "I bought ten dollars' worth of snacks."
-   },
-   {
     "t": 1791890607663,
     "ok": true,
     "peek": false,
@@ -5111,6 +5076,41 @@
     "peek": false,
     "via": "entry",
     "ex": "Was it worth the money?"
+   },
+   {
+    "t": 1793097771285,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "It's worth a try."
+   },
+   {
+    "t": 1793097776925,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Was it worth the money?"
+   },
+   {
+    "t": 1793097781499,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "She finally proved her worth to the team."
+   },
+   {
+    "t": 1793097789454,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We lost a week's worth of work."
+   },
+   {
+    "t": 1793097806570,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "I bought ten dollars' worth of snacks."
    }
   ],
   "unstoppable-irresistible-inexorable": [
@@ -11333,13 +11333,13 @@
  },
  "history": [
   {
-   "a": "stray",
-   "t": 1793088289567,
+   "a": "worth",
+   "t": 1793097764721,
    "via": "entry"
   },
   {
-   "a": "worth",
-   "t": 1793088021867,
+   "a": "stray",
+   "t": 1793088289567,
    "via": "entry"
   },
   {
