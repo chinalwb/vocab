@@ -775,6 +775,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## "推迟/暂缓" 类词组一句话辨析速查
 
 - 日期:2026-08-21
+- 类型:语法
 - 掌握:会写
 
 **含义:** 一组"推迟 / 暂缓 / 搁置"的说法,按**要不要定新时间、做没做到一半、还打不打算做、场合正式程度**来选。
@@ -1016,6 +1017,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## synonym / antonym / synonymous 的介词搭配
 
 - 日期:2026-08-25
+- 类型:语法
 - 掌握:会写
 
 **标准搭配:**
@@ -1460,6 +1462,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## 其他带 moment/moments 的短语
 
 - 日期:2026-08-26
+- 词性:phrase
 - 掌握:认识
 
 **in a moment** —— 马上、一会儿(很快,通常指几秒到几分钟内)
@@ -1525,6 +1528,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## concentrate on / focus on 及其近义表达
 
 - 日期:2026-08-26
+- 类型:语法
 - 掌握:会写
 
 表达"抛开一切、专心投入到某件事/某个技术点上"的一组说法。
@@ -1762,6 +1766,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## try to do vs. try doing
 
 - 日期:~2026-09-05
+- 类型:语法
 - 掌握:会写
 
 **义项一:try to do sth. —— 尝试去做某事(强调动作/目标能否达成,动作本身可能没能完成)**
@@ -1813,6 +1818,7 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 ## What percentage of X has been completed (so far)?
 
 - 日期:~2026-09-05
+- 类型:句子
 - 掌握:会写
 
 **用法:** 询问/汇报某项工作进度的完成百分比,工作场景里常用的模板句。
@@ -4530,6 +4536,20 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **含义:** 值(多少钱);值得(花时间、花钱、花力气)。作形容词时后面必须直接跟宾语,像介词一样;**worth 从来不是动词**,所以没有 *worths*。
 
+**对比:worth / worthy / worthwhile**
+
+| 单词 | 词性 | 常见结构与用法 | 举例 |
+|---|---|---|---|
+| **worth** | 介词 / 形容词 | be worth + 名词 / 代词 / doing<br>*(后面一定要有宾语)* | The view was **worth it**.(这风景值了。)<br>The book is **worth reading**.(这本书值得一读。) |
+| **worth** | 名词 | sb's worth(某人的价值、能力)<br>a week's / ten dollars' **worth of** + 名词(相当于……的量)<br>*(前面通常带所有格,撇号别漏)* | She finally proved **her worth** to the team.(她终于向团队证明了自己的价值。)<br>We lost **a week's worth of** work.(我们白干了一周。) |
+| **worthy** | 形容词 | be worthy **of** + 名词<br>*(通常不单独用,后面要加 of)* | His actions are **worthy of praise**.(他的行为值得赞扬。) |
+| **worthwhile** | 形容词 | be worthwhile / a worthwhile + 名词<br>*(可以单独放在句尾)* | The trip was long, but it was **worthwhile**.(路途遥远,但很值得。) |
+
+- **两个 worth 怎么分:** 前面有 *her / a week's* 这类所有格或限定词,是名词;前面是 be、后面紧跟宾语,是介词或形容词。
+- **worth 的词性:** 剑桥、柯林斯标介词,牛津标形容词;记住"后面必须带宾语、不加 of"就够了。
+- **worthy of + 动词:** 几乎都用被动(*worthy of being considered*);也常说 *worthy to be* + 过去分词,或放在名词前(*a worthy cause*,一项值得支持的事业)。
+- **worthwhile 还能接 doing / to do:** *It's worthwhile checking the logs first.*
+
 **我的原句:**
 
 > Do you think it worths to save this one too?
@@ -5370,6 +5390,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 ## 翻译:jab the scoop into / chips of ice
 
 - 日期:2026-10-26
+- 掌握:认识
 
 **含义:** 中译英练习——「我使劲地在制冰机里挖了几下,挖上来几块碎冰。」
 

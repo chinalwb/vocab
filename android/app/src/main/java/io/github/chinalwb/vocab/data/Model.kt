@@ -5,6 +5,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.JsonClassDiscriminator
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 
 /** The data.json schema this app understands; must match SCHEMA in build.py. */
 const val SUPPORTED_SCHEMA = 1
@@ -63,6 +65,8 @@ data class Entry(
                 is Block.Bullets -> b.items.forEach { append('\n').append(it) }
                 is Block.Examples -> b.items.forEach { append('\n').append(it.en).append('\n').append(it.zh) }
                 is Block.Quote -> b.lines.forEach { append('\n').append(it) }
+                is Block.Table -> (listOf(b.head) + b.rows).forEach { r -> r.forEach { append('\n').append(it) } }
+                Block.Unknown -> {}
             }
         }
     }.lowercase()
@@ -143,6 +147,19 @@ sealed interface Block {
 
     @Serializable @SerialName("quote")
     data class Quote(val lines: List<String>) : Block
+
+    /** A comparison table (worth / worthy / worthwhile); a cell's line breaks are "\n". */
+    @Serializable @SerialName("table")
+    data class Table(val head: List<String>, val rows: List<List<String>> = emptyList()) : Block
+
+    /** A block type from a newer build.py: skipped, so the rest of data.json still loads. */
+    @Serializable @SerialName("unknown")
+    data object Unknown : Block
+}
+
+/** For decoding data.json: an unknown block "t" decodes as [Block.Unknown] instead of failing the whole file. */
+val BlocksModule = SerializersModule {
+    polymorphic(Block::class) { defaultDeserializer { Block.Unknown.serializer() } }
 }
 
 @Serializable

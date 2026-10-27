@@ -16,6 +16,7 @@ import html
 import json
 import pathlib
 import re
+import sys
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
@@ -76,6 +77,9 @@ def detect_level(title, raw, own=None):
         return level
     if title.startswith("句子"):
         return "SENTENCE"
+    # 翻译: a 中译英 exercise is sentence-level practice, nearest to 整句订正 (用户 2026-10-27)
+    if title.startswith("翻译"):
+        return "SENTENCE"
     if title.startswith("自测"):
         return "SELFTEST"
     if title.startswith("语法笔记") or title.startswith("语域笔记"):
@@ -111,7 +115,7 @@ def gloss(raw, level):
     for line in raw.split("\n"):
         s = line.strip()
         # a bare "**我的原句:**" label says nothing; the quote under it does
-        if s and not s.startswith("-") and not s.startswith("**English definition") and not s.startswith("**我的原句"):
+        if s and not s.startswith(("-", "|")) and not s.startswith("**English definition") and not s.startswith("**我的原句"):
             return re.sub(r"\*\*(.+?)\*\*", r"\1", re.sub(r"^>\s*", "", s))
     return ""
 
@@ -144,6 +148,7 @@ def parse_blocks(raw):
       {"t": "ul", "items": [s, ...]}
       {"t": "ol", "items": [{"en": s, "zh": s}, ...]}   (zh may be "")
       {"t": "quote", "lines": [s, ...]}
+      {"t": "table", "head": [s, ...], "rows": [[s, ...], ...]}   (a cell's <br> becomes "\n")
     """
     lines = strip_meta(raw).split("\n")
     out, cur, i = [], None, 0
@@ -156,7 +161,17 @@ def parse_blocks(raw):
         mo = re.match(r"^(\d+)\.\s+(.*)$", s)
         mu = re.match(r"^[-*]\s+(.*)$", s)
         mq = re.match(r"^>\s?(.*)$", s)
-        if mq:
+        # a markdown table: a | row, then a |---| row; it runs while lines start with |
+        if s.startswith("|") and i + 1 < len(lines) and TABLE_RULE.match(lines[i + 1].strip()):
+            head = table_cells(s)
+            rows, i = [], i + 1
+            while i + 1 < len(lines) and lines[i + 1].strip().startswith("|"):
+                i += 1
+                cells = table_cells(lines[i].strip())
+                rows.append((cells + [""] * len(head))[:len(head)])
+            out.append({"t": "table", "head": head, "rows": rows})
+            cur = None
+        elif mq:
             quoted = [mq.group(1)]
             while i + 1 < len(lines) and re.match(r"^>\s?", lines[i + 1].strip()):
                 i += 1
@@ -185,6 +200,15 @@ def parse_blocks(raw):
     return out
 
 
+TABLE_RULE = re.compile(r"^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)*\|?$")
+
+
+def table_cells(row):
+    """'| a | b \\| c |' -> ['a', 'b | c']; <br> inside a cell is a line break."""
+    cells = re.split(r"(?<!\\)\|", row.strip().removeprefix("|").removesuffix("|"))
+    return [re.sub(r"<br\s*/?>", "\n", c.strip().replace("\\|", "|"), flags=re.I) for c in cells]
+
+
 def to_html(blocks):
     out = []
     for b in blocks:
@@ -197,6 +221,12 @@ def to_html(blocks):
                 f'<li><span class="en">{inline(x["en"])}</span>'
                 + (f'<span class="zh">{inline(x["zh"])}</span>' if x["zh"] else "") + "</li>"
                 for x in b["items"]) + "</ol>")
+        elif b["t"] == "table":
+            cell = lambda tag, x: f"<{tag}>{inline(x).replace(chr(10), '<br>')}</{tag}>"
+            out.append('<div class="tbl"><table><thead><tr>' + "".join(cell("th", x) for x in b["head"])
+                       + "</tr></thead><tbody>"
+                       + "".join("<tr>" + "".join(cell("td", x) for x in r) + "</tr>" for r in b["rows"])
+                       + "</tbody></table></div>")
         else:
             out.append("<blockquote>" + "<br>".join(inline(x) for x in b["lines"]) + "</blockquote>")
     return "".join(out)
@@ -292,6 +322,11 @@ def build_entries(src, own=None):
         if e["anchor"] not in numbers:
             raise SystemExit(f"{e['anchor']}: missing from ## 目录 — add a 'N. [title](#{e['anchor']})' line")
         level = detect_level(e["title"], e["raw"], own)
+        # 术语 is also the fallback: an entry with no 类型, 词性 or CEFR that lands there is
+        # probably a new kind of entry no rule knows yet — say so instead of filing it quietly
+        if level == "TERM" and not meta_field(e["raw"], "词性") and not re.search(r"CEFR[:：]", e["raw"]):
+            print(f"warning: {e['title']} ({e['anchor']}) has no 类型, 词性 or CEFR — filed as 术语; "
+                  "add a '- 类型:' line or a title prefix rule", file=sys.stderr)
         blocks = parse_blocks(e["raw"])
         entry = {
             "anchor": e["anchor"],
