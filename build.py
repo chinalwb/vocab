@@ -16,6 +16,7 @@ import html
 import json
 import pathlib
 import re
+import sys
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
@@ -75,6 +76,9 @@ def detect_level(title, raw, own=None):
             raise SystemExit(f"{title}: unknown 类型 '{kind}' — use one of {', '.join([*own, *KIND])}")
         return level
     if title.startswith("句子"):
+        return "SENTENCE"
+    # 翻译: a 中译英 exercise is sentence-level practice, nearest to 整句订正 (用户 2026-10-27)
+    if title.startswith("翻译"):
         return "SENTENCE"
     if title.startswith("自测"):
         return "SELFTEST"
@@ -292,6 +296,11 @@ def build_entries(src, own=None):
         if e["anchor"] not in numbers:
             raise SystemExit(f"{e['anchor']}: missing from ## 目录 — add a 'N. [title](#{e['anchor']})' line")
         level = detect_level(e["title"], e["raw"], own)
+        # 术语 is also the fallback: an entry with no 类型, 词性 or CEFR that lands there is
+        # probably a new kind of entry no rule knows yet — say so instead of filing it quietly
+        if level == "TERM" and not meta_field(e["raw"], "词性") and not re.search(r"CEFR[:：]", e["raw"]):
+            print(f"warning: {e['title']} ({e['anchor']}) has no 类型, 词性 or CEFR — filed as 术语; "
+                  "add a '- 类型:' line or a title prefix rule", file=sys.stderr)
         blocks = parse_blocks(e["raw"])
         entry = {
             "anchor": e["anchor"],
