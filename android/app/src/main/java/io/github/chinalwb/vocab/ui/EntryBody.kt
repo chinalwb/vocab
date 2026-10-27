@@ -33,6 +33,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,7 +46,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -115,8 +119,9 @@ private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit
     val ink = MaterialTheme.colorScheme.onSurface
     val body = MaterialTheme.typography.bodyLarge.copy(lineHeight = 26.sp)
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        for (block in blocks) when (block) {
-            is Block.Para -> Text(inline(block.text, link, onXref), style = body)
+        blocks.forEachIndexed { i, block -> when (block) {
+            // a table's bold title line is drawn by the table itself, with the ⤢ beside it
+            is Block.Para -> if (!titlesTable(blocks, i)) Text(inline(block.text, link, onXref), style = body)
             is Block.Bullets -> Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 block.items.forEach { item ->
                     Row {
@@ -176,9 +181,9 @@ private fun Blocks(anchor: String, blocks: List<Block>, onXref: (String) -> Unit
                 )
             }
             is Block.Quote -> Quote(block.lines, link, onXref)
-            is Block.Table -> Table(block, link, onXref)
+            is Block.Table -> Table(block, link, onXref, title = (blocks.getOrNull(i - 1) as? Block.Para)?.text?.takeIf { titlesTable(blocks, i - 1) }, still = still)
             Block.Unknown -> {}
-        }
+        } }
     }
     val ex = menuFor
     if (ex != null && quiz != null) ExampleMenu(
@@ -259,8 +264,73 @@ fun Quote(lines: List<String>, link: androidx.compose.ui.graphics.Color, onXref:
  * (or its whole text, if shorter): 形容词 stays on one line instead of stacking.
  * If even the longest words don't fit, the columns shrink in step and long words wrap.
  */
+private val BOLD_LINE = Regex("""^\*\*([^*]+)\*\*$""")
+
+/** Is blocks[i] a table's title — a whole-bold line ("**对比:worth / worthy / worthwhile**") right above it? */
+private fun titlesTable(blocks: List<Block>, i: Int): Boolean =
+    blocks.getOrNull(i + 1) is Block.Table && (blocks.getOrNull(i) as? Block.Para)?.text?.let(BOLD_LINE::matches) == true
+
+/**
+ * The table under its title line; a rotate-phone icon at the end of that line (not in a shared picture) opens it
+ * full screen, in landscape. [title] is the bold line's markdown, or null when there's none.
+ */
 @Composable
-private fun Table(table: Block.Table, link: androidx.compose.ui.graphics.Color, onXref: (String) -> Unit) {
+private fun Table(table: Block.Table, link: androidx.compose.ui.graphics.Color, onXref: (String) -> Unit, title: String?, still: Boolean) {
+    var full by rememberSaveable { mutableStateOf(false) }
+    val body = MaterialTheme.typography.bodyLarge.copy(lineHeight = 26.sp)
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.weight(1f)) { if (title != null) Text(inline(title, link, onXref), style = body) }
+            if (!still) androidx.compose.material3.IconButton(onClick = { full = true }, Modifier.size(36.dp)) {
+                androidx.compose.material3.Icon(ScreenRotationIcon, "横屏查看表格", Modifier.size(18.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+        TableGrid(table, link, onXref)
+    }
+    if (full) TableScreen(table, title?.let { BOLD_LINE.matchEntire(it)?.groupValues?.get(1) }, link, onXref) { full = false }
+}
+
+/**
+ * 横屏查看表格 (用户 2026-10-27): the table alone on a full-screen page, the phone turned to landscape
+ * while it's open (the activity handles the rotation itself — configChanges in the manifest — so
+ * this page stays open through it) and turned back on ✕ or Back. Taps on cross-references still work.
+ */
+@Composable
+private fun TableScreen(table: Block.Table, title: String?, link: androidx.compose.ui.graphics.Color, onXref: (String) -> Unit, onClose: () -> Unit) {
+    val activity = LocalContext.current.findActivity()
+    DisposableEffect(activity) {
+        val before = activity?.requestedOrientation
+        activity?.requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        onDispose { if (before != null) activity.requestedOrientation = before }
+    }
+    androidx.compose.ui.window.Dialog(
+        onDismissRequest = onClose,
+        properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false),
+    ) {
+        androidx.compose.material3.Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface) {
+            Column(Modifier.fillMaxSize().safeDrawingPadding()) {
+                Row(Modifier.fillMaxWidth().padding(start = 24.dp, end = 8.dp, top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text(title ?: "表格", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                    androidx.compose.material3.IconButton(onClick = onClose) {
+                        androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Default.Close, "关闭", Modifier.size(22.dp))
+                    }
+                }
+                Box(Modifier.verticalScroll(rememberScrollState()).padding(start = 24.dp, end = 24.dp, bottom = 24.dp)) {
+                    TableGrid(table, link, onXref)
+                }
+            }
+        }
+    }
+}
+
+private tailrec fun Context.findActivity(): android.app.Activity? = when (this) {
+    is android.app.Activity -> this
+    is android.content.ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
+
+@Composable
+private fun TableGrid(table: Block.Table, link: androidx.compose.ui.graphics.Color, onXref: (String) -> Unit) {
     val cols = table.head.size
     val rows = listOf(table.head) + table.rows
     val style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 21.sp)

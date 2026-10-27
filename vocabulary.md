@@ -4536,6 +4536,20 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **含义:** 值(多少钱);值得(花时间、花钱、花力气)。作形容词时后面必须直接跟宾语,像介词一样;**worth 从来不是动词**,所以没有 *worths*。
 
+**对比:worth / worthy / worthwhile**
+
+| 单词 | 词性 | 常见结构与用法 | 举例 |
+|---|---|---|---|
+| **worth** | 介词 / 形容词 | be worth + 名词 / 代词 / doing<br>*(后面一定要有宾语)* | The view was **worth it**.(这风景值了。)<br>The book is **worth reading**.(这本书值得一读。) |
+| **worth** | 名词 | sb's worth(某人的价值、能力)<br>a week's / ten dollars' **worth of** + 名词(相当于……的量)<br>*(前面通常带所有格,撇号别漏)* | She finally proved **her worth** to the team.(她终于向团队证明了自己的价值。)<br>We lost **a week's worth of** work.(我们白干了一周。) |
+| **worthy** | 形容词 | be worthy **of** + 名词<br>*(通常不单独用,后面要加 of)* | His actions are **worthy of praise**.(他的行为值得赞扬。) |
+| **worthwhile** | 形容词 | be worthwhile / a worthwhile + 名词<br>*(可以单独放在句尾)* | The trip was long, but it was **worthwhile**.(路途遥远,但很值得。) |
+
+- **两个 worth 怎么分:** 前面有 *her / a week's* 这类所有格或限定词,是名词;前面是 be、后面紧跟宾语,是介词或形容词。
+- **worth 的词性:** 剑桥、柯林斯标介词,牛津标形容词;记住"后面必须带宾语、不加 of"就够了。
+- **worthy of + 动词:** 几乎都用被动(*worthy of being considered*);也常说 *worthy to be* + 过去分词,或放在名词前(*a worthy cause*,一项值得支持的事业)。
+- **worthwhile 还能接 doing / to do:** *It's worthwhile checking the logs first.*
+
 **我的原句:**
 
 > Do you think it worths to save this one too?

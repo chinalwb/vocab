@@ -454,6 +454,8 @@ build.py 内部只有一个解析器 `parse_blocks()`:它把条目正文解析�
 
 **表格怎么显示**(App 2.25):build.py 的 `parse_blocks()` 认出「`|` 开头的一行 + `|---|` 分隔行」,把后面连续的 `|` 行收成一个 `table` 块(格子数按表头补齐或截断)。网页由 `to_html()` 输出 `<div class="tbl"><table>`,样式在 template.html 的 `.body table`:只有行间横线,表头下一道深色线,格子最小 4em,太宽时表格自己横向滚动。App 由 EntryBody.kt 的 `Table()` 自己排版,不用横向滚动:先量每格的最小宽度(最长的单词)和理想宽度(整段不换行),每列至少给到最小宽度、并且不少于 4 个字宽(内容更短就按内容);剩下的宽度按「理想 − 最小」的比例分给各列,表格铺满卡片;连最小宽度都放不下时各列按比例缩小。4 个字的下限是因为中文每个字后面都能断行,不加下限的话「形容词」会一个字一行。分享图片用同一个渲染函数,所以图片里也有表格。
 
+**横屏查看表格**(用户 2026-10-27,只做了 App,App 2.25):表格上面紧挨着一行整行加粗的标题(`**对比:worth / worthy / worthwhile**`)时,这行由表格自己画,右端放一个「旋转手机」图标(Material 的 screen_rotation,`ScreenRotationIcon`;特意不用卡片的 ⤢,免得两个按钮混淆,用户要求);没有标题行时图标单独一行靠右。点图标打开全屏页(EntryBody.kt 的 `TableScreen()`,一个全屏 Dialog):顶上是标题和 ✕,下面是同一张表,能上下滚动;打开时把 Activity 设成 `SCREEN_ORIENTATION_SENSOR_LANDSCAPE`,点 ✕ 或返回键关闭时恢复原来的方向。为了旋转时这一页不被关掉,manifest 里 MainActivity 加了 `configChanges="orientation|screenSize|screenLayout|smallestScreenSize"`:旋转时 Activity 不重建,Compose 自己按新尺寸重排(整个 App 旋转时也因此不再重建、状态都保留)。分享图片里没有这个图标。
+
 注意:`README.md` 里"推送到 `main` 后自动更新"的说法是面向用户在手机上直接编辑的场景;Claude 的写入流程以本文件的 dev 分支规则为准。
 
 ## Android App(`android/`)
