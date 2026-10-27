@@ -870,6 +870,14 @@
    "lapses": 0,
    "due": 20754,
    "t": 1793079476903
+  },
+  "jab-chips-of-ice": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20754,
+   "t": 1793079505739
   }
  },
  "newDay": 20753,
@@ -11201,6 +11209,13 @@
     "peek": false,
     "via": "review",
     "ex": "I jabbed the scoop into the ice maker a few times and came up with a few chips of ice."
+   },
+   {
+    "t": 1793079505736,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I dug really hard in the ice maker and only got a few little pieces of ice."
    }
   ]
  },
@@ -11219,6 +11234,11 @@
   }
  },
  "history": [
+  {
+   "a": "worth",
+   "t": 1793079514870,
+   "via": "entry"
+  },
   {
    "a": "jab-chips-of-ice",
    "t": 1793079477566,
@@ -11252,11 +11272,6 @@
   {
    "a": "come-back-to",
    "t": 1793079368066,
-   "via": "review"
-  },
-  {
-   "a": "worth",
-   "t": 1793079340821,
    "via": "review"
   },
   {
