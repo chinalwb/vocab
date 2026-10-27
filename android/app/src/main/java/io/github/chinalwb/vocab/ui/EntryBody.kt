@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -336,11 +337,13 @@ private fun TableGrid(table: Block.Table, link: androidx.compose.ui.graphics.Col
     val style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 21.sp)
     val head = MaterialTheme.colorScheme.onSurfaceVariant
     val rule = MaterialTheme.colorScheme.outlineVariant
+    // 举例 (the last column): the phrase being taught in amber / deep orange, as on the page's --phrase
+    val key = if (MaterialTheme.colorScheme.surface.luminance() < 0.5f) androidx.compose.ui.graphics.Color(0xFFFFB454) else androidx.compose.ui.graphics.Color(0xFFC2410C)
     androidx.compose.ui.layout.Layout(content = {
         rows.forEachIndexed { r, row ->
             row.forEachIndexed { c, cell ->
                 Text(
-                    inline(cell, link, onXref),
+                    inline(cell, link, onXref, boldColor = if (r > 0 && c == cols - 1) key else androidx.compose.ui.graphics.Color.Unspecified),
                     style = if (r == 0) style.copy(fontWeight = FontWeight.Bold) else style,
                     modifier = Modifier.padding(end = if (c < cols - 1) 12.dp else 0.dp, top = 7.dp, bottom = 7.dp),
                 )

@@ -57,6 +57,8 @@
   --sg-learn:color-mix(in srgb,var(--st-learn) 22%,var(--chip)); --sg-review:color-mix(in srgb,var(--accent) 20%,var(--chip));
   --sg-test:color-mix(in srgb,var(--st-test) 24%,var(--chip)); --sg-done:color-mix(in srgb,var(--st-done) 22%,var(--chip));
   --err:#c2412d; --warn:#b7791f; --mk:#ffffff; --tag:#e9ebef; --tag-ink:#4b5060;
+  /* the bold phrase in a table's example column; readable on every level's card colour */
+  --phrase:#c2410c;
   /* liquid glass (after iOS 26): frosted controls floating over the cards */
   --glass:rgba(243,244,246,.72); --glass-strong:rgba(243,244,246,.86);
   --glass-fill:rgba(255,255,255,.66); --glass-rim:rgba(255,255,255,.9); --glass-edge:rgba(21,23,28,.09);
@@ -94,7 +96,7 @@
     --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
 
     --accent:#8ea2ff; --accent-ink:#10142a;
-    --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db;
+    --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db; --phrase:#ffb454;
   --glass:rgba(20,22,26,.72); --glass-strong:rgba(20,22,26,.86);
   --glass-fill:rgba(255,255,255,.06); --glass-rim:rgba(255,255,255,.14); --glass-edge:rgba(255,255,255,.08);
   --glass-shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.3);
@@ -131,7 +133,7 @@
   --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
 
   --accent:#8ea2ff; --accent-ink:#10142a;
-  --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db;
+  --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db; --phrase:#ffb454;
   --glass:rgba(20,22,26,.72); --glass-strong:rgba(20,22,26,.86);
   --glass-fill:rgba(255,255,255,.06); --glass-rim:rgba(255,255,255,.14); --glass-edge:rgba(255,255,255,.08);
   --glass-shadow:0 10px 30px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.3);
@@ -537,6 +539,8 @@ textarea.mynote::placeholder{color:var(--card-ink-2);opacity:.8}
 .body th{font-weight:700;border-bottom-color:var(--card-ink-2)}
 .body tr:last-child td{border-bottom:0}
 .body td em{color:var(--card-ink-2)}
+/* 举例 (the last column): the phrase being taught stands out (用户 2026-10-27) */
+.body td:last-child strong{color:var(--phrase)}
 
 /* ── 错题本 ─────────────────────────────── */
 .mtag{

@@ -27,11 +27,14 @@ private val TOKEN = Regex(
 /** `==text==`: a mistake in 我的原句 (阅读), on a red wash that reads in both themes. */
 private val MISTAKE_WASH = Color(0x40E5484D)
 
-/** Renders inline markdown; `[text](#anchor)` becomes a tappable cross-reference. */
-fun inline(text: String, linkColor: Color, onXref: (String) -> Unit): AnnotatedString =
-    buildAnnotatedString { append(text, linkColor, onXref) }
+/**
+ * Renders inline markdown; `[text](#anchor)` becomes a tappable cross-reference.
+ * [boldColor] tints `**bold**` (a table's example column); unspecified keeps the text colour.
+ */
+fun inline(text: String, linkColor: Color, onXref: (String) -> Unit, boldColor: Color = Color.Unspecified): AnnotatedString =
+    buildAnnotatedString { append(text, linkColor, onXref, boldColor) }
 
-private fun AnnotatedString.Builder.append(text: String, linkColor: Color, onXref: (String) -> Unit) {
+private fun AnnotatedString.Builder.append(text: String, linkColor: Color, onXref: (String) -> Unit, boldColor: Color = Color.Unspecified) {
     var last = 0
     for (m in TOKEN.findAll(text)) {
         append(text.substring(last, m.range.first))
@@ -40,7 +43,7 @@ private fun AnnotatedString.Builder.append(text: String, linkColor: Color, onXre
             g[1] != null -> withStyle(SpanStyle(fontSize = 0.8.em, background = linkColor.copy(alpha = 0.10f))) {
                 append("\u2009${g[1]!!.value}\u2009")
             }
-            g[2] != null -> withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append(g[2]!!.value, linkColor, onXref) }
+            g[2] != null -> withStyle(SpanStyle(fontWeight = FontWeight.SemiBold, color = boldColor)) { append(g[2]!!.value, linkColor, onXref) }
             g[3] != null -> withStyle(SpanStyle(textDecoration = TextDecoration.LineThrough)) { append(g[3]!!.value, linkColor, onXref) }
             g[4] != null -> withStyle(SpanStyle(fontFamily = FontFamily.Monospace, background = linkColor.copy(alpha = 0.10f))) { append(g[4]!!.value) }
             g[5] != null -> {
