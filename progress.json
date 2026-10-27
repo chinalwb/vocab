@@ -4763,27 +4763,6 @@
   ],
   "worth": [
    {
-    "t": 1791890116299,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "This old guitar is worth about $2,000."
-   },
-   {
-    "t": 1791890280137,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "How much is the company worth now?"
-   },
-   {
-    "t": 1791890320396,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The book is worth reading."
-   },
-   {
     "t": 1791890328479,
     "ok": true,
     "peek": false,
@@ -5111,6 +5090,27 @@
     "peek": false,
     "via": "entry",
     "ex": "The trip was long, but the view was worth it."
+   },
+   {
+    "t": 1793081869304,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "It's worth a try."
+   },
+   {
+    "t": 1793081876806,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Was it worth the money?"
+   },
+   {
+    "t": 1793081892935,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "She finally proved her worth to the team."
    }
   ],
   "unstoppable-irresistible-inexorable": [
