@@ -299,10 +299,10 @@
 - **看和导出**:⋮ →「今天的练习 · 导出 PDF」(路由 `today`,`ui/TodayScreen.kt`):今天的每一对(点开条目),顶上「导出 PDF」→「保存到「下载」」(Android 10+,MediaStore,不要权限)或「分享…」(系统分享面板,FileProvider 的 `cache/exports/`)。
 - **PDF**(`review/PracticePdf.kt`,`PdfDocument` + `StaticLayout`,系统字体,中文不用打包字体):A4 一个文件,三部分各从新的一页开始——一、答案(中文 + 英文);二、对照(我写的里多写 / 写错的词红色划掉,答案里漏掉的高亮,标「答对 / 没对 / 没写」);三、只有中文(每句下面留 2–4 条横线,手写练习)。文件名 `vocab-practice-日期.pdf`。
 
-### 分享图片(用户 2026-10-27,只做了 App,App 2.23)
+### 分享图片(用户 2026-10-27,只做了 App,App 2.23;页脚图标和标语 2.24)
 
 - **入口**:条目页顶栏右上角的分享图标 → 底部弹出「分享图片」,上面是图片预览(可滚动),下面三个按钮。
-- **图片内容**(`ui/ShareCard.kt` 的 `ShareCard`):级别标签、词条名、词性和音标、笔记的全部内容(`StillBlocks`:和条目页同样的排版,但没有 🔊、⭐,也没有自测圆点)、页脚「VoCab · #编号 · 收录日期」。**不含「我的笔记」**。整条一张长图,宽度跟随屏幕(S23 约 1000 像素)。
+- **图片内容**(`ui/ShareCard.kt` 的 `ShareCard`):级别标签、词条名、词性和音标、笔记的全部内容(`StillBlocks`:和条目页同样的排版,但没有 🔊、⭐,也没有自测圆点)、页脚(用户 2026-10-27,App 2.24):左边 App 图标(启动图标的前景图放大 1.2 倍裁掉外框,圆角),旁边「VoCab」和标语「Get it right. Then make it better.」,右边编号和收录日期。**不含「我的笔记」**。整条一张长图,宽度跟随屏幕(S23 约 1000 像素)。
 - **始终浅色**:图片用 `LightTheme`,手机开深色模式也一样。`Surface` 要写明 `contentColor = onSurface`:浅色主题里 `surfaceVariant` 和 `surfaceContainerHigh` 都是白色,不写的话 `contentColorFor` 会选成灰色的 `onSurfaceVariant`。
 - **怎么生成**:预览本身记录进 `GraphicsLayer`(`Modifier.recordInto`),点按钮时 `toImageBitmap()`,先复制成普通内存位图(硬件位图不能压缩),存 PNG 到 `cache/share/`(每次清空,FileProvider 的 `share` 路径)。
 - **三个按钮**:
