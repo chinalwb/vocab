@@ -4763,90 +4763,6 @@
   ],
   "worth": [
    {
-    "t": 1791890607663,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Learning to write well is a worthwhile investment."
-   },
-   {
-    "t": 1791890630061,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The extra testing turned out to be worthwhile."
-   },
-   {
-    "t": 1791890649920,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Her proposal is worthy of serious consideration."
-   },
-   {
-    "t": 1791890678349,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "This bug is hardly worthy of a hotfix."
-   },
-   {
-    "t": 1791977314301,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "This old guitar is worth about $2,000."
-   },
-   {
-    "t": 1792024009185,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "How much is the company worth now?"
-   },
-   {
-    "t": 1792026755134,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The book is worth reading."
-   },
-   {
-    "t": 1792026785310,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "It's not worth arguing about."
-   },
-   {
-    "t": 1792026799234,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The trip was long, but the view was worth it."
-   },
-   {
-    "t": 1792026805357,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "It's worth a try."
-   },
-   {
-    "t": 1792026819239,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Was it worth the money?"
-   },
-   {
-    "t": 1792029340870,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "She finally proved her worth to the team."
-   },
-   {
     "t": 1792030251202,
     "ok": true,
     "peek": false,
@@ -5111,6 +5027,90 @@
     "peek": false,
     "via": "entry",
     "ex": "I bought ten dollars' worth of snacks."
+   },
+   {
+    "t": 1793097818090,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I bought ten dollars' worth of snacks."
+   },
+   {
+    "t": 1793097832171,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "For what it's worth, I think you made the right call."
+   },
+   {
+    "t": 1793097842705,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Learning to write well is a worthwhile investment."
+   },
+   {
+    "t": 1793097852366,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Learning to write well is a worthwhile investment."
+   },
+   {
+    "t": 1793097857280,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The extra testing turned out to be worthwhile."
+   },
+   {
+    "t": 1793097862568,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Her proposal is worthy of serious consideration."
+   },
+   {
+    "t": 1793097870259,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "This bug is hardly worthy of a hotfix."
+   },
+   {
+    "t": 1793097873860,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "This old guitar is worth about $2,000."
+   },
+   {
+    "t": 1793097877552,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much is the company worth now?"
+   },
+   {
+    "t": 1793097881756,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The book is worth reading."
+   },
+   {
+    "t": 1793097891808,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "It's not worth arguing about."
+   },
+   {
+    "t": 1793097896832,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The trip was long, but the view was worth it."
    }
   ],
   "unstoppable-irresistible-inexorable": [
