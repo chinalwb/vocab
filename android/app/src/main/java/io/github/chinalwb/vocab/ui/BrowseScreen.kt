@@ -90,7 +90,8 @@ private fun monthHeader(key: String): String =
 private const val ALL = "ALL"
 private const val WORD = "WORD"
 private val CEFR = listOf("A1", "A2", "B1", "B2", "C1", "C2")
-private val TYPES = listOf(ALL to "全部", WORD to "单词", "TERM" to "术语", "GRAMMAR" to "语法", "SENTENCE" to "句子", "KNOWLEDGE" to "Knowledge", "SELFTEST" to "自测题")
+private val TYPES = listOf(ALL to "全部", WORD to "单词", "TERM" to "术语", "GRAMMAR" to "语法", "SENTENCE" to "句子", "KNOWLEDGE" to "Knowledge",
+    "G3" to "三年级", "G4" to "四年级", "G5" to "五年级", "G6" to "六年级", "SELFTEST" to "自测题")
 
 /**
  * "name(动词,"指定"义)" → "name" + "动词,"指定"义": the headword stays big, the trailing

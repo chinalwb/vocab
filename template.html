@@ -50,6 +50,11 @@
   --cl-1:#dfe9c8; --cl-2:#d2e0b4; --cl-3:#eaf1d8;
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
   --kn-1:#e2e0d0; --kn-2:#d8d5c0; --kn-3:#ece9dc;
+  /* 三年级 – 六年级: one lime ramp, a grade deeper each year */
+  --g3-1:#eef4cf; --g3-2:#e5eebd; --g3-3:#f5f9e2;
+  --g4-1:#e4eebb; --g4-2:#d9e7a6; --g4-3:#eef4d3;
+  --g5-1:#d8e6a4; --g5-2:#cbdd8e; --g5-3:#e5eebf;
+  --g6-1:#cbdc8f; --g6-2:#bdd278; --g6-3:#dae6ae;
 
   --accent:#2b4acb; --accent-ink:#ffffff; --st-learn:#8a8f9c; --st-test:#e0812f; --st-done:#3e9b5b;
   /* card colours by stage (site.json "cardColor": "stage"): the stage dots' colours, washed into the
@@ -94,6 +99,10 @@
     --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
     --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
+    --g3-1:#3a4220; --g3-2:#444d26; --g3-3:#31381b;
+    --g4-1:#3f4a1f; --g4-2:#4a5725; --g4-3:#353e1a;
+    --g5-1:#44531f; --g5-2:#506125; --g5-3:#39461a;
+    --g6-1:#4a5c1f; --g6-2:#566b25; --g6-3:#3e4e1a;
 
     --accent:#8ea2ff; --accent-ink:#10142a;
     --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db; --phrase:#ffb454;
@@ -131,6 +140,10 @@
   --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
   --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
+  --g3-1:#3a4220; --g3-2:#444d26; --g3-3:#31381b;
+  --g4-1:#3f4a1f; --g4-2:#4a5725; --g4-3:#353e1a;
+  --g5-1:#44531f; --g5-2:#506125; --g5-3:#39461a;
+  --g6-1:#4a5c1f; --g6-2:#566b25; --g6-3:#3e4e1a;
 
   --accent:#8ea2ff; --accent-ink:#10142a;
   --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db; --phrase:#ffb454;
@@ -1136,9 +1149,17 @@ const LV = {
   COLLOC:{nm:"阅读里看到的地道写法", sw:["--cl-1","--cl-2","--cl-3"]},
   SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]},
   // Knowledge (`- 类型:Knowledge`, 用户 2026-10-23): writing know-how — punctuation, sentence structure
-  KNOWLEDGE:{nm:"Knowledge:写作通用知识(标点、句子结构……)", sw:["--kn-1","--kn-2","--kn-3"]}
+  KNOWLEDGE:{nm:"Knowledge:写作通用知识(标点、句子结构……)", sw:["--kn-1","--kn-2","--kn-3"]},
+  // 三年级 – 六年级 (`- 类型:三年级` …, 用户 2026-10-28): primary-school English by grade
+  G3:{nm:"三年级:小学英语", sw:["--g3-1","--g3-2","--g3-3"]},
+  G4:{nm:"四年级:小学英语", sw:["--g4-1","--g4-2","--g4-3"]},
+  G5:{nm:"五年级:小学英语", sw:["--g5-1","--g5-2","--g5-3"]},
+  G6:{nm:"六年级:小学英语", sw:["--g6-1","--g6-2","--g6-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge"};
+const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge",
+  G3:"三年级", G4:"四年级", G5:"五年级", G6:"六年级"};
+// the grade groups, each listed in 类型 / 分类 only once it has an entry
+const GRADES = ["G3", "G4", "G5", "G6"].filter(k => DATA.some(g => g.level === k)).map(k => [k, LABEL[k]]);
 // site.json "groups" (用户 2026-10-23, so's): a notebook's own categories, each picked by an entry's
 // `- 类型:` line and coloured with one of the palettes above; with any, 分类 and the 类型 row list only these
 const OWN = VK.groups || [];
@@ -1223,7 +1244,7 @@ if (!STAGE_NAME[stageF]) stageF = "";
 // Each row is single-choice and starts at 全部; the rows narrow each other.
 const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
-  ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []),
+  ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []), ...GRADES,
   ...(DATA.some(g => g.level === "COLLOC") ? [["COLLOC", "固定搭配"]] : []), ["SELFTEST", "自测题"]];
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
@@ -1675,8 +1696,8 @@ function runSentences(it){
     const en = plainMd(x.en), mine = log.filter(a => (a.ex || "") === en), last = mine[mine.length - 1];
     return [!mine.some(a => a.t >= since && a.ok) ? 0 : last && (!last.text || !last.ok) ? 1 : 2, last ? last.t : 0, k];
   };
-  return xs.map((x, k) => rank(x, k)).sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2])
-    .slice(0, RUN_SENTENCES).map(r => r[2]).sort((a, b) => a - b);
+  return shuffled(xs.map((x, k) => rank(x, k)).sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2])
+    .slice(0, RUN_SENTENCES).map(r => r[2]), Math.random() * 4294967296);   // asked in a random order (用户 2026-10-27)
 }
 // what a question checks against: a 自测题's first 答案 line, a moved entry's example; else none
 const answerOf = (it, level, ex) => level === "SELFTEST" ? ((it.answer || "").split("\n").find(l => l.trim()) || null) : ex ? plainMd(ex.en) : null;
@@ -1817,7 +1838,22 @@ if (!quizOut) {
 const isOut = (anchor, en) => !!(quizOut[anchor] && quizOut[anchor][en] && quizOut[anchor][en].on);
 // never none: one always stays in, but a sync from two devices could leave every one out
 const quizExamples = it => { const xs = it.examples || [], kept = xs.filter(x => !isOut(it.anchor, plainMd(x.en))); return kept.length ? kept : xs; };
-const quizEx = (it, n = (stLog[it.anchor] || []).length) => { const xs = quizExamples(it); return xs.length ? { ...xs[n % xs.length], k: n % xs.length, of: xs.length } : null; };
+// the nth self-test (用户 2026-10-27: shuffled; it was note order): every sentence once a round, each
+// round in its own order seeded by the entry and the round, never the same one twice running
+function roundOrder(anchor, n, round){
+  let order = [];
+  for (let r = 0; r <= round; r++) {
+    const next = shuffled([...Array(n).keys()], hashStr(anchor) * 31 + r);
+    order = r > 0 && n > 1 && next[0] === order[n - 1] ? [next[1], next[0], ...next.slice(2)] : next;
+  }
+  return order;
+}
+const quizEx = (it, n = (stLog[it.anchor] || []).length) => {
+  const xs = quizExamples(it);
+  if (!xs.length) return null;
+  const k = roundOrder(it.anchor, xs.length, Math.floor(n / xs.length))[n % xs.length];
+  return { ...xs[k], k, of: xs.length };
+};
 function toggleQuizEx(it, en){
   const out = !isOut(it.anchor, en);
   if (out && quizExamples(it).length <= 1) { flash("至少要留一句例句来考"); return false; }
@@ -3339,7 +3375,7 @@ const SIDE = [
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
   ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"],
-    ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []), ["SELFTEST", "自测题"]])
+    ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []), ...GRADES, ["SELFTEST", "自测题"]])
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];

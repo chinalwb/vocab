@@ -20,23 +20,18 @@
 14. [push back (sth)](#push-back)
 15. [put (sth) on hold](#put-on-hold)
 16. [hold up](#hold-up)
-17. [table (sth)](#table)
 18. [shelve (sth)](#shelve)
 19. [stall](#stall)
 20. [tinker](#tinker)
 21. [rule out / rule sb out](#rule-out)
 22. [unstoppable / irresistible / inexorable](#unstoppable-irresistible-inexorable)
-23. [语法笔记:悬垂修饰语(dangling modifier)](#dangling-modifier)
 24. [put sth on the back burner](#back-burner)
-25. ["推迟/暂缓" 类词组一句话辨析速查](#postpone-family-quickref)
 26. [recon](#recon)
 27. [chrome](#chrome)
 28. [hand-wave](#hand-wave)
 29. [independent](#independent)
 30. [stand (stands ready / still stands)](#stand)
 31. [coalesce](#coalesce)
-32. [语法笔记:why 疑问句 vs how come vs 间接疑问句](#wh-question-order)
-33. [synonym / antonym / synonymous 的介词搭配](#synonym-preposition)
 34. [assorted](#assorted)
 35. [pastry / pastries](#pastry)
 36. [bakery](#bakery)
@@ -60,7 +55,6 @@
 54. [contraceptive / contraception](#contraceptive)
 55. [语法笔记:What will X be? vs What will be X?(末端重量原则)](#end-weight)
 56. [try to do vs. try doing](#try-to-do-vs-try-doing)
-57. [语法笔记:逗号粘连(comma splice)+ shared code 连字符误用](#comma-splice-shared-code)
 58. [What percentage of X has been completed (so far)?](#percentage-completed)
 59. [语法笔记:any 后面用单数还是复数](#any-singular-plural)
 60. [语域笔记:"Why can't you do this yourself?" 太冲,如何委婉表达](#soften-why-cant-you)
@@ -161,16 +155,24 @@
 155. [句子:redraft / the message to sb](#s-redraft-message-to)
 156. [tend toward / lean toward / focus mostly on](#tend-lean-focus)
 157. [given that / with that in mind](#given-that)
-158. [comma splice:怎么一眼判断](#comma-splice)
 159. [Does it have to be this complicated? / overcomplicate](#this-complicated)
 160. [句子:next year's / how many days are left until](#s-next-years-days-left)
 161. [句子:as we go / as the work progresses / sort out the details](#s-as-we-go)
 162. [from memory(默写 / 凭记忆)](#from-memory)
 163. [句子:reads so naturally / I doubt many …](#s-reads-naturally-doubt)
 164. [go ahead and do / go ahead with](#go-ahead)
-165. [句子:hold off on / considering switching / put on hold](#s-hold-off-considering)
 166. [翻译:jab the scoop into / chips of ice](#jab-chips-of-ice)
-167. [句子:share sth on WeChat / share sth with sb / settle on](#s-share-on-wechat)
+168. [hesitate / hesitant](#hesitate-hesitant)
+169. [a / an:一个](#g3-a-an)
+170. [名词复数:two cats](#g3-plural-s)
+171. [am / is / are:是](#g3-am-is-are)
+172. [his / her:他的、她的](#g3-his-her)
+173. [一般疑问句:Is it…? / Do you like…?](#g3-yes-no-questions)
+174. [there is / there are:某处有……](#g4-there-be)
+175. [Where is…? 和 in / on / under / near](#g4-where-prepositions)
+176. [can + 动词原形:会、能](#g4-can)
+177. [特殊疑问句:What time / How much / Whose](#g4-wh-questions)
+178. [these / those 和特殊的复数](#g4-these-those-plurals)
 
 ---
 
@@ -561,22 +563,6 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 ---
 
-<a id="table"></a>
-## table (sth)
-
-- 词性:v.
-- 日期:2026-08-19
-- 掌握:认识
-
-⚠️ **英式和美式意思正好相反**,经典的跨语境坑。
-
-**美式英语:** table a discussion = **搁置**这个议题,先不讨论。
-**英式英语:** table a discussion = **提出**这个议题,拿出来讨论。
-
-（所以开跨国会议时这个词很容易造成误会）
-
----
-
 <a id="shelve"></a>
 ## shelve (sth)
 
@@ -723,30 +709,6 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 ---
 
-<a id="dangling-modifier"></a>
-## 语法笔记:悬垂修饰语(dangling modifier)
-
-- 日期:2026-08-21
-- 掌握:会写
-
-**问题描述:** "if / when + 动名词(-ing)" 这种缩略状语结构,省略主语时,隐含的主语必须能从主句里清楚地推断出来。如果推不出来(比如主句主语是个物,而 -ing 动作的执行者其实是"人"),就会造成逻辑不清、悬垂修饰语的问题。
-
-**我的原句:**
-
-> What is the model name of Gemini 3.5 Flash Lite if using it in python code?
-
-**问题:**
-
-- ⚠️ [逻辑] **if using it** —— 技术写作里这种省略主语的条件句很常见;更严谨的写法是补主语 **if you use it**,或用 **when used**。
-- ❌ [词形] **python** —— 编程语言名是专有名词 → **Python**。
-- ✅ **model name of X** —— 意思清楚,日常使用完全够用;技术语境也常说 **model name for X**。
-
-**改正后:**
-- ✅ *What is the model name for Gemini 3.5 Flash Lite when used in Python code?*
-- ✅ *What is the model name of Gemini 3.5 Flash Lite if you use it in Python code?*
-
----
-
 <a id="back-burner"></a>
 ## put sth on the back burner
 
@@ -768,62 +730,6 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 **反义搭配:front burner = 当前最优先要处理的事**
 3. Fixing the payment bug is now the **front burner** issue.
    修复支付相关的 bug 现在是最优先要处理的事。
-
----
-
-<a id="postpone-family-quickref"></a>
-## "推迟/暂缓" 类词组一句话辨析速查
-
-- 日期:2026-08-21
-- 类型:语法
-- 掌握:会写
-
-**含义:** 一组"推迟 / 暂缓 / 搁置"的说法,按**要不要定新时间、做没做到一半、还打不打算做、场合正式程度**来选。
-
-**怎么选(先问自己这几个问题):**
-
-- **只是等一会儿?** → **hold on**(几秒到几分钟,不是搁置计划)
-- **有明确的新时间?**
-  - 口语 / 工作沟通 → **push back (to …)**
-  - 书面 / 正式通知 → **postpone (until …)**
-  - 制度化流程(税、入学、判决)→ **defer**
-- **还没开始,先不做,时间待定?** → **hold off (on)**
-- **已经开始了,先停下?** → **put on hold**
-- **还要做,只是不急?**
-  - 降低优先级 → **put on the back burner**(口语)/ **deprioritize**(工作)
-  - 可能不会再捡起来 → **shelve**(无限期搁置)
-- **带"拖延、不想做"的意味?** → **put off**(偏自己拖)/ **stall**(故意拖时间,负面)
-- **被别的事耽搁了(被动)?** → **hold up**
-- **会议上"先不议"?** → **table** —— ⚠️ 美式是"搁置",英式是"提出讨论",跨国团队慎用
-
-**逐个看(每个配一句例句):**
-
-- ① **hold on** —— 等一下 / 坚持住(短暂等待)。
-  *Hold on, let me check the logs first.*(等一下,我先看看日志。)
-- ② **hold off (on)** —— 先别启动 / 先别做,等更合适的时机。
-  *Let's hold off on the release until the crash is fixed.*(崩溃修好之前,先别发版。)
-- ③ **put off** —— 把一件事推到以后(最通用,常带拖延语感)。
-  *I keep putting off updating the documentation.*(我一直在拖着没更新文档。)
-- ④ **postpone** —— 正式、中性的"推迟到另一个时间"(书面首选)。
-  *The launch has been postponed until next month.*(发布已推迟到下个月。)
-- ⑤ **defer** —— 制度化 / 官方场景的"推迟";另有 defer to = 听从,勿混淆。
-  *She deferred her admission for a year.*(她把入学推迟了一年。)
-- ⑥ **push back** —— 口语化的"推迟",常带新时间(商务场合高频)。
-  *Can we push the demo back to Thursday?*(演示能推到周四吗?)
-- ⑦ **put on hold** —— 暂停 / 搁置(多指已经开始的事)。
-  *The migration is on hold until we get more people.*(迁移先暂停,等有更多人手再说。)
-- ⑧ **hold up** —— 耽搁(被动受阻)/ 打劫,两个不相关的意思。
-  *Sorry I'm late — I got held up in a meeting.*(抱歉迟到了,被一个会耽搁了。)
-- ⑨ **table** —— 美:搁置议题;英:提出讨论。
-  *(US) Let's table this discussion until next week.*(这个讨论下周再说。)
-- ⑩ **shelve** —— 无限期搁置 / 雪藏,暗示可能不会再捡起来。
-  *The redesign was shelved after the budget cut.*(预算削减后,改版方案被搁置了。)
-- ⑪ **stall** —— 故意拖延、拖时间(负面)。
-  *The vendor keeps stalling instead of giving us a date.*(供应商一直在拖,不给我们一个日期。)
-- ⑫ **put sth on the back burner** —— 降低优先级、以后再处理,语感比 shelve 轻。
-  *Let's put the dark mode on the back burner for now.*(暗色模式先放一放。)
-
-**相关条目:** ① [hold on](#hold-on) · ② [hold off](#hold-off) · ③ [put off](#put-off) · ④ [postpone](#postpone) · ⑤ [defer](#defer) · ⑥ [push back](#push-back) · ⑦ [put on hold](#put-on-hold) · ⑧ [hold up](#hold-up) · ⑨ [table](#table) · ⑩ [shelve](#shelve) · ⑪ [stall](#stall) · ⑫ [back burner](#back-burner) · [deprioritize](#deprioritize) · [自测:这个先放一放吧](#t-hold-off-for-now)
 
 ---
 
@@ -976,70 +882,6 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
    会议过程中,大家的想法逐渐汇聚成了一个清晰的计划。
 2. The various protest groups eventually **coalesced into** a single unified movement.
    各个抗议团体最终汇聚成了一个统一的运动。
-
----
-
-<a id="wh-question-order"></a>
-## 语法笔记:why 疑问句 vs how come vs 间接疑问句
-
-- 日期:2026-08-25
-- 掌握:会写
-
-**规则总览:** 疑问词提问是否需要 do-support(do/does/did)+ 倒装,要分三种情况看。
-
-**① 直接疑问句(why/what/how 等)—— 需要 do-support + 倒装**
-- ❌ *Why it uses the word "would"?*
-- ✅ *Why does it use the word "would"?*
-说明:主语第三人称单数用 does,主动词还原成原形(use,不是 uses)。
-
-**② how come 疑问句 —— 特例,不需要倒装,保持陈述句语序**
-- ✅ *How come it uses the word "would"?*
-- ❌ *How come does it use the word "would"?*(错,how come 后面不能再加 does)
-说明:how come 意思等同于 why,但语气更口语化、略带疑惑/惊讶,且语法上不倒装,动词保持正常变位(uses)。
-
-**③ 间接疑问句 / 嵌入疑问句(嵌在 tell me / I wonder / do you know 等后面)—— 回到陈述句语序,不倒装**
-- ✅ *He didn't tell me why that sentence uses the word "would".*
-- ❌ *He didn't tell me why does that sentence use the word "would".*(错,间接疑问句里不能再加 does)
-
-**一句话记忆:** 独立提问用倒装(why does...);how come 天生不倒装;疑问句被"包"进另一句话里(间接疑问句)时,也变回陈述句语序(why it uses...)。
-
-**我的原句:**
-
-> Why it uses the word "would"?
-
-- ❌ [结构] **Why it uses** —— 直接疑问句要 do-support + 倒装 → **Why does it use**。
-
-**相关条目:** [句子:hit an error / under what circumstances](#s-rate-limit-error) —— 间接疑问句语序用对了的一个实例(in what situations users would hit...)。
-
----
-
-<a id="synonym-preposition"></a>
-## synonym / antonym / synonymous 的介词搭配
-
-- 日期:2026-08-25
-- 类型:语法
-- 掌握:会写
-
-**标准搭配:**
-- **synonym(s) for X** —— 最常见、最自然的说法。
-  *What are some synonyms for "immense"?*
-- **synonym(s) of X** —— 也正确,偏书面/词典式的表达。
-  *"Huge" is a synonym of "immense".*
-- **antonym(s) for/of X** —— 同理,antonym 也搭配 for 或 of。
-  *What's the antonym for "immense"?*
-
-**我的原句:**
-
-> synonyms to immense
-
-- ⚠️ [介词] **synonyms to** —— 有人这么用,但标准搭配是 **synonyms for / of**。
-
-**容易混的点:** 如果用的是形容词 **synonymous**(而不是名词 synonym),搭配的介词是 **with**,不是 for/of:
-
-> *"Huge" is synonymous with "immense".*
-> "巨大"和"immense"是同义词。(这里 synonymous with 是固定搭配)
-
-**一句话总结:** 名词 synonym/antonym 后面接 **for** 或 **of**;形容词 synonymous 后面接 **with**——三者都不用 to。
 
 ---
 
@@ -1787,33 +1629,6 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
 
 ---
 
-<a id="comma-splice-shared-code"></a>
-## 语法笔记:逗号粘连(comma splice)+ shared code 连字符误用
-
-- 日期:~2026-09-05
-- 掌握:会写
-
-**我的原句:**
-
-> The user was using an iPhone, though the feature was built on shared-code, please help check it out.
-
-- ❌ [标点] **..., please help check it out** —— 陈述句 + 从句 + 祈使句只靠逗号硬连(逗号粘连)→ 句号断开:*...built on shared code. Could you help check it out?*
-- ❌ [词形] **shared-code** —— 作介词宾语的名词短语不加连字符 → **shared code**。
-
-**问题一:逗号粘连(comma splice / run-on sentence)**
-"The user was using an iPhone"(陈述句)+ "though the feature was built on shared code"(从句)+ "please help check it out"(祈使句)三段只靠逗号硬连在一起。祈使句不能直接用逗号接在前面的陈述/从句后面,需要用句号断开,或改写成疑问句形式的礼貌请求。
-
-**问题二:shared-code 不该加连字符**
-这里 "shared code"(共享代码)是介词 on 后面的**名词短语**,shared 只是普通形容词修饰 code,不是放在另一个名词前面的复合形容词,所以不需要连字符。只有当它整体作为形容词去修饰后面的名词时才加连字符,比如 "a shared-code feature"。
-
-**改正后:**
-> The user was using an iPhone, even though the feature was built on shared code. Could you help check it out?
-> 这个用户用的是 iPhone,不过这个功能是基于共享代码构建的——能麻烦帮忙查一下吗?
-
-这里把 though 换成语气更明确的 even though,去掉了多余的连字符,并把最后的祈使句断成独立一句(或改成疑问句 "Could you help check it out?",更像礼貌请求而不是命令)。
-
----
-
 <a id="percentage-completed"></a>
 ## What percentage of X has been completed (so far)?
 
@@ -2013,7 +1828,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **反义词:** prioritize(优先处理、排优先级)。
 
-**辨析:** deprioritize 只是把重要性调低,任务还在队列里;而 put on hold / shelve 是"暂时停掉不做了"(见 [推迟/暂缓家族速查](#postpone-family-quickref) 对比)。
+**辨析:** deprioritize 只是把重要性调低,任务还在队列里;而 put on hold / shelve 是"暂时停掉不做了"(见阅读清单里的「推迟/暂缓」速查)。
 
 **相关条目:** [severity](#severity) —— severity 是问题本身多严重,priority 是先修哪个;high severity 的问题也可能被 deprioritize。
 
@@ -2628,7 +2443,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **相关条目:**
 
-- [语法笔记:why 疑问句 vs how come vs 间接疑问句](#wh-question-order) —— 原句里用对了的间接疑问句语序规则。
+- 阅读清单里的「语法笔记:why 疑问句 vs how come vs 间接疑问句」—— 原句里用对了的间接疑问句语序规则。
 - [句子:error message / shown to users](#s-error-message) —— 紧接着的追问:用户看到的是什么提示。
 
 ---
@@ -3705,7 +3520,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **要点:**
 
-- **hold off on sth** —— 先不做、暂缓(见 [hold off](#hold-off),以及 [推迟/暂缓速查](#postpone-family-quickref))。
+- **hold off on sth** —— 先不做、暂缓(见 [hold off](#hold-off),以及阅读清单里的「推迟/暂缓」速查)。
 - **that** 指代对方刚提的建议,比 it 更自然。
 - **for now** —— 强调"只是暂时不做"。
 
@@ -5143,26 +4958,6 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 ---
 
-<a id="comma-splice"></a>
-## comma splice:怎么一眼判断
-
-- 类型:Knowledge
-- 日期:2026-10-23
-- 掌握:会写
-
-**含义:** comma splice(逗号粘连):两个**独立分句**(各有主语和谓语、能单独成句)只用一个逗号连起来。
-
-**快速判断:** 看逗号两边,如果两边都能单独成句,又没有 *and*、*but*、*so*、*though* 这类连词,就是 comma splice。
-
-**怎么改:** 换成句号或分号,或者加一个连词。
-
-- 是:*Let's add a new entry for this, each phrase has one sample sentence.* —— 逗号后面有主语 *each phrase* 和谓语 *has*,能单独成句。
-- 改:*Let's add a new entry for this; each phrase has one sample sentence.* 或 *…, and each phrase gets one sample sentence.*
-- 不是:*Let's add a new entry for this, with one sample sentence each.* —— 逗号后面是介词短语,不能单独成句。
-- 不是:*…, though I know …* —— *though* 引出的是从句,有连词就不算。
-
----
-
 <a id="this-complicated"></a>
 ## Does it have to be this complicated? / overcomplicate
 
@@ -5352,40 +5147,6 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 ---
 
-<a id="s-hold-off-considering"></a>
-## 句子:hold off on / considering switching / put on hold
-
-- 日期:2026-10-27
-
-**我的原句:**
-
-> Let's hold off on this task. PM team is considering to switch to another tool.
-
-**问题:**
-
-- ✅ **Let's hold off on this task.** —— 原句就很好。
-- ❌ [冠词] **PM team** —— 指的是自己公司那个具体的团队,要加定冠词 → **The PM team**。(第二次漏 the)
-- ❌ [动词] **considering to switch** —— *consider* 后面只接 -ing,不接 to do → **considering switching**。同类只接 -ing 的动词:suggest、avoid、finish、mind、keep。
-
-**改完是:**
-
-> Let's hold off on this task. The PM team is considering switching to another tool.
-> 这个任务先缓一缓。PM 团队在考虑换成另一个工具。
-
-**C1 写法:**
-
-> Let's put this on hold for now. The PM team is weighing a switch to another tool.
-> 这个先暂停。PM 团队正在权衡要不要换成另一个工具。
-
-**涉及的搭配:**
-
-- **hold off on sth** —— 推迟、先不做某事。
-- **put sth on hold** —— 把某事暂停、搁置,说任务时很常用。
-- **consider doing sth** —— 考虑做某事(不是 *consider to do*)。
-- **weigh a switch to sth** —— 权衡要不要换成某物,比 *consider* 更具体。
-
----
-
 <a id="jab-chips-of-ice"></a>
 ## 翻译:jab the scoop into / chips of ice
 
@@ -5425,44 +5186,351 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 ---
 
-<a id="s-share-on-wechat"></a>
-## 句子:share sth on WeChat / share sth with sb / settle on
+<a id="hesitate-hesitant"></a>
+## hesitate / hesitant
 
+- 音标:hesitate 英 /ˈhezɪteɪt/ 美 /ˈhezəteɪt/;hesitant 英 /ˈhezɪtənt/ 美 /ˈhezətənt/
+- 词性:v. / adj.
+- CEFR:B2(hesitate)
 - 日期:2026-10-27
+- 掌握:会写
+
+**English definition:** *hesitate* (verb): to pause before doing or saying something because you are unsure. *hesitant* (adjective): unsure, and so slow to act or speak.
+
+**含义:** 犹豫。**hesitate** 是动词(犹豫这个动作),**hesitant** 是形容词(犹豫的状态),要放在 be 后面。
 
 **我的原句:**
 
-> I was struggling to find the correct prepsition between "share sth. on WeChat" and "share sth. to WeChat". I think "share something to somebody" should a correct pattern, but when it comes to describing about sharing something on some platform, I wasn't that confident with it and finally came up with "share .. on WeChat".
+> I was hesitate about whether to include the indefinite article "a" in front of "good shape"
 
-**问题:**
+- ❌ [词形] **was hesitate** —— *hesitate* 是动词,不能放在 *was* 后面 → **was hesitant** 或 **hesitated**。
+- ⚠️ [搭配] **in front of** —— 说词序用 **before**;*in front of* 多指空间位置。
 
-- ❌ [词形] **prepsition** —— 拼写错误 → **preposition**。
-- ⚠️ [逻辑] **find the correct preposition between A and B** —— 二选一用 **choose between A and B**。
-- ❌ [结构] **should a correct pattern** —— 少了 *be*;陈述判断直接用 **is**。
-- ❌ [搭配] **share something to somebody** —— 和人分享用 **share something with somebody**。
-- ❌ [动词] **describing about** —— *describe* 直接跟宾语,不加 *about*。
-- ⚠️ [冠词] **some platform** —— 泛指「一个平台」用 **a platform**。
-- ⚠️ [介词] **confident with** —— 对某事有把握用 **confident about**。
-- ⚠️ [搭配] **came up with** —— 是「想出、发明」;在已有选项里挑一个用 **settled on**。
+**对比:hesitate / hesitant**
 
-**改完是:**
+| 单词 | 词性 | 常见结构与用法 | 举例 |
+|---|---|---|---|
+| **hesitate** | 动词 | hesitate over / about + whether to do / doing<br>*(拿不定主意;介词只用 over / about,不用 of)* | We **hesitated over whether to** ship it on Friday.(我们犹豫要不要周五发布。) |
+| **hesitate** | 动词 | hesitate to do<br>*(有顾虑、不太敢做;Don't hesitate to … = 尽管……)* | **Don't hesitate to** ask if you get stuck.(卡住了就尽管问。) |
+| **hesitant** | 形容词 | be hesitant about + doing / be hesitant to do<br>*(放在 be 后面,不能说 was hesitate)* | He **was hesitant about** taking the job.(他对要不要接这份工作拿不准。) |
 
-> I was struggling to choose between "share sth on WeChat" and "share sth to WeChat". I think "share something with somebody" is a correct pattern, but when it comes to describing sharing something on a platform, I wasn't that confident about it and finally settled on "share … on WeChat".
+**义项一:hesitate over / about —— 拿不定主意**
 
-**C1 写法:**
+1. We **hesitated over whether to** ship it on Friday.
+   我们犹豫要不要周五发布。
+2. She **hesitated about asking** her manager for help.
+   她犹豫要不要找经理帮忙。
 
-> I couldn't decide between "share sth on WeChat" and "share sth to WeChat". I know we say "share something with someone", but I wasn't sure which preposition goes with a platform, so I went with "on".
-> 我拿不准该用 share on WeChat 还是 share to WeChat。我知道「和某人分享」是 share with,但不确定平台该搭配哪个介词,最后选了 on。
+**义项二:hesitate to do —— 有顾虑、不太敢做**
 
-**介词怎么选:**
+1. **Don't hesitate to** ask if you get stuck.
+   卡住了就尽管问。
+2. I **hesitated to** merge it without a review.
+   没经过评审,我不太敢合并。
 
-- **share sth on WeChat** —— 在某个平台上分享;说平台用 *on*(on Facebook、on Moments)。写句子用这个。
-- **Share to WeChat** —— App 分享按钮上的常见文字,带「发送到」的方向感;做按钮可以,写句子用 *on* 更自然。
-- **share sth via WeChat** —— 通过微信分享,强调渠道。
-- **share sth with sb** —— 和某人分享,不是 *share sth to sb*。
+**义项三:be hesitant about / to —— 犹豫的(形容词)**
 
-**涉及的搭配:**
+1. He **was hesitant about** taking the job.
+   他对要不要接这份工作拿不准。
+2. The team **is hesitant to** switch to a new tool.
+   团队不太愿意换新工具。
 
-- **choose / decide between A and B** —— 在 A 和 B 之间选。
-- **settle on sth** —— 考虑之后选定;**go with sth** 更口语。
-- **be confident about sth** —— 对某事有把握。
+---
+
+<a id="g3-a-an"></a>
+## a / an:一个
+
+- 类型:三年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** 表示"一个"。后面的词以辅音开头用 **a**,以元音开头用 **an**。
+
+**要点:**
+
+- 看读音,不看字母:*an egg*、*an orange*、*an elephant*;*a dog*、*a pen*。
+- 两个以上就不用 a / an 了,名词改复数(见三年级「名词复数」)。
+
+**义项一:a + 辅音开头的词**
+
+1. I have **a** dog.
+   我有一只狗。
+2. It's **a** red pen.
+   这是一支红色的钢笔。
+
+**义项二:an + 元音开头的词**
+
+1. This is **an** egg.
+   这是一个鸡蛋。
+2. I have **an** orange.
+   我有一个橙子。
+
+---
+
+<a id="g3-plural-s"></a>
+## 名词复数:two cats
+
+- 类型:三年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** 两个及以上,名词后面要加 **-s**。
+
+**要点:**
+
+- 中文"两只猫"里的"猫"不变,英文要变:*a cat → two cats*。
+- *How many* 问"多少个",后面的名词也用复数。
+
+**义项一:数字 + 复数**
+
+1. I have two **cats**.
+   我有两只猫。
+2. I can see three **birds**.
+   我能看到三只鸟。
+
+**义项二:How many + 复数**
+
+1. How many **kites** can you see?
+   你能看到多少只风筝?
+2. How many **books** do you have?
+   你有多少本书?
+
+---
+
+<a id="g3-am-is-are"></a>
+## am / is / are:是
+
+- 类型:三年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** "是"有三种写法,跟着前面的人变:**I am**;**he / she / it is**;**you / we / they are**。
+
+**要点:**
+
+- 口诀:我用 am,你用 are,is 跟着他她它;一个人用 is,几个人用 are。
+- 中文都说"是",英文要先看主语是谁。
+
+**义项一:I am / you are**
+
+1. I **am** nine.
+   我九岁。
+2. You **are** my friend.
+   你是我的朋友。
+
+**义项二:is / are**
+
+1. She **is** my sister.
+   她是我的妹妹。
+2. They **are** my friends.
+   他们是我的朋友。
+
+---
+
+<a id="g3-his-her"></a>
+## his / her:他的、她的
+
+- 类型:三年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** 说"他的、她的"用 **his / her**,不能用 he / she。
+
+**要点:**
+
+- *he* 他 → *his* 他的;*she* 她 → *her* 她的;*I* 我 → *my* 我的;*you* 你 → *your* 你的。
+- 后面跟着东西(名字、书包)时,用"的"这一组。
+
+**义项一:his / her + 名词**
+
+1. **His** name is Mike.
+   他的名字叫 Mike。
+2. **Her** name is Sarah.
+   她的名字叫 Sarah。
+
+**义项二:he 和 his 放在一起**
+
+1. **He** is my brother. **His** name is Tom.
+   他是我哥哥。他的名字叫 Tom。
+
+---
+
+<a id="g3-yes-no-questions"></a>
+## 一般疑问句:Is it…? / Do you like…?
+
+- 类型:三年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** 问"是不是、喜不喜欢",用 Yes / No 回答。有 is 的句子,把 is 挪到最前面;有 like 这类动词的句子,在最前面加 Do。
+
+**要点:**
+
+- 回答用问句里的词:*Is it…?* → *Yes, it is.*;*Do you…?* → *Yes, I do. / No, I don't.*
+- 不说 *Yes, I like.*,也不说 *You like pears?*
+
+**义项一:Is it…?**
+
+1. **Is it** a cat?
+   它是一只猫吗?
+2. Yes, **it is**.
+   是的,它是。
+
+**义项二:Do you like…?**
+
+1. **Do you like** pears?
+   你喜欢梨吗?
+2. No, **I don't**.
+   不,我不喜欢。
+
+---
+
+<a id="g4-there-be"></a>
+## there is / there are:某处有……
+
+- 类型:四年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** 说"某个地方有某物",用 **there is**(一个)/ **there are**(两个及以上),不用 have。
+
+**要点:**
+
+- 中文"教室里有一台电脑",英文不说 *The classroom has…*,也不说 *In the classroom have…*。
+- 问"有没有",把 *is / are* 挪到最前面:*Is there…? / Are there…?*
+
+**义项一:There is / There are**
+
+1. **There is** a computer in our classroom.
+   我们教室里有一台电脑。
+2. **There are** two windows in my room.
+   我的房间里有两扇窗户。
+
+**义项二:Is there…?**
+
+1. **Is there** a library in your school?
+   你们学校有图书馆吗?
+2. Yes, **there is**.
+   是的,有。
+
+---
+
+<a id="g4-where-prepositions"></a>
+## Where is…? 和 in / on / under / near
+
+- 类型:四年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** 问东西在哪儿用 **Where is…?**,回答用方位介词:**in** 在……里、**on** 在……上、**under** 在……下面、**near** 在……附近。
+
+**要点:**
+
+- 中文"在桌子上","上"放在后面;英文介词放在前面:*on the desk*。
+- 回答用 *It's…*,不用重复东西的名字。
+
+**义项一:Where is…? It's…**
+
+1. **Where is** my bag?
+   我的书包在哪儿?
+2. It's **on** the desk.
+   它在桌子上。
+
+**义项二:under / near**
+
+1. My cat is **under** the chair.
+   我的猫在椅子下面。
+2. The bus stop is **near** our school.
+   公交车站在我们学校附近。
+
+---
+
+<a id="g4-can"></a>
+## can + 动词原形:会、能
+
+- 类型:四年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** **can** 表示"会、能",后面的动词用原形,主语是谁都一样。
+
+**要点:**
+
+- 说 *She can swim.*,不说 *She can swims.*,也不说 *She cans swim.*
+- 问"你会……吗"把 *can* 挪到最前面;回答 *Yes, I can. / No, I can't.*
+
+**义项一:can + 动词原形**
+
+1. She **can swim**.
+   她会游泳。
+2. My brother **can ride** a bike.
+   我弟弟会骑自行车。
+
+**义项二:Can you…?**
+
+1. **Can you** play football?
+   你会踢足球吗?
+2. No, **I can't**.
+   不,我不会。
+
+---
+
+<a id="g4-wh-questions"></a>
+## 特殊疑问句:What time / How much / Whose
+
+- 类型:四年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** 想知道具体的信息(几点、多少钱、天气、谁的),用疑问词开头,不能用 Yes / No 回答。
+
+**要点:**
+
+- 中文疑问词放在原来的位置("现在几点了"),英文疑问词放在最前面。
+- 问天气说 *What's the weather like?*,不说 *How is the weather like?*
+
+**义项一:问时间和价钱**
+
+1. **What time** is it?
+   现在几点了?
+2. **How much** is this skirt?
+   这条裙子多少钱?
+
+**义项二:问天气和归属**
+
+1. **What's the weather like** in Beijing?
+   北京天气怎么样?
+2. **Whose** shoes are these?
+   这是谁的鞋?
+
+---
+
+<a id="g4-these-those-plurals"></a>
+## these / those 和特殊的复数
+
+- 类型:四年级
+- 日期:2026-10-28
+- 掌握:会写
+
+**含义:** **these** 这些(近处),**those** 那些(远处),后面用 are 和复数。有的名词复数不是只加 -s。
+
+**要点:**
+
+- 加 -es:*tomato → tomatoes*、*potato → potatoes*、*box → boxes*。
+- 不规则:*child → children*、*foot → feet*;*sheep* 单复数一样。
+
+**义项一:These are / Those are**
+
+1. **These are** my new shoes.
+   这些是我的新鞋。
+2. **Are those** horses?
+   那些是马吗?
+
+**义项二:特殊的复数**
+
+1. I like **tomatoes**.
+   我喜欢西红柿。
+2. Look at those **sheep**!
+   看那些羊!
+3. There are many **children** in the park.
+   公园里有很多孩子。

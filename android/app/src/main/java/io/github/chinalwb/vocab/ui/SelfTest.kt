@@ -180,11 +180,27 @@ fun Entry.quizExampleOf(en: String, excluded: Set<String> = emptySet()): QuizExa
     return if (k < 0) null else QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size, xs[k].en)
 }
 
+/**
+ * The example the [tries]th self-test asks (用户 2026-10-27: shuffled; it was note order): every
+ * sentence once a round, each round in its own order, seeded by the entry and the round so a
+ * reopened page asks the same one — and never the same sentence twice running across two rounds.
+ */
 fun Entry.quizExample(tries: Int, excluded: Set<String> = emptySet()): QuizExample? {
     val xs = quizExamples(excluded)
     if (xs.isEmpty()) return null
-    val k = tries % xs.size
+    val k = roundOrder(anchor, xs.size, tries / xs.size)[tries % xs.size]
     return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size, xs[k].en)
+}
+
+/** Round [round]'s order of [n] sentences; same as roundOrder() in template.html (its own random numbers). */
+private fun roundOrder(anchor: String, n: Int, round: Int): List<Int> {
+    var order = emptyList<Int>()
+    for (r in 0..round) {
+        val next = (0 until n).shuffled(Random(anchor.hashCode() * 31 + r))
+        // the round's first must not repeat the last round's last
+        order = if (r > 0 && n > 1 && next[0] == order.last()) listOf(next[1], next[0]) + next.drop(2) else next
+    }
+    return order
 }
 
 /**
@@ -325,8 +341,8 @@ const val RUN_SENTENCES = 3
 /**
  * The sentences a run asks, as indexes into quizExamples(): up to [RUN_SENTENCES] — first the ones
  * not yet right in this stage (since [since]), then the ones last answered wrong, then the longest
- * unasked — asked in note order. The rest come round on later days; moving on still needs every one
- * right. Same as runSentences() in template.html.
+ * unasked — asked in a random order (用户 2026-10-27; it was note order). The rest come round on later
+ * days; moving on still needs every one right. Same as runSentences() in template.html.
  */
 fun Entry.runSentences(attempts: List<Attempt>, since: Long, excluded: Set<String>): List<Int> {
     val xs = quizExamples(excluded).map { plain(it.en) }
@@ -340,7 +356,7 @@ fun Entry.runSentences(attempts: List<Attempt>, since: Long, excluded: Set<Strin
         }
     }
     val lastT = { k: Int -> attempts.lastOrNull { it.ex == xs[k] }?.t ?: 0L }
-    return xs.indices.sortedWith(compareBy<Int>({ group(it) }, { lastT(it) }, { it })).take(RUN_SENTENCES).sorted()
+    return xs.indices.sortedWith(compareBy<Int>({ group(it) }, { lastT(it) }, { it })).take(RUN_SENTENCES).shuffled()
 }
 
 /** The 选词 | 打字 switch, a small pill at the end of its row; [lockSecond] greys out the second. */
