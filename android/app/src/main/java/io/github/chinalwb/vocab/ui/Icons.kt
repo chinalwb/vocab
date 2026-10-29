@@ -103,6 +103,16 @@ val HistoryIcon: ImageVector = ImageVector.Builder("History", 24.dp, 24.dp, 24f,
 
 // Material's "screen_rotation": a table opens on its own page, turned to landscape (用户 2026-10-27,
 // a different icon from the card's ⤢ so the two buttons aren't confused).
+/** Material "shuffle": the 打乱 pill on the answer sheet. */
+val ShuffleIcon: ImageVector = ImageVector.Builder("Shuffle", 24.dp, 24.dp, 24f, 24f).addPath(
+    pathData = addPathNodes(
+        "M10.59,9.17L5.41,4 4,5.41l5.17,5.17 1.42,-1.41z" +
+            "M14.5,4l2.04,2.04L4,18.59 5.41,20 17.96,7.46 20,9.5V4h-5.5z" +
+            "M14.83,13.41l-1.41,1.41 3.13,3.13L14.5,20H20v-5.5l-2.04,2.04 -3.13,-3.13z"
+    ),
+    fill = SolidColor(Color.Black),
+).build()
+
 val ScreenRotationIcon: ImageVector = ImageVector.Builder("ScreenRotation", 24.dp, 24.dp, 24f, 24f).addPath(
     pathData = addPathNodes(
         "M16.48,2.52c3.27,1.55 5.61,4.72 5.97,8.48h1.5C23.44,4.84 18.29,0 12,0l-0.66,0.03l3.81,3.81l1.33,-1.32z" +

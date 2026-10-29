@@ -579,6 +579,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 onRight = vm::rightQuiz,
                 onToggleExample = vm::toggleQuizExample,
                 onFav = { a, en -> vm.toggleFav(a, en) },
+                onShuffle = vm::shuffleQuiz,
                 // a run draws its own top row under the status bar and keeps above the navigation bar
                 modifier = if (quiz?.stage == stage) Modifier.imePadding() else Modifier,
                 contentPadding = pad,
