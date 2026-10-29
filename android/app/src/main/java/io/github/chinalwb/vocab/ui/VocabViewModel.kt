@@ -64,6 +64,8 @@ data class QuizSession(
     /** the sentences this run asks of the entry (indexes into quizExamples()), and ① skipped for this one */
     val qs: List<String> = emptyList(),
     val skipped: Boolean = false,
+    /** 打乱 (用户 2026-10-29): this run deals each entry's sentences at random instead of note order */
+    val shuffle: Boolean = false,
 ) {
     val current get() = queue.getOrNull(index)
 
@@ -80,7 +82,7 @@ data class QuizSession(
         val asks = e.level != "SELFTEST"
         val left = optOut[e.anchor].orEmpty()
         // kept as the sentences themselves, so leaving one out mid-run doesn't shift the rest
-        val qs = if (!asks) emptyList() else if (k == 0 && !keepQs) e.quizExamples(left).let { xs -> e.runSentences(mine, since[e.anchor] ?: 0L, left).map { plain(xs[it].en) } } else qs
+        val qs = if (!asks) emptyList() else if (k == 0 && !keepQs) e.quizExamples(left).let { xs -> e.runSentences(mine, since[e.anchor] ?: 0L, left).map { plain(xs[it].en) } }.let { if (shuffle) it.shuffled() else it } else qs
         val ex = if (asks) qs.getOrNull(k)?.let { e.quizExampleOf(it, left) } else null
         val skip = (if (asks) ex != null else e.selfTestAnswer.isNotBlank()) && mine.rightBefore(ex?.en ?: "")
         return copy(qs = qs, example = ex, step = if (skip) 2 else 1, bankOk = skip, skipped = skip)
@@ -340,6 +342,22 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             !tried -> { recordAttempt(e, "", false, via); schedule(s, e, false); _quiz.value = s.copy(revealed = true, missed = true) }
             else -> _quiz.value = s.copy(revealed = true)
         }
+    }
+
+    /**
+     * 打乱 in a run: on, this entry's sentences still to come (this one included) are dealt again and
+     * so are the next entries'; off, they go back to note order. This sentence starts over at ①.
+     * Same as the #q-shuf handler in renderQuizCard() (template.html).
+     */
+    fun shuffleQuiz() {
+        val s = _quiz.value ?: return
+        val e = s.current ?: return
+        val on = !s.shuffle
+        val xs = e.quizExamples(quizOptOut.value[e.anchor].orEmpty()).map { plain(it.en) }
+        val rest = s.qs.drop(s.k)
+        val kept = if (on) dealOrder(rest.size, 0).map { rest[it] } else rest.sortedBy { xs.indexOf(it) }
+        _quiz.value = s.copy(shuffle = on, qs = s.qs.take(s.k) + kept, revealed = false, righted = false)
+            .withExample(quizOptOut.value, selfTests.value, stageTimes.value.t, keepQs = true)
     }
 
     /** Within the entry: ① → ② 打字, or ([nextSentence]) on to its next sentence's ①. */

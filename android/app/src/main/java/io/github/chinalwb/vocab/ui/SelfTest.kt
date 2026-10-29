@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.LaunchedEffect
@@ -134,7 +135,11 @@ private fun Line(label: String, text: AnnotatedString, say: String? = null) {
  * compared word by word. Each try takes the next example in turn (attempt count % examples).
  * Entries without a translated example (grammar notes, quick references) I grade myself.
  */
-data class QuizExample(val en: String, val zh: String, val k: Int, val of: Int, /** [en] as written, its key part in **bold** */ val raw: String = en)
+data class QuizExample(
+    val en: String, val zh: String, val k: Int, val of: Int, /** [en] as written, its key part in **bold** */ val raw: String = en,
+    /** where it comes in the order asked: [k] in note order, else its place in the order 打乱 dealt */
+    val pos: Int = k,
+)
 
 /** A piece of a quiz sentence: a **bold** key part to type ([key]), or the text around it. */
 data class Blank(val key: Boolean, val text: String)
@@ -181,26 +186,42 @@ fun Entry.quizExampleOf(en: String, excluded: Set<String> = emptySet()): QuizExa
 }
 
 /**
- * The example the [tries]th self-test asks (用户 2026-10-27: shuffled; it was note order): every
- * sentence once a round, each round in its own order, seeded by the entry and the round so a
- * reopened page asks the same one — and never the same sentence twice running across two rounds.
+ * The example the [tries]th self-test asks: position [tries] in note order, or in [order] — the one
+ * 打乱 dealt (用户 2026-10-29; it replaces 2.27's automatic shuffle). Same as quizEx() in template.html.
  */
-fun Entry.quizExample(tries: Int, excluded: Set<String> = emptySet()): QuizExample? {
+fun Entry.quizExample(tries: Int, excluded: Set<String> = emptySet(), order: List<Int>? = null): QuizExample? {
     val xs = quizExamples(excluded)
     if (xs.isEmpty()) return null
-    val k = roundOrder(anchor, xs.size, tries / xs.size)[tries % xs.size]
-    return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size, xs[k].en)
+    val pos = tries % xs.size
+    val k = if (order != null && order.size == xs.size) order[pos] else pos
+    return QuizExample(plain(xs[k].en), plain(xs[k].zh), k, xs.size, xs[k].en, pos)
 }
 
-/** Round [round]'s order of [n] sentences; same as roundOrder() in template.html (its own random numbers). */
-private fun roundOrder(anchor: String, n: Int, round: Int): List<Int> {
-    var order = emptyList<Int>()
-    for (r in 0..round) {
-        val next = (0 until n).shuffled(Random(anchor.hashCode() * 31 + r))
-        // the round's first must not repeat the last round's last
-        order = if (r > 0 && n > 1 && next[0] == order.last()) listOf(next[1], next[0]) + next.drop(2) else next
+/** 打乱: a random order of 0 until [n] that doesn't start with [first], so a tap visibly changes the question. Same as dealOrder() in template.html. */
+fun dealOrder(n: Int, first: Int): List<Int> {
+    val o = (0 until n).shuffled().toMutableList()
+    if (n > 1 && o[0] == first) { o[0] = o[1]; o[1] = first }
+    return o
+}
+
+/** The 打乱 pill at the end of the stats line: off asks in note order, on (filled) in the order dealt. */
+@Composable
+fun ShuffleButton(on: Boolean, onClick: () -> Unit) {
+    val shape = RoundedCornerShape(50)
+    val ink = MaterialTheme.colorScheme.onSurface
+    val fg = if (on) MaterialTheme.colorScheme.surface else ink
+    Row(
+        Modifier
+            .clip(shape)
+            .background(if (on) ink else ink.copy(alpha = 0.08f))
+            .clickable(onClick = onClick)
+            .padding(start = 9.dp, end = 12.dp, top = 5.dp, bottom = 5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+    ) {
+        androidx.compose.material3.Icon(ShuffleIcon, contentDescription = null, tint = fg, modifier = Modifier.size(16.dp))
+        Text("打乱", style = MaterialTheme.typography.labelLarge, color = fg)
     }
-    return order
 }
 
 /**
@@ -341,8 +362,8 @@ const val RUN_SENTENCES = 3
 /**
  * The sentences a run asks, as indexes into quizExamples(): up to [RUN_SENTENCES] — first the ones
  * not yet right in this stage (since [since]), then the ones last answered wrong, then the longest
- * unasked — asked in a random order (用户 2026-10-27; it was note order). The rest come round on later
- * days; moving on still needs every one right. Same as runSentences() in template.html.
+ * unasked — asked in note order (a run's 打乱 deals them at random instead, QuizSession.withExample()).
+ * The rest come round on later days; moving on still needs every one right. Same as runSentences() in template.html.
  */
 fun Entry.runSentences(attempts: List<Attempt>, since: Long, excluded: Set<String>): List<Int> {
     val xs = quizExamples(excluded).map { plain(it.en) }
@@ -356,7 +377,7 @@ fun Entry.runSentences(attempts: List<Attempt>, since: Long, excluded: Set<Strin
         }
     }
     val lastT = { k: Int -> attempts.lastOrNull { it.ex == xs[k] }?.t ?: 0L }
-    return xs.indices.sortedWith(compareBy<Int>({ group(it) }, { lastT(it) }, { it })).take(RUN_SENTENCES).shuffled()
+    return xs.indices.sortedWith(compareBy<Int>({ group(it) }, { lastT(it) }, { it })).take(RUN_SENTENCES).sorted()
 }
 
 /** The 选词 | 打字 switch, a small pill at the end of its row; [lockSecond] greys out the second. */

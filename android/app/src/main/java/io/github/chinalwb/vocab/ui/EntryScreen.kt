@@ -157,7 +157,9 @@ fun EntryScreen(
         // resets it: 再试一次 asks the same example again, 下一句 the next one
         var tryNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
         var exNo by rememberSaveable(entry.anchor, stage) { mutableStateOf(attempts.size) }
-        val ex = remember(entry.anchor, exNo, excluded) { if (selfTest) null else entry.quizExample(exNo, excluded) }
+        // 打乱 (用户 2026-10-29): the order it dealt, kept while this entry is open; null = note order
+        var order by rememberSaveable(entry.anchor) { mutableStateOf<IntArray?>(null) }
+        val ex = remember(entry.anchor, exNo, excluded, order) { if (selfTest) null else entry.quizExample(exNo, excluded, order?.toList()) }
         // 两步: ① 选词 then ② 打字 (stepLabel() in SelfTest.kt); the step's own state resets with it
         // a sentence answered right before skips ① (rightBefore()); read once, as the try starts
         val skipBank = remember(entry.anchor, stage, tryNo, exNo) {
@@ -177,7 +179,14 @@ fun EntryScreen(
         var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
         var quizUp by rememberSaveable(entry.anchor, stage) { mutableStateOf(stage == Stage.Test) }
         val retry = { tryNo = maxOf(tryNo + 1, attempts.size); quizUp = true }
-        val nextExample = { exNo = (ex?.k ?: exNo) + 1; retry() }
+        val nextExample = { exNo = (ex?.pos ?: exNo) + 1; retry() }
+        // 打乱 on: a new random order, from its start; off: note order, staying on this sentence
+        val shuffle = {
+            if (ex != null) {
+                if (order == null) { order = dealOrder(ex.of, ex.k).toIntArray(); exNo = 0 } else { order = null; exNo = ex.k }
+                retry()
+            }
+        }
         val ready = revealed && (step == 2 || !selfTest && ex == null) && advanceReady(entry, stage, attempts, since, excluded, reps)
         val answer = if (selfTest) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
         val key = if (selfTest) entry.selfTestAnswer else ex?.en       // what a reveal checks against
@@ -279,12 +288,13 @@ fun EntryScreen(
                     if (!revealed) {
                         Question(entry, ex, compact = if (bank != null) bank.picked.isNotEmpty() else typed.isNotBlank())
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub, modifier = Modifier.weight(1f, fill = false))
+                            Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub, modifier = Modifier.weight(1f))
                             if (toNotes) Text(
                                 "看笔记",
                                 style = MaterialTheme.typography.labelLarge,
                                 modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { quizUp = false }.padding(horizontal = 6.dp, vertical = 4.dp),
                             )
+                            if (ex != null && ex.of > 1) ShuffleButton(order != null, shuffle)
                         }
                         val blanks = if (step == 2 && stage != Stage.Test) blanksOf(ex?.raw) else null
                         when {

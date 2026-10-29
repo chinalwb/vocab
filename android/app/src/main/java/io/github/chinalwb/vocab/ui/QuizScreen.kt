@@ -128,12 +128,14 @@ fun QuizScreen(
     onFav: (String, String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
+    /** 打乱: this run's sentences at random, or (again) in note order */
+    onShuffle: () -> Unit = {},
 ) {
     val current = session?.current
     when {
         session != null && session.stage == stage && current != null -> QuizCard(
             session, selfTests, stageTimes, excluded, review, onStudied, onReveal, onGrade, onOnward, onNext, onEnd, { onOpen(it, emptyList()) }, onRight,
-            onToggleExample, onFav, modifier,
+            onToggleExample, onFav, modifier, onShuffle = onShuffle,
         )
         session != null && session.stage == stage -> Column(
             modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility).padding(24.dp),
@@ -455,6 +457,7 @@ private fun QuizCard(
     onToggleExample: (Entry, String) -> Unit,
     onFav: (String, String) -> Unit,
     modifier: Modifier,
+    onShuffle: () -> Unit,
 ) {
     val cur = session.current ?: return
     val hasAnswer = if (cur.level == "SELFTEST") cur.selfTestAnswer.isNotBlank() else session.example != null
@@ -484,6 +487,7 @@ private fun QuizCard(
                 onStudied, onReveal, onGrade, onOnward, onNext, onXref, onRight,
                 // the notes' examples: long-press only (不再考这句 / 收藏), no tap toggling mid-run
                 ExampleQuiz(excluded[e.anchor].orEmpty(), { en -> onToggleExample(e, en) }, { en -> onFav(e.anchor, en) }, tapToggles = false),
+                onShuffle = onShuffle,
             )
         }
     }
@@ -505,6 +509,7 @@ private fun QuizCardBody(
     onXref: (String) -> Unit,
     onRight: () -> Unit,
     notesQuiz: ExampleQuiz,
+    onShuffle: () -> Unit,
 ) {
     val exam = entry.level == "SELFTEST"
     val ex = session.example
@@ -512,7 +517,7 @@ private fun QuizCardBody(
     val answer = if (exam) entry.selfTestAnswer.lines().firstOrNull { it.isNotBlank() } else ex?.en
     val step = if (answer != null) session.step else 2
     // per sentence and step: what's typed, the 选词 hint (② only), and what the reveal checked
-    val key = "${session.index}/${session.k}/$step"
+    val key = "${session.index}/${session.k}/$step/${ex?.en}"
     var typed by rememberSaveable(key) { mutableStateOf("") }
     var help by rememberSaveable(key) { mutableStateOf(false) }
     var draft by rememberSaveable(key) { mutableStateOf("") }
@@ -581,7 +586,10 @@ private fun QuizCardBody(
                                 ex != null -> QuestionText(ex.zh, compact)
                                 else -> ReviewFront(entry, kindOf(entry, inTest = true))
                             }
-                            Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub)
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                Text(stats, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub, modifier = Modifier.weight(1f))
+                                if (ex != null && session.qs.size - session.k > 1) ShuffleButton(session.shuffle, onShuffle)
+                            }
                             val blanks = if (step == 2 && !studying && session.stage != Stage.Test) blanksOf(ex?.raw) else null
                             when {
                                 bank != null -> ChipsAnswerBox(bank)
