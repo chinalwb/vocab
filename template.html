@@ -1247,9 +1247,11 @@ if (!STAGE_NAME[stageF]) stageF = "";
 // 筛选: two labelled rows — 类型 (with a CEFR sub-row under 单词) and 进度 + 只看会写.
 // Each row is single-choice and starts at 全部; the rows narrow each other.
 const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
+// 类型 and 分类 list only the groups this notebook has (用户 2026-10-29: taobao's page shows 三年级 / 四年级
+// but no empty A1–C2 or 术语); DATA carries no empty groups
+const hasGroup = k => k === "ALL" || DATA.some(g => k === "WORD" ? CEFR.includes(g.level) : g.level === k);
 const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
-  ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []), ...GRADES,
-  ...(DATA.some(g => g.level === "COLLOC") ? [["COLLOC", "固定搭配"]] : []), ["SELFTEST", "自测题"]];
+  ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["SELFTEST", "自测题"]].filter(t => hasGroup(t[0]));
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
   const old = store.get("vk.level", "ALL");
@@ -3402,7 +3404,7 @@ const SIDE = [
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
   ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"],
-    ...(DATA.some(g => g.level === "KNOWLEDGE") ? [["KNOWLEDGE", "Knowledge"]] : []), ...GRADES, ["SELFTEST", "自测题"]])
+    ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["SELFTEST", "自测题"]].filter(([k]) => hasGroup(k)))
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];

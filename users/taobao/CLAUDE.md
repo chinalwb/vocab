@@ -72,7 +72,7 @@
 ## 他的网页
 
 - 地址:**https://chinalwb.github.io/vocab/taobao/**(dev 合进 main 之后才更新,和主页一样)。只有网页,没有 App。
-- 页面配置在 `site.json`:localStorage 前缀 `vk.taobao.`,进度同步到 `progress` 分支的 `progress-taobao.json`;主题色是青绿色(用户 2026-10-18 要求和主页不同);**没有分类**(用户 2026-10-18:他不需要 A1–C2、术语这些分类,`categories: false`)。**卡片按学习阶段上色**(用户 2026-10-18,`cardColor: stage`):灰 = 学习中,青绿 = 复习中,橙 = 考核中,绿 = 已掌握,和左栏阶段点的颜色一样。原来同类型卡片轮流用三个深浅,三条句子颜色不同却没有意思,容易让孩子误会。
+- 页面配置在 `site.json`:localStorage 前缀 `vk.taobao.`,进度同步到 `progress` 分支的 `progress-taobao.json`;**界面是设计稿 B 组「活泼友好」**(用户 2026-10-29,仿 Duolingo,https://claude.ai/artifact/YFLgTyKbWCtf7KxkRZX14i):白底、Nunito 粗体、2px 浅灰描边加 4px 实色「台阶」阴影,主按钮绿色、选中的是蓝色;样式全在 `duo.css`(`site.json` 的 `css`),只改样式不改页面结构,浅色 / 深色两套都在里面(原来的青绿色 theme 删了)。改 `template.html` 的类名时记得看一眼 `duo.css`。**分类只列他有的组**(用户 2026-10-29,`categories: true`):全部、句子订正、三年级、四年级、固定搭配;没有条目的 A1–C2、术语不会出现(2026-10-18 关掉分类就是因为那些空分类)。**卡片按学习阶段上色**(用户 2026-10-18,`cardColor: stage`):灰 = 学习中,蓝 = 复习中,橙 = 考核中,绿 = 已掌握,和左栏阶段点的颜色一样。原来同类型卡片轮流用三个深浅,三条句子颜色不同却没有意思,容易让孩子误会。
 - 本地预览:在仓库根目录 `python3 build.py --src users/taobao`,打开 `users/taobao/index.html`。
 
 ## 写入规则

@@ -1,0 +1,294 @@
+/* taobao 的页面:B · 活泼友好(用户 2026-10-29,设计稿 https://claude.ai/artifact/YFLgTyKbWCtf7KxkRZX14i 的 B 组)。
+   Inlined by build.py (site.json "css") after template.html's styles, so it only restyles: white ground,
+   Nunito at heavy weights, 2px light-grey rims with a solid 4px "ledge" under cards and buttons,
+   green for the main action, blue for what's selected. */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap");
+
+:root{
+  --font:"Nunito","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --ground:#ffffff; --ink:#3c3c3c; --ink-2:#4b4b4b; --ink-3:#6f6f6f; --rule:#e5e5e5;
+  --chip:#ffffff; --chip-on:#3c3c3c; --chip-on-ink:#ffffff;
+  --card-ink:#3c3c3c; --card-ink-2:#5f5f5f; --card-edge:#e5e5e5;
+  --shadow:none; --shadow-lift:none; --scrim:rgba(60,60,60,.4);
+  --accent:#1cb0f6; --accent-ink:#ffffff;
+  --st-learn:#afafaf; --st-test:#ff9600; --st-done:#58cc02;
+  --err:#ea2b2b; --warn:#cd7900; --mk:#ffffff; --tag:#f0f0f0; --tag-ink:#4b4b4b;
+  --glass:#ffffff; --glass-strong:#ffffff; --glass-fill:#f7f7f7; --glass-rim:transparent; --glass-edge:#e5e5e5;
+  --glass-shadow:0 4px 0 #e5e5e5;
+  --well:#f7f7f7; --panel:#ffffff; --key:#e5e5e5; --sum-bg:#ffffff; --sum-fg:#3c3c3c;
+  /* the look's own tokens */
+  --go:#46a302; --go-edge:#3a8a02; --go-ink:#ffffff; --go-bar:#58cc02;
+  --blue:#1cb0f6; --blue-edge:#1899d6;
+  --sel-bg:#ddf4ff; --sel-edge:#84d8ff; --sel-ink:#0a78ae;
+  --ledge:#e5e5e5; --soft:#f7f7f7;
+  --ok-bg:#d7ffb8; --ok-ink:#3d7a00; --bad-bg:#ffdfe0; --bad-ink:#c41d1d; --miss-bg:#fff0db; --miss-ink:#a14d00;
+  --brand:#46a302;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#131f24; --ink:#f1f7fb; --ink-2:#dce6ec; --ink-3:#9eb0ba; --rule:#37464f;
+    --chip:#131f24; --chip-on:#f1f7fb; --chip-on-ink:#131f24;
+    --card-ink:#f1f7fb; --card-ink-2:#c3d0d7; --card-edge:#37464f;
+    --scrim:rgba(0,0,0,.6);
+    --accent:#49c0f8; --accent-ink:#131f24;
+    --st-learn:#6f8590; --st-test:#ffab33; --st-done:#79d634;
+    --err:#ff7878; --warn:#ffb648; --mk:#131f24; --tag:#202f36; --tag-ink:#dce6ec;
+    --glass:#131f24; --glass-strong:#131f24; --glass-fill:#202f36; --glass-edge:#37464f;
+    --glass-shadow:0 4px 0 #37464f;
+    --well:#202f36; --panel:#131f24; --key:#37464f; --sum-bg:#131f24; --sum-fg:#f1f7fb;
+    --go:#58cc02; --go-edge:#58a700; --go-ink:#131f24; --go-bar:#58cc02;
+    --blue:#1cb0f6; --blue-edge:#1899d6;
+    --sel-bg:#1b3540; --sel-edge:#3f85a7; --sel-ink:#49c0f8;
+    --ledge:#37464f; --soft:#202f36;
+    --ok-bg:#1e3a12; --ok-ink:#9be15d; --bad-bg:#3f1c1f; --bad-ink:#ff8a8a; --miss-bg:#43300f; --miss-ink:#ffc46b;
+    --brand:#79d634;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#131f24; --ink:#f1f7fb; --ink-2:#dce6ec; --ink-3:#9eb0ba; --rule:#37464f;
+  --chip:#131f24; --chip-on:#f1f7fb; --chip-on-ink:#131f24;
+  --card-ink:#f1f7fb; --card-ink-2:#c3d0d7; --card-edge:#37464f;
+  --scrim:rgba(0,0,0,.6);
+  --accent:#49c0f8; --accent-ink:#131f24;
+  --st-learn:#6f8590; --st-test:#ffab33; --st-done:#79d634;
+  --err:#ff7878; --warn:#ffb648; --mk:#131f24; --tag:#202f36; --tag-ink:#dce6ec;
+  --glass:#131f24; --glass-strong:#131f24; --glass-fill:#202f36; --glass-edge:#37464f;
+  --glass-shadow:0 4px 0 #37464f;
+  --well:#202f36; --panel:#131f24; --key:#37464f; --sum-bg:#131f24; --sum-fg:#f1f7fb;
+  --go:#58cc02; --go-edge:#58a700; --go-ink:#131f24; --go-bar:#58cc02;
+  --blue:#1cb0f6; --blue-edge:#1899d6;
+  --sel-bg:#1b3540; --sel-edge:#3f85a7; --sel-ink:#49c0f8;
+  --ledge:#37464f; --soft:#202f36;
+  --ok-bg:#1e3a12; --ok-ink:#9be15d; --bad-bg:#3f1c1f; --bad-ink:#ff8a8a; --miss-bg:#43300f; --miss-ink:#ffc46b;
+  --brand:#79d634;
+}
+
+/* 500: Nunito falls up to its lightest loaded weight (600), Chinese gets Noto Sans SC 500, not 700 */
+body{font-weight:500;line-height:1.55}
+b,strong,h1,h2,h3{font-weight:800}
+:where(button,a,input,textarea,[tabindex]):focus-visible{outline:3px solid var(--blue)!important;outline-offset:2px}
+
+/* ── header: plain white, a 2px rule, no glass ── */
+.top{background:var(--ground);-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:2px solid var(--rule)}
+.brand h1{font-weight:900;letter-spacing:-.01em}
+.brand .logo{border-radius:14px;box-shadow:0 0 0 2px var(--rule), 0 3px 0 var(--ledge)}
+.tabs{border-bottom:2px solid var(--rule)}
+.tab{font-weight:800;border-bottom-width:3px}
+.tab[aria-selected="true"]{color:var(--sel-ink);border-bottom-color:var(--blue)}
+.search{background:var(--soft);border:2px solid var(--rule);border-radius:14px;box-shadow:none;padding:9px 16px;font-weight:600}
+.fbtn,.theme{background:var(--chip);border:2px solid var(--rule);border-radius:14px;box-shadow:0 3px 0 var(--ledge);font-weight:800}
+.theme{border-radius:12px;width:38px;height:38px}
+.fbtn[aria-expanded="true"],.fbtn.on{background:var(--sel-bg);border-color:var(--sel-edge);color:var(--sel-ink);box-shadow:0 3px 0 var(--sel-edge)}
+.fb-n{background:var(--blue);color:#fff}
+.fchip{border:2px solid var(--rule);border-radius:12px;font-weight:700}
+.today{height:42px;border-radius:14px;background:var(--go);color:var(--go-ink);box-shadow:0 4px 0 var(--go-edge);font-weight:900;letter-spacing:.03em;padding:0 16px}
+.today.idle{background:var(--chip);color:var(--ink-3);border:2px solid var(--rule);box-shadow:0 4px 0 var(--ledge);font-weight:800}
+.syncdot{font-weight:800}
+.syncdot.ok{color:var(--ok-ink)}
+
+/* ── buttons: chunky, with a ledge that sinks when pressed ── */
+.btn{border-radius:16px;font-weight:900;letter-spacing:.04em;background:var(--go);color:var(--go-ink);border:0;box-shadow:0 4px 0 var(--go-edge);padding:11px 20px;transition:transform .06s,box-shadow .06s}
+.btn:not([disabled]):active,.today:active,.wchip:not(.used):not(.dim):active,.pill:active,.fbtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ledge)}
+.btn:not([disabled]):active{box-shadow:0 1px 0 var(--go-edge)}
+.btn[disabled]{background:var(--rule);color:var(--ink-3);box-shadow:0 4px 0 var(--ledge);opacity:1}
+.btn.ghost,.row2 .btn.ghost{background:var(--chip);color:var(--sel-ink);border:2px solid var(--rule);box-shadow:0 4px 0 var(--ledge)}
+.btn.ghost:not([disabled]):active{box-shadow:0 1px 0 var(--ledge)}
+.btn.go{background:var(--go);color:var(--go-ink)}
+.linkish,.fclear{color:var(--sel-ink);font-weight:800;text-decoration:none}
+.linkish:hover,.fclear:hover{text-decoration:underline}
+
+/* pills (筛选, 错题 types): rimmed; selected = blue */
+.pill{border:2px solid var(--rule);border-radius:12px;font-weight:800;padding:6px 12px;box-shadow:0 3px 0 var(--ledge);color:var(--ink-2)}
+.pill[aria-pressed="true"]{background:var(--sel-bg);color:var(--sel-ink);border-color:var(--sel-edge);box-shadow:0 3px 0 var(--sel-edge)}
+.pill .dot{width:12px;height:12px;border-radius:4px}
+.wr-box{font-weight:800}
+.wr-box .box{width:20px;height:20px;border:2px solid var(--rule);border-radius:6px}
+.wr-box[aria-checked="true"] .box{background:var(--blue);border-color:var(--blue-edge)}
+.wr-box[aria-checked="true"] .box::after{border-color:#fff}
+.flab{font-weight:900;color:var(--ink-3)}
+.fsheet{background:var(--ground);-webkit-backdrop-filter:none;backdrop-filter:none;border:2px solid var(--rule);box-shadow:0 -4px 0 var(--ledge)}
+@media (min-width:640px){ .fsheet{border-radius:20px;box-shadow:0 4px 0 var(--ledge)} }
+.fgo{background:var(--go);color:var(--go-ink);border-radius:16px;font-weight:900;box-shadow:0 4px 0 var(--go-edge);padding:13px}
+
+/* ── cards: the stage wash stays (用户 2026-10-18), with a rim and a ledge ── */
+.sect-head .badge{border:2px solid color-mix(in srgb,var(--sw),#000 12%);border-radius:12px;font-weight:900}
+.sect-head .nm{font-weight:800}
+.card{border:2px solid color-mix(in srgb,var(--sw),#000 12%);border-radius:18px;box-shadow:0 4px 0 color-mix(in srgb,var(--sw),#000 12%);padding:14px 16px 12px}
+.card:hover{box-shadow:0 4px 0 color-mix(in srgb,var(--sw),#000 12%);transform:none;filter:brightness(.985)}
+.hw{font-weight:900}
+.gloss{font-weight:600}
+.foot{border-top:2px solid color-mix(in srgb,var(--sw),#000 10%)}
+.foot .stg.done{color:var(--ok-ink)}
+
+/* ── 错题本 ── */
+.mk{border:2px solid var(--rule);border-radius:16px;box-shadow:0 4px 0 var(--ledge)}
+.mk:hover{box-shadow:0 4px 0 var(--ledge);transform:none;background:var(--soft)}
+.mk .what .sv{font-weight:900}
+.mk .orig{border-left:3px solid var(--rule)}
+.mtag{border-radius:6px;font-weight:800}
+.check,.sync,.stat,.task{border:2px solid var(--rule);border-radius:18px;box-shadow:0 4px 0 var(--ledge)}
+.sync input,textarea.draft{border:2px solid var(--rule);border-radius:14px;background:var(--soft)}
+
+/* ── the entry: a white panel, the notes in grey and rimmed boxes ── */
+.sheet{background:var(--ground);border:2px solid var(--rule);border-radius:22px;box-shadow:none}
+.sheet h2{display:flex;align-items:center;gap:14px;font-weight:900;font-size:calc(28px * var(--fs))}
+.sheet h2 .spk{order:-1;flex:none;width:48px;height:48px;margin:0;border-radius:16px;background:var(--blue);color:#fff;box-shadow:0 4px 0 var(--blue-edge)}
+.sheet h2 .spk svg{width:24px;height:24px}
+.sheet h2 .spk:hover{background:var(--blue);filter:brightness(1.05)}
+.sheet.full h2 .spk,.sheet.quizzing h2 .spk{width:34px;height:34px;border-radius:11px;box-shadow:0 3px 0 var(--blue-edge)}
+.sheet.full h2 .spk svg,.sheet.quizzing h2 .spk svg{width:18px;height:18px}
+.mpill{background:var(--sel-bg);color:var(--sel-ink);border-radius:10px;font-weight:800;padding:6px 8px 6px 12px}
+.x,.nx{border:2px solid var(--rule);border-radius:12px;box-shadow:0 3px 0 var(--ledge);font-weight:800}
+.x{width:34px;height:34px}
+.nx{height:34px;background:var(--chip)}
+.back{background:var(--chip);border:2px solid var(--rule);border-radius:12px;font-weight:800;color:var(--sel-ink)}
+
+/* the four stages: done = green ✓, now = blue, still to come = grey */
+.lv::before,.lv::after{top:17px;height:4px}
+.lv::before{background:var(--rule)}
+.lv::after{background:var(--go-bar)}
+.lvl{font-weight:800;color:var(--ink-3);gap:8px}
+.lvl .node,.sheet .lvl .node,.scrim.docked .sheet .lvl .node{width:36px;height:36px;border:0;background:var(--rule);box-shadow:0 3px 0 color-mix(in srgb,var(--rule),#000 10%);color:#fff;font-weight:900;font-size:calc(15px * var(--fs))}
+.lvl.passed .node,.sheet .lvl.passed .node,.scrim.docked .sheet .lvl.passed .node{background:var(--go-bar);color:#fff;box-shadow:0 3px 0 var(--go-edge)}
+.lvl.on .node,.sheet .lvl.on .node,.scrim.docked .sheet .lvl.on .node{background:var(--blue);box-shadow:0 3px 0 var(--blue-edge)}
+.lvl.on .node::after{width:12px;height:12px;background:#fff}
+.lvl.on{color:var(--ink);font-weight:900}
+
+/* the notes card */
+.face{background:var(--chip);border:2px solid var(--rule);border-radius:22px}
+.face.bk{border:0}
+.nv-bar{padding:10px 6px 2px 12px}
+.nv-tab,.nv-bar .nv-tab{border:2px solid transparent;border-radius:12px;font-weight:800;color:var(--ink-3);padding:6px 12px}
+.nv-tab[aria-selected="true"],.nv-bar .nv-tab[aria-selected="true"]{background:var(--sel-bg);border-color:var(--sel-edge);color:var(--sel-ink);font-weight:900}
+.ib{color:var(--ink-3);border-radius:12px}
+.ib:hover{background:var(--soft)}
+.body{font-weight:500}
+.body p.lbl,.nv.all .nv-card > p.lbl{font-size:calc(12px * var(--fs));font-weight:900;letter-spacing:.08em;color:var(--ink-3)}
+.body blockquote{border:0;border-radius:16px;background:var(--soft);padding:12px 16px;font-weight:700}
+.body code{background:var(--soft);border-radius:6px}
+.body ul li::marker{color:var(--go-bar)}
+/* each example a rimmed box, the 自测 number in a blue dot inside it; the bold key part in blue */
+.body ol.ex,.sheet .body ol.ex{padding-left:0}
+.body ol.ex li,.sheet .body ol.ex li{list-style:none;position:relative;border:2px solid var(--rule);border-radius:16px;padding:10px 14px 10px 44px;margin:0 0 10px}
+.sheet .body ol.ex li::before{left:14px;top:13px}
+.sheet .body ol.ex li.qz::before{left:13px;top:14px;width:20px;height:20px;background:var(--blue);color:#fff;font-weight:900;font-size:calc(11px * var(--fs))}
+.sheet .body ol.ex li.qz.out::before{background:transparent;border:2px solid var(--rule);color:var(--ink-3)}
+.body ol.ex .en{font-weight:800;font-size:calc(16.5px * var(--fs))}
+.body ol.ex .en strong{color:var(--sel-ink);font-weight:900}
+.body ol.ex .zh{font-weight:600;color:var(--ink-3)}
+.body ol.ex li.lit{background:var(--sel-bg);border-color:var(--sel-edge);margin-left:0;margin-right:0;padding:10px 14px 10px 44px}
+.xref{text-decoration-color:var(--blue);color:var(--sel-ink);font-weight:800}
+.body th{border-bottom:2px solid var(--rule)}
+.qz-cap{margin-left:0}
+textarea.mynote{border:2px solid var(--rule);border-radius:14px;background:var(--soft)}
+.card-foot{padding:8px 12px 14px 18px;border-top:2px solid var(--rule)}
+.card-foot .hint{color:var(--ink-3);font-weight:700}
+.card-foot .btn{padding:14px 22px;font-size:calc(16px * var(--fs))}
+.mem .ln,.mem .pt{stroke:var(--blue)}
+.mem .pt{fill:var(--blue);stroke:var(--chip)}
+.mem .area{fill:var(--blue)}
+
+/* ── the answer sheet: a white question card over a panel of word tiles ── */
+.qcard{background:var(--chip);border:2px solid var(--rule);border-bottom:0;border-radius:22px 22px 0 0}
+.qpanel{border:2px solid var(--rule);border-radius:0 0 22px 22px;background:var(--soft)}
+.qmeta{color:var(--ink-3);font-weight:900;letter-spacing:.04em}
+.qmeta .amode{background:var(--soft);border:2px solid var(--rule);border-radius:12px;padding:2px}
+.amode button,.qmeta .amode button{border-radius:9px;font-weight:800}
+.amode button[aria-pressed="true"]{background:var(--sel-bg);color:var(--sel-ink);box-shadow:inset 0 0 0 2px var(--sel-edge)}
+.qprompt{font-weight:900}
+.qstats .shuf{border:2px solid var(--rule);background:var(--chip);color:var(--ink-2);border-radius:12px}
+.qstats .shuf.on{background:var(--sel-bg);border-color:var(--sel-edge);color:var(--sel-ink)}
+.sbars i{background:var(--go-bar);opacity:.25;height:6px}
+.sbars i.done{opacity:.6}.sbars i.on{opacity:1}
+.ybox{background:var(--soft);border:2px solid var(--rule);border-radius:18px}
+.ybox.typing{border-color:var(--blue)}
+.ybox .wb-ans .wchip{background:var(--chip);border:2px solid var(--rule);box-shadow:0 3px 0 var(--ledge);border-radius:12px;font-weight:800}
+.ybox .wb-ans .wchip.last{box-shadow:0 3px 0 var(--sel-edge);border-color:var(--sel-edge);background:var(--sel-bg)}
+.ybox .wb-ans .wchip.typing{outline-color:var(--blue);box-shadow:none;border-color:transparent}
+.ybox .wb-ans .caret{background:var(--blue)}
+.ybox .fillin input{background:var(--chip);border:2px solid var(--rule);border-bottom-width:3px;border-bottom-color:var(--blue);border-radius:10px}
+.wb-keys .wb-bank .wchip,.wb-bs,.wb-bank .wchip,.wchip{background:var(--chip);color:var(--ink);border:2px solid var(--rule);border-bottom-width:2px;border-radius:14px;box-shadow:0 4px 0 var(--ledge);font-weight:800}
+.wchip.used{background:var(--rule);border-color:var(--rule);box-shadow:none;color:transparent}
+.wb-bank .wchip.only{outline:3px solid var(--blue);outline-offset:2px}
+.qpanel .btn{padding:15px;font-size:calc(17px * var(--fs))}
+/* the verdict: green when right, red when not, grey for a peek */
+.vbar{background:var(--soft);color:var(--ink);border-radius:16px;border:2px solid var(--rule)}
+.vbar:has(.dot.good){background:var(--ok-bg);color:var(--ok-ink);border-color:transparent}
+.vbar:has(.dot.warn){background:var(--bad-bg);color:var(--bad-ink);border-color:transparent}
+.vbar .dot{width:32px;height:32px;font-weight:900}
+.vbar .dot.good{background:var(--go-bar);color:#fff}
+.vbar .dot.warn{background:#ff4b4b;color:#fff}
+.vbar .dot.peek{background:var(--rule);color:var(--ink-2)}
+.vbar small{opacity:.85}
+.steps{background:var(--bad-bg);color:var(--bad-ink);border-radius:12px;font-weight:700}
+.steps.ok{background:var(--ok-bg);color:var(--ok-ink)}
+.vwell{background:var(--soft);border:2px solid var(--rule)}
+.vl{color:var(--ink-3);font-weight:900;letter-spacing:.04em}
+.st-res .st-x{color:var(--bad-ink)}
+/* missed words: orange, not green (green reads as right) */
+.st-res .st-m{background:var(--miss-bg);color:var(--miss-ink)}
+.nfq{border-top:2px solid var(--rule)}
+
+/* ── 复习 / 考核: a fat green progress bar; the summary a white card with a green 开始 ── */
+.bar{height:14px;border-radius:999px;background:var(--rule)}
+.bar i{background:var(--go-bar);border-radius:999px}
+.runbar .bar{height:16px;border-radius:999px}
+.x2{color:var(--ink-3);border-radius:12px}
+.scard{background:var(--chip);border:2px solid var(--rule);border-radius:22px}
+.shead .big{font-weight:900}
+.ssum{border:2px solid var(--rule);box-shadow:0 4px 0 var(--ledge);border-radius:22px}
+.ssum-n b{font-weight:900;color:var(--go)}
+.ssum-c span{background:var(--soft);font-weight:800}
+.ssum .b0{background:var(--rule)}.ssum .b1{background:var(--st-test)}.ssum .b2{background:var(--go-bar)}
+.ssum .btn{background:var(--go);color:var(--go-ink);box-shadow:0 4px 0 var(--go-edge);border:0}
+.ready{border:2px solid var(--rule);border-radius:18px;box-shadow:0 4px 0 var(--ledge);font-weight:800}
+.ready .ck{background:var(--go-bar);color:#fff}
+.grp-h{font-weight:900;letter-spacing:.04em}
+.srow{border:2px solid color-mix(in srgb,var(--sw),#000 12%);box-shadow:0 4px 0 color-mix(in srgb,var(--sw),#000 12%);border-radius:18px}
+.srow b{font-weight:900}
+.srow .tg{font-weight:800}
+.flash{background:var(--ink);color:var(--ground);border-radius:14px;font-weight:800}
+.exm{border:2px solid var(--rule);border-bottom:0}
+.exm button{font-weight:700}
+
+/* ── phones: the tabs a bar docked at the bottom, the current one blue ── */
+.tabs.float{left:0;right:0;bottom:0;border-radius:0;border:0;border-top:2px solid var(--rule);background:var(--ground);
+  -webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;padding:6px 8px calc(8px + env(safe-area-inset-bottom,0px));gap:6px}
+.tabs.float .tab{border:2px solid transparent;border-radius:14px;color:var(--ink-3);font-weight:800}
+.tabs.float .tab[aria-selected="true"]{background:var(--sel-bg);border-color:var(--sel-edge);color:var(--sel-ink);font-weight:900}
+
+/* ── desk (≥1100px): the sidebar's rows like the design's, the list as rimmed cards ── */
+@media (min-width:1100px){
+  .side{border-right:2px solid var(--rule);gap:22px}
+  .sgrp{gap:4px}
+  .sgrp>span{font-size:calc(12px * var(--fs));font-weight:900;color:var(--ink-3)}
+  .sbtn{min-height:44px;border:2px solid transparent;border-radius:12px;padding:6px 12px;font-weight:800;color:var(--ink-2);gap:12px}
+  .sbtn .d{width:20px;height:20px;border-radius:7px}
+  .sbtn .d.sq{width:20px;height:20px;border-radius:7px;border:0}
+  .sbtn .n{font-weight:800;color:var(--ink-3)}
+  .sbtn:hover{background:var(--soft)}
+  .sbtn[aria-current="true"]{background:var(--sel-bg);border-color:var(--sel-edge);color:var(--sel-ink);box-shadow:none;font-weight:900}
+  .sbtn[aria-current="true"] .n{color:var(--sel-ink)}
+  .pbtn{border-radius:10px}
+  .search{height:46px;border-radius:14px}
+  #board>.phead{border-bottom:2px solid var(--rule)}
+  #board>.phead .pn{font-weight:800}
+  .col.ents #board,.col.ents #empty{border-right:2px solid var(--rule)}
+  .col.ents #board{padding:0 14px 64px}
+  .col.ents .sect-head{margin:0 4px 8px}
+  .col.ents .card{background:var(--chip);color:var(--ink);border:2px solid var(--rule);box-shadow:0 4px 0 var(--ledge);border-radius:16px;padding:12px 14px 10px;margin-bottom:12px}
+  .col.ents .card:hover{background:var(--soft);box-shadow:0 4px 0 var(--ledge);filter:none}
+  .col.ents .card.sel{background:var(--sel-bg);border-color:var(--sel-edge);box-shadow:0 4px 0 var(--sel-edge)}
+  .col.ents .card .hw{font-weight:900}
+  .col.ents .card .hw::before{width:14px;height:14px;border-radius:5px;border:0;vertical-align:0}
+  .col.ents .card .gloss{color:var(--ink-3);font-weight:600}
+  .col.ents .card .foot{color:var(--ink-3);font-weight:700}
+  /* docked, the notes card is the one box (as in the design); the sheet around it is just the page */
+  .scrim.docked .sheet{border:0;border-radius:0;background:var(--ground);padding-top:6px}
+  .mk-types{border:2px solid var(--rule);border-radius:18px;box-shadow:0 4px 0 var(--ledge)}
+  .mk-types .pill{box-shadow:none;border:2px solid transparent;border-radius:12px}
+  .mk-types .pill[aria-pressed="true"]{background:var(--sel-bg);border-color:var(--sel-edge);color:var(--sel-ink)}
+  .mk-types .pill .mbar{background:color-mix(in srgb,var(--blue) 45%,transparent);border-radius:999px}
+  .mk-types .pill[aria-pressed="true"] .mbar{background:var(--blue)}
+}
+@media (prefers-reduced-motion:reduce){ .btn:active,.today:active,.wchip:active,.pill:active,.fbtn:active{transform:none} }

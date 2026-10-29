@@ -459,6 +459,9 @@ SITE = {
     # optional colour overrides: {"light": {"--accent": "#…", …}, "dark": {…}}, laid over the
     # template's own :root blocks (light, dark by system setting, dark by the theme button)
     "theme": {},
+    # optional: a stylesheet next to the notebook's index.html, inlined after the template's own styles
+    # and the theme, so it can restyle the whole page (taobao's 活泼友好 look, 用户 2026-10-29)
+    "css": "",
 }
 
 
@@ -487,6 +490,8 @@ def main():
         raise SystemExit(f"{src / 'site.json'}: needs its own \"prefix\" — it shares localStorage with the main page")
     if site["logo"] and not (src / site["logo"]).exists():
         raise SystemExit(f"{src / 'site.json'}: logo {site['logo']} is missing")
+    if site["css"] and not (src / site["css"]).exists():
+        raise SystemExit(f"{src / 'site.json'}: css {site['css']} is missing")
     if src != ROOT and site["sync"]["path"] == SITE["sync"]["path"]:
         raise SystemExit(f"{src / 'site.json'}: needs its own sync \"path\" — it would overwrite progress.json")
 
@@ -504,7 +509,8 @@ def main():
         "/*__DATA__*/", json.dumps(data, ensure_ascii=False)).replace(
         "/*__MISTAKES__*/", json.dumps(mistakes, ensure_ascii=False)).replace(
         "/*__CONFIG__*/", json.dumps(site, ensure_ascii=False))
-    page = page.replace("<!--/HEAD-->", theme_css(site["theme"]) + "<!--/HEAD-->", 1)
+    skin = f"<style>\n{(src / site['css']).read_text(encoding='utf-8')}</style>\n" if site["css"] else ""
+    page = page.replace("<!--/HEAD-->", theme_css(site["theme"]) + skin + "<!--/HEAD-->", 1)
     if "__DATA__" in page or "__MISTAKES__" in page or "__CONFIG__" in page:
         raise SystemExit("template.html is missing its /*__DATA__*/, /*__MISTAKES__*/ or /*__CONFIG__*/ placeholder")
 
