@@ -166,6 +166,7 @@
 169. [since last week / from last week](#since-vs-from-last-week)
 170. [confuse / be confused about / get confused about](#confuse)
 171. [the same as / different from / similar to](#same-as-different-from)
+172. [against](#against)
 
 ---
 
@@ -5384,3 +5385,62 @@ platform 等于 10,就代表请求来自 web,对吧?
 > the same as / the different to
 
 - ❌ [冠词] **the different to** —— *different* 作表语不加 *the*,介词首选 *from* → **different from**。
+
+---
+
+<a id="against"></a>
+## against
+
+- 音标:英 /əˈɡenst/ /əˈɡeɪnst/ 美 /əˈɡenst/
+- 词性:prep.
+- CEFR:A2(反对、靠着);B2(技术、对照义)
+- 日期:2026-10-30
+- 掌握:会写
+
+**English definition:** Opposing something, or touching it; in technical and checking contexts, with something as the target to run on or the standard to compare with.
+
+**含义:** 核心意思是「A 对着 B」:A 和 B 的关系可以是连接(以……为运行目标)、比较(对照)、对抗(反对)、贴靠(靠着)或者衬托(在……的衬托下)。
+
+**用法速览:**
+
+| 用法 | 例句 | 中文 |
+|---|---|---|
+| ① 以……为运行目标(技术) | We ran the tests **against** the staging server. | 我们连着 staging 服务器跑了测试。 |
+| ② 对照、核对 | Please check the numbers **against** last month's report. | 请对照上个月的报告核对这些数字。 |
+| ③ 反对 | Most of the team voted **against** the plan. | 团队里大多数人投票反对这个方案。 |
+| ④ 靠着、贴着 | She leaned her bike **against** the wall. | 她把自行车靠在墙上。 |
+| ⑤ 在……的衬托下 | White text is hard to read **against** a light background. | 白字在浅色背景上很难看清。 |
+
+**义项一:run X against Y —— 以 Y 为运行目标(技术)**
+
+1. We ran the tests **against** the staging server.
+   我们连着 staging 服务器跑了测试。
+
+**义项二:check X against Y —— 对照 Y 核对 X**
+
+1. Please check the numbers **against** last month's report.
+   请对照上个月的报告核对这些数字。
+
+**义项三:反对**
+
+1. Most of the team voted **against** the plan.
+   团队里大多数人投票反对这个方案。
+
+**义项四:靠着、贴着**
+
+1. She leaned her bike **against** the wall.
+   她把自行车靠在墙上。
+
+**义项五:在……的衬托下**
+
+1. White text is hard to read **against** a light background.
+   白字在浅色背景上很难看清。
+
+**常见搭配:都是「对抗」义的延伸**
+
+1. Backups **protect against** data loss.
+   备份能防止数据丢失。
+2. We're working **against the clock** to ship by Friday.
+   我们在抢时间,争取周五前发布。
+3. **Against all odds**, the demo worked.
+   尽管困难重重,演示还是成功了。
