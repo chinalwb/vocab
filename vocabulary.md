@@ -163,6 +163,8 @@
 164. [go ahead and do / go ahead with](#go-ahead)
 166. [翻译:jab the scoop into / chips of ice](#jab-chips-of-ice)
 168. [hesitate / hesitant](#hesitate-hesitant)
+169. [since last week / from last week](#since-vs-from-last-week)
+170. [confuse / be confused about / get confused about](#confuse)
 
 ---
 
@@ -2966,7 +2968,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 - **live in (somewhere)** —— 存放在、待在某处,技术语境常用:*The config lives in the app module.*
 
-**相关条目:** [separate A from B](#separate-from) · [when it comes to sth](#when-it-comes-to) —— 这句里用到的两个搭配。
+**相关条目:** [separate A from B](#separate-from) · [when it comes to sth](#when-it-comes-to) —— 这句里用到的两个搭配。 · [confuse](#confuse) —— 第 2 句里 *confuse them with* 的用法。
 
 ---
 
@@ -5224,3 +5226,103 @@ platform 等于 10,就代表请求来自 web,对吧?
    他对要不要接这份工作拿不准。
 2. The team **is hesitant to** switch to a new tool.
    团队不太愿意换新工具。
+
+---
+
+<a id="since-vs-from-last-week"></a>
+## since last week / from last week
+
+- 类型:语法
+- 日期:2026-10-30
+- 掌握:会写
+
+**含义:** **since last week** = 从上周到现在,包括本周;**from last week** = 上周的,只是上周,不包括本周。
+
+**对比:since / from + 时间**
+
+| 说法 | 时间范围 | 包括本周吗 | 举例 |
+|---|---|---|---|
+| **since last week** | 从上周起一直到现在 | 包括 | orders **since last week** |
+| **from last week** | 上周(上周一到上周日) | 不包括 | orders **from last week** |
+| **from the past week** | 过去七天(从今天往回数) | 包括最近几天 | orders **from the past week** |
+
+**要点:**
+
+- 名词后面的 *from + 时间* 表示「来自那段时间」,不表示「从那时起」:*photos from last summer* 是去年夏天拍的照片。
+- 要表示「从那时起一直到现在」,用 *since*;要起点精确,说 *since last Monday*。
+- *last week* 是上周;*the last week* 是过去七天,和上周不一样。
+- *last / next / this* 开头的时间词前面不加介词:*placed last week*。
+
+**例句:**
+
+1. Could you pull up this user's orders **since** last week?
+   能调出这个用户从上周到现在的订单吗?
+2. Could you pull up this user's orders **from** last week?
+   能调出这个用户上周的订单吗?
+
+**我的原句:**
+
+> Could you pull up this user's orders of the last week?
+
+- ❌ [介词] **orders of the last week** —— 「上周的订单」用 **from last week**;*the last week* 是过去七天,不是上周 → *orders from last week*。
+
+**我的原句:**
+
+> So, "the orders from last week" means the orders placed in last week.
+
+- ❌ [介词] **placed in last week** —— *last week* 前面不加介词 → **placed last week**。
+
+---
+
+<a id="confuse"></a>
+## confuse / be confused about / get confused about
+
+- 音标:/kənˈfjuːz/
+- 词性:v. / adj.(confused)
+- CEFR:B1(confuse)
+- 日期:2026-10-30
+- 掌握:会写
+
+**English definition:** *confuse* (verb): to make someone unable to think clearly or understand something; to mistake one person or thing for another. *confused* (adjective): unable to think clearly or understand something.
+
+**含义:** **confuse** 是及物动词,后面必须有宾语:*confuse A with B*(把 A 和 B 搞混)、*confuse sb*(让某人糊涂)。说「我糊涂了 / 我搞混了」用形容词:**be / get confused about**。
+
+**对比:confuse / confused / confusing**
+
+| 单词 | 词性 | 常见结构与用法 | 举例 |
+|---|---|---|---|
+| **confuse** | 动词 | confuse A with B / confuse sb<br>*(后面必须有宾语,不能说 I confuse about it)* | I often **confuse** "affect" **with** "effect".(我常把 affect 和 effect 搞混。) |
+| **confused** | 形容词 | be / get confused about sth<br>*(人觉得糊涂;be 是状态,get 是变糊涂)* | I **got confused about** the time zones.(我被时区搞糊涂了。) |
+| **confusing** | 形容词 | sth is confusing<br>*(事物让人糊涂;I'm confusing 是「我让人糊涂」)* | The error message **is confusing**.(这条报错让人看不懂。) |
+
+**要点:**
+
+- *about* 接让你糊涂的那件事(话题);*by* 接让你糊涂的原因:*I was confused by the error message.*
+- 口语里说「搞混」也常用 *mix up*:*I always mix them up.*
+
+**义项一:confuse A with B —— 把 A 和 B 搞混**
+
+1. I often **confuse** "affect" **with** "effect".
+   我常把 affect 和 effect 搞混。
+2. Testers never **confuse** beta builds **with** the production version.
+   测试者不会把测试版和正式版搞混。
+
+**义项二:confuse sb —— 让某人糊涂**
+
+1. The new settings page **confuses** users.
+   新的设置页让用户摸不着头脑。
+
+**义项三:be / get confused about —— 对……感到糊涂**
+
+1. Users **are confused about** the new pricing.
+   用户对新的定价感到困惑。
+2. I **got confused about** the time zones.
+   我被时区搞糊涂了。
+
+**我的原句:**
+
+> Highlight the differences so I won't confuse about it again.
+
+- ❌ [搭配] **confuse about it** —— *confuse* 是及物动词,后面要有宾语 → **get confused about it**,或 **mix them up**。
+
+**相关条目:** [句子:separate A from B / when it comes to / live in](#s-testflight) —— 「更地道的说法」第 2 句里的 *confuse them with the production version*。
