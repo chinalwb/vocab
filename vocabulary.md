@@ -165,6 +165,8 @@
 168. [hesitate / hesitant](#hesitate-hesitant)
 169. [since last week / from last week](#since-vs-from-last-week)
 170. [confuse / be confused about / get confused about](#confuse)
+171. [the same as / different from / similar to](#same-as-different-from)
+172. [against](#against)
 
 ---
 
@@ -5326,3 +5328,119 @@ platform 等于 10,就代表请求来自 web,对吧?
 - ❌ [搭配] **confuse about it** —— *confuse* 是及物动词,后面要有宾语 → **get confused about it**,或 **mix them up**。
 
 **相关条目:** [句子:separate A from B / when it comes to / live in](#s-testflight) —— 「更地道的说法」第 2 句里的 *confuse them with the production version*。
+
+---
+
+<a id="same-as-different-from"></a>
+## the same as / different from / similar to
+
+- 类型:语法
+- 日期:2026-10-30
+- 掌握:会写
+
+**含义:** 比较两样东西时跟的介词:**the same as**、**different from**、**similar to**。拿不准时就用这三个,任何场合都不会错。
+
+**对比:same / different / similar**
+
+| 词 | 介词 | 冠词 | 例子 |
+|---|---|---|---|
+| **same** | 只用 **as**<br>*(不说 the same with / the same to)* | 前面加 *the* | My password is **the same as** yours. |
+| **different** | **from**:最标准,英美通用<br>**to**:英式口语<br>**than**:美式,常接从句 | 作表语时不加冠词<br>*(不说 the different to)* | The result was **different from** the previous one. |
+| **similar** | 只用 **to** | 作表语时不加冠词 | This bug is **similar to** the last one. |
+
+**对比:different from / to / than**
+
+| 说法 | 在哪儿用 | 什么时候用 | 例子 |
+|---|---|---|---|
+| **different from** | 英美通用,**任何场合都安全** | 拿不准时就用它;书面写作首选 | The result was **different from** the previous one. |
+| **different to** | 英式,偏口语 | 跟英国同事聊天;美式书面少见 | This version is **different to** the old one. |
+| **different than** | 美式 | 后面接从句时最自然 | The result was **different than** I expected. |
+
+**要点:**
+
+- **different from 永远安全**:英式、美式、口语、书面都对。*to* 和 *than* 也不算错,但各有地区和语气的限制。
+- *different than* 后面接从句时很顺(*than I expected*);换成 *from* 要补一个名词:*different from what I expected*。
+
+**义项一:the same as —— 和……一样**
+
+1. My password is **the same as** yours.
+   我的密码和你的一样。
+
+**义项二:different from / to / than —— 和……不一样**
+
+1. The result was **different from** the previous one.
+   这次的结果和上一次不一样。
+2. This version is **different to** the old one.
+   这个版本和旧版不一样。(英式说法)
+3. The result was **different than** I expected.
+   结果和我预想的不一样。(美式说法,后面接从句)
+
+**义项三:similar to —— 和……相似**
+
+1. This bug is **similar to** the last one.
+   这个 bug 和上一个很像。
+
+**我的原句:**
+
+> the same as / the different to
+
+- ❌ [冠词] **the different to** —— *different* 作表语不加 *the*,介词首选 *from* → **different from**。
+
+---
+
+<a id="against"></a>
+## against
+
+- 音标:英 /əˈɡenst/ /əˈɡeɪnst/ 美 /əˈɡenst/
+- 词性:prep.
+- CEFR:A2(反对、靠着);B2(技术、对照义)
+- 日期:2026-10-30
+- 掌握:会写
+
+**English definition:** Opposing something, or touching it; in technical and checking contexts, with something as the target to run on or the standard to compare with.
+
+**含义:** 核心意思是「A 对着 B」:A 和 B 的关系可以是连接(以……为运行目标)、比较(对照)、对抗(反对)、贴靠(靠着)或者衬托(在……的衬托下)。
+
+**用法速览:**
+
+| 用法 | 例句 | 中文 |
+|---|---|---|
+| ① 以……为运行目标(技术) | We ran the tests **against** the staging server. | 我们连着 staging 服务器跑了测试。 |
+| ② 对照、核对 | Please check the numbers **against** last month's report. | 请对照上个月的报告核对这些数字。 |
+| ③ 反对 | Most of the team voted **against** the plan. | 团队里大多数人投票反对这个方案。 |
+| ④ 靠着、贴着 | She leaned her bike **against** the wall. | 她把自行车靠在墙上。 |
+| ⑤ 在……的衬托下 | White text is hard to read **against** a light background. | 白字在浅色背景上很难看清。 |
+
+**义项一:run X against Y —— 以 Y 为运行目标(技术)**
+
+1. We ran the tests **against** the staging server.
+   我们连着 staging 服务器跑了测试。
+
+**义项二:check X against Y —— 对照 Y 核对 X**
+
+1. Please check the numbers **against** last month's report.
+   请对照上个月的报告核对这些数字。
+
+**义项三:反对**
+
+1. Most of the team voted **against** the plan.
+   团队里大多数人投票反对这个方案。
+
+**义项四:靠着、贴着**
+
+1. She leaned her bike **against** the wall.
+   她把自行车靠在墙上。
+
+**义项五:在……的衬托下**
+
+1. White text is hard to read **against** a light background.
+   白字在浅色背景上很难看清。
+
+**常见搭配:都是「对抗」义的延伸**
+
+1. Backups **protect against** data loss.
+   备份能防止数据丢失。
+2. We're working **against the clock** to ship by Friday.
+   我们在抢时间,争取周五前发布。
+3. **Against all odds**, the demo worked.
+   尽管困难重重,演示还是成功了。
