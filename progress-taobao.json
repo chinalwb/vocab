@@ -44,6 +44,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-ing-subject",
+   "t": 1793435712830,
+   "via": "entry"
+  },
+  {
    "a": "a-earthquake",
    "t": 1793435568217,
    "via": "entry"
@@ -51,11 +56,6 @@
   {
    "a": "s-plan-is-to",
    "t": 1793435509423,
-   "via": "entry"
-  },
-  {
-   "a": "s-ing-subject",
-   "t": 1793435485023,
    "via": "entry"
   },
   {
