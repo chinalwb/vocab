@@ -609,7 +609,7 @@
 2. I don't think **keeping** a big dog in a small flat is a good idea, as it needs a lot of space.
    我觉得在小公寓里养大狗不是个好主意,因为它需要很大的地方。
 
-相关条目:[计划是去做什么:The plan is to research…](#s-plan-is-to) · [给……压力:put pressure on someone](#s-put-pressure-on) · [现实中行得通:a realistic plan](#s-realistic-plan) · [很多人,很多个家:their houses](#s-their-houses) —— 同一篇地震作文里的另外几处,每条只练一个点。
+相关条目:[计划是去做什么:The plan is to research…](#s-plan-is-to) · [给……压力:put pressure on someone](#s-put-pressure-on) · [现实中行得通:a realistic plan](#s-realistic-plan) · [很多人,很多个家:their houses](#s-their-houses) —— 同一篇地震作文里的另外几处,每条只练一个点。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 **提升:也可以这样说**
 
@@ -663,7 +663,7 @@
 2. The goal which our class needs to reach this month is **to read** ten English books.
    我们班这个月要达到的目标,是读十本英文书。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文,一个用 -ing,一个用 to,别弄混。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文,一个用 -ing,一个用 to,别弄混。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 **提升:也可以这样说**
 
@@ -715,7 +715,7 @@
 2. I don't think getting a puppy is a good plan right now, as it costs too much and it will **put extra pressure on** my parents.
    我觉得现在养小狗不是个好计划,因为太花钱,还会给我爸妈带来额外的压力。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [现实中行得通:a realistic plan](#s-realistic-plan) —— 同一句话里的另外两处。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [现实中行得通:a realistic plan](#s-realistic-plan) —— 同一句话里的另外两处。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 **提升:别的用法**
 
@@ -765,7 +765,7 @@
 2. I don't think finishing all our homework in one hour is **a realistic plan**, as there is too much of it.
    我觉得一小时写完所有作业不是一个现实的计划,因为作业太多了。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [给……压力:put pressure on someone](#s-put-pressure-on) —— 同一句话里的另外两处。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [给……压力:put pressure on someone](#s-put-pressure-on) —— 同一句话里的另外两处。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 ---
 
@@ -811,7 +811,7 @@ all the structures 换成了 new buildings:这一段讲的是新楼。stay safe 
 2. If the roads are less likely to flood, children can just ride **their bikes** to school.
    如果路不那么容易被淹,孩子们就可以直接骑自行车上学。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文。[stay safe:stay + 形容词](#c-stay-safe) —— 同一句话里的 stay safe。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文。[stay safe:stay + 形容词](#c-stay-safe) —— 同一句话里的 stay safe。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 ---
 
@@ -840,7 +840,7 @@ all the structures 换成了 new buildings:这一段讲的是新楼。stay safe 
 1. During the fire drill, we must **stay calm** and walk out of the classroom quietly.
    消防演习的时候,我们要保持冷静,安静地走出教室。
 
-相关条目:[很多人,很多个家:their houses](#s-their-houses) —— 同一句话里的 their houses。
+相关条目:[很多人,很多个家:their houses](#s-their-houses) —— 同一句话里的 their houses。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 **提升:别的用法**
 
