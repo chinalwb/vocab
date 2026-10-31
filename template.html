@@ -10,6 +10,9 @@
   try {
     var t = localStorage.getItem(vkKey("vk.theme"));
     if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+    // and the text size picked under 字号 (用户 2026-10-31): --fs, 标准 = 1 when nothing is saved
+    var fs = localStorage.getItem(vkKey("vk.fs"));
+    if (fs === "0.9" || fs === "1.15") document.documentElement.style.setProperty("--fs", fs);
   } catch (e) {}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,8 +23,9 @@
   color-scheme: light;
   /* Same as the App: Atkinson Hyperlegible for Latin; Chinese falls through to Noto Sans SC,
      the face Android draws Chinese in (Noto Sans CJK), so both read alike on every screen. */
-  /* every font size is calc(Npx * var(--fs)): one knob for all text, like FONT_SCALE in the App */
-  --fs:1.25;
+  /* every font size is calc(Npx * var(--fs)): one knob for all text, like FONT_SCALE in the App.
+     字号 (用户 2026-10-31) sets it per browser: 小 0.9 · 标准 1 · 大 1.15 (FONT_SIZES); it was 1.25 for all */
+  --fs:1;
   --font:"Atkinson Hyperlegible","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
   --ground:#f3f4f6;
   --ink:#15171c;
@@ -2190,6 +2194,21 @@ function speak(text, v = voice){
   u.lang = "en-US"; if (v) u.voice = v; u.rate = 0.95;
   speechSynthesis.speak(u);
 }
+// 字号 (用户 2026-10-31): three steps of --fs, kept in this browser (vk.fs), stamped before paint in <head>
+const FONT_SIZES = [["0.9", "小", "90%"], ["1", "标准", "100%"], ["1.15", "大", "115%"]];
+function paintFontSize(){
+  const el = document.getElementById("fsize");
+  if (!el) return;
+  const cur = FONT_SIZES.some(f => f[0] === store.get("vk.fs", "1")) ? store.get("vk.fs", "1") : "1";
+  el.innerHTML = `<h3>字号</h3><p>整页文字的大小,只在这个浏览器里生效。</p><div class="row" role="group" aria-label="字号">` +
+    FONT_SIZES.map(([v, name, pct]) => `<button type="button" class="pill" data-fs="${v}" aria-pressed="${v === cur}">${name} <span class="n">${pct}</span></button>`).join("") + `</div>`;
+  el.querySelectorAll("[data-fs]").forEach(b => b.addEventListener("click", () => {
+    store.set("vk.fs", b.dataset.fs);
+    document.documentElement.style.setProperty("--fs", b.dataset.fs);
+    paintFontSize();
+    el.querySelector(`[data-fs="${b.dataset.fs}"]`).focus();
+  }));
+}
 const VOICE_SAMPLE = "Get it right. Then make it better.";
 function paintVoice(){
   const el = document.getElementById("voice");
@@ -3380,6 +3399,7 @@ function renderExtras(){
   extrasEl.dataset.built = "1";
   extrasEl.innerHTML =
     `<h2 style="margin-top:32px">练习</h2><details class="prac" id="prac"${store.get("vk.prac", "0") === "1" ? " open" : ""}><summary>今日仿写 / 本周段落</summary></details>` +
+    `<h2 style="margin-top:32px">显示</h2><div class="sync" id="fsize"></div>` +
     `<h2 style="margin-top:32px">朗读</h2><div class="sync" id="voice"></div>` +
     `<h2 style="margin-top:32px">同步</h2><div class="sync" id="sync"></div>` +
     `<p style="margin-top:20px"><button class="linkish" type="button" id="rv-reset">重置复习排期</button></p>`;
@@ -3387,7 +3407,7 @@ function renderExtras(){
   prac.append(practiceEl);
   renderPractice();
   prac.addEventListener("toggle", () => store.set("vk.prac", prac.open ? "1" : "0"));
-  paintSync(); paintVoice();
+  paintSync(); paintVoice(); paintFontSize();
   extrasEl.querySelector("#rv-reset").addEventListener("click", function(){
     if (!resetArmed) { resetArmed = true; this.textContent = "确定清空全部复习排期?再点一次确认"; return; }
     // resetAt tells the other devices to drop their older cards too
