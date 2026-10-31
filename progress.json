@@ -779,9 +779,9 @@
    "ease": 1.3,
    "interval": 1,
    "reps": 0,
-   "lapses": 6,
-   "due": 20757,
-   "t": 1793321778100
+   "lapses": 7,
+   "due": 20758,
+   "t": 1793456041269
   },
   "practitioner": {
    "ease": 1.3,
@@ -9545,13 +9545,6 @@
   ],
   "intermittent-outage": [
    {
-    "t": 1792048791178,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "We hit a transient outage on the server during the test run."
-   },
-   {
     "t": 1792048826207,
     "ok": true,
     "peek": false,
@@ -9893,6 +9886,13 @@
     "peek": false,
     "via": "review",
     "ex": "The server went down intermittently while the tests were running, so a couple of runs failed."
+   },
+   {
+    "t": 1793456041266,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "There was a brief service interruption on the server just now while the test cases were executing."
    }
   ],
   "defer": [
