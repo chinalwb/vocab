@@ -55,6 +55,8 @@
   --g4-1:#e4eebb; --g4-2:#d9e7a6; --g4-3:#eef4d3;
   --g5-1:#d8e6a4; --g5-2:#cbdd8e; --g5-3:#e5eebf;
   --g6-1:#cbdc8f; --g6-2:#bdd278; --g6-3:#dae6ae;
+  /* 文章 (taobao's essays.md): one violet, whatever the cards are coloured by; --es-dot is the list's square */
+  --es-1:#e6d5f7; --es-2:#dcc5f3; --es-3:#efe4fa; --es-dot:#8b5cf6;
 
   --accent:#2b4acb; --accent-ink:#ffffff; --st-learn:#8a8f9c; --st-test:#e0812f; --st-done:#3e9b5b;
   /* card colours by stage (site.json "cardColor": "stage"): the stage dots' colours, washed into the
@@ -103,6 +105,7 @@
     --g4-1:#3f4a1f; --g4-2:#4a5725; --g4-3:#353e1a;
     --g5-1:#44531f; --g5-2:#506125; --g5-3:#39461a;
     --g6-1:#4a5c1f; --g6-2:#566b25; --g6-3:#3e4e1a;
+    --es-1:#46305e; --es-2:#523870; --es-3:#3b284f; --es-dot:#b49cfb;
 
     --accent:#8ea2ff; --accent-ink:#10142a;
     --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db; --phrase:#ffb454;
@@ -144,6 +147,7 @@
   --g4-1:#3f4a1f; --g4-2:#4a5725; --g4-3:#353e1a;
   --g5-1:#44531f; --g5-2:#506125; --g5-3:#39461a;
   --g6-1:#4a5c1f; --g6-2:#566b25; --g6-3:#3e4e1a;
+  --es-1:#46305e; --es-2:#523870; --es-3:#3b284f; --es-dot:#b49cfb;
 
   --accent:#8ea2ff; --accent-ink:#10142a;
   --err:#f08a78; --warn:#e6b35c; --mk:#1b1e23; --tag:#2a2e36; --tag-ink:#cfd3db; --phrase:#ffb454;
@@ -1158,10 +1162,13 @@ const LV = {
   G3:{nm:"三年级:小学英语", sw:["--g3-1","--g3-2","--g3-3"]},
   G4:{nm:"四年级:小学英语", sw:["--g4-1","--g4-2","--g4-3"]},
   G5:{nm:"五年级:小学英语", sw:["--g5-1","--g5-2","--g5-3"]},
-  G6:{nm:"六年级:小学英语", sw:["--g6-1","--g6-2","--g6-3"]}
+  G6:{nm:"六年级:小学英语", sw:["--g6-1","--g6-2","--g6-3"]},
+  // 文章 (essays.md, 用户 2026-10-31, taobao's): a whole piece of writing after review. No #n, no stages
+  // (no 复习 / 考核, no track); its sentences are quizzed on the entry page, 选词 only.
+  ESSAY:{nm:"文章:整篇改好后的样子", sw:["--es-1","--es-2","--es-3"]}
 };
 const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge",
-  G3:"三年级", G4:"四年级", G5:"五年级", G6:"六年级"};
+  G3:"三年级", G4:"四年级", G5:"五年级", G6:"六年级", ESSAY:"文章"};
 // the grade groups, each listed in 类型 / 分类 only once it has an entry
 const GRADES = ["G3", "G4", "G5", "G6"].filter(k => DATA.some(g => g.level === k)).map(k => [k, LABEL[k]]);
 // site.json "groups" (用户 2026-10-23, so's): a notebook's own categories, each picked by an entry's
@@ -1222,16 +1229,16 @@ const nextStage = k => (STAGES[STAGES.findIndex(s => s[0] === k) + 1] || [])[0];
 let stages = {}, stageT = {};               // stageT: when each move was made, for 同步
 try { stages = JSON.parse(store.get("vk.stage", "{}")) || {}; } catch(e){}
 try { stageT = JSON.parse(store.get("vk.stage.t", "{}")) || {}; } catch(e){}
-const stageOf = (it, level) => stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
+const stageOf = (it, level) => level === "ESSAY" ? "" : stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
 // a card's colour: its level, cycling the level's three shades (mine), or its stage (site.json
 // "cardColor": "stage", a student's page, where the colour says how far along an entry is).
 // Whatever carries data-swl is repainted by refreshStages() when an entry moves.
-const swOf = (it, level, i) => VK.cardColor === "stage" ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
+const swOf = (it, level, i) => VK.cardColor === "stage" && level !== "ESSAY" ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
 // by stage, the desktop list's little square takes the stage dot's full colour (--swd); the wash is too pale there
 const SG_DOT = { learn: "--st-learn", review: "--accent", test: "--st-test", done: "--st-done" };
 function paintSw(el, it, level, i){
   el.style.setProperty("--sw", `var(${swOf(it, level, i)})`);
-  if (VK.cardColor === "stage") el.style.setProperty("--swd", `var(${SG_DOT[stageOf(it, level)]})`);
+  if (VK.cardColor === "stage") el.style.setProperty("--swd", `var(${SG_DOT[stageOf(it, level)] || "--es-dot"})`);
 }
 function setStage(it, stage){
   stages[it.anchor] = stage;
@@ -1251,7 +1258,7 @@ const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
 // but no empty A1–C2 or 术语); DATA carries no empty groups
 const hasGroup = k => k === "ALL" || DATA.some(g => k === "WORD" ? CEFR.includes(g.level) : g.level === k);
 const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
-  ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["SELFTEST", "自测题"]].filter(t => hasGroup(t[0]));
+  ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(t => hasGroup(t[0]));
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
   const old = store.get("vk.level", "ALL");
@@ -1451,7 +1458,7 @@ const sections = DATA.map(g => {
       (meta ? `<div class="meta">${meta}</div>` : "") +
       (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
       `<div class="foot">` +
-      `<span><span class="no">#${it.no}</span><span class="flv">${(it.cefr || "").match(/\b[ABC][12]\b/)?.[0] || LABEL[g.level] || g.level}</span>` +
+      `<span>${it.no ? `<span class="no">#${it.no}</span>` : ""}<span class="flv">${(it.cefr || "").match(/\b[ABC][12]\b/)?.[0] || LABEL[g.level] || g.level}</span>` +
       (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}<span class="stc" data-opt="1" data-anchor="${it.anchor}"></span>`) +
       `<span class="stg" data-anchor="${it.anchor}" data-level="${g.level}"></span><span class="mnt" data-anchor="${it.anchor}"></span></span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
@@ -1566,6 +1573,7 @@ function render(){
   let shown = 0;
   // pill counts: each row counts what its pills would show with every other filter kept
   const nType = { ALL: 0, WORD: 0 }, nCefr = { "": 0 }, nStage = { learn: 0, review: 0, test: 0, done: 0 };
+  let nStageAll = 0;                        // 全部 counts the 文章 too, which sit in no stage
   sections.forEach(s => s.cards.forEach(c => {
     if (!((numQ ? c.no === +numQ : !term || c.hay.includes(term) || noteOf(c.it.anchor).toLowerCase().includes(term)) && (!writeOnly || c.write) && (!favOnly || hasFav(c.it.anchor)) && (!noteOnly || noteOf(c.it.anchor)))) return;
     const st = stageOf(c.it, s.level), word = CEFR.includes(s.level);
@@ -1573,7 +1581,7 @@ function render(){
       nType.ALL++; nType[s.level] = (nType[s.level] || 0) + 1;
       if (word) { nType.WORD++; nCefr[""]++; nCefr[s.level] = (nCefr[s.level] || 0) + 1; }
     }
-    if (levelShown(s.level)) nStage[st]++;
+    if (levelShown(s.level)) { nStageAll++; if (st) nStage[st]++; }
   }));
   const nFav = sections.reduce((n, s) => n + s.cards.filter(c => hasFav(c.it.anchor)).length, 0);
   if (!nFav && favOnly) { favOnly = false; saveFilters(); return; }
@@ -1583,7 +1591,7 @@ function render(){
   nt.hidden = !nNote; nt.querySelector(".n").textContent = nNote;
   typeRow.querySelectorAll("[data-t] .n").forEach(el => { el.textContent = nType[el.parentNode.dataset.t] || 0; });
   cefrRow.querySelectorAll("[data-c] .n").forEach(el => { el.textContent = nCefr[el.parentNode.dataset.c] || 0; });
-  stageRow.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = el.parentNode.dataset.s ? nStage[el.parentNode.dataset.s] : Object.values(nStage).reduce((x, y) => x + y, 0); });
+  stageRow.querySelectorAll("[data-s] .n").forEach(el => { el.textContent = el.parentNode.dataset.s ? nStage[el.parentNode.dataset.s] : nStageAll; });
   sections.forEach(s => {
     if (!levelShown(s.level)) { s.el.hidden = true; return; }
     let n = 0;
@@ -2101,7 +2109,7 @@ function refreshStages(){
   if (VK.cardColor === "stage") document.querySelectorAll("[data-swl]").forEach(el =>
     paintSw(el, { anchor: el.dataset.swa || el.dataset.anchor }, el.dataset.swl, 0));
   const n = { learn: 0, review: 0, test: 0, done: 0 };
-  DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));   // pill counts come from render()
+  DATA.forEach(g => g.items.forEach(it => { const st = stageOf(it, g.level); if (st) n[st]++; }));   // pill counts come from render()
   document.getElementById("tally").textContent = total + " 条 · 会写 " + writeTotal + " · 已掌握 " + n.done + " · 错题 " + mkTotal;
 }
 
@@ -2292,6 +2300,7 @@ const wireXrefsIn = (root, go) => root.querySelectorAll(".xref").forEach(a => {
 });
 // the card's foot: how many sentences are still to be answered right before the next stage
 function progressHint(it, level, stage){
+  if (level === "ESSAY") return `共 ${quizExamples(it).length} 句 · 只选词,选对就算这句答对`;
   const nx = nextStage(stage);
   if (!nx) return "已掌握,不再进复习和考核";
   const since = stageT[it.anchor] || 0, log = stLog[it.anchor] || [];
@@ -2431,6 +2440,9 @@ function show(it, level, i, o = {}){
   const back = trail[trail.length - 1];
   const stage = stageOf(it, level);
   const selfTest = level === "SELFTEST";
+  // a 文章 (用户 2026-10-31): no stage track; each sentence is ① 选词 only and counts as right on its own
+  // (typing is practised in the sentence entries the essay links to)
+  const essay = level === "ESSAY";
   const wantBack = stage === "test";                    // 考核 opens on the 自测 side, the rest on the notes
   if (o.face === undefined && o.from === undefined && o.ex === undefined) delete exOrder[it.anchor];
   let ex = selfTest ? null : o.ex !== undefined ? quizEx(it, o.ex) : quizEx(it);   // fixed before this try is logged
@@ -2441,14 +2453,15 @@ function show(it, level, i, o = {}){
     ["掌握", it.mastery === "write" ? "会写" : "认识"], ["收录", it.date]].filter(r => r[1]);
   // the four stages on a track; a click on another one moves the entry there (only moves)
   const idx = STAGES.findIndex(st => st[0] === stage);
-  const levels = `<div class="lv" style="--n:${STAGES.length};--k:${idx}">` + STAGES.map(([k, name], j) => {
+  const levels = essay ? "" : `<div class="lv" style="--n:${STAGES.length};--k:${idx}">` + STAGES.map(([k, name], j) => {
     return `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}" data-to="${k}"${j === idx ? " disabled" : ""}>` +
       `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`;
   }).join("") + `</div>`;
   const curEx = () => ex ? plainMd(ex.en) : null;      // stats and history are this sentence's own
   let step = o.step || 1, skipped = false;
-  if (!o.step && answerOf(it, level, ex) && rightBefore(it.anchor, ex ? plainMd(ex.en) : "")) { step = 2; o.bankOk = true; skipped = true; }
-  const qMeta = () => (selfTest ? "自测题 · 中译英" : ex ? `例句 ${ex.k + 1} / ${ex.of} · 中译英` : "回想并写出来") +
+  if (!essay && !o.step && answerOf(it, level, ex) && rightBefore(it.anchor, ex ? plainMd(ex.en) : "")) { step = 2; o.bankOk = true; skipped = true; }
+  const qMeta = () => essay && ex ? `第 ${ex.k + 1} / ${ex.of} 句 · 选词` :
+    (selfTest ? "自测题 · 中译英" : ex ? `例句 ${ex.k + 1} / ${ex.of} · 中译英` : "回想并写出来") +
     (answerOf(it, level, ex) ? stepLabel(step) : "");
   const promptHtml = () => selfTest ? `<p class="qprompt">${esc(stTitle(it))}</p>`
     : ex ? `<p class="qprompt">${esc(plainMd(ex.zh))}</p>` : askHtml({ it, level, i }, kind({ it, level, i }));
@@ -2460,7 +2473,7 @@ function show(it, level, i, o = {}){
     `<div class="card-foot"><span class="hint" id="cf-hint">${esc(progressHint(it, level, stage))}</span>` +
     `<button class="btn" type="button" id="to-quiz">${reviewNow ? "复习这一条" : selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
   const backFace = `<div class="face bk">` + qsheetHtml({
-    meta: qMeta(), toggle: answerOf(it, level, ex) ? modeToggleHtml(step) : "", prompt: promptHtml(),
+    meta: qMeta(), toggle: answerOf(it, level, ex) && !essay ? modeToggleHtml(step) : "", prompt: promptHtml(),
     stats: stStatsLine(it.anchor, curEx()),
     extra: stage !== "test" ? `<button type="button" class="linkish" id="to-notes-pre">看笔记</button>` : "",
     shuf: ex && ex.of > 1 ? shufHtml(!!exOrder[it.anchor]) : "",
@@ -2571,7 +2584,7 @@ function show(it, level, i, o = {}){
     sheet.querySelector("#q-ask").hidden = sheet.querySelector("#wb-keys").hidden = sheet.querySelector("#q-show").hidden = true;
     const mode = sheet.querySelector(".qmeta .amode");
     if (mode) mode.hidden = true;
-    if (ans !== null && step === 1) {                    // ① checked, not logged: on to ② 打字
+    if (ans !== null && step === 1 && !essay) {          // ① checked, not logged: on to ② 打字
       const bankOk = !!v.trim() && bestDiff(v, ans).same;
       res.innerHTML = (quiet() ? `<p class="qquiet">${esc(quiet())}</p>` : "") + verdictHtml(v, ans, STEP1_NOTE);
       after.innerHTML = `<button class="btn" type="button" id="st-step2">下一步:打字 ›</button>`;
@@ -2581,10 +2594,10 @@ function show(it, level, i, o = {}){
       b.focus();
       return;
     }
-    if (ans !== null) {                                   // ②: right only if ① was too
-      const typedOk = !cfg.help && !!v.trim() && bestDiff(v, ans).same, ok = !!o.bankOk && typedOk;
+    if (ans !== null) {                                   // ②: right only if ① was too; a 文章's ① alone
+      const typedOk = !cfg.help && !!v.trim() && bestDiff(v, ans).same, ok = essay ? typedOk : !!o.bankOk && typedOk;
       logAttempt(it.anchor, v, ok, "entry", ex ? plainMd(ex.en) : "");
-      paint(stepsHtml(!!o.bankOk, typedOk, !!cfg.help, skipped) + verdictHtml(v, ans, stats()) + (!ok && v.trim() ? RIGHT_BTN : ""));
+      paint((essay ? "" : stepsHtml(!!o.bankOk, typedOk, !!cfg.help, skipped)) + verdictHtml(v, ans, stats()) + (!ok && v.trim() ? RIGHT_BTN : ""));
       const rb = res.querySelector("#st-right");
       if (rb) rb.addEventListener("click", () => { if (markRight(it.anchor)) paint(RIGHTED + verdictHtml(v, ans, stats())); });
     }
@@ -2717,7 +2730,7 @@ const recallOn = (pts, day) => {
 // The 记忆 card after the notes: shown once the entry has a graded day, or is past 学习中
 function memorySlide(it, stage){
   const pts = memoryOf(it.anchor);
-  if (!pts.length && stage === "learn") return null;
+  if (!pts.length && (stage === "learn" || !stage)) return null;
   const head = `<p><strong>记忆曲线:</strong></p>`;
   if (!pts.length) return ["记忆", head + `<p class="mem-empty">还没在复习或考核里做过这一条。做过一次之后,这里会画出它的遗忘曲线:每复习一次回到顶上,答对了往后掉得更慢。</p>`];
   const today = dayNo(), now = recallOn(pts, today), card = rev.cards[it.anchor];
@@ -2992,7 +3005,7 @@ function stageListEl(stage){
 // across a gap of days, not just on the day; then a 复习 run moves it by itself, and entries graded
 // by me qualify on that alone.
 function advanceReady(it, level, stage){
-  if (!nextStage(stage)) return false;
+  if (!stage || !nextStage(stage)) return false;
   const since = stageT[it.anchor] || 0;
   const qs = level === "SELFTEST" ? [""] : quizExamples(it).map(x => plainMd(x.en));
   const log = stLog[it.anchor] || [];
@@ -3340,7 +3353,7 @@ function renderExtras(){
 
 // ── 练习: a daily imitation task and a weekly paragraph. The app picks the same ones
 // (ui/PracticeScreen.kt): pool = 会写 entries that aren't 句子 / 自测, sorted by anchor. ──
-const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST")
+const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST" && t.level !== "ESSAY")
   .sort((a, b) => a.it.anchor < b.it.anchor ? -1 : a.it.anchor > b.it.anchor ? 1 : 0);
 let skip = 0;                                             // 换一题 within this visit
 const words = t => (t.match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g) || []).length;
@@ -3404,7 +3417,7 @@ const SIDE = [
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
   ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"],
-    ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["SELFTEST", "自测题"]].filter(([k]) => hasGroup(k)))
+    ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(([k]) => hasGroup(k)))
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];
@@ -3419,7 +3432,7 @@ sideEl.addEventListener("click", e => { const b = e.target.closest(".sbtn"); if 
 board.insertAdjacentHTML("afterbegin", `<div class="phead"><span class="pn" id="listn"></span><button class="pbtn" id="listtog" type="button">${ICON_ROWS}</button></div>`);
 function paintSide(){
   const n = { learn: 0, review: 0, test: 0, done: 0 };
-  DATA.forEach(g => g.items.forEach(it => n[stageOf(it, g.level)]++));
+  DATA.forEach(g => g.items.forEach(it => { const st = stageOf(it, g.level); if (st) n[st]++; }));
   const cnt = { learn: n.learn, review: n.review, selftest: n.test, done: n.done, "c:ALL": total, mistakes: mkTotal, history: histRows().length };
   DATA.forEach(g => { cnt["c:" + g.level] = g.items.length; });
   const cur = view !== "entries" ? view : stageF === "learn" && typeF === "ALL" ? "learn" : stageF ? ""

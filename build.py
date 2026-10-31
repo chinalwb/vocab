@@ -5,7 +5,7 @@
   python build.py --artifact out.html   -> also write the body-only variant used
                                            when publishing as a Claude artifact
   python build.py --src users/taobao -> a student's notebook: reads its vocabulary.md and
-                                           site.json, writes the page next to them
+                                           site.json (and essays.md, if any), writes the page next to them
 Every run also writes data.json + meta.json, which the Android app (android/)
 fetches from Pages.
 """
@@ -20,7 +20,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
-GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "G3", "G4", "G5", "G6", "COLLOC", "SELFTEST"]
+GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "G3", "G4", "G5", "G6", "COLLOC", "ESSAY", "SELFTEST"]
 SCHEMA = 1  # bump when data.json changes shape in a way the app must know about
 
 # 错题本: a bullet like `- ❌ [介词] **...** —— ...` (or ⚠️) marks a mistake the
@@ -64,8 +64,9 @@ def split_entries(src):
 # the point it practises (taobao's notes); the prefixes below still work as before
 # Knowledge (用户 2026-10-23): general writing know-how — punctuation, sentence structure — not tied to one word
 # 三年级 – 六年级 (用户 2026-10-28): primary-school English by grade
+# 文章 (用户 2026-10-31): a whole piece of writing, kept in essays.md, never in vocabulary.md
 KIND = {"句子": "SENTENCE", "固定搭配": "COLLOC", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR", "Knowledge": "KNOWLEDGE",
-        "三年级": "G3", "四年级": "G4", "五年级": "G5", "六年级": "G6"}
+        "三年级": "G3", "四年级": "G4", "五年级": "G5", "六年级": "G6", "文章": "ESSAY"}
 
 
 def detect_level(title, raw, own=None):
@@ -105,6 +106,10 @@ def gloss(raw, level):
     # a 句子 entry previews best as the original sentence being corrected
     m = re.search(r"^>\s*(.+)$", raw, re.M)
     if m and level == "SENTENCE" and "**我的原句" in raw:
+        return m.group(1).strip()
+    # a 文章 previews as its 题目
+    m = re.search(r"^\*\*题目[:：]\*\*\s*\n+([^\n*>-][^\n]*)", raw, re.M)
+    if m and level == "ESSAY":
         return m.group(1).strip()
     # a 固定搭配 entry previews as the sentence it was met in: its one numbered example
     m = re.search(r"^1\.\s*(.+)$", raw, re.M)
@@ -317,13 +322,17 @@ def toc_numbers(src):
     return {a: int(n) for n, a in re.findall(r"^(\d+)\. \[.*?\]\(#([^)]+)\)\s*$", src, re.M)}
 
 
-def build_entries(src, own=None):
+def build_entries(src, own=None, essays=False):
+    """[essays]: a student's essays.md (用户 2026-10-31, taobao's): each entry a whole piece of writing,
+    group 文章. They number on their own (its ## 目录) and show no #n, so "no" is None."""
     out = []
     numbers = toc_numbers(src)
     for e in split_entries(src):
         if e["anchor"] not in numbers:
             raise SystemExit(f"{e['anchor']}: missing from ## 目录 — add a 'N. [title](#{e['anchor']})' line")
-        level = detect_level(e["title"], e["raw"], own)
+        level = "ESSAY" if essays else detect_level(e["title"], e["raw"], own)
+        if (level == "ESSAY") != essays:
+            raise SystemExit(f"{e['anchor']}: a 文章 goes in essays.md, and only 文章 go there")
         # 术语 is also the fallback: an entry with no 类型, 词性 or CEFR that lands there is
         # probably a new kind of entry no rule knows yet — say so instead of filing it quietly
         if level == "TERM" and not meta_field(e["raw"], "词性") and not re.search(r"CEFR[:：]", e["raw"]):
@@ -332,7 +341,7 @@ def build_entries(src, own=None):
         blocks = parse_blocks(e["raw"])
         entry = {
             "anchor": e["anchor"],
-            "no": numbers[e["anchor"]],
+            "no": None if essays else numbers[e["anchor"]],
             "title": e["title"],
             "level": level,
             "ipa": meta_field(e["raw"], "音标"),
@@ -344,6 +353,9 @@ def build_entries(src, own=None):
             "blocks": blocks,
             "mistakes": extract_mistakes(e["anchor"], blocks),
         }
+        # its mistakes are tagged in the sentence entries it links to; tagged here too, the 错题本 lists them twice
+        if essays and entry["mistakes"]:
+            raise SystemExit(f"{e['anchor']}: a 文章 carries no ❌ / ⚠️ [类型] tags — they belong in its sentence entries")
         # lets the app tell an edited entry from an untouched one between fetches
         entry["hash"] = digest(entry)
         out.append(entry)
@@ -501,6 +513,12 @@ def main():
             raise SystemExit(f"{src / 'site.json'}: group {g} needs a kind, a new key in A–Z and a swatch from {sorted(swatches)}")
     own = {g["kind"]: g["key"] for g in site["groups"]}
     entries = build_entries((src / "vocabulary.md").read_text(encoding="utf-8"), own)
+    essay_md = src / "essays.md"
+    if essay_md.exists():
+        entries += build_entries(essay_md.read_text(encoding="utf-8"), own, essays=True)
+    dup = {e["anchor"] for e in entries if sum(x["anchor"] == e["anchor"] for x in entries) > 1}
+    if dup:
+        raise SystemExit(f"anchors used twice across vocabulary.md and essays.md: {sorted(dup)}")
     read_md = src / "readlist.md"
     reads = build_reads(read_md.read_text(encoding="utf-8")) if read_md.exists() else []
     data = page_data(entries, [g["key"] for g in site["groups"]] + GROUP_ORDER)

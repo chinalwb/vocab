@@ -24,6 +24,7 @@
 18. [给……压力:put pressure on someone](#s-put-pressure-on)
 19. [现实中行得通:a realistic plan](#s-realistic-plan)
 20. [很多人,很多个家:their houses](#s-their-houses)
+21. [stay safe:stay + 形容词](#c-stay-safe)
 
 ---
 
@@ -608,7 +609,7 @@
 2. I don't think **keeping** a big dog in a small flat is a good idea, as it needs a lot of space.
    我觉得在小公寓里养大狗不是个好主意,因为它需要很大的地方。
 
-相关条目:[计划是去做什么:The plan is to research…](#s-plan-is-to) · [给……压力:put pressure on someone](#s-put-pressure-on) · [现实中行得通:a realistic plan](#s-realistic-plan) · [很多人,很多个家:their houses](#s-their-houses) —— 同一篇地震作文里的另外几处,每条只练一个点。
+相关条目:[计划是去做什么:The plan is to research…](#s-plan-is-to) · [给……压力:put pressure on someone](#s-put-pressure-on) · [现实中行得通:a realistic plan](#s-realistic-plan) · [很多人,很多个家:their houses](#s-their-houses) —— 同一篇地震作文里的另外几处,每条只练一个点。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 **提升:也可以这样说**
 
@@ -662,7 +663,7 @@
 2. The goal which our class needs to reach this month is **to read** ten English books.
    我们班这个月要达到的目标,是读十本英文书。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文,一个用 -ing,一个用 to,别弄混。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文,一个用 -ing,一个用 to,别弄混。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 **提升:也可以这样说**
 
@@ -714,7 +715,7 @@
 2. I don't think getting a puppy is a good plan right now, as it costs too much and it will **put extra pressure on** my parents.
    我觉得现在养小狗不是个好计划,因为太花钱,还会给我爸妈带来额外的压力。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [现实中行得通:a realistic plan](#s-realistic-plan) —— 同一句话里的另外两处。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [现实中行得通:a realistic plan](#s-realistic-plan) —— 同一句话里的另外两处。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 **提升:别的用法**
 
@@ -764,7 +765,7 @@
 2. I don't think finishing all our homework in one hour is **a realistic plan**, as there is too much of it.
    我觉得一小时写完所有作业不是一个现实的计划,因为作业太多了。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [给……压力:put pressure on someone](#s-put-pressure-on) —— 同一句话里的另外两处。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [给……压力:put pressure on someone](#s-put-pressure-on) —— 同一句话里的另外两处。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 ---
 
@@ -798,10 +799,10 @@
 
 **改好的句子:**
 
-1. If new buildings are less likely to collapse, people can just stay in **their houses**.
-   如果新楼不那么容易倒塌,大家就可以直接待在自己家里。
+1. If new buildings are less likely to collapse, people can just stay safe in **their houses**.
+   如果新楼不那么容易倒塌,大家待在自己家里就很安全。
 
-all the structures 换成了 new buildings:这一段讲的是新楼。
+all the structures 换成了 new buildings:这一段讲的是新楼。stay safe 是新加的,看 [stay safe:stay + 形容词](#c-stay-safe)。
 
 **记住这个小规则:**
 
@@ -810,4 +811,41 @@ all the structures 换成了 new buildings:这一段讲的是新楼。
 2. If the roads are less likely to flood, children can just ride **their bikes** to school.
    如果路不那么容易被淹,孩子们就可以直接骑自行车上学。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文。[stay safe:stay + 形容词](#c-stay-safe) —— 同一句话里的 stay safe。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
+
+---
+
+<a id="c-stay-safe"></a>
+## stay safe:stay + 形容词
+
+- 日期:2026-10-31
+- 掌握:会写
+- 类型:固定搭配
+
+**原句:**
+
+这是你的地震文章改好后的一句。
+
+1. If new buildings are less likely to collapse, people can just **stay safe** in their houses.
+   如果新楼不那么容易倒塌,大家待在自己家里就很安全。
+
+**固定搭配:stay safe**
+
+- 意思:保持安全,不会受伤。
+- 这里的 stay 是「保持某种样子」,后面接形容词:**safe**(安全的)。
+- 同样的用法还有:*stay calm*(保持冷静)、*stay warm*(保暖)、*stay healthy*(保持健康)。
+
+再练一句,用法和原句一样:
+
+1. During the fire drill, we must **stay calm** and walk out of the classroom quietly.
+   消防演习的时候,我们要保持冷静,安静地走出教室。
+
+相关条目:[很多人,很多个家:their houses](#s-their-houses) —— 同一句话里的 their houses。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
+
+**提升:别的用法**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- stay 后面也可以接 **safely**(安全地),说的是「怎么待着」:*People can stay safely in their houses.*(大家可以安全地待在家里。)
+- 两个都对:**stay safe** 说人是安全的;**stay safely** 说待着这件事是安全的。
+- 单独说「注意安全!」只能说 **Stay safe!**,不能说 *Stay safely!*。
