@@ -393,6 +393,13 @@ h1{
 .ecard{flex:1;min-height:0;position:relative;perspective:1400px}
 .ecard .inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,0,.2,1)}
 .ecard.flipped .inner{transform:rotateY(180deg)}
+/* the 3D is on only while the card turns (.turning, flip()): at rest Chrome sometimes sends the wheel
+   past a scroll box inside a preserve-3d card, so the notes wouldn't scroll (用户 2026-10-31, taobao's
+   文章 in ⤢); flat, the face turned away is hidden by hand and the one showing is not turned at all */
+.ecard:not(.turning) .inner{transform-style:flat}
+.ecard:not(.turning):not(.flipped) .face.bk,.ecard.flipped:not(.turning) .face.fr{visibility:hidden}
+.ecard.flipped:not(.turning) .inner,.ecard.flipped:not(.turning) .face.bk{transform:none}
+.ecard.snap .inner{transition:none}
 .face{
   position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
   display:flex;flex-direction:column;box-sizing:border-box;
@@ -2019,7 +2026,9 @@ const exKey = t => t.replace(/\[(.+?)\]\(#[^)]+\)/g, "$1").replace(/[*`~]/g, "")
 function markQuizExamples(sheet, it, tapToggles = true){
   if (it.level === "SELFTEST") return;
   const xs = it.examples || [];
-  sheet.querySelectorAll(".body ol.ex").forEach(ol => {
+  // a 文章's paragraphs are one list in three: one caption, under the last, and no 复习 / 考核 in it
+  const essay = it.level === "ESSAY", ols = [...sheet.querySelectorAll(".body ol.ex")];
+  ols.forEach((ol, k) => {
     let any = false;
     ol.querySelectorAll(":scope > li").forEach(li => {
       const en = li.querySelector(".en");
@@ -2030,9 +2039,11 @@ function markQuizExamples(sheet, it, tapToggles = true){
       li.dataset.en = plainMd(x.en);
       li.classList.toggle("out", isOut(it.anchor, li.dataset.en));
     });
-    if (any && !ol.nextElementSibling?.classList.contains("qz-cap")) {
+    if (any && (!essay || k === ols.length - 1) && !ol.nextElementSibling?.classList.contains("qz-cap")) {
       const cap = document.createElement("p"); cap.className = "qz-cap";
-      cap.textContent = tapToggles ? "● 自测、复习和考核都会考这些例句;点一句或长按选「不再考这句」(至少留一句);长按也能复制、收藏" : "● 长按一句:不再考这句、复制、收藏";
+      cap.textContent = !tapToggles ? "● 长按一句:不再考这句、复制、收藏"
+        : essay ? "● 自测会考这些句子(只选词);点一句或长按选「不再考这句」(至少留一句);长按也能复制、收藏"
+        : "● 自测、复习和考核都会考这些例句;点一句或长按选「不再考这句」(至少留一句);长按也能复制、收藏";
       ol.after(cap);
     }
   });
@@ -2497,7 +2508,15 @@ function show(it, level, i, o = {}){
   document.body.append(scrim);
   markSel(docked ? it.anchor : "");
   const card = sheet.querySelector(".ecard");
-  const flip = toQuiz => { card.classList.toggle("flipped", toQuiz); sheet.classList.toggle("quizzing", toQuiz); };
+  const flip = toQuiz => {
+    // 3D for the turn only (see .ecard:not(.turning)): put the resting card back in 3D without a
+    // transition (.snap), then turn it
+    card.classList.add("turning", "snap");
+    void card.offsetWidth;
+    card.classList.remove("snap");
+    clearTimeout(card._turn); card._turn = setTimeout(() => card.classList.remove("turning"), 700);
+    card.classList.toggle("flipped", toQuiz); sheet.classList.toggle("quizzing", toQuiz);
+  };
   if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => flip(wantBack)));
   markQuizExamples(sheet, it);
   markExamples(sheet, it);
