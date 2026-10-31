@@ -19,6 +19,11 @@
 13. [can + 动词原形:会、能](#g4-can)
 14. [特殊疑问句:What time / How much / Whose](#g4-wh-questions)
 15. [these / those 和特殊的复数](#g4-these-those-plurals)
+16. [动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject)
+17. [计划是去做什么:The plan is to research…](#s-plan-is-to)
+18. [给……压力:put pressure on someone](#s-put-pressure-on)
+19. [现实中行得通:a realistic plan](#s-realistic-plan)
+20. [很多人,很多个家:their houses](#s-their-houses)
 
 ---
 
@@ -557,3 +562,252 @@
    看那些羊!
 3. There are many **children** in the park.
    公园里有很多孩子。
+
+---
+
+<a id="s-ing-subject"></a>
+## 动作当主语,用 -ing:Reinforcing old buildings is…
+
+- 日期:2026-10-31
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> I don't think reinforce old buildings is a plan that can be perfect in reality as it costs too much and it will bring new stress to the government.
+> Also, make new buildings earthquake-proof is important.
+
+这是课本上的一道「说理由」练习:如果你是常有地震的国家的政府官员,你会先做哪件事?题目给了几个选择:加固旧楼、保证新楼能防震、教大家地震安全知识、研究预测地震的方法。
+
+👍 **做得好:**
+
+- 你先说不选哪个(加固旧楼),再说为什么(太贵,给政府压力)。说观点时先给理由,这正是题目要的。
+- **earthquake-proof**(防震的)用对了!-proof 表示「防……的」,和 *waterproof*(防水的)一样。
+
+**问题:**
+
+- ❌ [结构] **reinforce old buildings is a plan** —— 句子开头是一个动作(加固旧楼)。要把它当成「一件事」来说,开头的词加 -ing:**Reinforcing old buildings is…**
+- ❌ [结构] **make new buildings earthquake-proof is important** —— 同样的问题,改成 **Making new buildings earthquake-proof is important.**
+
+一步一步看:
+
+- 第 1 步:找到 is。is 前面的那部分,就是这句话在说的「什么」。
+- 第 2 步:is 前面是 reinforce old buildings,用 reinforce 这样的词开头,说的是一个动作。
+- 第 3 步:动作要放在 is 前面当「一件事」,开头的词就要加 -ing:reinforce → **reinforcing**,make → **making**。
+- 第 4 步:再看一眼题目,题目里已经写好了 **reinforcing** old buildings、**ensuring** new buildings…。抄题目里的词时,连 -ing 一起抄。
+
+**改好的句子:**
+
+1. Also, **making** new buildings earthquake-proof is important.
+   另外,让新楼能防震也很重要。
+
+**记住这个小规则:**
+
+- 问自己:is 前面是不是用动作开头?是的话,加 -ing。比如 *Reinforcing… is* / *Making… is*
+
+2. I don't think **keeping** a big dog in a small flat is a good idea, as it needs a lot of space.
+   我觉得在小公寓里养大狗不是个好主意,因为它需要很大的地方。
+
+相关条目:[计划是去做什么:The plan is to research…](#s-plan-is-to) · [给……压力:put pressure on someone](#s-put-pressure-on) · [现实中行得通:a realistic plan](#s-realistic-plan) · [很多人,很多个家:their houses](#s-their-houses) —— 同一篇地震作文里的另外几处,每条只练一个点。
+
+**提升:也可以这样说**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- 也可以先写 **It is important**,把动作放到后面。这时动作前面加 **to**,不加 -ing。
+- 例子:*It is important to make new buildings earthquake-proof.*(让新楼能防震很重要。)
+
+---
+
+<a id="s-plan-is-to"></a>
+## 计划是去做什么:The plan is to research…
+
+- 日期:2026-10-31
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> The plan which we need to prioritize is research ways to predict earthquakes.
+
+这是课本上的一道「说理由」练习(地震来了,政府先做哪件事)。这句说的是他选的第一件事:研究预测地震的方法。
+
+👍 **做得好:**
+
+- **prioritize**(优先做)是题目里的词,你拿来用了,用得对。
+- **The plan which we need to prioritize** —— 用 which 说清楚是「哪个计划」,这一长串写得很完整。
+
+**问题:**
+
+- ❌ [结构] **is research ways** —— is 后面直接跟了 research,两个动词撞在一起。说「计划是去做什么」,写成 **is to research ways**。
+
+一步一步看:
+
+- 第 1 步:去掉中间的 which 那部分,这句话就剩下 The plan … is ____。
+- 第 2 步:空格里要填「这个计划要去做的事」:研究预测地震的方法。
+- 第 3 步:「要去做的事」用 **to** 加 research 这样的词:**to research**。
+- 第 4 步:检查 is 和 research 中间有没有 to。没有,就是漏了。
+
+**改好的句子:**
+
+1. The plan which we need to prioritize is **to research** ways to predict earthquakes.
+   我们需要优先做的计划,是研究预测地震的方法。
+
+为什么不写 is researching?看最后的「提升」。
+
+**记住这个小规则:**
+
+- 说「计划、目标是做什么」时,问自己:is 后面有没有 to?比如 *My plan is to…*
+
+2. The goal which our class needs to reach this month is **to read** ten English books.
+   我们班这个月要达到的目标,是读十本英文书。
+
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文,一个用 -ing,一个用 to,别弄混。
+
+**提升:也可以这样说**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- *The plan … is researching ways…* 也能看懂,也有人这么说。
+- 但 plan(计划)说的是「接下来要去做的事」,**to** 正好带着「去做」的意思,所以 **is to research** 更好。
+- 题目里的 **researching** ways to predict earthquakes,放在句子开头当「一件事」时照抄就对了:*Researching ways to predict earthquakes is the most important plan.*(研究预测地震的方法是最重要的计划。)
+
+---
+
+<a id="s-put-pressure-on"></a>
+## 给……压力:put pressure on someone
+
+- 日期:2026-10-31
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> I don't think reinforce old buildings is a plan that can be perfect in reality as it costs too much and it will bring new stress to the government.
+
+这是课本上的一道「说理由」练习(地震来了,政府先做哪件事)。这句说的是他为什么不选「加固旧楼」。
+
+👍 **做得好:**
+
+- **as** 用来说原因(因为……),用得对。
+- 一下给了两个理由:太贵、给政府压力。理由越具体,观点越有说服力。
+
+**问题:**
+
+- ⚠️ [搭配] **bring new stress to the government** —— 能看懂,但「给某人压力」英文通常说 **put pressure on** someone。想说「额外的压力」,中间加 extra:**put extra pressure on the government**。
+
+一步一步看:
+
+- 第 1 步:中文「给政府带来新的压力」,一个字一个字翻,就成了 bring new stress to。
+- 第 2 步:英文说这个意思,用三个词搭在一起:**put** + **pressure** + **on**。
+- 第 3 步:「新的、多出来的」压力,用 **extra**:put **extra** pressure on the government。
+
+**改好的句子:**
+
+1. I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will **put extra pressure on** the government.
+   我觉得加固旧楼不是一个现实的计划,因为太花钱,还会给政府带来额外的压力。
+
+**记住这个小规则:**
+
+- 「给某人压力」,问自己:是不是 put … on?比如 *put pressure on the government*
+
+2. I don't think getting a puppy is a good plan right now, as it costs too much and it will **put extra pressure on** my parents.
+   我觉得现在养小狗不是个好计划,因为太花钱,还会给我爸妈带来额外的压力。
+
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [现实中行得通:a realistic plan](#s-realistic-plan) —— 同一句话里的另外两处。
+
+**提升:别的用法**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- **stress** 多说一个人心里的紧张、着急。
+- 例子:*I feel a lot of stress before exams.*(考试前我很紧张。)
+
+---
+
+<a id="s-realistic-plan"></a>
+## 现实中行得通:a realistic plan
+
+- 日期:2026-10-31
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> I don't think reinforce old buildings is a plan that can be perfect in reality as it costs too much and it will bring new stress to the government.
+
+这是课本上的一道「说理由」练习(地震来了,政府先做哪件事)。这句说的是他为什么不选「加固旧楼」。
+
+👍 **做得好:**
+
+- **I don't think … is …** —— 说「我觉得……不是……」时,英文习惯把 not 放在 think 前面。你这样写很地道。
+
+**问题:**
+
+- ⚠️ [直译] **a plan that can be perfect in reality** —— perfect 是「完美、一点毛病都没有」。你想说的是「现实中行得通」,用一个词就够了:**a realistic plan**。
+
+一步一步看:
+
+- 第 1 步:问自己:我想说这个计划「不完美」,还是「做不到」?
+- 第 2 步:你后面给的理由是「太贵」。太贵,就是「做不到」。
+- 第 3 步:「现实中做得到、行得通」= **realistic**。把 a plan that can be perfect in reality 换成 **a realistic plan**。
+
+**改好的句子:**
+
+1. I don't think reinforcing old buildings is **a realistic plan**, as it costs too much.
+   我觉得加固旧楼不是一个现实的计划,因为太花钱了。
+
+**记住这个小规则:**
+
+- 想说「做得到、行得通」,问自己:是 perfect,还是 realistic?
+
+2. I don't think finishing all our homework in one hour is **a realistic plan**, as there is too much of it.
+   我觉得一小时写完所有作业不是一个现实的计划,因为作业太多了。
+
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) · [给……压力:put pressure on someone](#s-put-pressure-on) —— 同一句话里的另外两处。
+
+---
+
+<a id="s-their-houses"></a>
+## 很多人,很多个家:their houses
+
+- 日期:2026-10-31
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> If all the structures are less likely to collapse, people can just stay in their house.
+
+这是课本上的一道「说理由」练习(地震来了,政府先做哪件事)。这句说的是新楼防震的好处。
+
+👍 **做得好:**
+
+- **less likely to collapse**(不那么容易倒塌)是很地道的说法,用得很好!
+- 用 If 说「如果……就……」,前后两半都写对了。
+
+**问题:**
+
+- ⚠️ [冠词] **people can just stay in their house** —— people 是很多人,他们住在很多栋房子里,要用复数:**in their houses**。
+
+一步一步看:
+
+- 第 1 步:看前面说的是谁:people,很多人。
+- 第 2 步:这么多人,是住在一栋房子里,还是很多栋?很多栋。
+- 第 3 步:很多栋,就加 s:their house → **their houses**。
+
+**改好的句子:**
+
+1. If new buildings are less likely to collapse, people can just stay in **their houses**.
+   如果新楼不那么容易倒塌,大家就可以直接待在自己家里。
+
+all the structures 换成了 new buildings:这一段讲的是新楼。
+
+**记住这个小规则:**
+
+- 前面是很多人(people、they)时,问自己:他们的东西是不是也有很多个?是 → 加 s。
+
+2. If the roads are less likely to flood, children can just ride **their bikes** to school.
+   如果路不那么容易被淹,孩子们就可以直接骑自行车上学。
+
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文。
