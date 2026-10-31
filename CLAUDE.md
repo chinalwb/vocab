@@ -353,6 +353,7 @@
 
 - 用设备自带的语音合成,免费、离线、不用密钥:App 是 Android `TextToSpeech`(`ui/Speech.kt` 的 `Speaker`,全 App 一个实例挂在 `VocabApp.speaker`;Manifest 里有 `<queries>` 声明 TTS_SERVICE,Android 11+ 找引擎要用),网页是 `speechSynthesis`(`speak()`,优先挑名字带 natural / neural / Google US English / Samantha 的英美音色)。en-US,语速 0.95。
 - 🔊 放在三处:条目页标题旁(读词条;自测题标题是中文,读它的第一行答案,见 `Entry.speakText()` / `speakText()`)、笔记里每句例句后面(网页由 `addSpeakButtons()` 在 MutationObserver 里统一补,所以复习 / 考核的做题页也有)、揭晓答案后的判定行(读对照用的那句答案)。
+- **网页可以自己选音色**(用户 2026-10-31,只做了网页;App 跟着 Android 系统的 TTS 设置):「练习与同步」里的「朗读音色」下拉框列出浏览器的英美英语音色(自动挑的排第一,联网音色标「联网」),选了立即试读一句,另有「试听」;存 `vk.voice`(voiceURI,空 = 自动),这个浏览器里找不到选过的音色时退回自动。`pickVoice()` / `enVoices()` / `paintVoice()`,`speak(text, v)`。
 - 网页的 🔊 点击在 capture 阶段拦截并 stopPropagation,所以放在可点的例句(排除出自测的那个点击)里也只朗读。
 - 没做的:预生成音频文件(edge-tts / Kokoro 在 build.py 里生成 MP3 提交进仓库),两边音色才能一致。用户先用方案一,不够再加。
 

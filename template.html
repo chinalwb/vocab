@@ -639,7 +639,7 @@ textarea.mynote::placeholder{color:var(--card-ink-2);opacity:.8}
 .sync p{font-size:calc(12.5px * var(--fs));color:var(--ink-3);margin:0 0 10px;line-height:1.6}
 .sync .st{font-size:calc(13px * var(--fs));color:var(--ink-2)}
 .sync .st.err{color:var(--err)}
-.sync input{flex:1 1 220px;min-width:0;font:inherit;font-size:calc(13px * var(--fs));background:var(--chip);color:var(--ink);border:1px solid var(--rule);border-radius:999px;padding:7px 14px}
+.sync input,.sync select{flex:1 1 220px;min-width:0;font:inherit;font-size:calc(13px * var(--fs));background:var(--chip);color:var(--ink);border:1px solid var(--rule);border-radius:999px;padding:7px 14px}
 .sync a{color:inherit}
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
 .stat{background:var(--mk);border:1px solid var(--rule);border-radius:10px;padding:12px 14px}
@@ -2172,20 +2172,44 @@ const ICON_CHEV = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
 // Prefers a natural-sounding US / UK English voice when there is one. ──
 const ICON_SPK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
 const spkBtn = text => text && /[A-Za-z]/.test(text) ? `<button class="spk" type="button" data-say="${esc(text)}" aria-label="朗读" title="朗读">${ICON_SPK}</button>` : "";
+// 朗读音色(用户 2026-10-31):「练习与同步」里可以自己选一个(vk.voice 存 voiceURI,空 = 自动);
+// 选的音色在这个浏览器里没有了(换了浏览器、删了下载的音色)就退回自动。
 let voice = null;
+const voiceScore = v => (/natural|neural|premium|enhanced/i.test(v.name) ? 4 : 0) + (/Google US English|Samantha|Daniel|Aria|Jenny/i.test(v.name) ? 3 : 0) + (/^en[-_]US/i.test(v.lang) ? 1 : 0);
+const enVoices = () => speechSynthesis.getVoices().filter(v => /^en[-_](US|GB)/i.test(v.lang))
+  .sort((a, b) => voiceScore(b) - voiceScore(a) || a.name.localeCompare(b.name));
 function pickVoice(){
-  const vs = speechSynthesis.getVoices().filter(v => /^en[-_](US|GB)/i.test(v.lang));
-  const score = v => (/natural|neural|premium|enhanced/i.test(v.name) ? 4 : 0) + (/Google US English|Samantha|Daniel|Aria|Jenny/i.test(v.name) ? 3 : 0) + (/^en[-_]US/i.test(v.lang) ? 1 : 0);
-  voice = vs.sort((a, b) => score(b) - score(a))[0] || null;
+  const vs = enVoices(), mine = store.get("vk.voice", "");
+  voice = (mine && vs.find(v => v.voiceURI === mine)) || vs[0] || null;
+  paintVoice();
 }
-if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.addEventListener("voiceschanged", pickVoice); }
-function speak(text){
+function speak(text, v = voice){
   if (!("speechSynthesis" in window) || !text) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US"; if (voice) u.voice = voice; u.rate = 0.95;
+  u.lang = "en-US"; if (v) u.voice = v; u.rate = 0.95;
   speechSynthesis.speak(u);
 }
+const VOICE_SAMPLE = "Get it right. Then make it better.";
+function paintVoice(){
+  const el = document.getElementById("voice");
+  if (!el) return;
+  if (!("speechSynthesis" in window)) { el.innerHTML = `<h3>朗读音色</h3><p>这个浏览器不支持朗读。</p>`; return; }
+  const vs = enVoices(), mine = store.get("vk.voice", "");
+  const has = vs.some(v => v.voiceURI === mine);
+  const opt = (val, label) => `<option value="${esc(val)}"${val === (has ? mine : "") ? " selected" : ""}>${esc(label)}</option>`;
+  el.innerHTML = `<h3>朗读音色</h3><p>🔊 用的是这个浏览器能用的英语音色。Mac 上可以在系统设置 → 辅助功能 → 朗读内容 → 系统声音 → 管理声音,下载带 (Premium) / (Enhanced) 的音色更自然,下载后刷新页面就会出现在这里。` +
+    (mine && !has ? "选过的音色在这个浏览器里找不到,现在用自动挑的。" : "") + `</p>` +
+    `<div class="row"><select id="voice-pick" aria-label="朗读音色">` +
+    opt("", "自动" + (vs[0] ? "(" + vs[0].name + ")" : "")) +
+    vs.map(v => opt(v.voiceURI, v.name + " · " + (/GB/i.test(v.lang) ? "英音" : "美音") + (v.localService ? "" : " · 联网"))).join("") +
+    `</select><button class="btn ghost" type="button" id="voice-try">试听</button></div>`;
+  const sel = el.querySelector("#voice-pick");
+  const chosen = () => vs.find(v => v.voiceURI === sel.value) || vs[0] || null;
+  sel.addEventListener("change", () => { store.set("vk.voice", sel.value); voice = chosen(); speak(VOICE_SAMPLE); });
+  el.querySelector("#voice-try").addEventListener("click", () => speak(VOICE_SAMPLE, chosen()));
+}
+if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.addEventListener("voiceschanged", pickVoice); }
 // capture phase, so a 🔊 inside a clickable example (or card) only speaks
 document.addEventListener("click", e => {
   const b = e.target.closest(".spk");
@@ -3356,13 +3380,14 @@ function renderExtras(){
   extrasEl.dataset.built = "1";
   extrasEl.innerHTML =
     `<h2 style="margin-top:32px">练习</h2><details class="prac" id="prac"${store.get("vk.prac", "0") === "1" ? " open" : ""}><summary>今日仿写 / 本周段落</summary></details>` +
+    `<h2 style="margin-top:32px">朗读</h2><div class="sync" id="voice"></div>` +
     `<h2 style="margin-top:32px">同步</h2><div class="sync" id="sync"></div>` +
     `<p style="margin-top:20px"><button class="linkish" type="button" id="rv-reset">重置复习排期</button></p>`;
   const prac = extrasEl.querySelector("#prac");
   prac.append(practiceEl);
   renderPractice();
   prac.addEventListener("toggle", () => store.set("vk.prac", prac.open ? "1" : "0"));
-  paintSync();
+  paintSync(); paintVoice();
   extrasEl.querySelector("#rv-reset").addEventListener("click", function(){
     if (!resetArmed) { resetArmed = true; this.textContent = "确定清空全部复习排期?再点一次确认"; return; }
     // resetAt tells the other devices to drop their older cards too
