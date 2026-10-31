@@ -9545,20 +9545,6 @@
   ],
   "intermittent-outage": [
    {
-    "t": 1792048726347,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "The server was briefly down while I was running the test cases just now."
-   },
-   {
-    "t": 1792048744939,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The server was briefly down while I was running the test cases just now."
-   },
-   {
     "t": 1792048791178,
     "ok": false,
     "peek": false,
@@ -9893,6 +9879,20 @@
     "peek": false,
     "via": "review",
     "ex": "The server was temporarily unreachable during the test run, which caused some failures."
+   },
+   {
+    "t": 1793455996587,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We hit a transient outage on the server during the test run."
+   },
+   {
+    "t": 1793456013823,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The server went down intermittently while the tests were running, so a couple of runs failed."
    }
   ],
   "defer": [
