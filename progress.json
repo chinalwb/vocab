@@ -370,8 +370,8 @@
    "t": 1793061281914
   },
   "jab-chips-of-ice": {
-   "s": "review",
-   "t": 1793075423079
+   "s": "test",
+   "t": 1793456242577
   },
   "go-ahead": {
    "s": "review",
@@ -881,11 +881,11 @@
   },
   "jab-chips-of-ice": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20757,
-   "t": 1793150295522
+   "due": 20765,
+   "t": 1793456235415
   },
   "go-ahead": {
    "ease": 2.5,
@@ -894,6 +894,14 @@
    "lapses": 0,
    "due": 20758,
    "t": 1793276892831
+  },
+  "since-vs-from-last-week": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20758,
+   "t": 1793456254581
   }
  },
  "newDay": 20756,
@@ -12300,6 +12308,20 @@
     "peek": false,
     "via": "review",
     "ex": "I dug really hard in the ice maker and only got a few little pieces of ice."
+   },
+   {
+    "t": 1793456222512,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I jabbed the scoop into the ice maker a few times and came up with a few chips of ice."
+   },
+   {
+    "t": 1793456235413,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I dug really hard in the ice maker and only got a few little pieces of ice."
    }
   ],
   "s-share-on-wechat": [
@@ -12593,6 +12615,20 @@
     "peek": false,
     "via": "entry",
     "ex": "Could you pull up this user's orders from last week?"
+   },
+   {
+    "t": 1793456250069,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Could you pull up this user's orders since last week?"
+   },
+   {
+    "t": 1793456254579,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Could you pull up this user's orders from last week?"
    }
   ]
  },
@@ -12611,6 +12647,11 @@
   }
  },
  "history": [
+  {
+   "a": "since-vs-from-last-week",
+   "t": 1793456242739,
+   "via": "review"
+  },
   {
    "a": "jab-chips-of-ice",
    "t": 1793456204123,
@@ -12719,11 +12760,6 @@
   {
    "a": "confuse",
    "t": 1793339747975,
-   "via": "entry"
-  },
-  {
-   "a": "since-vs-from-last-week",
-   "t": 1793339746498,
    "via": "entry"
   },
   {
