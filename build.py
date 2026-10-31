@@ -137,6 +137,8 @@ def inline(t):
     t = re.sub(r"\[(" + "|".join(TYPE_KEYS) + r")\](?!\()", r'<span class="mtag">\1</span>', t)
     # cross-references become real links the page turns into card-to-card jumps
     t = re.sub(r"\[(.+?)\]\(#([^)]+)\)", r'<a class="xref" href="#\2" data-ref="\2">\1</a>', t)
+    # a link out (用户 2026-10-31: a 文章's review page), in a new tab; only the web page renders it
+    t = re.sub(r"\[(.+?)\]\((https://[^)\s]+)\)", r'<a class="ext" href="\2" target="_blank" rel="noopener">\1 ↗</a>', t)
     t = re.sub(r"(?<![\w*])\*([^*\n]+)\*(?![\w*])", r"<em>\1</em>", t)
     return t
 
