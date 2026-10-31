@@ -30,6 +30,15 @@
     "via": "entry",
     "ex": "Our nature club has started its own bee project. It's small, but it aims to count the bees in the garden and learn about their favourite flowers."
    }
+  ],
+  "a-earthquake": [
+   {
+    "t": 1793433592979,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
+   }
   ]
  },
  "favs": {},
