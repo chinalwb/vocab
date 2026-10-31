@@ -44,6 +44,21 @@
  "favs": {},
  "history": [
   {
+   "a": "s-ing-subject",
+   "t": 1793435447379,
+   "via": "entry"
+  },
+  {
+   "a": "s-tell-describe",
+   "t": 1793435446807,
+   "via": "entry"
+  },
+  {
+   "a": "s-same-shape-list",
+   "t": 1793435445963,
+   "via": "entry"
+  },
+  {
    "a": "a-earthquake",
    "t": 1793434613501,
    "via": "entry"
@@ -56,16 +71,6 @@
   {
    "a": "c-be-witness-to",
    "t": 1793434600260,
-   "via": "entry"
-  },
-  {
-   "a": "s-tell-describe",
-   "t": 1793431019726,
-   "via": "entry"
-  },
-  {
-   "a": "s-same-shape-list",
-   "t": 1793431019139,
    "via": "entry"
   },
   {
