@@ -270,8 +270,8 @@
    "t": 1792757168187
   },
   "s-global-flag": {
-   "s": "review",
-   "t": 1792062562626
+   "s": "test",
+   "t": 1793455556141
   },
   "s-align-ux": {
    "s": "test",
@@ -737,11 +737,11 @@
   },
   "s-global-flag": {
    "ease": 1.3,
-   "interval": 3,
-   "reps": 2,
+   "interval": 4,
+   "reps": 3,
    "lapses": 5,
-   "due": 20756,
-   "t": 1793064334928
+   "due": 20761,
+   "t": 1793455552884
   },
   "s-align-ux": {
    "ease": 1.96,
@@ -10191,6 +10191,13 @@
     "peek": false,
     "via": "review",
     "ex": "When the global flag is off, the other flags have no effect, even if they're on."
+   },
+   {
+    "t": 1793455552881,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "If the global flag is disabled, none of the other flags take effect, regardless of their own settings."
    }
   ],
   "s-align-ux": [
@@ -12458,6 +12465,11 @@
  },
  "history": [
   {
+   "a": "s-testflight",
+   "t": 1793455556304,
+   "via": "review"
+  },
+  {
    "a": "s-global-flag",
    "t": 1793455442867,
    "via": "review"
@@ -12535,11 +12547,6 @@
   {
    "a": "since-vs-from-last-week",
    "t": 1793339746498,
-   "via": "entry"
-  },
-  {
-   "a": "s-testflight",
-   "t": 1793331941543,
    "via": "entry"
   },
   {
