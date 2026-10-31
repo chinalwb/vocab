@@ -2253,23 +2253,30 @@ function readAll(it, sheet, btn){
   const me = reading = { btn, lis };
   btn.innerHTML = ICON_STOP; btn.setAttribute("aria-label", "停止朗读"); btn.title = "停止朗读";
   speechSynthesis.cancel();
-  xs.forEach((t, k) => {
-    const u = new SpeechSynthesisUtterance(t);
+  // one sentence at a time, READ_PAUSE apart (用户 2026-10-31: the voice's own gap was too short)
+  const say = k => {
+    if (reading !== me) return;
+    if (k >= xs.length) { stopReading(false); return; }
+    const u = new SpeechSynthesisUtterance(xs[k]);
     u.lang = "en-US"; if (voice) u.voice = voice; u.rate = 0.95;
     u.onstart = () => {
       if (reading !== me) return;
       lis.forEach((li, j) => li.classList.toggle("reading", j === k));
       if (lis[k]) lis[k].scrollIntoView({ block: "nearest", behavior: "smooth" });
     };
-    u.onend = u.onerror = () => { if (reading === me && k === xs.length - 1) stopReading(); };
+    u.onend = () => { if (reading === me) me.timer = setTimeout(() => say(k + 1), READ_PAUSE); };
+    u.onerror = () => { if (reading === me) stopReading(false); };
     speechSynthesis.speak(u);
-  });
+  };
+  say(0);
 }
+const READ_PAUSE = 1200;                                   // ms between two sentences of 朗读全文
 // [cancel] false when a new 🔊 is about to cancel the voice itself
 function stopReading(cancel = true){
   if (!reading) return;
   const r = reading;
   reading = null;
+  clearTimeout(r.timer);
   r.lis.forEach(li => li.classList.remove("reading"));
   r.btn.innerHTML = ICON_PLAYALL; r.btn.setAttribute("aria-label", "朗读全文"); r.btn.title = "朗读全文";
   if (cancel && "speechSynthesis" in window) speechSynthesis.cancel();
