@@ -842,10 +842,10 @@
   "tend-lean-focus": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 3,
-   "due": 20757,
-   "t": 1793342363397
+   "due": 20758,
+   "t": 1793455861148
   },
   "from-memory": {
    "ease": 2.5,
@@ -865,11 +865,11 @@
   },
   "given-that": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20757,
-   "t": 1793150195351
+   "due": 20765,
+   "t": 1793455872004
   },
   "this-complicated": {
    "ease": 1.96,
@@ -11738,6 +11738,20 @@
     "peek": false,
     "via": "review",
     "ex": "He tends toward pessimism."
+   },
+   {
+    "t": 1793455853848,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I'm leaning toward the blue one."
+   },
+   {
+    "t": 1793455861146,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The doc leans toward iOS."
    }
   ],
   "come-back-to": [
@@ -11982,6 +11996,20 @@
    },
    {
     "t": 1793150192096,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Most users are on Android. With that in mind, let's fix Android first."
+   },
+   {
+    "t": 1793455866939,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Given that the API is deprecated, we should migrate."
+   },
+   {
+    "t": 1793455872000,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -12521,6 +12549,11 @@
  },
  "history": [
   {
+   "a": "given-that",
+   "t": 1793455862071,
+   "via": "review"
+  },
+  {
    "a": "tend-lean-focus",
    "t": 1793455817122,
    "via": "review"
@@ -12764,11 +12797,6 @@
    "a": "recon",
    "t": 1793150399424,
    "via": "entry"
-  },
-  {
-   "a": "given-that",
-   "t": 1793150173667,
-   "via": "review"
   },
   {
    "a": "that-said",
