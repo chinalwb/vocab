@@ -45,7 +45,17 @@
  "history": [
   {
    "a": "a-earthquake",
-   "t": 1793432722682,
+   "t": 1793434613501,
+   "via": "entry"
+  },
+  {
+   "a": "c-stay-safe",
+   "t": 1793434608461,
+   "via": "entry"
+  },
+  {
+   "a": "c-be-witness-to",
+   "t": 1793434600260,
    "via": "entry"
   },
   {
@@ -91,11 +101,6 @@
   {
    "a": "c-be-displaced-by",
    "t": 1792340834596,
-   "via": "entry"
-  },
-  {
-   "a": "c-be-witness-to",
-   "t": 1792340833314,
    "via": "entry"
   }
  ],
