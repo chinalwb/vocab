@@ -45,7 +45,7 @@
  "history": [
   {
    "a": "s-ing-subject",
-   "t": 1793435447379,
+   "t": 1793435485023,
    "via": "entry"
   },
   {
@@ -120,6 +120,12 @@
    "Also, making new buildings earthquake-proof is important.": {
     "on": false,
     "t": 1793433922097
+   }
+  },
+  "s-ing-subject": {
+   "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space.": {
+    "on": false,
+    "t": 1793435490940
    }
   }
  },
