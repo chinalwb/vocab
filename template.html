@@ -2557,7 +2557,12 @@ function show(it, level, i, o = {}){
     card.classList.add("turning", "snap");
     void card.offsetWidth;
     card.classList.remove("snap");
-    clearTimeout(card._turn); card._turn = setTimeout(() => card.classList.remove("turning"), 700);
+    // back to rest without a transition too, or dropping the 180° turn would play as a second flip
+    clearTimeout(card._turn); card._turn = setTimeout(() => {
+      card.classList.add("snap"); card.classList.remove("turning");
+      void card.offsetWidth;
+      card.classList.remove("snap");
+    }, 700);
     card.classList.toggle("flipped", toQuiz); sheet.classList.toggle("quizzing", toQuiz);
   };
   if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => flip(wantBack)));
