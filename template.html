@@ -953,7 +953,7 @@ textarea.draft:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .nfq-h span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .nfq-h .linkish{color:inherit;font-size:calc(13px * var(--fs))}
 .nfq .body>p.lbl{display:none}
-.body ol.ex li.lit{background:var(--well);border-radius:12px;padding:6px 8px;margin-left:-8px;margin-right:-8px}
+.body ol.ex li.lit,.body ol.ex li.reading{background:var(--well);border-radius:12px;padding:6px 8px;margin-left:-8px;margin-right:-8px}
 /* a 复习 / 考核 run: the whole screen, nothing else */
 body.running{overflow:hidden}
 .run{position:fixed;inset:0;z-index:45;background:var(--ground);color:var(--ink);display:flex;flex-direction:column;padding:max(6px,env(safe-area-inset-top,0px)) 8px max(12px,env(safe-area-inset-bottom,0px));box-sizing:border-box}
@@ -2179,6 +2179,10 @@ const ICON_CHEV = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
 // ── 朗读: the browser's own speech synthesis — free, no key; the voice is whatever the OS has.
 // Prefers a natural-sounding US / UK English voice when there is one. ──
 const ICON_SPK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
+// 朗读全文 (a 文章's title button): play, and stop while it reads
+const ICON_PLAYALL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h11v2H3zm0 4h11v2H3zm0 4h7v2H3zm10 0v8l7-4z"/></svg>';
+const ICON_STOP = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
+const readAllBtn = () => `<button class="spk spk-all" type="button" aria-label="朗读全文" title="朗读全文">${ICON_PLAYALL}</button>`;
 const spkBtn = text => text && /[A-Za-z]/.test(text) ? `<button class="spk" type="button" data-say="${esc(text)}" aria-label="朗读" title="朗读">${ICON_SPK}</button>` : "";
 // 朗读音色(用户 2026-10-31):「练习与同步」里可以自己选一个(vk.voice 存 voiceURI,空 = 自动);
 // 选的音色在这个浏览器里没有了(换了浏览器、删了下载的音色)就退回自动。
@@ -2193,6 +2197,7 @@ function pickVoice(){
 }
 function speak(text, v = voice){
   if (!("speechSynthesis" in window) || !text) return;
+  stopReading(false);                                      // any other 🔊 ends a 朗读全文
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = "en-US"; if (v) u.voice = v; u.rate = 0.95;
@@ -2233,10 +2238,46 @@ function paintVoice(){
   el.querySelector("#voice-try").addEventListener("click", () => speak(VOICE_SAMPLE, chosen()));
 }
 if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.addEventListener("voiceschanged", pickVoice); }
-// capture phase, so a 🔊 inside a clickable example (or card) only speaks
+// 朗读全文 (用户 2026-10-31): a 文章's sentences one after another, the one being read lit in the notes
+// (which turn to its tab); the button turns into ■, and a tap on it, any other 🔊 or leaving the entry stops it
+let reading = null;
+function readAll(it, sheet, btn){
+  const again = reading && reading.btn === btn;
+  stopReading();
+  if (again || !("speechSynthesis" in window)) return;
+  const xs = (it.examples || []).map(x => plainMd(x.en));
+  if (!xs.length) return;
+  const lis = [...sheet.querySelectorAll(".face.fr .body ol.ex > li")];
+  const nv = sheet.querySelector(".face.fr .nv"), card = lis[0] && lis[0].closest(".nv-card");
+  if (nv && card && !nv.classList.contains("all")) nvGo(nv, [...card.parentNode.children].indexOf(card));
+  const me = reading = { btn, lis };
+  btn.innerHTML = ICON_STOP; btn.setAttribute("aria-label", "停止朗读"); btn.title = "停止朗读";
+  speechSynthesis.cancel();
+  xs.forEach((t, k) => {
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = "en-US"; if (voice) u.voice = voice; u.rate = 0.95;
+    u.onstart = () => {
+      if (reading !== me) return;
+      lis.forEach((li, j) => li.classList.toggle("reading", j === k));
+      if (lis[k]) lis[k].scrollIntoView({ block: "nearest", behavior: "smooth" });
+    };
+    u.onend = u.onerror = () => { if (reading === me && k === xs.length - 1) stopReading(); };
+    speechSynthesis.speak(u);
+  });
+}
+// [cancel] false when a new 🔊 is about to cancel the voice itself
+function stopReading(cancel = true){
+  if (!reading) return;
+  const r = reading;
+  reading = null;
+  r.lis.forEach(li => li.classList.remove("reading"));
+  r.btn.innerHTML = ICON_PLAYALL; r.btn.setAttribute("aria-label", "朗读全文"); r.btn.title = "朗读全文";
+  if (cancel && "speechSynthesis" in window) speechSynthesis.cancel();
+}
+// capture phase, so a 🔊 inside a clickable example (or card) only speaks; 朗读全文 has its own listener
 document.addEventListener("click", e => {
   const b = e.target.closest(".spk");
-  if (!b) return;
+  if (!b || b.classList.contains("spk-all")) return;
   e.preventDefault(); e.stopPropagation();
   speak(b.dataset.say);
 }, true);
@@ -2485,6 +2526,7 @@ function decorateNotes(root, it, ex, go, onAll){
 // [o.ex]: which example to ask (再试一次 keeps it, 下一句 adds one); by default the next by attempt count.
 // [o.step]: 2 = the sentence's ② 打字, with [o.bankOk] how its ① 选词 went.
 function show(it, level, i, o = {}){
+  stopReading();
   if (scrim) scrim.remove();
   scrim = document.createElement("div");
   // wide screens, 浏览: docked in the column next to the list instead of over the page
@@ -2545,7 +2587,7 @@ function show(it, level, i, o = {}){
     `<button class="x" type="button" aria-label="关闭">✕</button>` +
     (nextT ? `<button class="nx" type="button" title="下一个:${esc(plainMd(nextT.it.title))}"><span>${pos + 1} / ${openList.length}</span> <b>下一个</b> ›</button>` : "") +
     (back ? `<button class="back" type="button">← 返回 ${back.it.title}</button>` : "") +
-    `<div class="mband"><h2>${it.title}${spkBtn(speakText(it, level))}</h2>` +
+    `<div class="mband"><h2>${it.title}${essay ? readAllBtn() : spkBtn(speakText(it, level))}</h2>` +
     `<button type="button" class="mpill" aria-expanded="false"><span>${esc(pill)}</span>${ICON_CHEV}</button>` +
     `<div class="mdet" hidden>${rows.map(([k, v]) => `<b>${k}</b><span>${esc(String(v))}</span>`).join("")}</div></div>` +
     levels +
@@ -2578,6 +2620,8 @@ function show(it, level, i, o = {}){
   // a cross-reference opens the note it points at, keeping a trail to come back
   wireXrefsIn(sheet, follow);
   if (back) sheet.querySelector(".back").addEventListener("click", goBack);
+  const ra = sheet.querySelector(".spk-all");
+  if (ra) ra.addEventListener("click", () => readAll(it, sheet, ra));
   const mpill = sheet.querySelector(".mpill"), mdet = sheet.querySelector(".mdet");
   mpill.addEventListener("click", () => { mdet.hidden = !mdet.hidden; mpill.setAttribute("aria-expanded", !mdet.hidden); });
   // moving re-renders the sheet, turning the card over if the 自测 side comes or goes
@@ -2692,6 +2736,7 @@ function show(it, level, i, o = {}){
 }
 function close(){
   if (!scrim) return;
+  stopReading();
   scrim.remove(); scrim = null; trail = []; openList = [];
   markSel("");
   if (view === "history") renderHistory();            // what I just opened is on top now

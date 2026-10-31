@@ -176,7 +176,7 @@ b,strong,h1,h2,h3{font-weight:800}
 .body ol.ex .en{font-weight:800;font-size:calc(16.5px * var(--fs))}
 .body ol.ex .en strong{color:var(--sel-ink);font-weight:900}
 .body ol.ex .zh{font-weight:600;color:var(--ink-3)}
-.body ol.ex li.lit{background:var(--sel-bg);border-color:var(--sel-edge);margin-left:0;margin-right:0;padding:10px 14px 10px 44px}
+.body ol.ex li.lit,.body ol.ex li.reading{background:var(--sel-bg);border-color:var(--sel-edge);margin-left:0;margin-right:0;padding:10px 14px 10px 44px}
 .xref{text-decoration-color:var(--blue);color:var(--sel-ink);font-weight:800}
 .body th{border-bottom:2px solid var(--rule)}
 .qz-cap{margin-left:0}
