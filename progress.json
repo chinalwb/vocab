@@ -785,11 +785,11 @@
   },
   "practitioner": {
    "ease": 1.3,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 5,
-   "due": 20757,
-   "t": 1793321821206
+   "due": 20760,
+   "t": 1793456091627
   },
   "defer": {
    "ease": 2.5,
@@ -11112,6 +11112,27 @@
     "peek": false,
     "via": "review",
     "ex": "As a practitioner in this field, I can tell you this approach actually works."
+   },
+   {
+    "t": 1793456080429,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "She's a general practitioner at a local clinic."
+   },
+   {
+    "t": 1793456087234,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "He's a longtime practitioner of traditional Chinese medicine."
+   },
+   {
+    "t": 1793456091625,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "As a practitioner in this field, I can tell you this approach actually works."
    }
   ],
   "check-out": [
@@ -12549,6 +12570,16 @@
  },
  "history": [
   {
+   "a": "s-rush-into-get-straight",
+   "t": 1793456092295,
+   "via": "review"
+  },
+  {
+   "a": "practitioner",
+   "t": 1793456072817,
+   "via": "review"
+  },
+  {
    "a": "intermittent-outage",
    "t": 1793455898629,
    "via": "review"
@@ -12654,11 +12685,6 @@
    "via": "entry"
   },
   {
-   "a": "s-rush-into-get-straight",
-   "t": 1793326905615,
-   "via": "entry"
-  },
-  {
    "a": "s-as-we-go",
    "t": 1793326902285,
    "via": "entry"
@@ -12676,11 +12702,6 @@
   {
    "a": "implication-vs-indication",
    "t": 1793321823591,
-   "via": "review"
-  },
-  {
-   "a": "practitioner",
-   "t": 1793321779822,
    "via": "review"
   },
   {
