@@ -2231,7 +2231,14 @@ function paintVoice(){
     `<div class="row"><select id="voice-pick" aria-label="朗读音色">` +
     opt("", "自动" + (vs[0] ? "(" + vs[0].name + ")" : "")) +
     vs.map(v => opt(v.voiceURI, v.name + " · " + (/GB/i.test(v.lang) ? "英音" : "美音") + (v.localService ? "" : " · 联网"))).join("") +
-    `</select><button class="btn ghost" type="button" id="voice-try">试听</button></div>`;
+    `</select><button class="btn ghost" type="button" id="voice-try">试听</button></div>` +
+    `<h3 style="margin-top:16px">句间停顿</h3><p>文章的「朗读全文」读完一句,停多久再读下一句。</p>` +
+    `<div class="row" role="group" aria-label="句间停顿">` + READ_PAUSES.map(ms =>
+      `<button type="button" class="pill" data-pause="${ms}" aria-pressed="${ms === readPause()}">${ms / 1000} 秒</button>`).join("") + `</div>`;
+  el.querySelectorAll("[data-pause]").forEach(b => b.addEventListener("click", () => {
+    store.set("vk.readPause", b.dataset.pause);
+    el.querySelectorAll("[data-pause]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  }));
   const sel = el.querySelector("#voice-pick");
   const chosen = () => vs.find(v => v.voiceURI === sel.value) || vs[0] || null;
   sel.addEventListener("change", () => { store.set("vk.voice", sel.value); voice = chosen(); speak(VOICE_SAMPLE); });
@@ -2253,10 +2260,9 @@ function readAll(it, sheet, btn){
   const me = reading = { btn, lis };
   btn.innerHTML = ICON_STOP; btn.setAttribute("aria-label", "停止朗读"); btn.title = "停止朗读";
   speechSynthesis.cancel();
-  // one sentence at a time, READ_PAUSE apart (用户 2026-10-31: the voice's own gap was too short)
+  // one sentence at a time, readPause() apart (用户 2026-10-31: the voice's own gap was too short)
   const say = k => {
     if (reading !== me) return;
-    if (k >= xs.length) { stopReading(false); return; }
     const u = new SpeechSynthesisUtterance(xs[k]);
     u.lang = "en-US"; if (voice) u.voice = voice; u.rate = 0.95;
     u.onstart = () => {
@@ -2264,13 +2270,17 @@ function readAll(it, sheet, btn){
       lis.forEach((li, j) => li.classList.toggle("reading", j === k));
       if (lis[k]) lis[k].scrollIntoView({ block: "nearest", behavior: "smooth" });
     };
-    u.onend = () => { if (reading === me) me.timer = setTimeout(() => say(k + 1), READ_PAUSE); };
+    // a pause only between two sentences: none before the first, and the last one ends it straight away
+    u.onend = () => { if (reading === me) { if (k === xs.length - 1) stopReading(false); else me.timer = setTimeout(() => say(k + 1), readPause()); } };
     u.onerror = () => { if (reading === me) stopReading(false); };
     speechSynthesis.speak(u);
   };
   say(0);
 }
-const READ_PAUSE = 1200;                                   // ms between two sentences of 朗读全文
+// 句间停顿 (用户 2026-10-31, under 朗读 in 练习与同步): ms between two sentences of 朗读全文, 500 by default,
+// kept in this browser (vk.readPause)
+const READ_PAUSES = [300, 500, 800, 1200];
+const readPause = () => { const v = +store.get("vk.readPause", "500"); return READ_PAUSES.includes(v) ? v : 500; };
 // [cancel] false when a new 🔊 is about to cancel the voice itself
 function stopReading(cancel = true){
   if (!reading) return;
