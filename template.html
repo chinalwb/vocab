@@ -1809,7 +1809,8 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
       : `<i class="caret ph" aria-hidden="true"></i><span class="wb-ph">点下面的词,一个一个拼出英文…</span>`;
   };
   const hint0 = ctl.hint ? ctl.hint.textContent : "";
-  const pick = w => { typed = ""; picks.push(w); paint(true); };
+  // a picked word is read out, by tap or by keyboard (用户 2026-10-31, like Duolingo); its punctuation isn't
+  const pick = w => { typed = ""; picks.push(w); paint(true); speak(w.replace(/[^A-Za-z0-9'’-]+/g, " ").trim()); };
   const paint = focus => {
     input.value = picks.join(" ");
     input.dispatchEvent(new Event("input"));
@@ -2530,7 +2531,7 @@ function show(it, level, i, o = {}){
     meta: qMeta(), toggle: answerOf(it, level, ex) && !essay ? modeToggleHtml(step) : "", prompt: promptHtml(),
     stats: stStatsLine(it.anchor, curEx()),
     extra: stage !== "test" ? `<button type="button" class="linkish" id="to-notes-pre">看笔记</button>` : "",
-    shuf: ex && ex.of > 1 ? shufHtml(!!exOrder[it.anchor]) : "",
+    shuf: ex && ex.of > 1 && !essay ? shufHtml(!!exOrder[it.anchor]) : "",   // a 文章 is asked in the essay's order (用户 2026-10-31)
   }) + `</div>`;
   const startBack = o.from !== undefined ? o.from : o.face ? o.face === "back" : wantBack;
   // while the answer sheet shows, the pill and the track fold away, as on the app's 自测
