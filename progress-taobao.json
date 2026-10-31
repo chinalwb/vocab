@@ -101,6 +101,13 @@
  ],
  "historyClearAt": 0,
  "readsHidden": {},
- "quizOut": {},
+ "quizOut": {
+  "a-earthquake": {
+   "The plan which we need to prioritize is to research ways to predict earthquakes.": {
+    "on": false,
+    "t": 1793433874249
+   }
+  }
+ },
  "notes": {}
 }
