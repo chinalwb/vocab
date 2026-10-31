@@ -2530,7 +2530,7 @@ function show(it, level, i, o = {}){
     meta: qMeta(), toggle: answerOf(it, level, ex) && !essay ? modeToggleHtml(step) : "", prompt: promptHtml(),
     stats: stStatsLine(it.anchor, curEx()),
     extra: stage !== "test" ? `<button type="button" class="linkish" id="to-notes-pre">看笔记</button>` : "",
-    shuf: ex && ex.of > 1 ? shufHtml(!!exOrder[it.anchor]) : "",
+    shuf: ex && ex.of > 1 && !essay ? shufHtml(!!exOrder[it.anchor]) : "",   // a 文章 is asked in the essay's order (用户 2026-10-31)
   }) + `</div>`;
   const startBack = o.from !== undefined ? o.from : o.face ? o.face === "back" : wantBack;
   // while the answer sheet shows, the pill and the track fold away, as on the app's 自测
