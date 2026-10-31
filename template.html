@@ -1809,8 +1809,11 @@ function mountBank(ansEl, bankEl, input, answer, others, seed, picks, ctl = {}){
       : `<i class="caret ph" aria-hidden="true"></i><span class="wb-ph">点下面的词,一个一个拼出英文…</span>`;
   };
   const hint0 = ctl.hint ? ctl.hint.textContent : "";
-  // a picked word is read out, by tap or by keyboard (用户 2026-10-31, like Duolingo); its punctuation isn't
-  const pick = w => { typed = ""; picks.push(w); paint(true); speak(w.replace(/[^A-Za-z0-9'’-]+/g, " ").trim()); };
+  // a picked word is read out, by tap or by keyboard (用户 2026-10-31, like Duolingo); its punctuation isn't.
+  // A lone capital is read as a letter ("capital I"), so a one-letter word goes lower-case: i sounds the
+  // same; longer words keep their case, or US / TV would be read as words
+  const sayWord = w => { const t = w.replace(/[^A-Za-z0-9'’-]+/g, " ").trim(); return t.length === 1 ? t.toLowerCase() : t; };
+  const pick = w => { typed = ""; picks.push(w); paint(true); speak(sayWord(w)); };
   const paint = focus => {
     input.value = picks.join(" ");
     input.dispatchEvent(new Event("input"));
