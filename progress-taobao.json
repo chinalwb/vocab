@@ -36,7 +36,22 @@
  "history": [
   {
    "a": "a-earthquake",
-   "t": 1793430879262,
+   "t": 1793431031784,
+   "via": "entry"
+  },
+  {
+   "a": "s-tell-describe",
+   "t": 1793431019726,
+   "via": "entry"
+  },
+  {
+   "a": "s-same-shape-list",
+   "t": 1793431019139,
+   "via": "entry"
+  },
+  {
+   "a": "s-its-their",
+   "t": 1793431018701,
    "via": "entry"
   },
   {
@@ -50,23 +65,8 @@
    "via": "entry"
   },
   {
-   "a": "s-same-shape-list",
-   "t": 1793427859144,
-   "via": "entry"
-  },
-  {
-   "a": "s-its-their",
-   "t": 1793427858806,
-   "via": "entry"
-  },
-  {
    "a": "s-put-pressure-on",
    "t": 1793421667857,
-   "via": "entry"
-  },
-  {
-   "a": "s-tell-describe",
-   "t": 1793421665439,
    "via": "entry"
   },
   {
