@@ -24,6 +24,7 @@
 18. [给……压力:put pressure on someone](#s-put-pressure-on)
 19. [现实中行得通:a realistic plan](#s-realistic-plan)
 20. [很多人,很多个家:their houses](#s-their-houses)
+21. [stay safe:stay + 形容词](#c-stay-safe)
 
 ---
 
@@ -798,10 +799,10 @@
 
 **改好的句子:**
 
-1. If new buildings are less likely to collapse, people can just stay in **their houses**.
-   如果新楼不那么容易倒塌,大家就可以直接待在自己家里。
+1. If new buildings are less likely to collapse, people can just stay safe in **their houses**.
+   如果新楼不那么容易倒塌,大家待在自己家里就很安全。
 
-all the structures 换成了 new buildings:这一段讲的是新楼。
+all the structures 换成了 new buildings:这一段讲的是新楼。stay safe 是新加的,看 [stay safe:stay + 形容词](#c-stay-safe)。
 
 **记住这个小规则:**
 
@@ -810,4 +811,41 @@ all the structures 换成了 new buildings:这一段讲的是新楼。
 2. If the roads are less likely to flood, children can just ride **their bikes** to school.
    如果路不那么容易被淹,孩子们就可以直接骑自行车上学。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文。[stay safe:stay + 形容词](#c-stay-safe) —— 同一句话里的 stay safe。
+
+---
+
+<a id="c-stay-safe"></a>
+## stay safe:stay + 形容词
+
+- 日期:2026-10-31
+- 掌握:会写
+- 类型:固定搭配
+
+**原句:**
+
+这是你的地震文章改好后的一句。
+
+1. If new buildings are less likely to collapse, people can just **stay safe** in their houses.
+   如果新楼不那么容易倒塌,大家待在自己家里就很安全。
+
+**固定搭配:stay safe**
+
+- 意思:保持安全,不会受伤。
+- 这里的 stay 是「保持某种样子」,后面接形容词:**safe**(安全的)。
+- 同样的用法还有:*stay calm*(保持冷静)、*stay warm*(保暖)、*stay healthy*(保持健康)。
+
+再练一句,用法和原句一样:
+
+1. During the fire drill, we must **stay calm** and walk out of the classroom quietly.
+   消防演习的时候,我们要保持冷静,安静地走出教室。
+
+相关条目:[很多人,很多个家:their houses](#s-their-houses) —— 同一句话里的 their houses。
+
+**提升:别的用法**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- stay 后面也可以接 **safely**(安全地),说的是「怎么待着」:*People can stay safely in their houses.*(大家可以安全地待在家里。)
+- 两个都对:**stay safe** 说人是安全的;**stay safely** 说待着这件事是安全的。
+- 单独说「注意安全!」只能说 **Stay safe!**,不能说 *Stay safely!*。
