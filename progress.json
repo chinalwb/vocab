@@ -753,11 +753,11 @@
   },
   "s-rush-into-get-straight": {
    "ease": 1.3,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 4,
-   "due": 20757,
-   "t": 1793321951248
+   "due": 20760,
+   "t": 1793456151036
   },
   "s-chase-for": {
    "ease": 1.3,
@@ -8201,6 +8201,13 @@
     "peek": false,
     "via": "review",
     "ex": "Let's not rush into writing the code before we've got everything straight."
+   },
+   {
+    "t": 1793456151034,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We shouldn't start writing the code until we've got everything straight."
    }
   ],
   "s-chase-for": [
@@ -9238,6 +9245,13 @@
     "peek": false,
     "via": "review",
     "ex": "What copy do we display for this error?"
+   },
+   {
+    "t": 1793456170640,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "What message do users see when they hit this error?"
    }
   ],
   "that-said": [
@@ -12584,6 +12598,11 @@
  },
  "history": [
   {
+   "a": "s-error-message",
+   "t": 1793456152514,
+   "via": "review"
+  },
+  {
    "a": "s-rush-into-get-straight",
    "t": 1793456092295,
    "via": "review"
@@ -12662,11 +12681,6 @@
    "a": "against",
    "t": 1793362585508,
    "via": "entry"
-  },
-  {
-   "a": "s-error-message",
-   "t": 1793342387037,
-   "via": "review"
   },
   {
    "a": "this-complicated",
