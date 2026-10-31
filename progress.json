@@ -358,12 +358,12 @@
    "t": 1793060742258
   },
   "likely-unlikely": {
-   "s": "review",
-   "t": 1793061071105
+   "s": "test",
+   "t": 1793455811489
   },
   "from-memory": {
-   "s": "review",
-   "t": 1793061136082
+   "s": "test",
+   "t": 1793455816961
   },
   "this-complicated": {
    "s": "review",
@@ -817,11 +817,11 @@
   },
   "t-write-for-new-pms": {
    "ease": 1.3,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 5,
-   "due": 20756,
-   "t": 1793276790432
+   "due": 20760,
+   "t": 1793455790078
   },
   "push-back": {
    "ease": 2.5,
@@ -849,19 +849,19 @@
   },
   "from-memory": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20757,
-   "t": 1793150243272
+   "due": 20765,
+   "t": 1793455816516
   },
   "likely-unlikely": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20757,
-   "t": 1793150146213
+   "due": 20765,
+   "t": 1793455810939
   },
   "given-that": {
    "ease": 2.5,
@@ -11330,6 +11330,13 @@
     "peek": false,
     "via": "review",
     "ex": ""
+   },
+   {
+    "t": 1793455787819,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": ""
    }
   ],
   "as-since-because": [
@@ -11724,6 +11731,13 @@
     "peek": false,
     "via": "review",
     "ex": "This week, we'll focus mostly on testing."
+   },
+   {
+    "t": 1793455825290,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "He tends toward pessimism."
    }
   ],
   "come-back-to": [
@@ -11854,6 +11868,27 @@
     "peek": false,
     "via": "review",
     "ex": "It's likely to rain."
+   },
+   {
+    "t": 1793455796507,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The bug is unlikely to happen again."
+   },
+   {
+    "t": 1793455805775,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "It's unlikely that they'll ask for it."
+   },
+   {
+    "t": 1793455810936,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "It's likely to rain."
    }
   ],
   "endowed-with": [
@@ -11977,6 +12012,13 @@
    },
    {
     "t": 1793150243271,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "See? I can write it from memory now."
+   },
+   {
+    "t": 1793455816513,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -12479,6 +12521,21 @@
  },
  "history": [
   {
+   "a": "tend-lean-focus",
+   "t": 1793455817122,
+   "via": "review"
+  },
+  {
+   "a": "from-memory",
+   "t": 1793455811651,
+   "via": "review"
+  },
+  {
+   "a": "likely-unlikely",
+   "t": 1793455790972,
+   "via": "review"
+  },
+  {
    "a": "t-write-for-new-pms",
    "t": 1793455748483,
    "via": "review"
@@ -12519,11 +12576,6 @@
    "via": "entry"
   },
   {
-   "a": "likely-unlikely",
-   "t": 1793421315958,
-   "via": "entry"
-  },
-  {
    "a": "against",
    "t": 1793362585508,
    "via": "entry"
@@ -12536,11 +12588,6 @@
   {
    "a": "this-complicated",
    "t": 1793342365413,
-   "via": "review"
-  },
-  {
-   "a": "tend-lean-focus",
-   "t": 1793342336508,
    "via": "review"
   },
   {
@@ -12717,11 +12764,6 @@
    "a": "recon",
    "t": 1793150399424,
    "via": "entry"
-  },
-  {
-   "a": "from-memory",
-   "t": 1793150236194,
-   "via": "review"
   },
   {
    "a": "given-that",
