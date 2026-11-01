@@ -12649,7 +12649,17 @@
  "history": [
   {
    "a": "against",
-   "t": 1793488999075,
+   "t": 1793507097965,
+   "via": "entry"
+  },
+  {
+   "a": "name-verb",
+   "t": 1793507088998,
+   "via": "entry"
+  },
+  {
+   "a": "t-hold-out-for",
+   "t": 1793507086733,
    "via": "entry"
   },
   {
@@ -12845,11 +12855,6 @@
   {
    "a": "percentage-completed",
    "t": 1793191170167,
-   "via": "entry"
-  },
-  {
-   "a": "t-hold-out-for",
-   "t": 1793189741043,
    "via": "entry"
   },
   {
@@ -13140,11 +13145,6 @@
   {
    "a": "acronym",
    "t": 1792508269354,
-   "via": "entry"
-  },
-  {
-   "a": "forgiven-for-thinking",
-   "t": 1792508239756,
    "via": "entry"
   }
  ],
