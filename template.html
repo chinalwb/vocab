@@ -550,6 +550,9 @@ textarea.mynote::placeholder{color:var(--card-ink-2);opacity:.8}
   cursor:pointer;font-weight:500;
 }
 .xref:hover,.ext:hover{text-decoration-thickness:2px}
+/* a notes page not read yet, while a new entry waits for 自测这条 (用户 2026-11-01) */
+.card-foot .btn.off{opacity:.4;cursor:default;box-shadow:none;transform:none}
+.nv-tab.unseen::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-left:6px;vertical-align:middle}
 .xref:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px;border-radius:2px}
 .xref[data-missing]{text-decoration-style:dotted;cursor:default;opacity:.75}
 .body blockquote{
@@ -1871,6 +1874,12 @@ const quizExamples = it => { const xs = it.examples || [], kept = xs.filter(x =>
 // unless the 打乱 button on the answer sheet is on. On an entry's page it deals that entry a random
 // order (exOrder), kept until the sheet is opened afresh; the nth self-test asks position n of it.
 const exOrder = {};
+// the sentences answered since the entry was opened (用户 2026-11-01): once all are, 下一句 becomes 下一条 / 关闭
+const exDone = {};
+// entries whose every notes page has been seen (vk.seen, this browser): 自测这条 shows from then on
+let seenAll = {};
+try { seenAll = JSON.parse(store.get("vk.seen", "{}")) || {}; } catch(e){}
+const unseenHint = n => `看完每一页笔记就能自测(还有 ${n} 页没看,标了圆点)`;
 const quizEx = (it, n = (stLog[it.anchor] || []).length) => {
   const xs = quizExamples(it);
   if (!xs.length) return null;
@@ -2341,6 +2350,7 @@ function nvPaint(nv, k){
   const track = nv.querySelector(".nv-track"), cards = track.children;
   k = Math.max(0, Math.min(cards.length - 1, k));
   nv._k = k;
+  nv.dispatchEvent(new CustomEvent("nvpage", { detail: k }));   // show() counts the pages seen
   nv.querySelectorAll(".nv-tab").forEach((t, j) => t.setAttribute("aria-selected", j === k));
   nv.querySelectorAll(".nv-dots i").forEach((d, j) => d.classList.toggle("on", j === k));
   const tab = nv.querySelectorAll(".nv-tab")[k];
@@ -2385,6 +2395,7 @@ document.addEventListener("click", e => {
       if (b && b.classList.contains("ib")) { b.innerHTML = notesAll ? ICON_CARDS : ICON_LIST; b.setAttribute("aria-label", notesAll ? "分卡显示" : "全部展开"); }
       else if (b) b.textContent = notesAll ? "分卡显示" : "全部展开";
       if (!notesAll && track) { track.scrollLeft = 0; nvPaint(n, 0); }
+      if (notesAll) n.dispatchEvent(new CustomEvent("nvall"));
     });
   }
 });
@@ -2555,13 +2566,19 @@ function show(it, level, i, o = {}){
   sheet.setAttribute("aria-label", it.title);
   sheet.style.setProperty("--sw", `var(${swOf(it, level, i)})`); sheet.dataset.swa = it.anchor; sheet.dataset.swl = level;
   const back = trail[trail.length - 1];
-  const stage = stageOf(it, level);
+  let stage = stageOf(it, level);
   const selfTest = level === "SELFTEST";
   // a 文章 (用户 2026-10-31): no stage track; each sentence is ① 选词 only and counts as right on its own
   // (typing is practised in the sentence entries the essay links to)
   const essay = level === "ESSAY";
   const wantBack = stage === "test";                    // 考核 opens on the 自测 side, the rest on the notes
-  if (o.face === undefined && o.from === undefined && o.ex === undefined) delete exOrder[it.anchor];
+  if (o.face === undefined && o.from === undefined && o.ex === undefined) { delete exOrder[it.anchor]; exDone[it.anchor] = new Set(); }
+  exDone[it.anchor] = exDone[it.anchor] || new Set();
+  // a new entry (学习中, never tried) shows 自测这条 only once every page of its notes has been seen
+  // (用户 2026-11-01: so the sentences to be tested are read first); 记忆 / 我的笔记 don't count
+  const pages = it.slides.length;
+  let unseen = stage === "learn" && pages > 1 && !(stLog[it.anchor] || []).length && !seenAll[it.anchor]
+    ? new Set(Array.from({ length: pages }, (_, k) => k).slice(1)) : null;
   let ex = selfTest ? null : o.ex !== undefined ? quizEx(it, o.ex) : quizEx(it);   // fixed before this try is logged
   const lvName = CEFR.includes(level) ? level : (TYPES.find(t => t[0] === level) || [, level])[1];
   // meta band: the headword and a pill; the rest of the facts unfold under it
@@ -2569,11 +2586,11 @@ function show(it, level, i, o = {}){
   const rows = [["类型", lvName], ["编号", it.no ? "#" + it.no : ""], ["音标", it.ipa], ["词性", it.pos], ["CEFR", it.cefr],
     ["掌握", it.mastery === "write" ? "会写" : "认识"], ["收录", it.date]].filter(r => r[1]);
   // the four stages on a track; a click on another one moves the entry there (only moves)
-  const idx = STAGES.findIndex(st => st[0] === stage);
-  const levels = essay ? "" : `<div class="lv" style="--n:${STAGES.length};--k:${idx}">` + STAGES.map(([k, name], j) => {
-    return `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}" data-to="${k}"${j === idx ? " disabled" : ""}>` +
-      `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`;
-  }).join("") + `</div>`;
+  const levelsHtml = st => { const idx = STAGES.findIndex(x => x[0] === st);
+    return `<div class="lv" style="--n:${STAGES.length};--k:${idx}">` + STAGES.map(([k, name], j) =>
+      `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}" data-to="${k}"${j === idx ? " disabled" : ""}>` +
+      `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`).join("") + `</div>`; };
+  const levels = essay ? "" : levelsHtml(stage);
   const curEx = () => ex ? plainMd(ex.en) : null;      // stats and history are this sentence's own
   let step = o.step || 1, skipped = false;
   if (!essay && !o.step && answerOf(it, level, ex) && rightBefore(it.anchor, ex ? plainMd(ex.en) : "")) { step = 2; o.bankOk = true; skipped = true; }
@@ -2587,8 +2604,9 @@ function show(it, level, i, o = {}){
   // due for 复习 today: the button reviews it (a run of one) — not before, as reviewing early stretches its intervals
   const reviewNow = stage === "review" && reviewDue(it);
   const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true, true, [memorySlide(it, stage), myNoteSlide(it)])}</div>` +
-    `<div class="card-foot"><span class="hint" id="cf-hint">${esc(progressHint(it, level, stage))}</span>` +
-    `<button class="btn" type="button" id="to-quiz">${reviewNow ? "复习这一条" : selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
+    `<div class="card-foot"><span class="hint" id="cf-hint">${esc(unseen ? unseenHint(unseen.size) : progressHint(it, level, stage))}</span>` +
+    `<button class="btn" type="button" id="to-next"${unseen ? "" : " hidden"}>看下页 ›</button>` +
+    `<button class="btn" type="button" id="to-quiz"${unseen ? " hidden" : ""}>${reviewNow ? "复习这一条" : selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
   const backFace = `<div class="face bk">` + qsheetHtml({
     meta: qMeta(), toggle: answerOf(it, level, ex) && !essay ? modeToggleHtml(step) : "", prompt: promptHtml(),
     stats: stStatsLine(it.anchor, curEx()),
@@ -2632,6 +2650,40 @@ function show(it, level, i, o = {}){
   markQuizExamples(sheet, it);
   markExamples(sheet, it);
   wireMyNote(sheet);
+  const frontNv = sheet.querySelector(".face.fr .nv");
+  if (unseen && frontNv) {
+    // a dot on each page still to read (用户 2026-11-01); 看下页 goes to the next of them
+    const tabs = [...frontNv.querySelectorAll(".nv-tab")];
+    const dots = () => tabs.forEach((t, j) => t.classList.toggle("unseen", !!unseen && unseen.has(j)));
+    const seen = k => {
+      if (!unseen) return;
+      if (k === "all") unseen.clear(); else unseen.delete(k);
+      dots();
+      if (unseen.size) { sheet.querySelector("#cf-hint").textContent = unseenHint(unseen.size); return; }
+      unseen = null;
+      seenAll[it.anchor] = Date.now(); store.set("vk.seen", JSON.stringify(seenAll));
+      sheet.querySelector("#cf-hint").textContent = progressHint(it, level, stage);
+      sheet.querySelector("#to-quiz").hidden = false;
+    };
+    // 看下页 while a page still to read lies ahead; from the last page on, 自测这条 shows greyed out
+    // until the dotted pages behind are read too (用户 2026-11-01)
+    const toNext = sheet.querySelector("#to-next"), toQuiz = sheet.querySelector("#to-quiz");
+    const paintFoot = () => {
+      const ahead = !!unseen && [...unseen].some(j => j > (frontNv._k || 0));
+      // greyed out, not disabled: a tap says why (用户 2026-11-01)
+      toNext.hidden = !ahead; toQuiz.hidden = ahead; toQuiz.classList.toggle("off", !!unseen);
+      toQuiz.setAttribute("aria-disabled", String(!!unseen));
+    };
+    frontNv.addEventListener("nvpage", e => { if (e.detail < pages) seen(e.detail); paintFoot(); });
+    frontNv.addEventListener("nvall", () => { seen("all"); paintFoot(); });
+    sheet.querySelector("#to-next").addEventListener("click", () => {
+      const at = frontNv._k || 0, left = [...unseen].sort((a, b) => a - b);
+      nvGo(frontNv, left.find(j => j > at) ?? left[0]);
+    });
+    dots();
+    if (notesAll) seen("all");
+    paintFoot();
+  }
   memRO.disconnect();
   sheet.querySelectorAll(".mem").forEach(el => memRO.observe(el));
   // a cross-reference opens the note it points at, keeping a trail to come back
@@ -2642,18 +2694,22 @@ function show(it, level, i, o = {}){
   const mpill = sheet.querySelector(".mpill"), mdet = sheet.querySelector(".mdet");
   mpill.addEventListener("click", () => { mdet.hidden = !mdet.hidden; mpill.setAttribute("aria-expanded", !mdet.hidden); });
   // moving re-renders the sheet, turning the card over if the 自测 side comes or goes
-  sheet.querySelectorAll(".lvl[data-to]").forEach(b => b.addEventListener("click", () => {
+  const wireTrack = () => sheet.querySelectorAll(".lvl[data-to]").forEach(b => b.addEventListener("click", () => {
     const was = card.classList.contains("flipped");
     setStage(it, b.dataset.to);
     render();
     show(it, level, i, { from: was });
   }));
+  wireTrack();
   sheet.querySelectorAll(".full").forEach(b => b.addEventListener("click", () => {
     cardFull = !cardFull;
     morph(scrim, () => sheet.classList.toggle("full", cardFull));
     sheet.querySelectorAll(".full").forEach(f => { f.innerHTML = cardFull ? ICON_UNFULL : ICON_FULL; f.setAttribute("aria-label", cardFull ? "退出全屏" : "全屏"); });
   }));
-  sheet.querySelector("#to-quiz").addEventListener("click", () => reviewNow ? reviewOne({ it, level, i }) : flip(true));
+  sheet.querySelector("#to-quiz").addEventListener("click", () => {
+    if (unseen) { flash(`还有 ${unseen.size} 页笔记没看(标了圆点),看完就能自测`); return; }
+    reviewNow ? reviewOne({ it, level, i }) : flip(true);
+  });
   const pre = sheet.querySelector("#to-notes-pre");
   if (pre) pre.addEventListener("click", () => flip(false));
   // 打乱 on: a new random order, from its start; off: note order, staying on this sentence
@@ -2691,7 +2747,17 @@ function show(it, level, i, o = {}){
     if (!li || e.target.closest("a")) return;
     toggleLi(li);
   });
-  const adv = () => advanceReady(it, level, stage) ? advanceHtml(stage) : "";
+  // 学习中 → 复习 by itself once every sentence has been answered right (用户 2026-11-01); the rest by the button
+  let moved = false;
+  const autoMove = () => {
+    if (stage !== "learn" || !advanceReady(it, level, stage)) return;
+    setStage(it, "review"); stage = "review"; moved = true;
+    render();
+    const lv = sheet.querySelector(".lv");
+    if (lv) { lv.outerHTML = levelsHtml(stage); wireTrack(); }
+  };
+  const adv = () => moved ? `<div class="adv"><span>这一阶段的题都答对过了,已移到复习</span></div>`
+    : advanceReady(it, level, stage) ? advanceHtml(stage) : "";
   const quiet = () => selfTest ? stTitle(it) : ex ? plainMd(ex.zh) : "";
   const paint = verdict => {                             // the verdict, the notes it comes from, the history
     res.innerHTML = (quiet() ? `<p class="qquiet">${esc(quiet())}</p>` : "") + verdict + adv() +
@@ -2729,20 +2795,31 @@ function show(it, level, i, o = {}){
     if (ans !== null) {                                   // ②: right only if ① was too; a 文章's ① alone
       const typedOk = !cfg.help && !!v.trim() && bestDiff(v, ans).same, ok = essay ? typedOk : !!o.bankOk && typedOk;
       logAttempt(it.anchor, v, ok, "entry", ex ? plainMd(ex.en) : "");
+      autoMove();
       paint((essay ? "" : stepsHtml(!!o.bankOk, typedOk, !!cfg.help, skipped)) + verdictHtml(v, ans, stats()) + (!ok && v.trim() ? RIGHT_BTN : ""));
       const rb = res.querySelector("#st-right");
-      if (rb) rb.addEventListener("click", () => { if (markRight(it.anchor)) paint(RIGHTED + verdictHtml(v, ans, stats())); });
+      if (rb) rb.addEventListener("click", () => { if (markRight(it.anchor)) { autoMove(); paint(RIGHTED + verdictHtml(v, ans, stats())); } });
     }
     else { if (!v.trim()) logAttempt(it.anchor, "", false, "entry"); paint(movedHtml(null, v)); }
-    // 再试一次 asks the same sentence again; with more than one, 下一句 goes on to the next
+    // 再试一次 asks the same sentence again. 下一句 goes on to the next one not yet answered since the
+    // entry was opened; once every one is, it's 下一条 (as 下一个 at the top) or, at the list's end, 关闭
+    // (用户 2026-11-01: it used to go round to the first sentence again)
+    const done = exDone[it.anchor];
+    done.add(ex ? ex.k : 0);
+    const nextEx = ex ? Array.from({ length: ex.of - 1 }, (_, d) => ex.pos + 1 + d).find(p => !done.has(quizEx(it, p).k)) : undefined;
+    const nt = nextInList();
     after.innerHTML = `<button class="btn ghost" type="button" id="st-again">↻ 再试一次</button>` +
-      (ex && ex.of > 1 ? `<button class="btn" type="button" id="st-nextex">下一句 ›</button>` : `<button class="btn" type="button" id="to-notes">看笔记</button>`);
+      (nextEx !== undefined ? `<button class="btn" type="button" id="st-nextex">下一句 ›</button>`
+        : nt ? `<button class="btn" type="button" id="st-nextit">下一条 ›</button>`
+        : `<button class="btn" type="button" id="st-close">关闭</button>`);
     after.hidden = false;
     after.querySelector("#st-again").addEventListener("click", () => show(it, level, i, { face: "back", ex: ex && ex.pos }));
     const nx = after.querySelector("#st-nextex");
-    if (nx) nx.addEventListener("click", () => show(it, level, i, { face: "back", ex: ex.pos + 1 }));
-    const tn = after.querySelector("#to-notes");
-    if (tn) tn.addEventListener("click", () => flip(false));
+    if (nx) nx.addEventListener("click", () => show(it, level, i, { face: "back", ex: nextEx }));
+    const ni = after.querySelector("#st-nextit");
+    if (ni) ni.addEventListener("click", goNext);
+    const cl = after.querySelector("#st-close");
+    if (cl) cl.addEventListener("click", close);
     sheet.querySelector("#to-quiz").textContent = "回到自测 →";
   };
 
