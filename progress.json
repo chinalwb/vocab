@@ -12630,6 +12630,15 @@
     "via": "review",
     "ex": "Could you pull up this user's orders from last week?"
    }
+  ],
+  "against": [
+   {
+    "t": 1793508510795,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Please check the numbers against last month's report."
+   }
   ]
  },
  "favs": {
