@@ -12,6 +12,14 @@
   "s-same-shape-list": {
    "s": "review",
    "t": 1793503065776
+  },
+  "s-tell-describe": {
+   "s": "review",
+   "t": 1793503237194
+  },
+  "s-ing-subject": {
+   "s": "review",
+   "t": 1793503251426
   }
  },
  "cards": {},
@@ -339,6 +347,20 @@
     "peek": false,
     "via": "entry",
     "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793503245185,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793503250688,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
    }
   ],
   "s-same-shape-list": [
@@ -415,6 +437,13 @@
     "peek": false,
     "via": "entry",
     "ex": "The goal which our class needs to reach this month is to read ten English books."
+   },
+   {
+    "t": 1793503265772,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
    }
   ],
   "s-put-pressure-on": [
@@ -452,6 +481,20 @@
   "s-tell-describe": [
    {
     "t": 1793503197158,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Then the passage describes an attempt to protect a town from lava in detail."
+   },
+   {
+    "t": 1793503225257,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "This book describes a trip to the mountains in detail."
+   },
+   {
+    "t": 1793503235040,
     "ok": true,
     "peek": false,
     "via": "entry",
