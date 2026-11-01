@@ -551,7 +551,7 @@ textarea.mynote::placeholder{color:var(--card-ink-2);opacity:.8}
 }
 .xref:hover,.ext:hover{text-decoration-thickness:2px}
 /* a notes page not read yet, while a new entry waits for 自测这条 (用户 2026-11-01) */
-.card-foot .btn:disabled{opacity:.4;cursor:default;box-shadow:none;transform:none}
+.card-foot .btn.off{opacity:.4;cursor:default;box-shadow:none;transform:none}
 .nv-tab.unseen::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-left:6px;vertical-align:middle}
 .xref:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px;border-radius:2px}
 .xref[data-missing]{text-decoration-style:dotted;cursor:default;opacity:.75}
@@ -2670,8 +2670,9 @@ function show(it, level, i, o = {}){
     const toNext = sheet.querySelector("#to-next"), toQuiz = sheet.querySelector("#to-quiz");
     const paintFoot = () => {
       const ahead = !!unseen && [...unseen].some(j => j > (frontNv._k || 0));
-      toNext.hidden = !ahead; toQuiz.hidden = ahead; toQuiz.disabled = !!unseen;
-      toQuiz.title = unseen ? "先看完标了圆点的页" : "";
+      // greyed out, not disabled: a tap says why (用户 2026-11-01)
+      toNext.hidden = !ahead; toQuiz.hidden = ahead; toQuiz.classList.toggle("off", !!unseen);
+      toQuiz.setAttribute("aria-disabled", String(!!unseen));
     };
     frontNv.addEventListener("nvpage", e => { if (e.detail < pages) seen(e.detail); paintFoot(); });
     frontNv.addEventListener("nvall", () => { seen("all"); paintFoot(); });
@@ -2705,7 +2706,10 @@ function show(it, level, i, o = {}){
     morph(scrim, () => sheet.classList.toggle("full", cardFull));
     sheet.querySelectorAll(".full").forEach(f => { f.innerHTML = cardFull ? ICON_UNFULL : ICON_FULL; f.setAttribute("aria-label", cardFull ? "退出全屏" : "全屏"); });
   }));
-  sheet.querySelector("#to-quiz").addEventListener("click", () => reviewNow ? reviewOne({ it, level, i }) : flip(true));
+  sheet.querySelector("#to-quiz").addEventListener("click", () => {
+    if (unseen) { flash(`还有 ${unseen.size} 页笔记没看(标了圆点),看完就能自测`); return; }
+    reviewNow ? reviewOne({ it, level, i }) : flip(true);
+  });
   const pre = sheet.querySelector("#to-notes-pre");
   if (pre) pre.addEventListener("click", () => flip(false));
   // 打乱 on: a new random order, from its start; off: note order, staying on this sentence
