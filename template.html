@@ -550,6 +550,8 @@ textarea.mynote::placeholder{color:var(--card-ink-2);opacity:.8}
   cursor:pointer;font-weight:500;
 }
 .xref:hover,.ext:hover{text-decoration-thickness:2px}
+/* a notes page not read yet, while a new entry waits for 自测这条 (用户 2026-11-01) */
+.nv-tab.unseen::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-left:6px;vertical-align:middle}
 .xref:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px;border-radius:2px}
 .xref[data-missing]{text-decoration-style:dotted;cursor:default;opacity:.75}
 .body blockquote{
@@ -1876,7 +1878,7 @@ const exDone = {};
 // entries whose every notes page has been seen (vk.seen, this browser): 自测这条 shows from then on
 let seenAll = {};
 try { seenAll = JSON.parse(store.get("vk.seen", "{}")) || {}; } catch(e){}
-const unseenHint = n => `看完每一页笔记就能自测(还有 ${n} 页没看)`;
+const unseenHint = n => `看完每一页笔记就能自测(还有 ${n} 页没看,标了圆点)`;
 const quizEx = (it, n = (stLog[it.anchor] || []).length) => {
   const xs = quizExamples(it);
   if (!xs.length) return null;
@@ -2602,6 +2604,7 @@ function show(it, level, i, o = {}){
   const reviewNow = stage === "review" && reviewDue(it);
   const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true, true, [memorySlide(it, stage), myNoteSlide(it)])}</div>` +
     `<div class="card-foot"><span class="hint" id="cf-hint">${esc(unseen ? unseenHint(unseen.size) : progressHint(it, level, stage))}</span>` +
+    `<button class="btn" type="button" id="to-next"${unseen ? "" : " hidden"}>看下页 ›</button>` +
     `<button class="btn" type="button" id="to-quiz"${unseen ? " hidden" : ""}>${reviewNow ? "复习这一条" : selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
   const backFace = `<div class="face bk">` + qsheetHtml({
     meta: qMeta(), toggle: answerOf(it, level, ex) && !essay ? modeToggleHtml(step) : "", prompt: promptHtml(),
@@ -2648,17 +2651,27 @@ function show(it, level, i, o = {}){
   wireMyNote(sheet);
   const frontNv = sheet.querySelector(".face.fr .nv");
   if (unseen && frontNv) {
+    // a dot on each page still to read (用户 2026-11-01); 看下页 goes to the next of them
+    const tabs = [...frontNv.querySelectorAll(".nv-tab")];
+    const dots = () => tabs.forEach((t, j) => t.classList.toggle("unseen", !!unseen && unseen.has(j)));
     const seen = k => {
       if (!unseen) return;
       if (k === "all") unseen.clear(); else unseen.delete(k);
+      dots();
       if (unseen.size) { sheet.querySelector("#cf-hint").textContent = unseenHint(unseen.size); return; }
       unseen = null;
+      sheet.querySelector("#to-next").hidden = true;
       seenAll[it.anchor] = Date.now(); store.set("vk.seen", JSON.stringify(seenAll));
       sheet.querySelector("#cf-hint").textContent = progressHint(it, level, stage);
       sheet.querySelector("#to-quiz").hidden = false;
     };
     frontNv.addEventListener("nvpage", e => { if (e.detail < pages) seen(e.detail); });
     frontNv.addEventListener("nvall", () => seen("all"));
+    sheet.querySelector("#to-next").addEventListener("click", () => {
+      const at = frontNv._k || 0, left = [...unseen].sort((a, b) => a - b);
+      nvGo(frontNv, left.find(j => j > at) ?? left[0]);
+    });
+    dots();
     if (notesAll) seen("all");
   }
   memRO.disconnect();
