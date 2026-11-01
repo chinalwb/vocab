@@ -62,6 +62,14 @@
    "lapses": 1,
    "due": 20759,
    "t": 1793535813848
+  },
+  "s-plan-is-to": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20759,
+   "t": 1793535844113
   }
  },
  "newDay": 0,
@@ -527,6 +535,20 @@
     "peek": false,
     "via": "entry",
     "ex": "The goal which our class needs to reach this month is to read ten English books."
+   },
+   {
+    "t": 1793535836822,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1793535844113,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The goal which our class needs to reach this month is to read ten English books."
    }
   ],
   "s-put-pressure-on": [
@@ -619,11 +641,23 @@
     "peek": false,
     "via": "entry",
     "ex": "I don't think finishing all our homework in one hour is a realistic plan, as there is too much of it."
+   },
+   {
+    "t": 1793535859268,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "s-realistic-plan",
+   "t": 1793535845016,
+   "via": "review"
+  },
   {
    "a": "s-plan-is-to",
    "t": 1793535817112,
@@ -637,11 +671,6 @@
   {
    "a": "a-earthquake",
    "t": 1793534524329,
-   "via": "entry"
-  },
-  {
-   "a": "s-realistic-plan",
-   "t": 1793525080352,
    "via": "entry"
   },
   {
