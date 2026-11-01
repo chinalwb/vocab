@@ -686,6 +686,15 @@
     "via": "review",
     "ex": "I don't think finishing all our homework in one hour is a realistic plan, as there is too much of it."
    }
+  ],
+  "c-stay-safe": [
+   {
+    "t": 1793536055640,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
+   }
   ]
  },
  "favs": {},
