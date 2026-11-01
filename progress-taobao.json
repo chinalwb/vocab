@@ -700,6 +700,13 @@
     "peek": false,
     "via": "entry",
     "ex": "Then the passage describes an attempt to protect a town from lava in detail."
+   },
+   {
+    "t": 1793536319533,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Then the passage describes an attempt to protect a town from lava in detail."
    }
   ],
   "s-realistic-plan": [
