@@ -12649,7 +12649,22 @@
  "history": [
   {
    "a": "against",
-   "t": 1793507097965,
+   "t": 1793508479873,
+   "via": "entry"
+  },
+  {
+   "a": "hesitate-hesitant",
+   "t": 1793508475844,
+   "via": "entry"
+  },
+  {
+   "a": "confuse",
+   "t": 1793508473910,
+   "via": "entry"
+  },
+  {
+   "a": "worth",
+   "t": 1793508467643,
    "via": "entry"
   },
   {
@@ -12773,16 +12788,6 @@
    "via": "review"
   },
   {
-   "a": "hesitate-hesitant",
-   "t": 1793339750189,
-   "via": "entry"
-  },
-  {
-   "a": "confuse",
-   "t": 1793339747975,
-   "via": "entry"
-  },
-  {
    "a": "s-as-we-go",
    "t": 1793326902285,
    "via": "entry"
@@ -12820,11 +12825,6 @@
   {
    "a": "go-ahead",
    "t": 1793276879312,
-   "via": "review"
-  },
-  {
-   "a": "worth",
-   "t": 1793276667404,
    "via": "review"
   },
   {
