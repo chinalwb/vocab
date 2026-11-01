@@ -118,6 +118,14 @@
    "lapses": 0,
    "due": 20759,
    "t": 1793536342112
+  },
+  "c-be-witness-to": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20759,
+   "t": 1793536577008
   }
  },
  "newDay": 0,
@@ -784,11 +792,23 @@
     "peek": false,
     "via": "review",
     "ex": "Local islanders have been witness to its evolving shape over hundreds of years."
+   },
+   {
+    "t": 1793536577008,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The old tree in our playground has been witness to many happy moments over the years."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "c-be-displaced-by",
+   "t": 1793536585428,
+   "via": "review"
+  },
   {
    "a": "c-be-witness-to",
    "t": 1793536349978,
@@ -837,11 +857,6 @@
   {
    "a": "a-earthquake",
    "t": 1793534524329,
-   "via": "entry"
-  },
-  {
-   "a": "c-be-displaced-by",
-   "t": 1793503571133,
    "via": "entry"
   },
   {
