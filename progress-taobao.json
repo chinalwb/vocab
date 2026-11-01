@@ -54,6 +54,14 @@
    "lapses": 0,
    "due": 20759,
    "t": 1793503337346
+  },
+  "s-ing-subject": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20759,
+   "t": 1793535813848
   }
  },
  "newDay": 0,
@@ -475,6 +483,20 @@
     "peek": false,
     "via": "entry",
     "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793535801934,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793535813848,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
    }
   ],
   "s-plan-is-to": [
@@ -603,6 +625,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-plan-is-to",
+   "t": 1793535817112,
+   "via": "review"
+  },
+  {
    "a": "s-ing-subject",
    "t": 1793535776158,
    "via": "review"
@@ -645,11 +672,6 @@
   {
    "a": "s-its-their",
    "t": 1793502603414,
-   "via": "entry"
-  },
-  {
-   "a": "s-plan-is-to",
-   "t": 1793502301781,
    "via": "entry"
   },
   {
