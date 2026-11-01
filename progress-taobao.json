@@ -357,6 +357,21 @@
  "favs": {},
  "history": [
   {
+   "a": "s-plan-is-to",
+   "t": 1793502076442,
+   "via": "entry"
+  },
+  {
+   "a": "s-put-pressure-on",
+   "t": 1793502074027,
+   "via": "entry"
+  },
+  {
+   "a": "s-ing-subject",
+   "t": 1793502059496,
+   "via": "entry"
+  },
+  {
    "a": "a-earthquake",
    "t": 1793501631088,
    "via": "entry"
@@ -369,16 +384,6 @@
   {
    "a": "s-same-shape-list",
    "t": 1793501398429,
-   "via": "entry"
-  },
-  {
-   "a": "s-ing-subject",
-   "t": 1793501167596,
-   "via": "entry"
-  },
-  {
-   "a": "s-plan-is-to",
-   "t": 1793435509423,
    "via": "entry"
   },
   {
@@ -404,11 +409,6 @@
   {
    "a": "g3-yes-no-questions",
    "t": 1793427867063,
-   "via": "entry"
-  },
-  {
-   "a": "s-put-pressure-on",
-   "t": 1793421667857,
    "via": "entry"
   },
   {
