@@ -12645,6 +12645,13 @@
     "peek": false,
     "via": "entry",
     "ex": "Most of the team voted against the plan."
+   },
+   {
+    "t": 1793508565280,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We're working against the clock to ship by Friday."
    }
   ]
  },
