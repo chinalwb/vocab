@@ -15,6 +15,7 @@
 19. [现实中行得通:a realistic plan](#s-realistic-plan)
 20. [很多人,很多个家:their houses](#s-their-houses)
 21. [stay safe:stay + 形容词](#c-stay-safe)
+22. [用完了:finished with it](#s-finished-with)
 
 ---
 
@@ -539,3 +540,46 @@ all the structures 换成了 new buildings:这一段讲的是新楼。stay safe 
 - stay 后面也可以接 **safely**(安全地),说的是「怎么待着」:*People can stay safely in their houses.*(大家可以安全地待在家里。)
 - 两个都对:**stay safe** 说人是安全的;**stay safely** 说待着这件事是安全的。
 - 单独说「注意安全!」只能说 **Stay safe!**,不能说 *Stay safely!*。
+
+---
+
+<a id="s-finished-with"></a>
+## 用完了:finished with it
+
+- 日期:2026-11-01
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> Can I have the newspaper when you've finished it.
+
+这是语法书上的练习:看情景,把句子补完整。情景是:朋友正在看报纸,你想等她看完之后也看一看。
+
+👍 **做得好:**
+
+- **when you've finished** 写得很好!说「等你……之后」,when 后面不用 will,你用了 you've finished,完全正确。
+
+**问题:**
+
+- ✅ **when you've finished it** —— 意思清楚,日常使用完全够用;不过它听起来像「你把报纸从头读到尾」。这里你想说的是「你不用它了,就给我」,更贴切的是 **when you've finished with it**。
+
+一步一步看:
+
+- 第 1 步:问自己,我要的是什么?是等朋友把报纸读完最后一页吗?不是,是等她不用了。
+- 第 2 步:「不用了、用完了」要说 **finish with** something。
+- 第 3 步:在 finished 后面加上 with:finished it → **finished with it**。
+
+**改好的句子:**
+
+1. Can I have the newspaper when you've **finished with** it?
+   你看完报纸以后,能给我看看吗?
+
+**记住这个小规则:**
+
+- **finish it**:把它做完,比如读完、吃完、写完。*Have you finished your homework?*(你作业写完了吗?)
+- **finish with it**:不再需要它了。*Have you finished with the scissors?*(剪刀你用完了吗?)
+- 写之前问自己:我是想说「做完」,还是想说「用完了、不要了」?
+
+2. Can I borrow your ruler when you've **finished with** it?
+   你用完尺子以后,能借我用一下吗?
