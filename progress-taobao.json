@@ -410,6 +410,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-its-their",
+   "t": 1793502603414,
+   "via": "entry"
+  },
+  {
    "a": "s-their-houses",
    "t": 1793502586000,
    "via": "entry"
@@ -437,11 +442,6 @@
   {
    "a": "a-earthquake",
    "t": 1793501631088,
-   "via": "entry"
-  },
-  {
-   "a": "s-its-their",
-   "t": 1793501405580,
    "via": "entry"
   },
   {
