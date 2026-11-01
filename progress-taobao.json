@@ -542,6 +542,13 @@
     "peek": false,
     "via": "entry",
     "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much."
+   },
+   {
+    "t": 1793503498943,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think finishing all our homework in one hour is a realistic plan, as there is too much of it."
    }
   ]
  },
