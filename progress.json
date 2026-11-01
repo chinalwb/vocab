@@ -12638,6 +12638,13 @@
     "peek": false,
     "via": "entry",
     "ex": "Please check the numbers against last month's report."
+   },
+   {
+    "t": 1793508539357,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Most of the team voted against the plan."
    }
   ]
  },
