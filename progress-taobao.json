@@ -603,6 +603,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-ing-subject",
+   "t": 1793535776158,
+   "via": "review"
+  },
+  {
    "a": "a-earthquake",
    "t": 1793534524329,
    "via": "entry"
@@ -610,11 +615,6 @@
   {
    "a": "s-realistic-plan",
    "t": 1793525080352,
-   "via": "entry"
-  },
-  {
-   "a": "s-ing-subject",
-   "t": 1793524874819,
    "via": "entry"
   },
   {
