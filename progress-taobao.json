@@ -110,6 +110,14 @@
    "lapses": 0,
    "due": 20759,
    "t": 1793536286892
+  },
+  "s-tell-describe": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20759,
+   "t": 1793536342112
   }
  },
  "newDay": 0,
@@ -707,6 +715,13 @@
     "peek": false,
     "via": "review",
     "ex": "Then the passage describes an attempt to protect a town from lava in detail."
+   },
+   {
+    "t": 1793536342111,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This book describes a trip to the mountains in detail."
    }
   ],
   "s-realistic-plan": [
@@ -766,6 +781,11 @@
  "favs": {},
  "history": [
   {
+   "a": "c-be-witness-to",
+   "t": 1793536349978,
+   "via": "review"
+  },
+  {
    "a": "s-tell-describe",
    "t": 1793536300722,
    "via": "review"
@@ -813,11 +833,6 @@
   {
    "a": "c-be-displaced-by",
    "t": 1793503571133,
-   "via": "entry"
-  },
-  {
-   "a": "c-be-witness-to",
-   "t": 1793503569607,
    "via": "entry"
   },
   {
