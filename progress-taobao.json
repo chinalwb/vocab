@@ -800,6 +800,15 @@
     "via": "review",
     "ex": "The old tree in our playground has been witness to many happy moments over the years."
    }
+  ],
+  "c-be-displaced-by": [
+   {
+    "t": 1793536702838,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Sections of earth are often displaced by a sudden jolt."
+   }
   ]
  },
  "favs": {},
