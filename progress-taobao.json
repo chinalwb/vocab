@@ -86,6 +86,14 @@
    "lapses": 0,
    "due": 20759,
    "t": 1793535939734
+  },
+  "c-stay-safe": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20759,
+   "t": 1793536096054
   }
  },
  "newDay": 0,
@@ -694,11 +702,23 @@
     "peek": false,
     "via": "review",
     "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
+   },
+   {
+    "t": 1793536096054,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "During the fire drill, we must stay calm and walk out of the classroom quietly."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "s-its-their",
+   "t": 1793536097306,
+   "via": "review"
+  },
   {
    "a": "c-stay-safe",
    "t": 1793536024689,
@@ -743,11 +763,6 @@
    "a": "s-put-pressure-on",
    "t": 1793503304114,
    "via": "review"
-  },
-  {
-   "a": "s-its-their",
-   "t": 1793502603414,
-   "via": "entry"
   },
   {
    "a": "s-same-shape-list",
