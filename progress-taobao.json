@@ -126,6 +126,14 @@
    "lapses": 0,
    "due": 20759,
    "t": 1793536577008
+  },
+  "c-be-displaced-by": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20759,
+   "t": 1793536733768
   }
  },
  "newDay": 0,
@@ -808,6 +816,13 @@
     "peek": false,
     "via": "review",
     "ex": "Sections of earth are often displaced by a sudden jolt."
+   },
+   {
+    "t": 1793536733767,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Small stones on the beach are often displaced by a big wave."
    }
   ]
  },
