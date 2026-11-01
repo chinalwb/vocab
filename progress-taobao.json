@@ -582,6 +582,11 @@
  "favs": {},
  "history": [
   {
+   "a": "a-earthquake",
+   "t": 1793503593363,
+   "via": "entry"
+  },
+  {
    "a": "c-stay-safe",
    "t": 1793503572467,
    "via": "entry"
@@ -624,11 +629,6 @@
   {
    "a": "s-ing-subject",
    "t": 1793502297764,
-   "via": "entry"
-  },
-  {
-   "a": "a-earthquake",
-   "t": 1793501631088,
    "via": "entry"
   },
   {
