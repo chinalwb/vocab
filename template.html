@@ -551,6 +551,7 @@ textarea.mynote::placeholder{color:var(--card-ink-2);opacity:.8}
 }
 .xref:hover,.ext:hover{text-decoration-thickness:2px}
 /* a notes page not read yet, while a new entry waits for 自测这条 (用户 2026-11-01) */
+.card-foot .btn:disabled{opacity:.4;cursor:default;box-shadow:none;transform:none}
 .nv-tab.unseen::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-left:6px;vertical-align:middle}
 .xref:focus-visible{outline:2px solid var(--card-ink);outline-offset:2px;border-radius:2px}
 .xref[data-missing]{text-decoration-style:dotted;cursor:default;opacity:.75}
@@ -2660,19 +2661,27 @@ function show(it, level, i, o = {}){
       dots();
       if (unseen.size) { sheet.querySelector("#cf-hint").textContent = unseenHint(unseen.size); return; }
       unseen = null;
-      sheet.querySelector("#to-next").hidden = true;
       seenAll[it.anchor] = Date.now(); store.set("vk.seen", JSON.stringify(seenAll));
       sheet.querySelector("#cf-hint").textContent = progressHint(it, level, stage);
       sheet.querySelector("#to-quiz").hidden = false;
     };
-    frontNv.addEventListener("nvpage", e => { if (e.detail < pages) seen(e.detail); });
-    frontNv.addEventListener("nvall", () => seen("all"));
+    // 看下页 while a page still to read lies ahead; from the last page on, 自测这条 shows greyed out
+    // until the dotted pages behind are read too (用户 2026-11-01)
+    const toNext = sheet.querySelector("#to-next"), toQuiz = sheet.querySelector("#to-quiz");
+    const paintFoot = () => {
+      const ahead = !!unseen && [...unseen].some(j => j > (frontNv._k || 0));
+      toNext.hidden = !ahead; toQuiz.hidden = ahead; toQuiz.disabled = !!unseen;
+      toQuiz.title = unseen ? "先看完标了圆点的页" : "";
+    };
+    frontNv.addEventListener("nvpage", e => { if (e.detail < pages) seen(e.detail); paintFoot(); });
+    frontNv.addEventListener("nvall", () => { seen("all"); paintFoot(); });
     sheet.querySelector("#to-next").addEventListener("click", () => {
       const at = frontNv._k || 0, left = [...unseen].sort((a, b) => a - b);
       nvGo(frontNv, left.find(j => j > at) ?? left[0]);
     });
     dots();
     if (notesAll) seen("all");
+    paintFoot();
   }
   memRO.disconnect();
   sheet.querySelectorAll(".mem").forEach(el => memRO.observe(el));
