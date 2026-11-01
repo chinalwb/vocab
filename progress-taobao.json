@@ -389,6 +389,15 @@
     "via": "entry",
     "ex": "I don't think getting a puppy is a good plan right now, as it costs too much and it will put extra pressure on my parents."
    }
+  ],
+  "s-their-houses": [
+   {
+    "t": 1793502483295,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
+   }
   ]
  },
  "favs": {},
