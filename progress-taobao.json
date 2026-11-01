@@ -448,6 +448,15 @@
     "via": "entry",
     "ex": "If the roads are less likely to flood, children can just ride their bikes to school."
    }
+  ],
+  "s-tell-describe": [
+   {
+    "t": 1793503197158,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Then the passage describes an attempt to protect a town from lava in detail."
+   }
   ]
  },
  "favs": {},
