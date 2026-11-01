@@ -6,6 +6,244 @@
  "newToday": 0,
  "resetAt": 0,
  "attempts": {
+  "g3-a-an": [
+   {
+    "t": 1793281957664,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I have a dog."
+   },
+   {
+    "t": 1793281988937,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "It's a red pen."
+   },
+   {
+    "t": 1793282000178,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "This is an egg."
+   }
+  ],
+  "g4-where-prepositions": [
+   {
+    "t": 1793282047464,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Where is my bag?"
+   },
+   {
+    "t": 1793282058226,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "It's on the desk."
+   },
+   {
+    "t": 1793282077523,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "My cat is under the chair."
+   },
+   {
+    "t": 1793282103833,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The bus stop is near our school."
+   }
+  ],
+  "g4-can": [
+   {
+    "t": 1793282126403,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "She can swim."
+   },
+   {
+    "t": 1793282163166,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "My brother can ride a bike."
+   },
+   {
+    "t": 1793282182361,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Can you play football?"
+   },
+   {
+    "t": 1793282197849,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "No, I can't."
+   }
+  ],
+  "g4-wh-questions": [
+   {
+    "t": 1793282223664,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "What time is it?"
+   },
+   {
+    "t": 1793282241500,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much is this skirt?"
+   },
+   {
+    "t": 1793282285319,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "What's the weather like in Beijing?"
+   },
+   {
+    "t": 1793282315119,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Whose shoes are these?"
+   }
+  ],
+  "g4-these-those-plurals": [
+   {
+    "t": 1793282373274,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "These are my new shoes."
+   },
+   {
+    "t": 1793282412443,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Are those horses?"
+   },
+   {
+    "t": 1793282435103,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I like tomatoes."
+   },
+   {
+    "t": 1793282455169,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Look at those sheep!"
+   },
+   {
+    "t": 1793282474767,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "There are many children in the park."
+   }
+  ],
+  "a-earthquake": [
+   {
+    "t": 1793433592979,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
+   },
+   {
+    "t": 1793500800513,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
+   },
+   {
+    "t": 1793500827343,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1793500856742,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1793500883073,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "In that way, we can evacuate people from dangerous areas before an earthquake hits."
+   },
+   {
+    "t": 1793500894489,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793500914737,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We can achieve this by adding bolted foundations, shock absorbers, and steel frames."
+   },
+   {
+    "t": 1793500944721,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
+   },
+   {
+    "t": 1793501009334,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If we combine these two ways, with prediction as our top priority, earthquakes will cause less destruction and loss of life."
+   }
+  ],
+  "s-ing-subject": [
+   {
+    "t": 1793501119823,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793501147216,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793501157735,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   }
+  ],
   "s-same-shape-list": [
    {
     "t": 1792340801234,
@@ -30,27 +268,28 @@
     "via": "entry",
     "ex": "Our nature club has started its own bee project. It's small, but it aims to count the bees in the garden and learn about their favourite flowers."
    }
-  ],
-  "a-earthquake": [
-   {
-    "t": 1793433592979,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
-   }
   ]
  },
  "favs": {},
  "history": [
   {
-   "a": "a-earthquake",
-   "t": 1793492225662,
+   "a": "s-its-their",
+   "t": 1793501405580,
+   "via": "entry"
+  },
+  {
+   "a": "s-same-shape-list",
+   "t": 1793501398429,
    "via": "entry"
   },
   {
    "a": "s-ing-subject",
-   "t": 1793435752295,
+   "t": 1793501167596,
+   "via": "entry"
+  },
+  {
+   "a": "a-earthquake",
+   "t": 1793500709483,
    "via": "entry"
   },
   {
@@ -64,11 +303,6 @@
    "via": "entry"
   },
   {
-   "a": "s-same-shape-list",
-   "t": 1793435445963,
-   "via": "entry"
-  },
-  {
    "a": "c-stay-safe",
    "t": 1793434608461,
    "via": "entry"
@@ -76,11 +310,6 @@
   {
    "a": "c-be-witness-to",
    "t": 1793434600260,
-   "via": "entry"
-  },
-  {
-   "a": "s-its-their",
-   "t": 1793431018701,
    "via": "entry"
   },
   {
@@ -99,18 +328,33 @@
    "via": "entry"
   },
   {
+   "a": "c-be-displaced-by",
+   "t": 1793410048581,
+   "via": "entry"
+  },
+  {
    "a": "g4-where-prepositions",
    "t": 1793409962889,
    "via": "entry"
   },
   {
-   "a": "g4-there-be",
-   "t": 1793281757607,
+   "a": "g4-these-those-plurals",
+   "t": 1793282424769,
    "via": "entry"
   },
   {
-   "a": "c-be-displaced-by",
-   "t": 1792340834596,
+   "a": "g4-wh-questions",
+   "t": 1793282340958,
+   "via": "entry"
+  },
+  {
+   "a": "g3-a-an",
+   "t": 1793281941209,
+   "via": "entry"
+  },
+  {
+   "a": "g4-there-be",
+   "t": 1793281757607,
    "via": "entry"
   }
  ],
