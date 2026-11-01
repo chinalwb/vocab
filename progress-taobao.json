@@ -70,6 +70,14 @@
    "lapses": 0,
    "due": 20759,
    "t": 1793535844113
+  },
+  "s-realistic-plan": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20759,
+   "t": 1793535881758
   }
  },
  "newDay": 0,
@@ -648,11 +656,23 @@
     "peek": false,
     "via": "review",
     "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much."
+   },
+   {
+    "t": 1793535881758,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think finishing all our homework in one hour is a realistic plan, as there is too much of it."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "s-their-houses",
+   "t": 1793535882650,
+   "via": "review"
+  },
   {
    "a": "s-realistic-plan",
    "t": 1793535845016,
@@ -686,11 +706,6 @@
   {
    "a": "c-be-witness-to",
    "t": 1793503569607,
-   "via": "entry"
-  },
-  {
-   "a": "s-their-houses",
-   "t": 1793503562451,
    "via": "entry"
   },
   {
