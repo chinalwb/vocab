@@ -2366,9 +2366,14 @@ function essayPdf(it){
     lis: [...ol.querySelectorAll(":scope > li")].map(li => ({ en: li.querySelector(".en")?.innerHTML || "", txt: li.querySelector(".en")?.textContent.trim() || "", zh: li.querySelector(".zh")?.textContent.trim() || "" }))
   }));
   const title = esc(it.title);
-  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${title}</title><style>
+  // the page's own fonts (a student's css can bring its own: taobao's Nunito), so the PDF reads like the page
+  const font = getComputedStyle(document.documentElement).getPropertyValue("--font");
+  const sheets = [...document.querySelectorAll('link[rel="stylesheet"]')].map(l => l.href);
+  for (const ss of document.styleSheets) { try { for (const r of ss.cssRules) if (r instanceof CSSImportRule) sheets.push(r.href); } catch {} }
+  sheets.splice(0, sheets.length, ...new Set(sheets.filter(u => u.startsWith("https://fonts.googleapis.com/"))));
+  const html = `<!doctype html><html lang="en" style='--font:${font}'><head><meta charset="utf-8"><title>${title}</title>${sheets.map(u => `<link rel="stylesheet" href="${esc(u)}">`).join("")}<style>
 @page{size:A4;margin:20mm 18mm}
-body{font-family:"Atkinson Hyperlegible","Helvetica Neue",Arial,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;color:#111;margin:0}
+body{font-family:var(--font);color:#111;margin:0}
 h1{font-size:20pt;margin:0 0 4pt}h2{font-size:13pt;margin:0 0 14pt;color:#555;font-weight:600}
 .date{color:#777;font-size:10pt;margin-bottom:18pt}
 .essay p{font-size:13pt;line-height:1.75;margin:0 0 12pt;text-indent:2em}
@@ -2390,7 +2395,16 @@ ol{margin:0;padding-left:22pt}li{margin:0 0 10pt;break-inside:avoid}
   f.contentDocument.open(); f.contentDocument.write(html); f.contentDocument.close();
   // Chrome names the file after the page's title
   const go = () => { const t = document.title; document.title = it.title; f.contentWindow.focus(); f.contentWindow.print(); document.title = t; setTimeout(() => f.remove(), 60000); };
-  f.contentDocument.fonts ? f.contentDocument.fonts.ready.then(go) : setTimeout(go, 300);
+  // print once the web fonts are in (the same ones as the page; Noto Sans SC comes in slices, so ask for this text);
+  // offline, or after 4 s, it prints with the fallbacks in --font
+  const doc = f.contentDocument, text = doc.body.textContent;
+  let done = false; const once = () => { if (!done) { done = true; go(); } };
+  setTimeout(once, 4000);
+  const fams = font.split(",").map(x => x.trim()).filter(x => x.startsWith('"')).slice(0, 2);   // e.g. "Nunito", "Noto Sans SC"
+  const load = () => Promise.all(["400", "700"].flatMap(w => fams.map(fm => doc.fonts.load(`${w} 12pt ${fm}`, text))))
+    .then(() => doc.fonts.ready).then(once, once);
+  const links = [...doc.querySelectorAll("link")];
+  Promise.all(links.map(l => l.sheet ? 0 : new Promise(r => { l.onload = l.onerror = r; }))).then(load);
 }
 // ⤢ / ⤡: the transitions are on only while .morph is (see the CSS); none with reduced motion
 function morph(scrim, change){
