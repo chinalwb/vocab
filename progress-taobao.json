@@ -94,6 +94,14 @@
    "lapses": 0,
    "due": 20759,
    "t": 1793536096054
+  },
+  "s-its-their": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20759,
+   "t": 1793536202645
   }
  },
  "newDay": 0,
@@ -149,6 +157,13 @@
     "peek": false,
     "via": "review",
     "ex": "The project aims to predict the volcanoes' future activity and learn about their history."
+   },
+   {
+    "t": 1793536202645,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Our nature club has started its own bee project. It's small, but it aims to count the bees in the garden and learn about their favourite flowers."
    }
   ],
   "s-same-shape-list": [
@@ -722,6 +737,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-same-shape-list",
+   "t": 1793536205630,
+   "via": "review"
+  },
+  {
    "a": "s-its-their",
    "t": 1793536097306,
    "via": "review"
@@ -770,11 +790,6 @@
    "a": "s-put-pressure-on",
    "t": 1793503304114,
    "via": "review"
-  },
-  {
-   "a": "s-same-shape-list",
-   "t": 1793501398429,
-   "via": "entry"
   },
   {
    "a": "s-tell-describe",
