@@ -397,6 +397,13 @@
     "peek": false,
     "via": "entry",
     "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
+   },
+   {
+    "t": 1793502579107,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If the roads are less likely to flood, children can just ride their bikes to school."
    }
   ]
  },
@@ -404,7 +411,7 @@
  "history": [
   {
    "a": "s-their-houses",
-   "t": 1793502442122,
+   "t": 1793502586000,
    "via": "entry"
   },
   {
