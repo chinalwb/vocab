@@ -776,6 +776,15 @@
     "via": "review",
     "ex": "During the fire drill, we must stay calm and walk out of the classroom quietly."
    }
+  ],
+  "c-be-witness-to": [
+   {
+    "t": 1793536418527,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Local islanders have been witness to its evolving shape over hundreds of years."
+   }
   ]
  },
  "favs": {},
