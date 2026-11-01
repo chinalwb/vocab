@@ -24,6 +24,26 @@
   "s-plan-is-to": {
    "s": "review",
    "t": 1793503298880
+  },
+  "s-realistic-plan": {
+   "s": "review",
+   "t": 1793503557063
+  },
+  "s-their-houses": {
+   "s": "review",
+   "t": 1793503563314
+  },
+  "c-be-witness-to": {
+   "s": "review",
+   "t": 1793503570260
+  },
+  "c-be-displaced-by": {
+   "s": "review",
+   "t": 1793503571594
+  },
+  "c-stay-safe": {
+   "s": "review",
+   "t": 1793503573012
   }
  },
  "cards": {
@@ -549,11 +569,43 @@
     "peek": false,
     "via": "entry",
     "ex": "I don't think finishing all our homework in one hour is a realistic plan, as there is too much of it."
+   },
+   {
+    "t": 1793503541174,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think finishing all our homework in one hour is a realistic plan, as there is too much of it."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "c-stay-safe",
+   "t": 1793503572467,
+   "via": "entry"
+  },
+  {
+   "a": "c-be-displaced-by",
+   "t": 1793503571133,
+   "via": "entry"
+  },
+  {
+   "a": "c-be-witness-to",
+   "t": 1793503569607,
+   "via": "entry"
+  },
+  {
+   "a": "s-their-houses",
+   "t": 1793503562451,
+   "via": "entry"
+  },
+  {
+   "a": "s-realistic-plan",
+   "t": 1793503553978,
+   "via": "entry"
+  },
   {
    "a": "s-put-pressure-on",
    "t": 1793503304114,
@@ -562,16 +614,6 @@
   {
    "a": "s-its-their",
    "t": 1793502603414,
-   "via": "entry"
-  },
-  {
-   "a": "s-their-houses",
-   "t": 1793502586000,
-   "via": "entry"
-  },
-  {
-   "a": "s-realistic-plan",
-   "t": 1793502439642,
    "via": "entry"
   },
   {
@@ -600,16 +642,6 @@
    "via": "entry"
   },
   {
-   "a": "c-stay-safe",
-   "t": 1793434608461,
-   "via": "entry"
-  },
-  {
-   "a": "c-be-witness-to",
-   "t": 1793434600260,
-   "via": "entry"
-  },
-  {
    "a": "g3-his-her",
    "t": 1793427867491,
    "via": "entry"
@@ -617,11 +649,6 @@
   {
    "a": "g3-yes-no-questions",
    "t": 1793427867063,
-   "via": "entry"
-  },
-  {
-   "a": "c-be-displaced-by",
-   "t": 1793410048581,
    "via": "entry"
   },
   {
