@@ -2341,7 +2341,7 @@ function notesHtml(it, fill = false, withFull = true, extra = []){
   const essay = it.level === "ESSAY";
   return `<div class="nv fill v2${notesAll ? " all" : ""}${essay ? langCls() : ""}"><div class="nv-bar">` +
     `<div class="nv-tabs" role="tablist">${sl.map(([l], k) => `<button type="button" class="nv-tab" role="tab" aria-selected="${!k}" data-k="${k}" title="${esc(l)}">${esc(l)}</button>`).join("")}</div>` +
-    (essay ? langBtn() : "") +
+    (essay ? langBtn() + `<button type="button" class="nv-pdf ib" data-a="${esc(it.anchor)}" aria-label="导出 PDF" title="导出 PDF">${ICON_PDF}</button>` : "") +
     `<button type="button" class="nv-all ib" aria-label="${notesAll ? "分卡显示" : "全部展开"}">${notesAll ? ICON_CARDS : ICON_LIST}</button>${fullBtn}</div>` +
     `<div class="nv-track" tabindex="0" aria-label="笔记卡片,左右滑动或用 ← → 切换">${sl.map(([, h]) => `<section class="nv-card">${h}</section>`).join("")}</div></div>`;
 }
@@ -2352,6 +2352,46 @@ const langOf = () => LANGS.find(l => l[0] === essayLang) || LANGS[0];
 const langCls = () => essayLang === "both" ? "" : ` only-${essayLang}`;
 const langBtn = () => { const [, short, long] = langOf(), nx = LANGS[(LANGS.indexOf(langOf()) + 1) % LANGS.length];
   return `<button type="button" class="nv-lang" aria-label="${long},点了${nx[2]}" title="${long} · 点了${nx[2]}">${short}</button>`; };
+// 文章 → PDF (用户 2026-11-01): the browser's print dialog (保存为 PDF), so Chinese needs no embedded font.
+// 一、the corrected essay as plain English paragraphs; 二、from a new page, each sentence with its Chinese
+const ICON_PDF = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/><text x="12" y="18" text-anchor="middle" font-size="6.2" font-weight="700" font-family="Arial,sans-serif">PDF</text></svg>';
+function essayPdf(it){
+  const sl = it.slides.find(([, h]) => h.includes('class="ex"'));
+  if (!sl) return;
+  const d = document.createElement("div");
+  d.innerHTML = sl[1];
+  // paragraphs: each ol.ex, with the 「第 n 段」 line before it
+  const paras = [...d.querySelectorAll("ol.ex")].map(ol => ({
+    label: ol.previousElementSibling?.matches("p") ? ol.previousElementSibling.textContent.trim() : "",
+    lis: [...ol.querySelectorAll(":scope > li")].map(li => ({ en: li.querySelector(".en")?.innerHTML || "", txt: li.querySelector(".en")?.textContent.trim() || "", zh: li.querySelector(".zh")?.textContent.trim() || "" }))
+  }));
+  const title = esc(it.title);
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${title}</title><style>
+@page{size:A4;margin:20mm 18mm}
+body{font-family:"Atkinson Hyperlegible","Helvetica Neue",Arial,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;color:#111;margin:0}
+h1{font-size:20pt;margin:0 0 4pt}h2{font-size:13pt;margin:0 0 14pt;color:#555;font-weight:600}
+.date{color:#777;font-size:10pt;margin-bottom:18pt}
+.essay p{font-size:13pt;line-height:1.75;margin:0 0 12pt;text-indent:2em}
+.two{break-before:page}
+.lab{font-size:10.5pt;color:#777;margin:16pt 0 6pt;font-weight:700}
+ol{margin:0;padding-left:22pt}li{margin:0 0 10pt;break-inside:avoid}
+.en{font-size:12.5pt;line-height:1.5}.en strong{font-weight:700;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:2px}
+.zh{font-size:11pt;color:#444;margin-top:3pt;line-height:1.5}
+.note{font-size:9.5pt;color:#777;margin-top:16pt}
+</style></head><body>
+<h1>${title}</h1><div class="date">${esc(it.date || "")}</div>
+<h2>一、改好的文章</h2><div class="essay">${paras.map(p => `<p>${esc(p.lis.map(l => l.txt).join(" "))}</p>`).join("")}</div>
+<div class="two"><h2>二、逐句对照</h2>${paras.map(p => (p.label ? `<div class="lab">${esc(p.label)}</div>` : "") +
+    `<ol>${p.lis.map(l => `<li><div class="en">${l.en}</div>${l.zh ? `<div class="zh">${esc(l.zh)}</div>` : ""}</li>`).join("")}</ol>`).join("")}
+<div class="note">加下划线的是改过的地方。</div></div></body></html>`;
+  const f = document.createElement("iframe");
+  f.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden";
+  document.body.appendChild(f);
+  f.contentDocument.open(); f.contentDocument.write(html); f.contentDocument.close();
+  // Chrome names the file after the page's title
+  const go = () => { const t = document.title; document.title = it.title; f.contentWindow.focus(); f.contentWindow.print(); document.title = t; setTimeout(() => f.remove(), 60000); };
+  f.contentDocument.fonts ? f.contentDocument.fonts.ready.then(go) : setTimeout(go, 300);
+}
 // ⤢ / ⤡: the transitions are on only while .morph is (see the CSS); none with reduced motion
 function morph(scrim, change){
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return change();
@@ -2401,6 +2441,7 @@ document.addEventListener("click", e => {
   if (!nv) return;
   const tab = e.target.closest(".nv-tab");
   if (tab) nvGo(nv, +tab.dataset.k);
+  else if (e.target.closest(".nv-pdf")) { const t = byAnchor[e.target.closest(".nv-pdf").dataset.a]; if (t) essayPdf(t.it); }
   else if (e.target.closest(".nv-lang")) {
     essayLang = LANGS[(LANGS.indexOf(langOf()) + 1) % LANGS.length][0];
     try { localStorage.setItem(vkKey("vk.essayLang"), essayLang); } catch {}
