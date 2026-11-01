@@ -534,6 +534,15 @@
     "via": "entry",
     "ex": "Then the passage describes an attempt to protect a town from lava in detail."
    }
+  ],
+  "s-realistic-plan": [
+   {
+    "t": 1793503385266,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much."
+   }
   ]
  },
  "favs": {},
