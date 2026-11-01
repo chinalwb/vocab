@@ -829,14 +829,19 @@
  "favs": {},
  "history": [
   {
-   "a": "c-be-displaced-by",
-   "t": 1793536585428,
-   "via": "review"
+   "a": "c-be-witness-to",
+   "t": 1793536795456,
+   "via": "entry"
   },
   {
-   "a": "c-be-witness-to",
-   "t": 1793536349978,
-   "via": "review"
+   "a": "c-stay-safe",
+   "t": 1793536794882,
+   "via": "entry"
+  },
+  {
+   "a": "c-be-displaced-by",
+   "t": 1793536794331,
+   "via": "entry"
   },
   {
    "a": "s-tell-describe",
@@ -851,11 +856,6 @@
   {
    "a": "s-its-their",
    "t": 1793536097306,
-   "via": "review"
-  },
-  {
-   "a": "c-stay-safe",
-   "t": 1793536024689,
    "via": "review"
   },
   {
@@ -941,6 +941,12 @@
    "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space.": {
     "on": false,
     "t": 1793435490940
+   }
+  },
+  "c-be-witness-to": {
+   "Local islanders have been witness to its evolving shape over hundreds of years.": {
+    "on": false,
+    "t": 1793536784666
    }
   }
  },
