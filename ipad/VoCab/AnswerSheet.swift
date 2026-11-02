@@ -60,22 +60,29 @@ struct AnswerSheet<Lead: View, Trail: View, After: View>: View {
     }
 
     var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    topLine
-                    promptCard
-                    if !revealed {
-                        if chips { bankPanel(bank) }
-                        Button(action: reveal) { Text("显示答案").frame(maxWidth: .infinity) }
-                            .buttonStyle(LedgeButtonStyle(face: Theme.blue, edge: Theme.blueEdge))
-                    } else if let result {
-                        verdict(result).id("verdict")
+        // the question at the top; the chips and 显示答案 pinned to the bottom, under the thumbs
+        // (as the phone does) — with the keyboard up they ride on top of it
+        VStack(spacing: 0) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        topLine
+                        promptCard
+                        if revealed, let result { verdict(result).id("verdict") }
                     }
+                    .padding(20)
                 }
-                .padding(20)
+                .onChange(of: revealed) { if revealed { withAnimation { proxy.scrollTo("verdict", anchor: .top) } } }
             }
-            .onChange(of: revealed) { if revealed { withAnimation { proxy.scrollTo("verdict", anchor: .top) } } }
+            if !revealed {
+                VStack(spacing: 16) {
+                    if chips { bankPanel(bank) }
+                    Button(action: reveal) { Text("显示答案").frame(maxWidth: .infinity) }
+                        .buttonStyle(LedgeButtonStyle(face: Theme.blue, edge: Theme.blueEdge))
+                }
+                .padding(.horizontal, 20).padding(.top, 12).padding(.bottom, 16)
+                .transition(.opacity)
+            }
         }
         .onAppear {
             guard !started else { return }
