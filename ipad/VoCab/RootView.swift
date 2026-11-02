@@ -74,7 +74,7 @@ struct RootView: View {
         .tint(Theme.selInk)
         .task {
             // `-open <anchor>` at launch (simulator testing) opens that entry; `-quiz YES` flips to 自测;
-            if let a = UserDefaults.standard.string(forKey: "open") { selected = a; columns = .detailOnly }
+            if let a = UserDefaults.standard.string(forKey: "open") { selected = a; if UserDefaults.standard.string(forKey: "pick") == nil { columns = .detailOnly } }
             // `-pick review` shows a stage's list; `-run review` starts its run (simulator testing too)
             if let p = UserDefaults.standard.string(forKey: "pick").flatMap(Stage.init) { pick = .stage(p) }
             if let r = UserDefaults.standard.string(forKey: "run").flatMap(Stage.init) {
@@ -106,8 +106,8 @@ struct RootView: View {
             Section("学习阶段") {
                 row("全部条目", "square.grid.2x2", model.entries.count).tag(Pick.all)
                 ForEach(Stage.allCases) { s in
-                    Label { HStack { Text(s.label); Spacer(); count(model.entries.filter { model.stage($0) == s }.count) } } icon: {
-                        Circle().fill(Theme.dot(s)).frame(width: 12, height: 12)
+                    Label { HStack { Text(s.label); Spacer(); Count(n: model.entries.filter { model.stage($0) == s }.count) } } icon: {
+                        StageDot(color: Theme.dot(s), size: 12, round: true)
                     }.font(Theme.font(17, .bold)).tag(Pick.stage(s))
                 }
             }
@@ -134,9 +134,8 @@ struct RootView: View {
     }
 
     private func row(_ t: String, _ icon: String, _ n: Int) -> some View {
-        Label { HStack { Text(t); Spacer(); count(n) } } icon: { Image(systemName: icon) }.font(Theme.font(17, .bold))
+        Label { HStack { Text(t); Spacer(); Count(n: n) } } icon: { Image(systemName: icon) }.font(Theme.font(17, .bold))
     }
-    private func count(_ n: Int) -> some View { Text("\(n)").font(Theme.font(15, .bold)).foregroundStyle(Theme.ink3) }
 
     private var entryList: some View {
         List(selection: $selected) {
@@ -157,16 +156,7 @@ struct RootView: View {
     }
 
     private func row(_ e: Entry) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            RoundedRectangle(cornerRadius: 4).fill(Theme.dot(model.stage(e))).frame(width: 12, height: 12).padding(.top, 6)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(e.title).font(Theme.font(18, .heavy)).foregroundStyle(Theme.ink).lineLimit(2)
-                Text(plain(e.gloss)).font(Theme.font(14, .medium)).foregroundStyle(Theme.ink3).lineLimit(2)
-                Text(sub(e)).font(Theme.font(12, .bold)).foregroundStyle(Theme.ink3)
-            }
-        }
-        .padding(.vertical, 6)
-        .tag(e.anchor)
+        EntryRow(entry: e, color: Theme.dot(model.stage(e)), sub: sub(e)).tag(e.anchor)
     }
 
     /// #12 · 复习中 · 试 3 · 对 2 · 明天到期
@@ -198,6 +188,48 @@ struct RootView: View {
     private func next() {
         guard let a = selected, let i = list.firstIndex(where: { $0.anchor == a }), i + 1 < list.count else { return }
         selected = list[i + 1].anchor
+    }
+}
+
+/// A selected row on the strong blue background (backgroundProminence .increased) turns its text
+/// white — fixed greys would vanish into it. Unfocused, the selection is a light grey and keeps them.
+private struct EntryRow: View {
+    let entry: Entry
+    let color: Color
+    let sub: String
+    @Environment(\.backgroundProminence) private var prominence
+    var body: some View {
+        let on = prominence == .increased
+        HStack(alignment: .top, spacing: 12) {
+            StageDot(color: color, size: 12, round: false).padding(.top, 6)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(entry.title).font(Theme.font(18, .heavy)).foregroundStyle(on ? .white : Theme.ink).lineLimit(2)
+                Text(plain(entry.gloss)).font(Theme.font(14, .medium)).foregroundStyle(on ? .white.opacity(0.85) : Theme.ink3).lineLimit(2)
+                Text(sub).font(Theme.font(12, .bold)).foregroundStyle(on ? .white.opacity(0.85) : Theme.ink3)
+            }
+        }
+        .padding(.vertical, 6)
+    }
+}
+
+private struct Count: View {
+    let n: Int
+    @Environment(\.backgroundProminence) private var prominence
+    var body: some View {
+        Text("\(n)").font(Theme.font(15, .bold)).foregroundStyle(prominence == .increased ? .white.opacity(0.9) : Theme.ink3)
+    }
+}
+
+/// A stage's colour dot; on a selected row it gets a white rim, so a blue dot still shows on the blue.
+private struct StageDot: View {
+    let color: Color
+    let size: CGFloat
+    let round: Bool
+    @Environment(\.backgroundProminence) private var prominence
+    var body: some View {
+        let shape = RoundedRectangle(cornerRadius: round ? size / 2 : 4)
+        shape.fill(color).frame(width: size, height: size)
+            .overlay(shape.stroke(.white, lineWidth: prominence == .increased ? 2 : 0))
     }
 }
 
