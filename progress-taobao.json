@@ -935,6 +935,10 @@
    "Also, making new buildings earthquake-proof is important.": {
     "on": false,
     "t": 1793433922097
+   },
+   "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government.": {
+    "on": false,
+    "t": 1793616313329
    }
   },
   "s-ing-subject": {
