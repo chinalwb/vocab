@@ -121,11 +121,11 @@
   },
   "c-be-witness-to": {
    "ease": 2.5,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 0,
-   "due": 20759,
-   "t": 1793536577008
+   "due": 20762,
+   "t": 1793621712872
   },
   "c-be-displaced-by": {
    "ease": 2.5,
@@ -933,6 +933,13 @@
     "peek": false,
     "via": "review",
     "ex": "Local islanders have been witness to its evolving shape over hundreds of years."
+   },
+   {
+    "t": 1793621712871,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The old tree in our playground has been witness to many happy moments over the years."
    }
   ],
   "c-be-displaced-by": [
@@ -949,11 +956,23 @@
     "peek": false,
     "via": "review",
     "ex": "Small stones on the beach are often displaced by a big wave."
+   },
+   {
+    "t": 1793621729766,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Sections of earth are often displaced by a sudden jolt."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "c-be-displaced-by",
+   "t": 1793621713426,
+   "via": "review"
+  },
   {
    "a": "c-be-witness-to",
    "t": 1793621683845,
@@ -1012,11 +1031,6 @@
   {
    "a": "c-stay-safe",
    "t": 1793537284936,
-   "via": "entry"
-  },
-  {
-   "a": "c-be-displaced-by",
-   "t": 1793537284464,
    "via": "entry"
   },
   {
