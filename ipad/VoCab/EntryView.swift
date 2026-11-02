@@ -34,7 +34,10 @@ struct EntryView: View {
                 }
             }
         }
-        .onAppear { quizzing = stage == .test || UserDefaults.standard.bool(forKey: "quiz") }
+        .onAppear {
+            quizzing = stage == .test || UserDefaults.standard.bool(forKey: "quiz")
+            model.visit(entry, via: "entry")
+        }
         .onChange(of: entry.anchor) { quizzing = model.stage(entry) == .test; speaker.stop() }
         .onDisappear { speaker.stop() }
         .environment(\.openURL, OpenURLAction { url in
@@ -104,7 +107,17 @@ struct EntryView: View {
         HStack(spacing: 12) {
             Text(hint).font(Theme.font(15, .semibold)).foregroundStyle(Theme.ink2)
             Spacer()
-            Button(entry.isEssay ? "选词练习 →" : "自测这条 →") { speaker.stop(); flip(true) }.buttonStyle(LedgeButtonStyle())
+            if let s = stage, s != .learn, model.advanceReady(entry), let nx = s.next {
+                // 移到 X = the move and the next entry; the track above only moves
+                Button("移到\(nx.short)") { model.move(entry, to: nx); onNext?() }.buttonStyle(LedgeButtonStyle(outline: true))
+            }
+            if stage == .review && model.reviewDue(entry) {
+                // 复习这一条: a run of one (its notes just read), which grades SM-2 — the page's 自测 never does
+                Button("复习这一条 →") { speaker.stop(); model.run = RunSession(stage: .review, queue: [entry.anchor], studied: true) }
+                    .buttonStyle(LedgeButtonStyle())
+            } else {
+                Button(entry.isEssay ? "选词练习 →" : "自测这条 →") { speaker.stop(); flip(true) }.buttonStyle(LedgeButtonStyle())
+            }
         }
         .padding(.horizontal, 16).padding(.top, 10).padding(.bottom, 8)
     }
@@ -112,12 +125,19 @@ struct EntryView: View {
     private var hint: String {
         if entry.isEssay { return "共 \(entry.quizExamples.count) 句 · 只选词,选对就算这句答对" }
         guard let s = stage else { return "" }
-        guard let next = s.next else { return "已掌握" }
-        guard let r = remaining(model.attempts(entry), since: model.since(entry), questions: entry.questionKeys) else {
-            return "这条没有例句,自己判断写没写对"
+        guard let next = s.next else { return "已掌握,不再进复习和考核" }
+        let qs = model.questions(entry)
+        let left = remaining(model.attempts(entry), since: model.since(entry), questions: qs)
+        if s == .review {
+            // and the SM-2 streak; then a run moves it
+            let more = promoteReps - model.reps(entry)
+            let todo = [(left ?? 0) > 0 ? (entry.level == "SELFTEST" ? "答对这道题" : "再答对 \(left!) 句") : nil,
+                        more > 0 ? "复习里再连续答对 \(more) 次" : nil].compactMap { $0 }
+            return todo.isEmpty ? "都做到了,可以移到\(next.short)" : todo.joined(separator: ",") + ",就自动移到\(next.short)"
         }
-        if r > 0 { return "再答对 \(r) 句可移到\(next.short)" }
-        return s == .review ? "这一阶段的题都答对过了,可以在上面移到考核" : "这一阶段的题都答对过了"
+        guard let r = left else { return "这条没有例句,自己判断写没写对" }
+        if r > 0 { return entry.level == "SELFTEST" ? "答对这道题可移到\(next.short)" : "再答对 \(r) 句可移到\(next.short)" }
+        return "题都答对过了,可以移到\(next.short)"
     }
 }
 
