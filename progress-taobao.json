@@ -985,6 +985,15 @@
     "via": "review",
     "ex": "Small stones on the beach are often displaced by a big wave."
    }
+  ],
+  "s-finished-with": [
+   {
+    "t": 1793621885898,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Can I have the newspaper when you've finished with it?"
+   }
   ]
  },
  "favs": {},
