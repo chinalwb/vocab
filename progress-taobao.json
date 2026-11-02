@@ -129,11 +129,11 @@
   },
   "c-be-displaced-by": {
    "ease": 2.5,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 0,
-   "due": 20759,
-   "t": 1793536733768
+   "due": 20762,
+   "t": 1793621752417
   }
  },
  "newDay": 0,
@@ -910,6 +910,13 @@
     "peek": false,
     "via": "review",
     "ex": "During the fire drill, we must stay calm and walk out of the classroom quietly."
+   },
+   {
+    "t": 1793621761767,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
    }
   ],
   "c-be-witness-to": [
@@ -963,11 +970,23 @@
     "peek": false,
     "via": "review",
     "ex": "Sections of earth are often displaced by a sudden jolt."
+   },
+   {
+    "t": 1793621752417,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Small stones on the beach are often displaced by a big wave."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "c-stay-safe",
+   "t": 1793621752941,
+   "via": "review"
+  },
   {
    "a": "c-be-displaced-by",
    "t": 1793621713426,
@@ -1026,11 +1045,6 @@
   {
    "a": "a-earthquake",
    "t": 1793616258712,
-   "via": "entry"
-  },
-  {
-   "a": "c-stay-safe",
-   "t": 1793537284936,
    "via": "entry"
   },
   {
