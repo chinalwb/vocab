@@ -58,18 +58,18 @@
   "s-ing-subject": {
    "ease": 1.96,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 1,
-   "due": 20759,
-   "t": 1793535813848
+   "due": 20760,
+   "t": 1793621372301
   },
   "s-plan-is-to": {
    "ease": 2.5,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 0,
-   "due": 20759,
-   "t": 1793535844113
+   "due": 20762,
+   "t": 1793621393998
   },
   "s-realistic-plan": {
    "ease": 2.5,
@@ -105,19 +105,19 @@
   },
   "s-same-shape-list": {
    "ease": 2.5,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 0,
-   "due": 20759,
-   "t": 1793536286892
+   "due": 20762,
+   "t": 1793621333061
   },
   "s-tell-describe": {
    "ease": 2.5,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 0,
-   "due": 20759,
-   "t": 1793536342112
+   "due": 20762,
+   "t": 1793621355718
   },
   "c-be-witness-to": {
    "ease": 2.5,
@@ -488,6 +488,20 @@
     "peek": false,
     "via": "review",
     "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793621362438,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793621372300,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
    }
   ],
   "s-same-shape-list": [
@@ -546,6 +560,13 @@
     "peek": false,
     "via": "review",
     "ex": "The project aims to predict the volcanoes' future activity, learn about their history and, most important of all, prepare for an eruption."
+   },
+   {
+    "t": 1793621328095,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "On Saturday, I want to clean my room, finish my homework and, most important of all, play football with my friends."
    }
   ],
   "s-its-their": [
@@ -662,6 +683,20 @@
     "peek": false,
     "via": "review",
     "ex": "The goal which our class needs to reach this month is to read ten English books."
+   },
+   {
+    "t": 1793621383869,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1793621393997,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The goal which our class needs to reach this month is to read ten English books."
    }
   ],
   "s-put-pressure-on": [
@@ -759,6 +794,20 @@
     "peek": false,
     "via": "review",
     "ex": "This book describes a trip to the mountains in detail."
+   },
+   {
+    "t": 1793621349921,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Then the passage describes an attempt to protect a town from lava in detail."
+   },
+   {
+    "t": 1793621355717,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This book describes a trip to the mountains in detail."
    }
   ],
   "s-realistic-plan": [
@@ -850,6 +899,26 @@
  "favs": {},
  "history": [
   {
+   "a": "s-put-pressure-on",
+   "t": 1793621394588,
+   "via": "review"
+  },
+  {
+   "a": "s-plan-is-to",
+   "t": 1793621372892,
+   "via": "review"
+  },
+  {
+   "a": "s-ing-subject",
+   "t": 1793621356273,
+   "via": "review"
+  },
+  {
+   "a": "s-tell-describe",
+   "t": 1793621336891,
+   "via": "review"
+  },
+  {
    "a": "s-same-shape-list",
    "t": 1793621282561,
    "via": "review"
@@ -880,11 +949,6 @@
    "via": "entry"
   },
   {
-   "a": "s-tell-describe",
-   "t": 1793536300722,
-   "via": "review"
-  },
-  {
    "a": "s-their-houses",
    "t": 1793535882650,
    "via": "review"
@@ -892,21 +956,6 @@
   {
    "a": "s-realistic-plan",
    "t": 1793535845016,
-   "via": "review"
-  },
-  {
-   "a": "s-plan-is-to",
-   "t": 1793535817112,
-   "via": "review"
-  },
-  {
-   "a": "s-ing-subject",
-   "t": 1793535776158,
-   "via": "review"
-  },
-  {
-   "a": "s-put-pressure-on",
-   "t": 1793503304114,
    "via": "review"
   },
   {
