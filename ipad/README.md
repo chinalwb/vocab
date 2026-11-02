@@ -25,6 +25,8 @@ cards or all at once, 🔊), 自测 (① 选词 → ② 打字, fill in only the
 whole sentence, 算我对, 打乱, 下一句 / 下一条, 学习中 → 复习 by itself), essays (选词 only,
 朗读全文 with the pause from 设置, 中英 / 英 / 中).
 
+Also: 设置 → 朗读音色 picks any US / UK English voice on the iPad (自动 = the best US one).
+
 Phase 2: the 复习 / 考核 lists (grouped by why each entry is there, a summary card with 开始复习 /
 开始考核) and full-screen runs with SM-2 — 先看一遍 → 翻面做题, up to 3 sentences per entry, 复习 → 考核
 by itself after 3 right in a row, a 考核 miss back to 复习, 完成 with 撤销移动; 复习这一条 on an entry

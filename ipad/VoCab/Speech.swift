@@ -26,11 +26,29 @@ final class Speaker: NSObject, AVSpeechSynthesizerDelegate {
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio)
     }
 
-    /// The best US English voice installed: premium, then enhanced, then the default.
-    @ObservationIgnored private lazy var voice: AVSpeechSynthesisVoice? = {
+    /// 朗读音色 (the web's vk.voice): a voice's identifier, "" = 自动.
+    var voiceID: String {
+        get { access(keyPath: \.voiceID); return UserDefaults.standard.string(forKey: "voice") ?? "" }
+        set { withMutation(keyPath: \.voiceID) { UserDefaults.standard.set(newValue, forKey: "voice") } }
+    }
+
+    /// The US / UK English voices on this iPad, best quality first; novelty voices left out.
+    static var voices: [AVSpeechSynthesisVoice] {
+        AVSpeechSynthesisVoice.speechVoices()
+            .filter { ($0.language == "en-US" || $0.language == "en-GB") && !$0.voiceTraits.contains(.isNoveltyVoice) }
+            .sorted { $0.quality.rawValue != $1.quality.rawValue ? $0.quality.rawValue > $1.quality.rawValue : $0.name < $1.name }
+    }
+
+    /// 自动: the best US English voice installed — premium, then enhanced, then the default.
+    @ObservationIgnored private(set) lazy var autoVoice: AVSpeechSynthesisVoice? = {
         let us = AVSpeechSynthesisVoice.speechVoices().filter { $0.language == "en-US" }
         return us.first { $0.quality == .premium } ?? us.first { $0.quality == .enhanced } ?? AVSpeechSynthesisVoice(language: "en-US")
     }()
+
+    /// The chosen voice; one that's gone from this iPad falls back to 自动.
+    private var voice: AVSpeechSynthesisVoice? {
+        voiceID.isEmpty ? autoVoice : AVSpeechSynthesisVoice(identifier: voiceID) ?? autoVoice
+    }
 
     private func utterance(_ text: String) -> AVSpeechUtterance {
         let u = AVSpeechUtterance(string: text)

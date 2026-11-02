@@ -1,4 +1,5 @@
 import SwiftUI
+import AVFoundation
 
 /// What the sidebar picks: everything, one stage, or one group.
 enum Pick: Hashable {
@@ -224,19 +225,30 @@ struct SettingsView: View {
                     Text("和 taobao 的网页共用一份进度(progress 分支的 progress-taobao.json):学习阶段、复习排期、自测结果、学习历史。自测里写的句子原文不上传。token 只存在这台 iPad 的钥匙串里,只需要 chinalwb/vocab 的 Contents 读写权限。")
                 }
                 Section {
+                    Picker("朗读音色", selection: $speaker.voiceID) {
+                        Text("自动(\(speaker.autoVoice?.name ?? "系统默认"))").tag("")
+                        ForEach(Speaker.voices, id: \.identifier) { v in Text(voiceLabel(v)).tag(v.identifier) }
+                    }
+                    .onChange(of: speaker.voiceID) { speaker.speak("Let's read the essay together, one sentence at a time.") }
                     Picker("句间停顿", selection: $speaker.pause) {
                         ForEach(Speaker.pauses, id: \.self) { Text(String(format: "%.1f 秒", Double($0) / 1000)).tag($0) }
                     }
                     .pickerStyle(.segmented)
                     Button("试听") { speaker.speak("Let's read the essay together, one sentence at a time.") }
                 } header: { Text("朗读") } footer: {
-                    Text("文章「朗读全文」时两句之间停多久。音色用 iPad 自带的美式英语,在「设置 → 辅助功能 → 朗读内容 → 声音」里可以下载更自然的增强音色。")
+                    Text("选了音色会马上试读一句。句间停顿是文章「朗读全文」时两句之间停多久。想要更自然的声音:iPad 的「设置 → 辅助功能 → 朗读内容 → 声音 → 英语」里下载「增强」或「高级」音色,回来这里就能选。")
                 }
             }
             .navigationTitle("设置")
             .formStyle(.grouped)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("完成") { dismiss() } } }
         }
+    }
+
+    private func voiceLabel(_ v: AVSpeechSynthesisVoice) -> String {
+        let accent = v.language == "en-GB" ? "英" : "美"
+        let q = v.quality == .premium ? " · 高级" : v.quality == .enhanced ? " · 增强" : ""
+        return "\(v.name)(\(accent)\(q))"
     }
 
     private var syncLine: String {
