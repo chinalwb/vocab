@@ -167,6 +167,7 @@
 170. [confuse / be confused about / get confused about](#confuse)
 171. [the same as / different from / similar to](#same-as-different-from)
 172. [against](#against)
+173. [句子:score … from a language perspective / mark … for Language](#s-score-language)
 
 ---
 
@@ -5444,3 +5445,40 @@ platform 等于 10,就代表请求来自 web,对吧?
    我们在抢时间,争取周五前发布。
 3. **Against all odds**, the demo worked.
    尽管困难重重,演示还是成功了。
+
+---
+
+<a id="s-score-language"></a>
+## 句子:score … from a language perspective / mark … for Language
+
+- 日期:2026-11-02
+
+**我的原句:**
+
+> How much would you score the article as follow from the language dimension?
+
+**问题:**
+
+- ⚠️ [搭配] **How much would you score** —— 能懂,但母语者不用 *how much* 问打分 → **How would you score** / **What score would you give**。
+- ❌ [词形] **the article as follow** —— *as follows* 要带 s,而且一般放在冒号前引出后文,不跟在名词后面;「下面这篇文章」说 **the following article** / **the article below**。
+- ❌ [介词] **from the language dimension** —— *dimension* 搭配 *on*:**on the language dimension**;*the* 没错。用 *from* 就换成 *perspective*:**from a language perspective**。
+
+**对比:perspective / dimension**
+
+| 说法 | 介词 | 冠词 | 什么时候用 |
+|---|---|---|---|
+| **from a language perspective** | from | a(泛指一个角度) | 日常最自然 |
+| **on the language dimension** | on | the(固定几个维度中的一项) | 评分表有固定维度 |
+| **for Language** | for | 不加(分项名称) | FCE 写作四个分项之一,每项 0–5 分 |
+
+**要点:**
+
+- 介词由名词决定:*perspective* 用 *from*,*dimension* 用 *on*;冠词看是否特指,两者互不影响。
+- 考试「判分」英式常用 *mark*;FCE 写作的四个分项是 Content、Communicative Achievement、Organisation、Language。
+
+**例句:**
+
+1. How would you score the following article **from a language perspective**?
+   从语言角度,你会给下面这篇文章打几分?
+2. How would you **mark** the article below **for Language**, using the FCE assessment scale?
+   按 FCE 评分标准,你会给下面这篇文章的「语言」一项打几分?
