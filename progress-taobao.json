@@ -843,6 +843,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-same-shape-list",
+   "t": 1793621282561,
+   "via": "review"
+  },
+  {
    "a": "s-its-their",
    "t": 1793621235371,
    "via": "review"
@@ -870,11 +875,6 @@
   {
    "a": "s-tell-describe",
    "t": 1793536300722,
-   "via": "review"
-  },
-  {
-   "a": "s-same-shape-list",
-   "t": 1793536205630,
    "via": "review"
   },
   {
