@@ -34,8 +34,13 @@ due today. 同步 with `progress-taobao.json` (设置 → 同步到 GitHub, taob
 in the Keychain): stages, SM-2 cards, 自测 results (never the text), 学习历史; 不再考这句 is read from it.
 ⭐, 我的笔记 and 阅读 are carried through untouched.
 
-Not yet: screens for 学习历史 / 我的笔记 / 记忆曲线, essay PDF, setting 不再考这句 / ⭐ on the iPad,
-hardware-keyboard chip filtering, the "see every notes page first" gate.
+Phase 3: the entry's notes end with 记忆 (the estimated forgetting curve; touch it for a day's estimate) and
+我的笔记 (saves as you type, synced); a new entry shows 自测这条 only once every notes page has been seen
+(dots on the unread tabs, 看下页 ›); 学习历史 in the sidebar (by day, 清空 asks twice); long-press an example
+for 复制 · 收藏 ⭐ · 不再考这句 (an asked example's number sits in a solid dot, hollow once left out). ⭐ and
+我的笔记 now sync both ways; 阅读 is still carried through untouched.
+
+Not yet: essay PDF, hardware-keyboard chip filtering, pre-generated neural voices.
 
 Testing in the simulator, as launch arguments: `-open <anchor>` (and `-quiz YES`) opens an entry;
-`-pick review` shows a stage's list; `-run review` / `-run test` starts its run.
+`-pick review` (or `history`) shows that list; `-page N` opens the entry's Nth notes page; `-run review` / `-run test` starts its run.

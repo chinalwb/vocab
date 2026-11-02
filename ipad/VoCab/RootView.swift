@@ -6,6 +6,7 @@ enum Pick: Hashable {
     case all
     case stage(Stage)
     case group(String)
+    case history
 }
 
 /// Three columns like the web's desk layout: sidebar · entry list · the entry.
@@ -20,10 +21,23 @@ struct RootView: View {
     /// Cross-references opened from the entry, so ← 返回 can walk back.
     @State private var trail: [String] = []
     @State private var portrait = false
+    /// 学习历史 as it was when opened, so the row I tap doesn't jump to the top under my finger
+    @State private var histOrder: [Visit] = []
+    @State private var clearArmed = false
 
     /// 复习 / 考核 grouped by why each entry is there, in the order a run takes them.
     private var groups: [(title: String, entries: [Entry])]? {
-        guard query.trimmingCharacters(in: .whitespaces).isEmpty, case .stage(let s) = pick ?? .all, s == .review || s == .test else { return nil }
+        guard query.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
+        if pick == .history {
+            // a heading per day: 今天 / 昨天 / 10 月 14 日 · 周二
+            var out: [(title: String, entries: [Entry])] = []
+            for v in histOrder { guard let e = model.entry(v.a) else { continue }
+                let d = histDay(v.t)
+                if out.last?.title == d { out[out.count - 1].entries.append(e) } else { out.append((d, [e])) }
+            }
+            return out
+        }
+        guard case .stage(let s) = pick ?? .all, s == .review || s == .test else { return nil }
         if s == .review {
             let p = model.reviewPlan(), planned = Set((p.due + p.fresh).map(\.anchor))
             let later = model.inStage(.review).filter { !planned.contains($0.anchor) }
@@ -42,12 +56,14 @@ struct RootView: View {
             case .all: return true
             case .stage(let s): return model.stage(e) == s
             case .group(let g): return e.level == g
+            case .history: return false
             }
         }
         guard !q.isEmpty else { return base }
         // #12 or 12 finds entry 12; anything else searches the notes (all entries, not just this list)
         let num = Int(q.hasPrefix("#") ? String(q.dropFirst()) : q)
-        return model.entries.filter { e in num.map { e.no == $0 } ?? e.searchText.contains(q) }
+        // 我的笔记 is searched too
+        return model.entries.filter { e in num.map { e.no == $0 } ?? (e.searchText.contains(q) || model.noteOf(e).lowercased().contains(q)) }
     }
 
     var body: some View {
@@ -79,7 +95,7 @@ struct RootView: View {
             // `-open <anchor>` at launch (simulator testing) opens that entry; `-quiz YES` flips to 自测;
             if let a = UserDefaults.standard.string(forKey: "open") { selected = a; if UserDefaults.standard.string(forKey: "pick") == nil { columns = .detailOnly } }
             // `-pick review` shows a stage's list; `-run review` starts its run (simulator testing too)
-            if let p = UserDefaults.standard.string(forKey: "pick").flatMap(Stage.init) { pick = .stage(p) }
+            if let p = UserDefaults.standard.string(forKey: "pick") { pick = p == "history" ? .history : Stage(rawValue: p).map { .stage($0) } ?? .all }
             if let r = UserDefaults.standard.string(forKey: "run").flatMap(Stage.init) {
                 model.run = RunSession(stage: r, queue: model.quizQueue(r).map(\.anchor))
             }
@@ -92,6 +108,7 @@ struct RootView: View {
             if phase == .background { model.flush() }
         }
         .onChange(of: selected) { trail = [] }
+        .onChange(of: pick) { if pick == .history { histOrder = model.history.visits; clearArmed = false } }
         .sheet(isPresented: $settings) { SettingsView().environment(model) }
         .fullScreenCover(item: Binding(get: { model.run }, set: { model.run = $0 })) { RunView(run: $0).environment(model) }
     }
@@ -120,6 +137,9 @@ struct RootView: View {
                         Image(systemName: g.key == "ESSAY" ? "doc.richtext" : g.key == "COLLOC" ? "link" : "text.quote")
                     }
                 }
+            }
+            Section("其他") {
+                side(.history, "学习历史", model.history.visits.filter { model.entry($0.a) != nil }.count) { Image(systemName: "clock") }
             }
             Section {
                 Button { settings = true } label: { Label("设置", systemImage: "gearshape").font(Theme.font(17, .bold)) }
@@ -155,9 +175,25 @@ struct RootView: View {
             if query.trimmingCharacters(in: .whitespaces).isEmpty, case .stage(let st) = pick ?? .all, st == .review || st == .test {
                 Section { StageSummary(stage: st, onReady: { selected = $0 }) }
             }
+            if pick == .history && query.trimmingCharacters(in: .whitespaces).isEmpty {
+                Section {
+                    Text(histOrder.isEmpty ? "还没有看过的条目。打开一条、或在复习 / 考核里做到它,都会记在这里。"
+                         : "最近看过的 \(list.count) 条,最新的在最上面;同一条再看会移到最上面,最多留 \(historyMax) 条。开了同步的话,网页和 iPad 共用这份历史。")
+                        .font(Theme.font(14, .medium)).foregroundStyle(Theme.ink3)
+                }
+            }
             if let groups {
                 ForEach(groups, id: \.title) { g in
                     Section("\(g.title) · \(g.entries.count)") { ForEach(g.entries) { row($0) } }
+                }
+                if pick == .history && !histOrder.isEmpty {
+                    Section {
+                        Button(clearArmed ? "确定清空?再点一次确认(其他设备同步后也会清空)" : "清空学习历史", role: .destructive) {
+                            if !clearArmed { clearArmed = true; return }
+                            model.clearHistory(); histOrder = []; clearArmed = false
+                        }
+                        .font(Theme.font(15, .bold))
+                    }
                 }
             } else {
                 ForEach(list) { row($0) }
@@ -181,10 +217,15 @@ struct RootView: View {
         .listRowBackground(Picked(on: on))
     }
 
-    /// #12 · 复习中 · 试 3 · 对 2 · 明天到期
+    /// #12 · 复习中 · 试 3 · 对 2 · 明天到期 · 📝 笔记 — in 学习历史 the time and how I met it first
     private func sub(_ e: Entry) -> String {
         let tries = model.attempts(e).filter { !$0.text.isEmpty }
         var xs = [e.no.map { "#\($0)" }, model.stage(e)?.label ?? "文章"].compactMap { $0 }
+        if pick == .history, let v = histOrder.first(where: { $0.a == e.anchor }) {
+            let hm = Date(timeIntervalSince1970: Double(v.t) / 1000).formatted(date: .omitted, time: .shortened)
+            xs.insert("\(hm) \(["review": "复习", "test": "考核"][v.via] ?? "打开")", at: 0)
+        }
+        if !model.noteOf(e).isEmpty { xs.append("📝 笔记") }
         if !tries.isEmpty { xs.append("试 \(tries.count) · 对 \(tries.filter(\.ok).count)") }
         if model.stage(e) == .review, let d = model.card(e)?.due {
             let today = dayNo()
@@ -198,6 +239,7 @@ struct RootView: View {
         case .all: return "全部条目"
         case .stage(let s): return s.label
         case .group(let g): return groupLabel(g)
+        case .history: return "学习历史"
         }
     }
 
@@ -211,6 +253,16 @@ struct RootView: View {
         guard let a = selected, let i = list.firstIndex(where: { $0.anchor == a }), i + 1 < list.count else { return }
         selected = list[i + 1].anchor
     }
+}
+
+/// 今天 / 昨天 / 10 月 14 日 · 周二
+private func histDay(_ ms: Int64) -> String {
+    let d = Date(timeIntervalSince1970: Double(ms) / 1000), cal = Calendar.current
+    let n = cal.dateComponents([.day], from: cal.startOfDay(for: d), to: cal.startOfDay(for: Date())).day ?? 0
+    if n == 0 { return "今天" }
+    if n == 1 { return "昨天" }
+    let c = cal.dateComponents([.month, .day, .weekday], from: d)
+    return "\(c.month!) 月 \(c.day!) 日 · 周\(Array("日一二三四五六")[c.weekday! - 1])"
 }
 
 /// What a picked row sits on: the light blue of a picked chip, with its blue rim.

@@ -117,6 +117,11 @@ private struct RunEntry: View {
             }
         }
         .onAppear(perform: prepare)
+        // 不再考这句 mid-run: a sentence still to come leaves this run at once; the one on screen keeps going
+        .onChange(of: model.quizOut[entry.anchor]) {
+            guard let qs = run.qs, run.k + 1 < qs.count else { return }
+            run.qs = Array(qs[...run.k]) + qs[(run.k + 1)...].filter { !model.isOut(entry, $0) }
+        }
     }
 
     /// Once per entry: what it asks, and the visit for 学习历史.
@@ -137,7 +142,7 @@ private struct RunEntry: View {
                 Text(entry.title).font(Theme.font(30, .heavy)).foregroundStyle(Theme.ink)
                 if !entry.speakText.isEmpty { SpeakButton(text: entry.speakText, size: 20) }
             }
-            NotesCard(entry: entry) { EmptyView() } footer: {
+            NotesCard(entry: entry, extras: [.note]) { EmptyView() } footer: {
                 HStack {
                     Spacer()
                     Button("翻面做题") { withAnimation(.easeInOut(duration: 0.35)) { run.studied = true } }.buttonStyle(LedgeButtonStyle())
@@ -159,7 +164,7 @@ private struct RunEntry: View {
     private var question: Question? {
         if selfTest { let a = entry.selfTestAnswer; return a.isEmpty ? nil : Question(en: a, zh: entry.title, raw: a, k: 0, of: 1) }
         guard run.k < qs.count else { return nil }
-        let xs = model.examples(entry)
+        let xs = entry.quizExamples
         guard let k = xs.firstIndex(where: { plain($0.en) == qs[run.k] }) else { return nil }
         return Question(en: qs[run.k], zh: plain(xs[k].zh), raw: xs[k].en, k: k, of: xs.count)
     }

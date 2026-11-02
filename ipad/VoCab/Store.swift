@@ -45,6 +45,10 @@ final class AppModel {
     private(set) var review = ReviewData()
     private(set) var history = HistoryData()
     private(set) var quizOut: QuizOut = [:]
+    private(set) var favs: Favs = [:]
+    private(set) var notes: [String: Note] = [:]
+    /// entries whose every notes page has been seen (this iPad only, like the page's vk.seen)
+    private(set) var seen: [String: Int64] = [:]
     var updateNote: String?
     /// The 复习 / 考核 run on screen, if any.
     var run: RunSession?
@@ -71,6 +75,9 @@ final class AppModel {
         review = load("review.json") ?? ReviewData()
         history = load("history.json") ?? HistoryData()
         quizOut = load("quizout.json") ?? [:]
+        favs = load("favs.json") ?? [:]
+        notes = load("notes.json") ?? [:]
+        seen = load("seen.json") ?? [:]
         sync = SyncStatus.saved()
     }
 
@@ -168,6 +175,67 @@ final class AppModel {
         let kept = xs.filter { out[plain($0.en)]?.on != true }
         return kept.isEmpty ? xs : kept
     }
+    func isOut(_ e: Entry, _ en: String) -> Bool { quizOut[e.anchor]?[en]?.on == true }
+
+    /// 不再考这句 / 恢复考这句; false when it would leave the entry nothing to ask.
+    @discardableResult func toggleOut(_ e: Entry, _ en: String) -> Bool {
+        let out = !isOut(e, en)
+        if out && examples(e).count <= 1 { return false }
+        quizOut[e.anchor, default: [:]][en] = Flag(on: out, t: nowMs())
+        save(quizOut, "quizout.json")
+        changed()
+        return true
+    }
+
+    // MARK: ⭐ 收藏
+
+    func isFav(_ e: Entry, _ en: String) -> Bool { favs[e.anchor]?[en]?.on == true }
+    @discardableResult func toggleFav(_ e: Entry, _ en: String) -> Bool {
+        let on = !isFav(e, en)
+        favs[e.anchor, default: [:]][en] = Flag(on: on, t: nowMs())
+        save(favs, "favs.json")
+        changed()
+        return on
+    }
+
+    // MARK: 我的笔记
+
+    func noteOf(_ e: Entry) -> String { notes[e.anchor]?.text ?? "" }
+    func setNote(_ e: Entry, _ text: String) {
+        let t = text.replacingOccurrences(of: #"\s+$"#, with: "", options: .regularExpression)
+        guard t != noteOf(e) else { return }
+        notes[e.anchor] = Note(text: t, t: nowMs())
+        save(notes, "notes.json")
+        changed()
+    }
+
+    // MARK: 看完每一页笔记
+
+    /// A new entry (学习中, never tried) shows 自测这条 only once every page of its notes has been seen.
+    func needsReading(_ e: Entry) -> Bool {
+        stage(e) == .learn && e.sections.count > 1 && attempts(e).isEmpty && seen[e.anchor] == nil
+    }
+    func markSeen(_ e: Entry) {
+        seen[e.anchor] = nowMs()
+        save(seen, "seen.json")
+    }
+
+    // MARK: 记忆曲线
+
+    /// The 复习 / 考核 attempts (not the entry page's, not before a reset) by day, replayed through SM-2.
+    func memory(_ e: Entry) -> [MemoryPoint] {
+        var days: [Int64: Bool] = [:]
+        for a in attempts(e) where a.via != "entry" && a.t >= review.resetAt {
+            let d = dayNo(Date(timeIntervalSince1970: Double(a.t) / 1000))
+            days[d] = (days[d] ?? true) && a.ok
+        }
+        var c = Card()
+        return days.keys.sorted().map { d in
+            c = schedule(c, q: days[d]! ? 4 : 1, today: d)
+            return MemoryPoint(day: d, ok: days[d]!, interval: c.interval)
+        }
+    }
+
     /// What must each be answered right to move on: plain English, or "" for a 自测题.
     func questions(_ e: Entry) -> [String] { e.level == "SELFTEST" ? [""] : examples(e).map { plain($0.en) } }
 
@@ -250,11 +318,19 @@ final class AppModel {
         changed()
     }
 
+    /// 清空学习历史: the other devices drop the older rows too once they sync.
+    func clearHistory() {
+        history = HistoryData(visits: [], clearAt: nowMs())
+        save(history, "history.json")
+        changed()
+    }
+
     // MARK: 同步's view of the stores (Sync.swift)
 
-    func replaceSynced(stages: StageData, attempts at: [String: [Attempt]], review r: ReviewData, history h: HistoryData, quizOut q: QuizOut) {
-        stageData = stages; attempts = at; review = r; history = h; quizOut = q
+    func replaceSynced(stages: StageData, attempts at: [String: [Attempt]], review r: ReviewData, history h: HistoryData,
+                       quizOut q: QuizOut, favs f: Favs, notes n: [String: Note]) {
+        stageData = stages; attempts = at; review = r; history = h; quizOut = q; favs = f; notes = n
         save(stageData, "stage.json"); save(attempts, "selftest.json"); save(review, "review.json")
-        save(history, "history.json"); save(quizOut, "quizout.json")
+        save(history, "history.json"); save(quizOut, "quizout.json"); save(favs, "favs.json"); save(notes, "notes.json")
     }
 }

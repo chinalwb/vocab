@@ -6,8 +6,8 @@ import UIKit
  * 同步: progress-taobao.json on the repo's orphan `progress` branch — the same file taobao's page reads
  * and writes, with the same merge rules as syncNow() / applyRemote() in template.html and ProgressSync.kt:
  * moves and SM-2 cards newest wins per entry (a reset drops older cards), 自测 attempts are a union (what
- * I typed never leaves the iPad), 学习历史 merged and trimmed. What the iPad doesn't have yet (⭐, 我的笔记,
- * 阅读) is carried through untouched, so a sync from here never drops it.
+ * I typed never leaves the iPad), 学习历史 merged and trimmed, ⭐ / 不再考这句 newest wins per sentence, 我的笔记
+ * per entry. 阅读 (the phone's) is carried through untouched, so a sync from here never drops it.
  */
 
 private let api = URL(string: "https://api.github.com/repos/chinalwb/vocab/contents/progress-taobao.json")!
@@ -64,6 +64,8 @@ private struct Remote: Decodable {
     var history: [Visit]?
     var historyClearAt: Int64?
     var quizOut: QuizOut?
+    var favs: Favs?
+    var notes: [String: Note]?
 }
 
 private struct Out: Encodable {
@@ -79,6 +81,8 @@ private struct Out: Encodable {
     let history: [Visit]
     let historyClearAt: Int64
     let quizOut: QuizOut
+    let favs: Favs
+    let notes: [String: Note]
 }
 
 /// Every field, defaults filled in — so what's on GitHub and what would go up compare field by field.
@@ -192,13 +196,20 @@ extension AppModel {
         h.visits = trimHistory(h.visits + (r.history ?? []), clearAt: h.clearAt)
 
         // 不再考这句: newest wins per sentence
-        var qo = quizOut
-        for (a, m) in r.quizOut ?? [:] {
-            var mine = qo[a] ?? [:]
-            for (en, f) in m where f.t > (mine[en]?.t ?? 0) { mine[en] = f }
-            qo[a] = mine
+        let perSentence = { (mine: [String: [String: Flag]], theirs: [String: [String: Flag]]?) -> [String: [String: Flag]] in
+            var out = mine
+            for (a, m) in theirs ?? [:] {
+                var one = out[a] ?? [:]
+                for (en, f) in m where f.t > (one[en]?.t ?? 0) { one[en] = f }
+                out[a] = one
+            }
+            return out
         }
-        replaceSynced(stages: st, attempts: at, review: rv, history: h, quizOut: qo)
+        // 我的笔记: newest wins per entry
+        var ns = notes
+        for (a, n) in r.notes ?? [:] where n.t > (ns[a]?.t ?? 0) { ns[a] = n }
+        replaceSynced(stages: st, attempts: at, review: rv, history: h,
+                      quizOut: perSentence(quizOut, r.quizOut), favs: perSentence(favs, r.favs), notes: ns)
     }
 
     /// What goes up: the iPad's merged state, plus whatever it doesn't handle, as GitHub has it.
@@ -207,10 +218,10 @@ extension AppModel {
             stages: stageData.stages.reduce(into: [:]) { $0[$1.key] = .init(s: $1.value, t: stageData.t[$1.key] ?? 0) },
             cards: review.cards, newDay: review.newDay, newToday: review.newToday, resetAt: review.resetAt,
             attempts: attempts.mapValues { $0.map { .init(t: $0.t, ok: $0.ok, peek: $0.text.isEmpty, via: $0.via, ex: $0.ex) } },
-            history: history.visits, historyClearAt: history.clearAt, quizOut: quizOut)
+            history: history.visits, historyClearAt: history.clearAt, quizOut: quizOut, favs: favs, notes: notes)
         var o = try JSONSerialization.jsonObject(with: JSONEncoder().encode(out)) as! [String: Any]
         let carried = normalized(remote)
-        for k in ["favs", "readsHidden", "notes"] { o[k] = carried[k] }
+        o["readsHidden"] = carried["readsHidden"]
         return o
     }
 

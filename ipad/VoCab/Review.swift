@@ -72,9 +72,28 @@ func trimHistory(_ xs: [Visit], clearAt: Int64) -> [Visit] {
     return Array(xs.filter { $0.t > clearAt }.sorted { $0.t > $1.t }.filter { seen.insert($0.a).inserted }.prefix(historyMax))
 }
 
-/// 不再考这句 (set on the page or the phone; read here): {anchor: {plain English: Flag}}.
+/// A per-sentence switch that 同步 carries, off included: {anchor: {plain English: Flag}}, newest wins.
 struct Flag: Codable, Equatable { var on: Bool; var t: Int64 }
+/// 不再考这句 — and ⭐ 收藏, the same shape.
 typealias QuizOut = [String: [String: Flag]]
+typealias Favs = [String: [String: Flag]]
+
+/// 我的笔记 on an entry; a cleared one is kept as "" so 同步 carries the clear too. Newest wins per entry.
+struct Note: Codable, Equatable { var text: String; var t: Int64 }
+
+// MARK: 记忆曲线 — an estimate, not a measurement (memoryOf() on the page, review/Memory.kt)
+
+/// SM-2 sets the next review for when recall would be down to about this.
+let recallAtDue = 0.9
+
+/// One graded day of 复习 / 考核: right only if every sentence that day was; [interval] the SM-2 gap after it.
+struct MemoryPoint { let day: Int64; let ok: Bool; let interval: Int }
+
+/// Recall on [day]: e^(−t/S) from the last graded day before it, S = interval / ln(1/0.9).
+func recallOn(_ pts: [MemoryPoint], _ day: Double) -> Double {
+    guard let p = pts.last(where: { Double($0.day) <= day }) else { return 1 }
+    return exp(-(day - Double(p.day)) / (Double(p.interval) / log(1 / recallAtDue)))
+}
 
 /// One 复习 / 考核 run: the queue, where it's at, and what it moved. Same fields as newRun() on the page
 /// and QuizSession in the Android app.
