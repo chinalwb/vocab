@@ -727,6 +727,13 @@
     "peek": false,
     "via": "review",
     "ex": "I don't think getting a puppy is a good plan right now, as it costs too much and it will put extra pressure on my parents."
+   },
+   {
+    "t": 1793621601678,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
    }
   ],
   "s-their-houses": [
@@ -899,14 +906,14 @@
  "favs": {},
  "history": [
   {
+   "a": "s-put-pressure-on",
+   "t": 1793621585970,
+   "via": "review"
+  },
+  {
    "a": "s-finished-with",
    "t": 1793621422675,
    "via": "entry"
-  },
-  {
-   "a": "s-put-pressure-on",
-   "t": 1793621394588,
-   "via": "review"
   },
   {
    "a": "s-plan-is-to",
