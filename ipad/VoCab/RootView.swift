@@ -19,6 +19,7 @@ struct RootView: View {
     @State private var columns = NavigationSplitViewVisibility.all
     /// Cross-references opened from the entry, so ← 返回 can walk back.
     @State private var trail: [String] = []
+    @State private var portrait = false
 
     /// 复习 / 考核 grouped by why each entry is there, in the order a run takes them.
     private var groups: [(title: String, entries: [Entry])]? {
@@ -72,6 +73,8 @@ struct RootView: View {
             }
         }
         .tint(Theme.selInk)
+        .background(GeometryReader { g in Color.clear.onAppear { portrait = g.size.height > g.size.width }
+            .onChange(of: g.size) { portrait = g.size.height > g.size.width } })
         .task {
             // `-open <anchor>` at launch (simulator testing) opens that entry; `-quiz YES` flips to 自测;
             if let a = UserDefaults.standard.string(forKey: "open") { selected = a; if UserDefaults.standard.string(forKey: "pick") == nil { columns = .detailOnly } }
@@ -94,7 +97,7 @@ struct RootView: View {
     }
 
     private var sidebar: some View {
-        List(selection: $pick) {
+        List {
             Section {
                 HStack(spacing: 12) {
                     if let img = UIImage(named: "avatar.jpg") ?? Bundle.main.path(forResource: "avatar", ofType: "jpg").flatMap(UIImage.init(contentsOfFile:)) {
@@ -104,17 +107,18 @@ struct RootView: View {
                 }.padding(.vertical, 4)
             }
             Section("学习阶段") {
-                row("全部条目", "square.grid.2x2", model.entries.count).tag(Pick.all)
+                side(.all, "全部条目", model.entries.count) { Image(systemName: "square.grid.2x2") }
                 ForEach(Stage.allCases) { s in
-                    Label { HStack { Text(s.label); Spacer(); Count(n: model.entries.filter { model.stage($0) == s }.count) } } icon: {
-                        StageDot(color: Theme.dot(s), size: 12, round: true)
-                    }.font(Theme.font(17, .bold)).tag(Pick.stage(s))
+                    side(.stage(s), s.label, model.entries.filter { model.stage($0) == s }.count) {
+                        Circle().fill(Theme.dot(s)).frame(width: 12, height: 12)
+                    }
                 }
             }
             Section("分类") {
                 ForEach(groupNames.filter { g in model.entries.contains { $0.level == g.key } }, id: \.key) { g in
-                    row(g.label, g.key == "ESSAY" ? "doc.richtext" : g.key == "COLLOC" ? "link" : "text.quote",
-                        model.entries.filter { $0.level == g.key }.count).tag(Pick.group(g.key))
+                    side(.group(g.key), g.label, model.entries.filter { $0.level == g.key }.count) {
+                        Image(systemName: g.key == "ESSAY" ? "doc.richtext" : g.key == "COLLOC" ? "link" : "text.quote")
+                    }
                 }
             }
             Section {
@@ -133,12 +137,21 @@ struct RootView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    private func row(_ t: String, _ icon: String, _ n: Int) -> some View {
-        Label { HStack { Text(t); Spacer(); Count(n: n) } } icon: { Image(systemName: icon) }.font(Theme.font(17, .bold))
+    /// A sidebar row; the picked one is drawn like a picked chip (light blue, blue text and rim) instead of
+    /// the system's dark highlight, whose white text the fixed greys couldn't follow on the iPad.
+    private func side<Icon: View>(_ p: Pick, _ t: String, _ n: Int, @ViewBuilder icon: () -> Icon) -> some View {
+        let on = (pick ?? .all) == p
+        return Button { pick = p } label: {
+            Label { HStack { Text(t); Spacer(); Text("\(n)").font(Theme.font(15, .bold)).foregroundStyle(on ? Theme.selInk : Theme.ink3) } } icon: { icon() }
+                .font(Theme.font(17, .bold)).foregroundStyle(on ? Theme.selInk : Theme.ink)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .listRowBackground(Picked(on: on))
     }
 
     private var entryList: some View {
-        List(selection: $selected) {
+        List {
             if query.trimmingCharacters(in: .whitespaces).isEmpty, case .stage(let st) = pick ?? .all, st == .review || st == .test {
                 Section { StageSummary(stage: st, onReady: { selected = $0 }) }
             }
@@ -156,7 +169,16 @@ struct RootView: View {
     }
 
     private func row(_ e: Entry) -> some View {
-        EntryRow(entry: e, color: Theme.dot(model.stage(e)), sub: sub(e)).tag(e.anchor)
+        let on = selected == e.anchor
+        return Button {
+            selected = e.anchor
+            // in portrait the list floats over the entry: put it away, as picking from a List did
+            if portrait { columns = .detailOnly }
+        } label: {
+            EntryRow(entry: e, color: Theme.dot(model.stage(e)), sub: sub(e), on: on).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .listRowBackground(Picked(on: on))
     }
 
     /// #12 · 复习中 · 试 3 · 对 2 · 明天到期
@@ -191,45 +213,36 @@ struct RootView: View {
     }
 }
 
-/// A selected row on the strong blue background (backgroundProminence .increased) turns its text
-/// white — fixed greys would vanish into it. Unfocused, the selection is a light grey and keeps them.
+/// What a picked row sits on: the light blue of a picked chip, with its blue rim.
+private struct Picked: View {
+    let on: Bool
+    var body: some View {
+        if on {
+            RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Theme.selBg)
+                .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(Theme.selEdge, lineWidth: 2))
+                .padding(.horizontal, 6).padding(.vertical, 2)
+        } else {
+            Color.clear
+        }
+    }
+}
+
 private struct EntryRow: View {
     let entry: Entry
     let color: Color
     let sub: String
-    @Environment(\.backgroundProminence) private var prominence
+    let on: Bool
     var body: some View {
-        let on = prominence == .increased
         HStack(alignment: .top, spacing: 12) {
-            StageDot(color: color, size: 12, round: false).padding(.top, 6)
+            RoundedRectangle(cornerRadius: 4).fill(color).frame(width: 12, height: 12).padding(.top, 6)
             VStack(alignment: .leading, spacing: 4) {
-                Text(entry.title).font(Theme.font(18, .heavy)).foregroundStyle(on ? .white : Theme.ink).lineLimit(2)
-                Text(plain(entry.gloss)).font(Theme.font(14, .medium)).foregroundStyle(on ? .white.opacity(0.85) : Theme.ink3).lineLimit(2)
-                Text(sub).font(Theme.font(12, .bold)).foregroundStyle(on ? .white.opacity(0.85) : Theme.ink3)
+                Text(entry.title).font(Theme.font(18, .heavy)).foregroundStyle(on ? Theme.selInk : Theme.ink).lineLimit(2)
+                Text(plain(entry.gloss)).font(Theme.font(14, .medium)).foregroundStyle(Theme.ink2).lineLimit(2)
+                Text(sub).font(Theme.font(12, .bold)).foregroundStyle(Theme.ink3)
             }
+            Spacer(minLength: 0)
         }
         .padding(.vertical, 6)
-    }
-}
-
-private struct Count: View {
-    let n: Int
-    @Environment(\.backgroundProminence) private var prominence
-    var body: some View {
-        Text("\(n)").font(Theme.font(15, .bold)).foregroundStyle(prominence == .increased ? .white.opacity(0.9) : Theme.ink3)
-    }
-}
-
-/// A stage's colour dot; on a selected row it gets a white rim, so a blue dot still shows on the blue.
-private struct StageDot: View {
-    let color: Color
-    let size: CGFloat
-    let round: Bool
-    @Environment(\.backgroundProminence) private var prominence
-    var body: some View {
-        let shape = RoundedRectangle(cornerRadius: round ? size / 2 : 4)
-        shape.fill(color).frame(width: size, height: size)
-            .overlay(shape.stroke(.white, lineWidth: prominence == .increased ? 2 : 0))
     }
 }
 
