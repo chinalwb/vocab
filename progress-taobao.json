@@ -44,6 +44,10 @@
   "c-stay-safe": {
    "s": "review",
    "t": 1793503573012
+  },
+  "s-finished-with": {
+   "s": "review",
+   "t": 1793622013890
   }
  },
  "cards": {
@@ -134,6 +138,14 @@
    "lapses": 0,
    "due": 20762,
    "t": 1793621752417
+  },
+  "s-finished-with": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20760,
+   "t": 1793622053231
   }
  },
  "newDay": 0,
@@ -993,11 +1005,44 @@
     "peek": false,
     "via": "entry",
     "ex": "Can I have the newspaper when you've finished with it?"
+   },
+   {
+    "t": 1793622013889,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Can I borrow your ruler when you've finished with it?"
+   },
+   {
+    "t": 1793622022951,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Can I have the newspaper when you've finished with it?"
+   },
+   {
+    "t": 1793622045587,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Can I have the newspaper when you've finished with it?"
+   },
+   {
+    "t": 1793622053230,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Can I borrow your ruler when you've finished with it?"
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "s-finished-with",
+   "t": 1793622037528,
+   "via": "review"
+  },
   {
    "a": "c-stay-safe",
    "t": 1793621752941,
@@ -1027,11 +1072,6 @@
    "a": "s-put-pressure-on",
    "t": 1793621585970,
    "via": "review"
-  },
-  {
-   "a": "s-finished-with",
-   "t": 1793621422675,
-   "via": "entry"
   },
   {
    "a": "s-plan-is-to",
