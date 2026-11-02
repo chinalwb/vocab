@@ -51,6 +51,8 @@ jobs:
             [ -f "$d/index.html" ] || continue
             mkdir -p "_site/$(basename "$d")"
             cp "$d/index.html" "_site/$(basename "$d")/"
+            # the iPad app (ipad/) reads a student's notes from here, like the Android app reads the root's
+            cp "$d/data.json" "$d/meta.json" "_site/$(basename "$d")/"
             # pictures the page uses (site.json "logo")
             find "$d" -maxdepth 1 \( -name '*.jpg' -o -name '*.png' -o -name '*.webp' \) -exec cp {} "_site/$(basename "$d")/" \;
           done

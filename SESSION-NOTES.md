@@ -3,6 +3,15 @@
 换电脑接着做之前先看这里:每次长会话改了什么、现在的版本、没做完的事。最新的在最上面。细节规则以 `CLAUDE.md` 为准。
 
 ---
+## 2026-11-02:iPad App(第一阶段)
+
+- 用户要一个原生 SwiftUI 的 iPad App,主要给 taobao 用(问过三种做法:可安装的网页 / WKWebView 外壳 / 原生,用户选了原生)。代码在 `ipad/`,`xcodegen` 生成工程,怎么装到 iPad 上见 `ipad/README.md`(免费 Apple ID 7 天要重新装一次)。
+- 规则照 Android 的 `SelfTest.kt` / `Model.kt` 和网页移植;存储格式和 Android 一样(`stage.json`、`selftest.json`),为以后同步 `progress-taobao.json` 做准备。
+- Pages workflow 现在把学生目录的 `data.json` / `meta.json` 也发布出去(App 启动时从 `/vocab/taobao/` 拉更新);合进 main 之前 App 只用打包进去的数据。
+- **还没做**:复习 / 考核做题(SM-2)、同步、我的笔记、学习历史、记忆曲线、文章 PDF、不再考这句 / 收藏、选词时用实体键盘筛词块、「看完每一页笔记才能自测」。只在模拟器上测过(iPad Air),还没在真机上跑。
+
+---
+
 
 ## 2026-10-15 ~ 10-16:自动升级、两步作答、桌面三栏、记忆曲线、复习这一条
 
