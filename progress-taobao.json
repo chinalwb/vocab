@@ -49,11 +49,11 @@
  "cards": {
   "s-put-pressure-on": {
    "ease": 2.5,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 0,
-   "due": 20759,
-   "t": 1793503337346
+   "due": 20762,
+   "t": 1793621622935
   },
   "s-ing-subject": {
    "ease": 1.96,
@@ -734,6 +734,13 @@
     "peek": false,
     "via": "review",
     "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
+   },
+   {
+    "t": 1793621622934,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think getting a puppy is a good plan right now, as it costs too much and it will put extra pressure on my parents."
    }
   ],
   "s-their-houses": [
@@ -852,6 +859,13 @@
     "peek": false,
     "via": "review",
     "ex": "I don't think finishing all our homework in one hour is a realistic plan, as there is too much of it."
+   },
+   {
+    "t": 1793621637042,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much."
    }
   ],
   "c-stay-safe": [
@@ -905,6 +919,11 @@
  },
  "favs": {},
  "history": [
+  {
+   "a": "s-realistic-plan",
+   "t": 1793621623599,
+   "via": "review"
+  },
   {
    "a": "s-put-pressure-on",
    "t": 1793621585970,
@@ -963,11 +982,6 @@
   {
    "a": "s-their-houses",
    "t": 1793535882650,
-   "via": "review"
-  },
-  {
-   "a": "s-realistic-plan",
-   "t": 1793535845016,
    "via": "review"
   },
   {
