@@ -168,6 +168,7 @@
 171. [the same as / different from / similar to](#same-as-different-from)
 172. [against](#against)
 173. [句子:score … from a language perspective / mark … for Language](#s-score-language)
+174. [句子:you might be interested in / of interest to you / find … interesting](#s-interested-in)
 
 ---
 
@@ -5482,3 +5483,40 @@ platform 等于 10,就代表请求来自 web,对吧?
    从语言角度,你会给下面这篇文章打几分?
 2. How would you **mark** the article below **for Language**, using the FCE assessment scale?
    按 FCE 评分标准,你会给下面这篇文章的「语言」一项打几分?
+
+---
+
+<a id="s-interested-in"></a>
+## 句子:you might be interested in / of interest to you / find … interesting
+
+- 日期:2026-11-02
+
+**我的原句:**
+
+> Here are some articles you might be interest of.
+
+**问题:**
+
+- ❌ [词形] **be interest of** —— 人作主语用形容词 + 介词 **interested in**:*interest* → *interested*,*of* → *in* → *you might be* **interested in**。
+
+**对比:interested in / of interest to**
+
+| 说法 | 主语 | 语气 | 举例 |
+|---|---|---|---|
+| **be interested in** sth | 人 | 中性 | articles you might **be interested in** |
+| **be of interest to** sb | 事物 | 正式 | articles that might **be of interest to** you |
+| **find** sth **interesting** | 人 | 口语 | articles you might **find interesting** |
+
+**要点:**
+
+- 句末以 *in* 结尾完全没问题:*articles you might be interested in*。
+- *be of interest* 和 *be of importance / be of use* 同一类:*of* + 名词,相当于形容词;*interest* 前不加冠词。
+
+**例句:**
+
+1. Here are some articles you might be **interested in**.
+   这里有几篇你可能感兴趣的文章。
+2. Here are some articles that might be **of interest to** you.
+   这里有几篇你可能会感兴趣的文章。(正式)
+3. Here are a few articles you might **find interesting**.
+   这里有几篇你可能觉得有意思的文章。(口语)
