@@ -9409,6 +9409,13 @@
     "peek": false,
     "via": "review",
     "ex": "What copy do we display for this error?"
+   },
+   {
+    "t": 1793699834914,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "What message do users see when they hit this error?"
    }
   ],
   "that-said": [
