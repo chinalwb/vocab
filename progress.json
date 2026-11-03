@@ -13654,7 +13654,7 @@
    },
    "The server was temporarily unreachable during the test run, which caused some failures.": {
     "on": false,
-    "t": 1793148021425
+    "t": 1793699512080
    },
    "The server went down intermittently while the tests were running, so a couple of runs failed.": {
     "on": false,
@@ -13796,8 +13796,8 @@
    "t": 1793619072832
   },
   "intermittent-outage": {
-   "text": "The server was briefly down while I was running the test cases just now.\n\nWe hit a transient outage on the server during the test run.",
-   "t": 1793699437746
+   "text": "The server was briefly down while I was running the test cases just now.\nWe hit a transient outage on the server during the test run.\nThe server went down intermittently while the tests were running, so a couple of runs failed.\nThe server was temporarily unreachable during the test run, which caused some failures.",
+   "t": 1793699562590
   }
  }
 }
