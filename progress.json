@@ -12957,6 +12957,20 @@
     "peek": false,
     "via": "entry",
     "ex": "How would you mark the article below for Language, using the FCE assessment scale?"
+   },
+   {
+    "t": 1793700502281,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "How would you score the following article from a language perspective?"
+   },
+   {
+    "t": 1793700523385,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How would you score the following article from a language perspective?"
    }
   ],
   "s-interested-in": [
@@ -13091,7 +13105,7 @@
  "history": [
   {
    "a": "s-score-language",
-   "t": 1793700461347,
+   "t": 1793700507787,
    "via": "review"
   },
   {
