@@ -13794,6 +13794,10 @@
   "s-score-language": {
    "text": "How would you score it?\nHow would you mark it?",
    "t": 1793619072832
+  },
+  "intermittent-outage": {
+   "text": "The server was briefly down while I was running the test cases just now.\n\nWe hit a transient outage on the server during the test run.",
+   "t": 1793699437746
   }
  }
 }
