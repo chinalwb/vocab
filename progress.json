@@ -238,8 +238,8 @@
    "t": 1792976360180
   },
   "s-rush-into-get-straight": {
-   "s": "review",
-   "t": 1792025002724
+   "s": "test",
+   "t": 1793699806059
   },
   "s-chase-for": {
    "s": "test",
@@ -13027,6 +13027,11 @@
  },
  "history": [
   {
+   "a": "s-error-message",
+   "t": 1793699806222,
+   "via": "review"
+  },
+  {
    "a": "s-rush-into-get-straight",
    "t": 1793699741049,
    "via": "review"
@@ -13150,11 +13155,6 @@
    "a": "hold-off",
    "t": 1793456273917,
    "via": "entry"
-  },
-  {
-   "a": "s-error-message",
-   "t": 1793456152514,
-   "via": "review"
   },
   {
    "a": "given-that",
