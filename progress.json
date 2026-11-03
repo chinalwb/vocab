@@ -914,10 +914,10 @@
   "s-interested-in": {
    "ease": 1.96,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 1,
-   "due": 20760,
-   "t": 1793619944665
+   "due": 20761,
+   "t": 1793700377680
   }
  },
  "newDay": 20759,
@@ -13036,6 +13036,34 @@
     "peek": false,
     "via": "entry",
     "ex": "Here are a few articles you might find interesting."
+   },
+   {
+    "t": 1793700361488,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "Here are some articles you might be interested in."
+   },
+   {
+    "t": 1793700369948,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Here are some articles you might be interested in."
+   },
+   {
+    "t": 1793700373586,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Here are some articles that might be of interest to you."
+   },
+   {
+    "t": 1793700377674,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Here are a few articles you might find interesting."
    }
   ]
  },
@@ -13054,6 +13082,16 @@
   }
  },
  "history": [
+  {
+   "a": "t-write-for-new-pms",
+   "t": 1793700378278,
+   "via": "review"
+  },
+  {
+   "a": "s-interested-in",
+   "t": 1793700364974,
+   "via": "review"
+  },
   {
    "a": "s-testflight",
    "t": 1793699967925,
@@ -13092,11 +13130,6 @@
   {
    "a": "jab-chips-of-ice",
    "t": 1793667752166,
-   "via": "entry"
-  },
-  {
-   "a": "s-interested-in",
-   "t": 1793664581917,
    "via": "entry"
   },
   {
@@ -13172,11 +13205,6 @@
   {
    "a": "t-hold-out-for",
    "t": 1793507086733,
-   "via": "entry"
-  },
-  {
-   "a": "t-write-for-new-pms",
-   "t": 1793456319169,
    "via": "entry"
   },
   {
