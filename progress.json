@@ -9075,13 +9075,6 @@
   ],
   "s-error-message": [
    {
-    "t": 1792042828110,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "What copy do we display for this error?"
-   },
-   {
     "t": 1792042887707,
     "ok": true,
     "peek": false,
@@ -9423,6 +9416,13 @@
     "peek": false,
     "via": "review",
     "ex": "What message do users see when they hit this error?"
+   },
+   {
+    "t": 1793699948511,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "What's the error message shown to users in this case?"
    }
   ],
   "that-said": [
