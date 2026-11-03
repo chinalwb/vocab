@@ -314,8 +314,8 @@
    "t": 1793149434924
   },
   "t-write-for-new-pms": {
-   "s": "review",
-   "t": 1792411375565
+   "s": "test",
+   "t": 1793700448026
   },
   "hardly-anyone": {
    "s": "test",
@@ -13090,6 +13090,11 @@
  },
  "history": [
   {
+   "a": "s-score-language",
+   "t": 1793700461347,
+   "via": "review"
+  },
+  {
    "a": "t-write-for-new-pms",
    "t": 1793700378278,
    "via": "review"
@@ -13142,11 +13147,6 @@
   {
    "a": "against",
    "t": 1793619405674,
-   "via": "entry"
-  },
-  {
-   "a": "s-score-language",
-   "t": 1793619147586,
    "via": "entry"
   },
   {
