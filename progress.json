@@ -825,11 +825,11 @@
   },
   "t-write-for-new-pms": {
    "ease": 1.3,
-   "interval": 1,
-   "reps": 0,
-   "lapses": 6,
-   "due": 20761,
-   "t": 1793700418517
+   "interval": 4,
+   "reps": 3,
+   "lapses": 5,
+   "due": 20764,
+   "t": 1793700447099
   },
   "push-back": {
    "ease": 2.5,
@@ -11609,7 +11609,7 @@
    },
    {
     "t": 1793700418512,
-    "ok": false,
+    "ok": true,
     "peek": false,
     "via": "review",
     "ex": ""
