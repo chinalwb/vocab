@@ -626,10 +626,10 @@
   "stall": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 5,
-   "due": 20760,
-   "t": 1793618126148
+   "due": 20761,
+   "t": 1793699319549
   },
   "tinker": {
    "ease": 2.5,
@@ -666,10 +666,10 @@
   "make-the-most-of": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 6,
-   "due": 20760,
-   "t": 1793618190040
+   "due": 20761,
+   "t": 1793699343500
   },
   "that-said": {
    "ease": 1.3,
@@ -3640,27 +3640,6 @@
   ],
   "stall": [
    {
-    "t": 1791851164314,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The car stalled at the intersection and wouldn't restart."
-   },
-   {
-    "t": 1791851201842,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "(航空语境) The plane stalled and lost altitude rapidly."
-   },
-   {
-    "t": 1791851262924,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "She bought fresh vegetables from a stall at the farmers' market."
-   },
-   {
     "t": 1791851298447,
     "ok": true,
     "peek": false,
@@ -3985,6 +3964,27 @@
    {
     "t": 1793618126147,
     "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "We booked seats in the stalls for tonight's show."
+   },
+   {
+    "t": 1793699306995,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "He's just stalling — he doesn't want to give us an answer."
+   },
+   {
+    "t": 1793699314496,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "(航空语境) The plane stalled and lost altitude rapidly."
+   },
+   {
+    "t": 1793699319543,
+    "ok": true,
     "peek": false,
     "via": "review",
     "ex": "We booked seats in the stalls for tonight's show."
@@ -7460,27 +7460,6 @@
   ],
   "make-the-most-of": [
    {
-    "t": 1791980443267,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "Make the most of your twenties — you'll never get this time back."
-   },
-   {
-    "t": 1791980471034,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "How can we make the best use of the budget we've been given?"
-   },
-   {
-    "t": 1791980498843,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "How can we make the best use of the budget we've been given?"
-   },
-   {
     "t": 1791980519156,
     "ok": true,
     "peek": false,
@@ -7805,6 +7784,27 @@
    {
     "t": 1793618190039,
     "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "This layout makes the best use of the limited screen space."
+   },
+   {
+    "t": 1793699326602,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Make the most of your twenties — you'll never get this time back."
+   },
+   {
+    "t": 1793699335684,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How can we make the best use of the budget we've been given?"
+   },
+   {
+    "t": 1793699343493,
+    "ok": true,
     "peek": false,
     "via": "review",
     "ex": "This layout makes the best use of the limited screen space."
@@ -9709,20 +9709,6 @@
   ],
   "intermittent-outage": [
    {
-    "t": 1792049137980,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The server was temporarily unreachable during the test run, which caused some failures."
-   },
-   {
-    "t": 1792049421646,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "There was a brief service interruption on the server just now while the test cases were executing."
-   },
-   {
     "t": 1792049555654,
     "ok": true,
     "peek": false,
@@ -10057,6 +10043,20 @@
     "peek": false,
     "via": "review",
     "ex": "There was a brief service interruption on the server just now while the test cases were executing."
+   },
+   {
+    "t": 1793699352257,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The server was briefly down while I was running the test cases just now."
+   },
+   {
+    "t": 1793699362676,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "We hit a transient outage on the server during the test run."
    }
   ],
   "defer": [
@@ -12971,6 +12971,21 @@
  },
  "history": [
   {
+   "a": "intermittent-outage",
+   "t": 1793699371017,
+   "via": "entry"
+  },
+  {
+   "a": "make-the-most-of",
+   "t": 1793699320135,
+   "via": "review"
+  },
+  {
+   "a": "stall",
+   "t": 1793699300218,
+   "via": "review"
+  },
+  {
    "a": "jab-chips-of-ice",
    "t": 1793667752166,
    "via": "entry"
@@ -13038,21 +13053,6 @@
   {
    "a": "s-testflight",
    "t": 1793618194234,
-   "via": "review"
-  },
-  {
-   "a": "make-the-most-of",
-   "t": 1793618149220,
-   "via": "review"
-  },
-  {
-   "a": "stall",
-   "t": 1793618096757,
-   "via": "review"
-  },
-  {
-   "a": "intermittent-outage",
-   "t": 1793617908997,
    "via": "review"
   },
   {
