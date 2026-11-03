@@ -918,6 +918,14 @@
    "lapses": 1,
    "due": 20761,
    "t": 1793700377680
+  },
+  "s-score-language": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20761,
+   "t": 1793700546145
   }
  },
  "newDay": 20759,
@@ -12971,6 +12979,13 @@
     "peek": false,
     "via": "review",
     "ex": "How would you score the following article from a language perspective?"
+   },
+   {
+    "t": 1793700546141,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "How would you mark the article below for Language, using the FCE assessment scale?"
    }
   ],
   "s-interested-in": [
