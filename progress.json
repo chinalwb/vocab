@@ -9709,20 +9709,6 @@
   ],
   "intermittent-outage": [
    {
-    "t": 1792049555654,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "There was a brief service interruption on the server just now while the test cases were executing."
-   },
-   {
-    "t": 1792165028821,
-    "ok": false,
-    "peek": false,
-    "via": "review",
-    "ex": "The server was briefly down while I was running the test cases just now."
-   },
-   {
     "t": 1792165093100,
     "ok": false,
     "peek": false,
@@ -10054,6 +10040,20 @@
    {
     "t": 1793699362676,
     "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "We hit a transient outage on the server during the test run."
+   },
+   {
+    "t": 1793699624451,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The server was briefly down while I was running the test cases just now."
+   },
+   {
+    "t": 1793699631406,
+    "ok": true,
     "peek": false,
     "via": "review",
     "ex": "We hit a transient outage on the server during the test run."
@@ -12972,8 +12972,8 @@
  "history": [
   {
    "a": "intermittent-outage",
-   "t": 1793699371017,
-   "via": "entry"
+   "t": 1793699617593,
+   "via": "review"
   },
   {
    "a": "make-the-most-of",
@@ -13649,12 +13649,12 @@
   },
   "intermittent-outage": {
    "There was a brief service interruption on the server just now while the test cases were executing.": {
-    "on": false,
-    "t": 1793148023041
+    "on": true,
+    "t": 1793699590697
    },
    "The server was temporarily unreachable during the test run, which caused some failures.": {
-    "on": false,
-    "t": 1793699512080
+    "on": true,
+    "t": 1793699602623
    },
    "The server went down intermittently while the tests were running, so a couple of runs failed.": {
     "on": false,
