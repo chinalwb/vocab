@@ -4856,6 +4856,13 @@
     "peek": false,
     "via": "entry",
     "ex": "I'd say iOS handles this better: beta builds live in a dedicated app, TestFlight, so testers never confuse them with the production version from the App Store."
+   },
+   {
+    "t": 1793875395292,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I'd say iOS handles this better: beta builds live in a dedicated app, TestFlight, so testers never confuse them with the production version from the App Store."
    }
   ],
   "t-making-some-progress": [
