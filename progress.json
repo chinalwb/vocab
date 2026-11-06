@@ -934,10 +934,18 @@
   "s-score-language": {
    "ease": 1.3,
    "interval": 1,
-   "reps": 0,
+   "reps": 1,
    "lapses": 3,
-   "due": 20763,
-   "t": 1793839731464
+   "due": 20764,
+   "t": 1793936504868
+  },
+  "against": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20764,
+   "t": 1793936520914
   }
  },
  "newDay": 20762,
@@ -13115,6 +13123,27 @@
     "peek": false,
     "via": "entry",
     "ex": "Please check the numbers against last month's report."
+   },
+   {
+    "t": 1793936510725,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Please check the numbers against last month's report."
+   },
+   {
+    "t": 1793936514940,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Most of the team voted against the plan."
+   },
+   {
+    "t": 1793936520911,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We're working against the clock to ship by Friday."
    }
   ],
   "s-score-language": [
@@ -13194,6 +13223,20 @@
     "peek": false,
     "via": "entry",
     "ex": "How would you score the following article from a language perspective?"
+   },
+   {
+    "t": 1793936495402,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How would you score the following article from a language perspective?"
+   },
+   {
+    "t": 1793936504864,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How would you mark the article below for Language, using the FCE assessment scale?"
    }
   ],
   "s-interested-in": [
@@ -13373,6 +13416,13 @@
     "peek": false,
     "via": "entry",
     "ex": "I got confused about the time zones."
+   },
+   {
+    "t": 1793936528988,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I often confuse \"affect\" with \"effect\"."
    }
   ]
  },
@@ -13391,6 +13441,16 @@
   }
  },
  "history": [
+  {
+   "a": "confuse",
+   "t": 1793936521512,
+   "via": "review"
+  },
+  {
+   "a": "against",
+   "t": 1793936505559,
+   "via": "review"
+  },
   {
    "a": "s-score-language",
    "t": 1793936405085,
@@ -13434,16 +13494,6 @@
   {
    "a": "hesitate-hesitant",
    "t": 1793878912814,
-   "via": "entry"
-  },
-  {
-   "a": "confuse",
-   "t": 1793839789562,
-   "via": "entry"
-  },
-  {
-   "a": "against",
-   "t": 1793839778860,
    "via": "entry"
   },
   {
