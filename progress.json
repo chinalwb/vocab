@@ -954,6 +954,14 @@
    "lapses": 0,
    "due": 20764,
    "t": 1793936603306
+  },
+  "hesitate-hesitant": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20764,
+   "t": 1793936663851
   }
  },
  "newDay": 20762,
@@ -13043,6 +13051,13 @@
     "peek": false,
     "via": "review",
     "ex": "He was hesitant about taking the job."
+   },
+   {
+    "t": 1793936663849,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "The team is hesitant to switch to a new tool."
    }
   ],
   "since-vs-from-last-week": [
