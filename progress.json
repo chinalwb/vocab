@@ -946,6 +946,14 @@
    "lapses": 0,
    "due": 20764,
    "t": 1793936520914
+  },
+  "confuse": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20764,
+   "t": 1793936603306
   }
  },
  "newDay": 20762,
@@ -13021,6 +13029,20 @@
     "peek": false,
     "via": "entry",
     "ex": "I hesitated to merge it without a review."
+   },
+   {
+    "t": 1793936614870,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We hesitated over whether to ship it on Friday."
+   },
+   {
+    "t": 1793936629103,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "He was hesitant about taking the job."
    }
   ],
   "since-vs-from-last-week": [
@@ -13423,6 +13445,20 @@
     "peek": false,
     "via": "review",
     "ex": "I often confuse \"affect\" with \"effect\"."
+   },
+   {
+    "t": 1793936591893,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Testers never confuse beta builds with the production version."
+   },
+   {
+    "t": 1793936603302,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The new settings page confuses users."
    }
   ]
  },
@@ -13441,6 +13477,11 @@
   }
  },
  "history": [
+  {
+   "a": "hesitate-hesitant",
+   "t": 1793936604313,
+   "via": "review"
+  },
   {
    "a": "confuse",
    "t": 1793936521512,
@@ -13489,11 +13530,6 @@
   {
    "a": "recon",
    "t": 1793879027792,
-   "via": "entry"
-  },
-  {
-   "a": "hesitate-hesitant",
-   "t": 1793878912814,
    "via": "entry"
   },
   {
