@@ -4895,6 +4895,13 @@
     "peek": false,
     "via": "entry",
     "ex": "When it comes to installing betas through the regular Play Store, I'd say the iOS ecosystem offers a better flow by keeping beta builds in a dedicated app, TestFlight."
+   },
+   {
+    "t": 1793936245505,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "When it comes to installing betas through the regular Play Store, I'd say the iOS ecosystem offers a better flow by keeping beta builds in a dedicated app, TestFlight."
    }
   ],
   "t-making-some-progress": [
