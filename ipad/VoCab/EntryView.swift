@@ -12,6 +12,11 @@ struct EntryView: View {
     @Environment(AppModel.self) private var model
     @State private var quizzing = false
     @State private var full = false
+    @State private var page = 0
+    /// the notes pages a new entry still has to show before 自测这条 (nil once they're all seen)
+    @State private var unseen: Set<Int>?
+    @State private var flash: String?
+    @AppStorage("notesAll") private var notesAll = false
     private let speaker = Speaker.shared
 
     private var stage: Stage? { model.stage(entry) }
@@ -34,7 +39,23 @@ struct EntryView: View {
                 }
             }
         }
-        .onAppear { quizzing = stage == .test || UserDefaults.standard.bool(forKey: "quiz") }
+        .onAppear {
+            quizzing = stage == .test || UserDefaults.standard.bool(forKey: "quiz")
+            model.visit(entry, via: "entry")
+            page = UserDefaults.standard.integer(forKey: "page")   // `-page N` (simulator testing)
+            // a new entry shows 自测这条 once every page of its notes has been seen (用户 2026-11-01);
+            // 记忆 / 我的笔记 don't count
+            if model.needsReading(entry) { unseen = Set(1..<entry.sections.count); if notesAll { saw(all: true) } }
+        }
+        .onChange(of: page) { saw(page) }
+        .onChange(of: notesAll) { if notesAll { saw(all: true) } }
+        .overlay(alignment: .bottom) {
+            if let flash {
+                Text(flash).font(Theme.font(16, .bold)).foregroundStyle(Theme.ground)
+                    .padding(.horizontal, 18).padding(.vertical, 12).background(Capsule().fill(Theme.ink))
+                    .padding(.bottom, 90).transition(.opacity)
+            }
+        }
         .onChange(of: entry.anchor) { quizzing = model.stage(entry) == .test; speaker.stop() }
         .onDisappear { speaker.stop() }
         .environment(\.openURL, OpenURLAction { url in
@@ -70,7 +91,7 @@ struct EntryView: View {
 
     private var card: some View {
         ZStack {
-            NotesCard(entry: entry, reading: readingSentence) {
+            NotesCard(entry: entry, reading: readingSentence, extras: extras, unseen: unseen ?? [], page: $page) {
                 Button { withAnimation(.snappy(duration: 0.3)) { full.toggle() } } label: {
                     Image(systemName: full ? "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right")
                         .font(.system(size: 16, weight: .bold)).frame(width: 34, height: 34)
@@ -98,26 +119,75 @@ struct EntryView: View {
         return plain(entry.quizExamples[k].en)
     }
 
+    /// 记忆 once the entry has a graded day or is past 学习中; 我的笔记 always.
+    private var extras: [NotesExtra] {
+        let memory = !model.memory(entry).isEmpty || (stage != nil && stage != .learn)
+        return (memory ? [.memory] : []) + [.note]
+    }
+
+    private func saw(_ k: Int = 0, all: Bool = false) {
+        guard var u = unseen else { return }
+        if all { u = [] } else { u.remove(k) }
+        if u.isEmpty { unseen = nil; model.markSeen(entry) } else { unseen = u }
+    }
+
+    private func say(_ t: String) {
+        withAnimation { flash = t }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) { withAnimation { if flash == t { flash = nil } } }
+    }
+
     private func flip(_ on: Bool) { withAnimation(.easeInOut(duration: 0.35)) { quizzing = on } }
 
     private var foot: some View {
         HStack(spacing: 12) {
-            Text(hint).font(Theme.font(15, .semibold)).foregroundStyle(Theme.ink2)
+            Text(unseen.map { "看完每一页笔记就能自测(还有 \($0.count) 页没看,标了圆点)" } ?? hint)
+                .font(Theme.font(15, .semibold)).foregroundStyle(Theme.ink2)
             Spacer()
-            Button(entry.isEssay ? "选词练习 →" : "自测这条 →") { speaker.stop(); flip(true) }.buttonStyle(LedgeButtonStyle())
+            if let u = unseen {
+                if let ahead = u.filter({ $0 > page }).min() {
+                    Button("看下页 ›") { withAnimation(.snappy) { page = ahead } }.buttonStyle(LedgeButtonStyle())
+                } else {
+                    // greyed out, not disabled: a tap says why
+                    Button("自测这条 →") { say("还有 \(u.count) 页笔记没看(标了圆点),看完就能自测") }
+                        .buttonStyle(LedgeButtonStyle(face: Theme.rule, edge: Theme.rule, ink: Theme.ink3))
+                }
+            } else {
+                footButtons
+            }
         }
         .padding(.horizontal, 16).padding(.top, 10).padding(.bottom, 8)
+    }
+
+    @ViewBuilder private var footButtons: some View {
+            if let s = stage, s != .learn, model.advanceReady(entry), let nx = s.next {
+                // 移到 X = the move and the next entry; the track above only moves
+                Button("移到\(nx.short)") { model.move(entry, to: nx); onNext?() }.buttonStyle(LedgeButtonStyle(outline: true))
+            }
+            if stage == .review && model.reviewDue(entry) {
+                // 复习这一条: a run of one (its notes just read), which grades SM-2 — the page's 自测 never does
+                Button("复习这一条 →") { speaker.stop(); model.run = RunSession(stage: .review, queue: [entry.anchor], studied: true) }
+                    .buttonStyle(LedgeButtonStyle())
+            } else {
+                Button(entry.isEssay ? "选词练习 →" : "自测这条 →") { speaker.stop(); flip(true) }.buttonStyle(LedgeButtonStyle())
+            }
     }
 
     private var hint: String {
         if entry.isEssay { return "共 \(entry.quizExamples.count) 句 · 只选词,选对就算这句答对" }
         guard let s = stage else { return "" }
-        guard let next = s.next else { return "已掌握" }
-        guard let r = remaining(model.attempts(entry), since: model.since(entry), questions: entry.questionKeys) else {
-            return "这条没有例句,自己判断写没写对"
+        guard let next = s.next else { return "已掌握,不再进复习和考核" }
+        let qs = model.questions(entry)
+        let left = remaining(model.attempts(entry), since: model.since(entry), questions: qs)
+        if s == .review {
+            // and the SM-2 streak; then a run moves it
+            let more = promoteReps - model.reps(entry)
+            let todo = [(left ?? 0) > 0 ? (entry.level == "SELFTEST" ? "答对这道题" : "再答对 \(left!) 句") : nil,
+                        more > 0 ? "复习里再连续答对 \(more) 次" : nil].compactMap { $0 }
+            return todo.isEmpty ? "都做到了,可以移到\(next.short)" : todo.joined(separator: ",") + ",就自动移到\(next.short)"
         }
-        if r > 0 { return "再答对 \(r) 句可移到\(next.short)" }
-        return s == .review ? "这一阶段的题都答对过了,可以在上面移到考核" : "这一阶段的题都答对过了"
+        guard let r = left else { return "这条没有例句,自己判断写没写对" }
+        if r > 0 { return entry.level == "SELFTEST" ? "答对这道题可移到\(next.short)" : "再答对 \(r) 句可移到\(next.short)" }
+        return "题都答对过了,可以移到\(next.short)"
     }
 }
 

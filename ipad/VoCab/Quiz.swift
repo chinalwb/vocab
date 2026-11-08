@@ -81,8 +81,6 @@ extension Entry {
         return ""
     }
 
-    /// The questions that must each be answered right to move on: plain English, or "" for a 自测题.
-    var questionKeys: [String] { level == "SELFTEST" ? [""] : quizExamples.map { plain($0.en) } }
 
     /// What 🔊 next to the title reads: the headword, or a 自测题's first answer.
     var speakText: String {

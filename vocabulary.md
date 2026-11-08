@@ -169,6 +169,7 @@
 172. [against](#against)
 173. [句子:score … from a language perspective / mark … for Language](#s-score-language)
 174. [句子:you might be interested in / of interest to you / find … interesting](#s-interested-in)
+175. [句子:any errors / spot an error](#s-any-errors-spot)
 
 ---
 
@@ -1664,6 +1665,8 @@ BroadVision 曾是互联网泡沫(dot-com bubble)时代最具代表性的明星�
    架子上随便拿一本都行。
 
 **判断技巧:** 问自己是在问"有没有一批/一些(不管几个)",还是在说"随便哪一个单独拿出来都成立"——前者用复数(日常问句/否定句里 90% 都是这种),后者才用单数。
+
+**相关条目:** [句子:any errors / spot an error](#s-any-errors-spot) —— 请人检查句子时,通常问有没有 any errors。
 
 ---
 
@@ -5520,3 +5523,31 @@ platform 等于 10,就代表请求来自 web,对吧?
    这里有几篇你可能会感兴趣的文章。(正式)
 3. Here are a few articles you might **find interesting**.
    这里有几篇你可能觉得有意思的文章。(口语)
+
+---
+
+<a id="s-any-errors-spot"></a>
+## 句子:any errors / spot an error
+
+- 日期:2026-11-08
+- 掌握:会写
+
+**我的原句:**
+
+> Cool. Can you find any error in this sentence?
+
+**问题:**
+
+- ✅ **any error** —— 意思清楚,日常使用完全够用;这里泛问有没有错误,通常用复数 **any errors**,单数并非语法错误。
+
+**更地道的说法:**
+
+1. Cool. Can you spot any errors in this sentence?
+   好的。你能看出这句话里有什么错误吗?
+
+**涉及的搭配:**
+
+- **any errors** —— 有没有错误,数量不确定。
+- **spot an error** —— 发现、看出错误;原句的 **find** 也正确。
+
+**相关条目:** [语法笔记:any 后面用单数还是复数](#any-singular-plural) —— 对比 any 搭配可数名词单数、复数的用法。

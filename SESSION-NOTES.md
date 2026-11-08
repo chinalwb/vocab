@@ -3,6 +3,25 @@
 换电脑接着做之前先看这里:每次长会话改了什么、现在的版本、没做完的事。最新的在最上面。细节规则以 `CLAUDE.md` 为准。
 
 ---
+## 2026-11-02:iPad App(真机 + 第三阶段)
+
+- **装到了真机**(taobao 的 iPad Air 4,用户的免费 Personal Team `H5HH6LS79A`;team 只在命令行传,不写进 project.yml)。命令:`xcodebuild … -destination 'id=00008101-001D55202E01001E' -allowProvisioningUpdates DEVELOPMENT_TEAM=H5HH6LS79A build`,再 `xcrun devicectl device install app --device 5492416E-66AB-4CA1-8246-ACFCBBD5B7CB build/Build/Products/Debug-iphoneos/VoCab.app`。免费账号 7 天后要重装。**同步用户试过,没问题。**
+- 真机上改的:朗读音色选择(设置 → 朗读);App 图标(`ipad/tools/make_icon.py` 画的,绿底白卡片 Aa + 蓝色 ✓);选中的行改成浅蓝底蓝字(原来系统深蓝高亮下文字看不清);答题纸的词块和「显示答案」固定在页面底部。
+- **第三阶段**(用户点名做这五项,其余先放着):「看完每一页笔记才能自测」(只存 iPad,`seen.json`)、学习历史页面(左栏「其他」)、我的笔记、记忆曲线(`Extras.swift`)、长按例句的菜单(复制 / 收藏 / 不再考这句)。⭐ 和我的笔记现在双向同步;阅读的 `readsHidden` 仍然原样带着。
+- 用户说 iPad 自带的音色都不好听:建议先下载 Premium 音色(Ava / Zoe);还不行就做「预生成神经网络音频」(edge-tts 或 Kokoro),还没定。
+- **还没做**:文章 PDF、实体键盘筛词块、更好的音色。
+
+---
+## 2026-11-02:iPad App(第二阶段:复习 / 考核做题 + 同步)
+
+- **复习 / 考核**:左栏点「复习中 / 考核中」,中间是概况卡(大数字、开始按钮、能移到下一阶段的提示)+ 按原因分组的列表(复习:今天到期 / 新加入 / 以后到期;考核:没做过 / 上次没对 / 上次答对)。做题是全屏(`RunView.swift`),规则照网页 `renderQuizCard()`:复习先看一遍笔记,每条最多 3 句(`runSentences`),揭晓前不显示词条名,最后一句后按整条结果给 SM-2 打一次分;连续答对 3 次 + 例句都答对过 → 下一条时自动移到考核;考核答错 → 退回复习;完成页可以撤销移动;算我对会重算分数。条目页:复习阶段、今天到期的条目是「复习这一条 →」;复习 / 考核阶段题都答对过时卡片底部有「移到 X」。
+- **答题纸拆成共用的 `AnswerSheet.swift`**,条目页自测(`QuizView`)和做题共用。
+- **同步**(`Sync.swift`):设置 → 同步到 GitHub,taobao 自己填 token(存 iPad 钥匙串,我不经手)。和网页同一个 `progress-taobao.json`、同样的合并规则:进度 / SM-2 卡新者胜、自测记录并集(原文不上传)、学习历史合并;不再考这句从同步读进来(iPad 上还不能设置);⭐、我的笔记、阅读原样带着,不会被 iPad 丢掉。时机:启动、回到前台拉一次,改动后 15 秒推,切到后台立即推。
+- 新文件:`Review.swift`(SM-2、`dayNo()`、学习历史、`RunSession`)、`AnswerSheet.swift`、`RunView.swift`、`Sync.swift`。调试参数 `-pick review`、`-run review|test`。
+- **验证**:模拟器里看过复习列表、复习的「先看一遍」、考核做题页;对过 GitHub 上 `progress-taobao.json` 的字段格式。**同步没有真正跑过**(要 taobao 的 token),第一次连上后要看一下网页那边进度对不对。
+- **还没做**:学习历史 / 我的笔记 / 记忆曲线的页面、文章 PDF、在 iPad 上设「不再考这句」和 ⭐、实体键盘筛词块、「看完每一页笔记才能自测」;真机没测。
+
+---
 ## 2026-11-02:iPad App(第一阶段)
 
 - 用户要一个原生 SwiftUI 的 iPad App,主要给 taobao 用(问过三种做法:可安装的网页 / WKWebView 外壳 / 原生,用户选了原生)。代码在 `ipad/`,`xcodegen` 生成工程,怎么装到 iPad 上见 `ipad/README.md`(免费 Apple ID 7 天要重新装一次)。

@@ -18,14 +18,29 @@ Each build runs `build.py --src users/taobao` and bundles the notes, so it works
 it also fetches `https://chinalwb.github.io/vocab/taobao/meta.json` / `data.json` (published by
 the Pages workflow) and picks up new entries without a reinstall.
 
-## What's in it (phase 1)
+## What's in it
 
-Browse (sidebar: stages and groups; search, `#12`), the entry page (four-stage track, notes as
+Phase 1: browse (sidebar: stages and groups; search, `#12`), the entry page (four-stage track, notes as
 cards or all at once, 🔊), 自测 (① 选词 → ② 打字, fill in only the **bold** part, 考核 types the
 whole sentence, 算我对, 打乱, 下一句 / 下一条, 学习中 → 复习 by itself), essays (选词 only,
 朗读全文 with the pause from 设置, 中英 / 英 / 中).
 
-Not yet: 复习 / 考核 runs with SM-2, 同步 with `progress-taobao.json`, 我的笔记, 学习历史, 记忆曲线,
-essay PDF, 不再考这句 / ⭐. Progress is kept on the iPad only until 同步 is ported.
+Also: 设置 → 朗读音色 picks any US / UK English voice on the iPad (自动 = the best US one).
 
-Testing in the simulator: `-open <anchor>` (and `-quiz YES`) as launch arguments open an entry directly.
+Phase 2: the 复习 / 考核 lists (grouped by why each entry is there, a summary card with 开始复习 /
+开始考核) and full-screen runs with SM-2 — 先看一遍 → 翻面做题, up to 3 sentences per entry, 复习 → 考核
+by itself after 3 right in a row, a 考核 miss back to 复习, 完成 with 撤销移动; 复习这一条 on an entry
+due today. 同步 with `progress-taobao.json` (设置 → 同步到 GitHub, taobao's own fine-grained token, kept
+in the Keychain): stages, SM-2 cards, 自测 results (never the text), 学习历史; 不再考这句 is read from it.
+⭐, 我的笔记 and 阅读 are carried through untouched.
+
+Phase 3: the entry's notes end with 记忆 (the estimated forgetting curve; touch it for a day's estimate) and
+我的笔记 (saves as you type, synced); a new entry shows 自测这条 only once every notes page has been seen
+(dots on the unread tabs, 看下页 ›); 学习历史 in the sidebar (by day, 清空 asks twice); long-press an example
+for 复制 · 收藏 ⭐ · 不再考这句 (an asked example's number sits in a solid dot, hollow once left out). ⭐ and
+我的笔记 now sync both ways; 阅读 is still carried through untouched.
+
+Not yet: essay PDF, hardware-keyboard chip filtering, pre-generated neural voices.
+
+Testing in the simulator, as launch arguments: `-open <anchor>` (and `-quiz YES`) opens an entry;
+`-pick review` (or `history`) shows that list; `-page N` opens the entry's Nth notes page; `-run review` / `-run test` starts its run.
