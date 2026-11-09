@@ -1564,6 +1564,11 @@
  "favs": {},
  "history": [
   {
+   "a": "a-iceland",
+   "t": 1794205885704,
+   "via": "entry"
+  },
+  {
    "a": "s-go-to-look-at",
    "t": 1794205814273,
    "via": "entry"
@@ -1586,11 +1591,6 @@
   {
    "a": "s-anything-spectacular",
    "t": 1794205713913,
-   "via": "entry"
-  },
-  {
-   "a": "a-iceland",
-   "t": 1794202369947,
    "via": "entry"
   },
   {
