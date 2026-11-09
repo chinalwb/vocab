@@ -968,29 +968,6 @@
  "newToday": 0,
  "resetAt": 0,
  "attempts": {
-  "t-iphone-or-android": [
-   {
-    "t": 1791504422860,
-    "ok": false,
-    "peek": false,
-    "via": "review",
-    "ex": ""
-   },
-   {
-    "t": 1791552120106,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791683789209,
-    "ok": true,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
   "t-not-crash-like-emulator": [
    {
     "t": 1791465970944,
@@ -1134,6 +1111,29 @@
     "ok": true,
     "peek": false,
     "via": "entry",
+    "ex": ""
+   }
+  ],
+  "t-iphone-or-android": [
+   {
+    "t": 1791504422860,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": ""
+   },
+   {
+    "t": 1791552120106,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791683789209,
+    "ok": true,
+    "peek": false,
+    "via": "selftest",
     "ex": ""
    }
   ],
@@ -1670,6 +1670,167 @@
     "ex": ""
    }
   ],
+  "alibi": [
+   {
+    "t": 1791631268183,
+    "ok": false,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   },
+   {
+    "t": 1791633485875,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633626559,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633686317,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633714240,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633738049,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633769583,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633796963,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633823168,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633851993,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633884198,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633906616,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   }
+  ],
+  "expect": [
+   {
+    "t": 1791631337855,
+    "ok": false,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   },
+   {
+    "t": 1791800537816,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": "We don't expect to see any performance impact."
+   },
+   {
+    "t": 1791800584930,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": "We expect the migration to take about an hour."
+   },
+   {
+    "t": 1791800593046,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": "That function is expected to work correctly after the refactor."
+   }
+  ],
+  "t-wrong-color-blend": [
+   {
+    "t": 1791631611612,
+    "ok": false,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   }
+  ],
+  "t-every-choice-energy": [
+   {
+    "t": 1791631939223,
+    "ok": true,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   }
+  ],
+  "t-overthink-drained": [
+   {
+    "t": 1791631957902,
+    "ok": false,
+    "peek": true,
+    "via": "selftest",
+    "ex": ""
+   }
+  ],
+  "t-exhausted-before-start": [
+   {
+    "t": 1791632054501,
+    "ok": false,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   }
+  ],
+  "t-agonize-over": [
+   {
+    "t": 1791632071835,
+    "ok": false,
+    "peek": true,
+    "via": "selftest",
+    "ex": ""
+   }
+  ],
   "bakery": [
    {
     "t": 1791684421484,
@@ -1704,7 +1865,7 @@
     "ok": false,
     "peek": true,
     "via": "entry",
-    "ex": ""
+    "ex": "There's a bakery around the corner that sells fresh bread every morning."
    },
    {
     "t": 1791869652733,
@@ -2174,167 +2335,6 @@
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": ""
-   }
-  ],
-  "alibi": [
-   {
-    "t": 1791631268183,
-    "ok": false,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   },
-   {
-    "t": 1791633485875,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633626559,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633686317,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633714240,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633738049,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633769583,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633796963,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633823168,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633851993,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633884198,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633906616,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   }
-  ],
-  "expect": [
-   {
-    "t": 1791631337855,
-    "ok": false,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   },
-   {
-    "t": 1791800537816,
-    "ok": false,
-    "peek": true,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791800584930,
-    "ok": false,
-    "peek": true,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791800593046,
-    "ok": false,
-    "peek": true,
-    "via": "entry",
-    "ex": ""
-   }
-  ],
-  "t-wrong-color-blend": [
-   {
-    "t": 1791631611612,
-    "ok": false,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
-  "t-every-choice-energy": [
-   {
-    "t": 1791631939223,
-    "ok": true,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
-  "t-overthink-drained": [
-   {
-    "t": 1791631957902,
-    "ok": false,
-    "peek": true,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
-  "t-exhausted-before-start": [
-   {
-    "t": 1791632054501,
-    "ok": false,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
-  "t-agonize-over": [
-   {
-    "t": 1791632071835,
-    "ok": false,
-    "peek": true,
-    "via": "selftest",
     "ex": ""
    }
   ],
@@ -3092,28 +3092,28 @@
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "Android users can message iOS users, and vice versa."
    },
    {
     "t": 1791803616539,
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "Some people work better in the morning, others vice versa."
    },
    {
     "t": 1791803637958,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "Android users can message iOS users, and vice versa."
    },
    {
     "t": 1791803662094,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "Some people work better in the morning, others vice versa."
    },
    {
     "t": 1791810798116,
@@ -3164,56 +3164,56 @@
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "When you set the price, don't forget to factor in the payment fees."
    },
    {
     "t": 1791803854800,
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "The estimate doesn't factor in the cost of free users."
    },
    {
     "t": 1791803924148,
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "We need to factor in the risk of delays when we plan the release."
    },
    {
     "t": 1791803965341,
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "Once you factor in the commute, the cheaper apartment isn't really cheaper."
    },
    {
     "t": 1791804055482,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "When you set the price, don't forget to factor in the payment fees."
    },
    {
     "t": 1791804081649,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "The estimate doesn't factor in the cost of free users."
    },
    {
     "t": 1791804139907,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "We need to factor in the risk of delays when we plan the release."
    },
    {
     "t": 1791804168296,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "Once you factor in the commute, the cheaper apartment isn't really cheaper."
    },
    {
     "t": 1791810744095,
@@ -3257,7 +3257,7 @@
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": ""
+    "ex": "This is the first time I've used Compose in production."
    },
    {
     "t": 1791810897707,
@@ -12337,59 +12337,6 @@
     "ex": "It's likely to rain."
    }
   ],
-  "endowed-with": [
-   {
-    "t": 1793015425625,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "Humans are endowed with the capacity for reason."
-   },
-   {
-    "t": 1793015497561,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "She was endowed with a remarkable talent for music from a young age."
-   },
-   {
-    "t": 1793015649966,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "The university was endowed with a large sum of money by a wealthy alumnus."
-   },
-   {
-    "t": 1793015722807,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The university was endowed with a large sum of money by a wealthy alumnus."
-   },
-   {
-    "t": 1793015788839,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "Nature has endowed this region with abundant natural resources."
-   },
-   {
-    "t": 1793015829535,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Nature has endowed this region with abundant natural resources."
-   }
-  ],
-  "deprioritize": [
-   {
-    "t": 1793015889909,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "We've decided to deprioritize this feature until next quarter."
-   }
-  ],
   "given-that": [
    {
     "t": 1793060697085,
@@ -12736,6 +12683,59 @@
     "ex": ""
    }
   ],
+  "endowed-with": [
+   {
+    "t": 1793015425625,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Humans are endowed with the capacity for reason."
+   },
+   {
+    "t": 1793015497561,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "She was endowed with a remarkable talent for music from a young age."
+   },
+   {
+    "t": 1793015649966,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "The university was endowed with a large sum of money by a wealthy alumnus."
+   },
+   {
+    "t": 1793015722807,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The university was endowed with a large sum of money by a wealthy alumnus."
+   },
+   {
+    "t": 1793015788839,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Nature has endowed this region with abundant natural resources."
+   },
+   {
+    "t": 1793015829535,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Nature has endowed this region with abundant natural resources."
+   }
+  ],
+  "deprioritize": [
+   {
+    "t": 1793015889909,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "We've decided to deprioritize this feature until next quarter."
+   }
+  ],
   "go-ahead": [
    {
     "t": 1793150381573,
@@ -12794,34 +12794,41 @@
     "ex": "We can go ahead with the release."
    }
   ],
-  "g4-there-be": [
+  "g4-these-those-plurals": [
    {
-    "t": 1793187226573,
-    "ok": true,
+    "t": 1793186995246,
+    "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": "Is there a library in your school?"
+    "ex": "These are my new shoes."
    },
    {
-    "t": 1793187237000,
+    "t": 1793187006394,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "Yes, there is."
+    "ex": "These are my new shoes."
    },
    {
-    "t": 1793187242301,
+    "t": 1793187016300,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "Is there a library in your school?"
+    "ex": "Are those horses?"
    },
    {
-    "t": 1793189043138,
+    "t": 1793187024956,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "Is there a library in your school?"
+    "ex": "Look at those sheep!"
+   },
+   {
+    "t": 1793187038407,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "There are many children in the park."
    }
   ],
   "g4-wh-questions": [
@@ -12859,52 +12866,6 @@
     "peek": false,
     "via": "entry",
     "ex": "How much is this skirt?"
-   }
-  ],
-  "percentage-completed": [
-   {
-    "t": 1793191228866,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "What percentage of the work has been completed so far?"
-   }
-  ],
-  "g4-these-those-plurals": [
-   {
-    "t": 1793186995246,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "These are my new shoes."
-   },
-   {
-    "t": 1793187006394,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "These are my new shoes."
-   },
-   {
-    "t": 1793187016300,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Are those horses?"
-   },
-   {
-    "t": 1793187024956,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Look at those sheep!"
-   },
-   {
-    "t": 1793187038407,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "There are many children in the park."
    }
   ],
   "g4-can": [
@@ -12951,6 +12912,45 @@
     "peek": false,
     "via": "entry",
     "ex": "The bus stop is near our school."
+   }
+  ],
+  "g4-there-be": [
+   {
+    "t": 1793187226573,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Is there a library in your school?"
+   },
+   {
+    "t": 1793187237000,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Yes, there is."
+   },
+   {
+    "t": 1793187242301,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Is there a library in your school?"
+   },
+   {
+    "t": 1793189043138,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Is there a library in your school?"
+   }
+  ],
+  "percentage-completed": [
+   {
+    "t": 1793191228866,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "What percentage of the work has been completed so far?"
    }
   ],
   "hesitate-hesitant": [
@@ -14001,6 +14001,54 @@
   }
  },
  "quizOut": {
+  "recon": {
+   "Then recon the dialog chrome on-device before writing the test steps.": {
+    "on": true,
+    "t": 1
+   }
+  },
+  "make-use-of": {
+   "We should make use of the tools we already have.": {
+    "on": false,
+    "t": 1792744201585
+   }
+  },
+  "s-align-ux": {
+   "We want the UX to feel like DeepSeek's.": {
+    "on": false,
+    "t": 1792744398481
+   },
+   "The goal is to match DeepSeek's UX.": {
+    "on": true,
+    "t": 1
+   },
+   "We're using DeepSeek's UX as the benchmark.": {
+    "on": true,
+    "t": 1
+   }
+  },
+  "rule-out": {
+   "The investigators ruled the initial suspect out early in the case.": {
+    "on": true,
+    "t": 1
+   }
+  },
+  "stray": {
+   "A stray console.log slipped into the commit.": {
+    "on": true,
+    "t": 1
+   },
+   "The kids strayed from the path.": {
+    "on": true,
+    "t": 1
+   }
+  },
+  "s-title-wrap": {
+   "The bug's fixed 👍 One more thing: the title gets truncated. Could we let it wrap instead of cutting it off?": {
+    "on": true,
+    "t": 1
+   }
+  },
   "s-rate-limit-error": {
    "When exactly do users run into the \"Rate limit reached\" error?": {
     "on": true,
@@ -14015,20 +14063,6 @@
    "Before automating the flow, we need to recon the dialog chrome — its buttons, title bar, and layout.": {
     "on": true,
     "t": 1
-   }
-  },
-  "s-align-ux": {
-   "The goal is to match DeepSeek's UX.": {
-    "on": true,
-    "t": 1
-   },
-   "We're using DeepSeek's UX as the benchmark.": {
-    "on": true,
-    "t": 1
-   },
-   "We want the UX to feel like DeepSeek's.": {
-    "on": false,
-    "t": 1792744398481
    }
   },
   "for-what-its-worth": {
@@ -14101,36 +14135,8 @@
     "t": 1
    }
   },
-  "recon": {
-   "Then recon the dialog chrome on-device before writing the test steps.": {
-    "on": true,
-    "t": 1
-   }
-  },
   "contraceptive": {
    "Djerassi's team synthesized the first oral contraceptive.": {
-    "on": true,
-    "t": 1
-   }
-  },
-  "rule-out": {
-   "The investigators ruled the initial suspect out early in the case.": {
-    "on": true,
-    "t": 1
-   }
-  },
-  "stray": {
-   "A stray console.log slipped into the commit.": {
-    "on": true,
-    "t": 1
-   },
-   "The kids strayed from the path.": {
-    "on": true,
-    "t": 1
-   }
-  },
-  "s-title-wrap": {
-   "The bug's fixed 👍 One more thing: the title gets truncated. Could we let it wrap instead of cutting it off?": {
     "on": true,
     "t": 1
    }
@@ -14145,12 +14151,6 @@
    "Her designs tend toward simplicity.": {
     "on": false,
     "t": 1792905420894
-   }
-  },
-  "make-use-of": {
-   "We should make use of the tools we already have.": {
-    "on": false,
-    "t": 1792744201585
    }
   },
   "this-complicated": {
