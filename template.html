@@ -2270,8 +2270,14 @@ function readAll(it, sheet, btn){
   const xs = (it.examples || []).map(x => plainMd(x.en));
   if (!xs.length) return;
   const lis = [...sheet.querySelectorAll(".face.fr .body ol.ex > li")];
-  const nv = sheet.querySelector(".face.fr .nv"), card = lis[0] && lis[0].closest(".nv-card");
-  if (nv && card && !nv.classList.contains("all")) nvGo(nv, [...card.parentNode.children].indexOf(card));
+  const nv = sheet.querySelector(".face.fr .nv");
+  // turn the notes (card view) to the tab that holds this sentence; an essay can have a second tab of
+  // sentences, 改好的文章（二）, and the reading carries on into it (用户 2026-11-09)
+  const showCard = li => {
+    const card = li && li.closest(".nv-card");
+    if (nv && card && !nv.classList.contains("all")) nvGo(nv, [...card.parentNode.children].indexOf(card));
+  };
+  showCard(lis[0]);
   const me = reading = { btn, lis };
   btn.innerHTML = ICON_STOP; btn.setAttribute("aria-label", "停止朗读"); btn.title = "停止朗读";
   speechSynthesis.cancel();
@@ -2283,6 +2289,7 @@ function readAll(it, sheet, btn){
     u.onstart = () => {
       if (reading !== me) return;
       lis.forEach((li, j) => li.classList.toggle("reading", j === k));
+      if (k > 0 && lis[k] && lis[k].closest(".nv-card") !== lis[k - 1].closest(".nv-card")) showCard(lis[k]);
       if (lis[k]) lis[k].scrollIntoView({ block: "nearest", behavior: "smooth" });
     };
     // a pause only between two sentences: none before the first, and the last one ends it straight away

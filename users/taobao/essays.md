@@ -77,7 +77,7 @@
 
 详细的批改分析:[冰岛三日游批改](https://claude.ai/artifact/Uecgbr8hBWQr7wLfZMS9kc)
 
-**改好的文章:**
+**改好的文章（一）:**
 
 1. I've never seen **anything spectacular** like a huge waterfall before, so I think my first port of call will be Gullfoss.
    我从没见过大瀑布这样壮观的东西,所以我想第一站去黄金瀑布。
@@ -98,6 +98,51 @@
 
 加粗的是改过的地方。
 
+**改好的文章（二）:**
+
+这一版还是你选的四个地方、你排的顺序,把内容写得更完整。旅行是想象出来的,所以用 would。
+
+标题:Three Days in Iceland
+
+第 1 段
+
+1. Iceland has so many amazing things to do, but **if I only had three days there, these are the four I would choose**.
+   冰岛有那么多好玩的地方,可是如果我只有三天,我会选这四个。
+
+第 2 段
+
+1. **On the first day**, my first port of call would be Gullfoss.
+   第一天,我的第一站是黄金瀑布。
+2. I've never seen anything spectacular like a huge waterfall, **so I want to see one with my own eyes**.
+   我从没见过大瀑布这样壮观的东西,所以我想亲眼看一看。
+3. **In the afternoon**, I'd like to go caving.
+   下午,我想去探洞。
+4. Although it might be a little spooky in a dark cave, exploring it would be full of surprises.
+   虽然黑黑的洞里可能有点吓人,但探索它会充满惊喜。
+
+第 3 段
+
+1. **On the second day**, I'd get up early and visit a black-sand beach.
+   第二天,我会早早起床,去黑沙滩。
+2. Just imagine it – the sun slowly rising above the horizon **while the waves crash onto the black sand**!
+   想象一下:太阳从地平线上慢慢升起,海浪拍打着黑色的沙滩!
+3. I'm sure the scene would be unforgettable.
+   我相信那个景色会让人难忘。
+
+第 4 段
+
+1. Finally, **on the last day**, I'd go to an art gallery in Reykjavík to look at some magnificent paintings.
+   最后一天,我会去雷克雅未克的一家美术馆,看一些精美的画。
+2. **After two busy days outdoors, it would be a relaxing way to end the trip.**
+   在外面忙了两天,这是结束旅行的一种轻松的方式。
+
+第 5 段
+
+1. I'm really looking forward to it!
+   我真的很期待!
+
+加粗的是比(一)多写的地方:开头先说清楚三天、四个地方,按天安排,美术馆有了理由。
+
 **原文:**
 
 > I've never seen a spectacular thing like a huge waterfall before, so I think my first port of call will be Gullfoss. Then, I'd like to go caving. Although it might be a little spooky down the dark cave, the way of exploring will be full of surprise and discovery! Visiting a black-sand beach also seems cool. Just imagine it – a golden sun slowly rising up from the horizon! The scene will be unforgettable! At last, I'll go to the art gallery that is located in Reykjavík, look at some of the magnificent paintings. Looking forward to the trip!
@@ -109,26 +154,3 @@
 - [full of 后面用复数:full of surprises](#s-full-of-surprises) —— full of surprise and discovery → **full of surprises and discoveries**
 - [最后一个:Finally,不是 At last](#s-finally-at-last) —— At last → **Finally**
 - [去某处做某事:go to … to look at](#s-go-to-look-at) —— , look at → **to look at**
-
-**提升:范文**
-
-这一页不看也没关系,是让你多知道一点的。
-
-这篇范文还是你选的四个地方、你排的顺序,只是把内容写得更完整:
-
-- 开头先用一句话说清楚:三天,四个地方。
-- 用 On the first day、On the second day、on the last day 按天安排。
-- 美术馆也有了理由:前两天都在外面跑,最后一天去美术馆放松一下。
-- 旅行是想象出来的,所以用 would:if I only had three days, these are the four I would choose。
-
-Three Days in Iceland
-
-Iceland has so many amazing things to do, but if I only had three days there, these are the four I would choose.
-
-On the first day, my first port of call would be Gullfoss. I've never seen anything spectacular like a huge waterfall, so I want to see one with my own eyes. In the afternoon, I'd like to go caving. Although it might be a little spooky in a dark cave, exploring it would be full of surprises.
-
-On the second day, I'd get up early and visit a black-sand beach. Just imagine it – the sun slowly rising above the horizon while the waves crash onto the black sand! I'm sure the scene would be unforgettable.
-
-Finally, on the last day, I'd go to an art gallery in Reykjavík to look at some magnificent paintings. After two busy days outdoors, it would be a relaxing way to end the trip.
-
-I'm really looking forward to it!
