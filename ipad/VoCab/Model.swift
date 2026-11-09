@@ -119,8 +119,14 @@ private func sectionLabel(_ text: String) -> String? {
     guard let m = sectionRE.firstMatch(in: text, range: NSRange(location: 0, length: ns.length)) else { return nil }
     let r = m.range(at: 1).location != NSNotFound ? m.range(at: 1) : m.range(at: 2)
     let label = ns.substring(with: r).replacingOccurrences(of: "⚠️", with: "").trimmingCharacters(in: .whitespaces)
-    return label.split(whereSeparator: { ":：(（—".contains($0) }).first.map { $0.trimmingCharacters(in: .whitespaces) } ?? label
+    // a bracket cuts the label off ("race(动词)" -> "race"), except a numbered one, which stays:
+    // 改好的文章（一） / 改好的文章（二） (用户 2026-11-09) — as section_label() in build.py
+    let ls = label as NSString
+    let cut = labelCutRE.firstMatch(in: label, range: NSRange(location: 0, length: ls.length))
+    let head = cut.map { ls.substring(to: $0.range.location) } ?? label
+    return head.trimmingCharacters(in: .whitespaces)
 }
+private let labelCutRE = try! NSRegularExpression(pattern: #"[:：—]|[(（](?![一二三四五六七八九十\d]+[)）])"#)
 
 /// Mirrors sections() in build.py and splitSections() in Model.kt — keep them in step. Whatever comes
 /// before the first label is 概要; English definition + 含义 become one 释义 card; long labels are cut.

@@ -2362,9 +2362,14 @@ const langBtn = () => { const [, short, long] = langOf(), nx = LANGS[(LANGS.inde
 // 文章 → PDF (用户 2026-11-01): the browser's print dialog (保存为 PDF), so Chinese needs no embedded font.
 // 一、the corrected essay as plain English paragraphs; 二、from a new page, each sentence with its Chinese
 const ICON_PDF = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/><text x="12" y="18" text-anchor="middle" font-size="6.2" font-weight="700" font-family="Arial,sans-serif">PDF</text></svg>';
-function essayPdf(it){
-  const sl = it.slides.find(([, h]) => h.includes('class="ex"'));
+// [k] the tab open in card view: an essay with 改好的文章（一） and （二） exports the one being read
+// (用户 2026-11-09); the 全部 view, or a tab without sentences, exports the first
+function essayPdf(it, k){
+  const isEx = s => s && s[1].includes('class="ex"');
+  const exs = it.slides.filter(isEx);
+  const sl = isEx(it.slides[k]) ? it.slides[k] : exs[0];
   if (!sl) return;
+  const docTitle = exs.length > 1 ? `${it.title} · ${sl[0]}` : it.title;
   const d = document.createElement("div");
   d.innerHTML = sl[1];
   // paragraphs: each ol.ex, with the 「第 n 段」 line before it
@@ -2373,6 +2378,9 @@ function essayPdf(it){
     lis: [...ol.querySelectorAll(":scope > li")].map(li => ({ en: li.querySelector(".en")?.innerHTML || "", txt: li.querySelector(".en")?.textContent.trim() || "", zh: li.querySelector(".zh")?.textContent.trim() || "" }))
   }));
   const title = esc(it.title);
+  // the tab's own last line says what the bold marks ("加粗的是比（一）多写的地方…"); in the PDF it is underlined
+  const boldNote = [...d.querySelectorAll("p")].map(p => p.textContent.trim()).find(t => t.startsWith("加粗的是"));
+  const note = boldNote ? boldNote.replace(/^加粗/, "加下划线") : "加下划线的是改过的地方。";
   // the page's own fonts (a student's css can bring its own: taobao's Nunito), so the PDF reads like the page
   const font = getComputedStyle(document.documentElement).getPropertyValue("--font");
   const sheets = [...document.querySelectorAll('link[rel="stylesheet"]')].map(l => l.href);
@@ -2392,16 +2400,16 @@ ol{margin:0;padding-left:22pt}li{margin:0 0 10pt;break-inside:avoid}
 .note{font-size:9.5pt;color:#777;margin-top:16pt}
 </style></head><body>
 <h1>${title}</h1><div class="date">${esc(it.date || "")}</div>
-<h2>一、改好的文章</h2><div class="essay">${paras.map(p => `<p>${esc(p.lis.map(l => l.txt).join(" "))}</p>`).join("")}</div>
+<h2>一、${esc(sl[0])}</h2><div class="essay">${paras.map(p => `<p>${esc(p.lis.map(l => l.txt).join(" "))}</p>`).join("")}</div>
 <div class="two"><h2>二、逐句对照</h2>${paras.map(p => (p.label ? `<div class="lab">${esc(p.label)}</div>` : "") +
     `<ol>${p.lis.map(l => `<li><div class="en">${l.en}</div>${l.zh ? `<div class="zh">${esc(l.zh)}</div>` : ""}</li>`).join("")}</ol>`).join("")}
-<div class="note">加下划线的是改过的地方。</div></div></body></html>`;
+<div class="note">${esc(note)}</div></div></body></html>`;
   const f = document.createElement("iframe");
   f.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden";
   document.body.appendChild(f);
   f.contentDocument.open(); f.contentDocument.write(html); f.contentDocument.close();
   // Chrome names the file after the page's title
-  const go = () => { const t = document.title; document.title = it.title; f.contentWindow.focus(); f.contentWindow.print(); document.title = t; setTimeout(() => f.remove(), 60000); };
+  const go = () => { const t = document.title; document.title = docTitle; f.contentWindow.focus(); f.contentWindow.print(); document.title = t; setTimeout(() => f.remove(), 60000); };
   // print once the web fonts are in (the same ones as the page; Noto Sans SC comes in slices, so ask for this text);
   // offline, or after 4 s, it prints with the fallbacks in --font
   const doc = f.contentDocument, text = doc.body.textContent;
@@ -2462,7 +2470,7 @@ document.addEventListener("click", e => {
   if (!nv) return;
   const tab = e.target.closest(".nv-tab");
   if (tab) nvGo(nv, +tab.dataset.k);
-  else if (e.target.closest(".nv-pdf")) { const t = byAnchor[e.target.closest(".nv-pdf").dataset.a]; if (t) essayPdf(t.it); }
+  else if (e.target.closest(".nv-pdf")) { const t = byAnchor[e.target.closest(".nv-pdf").dataset.a]; if (t) essayPdf(t.it, nv.classList.contains("all") ? -1 : nv._k); }
   else if (e.target.closest(".nv-lang")) {
     essayLang = LANGS[(LANGS.indexOf(langOf()) + 1) % LANGS.length][0];
     try { localStorage.setItem(vkKey("vk.essayLang"), essayLang); } catch {}

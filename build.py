@@ -252,7 +252,10 @@ def section_label(text):
     m = SECTION_RE.match(text)
     if not m:
         return None
-    return re.split(r"[:：(（—]", (m.group(1) or m.group(2)).replace("⚠️", "").strip())[0].strip()
+    # a bracket cuts the label off ("race(动词)" -> "race"), except a numbered one, which stays:
+    # 改好的文章（一） / 改好的文章（二） (用户 2026-11-09). The iPad's sectionLabel() does the same.
+    return re.split(r"[:：—]|[(（](?![一二三四五六七八九十\d]+[)）])",
+                    (m.group(1) or m.group(2)).replace("⚠️", "").strip())[0].strip()
 
 
 def sections(blocks):
