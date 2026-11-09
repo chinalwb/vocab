@@ -16,6 +16,11 @@
 20. [很多人,很多个家:their houses](#s-their-houses)
 21. [stay safe:stay + 形容词](#c-stay-safe)
 22. [用完了:finished with it](#s-finished-with)
+23. [从没见过这样的东西:anything spectacular like…](#s-anything-spectacular)
+24. [说「做这件事」,直接用 -ing:exploring it](#s-exploring-it)
+25. [full of 后面用复数:full of surprises](#s-full-of-surprises)
+26. [最后一个:Finally,不是 At last](#s-finally-at-last)
+27. [去某处做某事:go to … to look at](#s-go-to-look-at)
 
 ---
 
@@ -300,7 +305,7 @@
 2. I don't think **keeping** a big dog in a small flat is a good idea, as it needs a lot of space.
    我觉得在小公寓里养大狗不是个好主意,因为它需要很大的地方。
 
-相关条目:[计划是去做什么:The plan is to research…](#s-plan-is-to) · [给……压力:put pressure on someone](#s-put-pressure-on) · [现实中行得通:a realistic plan](#s-realistic-plan) · [很多人,很多个家:their houses](#s-their-houses) —— 同一篇地震作文里的另外几处,每条只练一个点。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
+相关条目:[计划是去做什么:The plan is to research…](#s-plan-is-to) · [给……压力:put pressure on someone](#s-put-pressure-on) · [现实中行得通:a realistic plan](#s-realistic-plan) · [很多人,很多个家:their houses](#s-their-houses) —— 同一篇地震作文里的另外几处,每条只练一个点。 · [说「做这件事」,直接用 -ing:exploring it](#s-exploring-it) —— 冰岛那篇里,「做某件事」同样直接用 -ing。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 **提升:也可以这样说**
 
@@ -502,7 +507,7 @@ all the structures 换成了 new buildings:这一段讲的是新楼。stay safe 
 2. If the roads are less likely to flood, children can just ride **their bikes** to school.
    如果路不那么容易被淹,孩子们就可以直接骑自行车上学。
 
-相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文。[stay safe:stay + 形容词](#c-stay-safe) —— 同一句话里的 stay safe。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 同一篇作文。[stay safe:stay + 形容词](#c-stay-safe) —— 同一句话里的 stay safe。 · [full of 后面用复数:full of surprises](#s-full-of-surprises) —— 冰岛那篇里也是忘了加 s。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 ---
 
@@ -583,3 +588,259 @@ all the structures 换成了 new buildings:这一段讲的是新楼。stay safe 
 
 2. Can I borrow your ruler when you've **finished with** it?
    你用完尺子以后,能借我用一下吗?
+
+---
+
+<a id="s-anything-spectacular"></a>
+## 从没见过这样的东西:anything spectacular like…
+
+- 日期:2026-11-09
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> I've never seen a spectacular thing like a huge waterfall before, so I think my first port of call will be Gullfoss.
+
+这是课本上的一道思辨练习:从几个冰岛的活动里选四个,排好顺序、说出理由,安排三天的旅行。这句说的是他排第一的黄金瀑布。
+
+👍 **做得好:**
+
+- **port of call**(旅行中的一站)是一个固定说法,你用得很地道!
+- 先说理由(从没见过大瀑布),再说决定(第一站去那里),中间用 so 连起来,思路很清楚。
+
+**问题:**
+
+- ⚠️ [直译] **a spectacular thing like a huge waterfall** —— 能看懂,但这是照着中文「一个壮观的东西」写的。英文说「从没见过……的东西」,用 **anything**,形容词放在它后面:**anything spectacular like a huge waterfall**。
+
+一步一步看:
+
+- 第 1 步:句子里有 never(从没)。never 后面说「任何东西」,用 **anything**,不用 a thing。
+- 第 2 步:想说「壮观的东西」,把 spectacular 放在 anything **后面**:anything spectacular。
+- 第 3 步:后面的 like a huge waterfall 不用改,它说的是「像大瀑布这样的」。
+
+**改好的句子:**
+
+1. I've never seen **anything spectacular** like a huge waterfall before, so I think my first port of call will be Gullfoss.
+   我从没见过大瀑布这样壮观的东西,所以我想第一站去黄金瀑布。
+
+批改页上写的是 anything as spectacular as,意思不一样。看最后的「提升」。
+
+**记住这个小规则:**
+
+- 说「从没……过……的东西」时,问自己:是不是写成了 anything + 形容词?比如 *I've never seen anything spectacular*
+
+2. I've never seen **anything amazing** like a real rocket before, so I think my first stop at the science museum will be the space hall.
+   我从没见过真火箭这样了不起的东西,所以我想到了科技馆,第一站去太空馆。
+
+相关条目:[冰岛三天,去哪四个地方](#a-iceland) —— 这篇文章改好后的全文。
+
+**提升:别的用法**
+
+这一页不看也没关系,是让你多知道一点的。
+
+为什么不写 anything as spectacular as?
+
+- **anything as spectacular as** 也是对的句型,但它是「拿来比」,意思不一样。
+- 对比一:**anything spectacular like** —— *I've never seen anything spectacular like a huge waterfall before.*(我从没见过大瀑布这样壮观的东西。还没见过瀑布。)
+- 对比二:**anything as spectacular as** —— *I've never seen anything as spectacular as a huge waterfall before.*(我见过的东西,都没有大瀑布那么壮观。听起来已经见过瀑布了。)
+- 你想说的是「还没见过,所以想去」,所以用对比一。
+- 再看一个对比二的例子:*I've never eaten anything as delicious as my grandma's dumplings.*(我从没吃过比奶奶包的饺子更好吃的东西。)说这句话的人,一定吃过奶奶包的饺子。
+
+---
+
+<a id="s-exploring-it"></a>
+## 说「做这件事」,直接用 -ing:exploring it
+
+- 日期:2026-11-09
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> Although it might be a little spooky down the dark cave, the way of exploring will be full of surprise and discovery!
+
+这是课本上的一道思辨练习:从几个冰岛的活动里选四个,排好顺序、说出理由,安排三天的旅行。这句说的是探洞。
+
+👍 **做得好:**
+
+- 用 **Although** 先承认洞里可能有点吓人,再说为什么还是值得去。先想到别人会怎么反对,是思辨写作里很重要的方法。
+- **spooky**(有点吓人的)这个词用得很生动!
+- 这篇里的 *Visiting a black-sand beach also seems cool.* 用 -ing 开头,写对了!地震那篇作文里,这一点还错过。
+
+**问题:**
+
+- ⚠️ [直译] **the way of exploring** —— the way of 是「……的方法」,比如 *the way of cooking rice*(煮饭的方法)。你想说的是「探索这件事」,不是「探索的方法」,直接写 **exploring it**。
+
+一步一步看:
+
+- 第 1 步:问自己:我想说的是「探索的方法」,还是「探索这件事」?是「探索这件事」。
+- 第 2 步:「做某件事」放在 will be 前面,直接用 -ing,不用加 the way of:**exploring**。
+- 第 3 步:探索什么?那个洞。前面已经写过 the dark cave,所以后面用 **it**:exploring it。
+
+**改好的句子:**
+
+1. Although it might be a little spooky in the dark cave, **exploring it** will be full of surprises and discoveries!
+   虽然黑黑的洞里可能有点吓人,但探索它会充满惊喜和发现!
+
+down 换成了 in:说「在洞里」用 in,down 是「往下走」。surprises and discoveries 为什么加 s,看 [full of 后面用复数:full of surprises](#s-full-of-surprises)。
+
+**记住这个小规则:**
+
+- 想说「做某件事」时,问自己:是不是多写了 the way of?比如写 *exploring it*,不写 *the way of exploring*
+
+2. Although it might be a little scary at the top of the old tower, **climbing it** will be a great adventure!
+   虽然在老塔顶上可能有点吓人,但爬这座塔会是一次很棒的冒险!
+
+相关条目:[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 地震那篇里的同一个用法。 · [full of 后面用复数:full of surprises](#s-full-of-surprises) —— 同一句话里的另一处。 · [冰岛三天,去哪四个地方](#a-iceland) —— 这篇文章改好后的全文。
+
+---
+
+<a id="s-full-of-surprises"></a>
+## full of 后面用复数:full of surprises
+
+- 日期:2026-11-09
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> Although it might be a little spooky down the dark cave, the way of exploring will be full of surprise and discovery!
+
+这是课本上的一道思辨练习:从几个冰岛的活动里选四个,排好顺序、说出理由,安排三天的旅行。这句说的是探洞。
+
+👍 **做得好:**
+
+- **full of**(充满)用得对,一下就让人觉得探洞会碰到很多意想不到的事。
+- 把 surprise 和 discovery 两个词用 and 连起来,意思很丰富。
+
+**问题:**
+
+- ⚠️ [冠词] **full of surprise and discovery** —— 这里说的是一件件让人惊喜的事、一个个新发现,能一个一个地数,所以要用复数:**full of surprises and discoveries**。
+
+一步一步看:
+
+- 第 1 步:问自己:探洞时会碰到几件让人惊喜的事?一件,还是很多件?很多件。
+- 第 2 步:很多件,就加 s:surprise → **surprises**。
+- 第 3 步:discovery 也一样,y 变成 ies:discovery → **discoveries**。
+
+**改好的句子:**
+
+1. Although it might be a little spooky in the dark cave, exploring it will be full of **surprises and discoveries**!
+   虽然黑黑的洞里可能有点吓人,但探索它会充满惊喜和发现!
+
+down 换成了 in:说「在洞里」用 in。exploring it 看 [说「做这件事」,直接用 -ing:exploring it](#s-exploring-it)。
+
+**记住这个小规则:**
+
+- 用 full of 时,问自己:后面的东西是不是有很多个?是 → 加 s,比如 *full of surprises*
+
+2. Although it might be a little cold in the forest at night, camping there will be full of **stories and adventures**!
+   虽然晚上森林里可能有点冷,但在那儿露营会充满故事和冒险!
+
+相关条目:[很多人,很多个家:their houses](#s-their-houses) —— 地震那篇里也是忘了加 s。 · [说「做这件事」,直接用 -ing:exploring it](#s-exploring-it) —— 同一句话里的另一处。 · [冰岛三天,去哪四个地方](#a-iceland) —— 这篇文章改好后的全文。
+
+**提升:别的意思**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- surprise 不加 s,说的是「惊讶」这种心情。
+- 例子:*Her eyes were full of surprise.*(她眼里满是惊讶。)
+- 你想说的是一件件让人惊喜的事,所以要加 s。
+
+---
+
+<a id="s-finally-at-last"></a>
+## 最后一个:Finally,不是 At last
+
+- 日期:2026-11-09
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> At last, I'll go to the art gallery that is located in Reykjavík, look at some of the magnificent paintings.
+
+这是课本上的一道思辨练习:从几个冰岛的活动里选四个,排好顺序、说出理由,安排三天的旅行。这句说的是他排在最后的美术馆。
+
+👍 **做得好:**
+
+- 你用 my first port of call、Then 把几个地方按顺序排好,读的人跟得上。
+- **magnificent**(宏伟的、精美的)是 B2 的好词,用得对。
+
+**问题:**
+
+- ❌ [搭配] **At last** —— at last 是「终于」:等了很久,事情终于发生了。你想说的是「最后一个地方」,要用 **Finally**。
+
+一步一步看:
+
+- 第 1 步:问自己:我是等了很久,终于去美术馆了吗?不是。
+- 第 2 步:美术馆是我排的四个地方里的最后一个。
+- 第 3 步:说「最后一个」用 **Finally**:At last → **Finally**。
+
+**改好的句子:**
+
+1. **Finally**, I'll go to the art gallery in Reykjavík to look at some of the magnificent paintings.
+   最后,我会去雷克雅未克的美术馆,看看那里的一些精美的画。
+
+that is located in 换成了 in:意思一样,更短。to look at 为什么加 to,看 [去某处做某事:go to … to look at](#s-go-to-look-at)。
+
+**记住这个小规则:**
+
+- 写「最后」之前问自己:是等了很久「终于」发生了(*At last, the bus came.*),还是排在最后的一个(*Finally, …*)?
+
+2. Then, we'll see the lions. **Finally**, we'll go to the gift shop near the gate to buy some of the cute toys.
+   然后,我们去看狮子。最后,我们会去大门旁边的礼品店,买一些可爱的玩具。
+
+相关条目:[去某处做某事:go to … to look at](#s-go-to-look-at) —— 同一句话里的另一处。 · [冰岛三天,去哪四个地方](#a-iceland) —— 这篇文章改好后的全文。
+
+---
+
+<a id="s-go-to-look-at"></a>
+## 去某处做某事:go to … to look at
+
+- 日期:2026-11-09
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> At last, I'll go to the art gallery that is located in Reykjavík, look at some of the magnificent paintings.
+
+这是课本上的一道思辨练习:从几个冰岛的活动里选四个,排好顺序、说出理由,安排三天的旅行。这句说的是他排在最后的美术馆。
+
+👍 **做得好:**
+
+- **some of the magnificent paintings**(其中一些精美的画)—— some of the 用得对。
+- **I'll go to** 说以后的打算,用得对。
+
+**问题:**
+
+- ❌ [结构] **…Reykjavík, look at some of the magnificent paintings** —— 这句话已经有一个动作 go,后面又来一个动作 look at,中间只隔着一个逗号,两个动作接不起来。去美术馆是**为了**看画,写成 **to look at**。
+
+一步一步看:
+
+- 第 1 步:找出句子里的动作:go(去)和 look at(看)。
+- 第 2 步:问自己:这两个动作是什么关系?去美术馆,是为了看画。
+- 第 3 步:「为了做什么」用 to 加 look 这样的词:去掉逗号,写成 **to look at**。
+
+**改好的句子:**
+
+1. Finally, I'll go to the art gallery in Reykjavík **to look at** some of the magnificent paintings.
+   最后,我会去雷克雅未克的美术馆,看看那里的一些精美的画。
+
+**记住这个小规则:**
+
+- 写「去某个地方做某件事」时,问自己:两个动作中间有没有 to?比如 *go to the library to borrow books*
+
+2. Next weekend, I'll go to the new aquarium in our city **to see** some of the colourful fish.
+   下个周末,我会去我们城市新开的水族馆,看看那里的一些五颜六色的鱼。
+
+相关条目:[最后一个:Finally,不是 At last](#s-finally-at-last) —— 同一句话里的另一处。 · [冰岛三天,去哪四个地方](#a-iceland) —— 这篇文章改好后的全文。
+
+**提升:也可以这样说**
+
+这一页不看也没关系,是让你多知道一点的。
+
+- 也可以用 and 把两个动作连起来:*I'll go to the art gallery and look at some paintings.*
+- 两个都对。**to look at** 说出了去美术馆是「为了」看画,意思更清楚,所以这里用 to。
