@@ -80,20 +80,20 @@
    "t": 1794226116345
   },
   "s-ing-subject": {
-   "due": 20767,
+   "due": 20770,
    "ease": 1.42,
-   "interval": 1,
+   "interval": 3,
    "lapses": 2,
-   "reps": 1,
-   "t": 1794226033521
+   "reps": 2,
+   "t": 1794294287021
   },
   "s-plan-is-to": {
-   "due": 20767,
+   "due": 20770,
    "ease": 1.96,
-   "interval": 1,
+   "interval": 3,
    "lapses": 1,
-   "reps": 1,
-   "t": 1794226066463
+   "reps": 2,
+   "t": 1794294301383
   },
   "s-realistic-plan": {
    "due": 20768,
@@ -128,20 +128,20 @@
    "t": 1794120867759
   },
   "s-same-shape-list": {
-   "due": 20767,
+   "due": 20770,
    "ease": 1.96,
-   "interval": 1,
+   "interval": 3,
    "lapses": 1,
-   "reps": 1,
-   "t": 1794225965686
+   "reps": 2,
+   "t": 1794294263025
   },
   "s-tell-describe": {
-   "due": 20767,
+   "due": 20768,
    "ease": 1.42,
    "interval": 1,
    "lapses": 2,
-   "reps": 0,
-   "t": 1794225978200
+   "reps": 1,
+   "t": 1794294276798
   },
   "c-be-witness-to": {
    "due": 20767,
@@ -651,6 +651,20 @@
     "peek": false,
     "via": "review",
     "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1794294282768,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1794294287020,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
    }
   ],
   "s-same-shape-list": [
@@ -772,6 +786,13 @@
     "peek": false,
     "via": "review",
     "ex": "The project aims to predict the volcanoes' future activity, learn about their history and, most important of all, prepare for an eruption."
+   },
+   {
+    "t": 1794294263024,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "On Saturday, I want to clean my room, finish my homework and, most important of all, play football with my friends."
    }
   ],
   "s-its-their": [
@@ -1010,6 +1031,20 @@
    },
    {
     "t": 1794226066449,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The goal which our class needs to reach this month is to read ten English books."
+   },
+   {
+    "t": 1794294295350,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1794294301382,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -1310,6 +1345,20 @@
    },
    {
     "t": 1794225978187,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This book describes a trip to the mountains in detail."
+   },
+   {
+    "t": 1794294270738,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Then the passage describes an attempt to protect a town from lava in detail."
+   },
+   {
+    "t": 1794294276798,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -1998,6 +2047,26 @@
  "favs": {},
  "history": [
   {
+   "a": "s-put-pressure-on",
+   "t": 1794294301987,
+   "via": "review"
+  },
+  {
+   "a": "s-plan-is-to",
+   "t": 1794294287688,
+   "via": "review"
+  },
+  {
+   "a": "s-ing-subject",
+   "t": 1794294277456,
+   "via": "review"
+  },
+  {
+   "a": "s-tell-describe",
+   "t": 1794294263741,
+   "via": "review"
+  },
+  {
    "a": "s-same-shape-list",
    "t": 1794294221302,
    "via": "review"
@@ -2058,21 +2127,6 @@
    "via": "review"
   },
   {
-   "a": "s-put-pressure-on",
-   "t": 1794226068984,
-   "via": "review"
-  },
-  {
-   "a": "s-plan-is-to",
-   "t": 1794226041588,
-   "via": "review"
-  },
-  {
-   "a": "s-ing-subject",
-   "t": 1794226022855,
-   "via": "review"
-  },
-  {
    "a": "c-be-displaced-by",
    "t": 1794226000068,
    "via": "review"
@@ -2080,11 +2134,6 @@
   {
    "a": "c-be-witness-to",
    "t": 1794225979217,
-   "via": "review"
-  },
-  {
-   "a": "s-tell-describe",
-   "t": 1794225966520,
    "via": "review"
   },
   {
