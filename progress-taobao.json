@@ -72,12 +72,12 @@
  },
  "cards": {
   "s-put-pressure-on": {
-   "due": 20767,
+   "due": 20770,
    "ease": 1.96,
-   "interval": 1,
+   "interval": 3,
    "lapses": 1,
-   "reps": 1,
-   "t": 1794226116345
+   "reps": 2,
+   "t": 1794294337263
   },
   "s-ing-subject": {
    "due": 20770,
@@ -104,12 +104,12 @@
    "t": 1794120881158
   },
   "s-their-houses": {
-   "due": 20767,
+   "due": 20770,
    "ease": 1.42,
-   "interval": 1,
+   "interval": 3,
    "lapses": 2,
-   "reps": 1,
-   "t": 1794226143790
+   "reps": 2,
+   "t": 1794294351040
   },
   "c-stay-safe": {
    "due": 20771,
@@ -1135,6 +1135,20 @@
     "peek": false,
     "via": "review",
     "ex": "I don't think getting a puppy is a good plan right now, as it costs too much and it will put extra pressure on my parents."
+   },
+   {
+    "t": 1794294324698,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
+   },
+   {
+    "t": 1794294337263,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think getting a puppy is a good plan right now, as it costs too much and it will put extra pressure on my parents."
    }
   ],
   "s-their-houses": [
@@ -1245,6 +1259,20 @@
    },
    {
     "t": 1794226143777,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "If the roads are less likely to flood, children can just ride their bikes to school."
+   },
+   {
+    "t": 1794294345030,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
+   },
+   {
+    "t": 1794294351040,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -1807,6 +1835,13 @@
     "peek": false,
     "via": "review",
     "ex": "Can I borrow your ruler when you've finished with it?"
+   },
+   {
+    "t": 1794294360677,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Can I have the newspaper when you've finished with it?"
    }
   ],
   "s-anything-spectacular": [
@@ -2047,6 +2082,16 @@
  "favs": {},
  "history": [
   {
+   "a": "s-finished-with",
+   "t": 1794294351616,
+   "via": "review"
+  },
+  {
+   "a": "s-their-houses",
+   "t": 1794294337900,
+   "via": "review"
+  },
+  {
    "a": "s-put-pressure-on",
    "t": 1794294301987,
    "via": "review"
@@ -2114,16 +2159,6 @@
   {
    "a": "s-anything-spectacular",
    "t": 1794226158866,
-   "via": "review"
-  },
-  {
-   "a": "s-finished-with",
-   "t": 1794226144596,
-   "via": "review"
-  },
-  {
-   "a": "s-their-houses",
-   "t": 1794226117598,
    "via": "review"
   },
   {
