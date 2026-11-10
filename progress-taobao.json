@@ -144,20 +144,20 @@
    "t": 1794294276798
   },
   "c-be-witness-to": {
-   "due": 20767,
+   "due": 20770,
    "ease": 1.96,
-   "interval": 1,
+   "interval": 3,
    "lapses": 1,
-   "reps": 1,
-   "t": 1794225999300
+   "reps": 2,
+   "t": 1794294535363
   },
   "c-be-displaced-by": {
-   "due": 20767,
-   "ease": 1.96,
+   "due": 20768,
+   "ease": 1.42,
    "interval": 1,
-   "lapses": 1,
-   "reps": 1,
-   "t": 1794226021969
+   "lapses": 2,
+   "reps": 0,
+   "t": 1794294562657
   },
   "s-finished-with": {
    "due": 20768,
@@ -184,28 +184,28 @@
    "t": 1794294435737
   },
   "s-finally-at-last": {
-   "due": 20767,
+   "due": 20770,
    "ease": 2.5,
-   "interval": 1,
+   "interval": 3,
    "lapses": 0,
-   "reps": 1,
-   "t": 1794226226035
+   "reps": 2,
+   "t": 1794294487494
   },
   "s-full-of-surprises": {
-   "due": 20767,
+   "due": 20768,
    "ease": 1.96,
    "interval": 1,
    "lapses": 1,
-   "reps": 0,
-   "t": 1794226212269
+   "reps": 1,
+   "t": 1794294468469
   },
   "s-go-to-look-at": {
-   "due": 20767,
+   "due": 20770,
    "ease": 2.5,
-   "interval": 1,
+   "interval": 3,
    "lapses": 0,
-   "reps": 1,
-   "t": 1794226242684
+   "reps": 2,
+   "t": 1794294507881
   }
  },
  "newDay": 0,
@@ -1663,6 +1663,20 @@
     "peek": false,
     "via": "review",
     "ex": "The old tree in our playground has been witness to many happy moments over the years."
+   },
+   {
+    "t": 1794294523329,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Local islanders have been witness to its evolving shape over hundreds of years."
+   },
+   {
+    "t": 1794294535362,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The old tree in our playground has been witness to many happy moments over the years."
    }
   ],
   "c-be-displaced-by": [
@@ -1731,6 +1745,20 @@
    },
    {
     "t": 1794226021956,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Small stones on the beach are often displaced by a big wave."
+   },
+   {
+    "t": 1794294548612,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "Sections of earth are often displaced by a sudden jolt."
+   },
+   {
+    "t": 1794294562657,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -2023,6 +2051,20 @@
     "peek": false,
     "via": "review",
     "ex": "Then, we'll see the lions. Finally, we'll go to the gift shop near the gate to buy some of the cute toys."
+   },
+   {
+    "t": 1794294477368,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Finally, I'll go to the art gallery in Reykjavík to look at some of the magnificent paintings."
+   },
+   {
+    "t": 1794294487494,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Then, we'll see the lions. Finally, we'll go to the gift shop near the gate to buy some of the cute toys."
    }
   ],
   "s-full-of-surprises": [
@@ -2074,6 +2116,20 @@
     "peek": false,
     "via": "review",
     "ex": "Although it might be a little cold in the forest at night, camping there will be full of stories and adventures!"
+   },
+   {
+    "t": 1794294454406,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Although it might be a little spooky in the dark cave, exploring it will be full of surprises and discoveries!"
+   },
+   {
+    "t": 1794294468468,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Although it might be a little cold in the forest at night, camping there will be full of stories and adventures!"
    }
   ],
   "s-go-to-look-at": [
@@ -2111,11 +2167,45 @@
     "peek": false,
     "via": "review",
     "ex": "Next weekend, I'll go to the new aquarium in our city to see some of the colourful fish."
+   },
+   {
+    "t": 1794294497998,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Finally, I'll go to the art gallery in Reykjavík to look at some of the magnificent paintings."
+   },
+   {
+    "t": 1794294507881,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Next weekend, I'll go to the new aquarium in our city to see some of the colourful fish."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "c-be-displaced-by",
+   "t": 1794294535932,
+   "via": "review"
+  },
+  {
+   "a": "c-be-witness-to",
+   "t": 1794294508383,
+   "via": "review"
+  },
+  {
+   "a": "s-go-to-look-at",
+   "t": 1794294488069,
+   "via": "review"
+  },
+  {
+   "a": "s-finally-at-last",
+   "t": 1794294469038,
+   "via": "review"
+  },
   {
    "a": "s-full-of-surprises",
    "t": 1794294436307,
@@ -2185,26 +2275,6 @@
    "a": "s-its-their",
    "t": 1794226277941,
    "via": "entry"
-  },
-  {
-   "a": "s-go-to-look-at",
-   "t": 1794226226737,
-   "via": "review"
-  },
-  {
-   "a": "s-finally-at-last",
-   "t": 1794226214141,
-   "via": "review"
-  },
-  {
-   "a": "c-be-displaced-by",
-   "t": 1794226000068,
-   "via": "review"
-  },
-  {
-   "a": "c-be-witness-to",
-   "t": 1794225979217,
-   "via": "review"
   },
   {
    "a": "s-realistic-plan",
