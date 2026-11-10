@@ -160,28 +160,28 @@
    "t": 1794226021969
   },
   "s-finished-with": {
-   "due": 20767,
-   "ease": 1.96,
+   "due": 20768,
+   "ease": 1.42,
    "interval": 1,
-   "lapses": 1,
-   "reps": 1,
-   "t": 1794226157940
+   "lapses": 2,
+   "reps": 0,
+   "t": 1794294387123
   },
   "s-anything-spectacular": {
-   "due": 20767,
+   "due": 20770,
    "ease": 2.5,
-   "interval": 1,
+   "interval": 3,
    "lapses": 0,
-   "reps": 1,
-   "t": 1794226179139
+   "reps": 2,
+   "t": 1794294415293
   },
   "s-exploring-it": {
-   "due": 20767,
+   "due": 20770,
    "ease": 2.5,
-   "interval": 1,
+   "interval": 3,
    "lapses": 0,
-   "reps": 1,
-   "t": 1794226193437
+   "reps": 2,
+   "t": 1794294435737
   },
   "s-finally-at-last": {
    "due": 20767,
@@ -1842,6 +1842,13 @@
     "peek": false,
     "via": "review",
     "ex": "Can I have the newspaper when you've finished with it?"
+   },
+   {
+    "t": 1794294387123,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "Can I borrow your ruler when you've finished with it?"
    }
   ],
   "s-anything-spectacular": [
@@ -1900,6 +1907,20 @@
     "peek": false,
     "via": "review",
     "ex": "I've never seen anything amazing like a real rocket before, so I think my first stop at the science museum will be the space hall."
+   },
+   {
+    "t": 1794294406740,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I've never seen anything spectacular like a huge waterfall before, so I think my first port of call will be Gullfoss."
+   },
+   {
+    "t": 1794294415292,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I've never seen anything amazing like a real rocket before, so I think my first stop at the science museum will be the space hall."
    }
   ],
   "s-exploring-it": [
@@ -1933,6 +1954,20 @@
    },
    {
     "t": 1794226193424,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Although it might be a little scary at the top of the old tower, climbing it will be a great adventure!"
+   },
+   {
+    "t": 1794294426989,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Although it might be a little spooky in the dark cave, exploring it will be full of surprises and discoveries!"
+   },
+   {
+    "t": 1794294435736,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -2082,6 +2117,21 @@
  "favs": {},
  "history": [
   {
+   "a": "s-full-of-surprises",
+   "t": 1794294436307,
+   "via": "review"
+  },
+  {
+   "a": "s-exploring-it",
+   "t": 1794294415943,
+   "via": "review"
+  },
+  {
+   "a": "s-anything-spectacular",
+   "t": 1794294393211,
+   "via": "review"
+  },
+  {
    "a": "s-finished-with",
    "t": 1794294351616,
    "via": "review"
@@ -2144,21 +2194,6 @@
   {
    "a": "s-finally-at-last",
    "t": 1794226214141,
-   "via": "review"
-  },
-  {
-   "a": "s-full-of-surprises",
-   "t": 1794226194162,
-   "via": "review"
-  },
-  {
-   "a": "s-exploring-it",
-   "t": 1794226179913,
-   "via": "review"
-  },
-  {
-   "a": "s-anything-spectacular",
-   "t": 1794226158866,
    "via": "review"
   },
   {
