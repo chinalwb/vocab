@@ -54,6 +54,8 @@
   --cl-1:#dfe9c8; --cl-2:#d2e0b4; --cl-3:#eaf1d8;
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
   --kn-1:#e2e0d0; --kn-2:#d8d5c0; --kn-3:#ece9dc;
+  /* IELTS: a crimson, after the exam's own red */
+  --ie-1:#f9c0c6; --ie-2:#f4a9b2; --ie-3:#fcd9dd;
   /* 三年级 – 六年级: one lime ramp, a grade deeper each year */
   --g3-1:#eef4cf; --g3-2:#e5eebd; --g3-3:#f5f9e2;
   --g4-1:#e4eebb; --g4-2:#d9e7a6; --g4-3:#eef4d3;
@@ -105,6 +107,7 @@
     --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
     --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
+    --ie-1:#5e2430; --ie-2:#6f2b39; --ie-3:#4d1d27;
     --g3-1:#3a4220; --g3-2:#444d26; --g3-3:#31381b;
     --g4-1:#3f4a1f; --g4-2:#4a5725; --g4-3:#353e1a;
     --g5-1:#44531f; --g5-2:#506125; --g5-3:#39461a;
@@ -147,6 +150,7 @@
   --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
   --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
+  --ie-1:#5e2430; --ie-2:#6f2b39; --ie-3:#4d1d27;
   --g3-1:#3a4220; --g3-2:#444d26; --g3-3:#31381b;
   --g4-1:#3f4a1f; --g4-2:#4a5725; --g4-3:#353e1a;
   --g5-1:#44531f; --g5-2:#506125; --g5-3:#39461a;
@@ -1178,6 +1182,9 @@ const LV = {
   SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]},
   // Knowledge (`- 类型:Knowledge`, 用户 2026-10-23): writing know-how — punctuation, sentence structure
   KNOWLEDGE:{nm:"Knowledge:写作通用知识(标点、句子结构……)", sw:["--kn-1","--kn-2","--kn-3"]},
+  // IELTS (`- 类型:IELTS`, 用户 2026-11-11): one reading passage per entry — text, question, logic,
+  // long sentences, vocabulary; quizzed on its long sentences
+  IELTS:{nm:"IELTS:雅思阅读真题精讲", sw:["--ie-1","--ie-2","--ie-3"]},
   // 三年级 – 六年级 (`- 类型:三年级` …, 用户 2026-10-28): primary-school English by grade
   G3:{nm:"三年级:小学英语", sw:["--g3-1","--g3-2","--g3-3"]},
   G4:{nm:"四年级:小学英语", sw:["--g4-1","--g4-2","--g4-3"]},
@@ -1187,7 +1194,7 @@ const LV = {
   // (no 复习 / 考核, no track); its sentences are quizzed on the entry page, 选词 only.
   ESSAY:{nm:"文章:整篇改好后的样子", sw:["--es-1","--es-2","--es-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge",
+const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge", IELTS:"IELTS",
   G3:"三年级", G4:"四年级", G5:"五年级", G6:"六年级", ESSAY:"文章"};
 // the grade groups, each listed in 类型 / 分类 only once it has an entry
 const GRADES = ["G3", "G4", "G5", "G6"].filter(k => DATA.some(g => g.level === k)).map(k => [k, LABEL[k]]);
@@ -1278,7 +1285,7 @@ const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
 // but no empty A1–C2 or 术语); DATA carries no empty groups
 const hasGroup = k => k === "ALL" || DATA.some(g => k === "WORD" ? CEFR.includes(g.level) : g.level === k);
 const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
-  ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(t => hasGroup(t[0]));
+  ["KNOWLEDGE", "Knowledge"], ["IELTS", "IELTS"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(t => hasGroup(t[0]));
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
   const old = store.get("vk.level", "ALL");
@@ -3724,7 +3731,7 @@ const SIDE = [
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
   ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"],
-    ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(([k]) => hasGroup(k)))
+    ["KNOWLEDGE", "Knowledge"], ["IELTS", "IELTS"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(([k]) => hasGroup(k)))
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];
