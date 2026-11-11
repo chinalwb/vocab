@@ -1276,3 +1276,48 @@
 - ⚠️ [冠词] ==some platform== → **a platform** —— 泛指「一个平台」用 *a*。
 - ⚠️ [介词] ==confident with== → **confident about** —— 对某事有把握用 *about*。
 - ⚠️ [搭配] ==came up with== → **settled on** —— *come up with* 是「想出、发明」;在已有选项里挑一个用 *settle on*。
+
+---
+
+<a id="r-declare-my-own-bias"></a>
+## 雅思阅读:探险的时代已经过去,但对一条熟悉的路线给出新的解读,仍能给读者新的启发
+
+- 日期:2026-11-11
+- 关键词:a new slant · a well-travelled route
+
+**常用说法:**
+
+> I should admit my own bias first. As a writer, I'm interested in exploring ideas. I've been on a lot of expeditions, and every one was different. I've lived alone for months with isolated groups of people around the world, including two "uncontacted tribes". But nobody cares about any of this unless my books offer a new way of looking at things or explore a new idea. Why? Because the world has changed. The age of great journeys across continents is over — nobody needs another walk to the poles or another trip across the Empty Quarter. We already know what the Earth's land looks like, so exploration now only deals with small details, such as how microbes behave or how buffalo graze. Except for the deep sea and deep underground, this is the age of specialists. But this view ignores how the human mind helps us understand faraway places — and that is what I care about: how a new way of seeing even a familiar route can teach readers something new.
+
+**C1 说法:**
+
+> **I'd best declare my own bias.** As a writer, I'm interested in the exploration of ideas. I've done **a great many** expeditions and each one was unique. I've lived for months alone with isolated groups of people all around the world, even two 'uncontacted tribes'. But none of these things **is of the slightest interest to anyone** unless, through my books, I've found **a new slant**, explored a new idea. Why? Because **the world has moved on**. **The time has long passed for** the great continental voyages — **another** walk to the poles, **another** crossing of the Empty Quarter. We know **how the land surface of our planet lies**; exploration of it **is now down to the details** — the habits of microbes, **say**, or the grazing behaviour of buffalo. **Aside from** the deep sea and deep underground, it's the era of specialists. However, **this is to disregard** the role the human mind has in **conveying remote places**; and this is what interests me: how **a fresh interpretation**, even of **a well-travelled route**, can give its readers new insights.
+
+**差别:**
+
+- **I'd best declare my own bias** —— *I'd best* 是 *I had best*(不是 *I would*),和 *I'd better* 一样是「我最好……」,英式口语常见;*declare* 借用「申报利益关系」(*declare an interest*)的说法,意思是先把自己的立场摆出来,*bias* 在这里是「偏好、立场」,不是贬义的「偏见」;对应 *I should admit my own bias first*。
+- **a great many** —— 「非常多」,只接可数复数,比 *a lot of* 正式;*great* 不是「伟大、重大」;对应 *a lot of*。
+- **is of the slightest interest to anyone** —— *be of interest to sb* 是「让某人感兴趣」(东西有意思,不是人有兴趣);*the slightest* 只用在否定、疑问、条件里,这里和 *none … unless* 连起来是「谁都不会有一丁点兴趣」;对应 *nobody cares about*。
+- **a new slant** —— 看问题的新角度;*slant* 本义「倾斜」,常带一点立场色彩,和开头的 *bias* 呼应;对应 *a new way of looking at things*。
+- **the world has moved on** —— 时代变了,大家早就往前走了(不是「世界在前进」);对应 *the world has changed*。
+- **The time has long passed for** —— 「……的时代早就过去了」,*long* 是「早已」;对应 *The age of … is over*。
+- **another … another …** —— 两个 *another* 带出不屑:这些事早有人做过,再做一遍没有新意;对应 *nobody needs another …*。
+- **how the land surface of our planet lies** —— 字面是「地表是什么样子」,同时让人想到习语 *see how the land lies*(看看情况如何);对应 *what the Earth's land looks like*。
+- **is now down to the details** —— *be down to* 是「只剩下、归结到」;对应 *only deals with small details*。
+- **say** —— 插在句中的 *say* 是「比如说」;对应 *such as*。
+- **Aside from** —— 「除了……之外」,同 *apart from*;对应 *Except for*。
+- **this is to disregard** —— *this is to do sth* 是「这样说就等于……」,*this* 指前面「现在是专家的时代」这种看法;*disregard* 正式,这里是「没把……算进去」;对应 *this view ignores*。
+- **conveying remote places** —— *convey* 通常接信息、感受,这里接地点:把遥远的地方传达给读者,让读者感受到;对应 *helps us understand faraway places*。
+- **a fresh interpretation** —— 全新的解读;对应 *a new way of seeing*,也是题目里 *cast new light on* 的出处。
+- **a well-travelled route** —— 很多人走过的路线(英式拼写 *travelled*,美式 *traveled*);对应 *a familiar route*,也是题目里 *places that may be familiar* 的出处。
+
+**中文翻译:**
+
+我最好先交代一下自己的立场。作为作家,我感兴趣的是对思想的探索。我参加过非常多次探险,每一次都独一无二。我曾在世界各地和与世隔绝的群体单独生活过好几个月,其中甚至有两个"未接触部落"。但除非我在书里找到了新的角度、探讨了新的想法,否则这些经历谁都不会有一丁点兴趣。为什么?因为时代已经变了。横跨大陆的伟大远征早就过时了——再走一次极地,再穿越一次鲁卜哈利沙漠(Empty Quarter),都没什么新意。地球陆地是什么样子,我们已经一清二楚;对它的探索如今只剩下细节——比如微生物的习性,或者水牛怎么吃草。除了深海和地下深处,这已经是专家的时代。然而,这样说就忽略了人的头脑在传达遥远之地时所起的作用;而这正是我感兴趣的:一种新的解读,哪怕针对的是一条许多人走过的路线,也能让读者有新的领悟。
+
+**题目对应:Question 32**
+
+- 题目:*In the last paragraph, the writer explains that he is interested in* —— 答案 **B**:*the human ability to cast new light on places that may be familiar*。
+- *a fresh interpretation* → **cast new light on**
+- *a well-travelled route* → **places that may be familiar**
+- *the human mind* → **the human ability**
