@@ -399,6 +399,13 @@ button.tg:hover,button.tg:focus-visible{outline:2px solid var(--accent);outline-
 .ielts-answer{display:block;width:100%;box-sizing:border-box;font:inherit;background:var(--ground);color:var(--card-ink);border:1px solid var(--card-edge);border-radius:10px;padding:12px;margin:14px 0;resize:vertical}
 .ielts-actions{justify-content:flex-start;margin-top:20px}
 .ielts-help{line-height:1.7}
+.ielts-original{position:relative;padding-right:48px!important}
+.ielts-original>.original-play{position:absolute;right:2px;top:4px}
+.ielts-original-line{display:flex;align-items:flex-start;gap:8px}
+.ielts-original-line>span{flex:1;min-width:0}
+.spk.original-play{flex:none;width:36px;height:36px;padding:6px;margin:0;border-radius:50%;color:var(--accent)}
+.spk.original-play svg{width:24px;height:24px}
+.spk.original-play:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ielts-deck button[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--accent)}
 @media print{.ielts-controls,.ielts-actions,.ielts-answer{display:none}.ielts-expression{break-inside:avoid}.ielts-word{border:0;background:none}}
 
@@ -2402,6 +2409,9 @@ function ieltsDeck(it){
     `<div class="ielts-controls"><button type="button" class="btn" data-ielts="prev">← 上一张</button><span class="ielts-count" role="status"></span><button type="button" class="btn" data-ielts="next">下一张 →</button></div>` +
     `<p class="ielts-help">先回忆，再揭晓；换一天再试，并用自己的话造句。选择仅保存在此浏览器；独立学习条目沿用现有复习流程。</p></div>`;
 }
+function originalPlayBtn(text){
+  return text && /[A-Za-z]/.test(text) ? `<button type="button" class="spk original-play" data-say="${esc(text)}" aria-label="播放原文" title="播放原文"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>` : "";
+}
 function ieltsSlides(it){
   const {section} = ieltsModel(it);
   const d = document.createElement("div"); d.innerHTML = section("原文");
@@ -2433,6 +2443,11 @@ function ieltsSlides(it){
     }
     frag.append(document.createTextNode(node.textContent.slice(last))); node.replaceWith(frag);
   });
+  d.querySelectorAll("blockquote").forEach(quote => {
+    const text = quote.textContent.trim();
+    quote.classList.add("ielts-original");
+    quote.insertAdjacentHTML("beforeend", originalPlayBtn(text));
+  });
   return [["原文", d.innerHTML], ["读懂这句",withoutHeading("读懂这句")], ["表达卡片",ieltsDeck(it)], ["关联笔记",withoutHeading("关联笔记")]];
 }
 function paintIelts(deck){
@@ -2451,7 +2466,7 @@ function paintIelts(deck){
   box.innerHTML=`<div class="ielts-expression"><span class="tg">${esc(c.priority)}</span>`+
     (recalling ? `<h3>试着回忆英文表达</h3><p>${esc(c.prompt || c.meaning)}</p><textarea class="ielts-answer" rows="2" aria-label="回忆英文表达" placeholder="写下你记得的英文，再对照答案…"></textarea><button type="button" class="btn" data-ielts="reveal">揭晓表达与例句</button>` :
     `<h3>${esc(c.term)} ${spkBtn(c.term)}</h3><p>${esc(c.meaning)}</p>`+
-    (c.original?`<div class="ielts-example"><span>原文中的用法</span><p>${esc(c.original)}</p></div>`:"")+
+    (c.original?`<div class="ielts-example"><span>原文中的用法</span><p class="ielts-original-line"><span>${esc(c.original)}</span>${originalPlayBtn(c.original)}</p></div>`:"")+
     (c.example?`<div class="ielts-example"><span>新语境 · 自拟例句</span><p>${esc(c.example)} ${spkBtn(c.example)}</p><p>${esc(c.prompt)}</p></div>`:"")+
     (c.contrast?`<p class="ielts-contrast">${esc(c.contrast)}</p>`:"")+
     (deck._draft?`<div class="ielts-example"><span>刚才的回忆 · 自行对照</span><p>${esc(deck._draft)}</p></div>`:""))+

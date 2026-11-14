@@ -1,6 +1,8 @@
 package io.github.chinalwb.vocab.ui
 
 import android.content.Context
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,23 +56,26 @@ internal fun IeltsSection(
     if (section.label == "原文") {
         val color = MaterialTheme.colorScheme.primary
         blocks.forEach { block ->
-            if (block is Block.Quote && cards.isNotEmpty()) {
+            if (block is Block.Quote) {
                 val text = block.lines.joinToString("\n")
                 val terms = cards.mapIndexedNotNull { i, c ->
                     val term = c.term.replace(Regex("""\s+(sth|sb)\b.*$"""), "").trimEnd('…', '.').trim()
                     if (term.isBlank()) null else term to i
                 }.sortedByDescending { it.first.length }
                 val pattern = Regex("\\b(" + terms.joinToString("|") { Regex.escape(it.first) } + ")\\b", RegexOption.IGNORE_CASE)
+                Row(Modifier.fillMaxWidth()) {
                 Text(buildAnnotatedString {
                     var last = 0
-                    pattern.findAll(text).forEach { m ->
+                    (if (terms.isEmpty()) emptySequence() else pattern.findAll(text)).forEach { m ->
                         append(text.substring(last, m.range.first))
                         val target = terms.first { it.first.equals(m.value, ignoreCase = true) }.second
                         withLink(LinkAnnotation.Clickable("ielts-$target", TextLinkStyles(SpanStyle(color = color, textDecoration = TextDecoration.Underline))) { onWord(target) }) { append(m.value) }
                         last = m.range.last + 1
                     }
                     append(text.substring(last))
-                }, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(vertical = 10.dp))
+                }, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f).padding(vertical = 10.dp))
+                OriginalPlayButton(text)
+                }
             } else if (block is Block.Para) {
                 Surface(shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.primary.copy(alpha = .08f)) {
                     Text(plain(block.text), Modifier.padding(14.dp))
@@ -113,7 +118,7 @@ internal fun IeltsSection(
         } else {
             Row { Text(c.term, Modifier.weight(1f), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold); SpeakButton(c.term) }
             Text(c.meaning)
-            if (c.original.isNotBlank()) { Text("原文中的用法", style = MaterialTheme.typography.labelMedium); Text(c.original) }
+            if (c.original.isNotBlank()) { Text("原文中的用法", style = MaterialTheme.typography.labelMedium); Row(Modifier.fillMaxWidth()) { Text(c.original, Modifier.weight(1f)); OriginalPlayButton(c.original) } }
             if (c.example.isNotBlank()) {
                 Text("新语境 · 自拟例句", style = MaterialTheme.typography.labelMedium)
                 Row { Text(c.example, Modifier.weight(1f)); SpeakButton(c.example) }
@@ -139,4 +144,13 @@ internal fun IeltsSection(
         TextButton(enabled = at < visible.lastIndex, onClick = { onIndex(visible[at + 1].index) }) { Text("下一张 →") }
     }
     Text("先回忆，再揭晓；换一天再试，并用自己的话造句。选择仅保存在此设备；独立学习条目沿用现有复习流程。", style = MaterialTheme.typography.bodySmall)
+}
+
+
+@Composable
+private fun OriginalPlayButton(text: String) {
+    val speech = speaker()
+    IconButton(onClick = { speech.speak(text) }) {
+        Icon(Icons.Filled.PlayArrow, contentDescription = "播放原文", tint = MaterialTheme.colorScheme.primary)
+    }
 }
