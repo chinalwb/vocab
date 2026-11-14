@@ -171,6 +171,7 @@
 174. [句子:you might be interested in / of interest to you / find … interesting](#s-interested-in)
 175. [句子:any errors / spot an error](#s-any-errors-spot)
 176. [I'd best declare my own bias(雅思阅读 · 第 32 题)](#ielts-declare-my-own-bias)
+177. [Oldest children and "never get over" a younger sibling](#ielts-oldest-children-never-get-over)
 
 ---
 
@@ -3371,6 +3372,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **现成句式:** *With the advent of LLMs, …* —— 写技术趋势文章的开头;聊天说 *since X came out* 就行。
 
+**相关条目:** [Oldest children and "never get over" a younger sibling](#ielts-oldest-children-never-get-over) —— 对比日常的 arrival 与较正式、强调重要事物出现的 advent。
+
 ---
 
 <a id="first-time-perfect"></a>
@@ -5651,3 +5654,58 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **be down to the details** —— *be down to* 是「只剩下」。
 - **say** —— 插在句中,意思是「比如说」。
 - **aside from** —— 「除了……之外」,同 *apart from*。
+
+
+---
+
+<a id="ielts-oldest-children-never-get-over"></a>
+## Oldest children and "never get over" a younger sibling
+
+- 日期:2026-11-14
+- 掌握:认识
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+**Original**
+
+> Like the consensus seems to be that oldest children are generally less well-adjusted because they never get over the arrival of a younger sibling.
+
+**Explanation**
+
+参考译文：就是说，大家似乎普遍认为，排行最大的孩子通常在心理和社交方面适应得没那么好，因为他们一直无法释怀弟弟妹妹的到来。
+
+- 句首的 *Like* 是口语中的话语标记（discourse marker），这里接近中文的“就是……”，用来引出观点，不表示“像”。这是自然的口语习惯，正式书面语中通常省去。
+- *the consensus seems to be that...* 表示“大家的看法似乎是……”。*seems to be* 缓和了语气，没有 *The consensus is that...* 那么肯定。这个结构在口语和写作中都能用，但仍应有依据才声称存在共识。
+- *oldest children* 在这里指各个家庭中排行最大的孩子，用法自然。*firstborn children* 更明确地强调出生顺序；*eldest children* 也可以表达家中最大的孩子。不要把“两个孩子用 older，三个及以上用 oldest”当作不可违反的规则，也不必机械替换原文。
+- *less well-adjusted* 是比较级结构，指心理、情绪和社交方面适应得没那么好，不只是学习或处理新任务的能力较差。相较于直接说 *poorly adjusted*，它是较缓和的相对评价。
+- *never get over* 表示始终未能从某件事造成的情绪冲击中恢复过来。这里暗指弟弟妹妹到来后，原本独享父母关注的孩子受到的冲击；这层意思是结合语境作出的理解。*never* 可能带有夸张意味，但不能直接断定它没有“始终”的含义。
+- 整句结构：*the consensus seems to be [that oldest children are generally less well-adjusted because they never get over the arrival of a younger sibling]*。传统语法中，*that* 从句是接在 *seems to be* 后的表语从句，说明共识的具体内容；从句内部的 *because* 引出原因。
+- 这是说话人转述的一种普遍看法，句子本身不证明出生顺序与心理适应之间存在这样的因果关系。
+
+词汇释义（以下 CEFR 等级均为估计，供学习参考）：
+
+- **consensus** /kənˈsensəs/（C1，n.）：a general agreement among a group of people. 共识，普遍一致的看法。
+- **well-adjusted** /ˌwel əˈdʒʌstɪd/（C1，adj.）：emotionally balanced and able to deal well with everyday life and relationships. 心理、情绪及社交适应良好的。
+- **get over** 英 /ɡet ˈəʊvə/，美 /ɡet ˈoʊvər/（B2，短语动词）：to recover from an illness or an upsetting experience. 从疾病或令人难过的经历中恢复过来。
+- **sibling** /ˈsɪblɪŋ/（C1，n.）：a brother or sister. 兄弟姐妹，不限定性别。
+- **arrival** /əˈraɪvəl/（B2，n.）：the act of coming to a place, or the introduction or beginning of something new. 到来，出现；这里指弟弟或妹妹出生、加入家庭。
+
+补充用法：
+
+- *get over* 也可以表示克服某种困难或恐惧，如 *get over a fear*。
+- *can't get over* 可以表示难以释怀；在其他语境中也可以表示惊讶得无法相信，如 *I can't get over how much you've grown.*（你长大了这么多，真让我惊讶。）
+- 自拟例句：*A general consensus has emerged that remote work improves flexibility.* 大家逐渐形成了一种共识：远程工作提高了灵活性。
+
+**Key words**
+
+- **the consensus seems to be that...** —— 大家的看法似乎是……，适合谨慎地转述普遍观点。*There is a broad consensus that...* 表示存在广泛共识，但没有保留 *seems* 的不确定语气。
+- **reach / build a consensus** —— 达成／建立共识。其他常见搭配有 *a growing consensus*（逐渐形成的共识）和 *a general consensus*（普遍共识）。
+- **well-adjusted** —— 心理、情绪和社交适应良好的，如 *a well-adjusted child / adult*；反义表达包括 *maladjusted* 和 *poorly adjusted*。
+- **less well-adjusted** —— 适应得较差，以比较级作较缓和的负面评价。
+- **get over sth** —— 从某事中缓过来，如 *get over a shock / a breakup / an illness*。
+- **the arrival of a younger sibling** —— 弟弟或妹妹的到来。*the arrival of + 名词* 是可复用的结构，如 *the arrival of new technology*。
+- **sibling** —— 兄弟姐妹；常见搭配有 *sibling rivalry*（手足竞争）和 *an older / younger sibling*（哥哥姐姐／弟弟妹妹）。
+
+**References**
+
+- [advent](#advent) —— 对比 arrival 与 advent：arrival 是通用的“到来”，advent 较正式，常强调重要技术、时代或潮流的出现。
