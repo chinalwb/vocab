@@ -3,6 +3,27 @@
 换电脑接着做之前先看这里:每次长会话改了什么、现在的版本、没做完的事。最新的在最上面。细节规则以 `CLAUDE.md` 为准。
 
 ---
+## 2026-11-14:IELTS 阅读页与表达卡片重构
+
+- 用户同意把 IELTS 阅读与表达积累串起来：页签为「原文 / 读懂这句 / 表达卡片 / 关联笔记 / 我的笔记」，概要直接放在原文上方。build.py 统一 IELTS blocks，旧长文的讲解归入「读懂这句」，原文不改。
+- 来源元信息 `- 标签:15-1 · Listening · Part 2` 从正文移除，网页展示为三个可搜索的标签按钮；Android 保持胶囊标签。
+- Key words 表格提供逐张表达卡：学习分「重点会用 / 理解并积累 / 按需查看」，含本句含义、原文、新语境与中文提示、易混和已有词条关联。原文表达可点击打开卡片；旧词汇列表兼容简单卡片。
+- 网页和 Android 都有筛选、选择想学的表达、可选回忆与揭晓。回忆不记成绩、不改变 IELTS 阶段；选择仅保存在本浏览器／设备，不同步。要进入正式复习，优先打开关联的已有词条，否则复制保存请求交给助手查重整理，不由页面直接创建笔记。
+- 当前 oldest children 条目已配好五张卡。已有 IELTS 长文自动兼容四个内容页签，原讲解保留。
+- 验证：3 个 Python 回归测试通过；根目录及两个学生网页构建通过；Chrome 桌面／390px 手机、浅深色、原文跳转、回忆隐藏与揭晓、选择重载保留、标签搜索、旧文与普通词条检查通过，无 JS 错误；Android `:app:compileDebugKotlin` 通过，尚未做真机运行检查。
+- Android 版本 **2.32**（versionCode **106**）。本次提交到 dev，不自动发布 main。
+
+---
+## 2026-11-14:IELTS 分类(只读条目)
+
+- 用户要一个自己的 IELTS 分类,用来存备考时遇到的**词 / 短语 / 句子 / 段落**,只阅读和记账,**不自测**。
+- 做成固定分类(没走根目录 `site.json` 的 groups:那套只影响网页,还会把左栏其他分类挤掉)。改动:build.py 的 `KIND` / `GROUP_ORDER`;template.html 的 `--il-1..3` 钴蓝配色、`LV` / `LABEL` / `TYPES`、左栏分类、`READING()` 和各处的只读分支;Android `Theme.kt` / `BrowseScreen.kt` / `EntryScreen.kt`(藏轨道和自测按钮)/ `PracticeScreen.kt`;iPad `Model.swift` 的 `groupNames`(iPad 只读 taobao 的笔记,没有改阅读界面)。
+- 阅读条目在网页和 App 里:没有四格进度轨道,没有「自测这条」,没有自测面(网页背面仍在 DOM 里,但没有任何入口翻过去),不进练习 / 复习 / 考核;阶段上仍算「学习中」,照常出现在浏览、搜索、收藏、学习历史里。格式写进了 CLAUDE.md 的「IELTS 阅读条目」。
+- **来源标签 + 四个页签**(用户 2026-11-14 追加):每条带 `- 标签:15-1 · Listening · Part 2`(build.py 拆成 `tags`),网页卡片 / 条目页显示成小胶囊,搜索能搜到;Android `Entry.tags` 同样显示在条目页。详情页固定四个页签 Original / Explanation / Key words / References,靠正文里四个加粗小标题实现,不多加别的标题。
+- 验证:`python3 build.py` 正常(166 条);临时测试笔记本里 3 条 IELTS 条目,标签在 `data.json` 里是 `["15-1","Listening","Part 1"]` 这样,Chrome 无 JS 错误、卡片和条目页都显示胶囊、无轨道 / 无自测按钮;Android `:app:compileDebugKotlin` 通过。
+- 版本:Android **2.31**(versionCode 105)。**改动还没提交、没推 dev。**
+
+---
 ## 2026-11-02:iPad App(真机 + 第三阶段)
 
 - **装到了真机**(taobao 的 iPad Air 4,用户的免费 Personal Team `H5HH6LS79A`;team 只在命令行传,不写进 project.yml)。命令:`xcodebuild … -destination 'id=00008101-001D55202E01001E' -allowProvisioningUpdates DEVELOPMENT_TEAM=H5HH6LS79A build`,再 `xcrun devicectl device install app --device 5492416E-66AB-4CA1-8246-ACFCBBD5B7CB build/Build/Products/Debug-iphoneos/VoCab.app`。免费账号 7 天后要重装。**同步用户试过,没问题。**

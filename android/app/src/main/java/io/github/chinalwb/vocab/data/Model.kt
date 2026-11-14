@@ -42,12 +42,14 @@ data class Entry(
     /** Its number in the ## 目录 list — shown as #12 and searchable. 0 in data from before it existed. */
     val no: Int = 0,
     val title: String,
-    /** A1–C2, TERM, GRAMMAR or SENTENCE — see detect_level in build.py. */
+    /** A1–C2, TERM, IELTS, GRAMMAR or SENTENCE — see detect_level in build.py. */
     val level: String,
     val ipa: String = "",
     val pos: String = "",
     val cefr: String = "",
     val date: String = "",
+    /** Source tags on IELTS reading entries, e.g. ["15-1", "Listening", "Part 2"]. */
+    val tags: List<String> = emptyList(),
     /** "write" (会写: practise producing it) or "read" (认识) — see mastery() in build.py. */
     val mastery: String = "read",
     val gloss: String = "",
@@ -59,6 +61,7 @@ data class Entry(
     @Transient
     val searchText: String = buildString {
         append(title).append('\n').append(anchor).append('\n').append(gloss)
+        tags.forEach { append('\n').append(it) }
         blocks.forEach { b ->
             when (b) {
                 is Block.Para -> append('\n').append(b.text)

@@ -52,7 +52,7 @@ fun PracticeScreen(lib: LibraryState, onOpen: (String) -> Unit, modifier: Modifi
         Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
     }
-    val pool = remember(data) { data.entries.filter { it.writes && it.level != "SENTENCE" && it.level != "SELFTEST" }.sortedBy { it.anchor } }
+    val pool = remember(data) { data.entries.filter { it.writes && it.level != "SENTENCE" && it.level != "SELFTEST" && it.level != "IELTS" }.sortedBy { it.anchor } }
     if (pool.isEmpty()) {
         Box(modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) { Text("还没有标「会写」的条目。") }
         return

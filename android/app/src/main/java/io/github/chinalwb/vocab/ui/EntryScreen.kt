@@ -149,6 +149,8 @@ fun EntryScreen(
             return@Column
         }
         val selfTest = entry.level == "SELFTEST"
+        // IELTS notes are for reading and bookkeeping: no track, no self-test (用户 2026-11-14)
+        val reading = entry.level == "IELTS"
         var details by rememberSaveable { mutableStateOf(false) }
         var sharing by rememberSaveable { mutableStateOf(false) }
         // ⤢: the card takes the page (the headword, meta pill and track fold away)
@@ -177,7 +179,7 @@ fun EntryScreen(
         var draft by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf("") }
         var revealed by rememberSaveable(entry.anchor, stage, tryNo, step) { mutableStateOf(false) }
         var graded by rememberSaveable(entry.anchor, stage, tryNo) { mutableStateOf<Boolean?>(null) }
-        var quizUp by rememberSaveable(entry.anchor, stage) { mutableStateOf(stage == Stage.Test) }
+        var quizUp by rememberSaveable(entry.anchor, stage) { mutableStateOf(stage == Stage.Test && !reading) }
         val retry = { tryNo = maxOf(tryNo + 1, attempts.size); quizUp = true }
         val nextExample = { exNo = (ex?.pos ?: exNo) + 1; retry() }
         // 打乱 on: a new random order, from its start; off: note order, staying on this sentence
@@ -215,7 +217,8 @@ fun EntryScreen(
                 Column {
                     Headword(entry)
                     MetaPill(entry) { details = true }
-                    StageTrack(stage, onStage)
+                    TagChips(entry.tags)
+                    if (!reading) StageTrack(stage, onStage)
                 }
             }
             val cardTop by animateDpAsState(if (full) 4.dp else 0.dp, label = "cardTop")
@@ -230,7 +233,7 @@ fun EntryScreen(
             ) {
                 NotesPage(
                     entry, onXref,
-                    quiz = if (selfTest) null else ExampleQuiz(excluded, onToggleExample, onFav),
+                    quiz = if (selfTest || reading) null else ExampleQuiz(excluded, onToggleExample, onFav),
                     modifier = Modifier.weight(1f),
                     inCard = true,
                     trailing = {
@@ -241,13 +244,15 @@ fun EntryScreen(
                     // the 记忆 card after the notes, once there is a graded day or the entry is past 学习中;
                     // 我的笔记 last, always there to write in
                     extra = listOfNotNull(
-                        if (memory.isNotEmpty() || stage != Stage.Learn) "记忆" to { MemoryCard(memory, stage, due, band) } else null,
+                        if (!reading && (memory.isNotEmpty() || stage != Stage.Learn)) "记忆" to { MemoryCard(memory, stage, due, band) } else null,
                         "我的笔记" to @Composable { MyNote(entry.anchor, note, onNote) },
                     ),
                 )
                 CardFoot(
-                    hint = progressHint(entry, stage, attempts, since, excluded, reps),
+                    hint = if (reading) "阅读条目:存着回看的词、句子和段落,不用自测"
+                        else progressHint(entry, stage, attempts, since, excluded, reps),
                     label = when {
+                        reading -> null
                         reviewNow -> "复习这一条"
                         revealed -> "回到自测"
                         selfTest -> "自测一下"
@@ -435,6 +440,32 @@ private fun MetaPill(entry: Entry, onClick: () -> Unit) {
 }
 
 /**
+ * Source tags on a reading entry (`- 标签:15-1 · Listening · Part 2`, 用户 2026-11-14): small pills
+ * under the meta pill, so an item says which paper and part it came from.
+ */
+@Composable
+private fun TagChips(tags: List<String>) {
+    if (tags.isEmpty()) return
+    Row(
+        Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        tags.forEach { t ->
+            Text(
+                t,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(50))
+                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                    .padding(horizontal = 10.dp, vertical = 3.dp),
+            )
+        }
+    }
+}
+
+/**
  * The four stages as a track (学习中 → 复习中 → 考核中 → 已掌握): passed ones ticked, the current one
  * a ringed dot, the rest hollow; the line fills up to where the entry is. Tapping another stage
  * moves it there (it only moves — no jump to the next entry).
@@ -491,17 +522,19 @@ private fun StageTrack(stage: Stage, onPick: (Stage) -> Unit) {
 
 /** The card's foot: what's left in this stage, and the way into 自测. */
 @Composable
-private fun CardFoot(hint: String, label: String, onClick: () -> Unit) {
+private fun CardFoot(hint: String, label: String?, onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().padding(start = 18.dp, end = 10.dp, top = 6.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(hint, style = MaterialTheme.typography.bodySmall, color = sheetColors().sub, maxLines = 2, modifier = Modifier.weight(1f))
-        Button(onClick = onClick, modifier = Modifier.height(48.dp), contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 20.dp, end = 16.dp)) {
-            Text(label, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.width(6.dp))
-            Icon(Icons.AutoMirrored.Filled.ArrowForward, null, Modifier.size(16.dp))
+        if (label != null) {
+            Button(onClick = onClick, modifier = Modifier.height(48.dp), contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 20.dp, end = 16.dp)) {
+                Text(label, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.width(6.dp))
+                Icon(Icons.AutoMirrored.Filled.ArrowForward, null, Modifier.size(16.dp))
+            }
         }
     }
 }
