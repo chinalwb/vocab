@@ -5666,6 +5666,8 @@ platform 等于 10,就代表请求来自 web,对吧?
 - 类型:IELTS
 - 标签:15-1 · Listening · Part 2
 
+理解一种关于出生顺序的看法，重点积累 get over 和谨慎转述观点的句型。
+
 **Original**
 
 > Like the consensus seems to be that oldest children are generally less well-adjusted because they never get over the arrival of a younger sibling.
@@ -5698,13 +5700,13 @@ platform 等于 10,就代表请求来自 web,对吧?
 
 **Key words**
 
-- **the consensus seems to be that...** —— 大家的看法似乎是……，适合谨慎地转述普遍观点。*There is a broad consensus that...* 表示存在广泛共识，但没有保留 *seems* 的不确定语气。
-- **reach / build a consensus** —— 达成／建立共识。其他常见搭配有 *a growing consensus*（逐渐形成的共识）和 *a general consensus*（普遍共识）。
-- **well-adjusted** —— 心理、情绪和社交适应良好的，如 *a well-adjusted child / adult*；反义表达包括 *maladjusted* 和 *poorly adjusted*。
-- **less well-adjusted** —— 适应得较差，以比较级作较缓和的负面评价。
-- **get over sth** —— 从某事中缓过来，如 *get over a shock / a breakup / an illness*。
-- **the arrival of a younger sibling** —— 弟弟或妹妹的到来。*the arrival of + 名词* 是可复用的结构，如 *the arrival of new technology*。
-- **sibling** —— 兄弟姐妹；常见搭配有 *sibling rivalry*（手足竞争）和 *an older / younger sibling*（哥哥姐姐／弟弟妹妹）。
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| get over sth | 重点会用 | 从某件事造成的情绪冲击中恢复过来；也用于疾病。 | they never get over the arrival of a younger sibling | It took her a while to get over the disappointment. | 她花了一段时间才从失望中缓过来。 | get over 强调恢复；accept 强调接受事实。常见搭配：get over a shock / a breakup / an illness。 | |
+| the consensus seems to be that… | 重点会用 | 大家的看法似乎是……，谨慎地转述普遍观点。 | the consensus seems to be that oldest children are generally less well-adjusted | The consensus seems to be that the new library has benefited the community. | 大家的看法似乎是，新图书馆给社区带来了好处。 | There is a broad consensus that… 没有保留 seems 的不确定语气。搭配：reach / build a consensus、a growing / general consensus。 | |
+| well-adjusted | 理解并积累 | 心理、情绪和社交适应良好的。 | oldest children are generally less well-adjusted | Despite moving to a new city, she remained a happy, well-adjusted child. | 尽管搬到了新城市，她仍然是一个快乐、适应良好的孩子。 | less well-adjusted 是较缓和的相对评价；反义表达：maladjusted / poorly adjusted。 | |
+| sibling | 理解并积累 | 兄弟姐妹，不限定性别。 | the arrival of a younger sibling | Sharing a room with a younger sibling can be challenging. | 和弟弟或妹妹共用一个房间可能不容易。 | 常见搭配：sibling rivalry（手足竞争）、an older / younger sibling。 | |
+| the arrival of | 按需查看 | ……的到来或出现。 | the arrival of a younger sibling | The arrival of new technology has changed the way we learn. | 新技术的出现改变了我们的学习方式。 | arrival 用法通用；advent 较正式，常强调重要技术、时代或潮流的出现。 | [advent](#advent) |
 
 **References**
 

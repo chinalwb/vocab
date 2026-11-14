@@ -397,7 +397,16 @@ fun NotesPage(
     inCard: Boolean = false,
     trailing: @Composable () -> Unit = {},
     extra: List<Pair<String, @Composable () -> Unit>> = emptyList(),
-) = NotesPager(entry.anchor, entry.sections, entry.blocks, onXref, quiz, modifier, inCard = inCard, trailing = trailing, extra = extra)
+) {
+    var expression by rememberSaveable(entry.anchor) { mutableStateOf(0) }
+    var expressionVisit by rememberSaveable(entry.anchor) { mutableStateOf(0) }
+    NotesPager(entry.anchor, entry.sections, entry.blocks, onXref, quiz, modifier,
+        inCard = inCard, trailing = trailing, extra = extra,
+        sectionContent = if (entry.level == "IELTS") { section, go ->
+            IeltsSection(entry, section, expression, expressionVisit, { expression = it }, { expression = it; expressionVisit++; go(2) }, onXref)
+        } else null,
+    )
+}
 
 /**
  * [NotesPage] for any sectioned blocks — the entry page's notes and 阅读's details share it, the
@@ -423,6 +432,7 @@ fun NotesPager(
     trailing: @Composable () -> Unit = {},
     /** more cards after the notes, each drawn by its own composable — the entry page's 记忆 and 我的笔记 — in both modes */
     extra: List<Pair<String, @Composable () -> Unit>> = emptyList(),
+    sectionContent: (@Composable (Section, (Int) -> Unit) -> Unit)? = null,
 ) {
     // 分卡 (one section at a time) or 全部展开 (one long page): the user keeps both (用户 2026-10-14),
     // remembered across entries and launches — the same switch and key the carousel had
@@ -541,7 +551,10 @@ fun NotesPager(
                 Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(start = 20.dp, end = 20.dp, top = if (inCard) 12.dp else 20.dp, bottom = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                if (page < cards.size) Section(anchor, cards[page], heading = false, onXref, quiz, muted) else extra.getOrNull(page - cards.size)?.second?.invoke()
+                if (page < cards.size) {
+                    if (sectionContent != null) sectionContent(cards[page]) { k -> scope.launch { pager.animateScrollToPage(k) } }
+                    else Section(anchor, cards[page], heading = false, onXref, quiz, muted)
+                } else extra.getOrNull(page - cards.size)?.second?.invoke()
             }
         } else Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(start = 20.dp, end = 20.dp, top = if (inCard) 12.dp else 20.dp, bottom = 32.dp),
@@ -552,7 +565,12 @@ fun NotesPager(
                 Column(
                     Modifier.onGloballyPositionedTop { tops[i] = it },
                     verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) { Section(anchor, s, heading = i > 0, onXref, quiz, muted) }
+                ) {
+                    if (sectionContent != null) {
+                        Text(s.label, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+                        sectionContent(s) { k -> scope.launch { scroll.animateScrollTo(tops[k] ?: 0) } }
+                    } else Section(anchor, s, heading = i > 0, onXref, quiz, muted)
+                }
             }
             extra.forEachIndexed { k, (label, body) ->
                 Column(

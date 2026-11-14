@@ -54,8 +54,8 @@
   --cl-1:#dfe9c8; --cl-2:#d2e0b4; --cl-3:#eaf1d8;
   --st-1:#d6e0e6; --st-2:#c6d4dc; --st-3:#e4ecf0;
   --kn-1:#e2e0d0; --kn-2:#d8d5c0; --kn-3:#ece9dc;
-  /* IELTS: a crimson, after the exam's own red */
-  --ie-1:#f9c0c6; --ie-2:#f4a9b2; --ie-3:#fcd9dd;
+  /* IELTS (`- 类型:IELTS`, 用户 2026-11-14): cobalt, distinct from B1's pale blue and 术语's lavender */
+  --il-1:#ccd7f7; --il-2:#b8c6f4; --il-3:#e0e7fb;
   /* 三年级 – 六年级: one lime ramp, a grade deeper each year */
   --g3-1:#eef4cf; --g3-2:#e5eebd; --g3-3:#f5f9e2;
   --g4-1:#e4eebb; --g4-2:#d9e7a6; --g4-3:#eef4d3;
@@ -107,7 +107,7 @@
     --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
     --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
     --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
-    --ie-1:#5e2430; --ie-2:#6f2b39; --ie-3:#4d1d27;
+    --il-1:#283260; --il-2:#303b72; --il-3:#20284e;
     --g3-1:#3a4220; --g3-2:#444d26; --g3-3:#31381b;
     --g4-1:#3f4a1f; --g4-2:#4a5725; --g4-3:#353e1a;
     --g5-1:#44531f; --g5-2:#506125; --g5-3:#39461a;
@@ -150,7 +150,6 @@
   --cl-1:#36402a; --cl-2:#414d31; --cl-3:#2e3624;
   --st-1:#2c3a43; --st-2:#34454f; --st-3:#253139;
   --kn-1:#45432f; --kn-2:#504e38; --kn-3:#3b3a28;
-  --ie-1:#5e2430; --ie-2:#6f2b39; --ie-3:#4d1d27;
   --g3-1:#3a4220; --g3-2:#444d26; --g3-3:#31381b;
   --g4-1:#3f4a1f; --g4-2:#4a5725; --g4-3:#353e1a;
   --g5-1:#44531f; --g5-2:#506125; --g5-3:#39461a;
@@ -375,6 +374,34 @@ h1{
 .mdet{margin:10px 0 0;font-size:calc(13px * var(--fs));display:grid;grid-template-columns:auto 1fr;gap:5px 14px}
 .mdet[hidden]{display:none}
 .mdet b{font-weight:500;color:var(--card-ink-2)}
+/* source tags on IELTS reading entries (`- 标签:15-1 · Listening · Part 2`, 用户 2026-11-14) */
+.mtags{display:flex;gap:6px;flex-wrap:wrap;margin:8px 8px 0}
+.tg{display:inline-block;font-size:calc(11.5px * var(--fs));line-height:1.6;background:color-mix(in srgb,var(--card-ink) 8%,transparent);color:var(--card-ink-2);border-radius:999px;padding:1px 9px;white-space:nowrap}
+.ctags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.ctags .tg{font-size:calc(10.5px * var(--fs));padding:0 7px}
+.sheet.quizzing .mtags{display:none}
+
+/* IELTS reading: the source stays readable; expressions have one focused card each. */
+button.tg{font-family:inherit;border:1px solid var(--card-edge);cursor:pointer}
+button.tg:hover,button.tg:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ielts-overview{padding:12px 16px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:0 10px 10px 0}
+.ielts-word{font:inherit;color:inherit;border:0;border-bottom:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 9%,transparent);padding:0 2px;cursor:pointer;text-align:left;white-space:normal}
+.ielts-word:hover,.ielts-word:focus-visible{background:color-mix(in srgb,var(--accent) 22%,transparent);outline:2px solid var(--accent);outline-offset:2px}
+.ielts-controls,.ielts-actions{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:10px 0 16px}
+.ielts-controls label,.ielts-help,.ielts-count{font-size:calc(12px * var(--fs));color:var(--card-ink-2)}
+.ielts-controls select{font:inherit;color:var(--card-ink);background:var(--ground);border:1px solid var(--card-edge);border-radius:8px;padding:7px;max-width:100%}
+.ielts-expression{border:1px solid var(--card-edge);border-radius:16px;padding:clamp(14px,3vw,24px);background:color-mix(in srgb,var(--ground) 40%,transparent);overflow-wrap:anywhere}
+.ielts-expression h3{font-size:calc(21px * var(--fs));line-height:1.5;margin:12px 0}
+.ielts-example{border-left:2px solid var(--card-edge);padding-left:14px;margin:18px 0}
+.ielts-example>span{font-size:calc(11px * var(--fs));color:var(--card-ink-2)}
+.ielts-example p{margin:6px 0}
+.ielts-contrast{padding:12px;border-radius:10px;background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.ielts-answer{display:block;width:100%;box-sizing:border-box;font:inherit;background:var(--ground);color:var(--card-ink);border:1px solid var(--card-edge);border-radius:10px;padding:12px;margin:14px 0;resize:vertical}
+.ielts-actions{justify-content:flex-start;margin-top:20px}
+.ielts-help{line-height:1.7}
+.ielts-deck button[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--accent)}
+@media print{.ielts-controls,.ielts-actions,.ielts-answer{display:none}.ielts-expression{break-inside:avoid}.ielts-word{border:0;background:none}}
+
 /* progress band, drawn as levels: three nodes on a track, filled up to the one the entry is at */
 .lv{display:grid;grid-template-columns:repeat(var(--n,4),1fr);position:relative;margin:16px 0 12px;flex:none;--n:4;--k:0}
 .lv::before,.lv::after{content:"";position:absolute;top:13px;left:calc(50% / var(--n));height:3px;border-radius:2px;background:var(--card-edge);width:calc(100% - 100% / var(--n))}
@@ -1174,6 +1201,8 @@ const LV = {
   C1:{nm:"高级",  sw:["--c1-1","--c1-2","--c1-3"]},
   C2:{nm:"精通",  sw:["--c2-1","--c2-2","--c2-3"]},
   TERM:{nm:"术语与固定搭配(无 CEFR 分级)", sw:["--tm-1","--tm-2","--tm-3"]},
+  // IELTS (`- 类型:IELTS`, 用户 2026-11-14): words and phrases worth knowing for the exam
+  IELTS:{nm:"IELTS:雅思里用得上的词和说法", sw:["--il-1","--il-2","--il-3"]},
   GRAMMAR:{nm:"语法与语域笔记", sw:["--gr-1","--gr-2","--gr-3"]},
   SENTENCE:{nm:"整句订正:我的原句 → 更地道的说法", sw:["--sn-1","--sn-2","--sn-3"]},
   // 固定搭配 (`- 类型:固定搭配`): a phrase met in reading, quizzed on the sentence it came in.
@@ -1182,9 +1211,6 @@ const LV = {
   SELFTEST:{nm:"自测:简单高频,不复习也要能写对", sw:["--st-1","--st-2","--st-3"]},
   // Knowledge (`- 类型:Knowledge`, 用户 2026-10-23): writing know-how — punctuation, sentence structure
   KNOWLEDGE:{nm:"Knowledge:写作通用知识(标点、句子结构……)", sw:["--kn-1","--kn-2","--kn-3"]},
-  // IELTS (`- 类型:IELTS`, 用户 2026-11-11): one reading passage per entry — text, question, logic,
-  // long sentences, vocabulary; quizzed on its long sentences
-  IELTS:{nm:"IELTS:雅思阅读真题精讲", sw:["--ie-1","--ie-2","--ie-3"]},
   // 三年级 – 六年级 (`- 类型:三年级` …, 用户 2026-10-28): primary-school English by grade
   G3:{nm:"三年级:小学英语", sw:["--g3-1","--g3-2","--g3-3"]},
   G4:{nm:"四年级:小学英语", sw:["--g4-1","--g4-2","--g4-3"]},
@@ -1194,7 +1220,7 @@ const LV = {
   // (no 复习 / 考核, no track); its sentences are quizzed on the entry page, 选词 only.
   ESSAY:{nm:"文章:整篇改好后的样子", sw:["--es-1","--es-2","--es-3"]}
 };
-const LABEL = {TERM:"术语", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge", IELTS:"IELTS",
+const LABEL = {TERM:"术语", IELTS:"IELTS", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge",
   G3:"三年级", G4:"四年级", G5:"五年级", G6:"六年级", ESSAY:"文章"};
 // the grade groups, each listed in 类型 / 分类 only once it has an entry
 const GRADES = ["G3", "G4", "G5", "G6"].filter(k => DATA.some(g => g.level === k)).map(k => [k, LABEL[k]]);
@@ -1256,11 +1282,14 @@ const nextStage = k => (STAGES[STAGES.findIndex(s => s[0] === k) + 1] || [])[0];
 let stages = {}, stageT = {};               // stageT: when each move was made, for 同步
 try { stages = JSON.parse(store.get("vk.stage", "{}")) || {}; } catch(e){}
 try { stageT = JSON.parse(store.get("vk.stage.t", "{}")) || {}; } catch(e){}
+// IELTS (`- 类型:IELTS`, 用户 2026-11-14): reading and bookkeeping only — the notes are the point,
+// so no self-test and no stage track; it sits in 学习中 like any other note but never runs 复习 / 考核.
+const READING = level => level === "IELTS";
 const stageOf = (it, level) => level === "ESSAY" ? "" : stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
 // a card's colour: its level, cycling the level's three shades (mine), or its stage (site.json
 // "cardColor": "stage", a student's page, where the colour says how far along an entry is).
 // Whatever carries data-swl is repainted by refreshStages() when an entry moves.
-const swOf = (it, level, i) => VK.cardColor === "stage" && level !== "ESSAY" ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
+const swOf = (it, level, i) => VK.cardColor === "stage" && level !== "ESSAY" && !READING(level) ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
 // by stage, the desktop list's little square takes the stage dot's full colour (--swd); the wash is too pale there
 const SG_DOT = { learn: "--st-learn", review: "--accent", test: "--st-test", done: "--st-done" };
 function paintSw(el, it, level, i){
@@ -1284,8 +1313,8 @@ const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
 // 类型 and 分类 list only the groups this notebook has (用户 2026-10-29: taobao's page shows 三年级 / 四年级
 // but no empty A1–C2 or 术语); DATA carries no empty groups
 const hasGroup = k => k === "ALL" || DATA.some(g => k === "WORD" ? CEFR.includes(g.level) : g.level === k);
-const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
-  ["KNOWLEDGE", "Knowledge"], ["IELTS", "IELTS"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(t => hasGroup(t[0]));
+const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["IELTS", "IELTS"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
+  ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(t => hasGroup(t[0]));
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
   const old = store.get("vk.level", "ALL");
@@ -1457,6 +1486,8 @@ function setView(key){
 
 // anchor -> entry, so a cross-reference inside a note can open the note it points at
 const byAnchor = {};
+// escape text for HTML — defined before the cards are built, which need it for tags
+const esc = t => t.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 // build sections once
 const sections = DATA.map(g => {
@@ -1484,6 +1515,7 @@ const sections = DATA.map(g => {
       `<h3 class="hw">${it.title}</h3>` +
       (meta ? `<div class="meta">${meta}</div>` : "") +
       (it.gloss ? `<p class="gloss">${it.gloss}</p>` : "") +
+      (it.tags && it.tags.length ? `<div class="ctags">${sourceTags(it)}</div>` : "") +
       `<div class="foot">` +
       `<span>${it.no ? `<span class="no">#${it.no}</span>` : ""}<span class="flv">${(it.cefr || "").match(/\b[ABC][12]\b/)?.[0] || LABEL[g.level] || g.level}</span>` +
       (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}<span class="stc" data-opt="1" data-anchor="${it.anchor}"></span>`) +
@@ -1493,7 +1525,7 @@ const sections = DATA.map(g => {
     c.addEventListener("click", () => open(it, g.level, i, listOf(c)));
     byAnchor[it.anchor] = { it, level: g.level, i };
     grid.append(c);
-    return { el: c, it, no: it.no, write: it.mastery === "write", hay: (it.title + " " + it.gloss + " " + it.html).toLowerCase() };
+    return { el: c, it, no: it.no, write: it.mastery === "write", hay: (it.title + " " + it.gloss + " " + it.html + " " + (it.tags || []).join(" ")).toLowerCase() };
   });
   sec.append(head, grid);
   board.append(sec);
@@ -1507,7 +1539,6 @@ const mboard = document.getElementById("mboard");
 let mtype = "ALL";
 try { const s = localStorage.getItem(vkKey("vk.mtype")); if (s) mtype = s; } catch(e){}
 if (mtype !== "ALL" && !MISTAKES.some(g => g.type === mtype)) mtype = "ALL";
-const esc = t => t.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 const mkMax = Math.max(1, ...MISTAKES.map(g => g.items.length));
 const mkType = (key, text, n) => {
@@ -2338,10 +2369,146 @@ function addSpeakButtons(){
 const speakText = (it, level) => level === "SELFTEST" ? ((it.answer || "").split("\n").find(l => l.trim()) || "").trim()
   : (it.title.match(/^(.+?)\s*[((].+[))]$/) || [, it.title])[1];
 
+// IELTS is a reading collection. Optional recall here never writes quiz/stage records.
+const ieltsCache = new WeakMap();
+function ieltsModel(it){
+  if (ieltsCache.has(it)) return ieltsCache.get(it);
+  const section = name => (it.slides.find(s => s[0] === name) || [, ""])[1];
+  const doc = document.createElement("div"); doc.innerHTML = section("表达卡片");
+  const cards = [...doc.querySelectorAll("tbody tr")].map(tr => {
+    const c = [...tr.cells];
+    return {term:c[0]?.textContent.trim(), priority:c[1]?.textContent.trim() || "理解并积累",
+      meaning:c[2]?.textContent.trim() || "", original:c[3]?.textContent.trim() || "",
+      example:c[4]?.textContent.trim() || "", prompt:c[5]?.textContent.trim() || "",
+      contrast:c[6]?.textContent.trim() || "", ref:c[7]?.querySelector("a[data-ref]")?.dataset.ref || ""};
+  }).filter(c => c.term);
+  if (!cards.length) doc.querySelectorAll("li").forEach(li => {
+    const strong = li.querySelector("strong");
+    if (strong) cards.push({term:strong.textContent.trim(), priority:"理解并积累",
+      meaning:li.textContent.trim().slice(strong.textContent.trim().length).replace(/^\s*[—:：-]+\s*/, ""),
+      original:"",example:"",prompt:"",contrast:"",ref:""});
+  });
+  const model = {cards, section}; ieltsCache.set(it, model); return model;
+}
+const ieltsFocusKey = (it, c) => JSON.stringify([it.anchor, c.term]);
+function ieltsSelected(it, c){
+  try { return JSON.parse(store.get("vk.ielts.focus", "{}"))[ieltsFocusKey(it,c)] === true; } catch { return false; }
+}
+function ieltsDeck(it){
+  return `<div class="ielts-deck" data-anchor="${esc(it.anchor)}" data-index="0">` +
+    `<div class="ielts-controls"><label>学习范围 <select class="ielts-filter"><option value="all">全部表达</option><option value="重点会用">重点会用</option><option value="理解并积累">理解并积累</option><option value="按需查看">按需查看</option><option value="selected">我选的表达</option></select></label>` +
+    `<button type="button" class="linkish" data-ielts="recall" aria-pressed="false">回忆模式</button></div>` +
+    `<div class="ielts-content" aria-live="polite"></div>` +
+    `<div class="ielts-controls"><button type="button" class="btn" data-ielts="prev">← 上一张</button><span class="ielts-count" role="status"></span><button type="button" class="btn" data-ielts="next">下一张 →</button></div>` +
+    `<p class="ielts-help">先回忆，再揭晓；换一天再试，并用自己的话造句。选择仅保存在此浏览器；独立学习条目沿用现有复习流程。</p></div>`;
+}
+function ieltsSlides(it){
+  const {section} = ieltsModel(it);
+  const d = document.createElement("div"); d.innerHTML = section("原文");
+  const heading = d.querySelector("p");
+  if (heading?.textContent.trim() === "原文") heading.remove();
+  [...d.children].forEach(el => { if (el.tagName === "P") el.classList.add("ielts-overview"); });
+  const withoutHeading = name => {
+    const el = document.createElement("div"); el.innerHTML = section(name);
+    const first = el.firstElementChild;
+    if (first?.tagName === "P" && first.textContent.trim() === name) first.remove();
+    return el.innerHTML;
+  };
+  const pattern = term => term.replace(/\s+(sth|sb)\b.*$/i, "").replace(/[…\.]+$/, "").trim();
+  // Text nodes only: links, HTML attributes and pronunciation controls stay intact.
+  const walker = document.createTreeWalker(d, NodeFilter.SHOW_TEXT); const nodes = [];
+  while (walker.nextNode()) if (walker.currentNode.parentElement.closest("blockquote")) nodes.push(walker.currentNode);
+  nodes.forEach(node => {
+    const candidates = ieltsModel(it).cards.map((c,i) => ({i,term:pattern(c.term)})).filter(c => c.term).sort((a,b) => b.term.length-a.term.length);
+    const escapeRE = s => s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    if (!candidates.length) return;
+    const re = new RegExp("\\b("+candidates.map(c=>escapeRE(c.term)).join("|")+")\\b", "gi");
+    const frag = document.createDocumentFragment(); let last=0;
+    for (const m of node.textContent.matchAll(re)) {
+      frag.append(document.createTextNode(node.textContent.slice(last,m.index)));
+      const b=document.createElement("button"); b.type="button"; b.className="ielts-word";
+      b.dataset.ielts="word"; b.dataset.anchor=it.anchor;
+      b.dataset.index=String(candidates.find(c=>c.term.toLowerCase()===m[0].toLowerCase()).i);
+      b.textContent=m[0]; b.title="查看本句含义与表达卡片"; frag.append(b); last=m.index+m[0].length;
+    }
+    frag.append(document.createTextNode(node.textContent.slice(last))); node.replaceWith(frag);
+  });
+  return [["原文", d.innerHTML], ["读懂这句",withoutHeading("读懂这句")], ["表达卡片",ieltsDeck(it)], ["关联笔记",withoutHeading("关联笔记")]];
+}
+function paintIelts(deck){
+  const it=byAnchor[deck.dataset.anchor]?.it; if (!it) return;
+  const cards=ieltsModel(it).cards, filter=deck.querySelector("select").value;
+  const visible=cards.map((c,i)=>({c,i})).filter(({c})=>filter==="all" || (filter==="selected" ? ieltsSelected(it,c) : c.priority===filter));
+  let at=Math.max(0,Math.min(visible.length-1,Number(deck.dataset.index)||0)); deck.dataset.index=String(at);
+  deck.querySelector('[data-ielts="prev"]').disabled=!visible.length || at===0;
+  deck.querySelector('[data-ielts="next"]').disabled=!visible.length || at===visible.length-1;
+  deck.querySelector(".ielts-count").textContent=visible.length ? `${at+1} / ${visible.length}` : "0 / 0";
+  const box=deck.querySelector(".ielts-content");
+  if (!visible.length) { box.innerHTML='<p>这里还没有表达。可以切换学习范围，或在其他卡片中选择想学的表达。</p>'; return; }
+  const {c,i}=visible[at]; deck.dataset.card=String(i);
+  const recalling=deck.dataset.recall==="true" && deck.dataset.revealed!=="true";
+  const ref=c.ref || ALL.find(t=>t.level!=="IELTS" && t.it.title.toLowerCase()===c.term.toLowerCase())?.it.anchor;
+  box.innerHTML=`<div class="ielts-expression"><span class="tg">${esc(c.priority)}</span>`+
+    (recalling ? `<h3>试着回忆英文表达</h3><p>${esc(c.prompt || c.meaning)}</p><textarea class="ielts-answer" rows="2" aria-label="回忆英文表达" placeholder="写下你记得的英文，再对照答案…"></textarea><button type="button" class="btn" data-ielts="reveal">揭晓表达与例句</button>` :
+    `<h3>${esc(c.term)} ${spkBtn(c.term)}</h3><p>${esc(c.meaning)}</p>`+
+    (c.original?`<div class="ielts-example"><span>原文中的用法</span><p>${esc(c.original)}</p></div>`:"")+
+    (c.example?`<div class="ielts-example"><span>新语境 · 自拟例句</span><p>${esc(c.example)} ${spkBtn(c.example)}</p><p>${esc(c.prompt)}</p></div>`:"")+
+    (c.contrast?`<p class="ielts-contrast">${esc(c.contrast)}</p>`:"")+
+    (deck._draft?`<div class="ielts-example"><span>刚才的回忆 · 自行对照</span><p>${esc(deck._draft)}</p></div>`:""))+
+    `<div class="ielts-actions"><button type="button" class="btn" data-ielts="select" aria-pressed="${ieltsSelected(it,c)}">${ieltsSelected(it,c)?"已选为想学的表达 ✓":"选为想学的表达"}</button>`+
+    (ref && byAnchor[ref] ? `<a class="xref" href="#${esc(ref)}" data-ref="${esc(ref)}">打开已有条目 →</a>` : `<button type="button" class="linkish" data-ielts="save">复制学习条目保存请求</button>`)+`</div></div>`;
+  wireXrefsIn(box,t=>open(t.it,t.level,t.i));
+}
+function wireIelts(root){
+  root.querySelectorAll(".ielts-deck").forEach(deck=>{
+    if (deck._wired) return; deck._wired=true; paintIelts(deck);
+    deck.querySelector("select").addEventListener("change",()=>{deck.dataset.index="0";deck.dataset.revealed="false";deck._draft="";paintIelts(deck);});
+    deck.addEventListener("keydown",e=>{if(e.target.matches("textarea,select")) e.stopPropagation();});
+  });
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-ielts]"); if(!b) return;
+  const deck=b.closest(".ielts-deck"), action=b.dataset.ielts;
+  if(action==="word") {
+    const nv=b.closest(".nv"); const target=nv.querySelector(".ielts-deck");
+    target.querySelector("select").value="all";target.dataset.index=b.dataset.index;
+    target.dataset.recall="false";target.dataset.revealed="false";target._draft="";
+    target.querySelector('[data-ielts="recall"]').setAttribute("aria-pressed","false");
+    paintIelts(target); if(!nv.classList.contains("all")) nvGo(nv,2);
+    const h=target.querySelector("h3"); if(h){h.tabIndex=-1;h.focus({preventScroll:true});h.scrollIntoView({block:"nearest"});} return;
+  }
+  if(!deck) return;
+  const it=byAnchor[deck.dataset.anchor].it,c=ieltsModel(it).cards[Number(deck.dataset.card)];
+  if(action==="save" && c) {
+    copyText(`请把下面的表达整理为独立学习条目，先查现有笔记，有对应条目就复用并补双向链接，避免重复。\n来源条目：${it.title} (#${it.anchor})\n来源标签：${(it.tags||[]).join(" · ")}\n表达：${c.term}\n含义：${c.meaning}\n原文：${c.original}\n新语境（自拟）：${c.example}\n中文：${c.prompt}\n辨析：${c.contrast}\n目标：会写，进入现有复习流程。`,b);return;
+  }
+  if(action==="select" && c){
+    let selected={}; try{selected=JSON.parse(store.get("vk.ielts.focus","{}"))||{};}catch{}
+    selected[ieltsFocusKey(it,c)]=!ieltsSelected(it,c);store.set("vk.ielts.focus",JSON.stringify(selected));
+  }else if(action==="recall"){
+    deck.dataset.recall=String(deck.dataset.recall!=="true");b.setAttribute("aria-pressed",deck.dataset.recall);
+    deck.dataset.revealed="false";deck._draft="";
+  }else if(action==="reveal"){
+    deck._draft=deck.querySelector("textarea")?.value||"";deck.dataset.revealed="true";
+  }else if(action==="prev"||action==="next"){
+    deck.dataset.index=String(Number(deck.dataset.index)+(action==="next"?1:-1));deck.dataset.revealed="false";deck._draft="";
+  }
+  paintIelts(deck);
+});
+// Tag chips search the actual tag text; no redundant '标签:' paragraph in the notes.
+function sourceTags(it){ return (it.tags||[]).map(t=>`<button type="button" class="tg" data-source-tag="${esc(t)}" title="搜索来源：${esc(t)}">${esc(t)}</button>`).join(""); }
+document.addEventListener("click",e=>{
+  const tag=e.target.closest("[data-source-tag]"); if(!tag) return;
+  e.preventDefault();e.stopPropagation();q.value=tag.dataset.sourceTag;
+  view="entries";typeF="IELTS";cefrF="";stageF="";writeOnly=false;favOnly=false;noteOnly=false;
+  saveFilters();q.focus();
+},true);
+
 // [fill]: on the entry card, where the notes take the face's height (and get the ⤢ button);
 // [extra]: more [label, html] cards after the sections there (记忆, 我的笔记); empty ones are skipped
 function notesHtml(it, fill = false, withFull = true, extra = []){
-  const sl = fill ? [...it.slides, ...extra.filter(Boolean)] : it.slides;
+  const base = READING(it.level) ? ieltsSlides(it) : it.slides;
+  const sl = fill ? [...base, ...extra.filter(Boolean)] : base;
   if (!fill) return sl.length < 2 ? `<div class="notes-h">笔记</div>${it.html}` :
     `<div class="nv${notesAll ? " all" : ""}">` +
     `<div class="nv-h"><span>笔记</span><span class="ln"></span><button type="button" class="nv-all">${notesAll ? "分卡显示" : "全部展开"}</button></div>` +
@@ -2466,6 +2633,16 @@ function nvInit(nv){
         p.textContent.trim() === p.firstElementChild.textContent.trim() && /[:：]$/.test(p.textContent.trim())) p.classList.add("lbl");
   });
   nvPaint(nv, 0);
+  // A docked entry can become a phone dialog (or enter full screen). Re-align the active page
+  // after its width changes; retaining the old scrollLeft would leave two half-pages visible.
+  const track = nv.querySelector(".nv-track");
+  let trackWidth = track.clientWidth;
+  const widthObserver = new ResizeObserver(() => {
+    if (track.clientWidth === trackWidth) return;
+    trackWidth = track.clientWidth;
+    if (!nv.classList.contains("all")) track.scrollTo({left:(nv._k || 0) * (trackWidth + 12),behavior:"instant"});
+  });
+  widthObserver.observe(track);
   // the notes may start hidden (behind 显示答案) and fonts load late: refit when a card resizes
   const ro = new ResizeObserver(() => nvPaint(nv, nv._k));
   nv.querySelectorAll(".nv-card").forEach(c => ro.observe(c));
@@ -2529,6 +2706,7 @@ const wireXrefsIn = (root, go) => root.querySelectorAll(".xref").forEach(a => {
 });
 // the card's foot: how many sentences are still to be answered right before the next stage
 function progressHint(it, level, stage){
+  if (READING(level)) return "读懂原文 → 积累表达；想练会写的表达可单独加入复习";
   if (level === "ESSAY") return `共 ${quizExamples(it).length} 句 · 只选词,选对就算这句答对`;
   const nx = nextStage(stage);
   if (!nx) return "已掌握,不再进复习和考核";
@@ -2673,13 +2851,15 @@ function show(it, level, i, o = {}){
   // a 文章 (用户 2026-10-31): no stage track; each sentence is ① 选词 only and counts as right on its own
   // (typing is practised in the sentence entries the essay links to)
   const essay = level === "ESSAY";
+  // IELTS notes are for reading: no track, no self-test, nothing to flip to (用户 2026-11-14)
+  const reading = READING(level);
   const wantBack = stage === "test";                    // 考核 opens on the 自测 side, the rest on the notes
   if (o.face === undefined && o.from === undefined && o.ex === undefined) { delete exOrder[it.anchor]; exDone[it.anchor] = new Set(); }
   exDone[it.anchor] = exDone[it.anchor] || new Set();
   // a new entry (学习中, never tried) shows 自测这条 only once every page of its notes has been seen
   // (用户 2026-11-01: so the sentences to be tested are read first); 记忆 / 我的笔记 don't count
   const pages = it.slides.length;
-  let unseen = stage === "learn" && pages > 1 && !(stLog[it.anchor] || []).length && !seenAll[it.anchor]
+  let unseen = stage === "learn" && pages > 1 && !reading && !(stLog[it.anchor] || []).length && !seenAll[it.anchor]
     ? new Set(Array.from({ length: pages }, (_, k) => k).slice(1)) : null;
   let ex = selfTest ? null : o.ex !== undefined ? quizEx(it, o.ex) : quizEx(it);   // fixed before this try is logged
   const lvName = CEFR.includes(level) ? level : (TYPES.find(t => t[0] === level) || [, level])[1];
@@ -2692,7 +2872,7 @@ function show(it, level, i, o = {}){
     return `<div class="lv" style="--n:${STAGES.length};--k:${idx}">` + STAGES.map(([k, name], j) =>
       `<button type="button" class="lvl${j < idx ? " passed" : j === idx ? " on" : ""}" data-to="${k}"${j === idx ? " disabled" : ""}>` +
       `<span class="node">${j < idx ? "✓" : ""}</span><span>${name}</span></button>`).join("") + `</div>`; };
-  const levels = essay ? "" : levelsHtml(stage);
+  const levels = essay || reading ? "" : levelsHtml(stage);
   const curEx = () => ex ? plainMd(ex.en) : null;      // stats and history are this sentence's own
   let step = o.step || 1, skipped = false;
   if (!essay && !o.step && answerOf(it, level, ex) && rightBefore(it.anchor, ex ? plainMd(ex.en) : "")) { step = 2; o.bankOk = true; skipped = true; }
@@ -2706,9 +2886,9 @@ function show(it, level, i, o = {}){
   // due for 复习 today: the button reviews it (a run of one) — not before, as reviewing early stretches its intervals
   const reviewNow = stage === "review" && reviewDue(it);
   const front = `<div class="face fr"><div class="body fillb">${notesHtml(it, true, true, [memorySlide(it, stage), myNoteSlide(it)])}</div>` +
-    `<div class="card-foot"><span class="hint" id="cf-hint">${esc(unseen ? unseenHint(unseen.size) : progressHint(it, level, stage))}</span>` +
+    `<div class="card-foot"><span class="hint" id="cf-hint">${esc(reading ? "读懂原文 → 积累表达；想练会写的表达可单独加入复习" : unseen ? unseenHint(unseen.size) : progressHint(it, level, stage))}</span>` +
     `<button class="btn" type="button" id="to-next"${unseen ? "" : " hidden"}>看下页 ›</button>` +
-    `<button class="btn" type="button" id="to-quiz"${unseen ? " hidden" : ""}>${reviewNow ? "复习这一条" : selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
+    `<button class="btn" type="button" id="to-quiz"${reading || unseen ? " hidden" : ""}>${reviewNow ? "复习这一条" : selfTest ? "自测一下" : "自测这条"} →</button></div></div>`;
   const backFace = `<div class="face bk">` + qsheetHtml({
     meta: qMeta(), toggle: answerOf(it, level, ex) && !essay ? modeToggleHtml(step) : "", prompt: promptHtml(),
     stats: stStatsLine(it.anchor, curEx()),
@@ -2727,6 +2907,7 @@ function show(it, level, i, o = {}){
     `<div class="mband"><h2>${it.title}${essay ? readAllBtn() : spkBtn(speakText(it, level))}</h2>` +
     `<button type="button" class="mpill" aria-expanded="false"><span>${esc(pill)}</span>${ICON_CHEV}</button>` +
     `<div class="mdet" hidden>${rows.map(([k, v]) => `<b>${k}</b><span>${esc(String(v))}</span>`).join("")}</div></div>` +
+    (it.tags && it.tags.length ? `<div class="mtags">${sourceTags(it)}</div>` : "") +
     levels +
     `<div class="ecard${startBack ? " flipped" : ""}"><div class="inner">${front}${backFace}</div></div>`;
   scrim._entry = { it, level, i };
@@ -2749,9 +2930,10 @@ function show(it, level, i, o = {}){
     card.classList.toggle("flipped", toQuiz); sheet.classList.toggle("quizzing", toQuiz);
   };
   if (o.from !== undefined && o.from !== wantBack) requestAnimationFrame(() => requestAnimationFrame(() => flip(wantBack)));
-  markQuizExamples(sheet, it);
+  if (!reading) markQuizExamples(sheet, it);   // reading notes are not quizzed, so no ● dots or 不再考这句
   markExamples(sheet, it);
   wireMyNote(sheet);
+  if (reading) wireIelts(sheet);
   const frontNv = sheet.querySelector(".face.fr .nv");
   if (unseen && frontNv) {
     // a dot on each page still to read (用户 2026-11-01); 看下页 goes to the next of them
@@ -3667,7 +3849,7 @@ function renderExtras(){
 
 // ── 练习: a daily imitation task and a weekly paragraph. The app picks the same ones
 // (ui/PracticeScreen.kt): pool = 会写 entries that aren't 句子 / 自测, sorted by anchor. ──
-const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST" && t.level !== "ESSAY")
+const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST" && t.level !== "ESSAY" && t.level !== "IELTS")
   .sort((a, b) => a.it.anchor < b.it.anchor ? -1 : a.it.anchor > b.it.anchor ? 1 : 0);
 let skip = 0;                                             // 换一题 within this visit
 const words = t => (t.match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g) || []).length;
@@ -3730,8 +3912,8 @@ const SIDE = [
     ["review", "复习", "var(--accent)", () => setView("review")],
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
-  ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"],
-    ["KNOWLEDGE", "Knowledge"], ["IELTS", "IELTS"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(([k]) => hasGroup(k)))
+  ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["IELTS", "IELTS"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"],
+    ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(([k]) => hasGroup(k)))
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];

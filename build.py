@@ -20,7 +20,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
-GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "IELTS", "G3", "G4", "G5", "G6", "COLLOC", "ESSAY", "SELFTEST"]
+GROUP_ORDER = LEVELS + ["TERM", "IELTS", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "G3", "G4", "G5", "G6", "COLLOC", "ESSAY", "SELFTEST"]
 SCHEMA = 1  # bump when data.json changes shape in a way the app must know about
 
 # 错题本: a bullet like `- ❌ [介词] **...** —— ...` (or ⚠️) marks a mistake the
@@ -64,11 +64,10 @@ def split_entries(src):
 # the point it practises (taobao's notes); the prefixes below still work as before
 # Knowledge (用户 2026-10-23): general writing know-how — punctuation, sentence structure — not tied to one word
 # 三年级 – 六年级 (用户 2026-10-28): primary-school English by grade
+# IELTS (用户 2026-11-14): words and phrases worth knowing for the exam
 # 文章 (用户 2026-10-31): a whole piece of writing, kept in essays.md, never in vocabulary.md
-# IELTS (用户 2026-11-11): one IELTS reading passage per entry — the text, the question it answers,
-# the logic, the long sentences and the vocabulary; the passage itself is never corrected
-KIND = {"句子": "SENTENCE", "固定搭配": "COLLOC", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR", "Knowledge": "KNOWLEDGE", "IELTS": "IELTS",
-        "三年级": "G3", "四年级": "G4", "五年级": "G5", "六年级": "G6", "文章": "ESSAY"}
+KIND = {"句子": "SENTENCE", "固定搭配": "COLLOC", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR", "Knowledge": "KNOWLEDGE",
+        "IELTS": "IELTS", "三年级": "G3", "四年级": "G4", "五年级": "G5", "六年级": "G6", "文章": "ESSAY"}
 
 
 def detect_level(title, raw, own=None):
@@ -146,8 +145,8 @@ def inline(t):
 
 
 def strip_meta(raw):
-    # the 音标/词性/CEFR/日期/掌握/类型 bullets are rendered as chips, not body text
-    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握|类型|关键词)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
+    # the 音标/词性/CEFR/日期/掌握/类型/标签 bullets are rendered as chips, not body text
+    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握|类型|标签|关键词)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
 
 
 def parse_blocks(raw):
@@ -281,6 +280,34 @@ def sections(blocks):
     return out
 
 
+def ielts_blocks(blocks):
+    """Four reading sections for both clients; keep old passage material without extra tabs."""
+    groups = {k: [] for k in ("原文", "读懂这句", "表达卡片", "关联笔记")}
+    names = {"Original": "原文", "Explanation": "读懂这句", "Key words": "表达卡片",
+             "References": "关联笔记", "原文": "原文", "读懂这句": "读懂这句",
+             "表达卡片": "表达卡片", "关联笔记": "关联笔记", "词汇与表达": "表达卡片"}
+    summary = []
+    for label, bs in sections(blocks):
+        if label == "概要":
+            summary.extend(bs)
+            continue
+        dest = names.get(label, "读懂这句")
+        body = list(bs)
+        if body and body[0]["t"] == "p" and section_label(body[0]["text"]):
+            # Known headings are supplied by the tabs; legacy subsections remain as ordinary text.
+            if label in names:
+                body = body[1:]
+            else:
+                body[0] = {"t": "p", "text": body[0]["text"].replace("**", "")}
+        groups[dest].extend(body)
+    groups["原文"] = summary + groups["原文"]
+    out = []
+    for label, bs in groups.items():
+        out.append({"t": "p", "text": "**" + label + "**"})
+        out.extend(bs or [{"t": "p", "text": "暂无相关笔记。" if label == "关联笔记" else "待补充。"}])
+    return out
+
+
 def mastery(raw, level):
     """会写 → "write" (practise producing it), 认识 → "read" (recognising is enough)."""
     v = meta_field(raw, "掌握")
@@ -346,6 +373,8 @@ def build_entries(src, own=None, essays=False):
             print(f"warning: {e['title']} ({e['anchor']}) has no 类型, 词性 or CEFR — filed as 术语; "
                   "add a '- 类型:' line or a title prefix rule", file=sys.stderr)
         blocks = parse_blocks(e["raw"])
+        if level == "IELTS":
+            blocks = ielts_blocks(blocks)
         entry = {
             "anchor": e["anchor"],
             "no": None if essays else numbers[e["anchor"]],
@@ -355,6 +384,8 @@ def build_entries(src, own=None, essays=False):
             "pos": meta_field(e["raw"], "词性"),
             "cefr": meta_field(e["raw"], "CEFR"),
             "date": meta_field(e["raw"], "日期"),
+            # source tags on IELTS reading entries, e.g. 15-1 · Listening · Part 2 (用户 2026-11-14)
+            "tags": [t.strip() for t in meta_field(e["raw"], "标签").split("·") if t.strip()],
             "mastery": mastery(e["raw"], level),
             "gloss": re.sub(r"\*\*(.+?)\*\*", r"\1", gloss(e["raw"], level))[:150],
             "blocks": blocks,
@@ -412,7 +443,7 @@ def digest(obj):
 def page_data(entries, order=GROUP_ORDER):
     grouped = {}
     for e in entries:
-        item = {k: e[k] for k in ("anchor", "no", "title", "ipa", "pos", "cefr", "date", "gloss", "mastery")}
+        item = {k: e[k] for k in ("anchor", "no", "title", "ipa", "pos", "cefr", "date", "tags", "gloss", "mastery")}
         item["original"] = original_sentence(e["blocks"])
         if e["level"] == "SELFTEST":
             item["answer"] = quote_after(e["blocks"], "答案")
