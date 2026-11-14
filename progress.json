@@ -400,6 +400,10 @@
   "hesitate-hesitant": {
    "s": "review",
    "t": 1793879027766
+  },
+  "s-any-errors-spot": {
+   "s": "review",
+   "t": 1794152779001
   }
  },
  "cards": {
@@ -968,182 +972,27 @@
  "newToday": 0,
  "resetAt": 0,
  "attempts": {
-  "g4-there-be": [
+  "t-iphone-or-android": [
    {
-    "t": 1793187226573,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Is there a library in your school?"
-   },
-   {
-    "t": 1793187237000,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Yes, there is."
-   },
-   {
-    "t": 1793187242301,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Is there a library in your school?"
-   },
-   {
-    "t": 1793189043138,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Is there a library in your school?"
-   }
-  ],
-  "g4-wh-questions": [
-   {
-    "t": 1793187065524,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "How much is this skirt?"
-   },
-   {
-    "t": 1793187087415,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Whose shoes are these?"
-   },
-   {
-    "t": 1793187093776,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Whose shoes are these?"
-   },
-   {
-    "t": 1793187100534,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Whose shoes are these?"
-   },
-   {
-    "t": 1793189075105,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "How much is this skirt?"
-   }
-  ],
-  "t-two-projects": [
-   {
-    "t": 1791504601076,
+    "t": 1791504422860,
     "ok": false,
     "peek": false,
     "via": "review",
     "ex": ""
    },
    {
-    "t": 1791552599998,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791592318024,
+    "t": 1791552120106,
     "ok": true,
     "peek": false,
     "via": "entry",
     "ex": ""
    },
    {
-    "t": 1793189671492,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   }
-  ],
-  "t-hold-out-for": [
-   {
-    "t": 1791504500512,
-    "ok": false,
-    "peek": false,
-    "via": "review",
-    "ex": ""
-   },
-   {
-    "t": 1791552194558,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791552248080,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791552301632,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791552352974,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791552386439,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791552417838,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791552443118,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791552472755,
+    "t": 1791683789209,
     "ok": true,
     "peek": false,
-    "via": "entry",
+    "via": "selftest",
     "ex": ""
-   },
-   {
-    "t": 1793189815287,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   }
-  ],
-  "percentage-completed": [
-   {
-    "t": 1793191228866,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "What percentage of the work has been completed so far?"
    }
   ],
   "t-not-crash-like-emulator": [
@@ -1292,26 +1141,105 @@
     "ex": ""
    }
   ],
-  "t-iphone-or-android": [
+  "t-hold-out-for": [
    {
-    "t": 1791504422860,
+    "t": 1791504500512,
     "ok": false,
     "peek": false,
     "via": "review",
     "ex": ""
    },
    {
-    "t": 1791552120106,
+    "t": 1791552194558,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791552248080,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791552301632,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791552352974,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791552386439,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791552417838,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791552443118,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791552472755,
     "ok": true,
     "peek": false,
     "via": "entry",
     "ex": ""
    },
    {
-    "t": 1791683789209,
+    "t": 1793189815287,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   }
+  ],
+  "t-two-projects": [
+   {
+    "t": 1791504601076,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": ""
+   },
+   {
+    "t": 1791552599998,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791592318024,
     "ok": true,
     "peek": false,
-    "via": "selftest",
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1793189671492,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
     "ex": ""
    }
   ],
@@ -1746,167 +1674,6 @@
     "ex": ""
    }
   ],
-  "alibi": [
-   {
-    "t": 1791631268183,
-    "ok": false,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   },
-   {
-    "t": 1791633485875,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633626559,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633686317,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633714240,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633738049,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633769583,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633796963,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633823168,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633851993,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633884198,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   },
-   {
-    "t": 1791633906616,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": ""
-   }
-  ],
-  "expect": [
-   {
-    "t": 1791631337855,
-    "ok": false,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   },
-   {
-    "t": 1791800537816,
-    "ok": false,
-    "peek": true,
-    "via": "entry",
-    "ex": "We don't expect to see any performance impact."
-   },
-   {
-    "t": 1791800584930,
-    "ok": false,
-    "peek": true,
-    "via": "entry",
-    "ex": "We expect the migration to take about an hour."
-   },
-   {
-    "t": 1791800593046,
-    "ok": false,
-    "peek": true,
-    "via": "entry",
-    "ex": "That function is expected to work correctly after the refactor."
-   }
-  ],
-  "t-wrong-color-blend": [
-   {
-    "t": 1791631611612,
-    "ok": false,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
-  "t-every-choice-energy": [
-   {
-    "t": 1791631939223,
-    "ok": true,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
-  "t-overthink-drained": [
-   {
-    "t": 1791631957902,
-    "ok": false,
-    "peek": true,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
-  "t-exhausted-before-start": [
-   {
-    "t": 1791632054501,
-    "ok": false,
-    "peek": false,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
-  "t-agonize-over": [
-   {
-    "t": 1791632071835,
-    "ok": false,
-    "peek": true,
-    "via": "selftest",
-    "ex": ""
-   }
-  ],
   "bakery": [
    {
     "t": 1791684421484,
@@ -1941,7 +1708,7 @@
     "ok": false,
     "peek": true,
     "via": "entry",
-    "ex": "There's a bakery around the corner that sells fresh bread every morning."
+    "ex": ""
    },
    {
     "t": 1791869652733,
@@ -2411,6 +2178,167 @@
     "ok": false,
     "peek": false,
     "via": "entry",
+    "ex": ""
+   }
+  ],
+  "alibi": [
+   {
+    "t": 1791631268183,
+    "ok": false,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   },
+   {
+    "t": 1791633485875,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633626559,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633686317,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633714240,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633738049,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633769583,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633796963,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633823168,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633851993,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633884198,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791633906616,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": ""
+   }
+  ],
+  "expect": [
+   {
+    "t": 1791631337855,
+    "ok": false,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   },
+   {
+    "t": 1791800537816,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791800584930,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": ""
+   },
+   {
+    "t": 1791800593046,
+    "ok": false,
+    "peek": true,
+    "via": "entry",
+    "ex": ""
+   }
+  ],
+  "t-wrong-color-blend": [
+   {
+    "t": 1791631611612,
+    "ok": false,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   }
+  ],
+  "t-every-choice-energy": [
+   {
+    "t": 1791631939223,
+    "ok": true,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   }
+  ],
+  "t-overthink-drained": [
+   {
+    "t": 1791631957902,
+    "ok": false,
+    "peek": true,
+    "via": "selftest",
+    "ex": ""
+   }
+  ],
+  "t-exhausted-before-start": [
+   {
+    "t": 1791632054501,
+    "ok": false,
+    "peek": false,
+    "via": "selftest",
+    "ex": ""
+   }
+  ],
+  "t-agonize-over": [
+   {
+    "t": 1791632071835,
+    "ok": false,
+    "peek": true,
+    "via": "selftest",
     "ex": ""
    }
   ],
@@ -3168,28 +3096,28 @@
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "Android users can message iOS users, and vice versa."
+    "ex": ""
    },
    {
     "t": 1791803616539,
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": "Some people work better in the morning, others vice versa."
+    "ex": ""
    },
    {
     "t": 1791803637958,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "Android users can message iOS users, and vice versa."
+    "ex": ""
    },
    {
     "t": 1791803662094,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "Some people work better in the morning, others vice versa."
+    "ex": ""
    },
    {
     "t": 1791810798116,
@@ -3240,56 +3168,56 @@
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": "When you set the price, don't forget to factor in the payment fees."
+    "ex": ""
    },
    {
     "t": 1791803854800,
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": "The estimate doesn't factor in the cost of free users."
+    "ex": ""
    },
    {
     "t": 1791803924148,
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": "We need to factor in the risk of delays when we plan the release."
+    "ex": ""
    },
    {
     "t": 1791803965341,
     "ok": false,
     "peek": false,
     "via": "entry",
-    "ex": "Once you factor in the commute, the cheaper apartment isn't really cheaper."
+    "ex": ""
    },
    {
     "t": 1791804055482,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "When you set the price, don't forget to factor in the payment fees."
+    "ex": ""
    },
    {
     "t": 1791804081649,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "The estimate doesn't factor in the cost of free users."
+    "ex": ""
    },
    {
     "t": 1791804139907,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "We need to factor in the risk of delays when we plan the release."
+    "ex": ""
    },
    {
     "t": 1791804168296,
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "Once you factor in the commute, the cheaper apartment isn't really cheaper."
+    "ex": ""
    },
    {
     "t": 1791810744095,
@@ -3333,7 +3261,7 @@
     "ok": true,
     "peek": false,
     "via": "entry",
-    "ex": "This is the first time I've used Compose in production."
+    "ex": ""
    },
    {
     "t": 1791810897707,
@@ -12413,6 +12341,59 @@
     "ex": "It's likely to rain."
    }
   ],
+  "endowed-with": [
+   {
+    "t": 1793015425625,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Humans are endowed with the capacity for reason."
+   },
+   {
+    "t": 1793015497561,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "She was endowed with a remarkable talent for music from a young age."
+   },
+   {
+    "t": 1793015649966,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "The university was endowed with a large sum of money by a wealthy alumnus."
+   },
+   {
+    "t": 1793015722807,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The university was endowed with a large sum of money by a wealthy alumnus."
+   },
+   {
+    "t": 1793015788839,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Nature has endowed this region with abundant natural resources."
+   },
+   {
+    "t": 1793015829535,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Nature has endowed this region with abundant natural resources."
+   }
+  ],
+  "deprioritize": [
+   {
+    "t": 1793015889909,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "We've decided to deprioritize this feature until next quarter."
+   }
+  ],
   "given-that": [
    {
     "t": 1793060697085,
@@ -12759,59 +12740,6 @@
     "ex": ""
    }
   ],
-  "endowed-with": [
-   {
-    "t": 1793015425625,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "Humans are endowed with the capacity for reason."
-   },
-   {
-    "t": 1793015497561,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "She was endowed with a remarkable talent for music from a young age."
-   },
-   {
-    "t": 1793015649966,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "The university was endowed with a large sum of money by a wealthy alumnus."
-   },
-   {
-    "t": 1793015722807,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The university was endowed with a large sum of money by a wealthy alumnus."
-   },
-   {
-    "t": 1793015788839,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "Nature has endowed this region with abundant natural resources."
-   },
-   {
-    "t": 1793015829535,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Nature has endowed this region with abundant natural resources."
-   }
-  ],
-  "deprioritize": [
-   {
-    "t": 1793015889909,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "We've decided to deprioritize this feature until next quarter."
-   }
-  ],
   "go-ahead": [
    {
     "t": 1793150381573,
@@ -12868,6 +12796,82 @@
     "peek": false,
     "via": "review",
     "ex": "We can go ahead with the release."
+   }
+  ],
+  "g4-there-be": [
+   {
+    "t": 1793187226573,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Is there a library in your school?"
+   },
+   {
+    "t": 1793187237000,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Yes, there is."
+   },
+   {
+    "t": 1793187242301,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Is there a library in your school?"
+   },
+   {
+    "t": 1793189043138,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Is there a library in your school?"
+   }
+  ],
+  "g4-wh-questions": [
+   {
+    "t": 1793187065524,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much is this skirt?"
+   },
+   {
+    "t": 1793187087415,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Whose shoes are these?"
+   },
+   {
+    "t": 1793187093776,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Whose shoes are these?"
+   },
+   {
+    "t": 1793187100534,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Whose shoes are these?"
+   },
+   {
+    "t": 1793189075105,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much is this skirt?"
+   }
+  ],
+  "percentage-completed": [
+   {
+    "t": 1793191228866,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "What percentage of the work has been completed so far?"
    }
   ],
   "g4-these-those-plurals": [
@@ -13475,6 +13479,15 @@
     "via": "review",
     "ex": "The new settings page confuses users."
    }
+  ],
+  "s-any-errors-spot": [
+   {
+    "t": 1794152778997,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Cool. Can you spot any errors in this sentence?"
+   }
   ]
  },
  "favs": {
@@ -13506,6 +13519,11 @@
    "a": "coalesce",
    "t": 1794272219867,
    "via": "entry"
+  },
+  {
+   "a": "s-interested-in",
+   "t": 1794152786405,
+   "via": "review"
   },
   {
    "a": "s-any-errors-spot",
@@ -13566,11 +13584,6 @@
    "a": "recon",
    "t": 1793879027792,
    "via": "entry"
-  },
-  {
-   "a": "s-interested-in",
-   "t": 1793794032029,
-   "via": "review"
   },
   {
    "a": "make-the-most-of",
@@ -14001,40 +14014,6 @@
   }
  },
  "quizOut": {
-  "g4-there-be": {
-   "Yes, there is.": {
-    "on": true,
-    "t": 1793188953333
-   },
-   "There are two windows in my room.": {
-    "on": true,
-    "t": 1793188957823
-   },
-   "There is a computer in our classroom.": {
-    "on": true,
-    "t": 1793188958014
-   }
-  },
-  "g4-wh-questions": {
-   "What time is it?": {
-    "on": true,
-    "t": 1793188966556
-   },
-   "What's the weather like in Beijing?": {
-    "on": true,
-    "t": 1793188967525
-   },
-   "Whose shoes are these?": {
-    "on": true,
-    "t": 1793188967715
-   }
-  },
-  "percentage-completed": {
-   "The project is about 70% complete so far.": {
-    "on": true,
-    "t": 1793191176578
-   }
-  },
   "s-rate-limit-error": {
    "When exactly do users run into the \"Rate limit reached\" error?": {
     "on": true,
@@ -14219,6 +14198,40 @@
    "We hit a transient outage on the server during the test run.": {
     "on": false,
     "t": 1793148022154
+   }
+  },
+  "g4-there-be": {
+   "Yes, there is.": {
+    "on": true,
+    "t": 1793188953333
+   },
+   "There are two windows in my room.": {
+    "on": true,
+    "t": 1793188957823
+   },
+   "There is a computer in our classroom.": {
+    "on": true,
+    "t": 1793188958014
+   }
+  },
+  "g4-wh-questions": {
+   "What time is it?": {
+    "on": true,
+    "t": 1793188966556
+   },
+   "What's the weather like in Beijing?": {
+    "on": true,
+    "t": 1793188967525
+   },
+   "Whose shoes are these?": {
+    "on": true,
+    "t": 1793188967715
+   }
+  },
+  "percentage-completed": {
+   "The project is about 70% complete so far.": {
+    "on": true,
+    "t": 1793191176578
    }
   },
   "s-expected-to-work": {
