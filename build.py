@@ -20,7 +20,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
-GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "G3", "G4", "G5", "G6", "COLLOC", "ESSAY", "SELFTEST"]
+GROUP_ORDER = LEVELS + ["TERM", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "IELTS", "G3", "G4", "G5", "G6", "COLLOC", "ESSAY", "SELFTEST"]
 SCHEMA = 1  # bump when data.json changes shape in a way the app must know about
 
 # 错题本: a bullet like `- ❌ [介词] **...** —— ...` (or ⚠️) marks a mistake the
@@ -65,7 +65,9 @@ def split_entries(src):
 # Knowledge (用户 2026-10-23): general writing know-how — punctuation, sentence structure — not tied to one word
 # 三年级 – 六年级 (用户 2026-10-28): primary-school English by grade
 # 文章 (用户 2026-10-31): a whole piece of writing, kept in essays.md, never in vocabulary.md
-KIND = {"句子": "SENTENCE", "固定搭配": "COLLOC", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR", "Knowledge": "KNOWLEDGE",
+# IELTS (用户 2026-11-11): one IELTS reading passage per entry — the text, the question it answers,
+# the logic, the long sentences and the vocabulary; the passage itself is never corrected
+KIND = {"句子": "SENTENCE", "固定搭配": "COLLOC", "自测": "SELFTEST", "语法": "GRAMMAR", "语域": "GRAMMAR", "Knowledge": "KNOWLEDGE", "IELTS": "IELTS",
         "三年级": "G3", "四年级": "G4", "五年级": "G5", "六年级": "G6", "文章": "ESSAY"}
 
 
