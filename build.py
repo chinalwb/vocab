@@ -631,14 +631,14 @@ def main():
     meta = {
         "schema": SCHEMA,
         # reads count too, so a new 阅读 item alone makes the app fetch data.json again
-        "hash": digest([e["hash"] for e in entries] + [r["hash"] for r in reads]),
+        "hash": digest([e["hash"] for e in entries] + [r["hash"] for r in reads] + [e["hash"] for e in practice_entries]),
         "count": len(entries),
         "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     (src / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
     (src / "data.json").write_text(
         json.dumps({**meta, "mistakeTypes": [{"key": k, "desc": d, "check": c} for k, d, c in MISTAKE_TYPES],
-                    "entries": entries, "reads": reads}, ensure_ascii=False), encoding="utf-8")
+                    "entries": entries, "reads": reads, **({"practices": practice_entries} if practice_entries else {})}, ensure_ascii=False), encoding="utf-8")
 
     if args.artifact:
         pathlib.Path(args.artifact).write_text(

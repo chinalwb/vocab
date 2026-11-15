@@ -9,6 +9,18 @@ struct VocabData: Decodable {
     let schema: Int
     let hash: String
     let entries: [Entry]
+    let practices: [Entry]
+    let generated: String
+
+    enum CodingKeys: String, CodingKey { case schema, hash, entries, practices, generated }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        schema = try c.decode(Int.self, forKey: .schema)
+        hash = try c.decode(String.self, forKey: .hash)
+        entries = try c.decode([Entry].self, forKey: .entries)
+        practices = try c.decodeIfPresent([Entry].self, forKey: .practices) ?? []
+        generated = try c.decodeIfPresent(String.self, forKey: .generated) ?? ""
+    }
 }
 
 /// One note. [level] is SENTENCE, COLLOC, ESSAY, A1–C2… — see detect_level in build.py.
@@ -29,8 +41,10 @@ struct Entry: Decodable, Identifiable, Hashable {
 
     var id: String { anchor }
     var isEssay: Bool { level == "ESSAY" }
+    var isPractice: Bool { level == "PRACTICE" }
+    let practice: SpecialPracticeSet?
 
-    enum CodingKeys: String, CodingKey { case anchor, no, title, level, ipa, pos, cefr, date, mastery, gloss, blocks, hash }
+    enum CodingKeys: String, CodingKey { case anchor, no, title, level, ipa, pos, cefr, date, mastery, gloss, blocks, hash, practice }
 
     init(from d: Decoder) throws {
         let c = try d.container(keyedBy: CodingKeys.self)
@@ -46,6 +60,7 @@ struct Entry: Decodable, Identifiable, Hashable {
         gloss = try c.decodeIfPresent(String.self, forKey: .gloss) ?? ""
         blocks = try c.decodeIfPresent([Block].self, forKey: .blocks) ?? []
         hash = try c.decodeIfPresent(String.self, forKey: .hash) ?? ""
+        practice = try c.decodeIfPresent(SpecialPracticeSet.self, forKey: .practice)
         sections = splitSections(blocks)
         searchText = ([title, anchor, gloss] + blocks.flatMap(\.texts)).joined(separator: "\n").lowercased()
     }
@@ -147,7 +162,7 @@ func splitSections(_ blocks: [Block]) -> [NoteSection] {
 
 /// The groups taobao's notes use, in the order the sidebar lists them.
 let groupNames: [(key: String, label: String)] = [
-    ("SENTENCE", "句子"), ("COLLOC", "固定搭配"), ("ESSAY", "文章"), ("SELFTEST", "自测题"),
+    ("SENTENCE", "句子"), ("COLLOC", "固定搭配"), ("ESSAY", "文章"), ("PRACTICE", "专项练习"), ("SELFTEST", "自测题"),
     ("GRAMMAR", "语法"), ("TERM", "术语"), ("KNOWLEDGE", "Knowledge"),
     ("A1", "A1"), ("A2", "A2"), ("B1", "B1"), ("B2", "B2"), ("C1", "C1"), ("C2", "C2"),
 ]

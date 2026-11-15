@@ -74,7 +74,13 @@ struct RootView: View {
         } detail: {
             NavigationStack {
                 if let a = trail.last ?? selected, let e = model.entry(a) {
-                    EntryView(entry: e, place: place(of: selected), onNext: next, onXref: { trail.append($0) })
+                    Group {
+                        if e.isPractice {
+                            SpecialPracticeView(entry: e, onXref: { trail.append($0) })
+                        } else {
+                            EntryView(entry: e, place: place(of: selected), onNext: next, onXref: { trail.append($0) })
+                        }
+                    }
                         .id(e.anchor)
                         .toolbar {
                             if !trail.isEmpty {
@@ -101,10 +107,10 @@ struct RootView: View {
             }
             await model.refresh()
         }
-        .task { await model.syncNow() }
+        .task { if !UserDefaults.standard.bool(forKey: "offline") { await model.syncNow() } }
         .onChange(of: phase) {
             // back in the app: pull what the page did; leaving it: push what's waiting
-            if phase == .active { Task { await model.refresh(); await model.syncNow() } }
+            if phase == .active && !UserDefaults.standard.bool(forKey: "offline") { Task { await model.refresh(); await model.syncNow() } }
             if phase == .background { model.flush() }
         }
         .onChange(of: selected) { trail = [] }
@@ -134,7 +140,7 @@ struct RootView: View {
             Section("分类") {
                 ForEach(groupNames.filter { g in model.entries.contains { $0.level == g.key } }, id: \.key) { g in
                     side(.group(g.key), g.label, model.entries.filter { $0.level == g.key }.count) {
-                        Image(systemName: g.key == "ESSAY" ? "doc.richtext" : g.key == "COLLOC" ? "link" : "text.quote")
+                        Image(systemName: g.key == "PRACTICE" ? "checklist" : g.key == "ESSAY" ? "doc.richtext" : g.key == "COLLOC" ? "link" : "text.quote")
                     }
                 }
             }
@@ -211,7 +217,7 @@ struct RootView: View {
             // in portrait the list floats over the entry: put it away, as picking from a List did
             if portrait { columns = .detailOnly }
         } label: {
-            EntryRow(entry: e, color: Theme.dot(model.stage(e)), sub: sub(e), on: on).contentShape(Rectangle())
+            EntryRow(entry: e, color: e.isPractice ? Theme.brand : Theme.dot(model.stage(e)), sub: sub(e), on: on).contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .listRowBackground(Picked(on: on))
@@ -219,6 +225,10 @@ struct RootView: View {
 
     /// #12 · 复习中 · 试 3 · 对 2 · 明天到期 · 📝 笔记 — in 学习历史 the time and how I met it first
     private func sub(_ e: Entry) -> String {
+        if let practice = e.practice {
+            let summary = model.special(e).summary(practice)
+            return "\(summary.done) / \(practice.questions.count) 题 · \(summary.done == 0 ? "未开始" : summary.done == practice.questions.count ? "已完成" : "进行中") · \(summary.review.count) 题需重练"
+        }
         let tries = model.attempts(e).filter { !$0.text.isEmpty }
         var xs = [e.no.map { "#\($0)" }, model.stage(e)?.label ?? "文章"].compactMap { $0 }
         if pick == .history, let v = histOrder.first(where: { $0.a == e.anchor }) {

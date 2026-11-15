@@ -133,6 +133,7 @@ extension AppModel {
     }
 
     func syncNow() async {
+        guard !UserDefaults.standard.bool(forKey: "offline") else { return }
         guard let token = Keychain.token else { return }
         if sync.busy { syncAgain = true; return }
         pending?.cancel(); pending = nil

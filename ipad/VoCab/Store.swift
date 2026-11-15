@@ -42,6 +42,8 @@ final class AppModel {
     private(set) var stageData = StageData()
     private(set) var attempts: [String: [Attempt]] = [:]
     private(set) var dataHash = ""
+    private(set) var dataGenerated = ""
+    private(set) var specialRecords: [String: SpecialPracticeRecord] = [:]
     private(set) var review = ReviewData()
     private(set) var history = HistoryData()
     private(set) var quizOut: QuizOut = [:]
@@ -78,6 +80,7 @@ final class AppModel {
         favs = load("favs.json") ?? [:]
         notes = load("notes.json") ?? [:]
         seen = load("seen.json") ?? [:]
+        specialRecords = load("special-practice.json") ?? [:]
         sync = SyncStatus.saved()
     }
 
@@ -87,7 +90,7 @@ final class AppModel {
         guard let d = try? JSONDecoder().decode(VocabData.self, from: raw), d.schema <= supportedSchema else { return nil }
         return Loaded(data: d, generated: (try? JSONDecoder().decode(Gen.self, from: raw))?.generated ?? "")
     }
-    private func use(_ d: VocabData) { entries = d.entries; dataHash = d.hash }
+    private func use(_ d: VocabData) { entries = d.entries + d.practices; dataHash = d.hash; dataGenerated = d.generated }
 
     func load<T: Decodable>(_ name: String) -> T? {
         (try? Data(contentsOf: dir.appendingPathComponent(name))).flatMap { try? JSONDecoder().decode(T.self, from: $0) }
@@ -98,14 +101,15 @@ final class AppModel {
 
     /// Polls meta.json; downloads data.json only when its hash changed.
     func refresh() async {
+        if UserDefaults.standard.bool(forKey: "offline") { return }
         do {
             let (m, _) = try await URLSession.shared.data(from: Self.site.appendingPathComponent("meta.json"))
             let meta = try JSONDecoder().decode(Meta.self, from: m)
             guard meta.hash != dataHash, meta.schema <= supportedSchema else { return }
             let (raw, _) = try await URLSession.shared.data(from: Self.site.appendingPathComponent("data.json"))
-            guard let d = decodeData(raw) else { return }
+            guard let d = decodeData(raw), d.generated >= dataGenerated else { return }
             let before = Set(entries.map { "\($0.anchor)\u{1F}\($0.hash)" })
-            let changed = d.data.entries.filter { !before.contains("\($0.anchor)\u{1F}\($0.hash)") }.count
+            let changed = (d.data.entries + d.data.practices).filter { !before.contains("\($0.anchor)\u{1F}\($0.hash)") }.count
             try raw.write(to: dataFile, options: .atomic)
             use(d.data)
             if changed > 0 { updateNote = "笔记更新了:\(changed) 条新增或修改" }
@@ -116,17 +120,29 @@ final class AppModel {
 
     func entry(_ anchor: String) -> Entry? { entries.first { $0.anchor == anchor } }
 
+    // MARK: 专项练习 (device-local; never included in Sync.swift)
+
+    func special(_ e: Entry) -> SpecialPracticeRecord { specialRecords[e.anchor] ?? SpecialPracticeRecord() }
+    func updateSpecial(_ e: Entry, _ change: (inout SpecialPracticeRecord) -> Void) {
+        guard e.isPractice else { return }
+        var record = special(e)
+        change(&record)
+        specialRecords[e.anchor] = record
+        save(specialRecords, "special-practice.json")
+    }
+
     // MARK: stages
 
     /// Only moves are stored: a 自测题 starts in 考核, everything else in 学习中; an essay has no stage.
     func stage(_ e: Entry) -> Stage? {
-        if e.isEssay { return nil }
+        if e.isEssay || e.isPractice { return nil }
         return stageData.stages[e.anchor].flatMap(Stage.init) ?? (e.level == "SELFTEST" ? .test : .learn)
     }
     /// When the entry entered its stage (0 if it never moved).
     func since(_ e: Entry) -> Int64 { stageData.t[e.anchor] ?? 0 }
 
     func move(_ e: Entry, to s: Stage) {
+        guard !e.isPractice else { return }
         stageData.stages[e.anchor] = s.rawValue
         stageData.t[e.anchor] = nowMs()
         save(stageData, "stage.json")
@@ -138,6 +154,7 @@ final class AppModel {
     func attempts(_ e: Entry) -> [Attempt] { attempts[e.anchor] ?? [] }
 
     func record(_ e: Entry, _ a: Attempt) {
+        guard !e.isPractice else { return }
         attempts[e.anchor] = Array((attempts(e) + [a]).suffix(maxAttemptsPerEntry))
         save(attempts, "selftest.json")
         changed()
@@ -247,6 +264,7 @@ final class AppModel {
     func reviewDue(_ e: Entry) -> Bool { card(e).map { $0.due <= dayNo() } ?? true }
 
     func grade(_ e: Entry, ok: Bool) {
+        guard !e.isPractice else { return }
         var c = schedule(card(e) ?? Card(), q: ok ? 4 : 1, today: dayNo())
         c.t = nowMs()
         review.cards[e.anchor] = c

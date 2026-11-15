@@ -514,7 +514,7 @@ build.py 内部只有一个解析器 `parse_blocks()`:它把条目正文解析�
 
 独立分类 PRACTICE 由各笔记目录可选的 practices.json 供稿，schema 与用法见 users/taobao/CLAUDE.md。build_practices 校验题目与核心笔记引用，page_data 将结构化题目注入网页，practice.js / practice.css 内联到生成页；没有练习集的笔记本不显示该分类。新增题型或数据字段时同步更新验证与测试。
 
-专项练习走独立界面，不进入普通例句、自测、学习阶段或复习题池。第一版仅网页支持，数据不混入原生 App 的 data.json；原生客户端继续使用普通笔记接口。练习进度、草稿和答案用 store 的 vk.specialPractice 保存（会自动换成学生前缀），仅存本浏览器，不并入现有同步，也不上传学生输入。开发与验收说明见 tests/README.md。
+专项练习走独立界面，不进入普通例句、自测、学习阶段或复习题池。网页和 iPad 均支持专项界面；data.json 的 entries 保持普通笔记，专项另放可选 practices 数组，由新版 iPad 合并显示，旧客户端可忽略。meta.hash 包括题库变化。网页练习进度、草稿和答案用 store 的 vk.specialPractice 保存（自动换学生前缀），iPad 用独立 special-practice.json；均仅存当前设备，不并入现有同步，也不上传学生输入。开发与验收说明见 tests/README.md 和 ipad/README.md。
 
 ## Android App(`android/`)
 
