@@ -510,6 +510,12 @@ build.py 内部只有一个解析器 `parse_blocks()`:它把条目正文解析�
 
 注意:`README.md` 里"推送到 `main` 后自动更新"的说法是面向用户在手机上直接编辑的场景;Claude 的写入流程以本文件的 dev 分支规则为准。
 
+## 网页专项练习（2026-11-15）
+
+独立分类 PRACTICE 由各笔记目录可选的 practices.json 供稿，schema 与用法见 users/taobao/CLAUDE.md。build_practices 校验题目与核心笔记引用，page_data 将结构化题目注入网页，practice.js / practice.css 内联到生成页；没有练习集的笔记本不显示该分类。新增题型或数据字段时同步更新验证与测试。
+
+专项练习走独立界面，不进入普通例句、自测、学习阶段或复习题池。第一版仅网页支持，数据不混入原生 App 的 data.json；原生客户端继续使用普通笔记接口。练习进度、草稿和答案用 store 的 vk.specialPractice 保存（会自动换成学生前缀），仅存本浏览器，不并入现有同步，也不上传学生输入。开发与验收说明见 tests/README.md。
+
 ## Android App(`android/`)
 
 这是一个自用的 Kotlin + Jetpack Compose App,不上架,直接装 APK。功能:浏览(可切换列表视图和 Keep 式的卡片墙,浏览时上下栏随滚动收起,可只看「会写」)、搜索、交叉引用跳转、四个阶段 tab(浏览 / 复习 / 考核 / 掌握,见「进度」一节)、⋮ 菜单里的错题本(带「发消息前 30 秒自检」清单)、练习(每日仿写 + 每周段落,复制出来发给 Claude 批改)和同步与数据。复习进度只存在手机本地的 `filesDir/review.json` 里,**不会写回仓库**。

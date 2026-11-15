@@ -1,0 +1,359 @@
+[
+  {
+    "anchor": "p-have-to-questions",
+    "title": "have to：问句、否定句与过去式",
+    "date": "2026-11-15",
+    "description": "先看时间和主语，再决定 do / does / did 与 have 的形式；28 题可分项练，也可混合练。",
+    "skills": {
+      "past": "过去的需要",
+      "base": "do / does / did 后用原形",
+      "person": "问句里的人不变",
+      "agreement": "主语与 don’t / doesn’t"
+    },
+    "questions": [
+      {
+        "id": "past-1",
+        "skill": "past",
+        "type": "fill",
+        "prompt": "Yesterday the last bus had already left, so we ___ walk home.\n只填写空缺的两个词。",
+        "hint": "找 Yesterday：过去“不得不”用什么？",
+        "answers": [
+          "had to"
+        ],
+        "explanation": "Yesterday 和 had already left 都在说过去，当时不得不走回家，用 had to。",
+        "note": "s-have-to-past"
+      },
+      {
+        "id": "past-2",
+        "skill": "past",
+        "type": "correct",
+        "prompt": "改正时态错误，写出完整句子：\nThe museum was free last Sunday, so we don't have to buy tickets.",
+        "hint": "was 和 last Sunday 指过去；过去“不需要”用 didn’t have to。",
+        "answers": [
+          "The museum was free last Sunday, so we didn't have to buy tickets."
+        ],
+        "explanation": "过去那天不需要买票，用 didn’t have to；didn’t 后用 have。",
+        "note": "s-have-to-past"
+      },
+      {
+        "id": "past-3",
+        "skill": "past",
+        "type": "rewrite",
+        "prompt": "把这句话改成过去发生的事，并把 every morning 换成 yesterday morning：\nWe have to leave early every morning.",
+        "hint": "只改变时间：have to → had to。",
+        "answers": [
+          "We had to leave early yesterday morning."
+        ],
+        "explanation": "yesterday morning 说过去，have to 变为 had to。",
+        "note": "s-have-to-past"
+      },
+      {
+        "id": "base-1",
+        "skill": "base",
+        "type": "fill",
+        "prompt": "Where did she ___ to wait for the school bus?\n只填写空缺的一个词。",
+        "hint": "did 后面用 have，不用 had 或 has。",
+        "answers": [
+          "have"
+        ],
+        "explanation": "did 已经表示过去，后面用动词原形 have。",
+        "note": "s-did-have-base"
+      },
+      {
+        "id": "base-2",
+        "skill": "base",
+        "type": "correct",
+        "prompt": "改正动词形式，写出完整问句：\nHow much did he had to pay for the train ticket?",
+        "hint": "保留 did，把后面表示过去的 had 变回原形。",
+        "answers": [
+          "How much did he have to pay for the train ticket?"
+        ],
+        "explanation": "did 和 had 不一起表示过去；改成 did he have to pay。",
+        "note": "s-did-have-base"
+      },
+      {
+        "id": "base-3",
+        "skill": "base",
+        "type": "rewrite",
+        "prompt": "对 at seven 提问，保留 Mia，不用代词：\nMia had to get up at seven.",
+        "hint": "问几点用 What time，过去问句用 did，后面把 had 改成 have。",
+        "answers": [
+          "What time did Mia have to get up?",
+          "When did Mia have to get up?"
+        ],
+        "explanation": "顺序是 What time + did + Mia + have to get up。",
+        "note": "s-did-have-base"
+      },
+      {
+        "id": "person-1",
+        "skill": "person",
+        "type": "rewrite",
+        "prompt": "根据下面的陈述句，询问他什么时候必须离开；用 he 代替 Paul：\nPaul has to leave soon.",
+        "hint": "Paul 换成 he，仍然问他；用 What time does he…?",
+        "answers": [
+          "What time does he have to leave?",
+          "When does he have to leave?"
+        ],
+        "explanation": "Paul → he，问的是同一个人，所以用 does he，不能改成 do you。",
+        "note": "s-question-same-person"
+      },
+      {
+        "id": "person-2",
+        "skill": "person",
+        "type": "rewrite",
+        "prompt": "对 at the sports centre 提问，用 she 代替 Anna：\nAnna has to meet her coach at the sports centre.",
+        "hint": "问地点用 Where；Anna → she，后面用 does she have to。",
+        "answers": [
+          "Where does she have to meet her coach?"
+        ],
+        "explanation": "Anna → she，her coach 保留；问句仍在问 Anna，不是问你。",
+        "note": "s-question-same-person"
+      },
+      {
+        "id": "person-3",
+        "skill": "person",
+        "type": "rewrite",
+        "prompt": "对 a poster 提问，用 they 代替 the children：\nThe children have to make a poster.",
+        "hint": "the children 是不止一个人，用 they；问物品用 What。",
+        "answers": [
+          "What do they have to make?"
+        ],
+        "explanation": "the children → they，所以用 do they have to make。",
+        "note": "s-question-same-person"
+      },
+      {
+        "id": "agreement-1",
+        "skill": "agreement",
+        "type": "fill",
+        "prompt": "I ___ have to wear a uniform at the weekend.\n只填写 don't 或 doesn't。",
+        "hint": "主语 I 和 don’t 搭配。",
+        "answers": [
+          "don't"
+        ],
+        "explanation": "I 用 don’t，不用 doesn’t。",
+        "note": "s-i-dont-have-to"
+      },
+      {
+        "id": "agreement-2",
+        "skill": "agreement",
+        "type": "correct",
+        "prompt": "只改正助动词，写出完整句子：\nWe doesn't have to finish the project today.",
+        "hint": "主语是 we，应该选 don’t 还是 doesn’t？",
+        "answers": [
+          "We don't have to finish the project today."
+        ],
+        "explanation": "We 用 don’t；后面的 have to finish 不变。",
+        "note": "s-i-dont-have-to"
+      },
+      {
+        "id": "agreement-3",
+        "skill": "agreement",
+        "type": "fill",
+        "prompt": "My sister ___ have to take the bus because she lives near school.\n只填写 don't 或 doesn't。",
+        "hint": "My sister 可以换成 she。",
+        "answers": [
+          "doesn't"
+        ],
+        "explanation": "My sister 是一个人，相当于 she，用 doesn’t have to。",
+        "note": "s-i-dont-have-to"
+      },
+      {
+        "id": "past-4",
+        "skill": "past",
+        "type": "fill",
+        "prompt": "Last night, the campsite was full, so we ___ find another place to stay.\n只填写空缺的两个词。",
+        "hint": "Last night 是过去，当时“不得不”用 had to。",
+        "answers": [
+          "had to"
+        ],
+        "explanation": "Last night 指过去：had to find another place。",
+        "note": "s-have-to-past"
+      },
+      {
+        "id": "base-4",
+        "skill": "base",
+        "type": "correct",
+        "prompt": "改正动词形式，写出完整问句：\nWhere does she has to put her school bag?",
+        "hint": "does 后面用原形 have。",
+        "answers": [
+          "Where does she have to put her school bag?"
+        ],
+        "explanation": "does 后用 have，不能再用 has。",
+        "note": "s-did-have-base"
+      },
+      {
+        "id": "person-4",
+        "skill": "person",
+        "type": "rewrite",
+        "prompt": "对 because of the rain 提问，用 he 代替 Ben：\nBen had to stay inside because of the rain.",
+        "hint": "问原因用 Why；Ben → he，过去用 did。",
+        "answers": [
+          "Why did he have to stay inside?"
+        ],
+        "explanation": "Ben → he，问原因时写 Why did he have to stay inside?",
+        "note": "s-question-same-person"
+      },
+      {
+        "id": "agreement-4",
+        "skill": "agreement",
+        "type": "fill",
+        "prompt": "They ___ have to bring lunch because the school provides it.\n只填写 don't 或 doesn't。",
+        "hint": "They 和 don’t 搭配。",
+        "answers": [
+          "don't"
+        ],
+        "explanation": "They 用 don’t，后面的 have to bring 不变。",
+        "note": "s-i-dont-have-to"
+      },
+      {
+        "id": "past-5",
+        "skill": "past",
+        "type": "correct",
+        "prompt": "改正时态错误，写出完整句子：\nI lost my key yesterday, so I have to wait outside.",
+        "hint": "lost 和 yesterday 表示过去，当时“不得不”要用 had to。",
+        "answers": [
+          "I lost my key yesterday, so I had to wait outside."
+        ],
+        "explanation": "两件事都发生在昨天：lost my key，所以 had to wait。",
+        "note": "s-have-to-past"
+      },
+      {
+        "id": "base-5",
+        "skill": "base",
+        "type": "rewrite",
+        "prompt": "对 five pounds 提问，保留 they：\nThey had to pay five pounds for the boat ride.",
+        "hint": "问多少钱用 How much；过去用 did，had 变回 have。",
+        "answers": [
+          "How much did they have to pay for the boat ride?"
+        ],
+        "explanation": "How much + did + they + have to pay。",
+        "note": "s-did-have-base"
+      },
+      {
+        "id": "person-5",
+        "skill": "person",
+        "type": "rewrite",
+        "prompt": "对 on Friday 提问，用 she 代替 Lucy：\nLucy has to return the library books on Friday.",
+        "hint": "问哪一天可用 When；Lucy → she。",
+        "answers": [
+          "When does she have to return the library books?",
+          "On which day does she have to return the library books?",
+          "What day does she have to return the library books?"
+        ],
+        "explanation": "Lucy → she，用 does she have to；不能把她换成 you。",
+        "note": "s-question-same-person"
+      },
+      {
+        "id": "agreement-5",
+        "skill": "agreement",
+        "type": "correct",
+        "prompt": "只改正助动词，写出完整句子：\nHe don't have to hurry because there is plenty of time.",
+        "hint": "He 和 doesn’t 搭配。",
+        "answers": [
+          "He doesn't have to hurry because there is plenty of time."
+        ],
+        "explanation": "He 用 doesn’t；不要把 have 变成 has。",
+        "note": "s-i-dont-have-to"
+      },
+      {
+        "id": "past-6",
+        "skill": "past",
+        "type": "fill",
+        "prompt": "We visited the castle yesterday. Entry was free, so we ___ buy tickets.\n只填写空缺的部分；可用缩写。",
+        "hint": "过去“不需要”用 did not have to；空缺不包括后面的 buy。",
+        "answers": [
+          "didn't have to",
+          "did not have to"
+        ],
+        "explanation": "Entry was free 说明当时不需要买票，用 didn’t have to，而不是 mustn’t。",
+        "note": "s-have-to-past"
+      },
+      {
+        "id": "base-6",
+        "skill": "base",
+        "type": "correct",
+        "prompt": "改正动词形式，写出完整问句：\nWhy did they had to cancel the football match?",
+        "hint": "did 已经表示过去，后面用 have。",
+        "answers": [
+          "Why did they have to cancel the football match?"
+        ],
+        "explanation": "Why + did + they + have to cancel，不能写 did they had。",
+        "note": "s-did-have-base"
+      },
+      {
+        "id": "person-6",
+        "skill": "person",
+        "type": "rewrite",
+        "prompt": "对 before lunch 提问，用 they 代替 Sam and Leo：\nSam and Leo have to tidy the classroom before lunch.",
+        "hint": "两个人换成 they，问时间用 When do they…?",
+        "answers": [
+          "When do they have to tidy the classroom?"
+        ],
+        "explanation": "Sam and Leo → they，have to 的问句用 do they have to。",
+        "note": "s-question-same-person"
+      },
+      {
+        "id": "agreement-6",
+        "skill": "agreement",
+        "type": "fill",
+        "prompt": "The two boys ___ have to share a desk because there are enough desks.\n只填写 don't 或 doesn't。",
+        "hint": "The two boys 可以换成 they。",
+        "answers": [
+          "don't"
+        ],
+        "explanation": "两个男孩是不止一个人，相当于 they，用 don’t。",
+        "note": "s-i-dont-have-to"
+      },
+      {
+        "id": "past-7",
+        "skill": "past",
+        "type": "rewrite",
+        "prompt": "把这句话改成过去发生的事，并把 today 换成 yesterday：\nWe do not have to bring our own lunch today.",
+        "hint": "过去“不需要”用 did not have to。",
+        "answers": [
+          "We did not have to bring our own lunch yesterday.",
+          "We didn't have to bring our own lunch yesterday."
+        ],
+        "explanation": "do not → did not，have 保持原形；today 换成 yesterday。",
+        "note": "s-have-to-past"
+      },
+      {
+        "id": "base-7",
+        "skill": "base",
+        "type": "rewrite",
+        "prompt": "对 at the library 提问，保留 he：\nHe had to study at the library.",
+        "hint": "问地点用 Where，过去用 did，had 变回 have。",
+        "answers": [
+          "Where did he have to study?"
+        ],
+        "explanation": "Where + did + he + have to study。",
+        "note": "s-did-have-base"
+      },
+      {
+        "id": "person-7",
+        "skill": "person",
+        "type": "rewrite",
+        "prompt": "对 twenty minutes 提问，用 he 代替 Jack：\nJack had to wait twenty minutes for the bus.",
+        "hint": "问多长时间用 How long；Jack → he，过去用 did。",
+        "answers": [
+          "How long did he have to wait for the bus?"
+        ],
+        "explanation": "Jack → he，问的是他等了多久：How long did he have to wait for the bus?",
+        "note": "s-question-same-person"
+      },
+      {
+        "id": "agreement-7",
+        "skill": "agreement",
+        "type": "rewrite",
+        "prompt": "把这句话改成否定句，保留 I：\nI have to stay at school after the lesson.",
+        "hint": "I 用 don’t，后面保留 have to stay。",
+        "answers": [
+          "I don't have to stay at school after the lesson.",
+          "I do not have to stay at school after the lesson."
+        ],
+        "explanation": "I don’t have to 表示“我不需要”，不是“禁止我”。",
+        "note": "s-i-dont-have-to"
+      }
+    ]
+  }
+]

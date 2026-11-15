@@ -20,7 +20,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).parent
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
-GROUP_ORDER = LEVELS + ["TERM", "IELTS", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "G3", "G4", "G5", "G6", "COLLOC", "ESSAY", "SELFTEST"]
+GROUP_ORDER = LEVELS + ["TERM", "IELTS", "GRAMMAR", "SENTENCE", "KNOWLEDGE", "G3", "G4", "G5", "G6", "COLLOC", "ESSAY", "PRACTICE", "SELFTEST"]
 SCHEMA = 1  # bump when data.json changes shape in a way the app must know about
 
 # 错题本: a bullet like `- ❌ [介词] **...** —— ...` (or ⚠️) marks a mistake the
@@ -440,6 +440,53 @@ def digest(obj):
     return hashlib.sha256(json.dumps(obj, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
 
 
+def build_practices(path, entries):
+    """Web-only exercise sets: deliberately separate from ordinary examples and stage progress."""
+    if not path.exists():
+        return []
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        raise ValueError("practices.json must contain a list of exercise sets")
+    anchors = {e["anchor"] for e in entries}
+    out = []
+    for practice in payload:
+        anchor = practice["anchor"]
+        if not re.fullmatch(r"p-[a-z0-9-]+", anchor) or anchor in anchors:
+            raise ValueError(f"duplicate or invalid practice anchor: {anchor}")
+        anchors.add(anchor)
+        skills = practice["skills"]
+        if not isinstance(skills, dict) or not skills:
+            raise ValueError(f"{anchor}: skills must be a nonempty object")
+        questions = practice["questions"]
+        if not questions:
+            raise ValueError(f"{anchor}: needs questions")
+        ids = set()
+        for q in questions:
+            if not re.fullmatch(r"[a-z0-9-]+", q["id"]) or q["id"] in ids:
+                raise ValueError(f"{anchor}: duplicate or invalid question id")
+            ids.add(q["id"])
+            if q["skill"] not in skills or q["type"] not in ("fill", "correct", "rewrite"):
+                raise ValueError(f"{anchor}/{q['id']}: unknown skill or question type")
+            for key in ("prompt", "hint", "explanation", "note"):
+                if not isinstance(q.get(key), str) or not q[key].strip():
+                    raise ValueError(f"{anchor}/{q['id']}: missing {key}")
+            if q["note"] not in {e["anchor"] for e in entries}:
+                raise ValueError(f"{anchor}/{q['id']}: missing core note {q['note']}")
+            if not isinstance(q["answers"], list) or not q["answers"] or any(not isinstance(a, str) or not a.strip() for a in q["answers"]):
+                raise ValueError(f"{anchor}/{q['id']}: answers must be nonempty strings")
+        links = list(dict.fromkeys(q["note"] for q in questions))
+        title_by_anchor = {e["anchor"]: e["title"] for e in entries}
+        blocks = [{"t": "p", "text": practice["description"]},
+                  {"t": "ul", "items": [f"[{title_by_anchor[a]}](#{a})" for a in links]}]
+        entry = {"anchor": anchor, "no": None, "title": practice["title"], "level": "PRACTICE",
+                 "ipa": "", "pos": "", "cefr": "", "date": practice["date"], "tags": [],
+                 "mastery": "read", "gloss": practice["description"], "blocks": blocks,
+                 "mistakes": [], "practice": practice}
+        entry["hash"] = digest(entry)
+        out.append(entry)
+    return out
+
+
 def page_data(entries, order=GROUP_ORDER):
     grouped = {}
     for e in entries:
@@ -453,6 +500,8 @@ def page_data(entries, order=GROUP_ORDER):
         # the page joins these back into the whole notes for search and the 全部展开 view
         item["slides"] = [[label, to_html(bs)] for label, bs in sections(e["blocks"])]
         item["level"] = e["level"]
+        if e["level"] == "PRACTICE":
+            item["practice"] = e["practice"]
         grouped.setdefault(e["level"], []).append(item)
     return [{"level": l, "items": grouped[l]} for l in order if l in grouped]
 
@@ -559,9 +608,12 @@ def main():
         raise SystemExit(f"anchors used twice across vocabulary.md and essays.md: {sorted(dup)}")
     read_md = src / "readlist.md"
     reads = build_reads(read_md.read_text(encoding="utf-8")) if read_md.exists() else []
-    data = page_data(entries, [g["key"] for g in site["groups"]] + GROUP_ORDER)
+    practice_entries = build_practices(src / "practices.json", entries)
+    data = page_data(entries + practice_entries, [g["key"] for g in site["groups"]] + GROUP_ORDER)
     mistakes = mistake_data(entries)
     page = (ROOT / "template.html").read_text(encoding="utf-8").replace(
+        "/*__PRACTICE_CSS__*/", (ROOT / "practice.css").read_text(encoding="utf-8")).replace(
+        "/*__PRACTICE_JS__*/", (ROOT / "practice.js").read_text(encoding="utf-8")).replace(
         "/*__DATA__*/", json.dumps(data, ensure_ascii=False)).replace(
         "/*__MISTAKES__*/", json.dumps(mistakes, ensure_ascii=False)).replace(
         "/*__CONFIG__*/", json.dumps(site, ensure_ascii=False))

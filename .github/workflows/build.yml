@@ -9,6 +9,8 @@ on:
       - vocabulary.md
       - readlist.md
       - template.html
+      - practice.js
+      - practice.css
       - build.py
       - users/**
       - .github/workflows/build.yml

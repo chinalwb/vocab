@@ -1143,6 +1143,7 @@ body.running{overflow:hidden}
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
+/*__PRACTICE_CSS__*/
 </style>
 
 <!--/HEAD-->
@@ -1225,10 +1226,11 @@ const LV = {
   G6:{nm:"六年级:小学英语", sw:["--g6-1","--g6-2","--g6-3"]},
   // 文章 (essays.md, 用户 2026-10-31, taobao's): a whole piece of writing after review. No #n, no stages
   // (no 复习 / 考核, no track); its sentences are quizzed on the entry page, 选词 only.
+  PRACTICE:{nm:"专项练习:集中练习薄弱点", sw:["--cl-1","--cl-2","--cl-3"]},
   ESSAY:{nm:"文章:整篇改好后的样子", sw:["--es-1","--es-2","--es-3"]}
 };
 const LABEL = {TERM:"术语", IELTS:"IELTS", GRAMMAR:"语法", SENTENCE:"句子", COLLOC:"固定搭配", SELFTEST:"自测题", KNOWLEDGE:"Knowledge",
-  G3:"三年级", G4:"四年级", G5:"五年级", G6:"六年级", ESSAY:"文章"};
+  G3:"三年级", G4:"四年级", G5:"五年级", G6:"六年级", PRACTICE:"专项练习", ESSAY:"文章"};
 // the grade groups, each listed in 类型 / 分类 only once it has an entry
 const GRADES = ["G3", "G4", "G5", "G6"].filter(k => DATA.some(g => g.level === k)).map(k => [k, LABEL[k]]);
 // site.json "groups" (用户 2026-10-23, so's): a notebook's own categories, each picked by an entry's
@@ -1292,11 +1294,11 @@ try { stageT = JSON.parse(store.get("vk.stage.t", "{}")) || {}; } catch(e){}
 // IELTS (`- 类型:IELTS`, 用户 2026-11-14): reading and bookkeeping only — the notes are the point,
 // so no self-test and no stage track; it sits in 学习中 like any other note but never runs 复习 / 考核.
 const READING = level => level === "IELTS";
-const stageOf = (it, level) => level === "ESSAY" ? "" : stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
+const stageOf = (it, level) => (level === "ESSAY" || level === "PRACTICE") ? "" : stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
 // a card's colour: its level, cycling the level's three shades (mine), or its stage (site.json
 // "cardColor": "stage", a student's page, where the colour says how far along an entry is).
 // Whatever carries data-swl is repainted by refreshStages() when an entry moves.
-const swOf = (it, level, i) => VK.cardColor === "stage" && level !== "ESSAY" && !READING(level) ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
+const swOf = (it, level, i) => VK.cardColor === "stage" && level !== "ESSAY" && level !== "PRACTICE" && !READING(level) ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
 // by stage, the desktop list's little square takes the stage dot's full colour (--swd); the wash is too pale there
 const SG_DOT = { learn: "--st-learn", review: "--accent", test: "--st-test", done: "--st-done" };
 function paintSw(el, it, level, i){
@@ -1321,7 +1323,7 @@ const CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
 // but no empty A1–C2 or 术语); DATA carries no empty groups
 const hasGroup = k => k === "ALL" || DATA.some(g => k === "WORD" ? CEFR.includes(g.level) : g.level === k);
 const TYPES = OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ["WORD", "单词"], ["TERM", "术语"], ["IELTS", "IELTS"], ["GRAMMAR", "语法"], ["SENTENCE", "句子"],
-  ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(t => hasGroup(t[0]));
+  ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["PRACTICE", "专项练习"], ["SELFTEST", "自测题"]].filter(t => hasGroup(t[0]));
 let typeF = store.get("vk.type", null), cefrF = store.get("vk.cefr", "");
 if (typeF === null) {                       // from the old single row (vk.level)
   const old = store.get("vk.level", "ALL");
@@ -1525,7 +1527,7 @@ const sections = DATA.map(g => {
       (it.tags && it.tags.length ? `<div class="ctags">${sourceTags(it)}</div>` : "") +
       `<div class="foot">` +
       `<span>${it.no ? `<span class="no">#${it.no}</span>` : ""}<span class="flv">${(it.cefr || "").match(/\b[ABC][12]\b/)?.[0] || LABEL[g.level] || g.level}</span>` +
-      (g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}<span class="stc" data-opt="1" data-anchor="${it.anchor}"></span>`) +
+      (g.level === "PRACTICE" ? ` · <span class="sp-card-progress" data-sp-entry="${esc(it.anchor)}">${it.practice.questions.length} 题</span>` : g.level === "SELFTEST" ? ` · <span class="stc" data-anchor="${it.anchor}"></span>` : `${n ? " · " + n + " 例句" : ""}${wtag}<span class="stc" data-opt="1" data-anchor="${it.anchor}"></span>`) +
       `<span class="stg" data-anchor="${it.anchor}" data-level="${g.level}"></span><span class="mnt" data-anchor="${it.anchor}"></span></span>` +
       `<span class="dt"${approx ? ' title="近似日期:原始记录已不可考,按前后条目推断"' : ""}>${it.date}</span>` +
       `</div>`;
@@ -2849,6 +2851,7 @@ function decorateNotes(root, it, ex, go, onAll){
 // [o.ex]: which example to ask (再试一次 keeps it, 下一句 adds one); by default the next by attempt count.
 // [o.step]: 2 = the sentence's ② 打字, with [o.bankOk] how its ① 选词 went.
 function show(it, level, i, o = {}){
+  if (level === "PRACTICE") return showSpecialPractice(it, level, i);
   stopReading();
   if (scrim) scrim.remove();
   scrim = document.createElement("div");
@@ -3864,7 +3867,7 @@ function renderExtras(){
 
 // ── 练习: a daily imitation task and a weekly paragraph. The app picks the same ones
 // (ui/PracticeScreen.kt): pool = 会写 entries that aren't 句子 / 自测, sorted by anchor. ──
-const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST" && t.level !== "ESSAY" && t.level !== "IELTS")
+const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST" && t.level !== "ESSAY" && t.level !== "PRACTICE" && t.level !== "IELTS")
   .sort((a, b) => a.it.anchor < b.it.anchor ? -1 : a.it.anchor > b.it.anchor ? 1 : 0);
 let skip = 0;                                             // 换一题 within this visit
 const words = t => (t.match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g) || []).length;
@@ -3928,7 +3931,7 @@ const SIDE = [
     ["selftest", "考核", "var(--st-test)", () => setView("selftest")],
     ["done", "已掌握", "var(--st-done)", () => setView("done")]]],
   ...(VK.categories ? [["分类", (OWN.length ? [["ALL", "全部"], ...OWN.map(g => [g.key, g.label])] : [["ALL", "全部"], ...CEFR.map(c => [c, c]), ["TERM", "术语"], ["IELTS", "IELTS"], ["GRAMMAR", "语法"], ["SENTENCE", "句子订正"],
-    ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["SELFTEST", "自测题"]].filter(([k]) => hasGroup(k)))
+    ["KNOWLEDGE", "Knowledge"], ...GRADES, ["COLLOC", "固定搭配"], ["ESSAY", "文章"], ["PRACTICE", "专项练习"], ["SELFTEST", "自测题"]].filter(([k]) => hasGroup(k)))
     .map(([k, name]) => ["c:" + k, name, LV[k] ? `var(${LV[k].sw[0]})` : "", () => CEFR.includes(k) ? toFilter("WORD", k, "") : toFilter(k, "", "")])]] : []),
   ["其他", [["history", "学习历史", "", () => setView("history")], ["mistakes", "错题本", "", () => setView("mistakes")], ["more", "练习与同步", "", () => setView("more")]]],
 ];
@@ -4006,6 +4009,8 @@ document.addEventListener("keydown", e => {
   const t = byAnchor[c.dataset.anchor];
   open(t.it, t.level, t.i, listOf(c));
 });
+
+/*__PRACTICE_JS__*/
 
 refreshStCounts();
 refreshStages();

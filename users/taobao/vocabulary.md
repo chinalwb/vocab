@@ -21,6 +21,10 @@
 25. [full of 后面用复数:full of surprises](#s-full-of-surprises)
 26. [最后一个:Finally,不是 At last](#s-finally-at-last)
 27. [去某处做某事:go to … to look at](#s-go-to-look-at)
+28. [过去的事:had to / didn’t have to](#s-have-to-past)
+29. [did 后用 have，不用 had](#s-did-have-base)
+30. [改成问句，仍然问同一个人](#s-question-same-person)
+31. [I 用 don’t，不用 doesn’t](#s-i-dont-have-to)
 
 ---
 
@@ -844,3 +848,179 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 - 也可以用 and 把两个动作连起来:*I'll go to the art gallery and look at some paintings.*
 - 两个都对。**to look at** 说出了去美术馆是「为了」看画,意思更清楚,所以这里用 to。
+
+
+---
+
+<a id="s-have-to-past"></a>
+## 过去的事:had to / didn’t have to
+
+- 日期:2026-11-15
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> We couldn't repair the car ourselves. We have to take it to a garage.
+
+这是课本里的填空练习：车自己修不好，需要送去修。
+
+👍 **做得好:**
+
+- 你选了 have to，知道这里是在说“不得不”，意思判断对了。
+
+**问题:**
+
+- ❌ [动词] **have to** —— 前面的 couldn’t 说的是过去那次修车，后面也要说过去：用 **had to**。
+
+一步一步看:
+
+- 第 1 步：找时间线索，couldn’t 告诉我们这是过去的事。
+- 第 2 步：have to 说现在的需要，had to 说过去的需要。
+- 事故那题你写了 *…but he doesn’t have to go to hospital*；题目说的是那次事故中不需要去医院，改成 *…but he didn’t have to go to hospital*，不能换成表示“禁止”的 mustn’t。
+
+**改好的句子:**
+
+1. We couldn't repair the car ourselves. We **had to** take it to a garage.
+   我们自己修不好那辆车，只好把它送到修车厂。
+
+**记住这个小规则:**
+
+- 先问自己：我说的是过去那次的需要吗？过去用 had to，过去不需要用 didn’t have to。
+
+2. We couldn't find our way back to the campsite. We **had to** ask a local family for help.
+   我们找不到回营地的路，只好向当地一家人求助。
+
+相关条目:[did 后用 have，不用 had](#s-did-have-base) · [改成问句，仍然问同一个人](#s-question-same-person) · [I 用 don’t，不用 doesn’t](#s-i-dont-have-to) · [专项练习：have to 的问句、否定句与过去式](#p-have-to-questions)。
+
+
+---
+
+<a id="s-did-have-base"></a>
+## did 后用 have，不用 had
+
+- 日期:2026-11-15
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> How much did he had to pay?
+
+这是课本里的句子转换练习：George 昨天交了停车罚款，问他必须交多少钱。
+
+👍 **做得好:**
+
+- 你选了 How much 来问多少钱，也知道过去的问句需要 did。
+
+**问题:**
+
+- ❌ [动词] **did he had to pay** —— did 已经表示过去，后面的 had 要变回 **have**。
+
+一步一步看:
+
+- 第 1 步：原句的 had to pay 说的是昨天。
+- 第 2 步：问多少钱，先写 How much，再写 did he。
+- 第 3 步：did 已经管过去，后面写 have to pay，不再用 had。
+
+**改好的句子:**
+
+1. How much did he **have** to pay?
+   他必须交多少钱？
+
+**记住这个小规则:**
+
+- 看到 do、does 或 did，问自己：后面的动词有没有变回原形？
+
+2. How much did she **have** to pay for the tickets to the school concert?
+   她必须为学校音乐会的门票付多少钱？
+
+相关条目:[过去的事:had to / didn’t have to](#s-have-to-past) · [改成问句，仍然问同一个人](#s-question-same-person) · [I 用 don’t，不用 doesn’t](#s-i-dont-have-to) · [专项练习：have to 的问句、否定句与过去式](#p-have-to-questions)。
+
+
+---
+
+<a id="s-question-same-person"></a>
+## 改成问句，仍然问同一个人
+
+- 日期:2026-11-15
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> What time do you have to leave?
+
+这是课本里的句子转换练习：Paul 必须很快离开，要求问他几点必须离开。
+
+👍 **做得好:**
+
+- What time 用来问几点，放在句子开头，用得对；原句里的 do you have to 也能组成正确问句。
+
+**问题:**
+
+- ❌ [逻辑] **you** —— 题目说的是 Paul，答案却问起“你”。这句话本身合语法，但没有完成题目的转换；Paul 换成 **he**，问句用 **does he**。
+
+一步一步看:
+
+- 第 1 步：先圈出原句里的人：Paul。
+- 第 2 步：Paul 是一个男孩，用 he 代替；不能自己换成 you。
+- 第 3 步：问几点，写 What time does he have to leave?
+
+**改好的句子:**
+
+1. What time **does he** have to leave?
+   他几点必须离开？
+
+**记住这个小规则:**
+
+- 改问句前先问自己：我还在问原来那个人吗？
+
+2. What time **does she** have to arrive at the sports centre for the swimming lesson?
+   她几点必须到体育中心上游泳课？
+
+相关条目:[过去的事:had to / didn’t have to](#s-have-to-past) · [did 后用 have，不用 had](#s-did-have-base) · [I 用 don’t，不用 doesn’t](#s-i-dont-have-to) · [专项练习：have to 的问句、否定句与过去式](#p-have-to-questions)。
+
+
+---
+
+<a id="s-i-dont-have-to"></a>
+## I 用 don’t，不用 doesn’t
+
+- 日期:2026-11-15
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> I can stay in bed tomorrow morning because I doesn't have to go to work.
+
+这是课本里的填空练习：明天早上不用上班，所以可以晚起。
+
+👍 **做得好:**
+
+- 你选了“不需要”的意思，have to go 也写对了。
+
+**问题:**
+
+- ❌ [动词] **I doesn’t** —— 前面是 I，否定时用 **don’t**；doesn’t 和 he、she、it 这样的主语搭配。
+
+一步一步看:
+
+- 第 1 步：看 doesn’t 前面的人是谁：I。
+- 第 2 步：I、you、we、they 用 don’t；he、she、it 用 doesn’t。
+- 第 3 步：把 I doesn’t 改成 I don’t，后面的 have to go 保留。
+
+**改好的句子:**
+
+1. I can stay in bed tomorrow morning because I **don't** have to go to work.
+   明天早上我可以晚起，因为不用去上班。
+
+**记住这个小规则:**
+
+- 写 don’t 或 doesn’t 前，先问自己：前面的主语是谁？
+
+2. I can spend more time reading tomorrow evening because I **don't** have to finish any homework.
+   明天晚上我可以多读一会儿书，因为没有必须完成的作业。
+
+相关条目:[过去的事:had to / didn’t have to](#s-have-to-past) · [did 后用 have，不用 had](#s-did-have-base) · [改成问句，仍然问同一个人](#s-question-same-person) · [专项练习：have to 的问句、否定句与过去式](#p-have-to-questions)。
