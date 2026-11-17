@@ -76,6 +76,10 @@
   "s-have-to-past": {
    "s": "review",
    "t": 1794916352297
+  },
+  "s-did-have-base": {
+   "s": "review",
+   "t": 1794916388312
   }
  },
  "cards": {
@@ -2718,6 +2722,13 @@
     "peek": false,
     "via": "entry",
     "ex": "How much did he have to pay?"
+   },
+   {
+    "t": 1794916388311,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much did she have to pay for the tickets to the school concert?"
    }
   ],
   "s-question-same-person": [
