@@ -2761,6 +2761,13 @@
     "peek": false,
     "via": "entry",
     "ex": "I can spend more time reading tomorrow evening because I don't have to finish any homework."
+   },
+   {
+    "t": 1794916473288,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I can stay in bed tomorrow morning because I don't have to go to work."
    }
   ]
  },
