@@ -72,6 +72,10 @@
   "s-question-same-person": {
    "s": "review",
    "t": 1794916291898
+  },
+  "s-have-to-past": {
+   "s": "review",
+   "t": 1794916352297
   }
  },
  "cards": {
@@ -2684,6 +2688,13 @@
     "peek": false,
     "via": "entry",
     "ex": "We couldn't repair the car ourselves. We had to take it to a garage."
+   },
+   {
+    "t": 1794916352296,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We couldn't find our way back to the campsite. We had to ask a local family for help."
    }
   ],
   "s-did-have-base": [
@@ -2700,6 +2711,13 @@
     "peek": false,
     "via": "entry",
     "ex": "How much did she have to pay for the tickets to the school concert?"
+   },
+   {
+    "t": 1794916364482,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much did he have to pay?"
    }
   ],
   "s-question-same-person": [
