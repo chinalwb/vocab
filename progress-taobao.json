@@ -68,6 +68,10 @@
   "s-go-to-look-at": {
    "s": "test",
    "t": 1794563014204
+  },
+  "s-question-same-person": {
+   "s": "review",
+   "t": 1794916291898
   }
  },
  "cards": {
@@ -2691,6 +2695,13 @@
     "peek": false,
     "via": "entry",
     "ex": "What time does he have to leave?"
+   },
+   {
+    "t": 1794916291897,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "What time does she have to arrive at the sports centre for the swimming lesson?"
    }
   ]
  },
