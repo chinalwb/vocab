@@ -80,6 +80,10 @@
   "s-did-have-base": {
    "s": "review",
    "t": 1794916388312
+  },
+  "s-i-dont-have-to": {
+   "s": "review",
+   "t": 1794916504715
   }
  },
  "cards": {
@@ -2768,11 +2772,23 @@
     "peek": false,
     "via": "entry",
     "ex": "I can stay in bed tomorrow morning because I don't have to go to work."
+   },
+   {
+    "t": 1794916504714,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I can spend more time reading tomorrow evening because I don't have to finish any homework."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "p-have-to-questions",
+   "t": 1794916514472,
+   "via": "entry"
+  },
   {
    "a": "s-i-dont-have-to",
    "t": 1794916452079,
@@ -2812,11 +2828,6 @@
    "a": "s-tell-describe",
    "t": 1794915883362,
    "via": "review"
-  },
-  {
-   "a": "p-have-to-questions",
-   "t": 1794755682177,
-   "via": "entry"
   },
   {
    "a": "a-iceland",
