@@ -2754,11 +2754,23 @@
     "peek": false,
     "via": "entry",
     "ex": "I can stay in bed tomorrow morning because I don't have to go to work."
+   },
+   {
+    "t": 1794916450423,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "I can spend more time reading tomorrow evening because I don't have to finish any homework."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "s-i-dont-have-to",
+   "t": 1794916452079,
+   "via": "entry"
+  },
   {
    "a": "s-have-to-past",
    "t": 1794916049795,
@@ -2797,11 +2809,6 @@
   {
    "a": "p-have-to-questions",
    "t": 1794755682177,
-   "via": "entry"
-  },
-  {
-   "a": "s-i-dont-have-to",
-   "t": 1794755665196,
    "via": "entry"
   },
   {
