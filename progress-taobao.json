@@ -2651,6 +2651,22 @@
     "via": "review",
     "ex": "Next weekend, I'll go to the new aquarium in our city to see some of the colourful fish."
    }
+  ],
+  "s-have-to-past": [
+   {
+    "t": 1794916096770,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We couldn't repair the car ourselves. We had to take it to a garage."
+   },
+   {
+    "t": 1794916113928,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "We couldn't find our way back to the campsite. We had to ask a local family for help."
+   }
   ]
  },
  "favs": {},
