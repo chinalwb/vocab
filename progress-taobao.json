@@ -2667,6 +2667,15 @@
     "via": "entry",
     "ex": "We couldn't find our way back to the campsite. We had to ask a local family for help."
    }
+  ],
+  "s-did-have-base": [
+   {
+    "t": 1794916150825,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much did he have to pay?"
+   }
   ]
  },
  "favs": {},
