@@ -2675,6 +2675,22 @@
     "peek": false,
     "via": "entry",
     "ex": "How much did he have to pay?"
+   },
+   {
+    "t": 1794916215840,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much did she have to pay for the tickets to the school concert?"
+   }
+  ],
+  "s-question-same-person": [
+   {
+    "t": 1794916233787,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "What time does he have to leave?"
    }
   ]
  },
