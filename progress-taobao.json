@@ -2746,6 +2746,15 @@
     "via": "entry",
     "ex": "What time does she have to arrive at the sports centre for the swimming lesson?"
    }
+  ],
+  "s-i-dont-have-to": [
+   {
+    "t": 1794916428520,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "I can stay in bed tomorrow morning because I don't have to go to work."
+   }
   ]
  },
  "favs": {},
