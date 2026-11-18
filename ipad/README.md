@@ -46,12 +46,15 @@ practice, or retry only the latest wrong/hinted questions. Fill blanks, correct 
 sentences by typing; tap for a hint or the linked note. Answers allow authored alternatives,
 contractions, capitalization and punctuation variants. A submission is recorded once, with feedback
 and speech, and can be resumed after closing the app. Drafts, attempts and archived sessions are
-saved atomically to `special-practice.json` on this iPad. These records do **not** sync to the web and
-never enter ordinary stages, self-test records or SM-2. Completing the set does not mark it mastered.
+saved atomically to `special-practice.json` on this iPad, and (0.3, 2026-11-18) synced whole — typed answers
+included — in `progress-taobao.json`'s `specialPractice`, the same shape and merge as the web's practice.js
+(`SpecialPracticeRecord.merge(_:)`: attempts a union, a run newest `t` wins, `current` the later of the two).
+0.2 and older drop that field when they sync, so update the iPad. They never enter ordinary stages,
+self-test records or SM-2. Completing the set does not mark it mastered.
 
 `data.json` keeps ordinary notes in `entries` and adds an optional `practices` collection; older apps
 can still decode it. The metadata hash includes exercise-only edits. A newer bundled snapshot is
-kept when Pages still serves an older snapshot. Current app version: **0.2 (2)**.
+kept when Pages still serves an older snapshot. Current app version: **0.3 (3)**.
 
 Not yet: essay PDF, hardware-keyboard chip filtering, pre-generated neural voices.
 

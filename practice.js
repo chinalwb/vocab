@@ -1,5 +1,7 @@
-// 专项练习: web-only structured questions; no ordinary quiz, stage or SM-2 records.
-// Typed answers and drafts stay in this browser, under the notebook's store prefix.
+// 专项练习: structured questions of their own; no ordinary quiz, stage or SM-2 records.
+// Saved in this browser under the notebook's store prefix, and synced in the progress file's
+// specialPractice with the answers as typed (用户 2026-11-18: so they can be read and marked from
+// another device). Same shape and merge as SpecialPracticeRecord in ipad/VoCab/SpecialPractice.swift.
 let specialRecords = {};
 try { specialRecords = JSON.parse(store.get("vk.specialPractice", "{}")) || {}; } catch {}
 function specialState(anchor){
@@ -11,7 +13,44 @@ function refreshSpecialCards(){
     const summary=specialSummary(it);el.textContent=`${summary.done} / ${it.practice.questions.length} 题 · ${summary.done===0?"未开始":summary.done===it.practice.questions.length?"已完成":"进行中"}`;
   });
 }
-function saveSpecial(){ store.set("vk.specialPractice", JSON.stringify(specialRecords)); refreshSpecialCards(); }
+function saveSpecial(){ store.set("vk.specialPractice", JSON.stringify(specialRecords)); refreshSpecialCards(); syncSoon(); }
+// 同步: one shape on both sides, so the web and the iPad compare equal when nothing changed.
+const spRun = r => ({ id: String(r.id), mode: String(r.mode || "mixed"), skill: String(r.skill || ""), order: Array.isArray(r.order) ? r.order.map(String) : [],
+  index: r.index || 0, drafts: r.drafts || {}, help: r.help || {}, submissions: r.submissions || {},
+  status: r.status === "completed" || r.completed === true ? "completed" : "active", started: r.started || 0, t: r.t || 0 });
+const spAttempt = a => ({ id: String(a.id), q: String(a.q), run: String(a.run || ""), t: a.t || 0, answer: String(a.answer || ""), ok: !!a.ok, help: !!a.help });
+const spByTime = (a, b) => a.t - b.t || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+function specialOut(){
+  const out = {};
+  for (const a in specialRecords) {
+    const r = specialRecords[a], runs = {};
+    for (const id in r.runs || {}) runs[id] = spRun(r.runs[id]);
+    if (!Object.keys(runs).length && !(r.attempts || []).length) continue;   // only looked at
+    out[a] = { runs, current: runs[r.current] ? r.current : "", attempts: (r.attempts || []).map(spAttempt).sort(spByTime) };
+  }
+  return out;
+}
+// Attempts are a union by id; a run, newest t wins (changed in place: an open practice sheet holds
+// it); current is whichever side's current run changed last.
+function specialMerge(remote){
+  for (const a in remote) {
+    const o = remote[a];
+    if (!o || typeof o !== "object") continue;
+    const m = specialState(a), mine = m.current;
+    for (const id in o.runs || {}) {
+      const x = o.runs[id], l = m.runs[id];
+      if (!x || typeof x !== "object") continue;
+      if (!l) m.runs[id] = spRun(x);
+      else if ((x.t || 0) > (l.t || 0)) { Object.keys(l).forEach(k => delete l[k]); Object.assign(l, spRun(x)); }
+    }
+    const seen = new Set(m.attempts.map(x => x.id));
+    for (const x of Array.isArray(o.attempts) ? o.attempts : []) if (x && x.id && !seen.has(x.id)) { m.attempts.push(spAttempt(x)); seen.add(x.id); }
+    m.attempts.sort(spByTime);
+    const pick = [mine, o.current].filter(id => id && m.runs[id]).map(id => m.runs[id]).sort((x, y) => spByTime(y, x))[0];
+    m.current = pick ? pick.id : "";
+  }
+  store.set("vk.specialPractice", JSON.stringify(specialRecords)); refreshSpecialCards();
+}
 function specialId(){ return globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`; }
 function practiceNormalize(text){
   return String(text).normalize("NFKC").toLowerCase().replace(/[’‘]/g,"'")
@@ -59,7 +98,7 @@ function specialHomeHtml(it){
     `<div class="sp-actions"><button type="button" class="btn" data-sp="focused">开始分项练习</button><button type="button" class="btn" data-sp="mixed">开始混合练习 · ${p.questions.length} 题</button><button type="button" class="btn" data-sp="review"${summary.review.length?"":" disabled"}>重做错题与提示题 · ${summary.review.length}</button></div></section>`+
     `<details class="sp-notes"><summary>先看核心笔记</summary><ul>${notes.map(a=>`<li><a class="xref" href="#${esc(a)}" data-ref="${esc(a)}">${esc(byAnchor[a]?.it.title||a)}</a></li>`).join("")}</ul></details>`+
     `<details class="sp-past"><summary>练习记录与未完成的练习</summary>${Object.values(st.runs).sort((a,b)=>b.started-a.started).map(r=>`<div class="sp-run-record"><span>${new Date(r.started).toLocaleString("zh-CN")} · ${r.mode==="mixed"?"混合":r.mode==="review"?"重练":"分项"} · ${Object.keys(r.submissions).length}/${r.order.length} 题</span><button type="button" class="linkish" data-sp="resume" data-run="${esc(r.id)}">${r.status==="completed"?"查看结果":"继续"}</button></div>`).join("")||"<p>还没有练习记录。</p>"}</details>`+
-    `<p class="sp-storage">进度、草稿和答题记录自动保存在此浏览器；暂不随现有学习进度同步。提示后答对也会列入重练，不会直接算作掌握。</p>`;
+    `<p class="sp-storage">进度、草稿和答案自动保存在此浏览器；连上「同步到 GitHub」后和学习进度一起同步，换设备也能接着练（答案原文会存进公开的 GitHub 仓库）。提示后答对也会列入重练，不会直接算作掌握。</p>`;
 }
 function specialQuestionHtml(it,run){
   const p=it.practice,st=specialState(it.anchor),q=p.questions.find(q=>q.id===run.order[run.index]);
@@ -122,7 +161,7 @@ function showSpecialPractice(it,level,i,page="home",o={}){
     if(action==="focused")return startSpecial(it,"focused",sheet.querySelector("#sp-skill").value);
     if(action==="mixed"||action==="review")return startSpecial(it,action);
     if(action==="continue")return showSpecialPractice(it,level,i,"run");
-    if(action==="resume"){specialState(it.anchor).current=b.dataset.run;saveSpecial();return showSpecialPractice(it,level,i,"run");}
+    if(action==="resume"){const st=specialState(it.anchor),r=st.runs[b.dataset.run];if(r&&r.status!=="completed")r.t=Date.now();st.current=b.dataset.run;saveSpecial();return showSpecialPractice(it,level,i,"run");}
     if(action==="home")return showSpecialPractice(it,level,i);
     if(!run)return;
     if(action==="hint"){

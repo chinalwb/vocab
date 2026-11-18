@@ -109,5 +109,5 @@
 - 一个练习集包含 anchor（p- 开头）、title、date、description、skills（知识点键与中文名）、questions。每题有稳定 id、skill、type（fill / correct / rewrite）、prompt、hint、answers（可接受答案数组）、explanation 和 note（对应核心笔记锚点）。题目尽量明确保留哪个人、用哪个代词、只填空还是写整句；不要把合理的不同答案判成错。实质改变题目时使用新 id，避免旧记录套到新题。
 - 分项与混合使用同一批题。分项按知识点排列，混合打乱且不显示考点标签；允许中途退出、保存草稿、继续、查看结果与历史、重练最近答错或用过提示的题。
 - 提示后答对单独记；完成整组不等于掌握，不自动升级或解锁。练习集不进入原来的学习／复习／考核阶段，不记到普通自测和 SM-2 中。
-- 网页和 iPad 均提供独立练习界面：网页通过 store 保存在当前浏览器，沿用学生前缀；iPad 保存在 special-practice.json。专项记录不参与 GitHub 进度同步，不写回公开学习笔记。data.json 的 entries 仍只含普通笔记，专项题库另放可选的 practices 数组，旧版 App 可忽略；题库变动同样计入 meta.hash。
+- 网页和 iPad 均提供独立练习界面：网页通过 store 保存在当前浏览器，沿用学生前缀；iPad 保存在 special-practice.json。连上同步后，专项记录（含答案原文）随学习进度一起存进 progress 分支的 `progress-taobao.json`（字段 `specialPractice`，用户 2026-11-18：为了在别的设备上看和批改），不写回公开学习笔记。data.json 的 entries 仍只含普通笔记，专项题库另放可选的 practices 数组，旧版 App 可忽略；题库变动同样计入 meta.hash。
 - 核心笔记与练习集互相链接。专项题量不受普通条目“两道自测”的限制，普通条目上限仍然保留。

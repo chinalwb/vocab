@@ -451,7 +451,7 @@
 进度、SM-2 复习卡、自测结果、⭐ 收藏的例句、学习历史在网页和 App 之间同步,存在本仓库的**孤立分支 `progress`** 的 `progress.json` 里(和 main / dev 没有共同历史,不触发构建,也不进 dev → main 的 MR)。
 
 - 读写走 GitHub Contents API,用户自己的 fine-grained token(只给 chinalwb/vocab 的 Contents 读写),在「复习」页底部「同步到 GitHub」里填;网页存 localStorage `vk.gh`,App 存 SharedPreferences `sync`。**token 由用户自己填,我不经手。**
-- **自测里写的句子原文不上传**(公开仓库,原文没经过我脱敏):只同步时间、对错、是否偷看、来源;别的设备上显示为「(在另一台设备上写的)」。
+- **自测里写的句子原文不上传**(公开仓库,原文没经过我脱敏):只同步时间、对错、是否偷看、来源;别的设备上显示为「(在另一台设备上写的)」。**专项练习例外**:学生的答案原文照样上传(用户 2026-11-18 选的,为了在别的设备上看和批改),见「网页专项练习」一节。
 - 合并规则(两边一致,见 template.html 的 `applyRemote()` 和 `sync/ProgressSync.kt`):进度和复习卡按时间戳新者胜;「重置复习进度」记 `resetAt`,早于它的卡在所有设备上都丢掉;自测记录按时间戳取并集。合并后和远端一样就不提交。
 - 时机:打开时拉一次;改动后攒 15 秒提交一次;切走页面 / 离开 App 时立即提交;回到页面 / App 时再拉一次。写冲突(409/422)时重新拉取合并,最多 3 次。
 - **不要手动改 `progress` 分支**,也不要把它合进 dev / main。
@@ -533,7 +533,7 @@ build.py 内部只有一个解析器 `parse_blocks()`:它把条目正文解析�
 
 独立分类 PRACTICE 由各笔记目录可选的 practices.json 供稿，schema 与用法见 users/taobao/CLAUDE.md。build_practices 校验题目与核心笔记引用，page_data 将结构化题目注入网页，practice.js / practice.css 内联到生成页；没有练习集的笔记本不显示该分类。新增题型或数据字段时同步更新验证与测试。
 
-专项练习走独立界面，不进入普通例句、自测、学习阶段或复习题池。网页和 iPad 均支持专项界面；data.json 的 entries 保持普通笔记，专项另放可选 practices 数组，由新版 iPad 合并显示，旧客户端可忽略。meta.hash 包括题库变化。网页练习进度、草稿和答案用 store 的 vk.specialPractice 保存（自动换学生前缀），iPad 用独立 special-practice.json；均仅存当前设备，不并入现有同步，也不上传学生输入。开发与验收说明见 tests/README.md 和 ipad/README.md。
+专项练习走独立界面，不进入普通例句、自测、学习阶段或复习题池。网页和 iPad 均支持专项界面；data.json 的 entries 保持普通笔记，专项另放可选 practices 数组，由新版 iPad 合并显示，旧客户端可忽略。meta.hash 包括题库变化。网页练习进度、草稿和答案用 store 的 vk.specialPractice 保存（自动换学生前缀），iPad 用独立 special-practice.json。**同步（用户 2026-11-18，起因：taobao 在自己的浏览器里做完了题，我这边看到的是 0 / 28）**：整份记录连同学生写的答案原文放进学生同步文件的 `specialPractice`（`{anchor: {runs, current, attempts}}`），用户知道仓库是公开的、选了连答案一起传。合并规则两边一致：答题记录按 id 取并集，每次练习（run）按 `t` 新者胜，`current` 取两边当前练习里 `t` 更新的那个；只看过、没练过的不上传；从练习记录里继续一个**没做完**的练习会刷新它的 `t`（换设备也接着这一个），只是查看做完的结果不刷新。网页 `specialOut()` / `specialMerge()`（practice.js，merge 时原地改 run 对象，打开着的练习页不会失效），iPad `SpecialPracticeRecord.merge(_:)` / `synced`；run 在线上的形状统一用网页的 `status: "active" | "completed"`（iPad 早期写的 `completed` 也能读），两边写出来一样，没变化时不提交。只在有练习集的笔记本里写这个字段（`SP_SYNC`）：我的 `progress.json` 没有，免得 App 同步时丢掉它。**iPad 0.2 及以前不认识这个字段，同步时会把它删掉**（网页下次同步再传上去，数据不丢，但会来回提交），所以改了以后要尽快给 taobao 的 iPad 装 0.3。开发与验收说明见 tests/README.md 和 ipad/README.md。
 
 ## Android App(`android/`)
 

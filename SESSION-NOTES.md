@@ -3,6 +3,14 @@
 换电脑接着做之前先看这里:每次长会话改了什么、现在的版本、没做完的事。最新的在最上面。细节规则以 `CLAUDE.md` 为准。
 
 ---
+## 2026-11-18:专项练习的记录随学习进度同步,连答案一起(网页 + iPad 0.3)
+
+- **为什么**:taobao 前一天在自己的浏览器里做了专项练习,用户在自己这边打开看到「0 / 28 已作答题目」。不是丢了:专项记录原来只存在做题的那台设备(网页 localStorage `vk.taobao.specialPractice`,iPad `special-practice.json`),不同步。用户选了**连答案原文一起传**(知道仓库是公开的),方便在别的设备上看和批改。
+- **怎么做**:整份记录放进 `progress-taobao.json` 的 `specialPractice`。答题记录按 id 并集,每次练习按 `t` 新者胜,`current` 取两边里 `t` 更新的那个;只看过的不上传;继续一个没做完的练习会刷新 `t`,只看做完的结果不刷新。网页 practice.js `specialOut()` / `specialMerge()`,template.html 的 `normProgress()` / `progressOut()` / `applyRemote()`(只在有练习集的笔记本里,`SP_SYNC`);iPad `SpecialPracticeRecord.merge(_:)` / `synced` / `resume(_:)`,Sync.swift 的 `merge` / `snapshot`。线上统一用网页的 `status`,iPad 早期的 `completed` 也能读。iPad 版本 0.2 (2) → 0.3 (3)。
+- **验证**:Node 跑网页的 practice.js、macOS 编译 iPad 的 SpecialPractice.swift,模拟两边轮流同步:一轮之后两边都不再提交;并集、新者胜、`current`、原地更新都对;GitHub 上的坏数据两边都跳过(这一步发现 iPad 对不是对象的值会抛 ObjC 异常闪退,`try?` 接不住,加了 `isValidJSONObject`)。Playwright 打开构建出的页面、模拟 GitHub 接口:用 taobao 真实的 `progress-taobao.json` 起步,只多出 `specialPractice`,别的字段不变;另一个浏览器拉下来显示 2 / 28、草稿也在,不提交回去;我的主页不写这个字段。iPad 整个 App 对 iOS 模拟器 SDK 类型检查通过,新加的两个 XCTest 在 macOS 上跑过;**没在 iPad / 模拟器上跑整个 App**(这台 Mac 没装 xcodegen)。`tests/special_practice.cjs` 加了同步一段,`python3 -m unittest` 通过。
+- **还要做**:合进 main 后网页生效;taobao 下次在做题的那个浏览器打开页面(连着同步),昨天的记录就会传上去。**taobao 的 iPad 要装 0.3**:0.2 同步时会删掉这个字段(数据不丢,网页会再传,但会来回提交、我这边时有时无)。
+
+---
 ## 2026-11-18:⤢ 改成真正的全屏(网页)
 
 - 用户要像 Google Slides 放映那样的全屏:原来 ⤢ 只盖住列表,顶栏和分类栏还在。现在条目铺满整个窗口,并请求浏览器全屏(`setFull()`);Esc / ⤡ / 关掉条目都会退出,J / K、下一个保持全屏。专项练习页原来没有 ⤢,加上了(和 ✕ 同样式,taobao 的皮肤下也一致)。

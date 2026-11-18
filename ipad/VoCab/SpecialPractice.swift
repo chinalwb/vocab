@@ -52,6 +52,7 @@ func normalizedPracticeAnswer(_ answer: String) -> String {
 
 enum SpecialPracticeMode: String, Codable {
     case focused, mixed, review
+    init(from decoder: Decoder) throws { self = Self(rawValue: try decoder.singleValueContainer().decode(String.self)) ?? .mixed }
     var label: String { switch self { case .focused: return "分项"; case .mixed: return "混合"; case .review: return "重练" } }
 }
 
@@ -81,13 +82,43 @@ struct SpecialPracticeRun: Codable, Identifiable {
     var questionID: String? { order.indices.contains(index) ? order[index] : nil }
 }
 
+/// The web's shape (practice.js spRun()): `status` "active" / "completed". The first iPad builds wrote
+/// `completed`; both still read. Written the same way on both sides, so 同步 compares equal.
+extension SpecialPracticeRun {
+    private enum Key: String, CodingKey { case id, mode, skill, order, index, drafts, help, submissions, status, completed, started, t }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: Key.self)
+        id = try c.decode(String.self, forKey: .id)
+        mode = (try? c.decode(SpecialPracticeMode.self, forKey: .mode)) ?? .mixed
+        skill = try c.decodeIfPresent(String.self, forKey: .skill) ?? ""
+        order = try c.decodeIfPresent([String].self, forKey: .order) ?? []
+        index = try c.decodeIfPresent(Int.self, forKey: .index) ?? 0
+        drafts = try c.decodeIfPresent([String: String].self, forKey: .drafts) ?? [:]
+        help = try c.decodeIfPresent([String: Bool].self, forKey: .help) ?? [:]
+        submissions = try c.decodeIfPresent([String: String].self, forKey: .submissions) ?? [:]
+        if let status = try c.decodeIfPresent(String.self, forKey: .status) { completed = status == "completed" }
+        else { completed = try c.decodeIfPresent(Bool.self, forKey: .completed) ?? false }
+        started = try c.decodeIfPresent(Int64.self, forKey: .started) ?? 0
+        t = try c.decodeIfPresent(Int64.self, forKey: .t) ?? 0
+    }
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: Key.self)
+        try c.encode(id, forKey: .id); try c.encode(mode, forKey: .mode); try c.encode(skill, forKey: .skill)
+        try c.encode(order, forKey: .order); try c.encode(index, forKey: .index); try c.encode(drafts, forKey: .drafts)
+        try c.encode(help, forKey: .help); try c.encode(submissions, forKey: .submissions)
+        try c.encode(completed ? "completed" : "active", forKey: .status)
+        try c.encode(started, forKey: .started); try c.encode(t, forKey: .t)
+    }
+}
+
 struct SpecialPracticeSummary {
     let done: Int
     let firstRight: Int
     let review: [String]
 }
 
-/// Device-local file, deliberately absent from ordinary selftest.json, stage.json and sync payloads.
+/// Saved in special-practice.json, apart from selftest.json and stage.json; 同步 carries it whole in
+/// progress-taobao.json's specialPractice, answers included (用户 2026-11-18) — see merge(_:).
 struct SpecialPracticeRecord: Codable {
     var runs: [String: SpecialPracticeRun] = [:]
     var current = ""
@@ -149,5 +180,42 @@ struct SpecialPracticeRecord: Codable {
     func attempt(_ run: SpecialPracticeRun, question id: String) -> SpecialPracticeAttempt? {
         attempts.first { $0.id == run.submissions[id] }
     }
+    /// Back to an earlier run. An unfinished one changed last now, so 同步 makes it current on every
+    /// device; looking at a finished one's results doesn't take that over (like the page's resume).
+    mutating func resume(_ id: String) {
+        guard var run = runs[id] else { return }
+        if !run.completed { run.t = Self.time(); runs[id] = run }
+        current = id
+    }
+
+    // 同步: the same rules as specialMerge() / specialOut() in practice.js, so both sides agree.
+    /// Attempts are a union by id; a run, newest t wins; current is whichever side's current run changed last.
+    mutating func merge(_ o: SpecialPracticeRecord) {
+        let mine = current
+        for (id, x) in o.runs where x.t > (runs[id]?.t ?? .min) { runs[id] = x }
+        var seen = Set(attempts.map(\.id))
+        for a in o.attempts where !seen.contains(a.id) { attempts.append(a); seen.insert(a.id) }
+        attempts.sort { Self.before(($0.t, $0.id), ($1.t, $1.id)) }
+        current = [mine, o.current].compactMap { runs[$0] }.max { Self.before(($0.t, $0.id), ($1.t, $1.id)) }?.id ?? ""
+    }
+    /// What goes up: attempts in time order, no current pointing nowhere; nil when it was only looked at.
+    var synced: SpecialPracticeRecord? {
+        if runs.isEmpty && attempts.isEmpty { return nil }
+        var r = self
+        r.attempts.sort { Self.before(($0.t, $0.id), ($1.t, $1.id)) }
+        if r.runs[r.current] == nil { r.current = "" }
+        return r
+    }
+    private static func before(_ a: (Int64, String), _ b: (Int64, String)) -> Bool { a.0 != b.0 ? a.0 < b.0 : a.1 < b.1 }
     private static func time() -> Int64 { Int64(Date().timeIntervalSince1970 * 1000) }
+}
+
+extension SpecialPracticeRecord {
+    private enum Key: String, CodingKey { case runs, current, attempts }
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: Key.self)
+        runs = try c.decodeIfPresent([String: SpecialPracticeRun].self, forKey: .runs) ?? [:]
+        current = try c.decodeIfPresent(String.self, forKey: .current) ?? ""
+        attempts = try c.decodeIfPresent([SpecialPracticeAttempt].self, forKey: .attempts) ?? []
+    }
 }

@@ -90,6 +90,50 @@ final class SpecialPracticeTests: XCTestCase {
         XCTAssertEqual(record.runs.count, 2)
     }
 
+    /// 同步 (用户 2026-11-18): the web writes `status`, the first iPad builds wrote `completed`; one shape goes up.
+    func testSyncReadsWebAndLegacyRunsAndWritesTheWebShape() throws {
+        let web = #"{"runs":{"w1":{"id":"w1","mode":"mixed","skill":"","order":["base-1"],"index":0,"drafts":{},"help":{},"submissions":{},"status":"completed","started":1,"t":2}},"current":"w1","attempts":[]}"#
+        let legacy = #"{"runs":{"i1":{"id":"i1","mode":"focused","skill":"past","order":["past-1"],"index":0,"drafts":{},"help":{},"submissions":{},"completed":true,"started":1,"t":2}},"current":"i1","attempts":[]}"#
+        for text in [web, legacy] {
+            let record = try JSONDecoder().decode(SpecialPracticeRecord.self, from: Data(text.utf8))
+            XCTAssertTrue(record.currentRun!.completed)
+            let out = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(record)) as? [String: Any])
+            let run = try XCTUnwrap((out["runs"] as? [String: [String: Any]])?[record.current])
+            XCTAssertEqual(run["status"] as? String, "completed")
+            XCTAssertNil(run["completed"])
+        }
+        XCTAssertNil(SpecialPracticeRecord().synced, "a record only looked at stays off GitHub")
+    }
+
+    func testMergeUnionsAttemptsKeepsTheNewerRunAndTheLatestCurrent() throws {
+        func run(_ id: String, t: Int64, index: Int = 0) -> SpecialPracticeRun {
+            SpecialPracticeRun(id: id, mode: .mixed, skill: "", order: ["base-1", "base-2"], index: index, started: 1, t: t)
+        }
+        func attempt(_ id: String, t: Int64) -> SpecialPracticeAttempt {
+            SpecialPracticeAttempt(id: id, q: "base-1", run: "a", t: t, answer: "have", ok: true, help: false)
+        }
+        var mine = SpecialPracticeRecord(runs: ["a": run("a", t: 10, index: 1), "b": run("b", t: 5)], current: "b",
+                                         attempts: [attempt("x", t: 3), attempt("y", t: 7)])
+        let theirs = SpecialPracticeRecord(runs: ["a": run("a", t: 20, index: 0), "c": run("c", t: 1)], current: "a",
+                                           attempts: [attempt("y", t: 7), attempt("z", t: 4)])
+        mine.merge(theirs)
+        XCTAssertEqual(mine.attempts.map(\.id), ["x", "z", "y"])
+        XCTAssertEqual(mine.runs["a"]?.t, 20)
+        XCTAssertEqual(mine.runs["a"]?.index, 0)
+        XCTAssertEqual(Set(mine.runs.keys), ["a", "b", "c"])
+        XCTAssertEqual(mine.current, "a", "their current run changed later")
+        var again = mine
+        again.merge(theirs)
+        XCTAssertEqual(again.attempts.map(\.id), mine.attempts.map(\.id), "merging twice changes nothing")
+        // resuming an unfinished run makes it current everywhere; viewing a finished one doesn't
+        var done = run("b", t: 5); done.completed = true
+        var record = SpecialPracticeRecord(runs: ["a": run("a", t: 20), "b": done], current: "a", attempts: [])
+        record.resume("b")
+        XCTAssertEqual(record.runs["b"]?.t, 5)
+        record.merge(SpecialPracticeRecord(runs: [:], current: "a", attempts: []))
+        XCTAssertEqual(record.current, "a")
+    }
+
     @MainActor func testPracticeCannotEnterNormalStagesOrAttemptLog() throws {
         let entry = try XCTUnwrap(payload().practices.first)
         let model = AppModel(), before = model.attempts(entry), stages = model.stageData.stages

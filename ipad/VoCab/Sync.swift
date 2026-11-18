@@ -7,7 +7,8 @@ import UIKit
  * and writes, with the same merge rules as syncNow() / applyRemote() in template.html and ProgressSync.kt:
  * moves and SM-2 cards newest wins per entry (a reset drops older cards), 自测 attempts are a union (what
  * I typed never leaves the iPad), 学习历史 merged and trimmed, ⭐ / 不再考这句 newest wins per sentence, 我的笔记
- * per entry. 阅读 (the phone's) is carried through untouched, so a sync from here never drops it.
+ * per entry, 专项练习 (answers and all, 用户 2026-11-18) by SpecialPracticeRecord.merge(_:). 阅读 (the
+ * phone's) is carried through untouched, so a sync from here never drops it.
  */
 
 private let api = URL(string: "https://api.github.com/repos/chinalwb/vocab/contents/progress-taobao.json")!
@@ -89,7 +90,8 @@ private struct Out: Encodable {
 private func normalized(_ r: [String: Any]) -> [String: Any] {
     var o = r
     let defaults: [String: Any] = ["v": 1, "stages": [:], "cards": [:], "newDay": 0, "newToday": 0, "resetAt": 0, "attempts": [:],
-                                   "favs": [:], "history": [], "historyClearAt": 0, "readsHidden": [:], "quizOut": [:], "notes": [:]]
+                                   "favs": [:], "history": [], "historyClearAt": 0, "readsHidden": [:], "quizOut": [:], "notes": [:],
+                                   "specialPractice": [:]]
     for (k, v) in defaults where o[k] == nil || o[k] is NSNull { o[k] = v }
     return o
 }
@@ -209,8 +211,17 @@ extension AppModel {
         // 我的笔记: newest wins per entry
         var ns = notes
         for (a, n) in r.notes ?? [:] where n.t > (ns[a]?.t ?? 0) { ns[a] = n }
+        // 专项练习: per exercise set; one that doesn't read is left as it is here
+        var sp = specialRecords
+        for (a, o) in raw["specialPractice"] as? [String: Any] ?? [:] {
+            // a bare string or number would raise an Objective-C exception, which try? can't catch
+            guard JSONSerialization.isValidJSONObject(o), let d = try? JSONSerialization.data(withJSONObject: o),
+                  let theirs = try? JSONDecoder().decode(SpecialPracticeRecord.self, from: d) else { continue }
+            var mine = sp[a] ?? SpecialPracticeRecord()
+            mine.merge(theirs); sp[a] = mine
+        }
         replaceSynced(stages: st, attempts: at, review: rv, history: h,
-                      quizOut: perSentence(quizOut, r.quizOut), favs: perSentence(favs, r.favs), notes: ns)
+                      quizOut: perSentence(quizOut, r.quizOut), favs: perSentence(favs, r.favs), notes: ns, special: sp)
     }
 
     /// What goes up: the iPad's merged state, plus whatever it doesn't handle, as GitHub has it.
@@ -223,6 +234,7 @@ extension AppModel {
         var o = try JSONSerialization.jsonObject(with: JSONEncoder().encode(out)) as! [String: Any]
         let carried = normalized(remote)
         o["readsHidden"] = carried["readsHidden"]
+        o["specialPractice"] = try JSONSerialization.jsonObject(with: JSONEncoder().encode(specialRecords.compactMapValues(\.synced)))
         return o
     }
 
