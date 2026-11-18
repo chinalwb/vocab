@@ -152,12 +152,12 @@
    "t": 1794562777543
   },
   "s-tell-describe": {
-   "due": 20775,
+   "due": 20776,
    "ease": 1.3,
    "interval": 1,
-   "lapses": 3,
-   "reps": 1,
-   "t": 1794915901964
+   "lapses": 4,
+   "reps": 0,
+   "t": 1795005765045
   },
   "c-be-witness-to": {
    "due": 20776,
@@ -1007,6 +1007,13 @@
     "peek": false,
     "via": "review",
     "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1795005771894,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
    }
   ],
   "s-plan-is-to": [
@@ -1603,6 +1610,13 @@
     "peek": false,
     "via": "review",
     "ex": "Then the passage describes an attempt to protect a town from lava in detail."
+   },
+   {
+    "t": 1795005765044,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "This book describes a trip to the mountains in detail."
    }
   ],
   "s-realistic-plan": [
@@ -2792,6 +2806,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-ing-subject",
+   "t": 1795005767413,
+   "via": "review"
+  },
+  {
    "a": "s-tell-describe",
    "t": 1795005743603,
    "via": "review"
@@ -2829,11 +2848,6 @@
   {
    "a": "s-plan-is-to",
    "t": 1794915919231,
-   "via": "review"
-  },
-  {
-   "a": "s-ing-subject",
-   "t": 1794915902499,
    "via": "review"
   },
   {
