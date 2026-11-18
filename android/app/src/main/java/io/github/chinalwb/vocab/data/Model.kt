@@ -57,6 +57,8 @@ data class Entry(
     /** The user's own mistakes in this entry — the tagged ❌/⚠️ bullets. */
     val mistakes: List<Mistake> = emptyList(),
     val hash: String = "",
+    /** The 待补充 item this entry answers (`- 请求:<id>`, 用户 2026-11-18); "" for most entries. */
+    val req: String = "",
 ) {
     @Transient
     val searchText: String = buildString {

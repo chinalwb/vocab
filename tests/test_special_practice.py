@@ -76,6 +76,19 @@ class SpecialPracticeTests(unittest.TestCase):
         self.assertIsNone(item["no"])
         native = json.loads((self.source / "data.json").read_text())
         self.assertFalse(any(e["level"] == "PRACTICE" for e in native["entries"]))
+        self.assertEqual(len(native["practices"]), 1)
+        self.assertEqual(len(native["practices"][0]["practice"]["questions"]), 28)
+        self.assertEqual(native["schema"], 1)  # Older clients ignore the optional collection.
+
+    def test_native_meta_hash_includes_question_only_updates(self):
+        native = json.loads((self.source / "data.json").read_text())
+        prefix = [e["hash"] for e in native["entries"]] + [r["hash"] for r in native["reads"]]
+        hashes = [p["hash"] for p in native["practices"]]
+        self.assertEqual(native["hash"], build.digest(prefix + hashes))
+        changed = copy.deepcopy(self.payload)
+        changed[0]["questions"][0]["hint"] += " Updated hint."
+        new_hash = self.parse(changed)[0]["hash"]
+        self.assertNotEqual(native["hash"], build.digest(prefix + [new_hash]))
 
 
 if __name__ == "__main__":

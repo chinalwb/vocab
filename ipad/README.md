@@ -40,7 +40,37 @@ Phase 3: the entry's notes end with 记忆 (the estimated forgetting curve; touc
 for 复制 · 收藏 ⭐ · 不再考这句 (an asked example's number sits in a solid dot, hollow once left out). ⭐ and
 我的笔记 now sync both ways; 阅读 is still carried through untouched.
 
+Phase 4: **专项练习** has its own category and native screen. The have-to exercise set includes 28
+questions plus four linked core notes. Choose focused practice (one skill or all skills), mixed
+practice, or retry only the latest wrong/hinted questions. Fill blanks, correct mistakes, and rewrite
+sentences by typing; tap for a hint or the linked note. Answers allow authored alternatives,
+contractions, capitalization and punctuation variants. A submission is recorded once, with feedback
+and speech, and can be resumed after closing the app. Drafts, attempts and archived sessions are
+saved atomically to `special-practice.json` on this iPad. These records do **not** sync to the web and
+never enter ordinary stages, self-test records or SM-2. Completing the set does not mark it mastered.
+
+`data.json` keeps ordinary notes in `entries` and adds an optional `practices` collection; older apps
+can still decode it. The metadata hash includes exercise-only edits. A newer bundled snapshot is
+kept when Pages still serves an older snapshot. Current app version: **0.2 (2)**.
+
 Not yet: essay PDF, hardware-keyboard chip filtering, pre-generated neural voices.
 
 Testing in the simulator, as launch arguments: `-open <anchor>` (and `-quiz YES`) opens an entry;
 `-pick review` (or `history`) shows that list; `-page N` opens the entry's Nth notes page; `-run review` / `-run test` starts its run.
+
+
+## Validate the native practice flow
+
+```sh
+cd ipad
+xcodegen generate
+xcodebuild -project VoCab.xcodeproj -scheme VoCab \
+  -destination 'platform=iOS Simulator,name=iPad Pro 11-inch (M4)' \
+  CODE_SIGNING_ALLOWED=NO test
+```
+
+Choose an available iPad simulator (`xcrun simctl list devices available`). `VoCabTests` covers
+payload compatibility, grading, draft/result persistence, the complete 28-question/retry flow and
+stage isolation. `VoCabUITests` checks typing, hints, app restarts and retry selection in a fresh
+simulator. UI tests use `-offline YES` so they do not read or write online progress; that argument
+is also available for manual simulator checks. Use a disposable simulator to avoid existing data.

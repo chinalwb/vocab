@@ -172,6 +172,7 @@
 175. [句子:any errors / spot an error](#s-any-errors-spot)
 176. [I'd best declare my own bias(雅思阅读 · 第 32 题)](#ielts-declare-my-own-bias)
 177. [Oldest children and "never get over" a younger sibling](#ielts-oldest-children-never-get-over)
+178. [open 的用法(开着用 be open,不用 be opened)](#open-adj)
 
 ---
 
@@ -5711,3 +5712,46 @@ platform 等于 10,就代表请求来自 web,对吧?
 **References**
 
 - [advent](#advent) —— 对比 arrival 与 advent：arrival 是通用的“到来”，advent 较正式，常强调重要技术、时代或潮流的出现。
+
+---
+
+<a id="open-adj"></a>
+## open 的用法(开着用 be open,不用 be opened)
+
+- 音标:英 /ˈəʊpən/ 美 /ˈoʊpən/
+- 词性:adj. / v.
+- CEFR:A1
+- 日期:2026-11-18
+- 掌握:会写
+
+**English definition:** (adj.) Not closed; in a state where something can be used, seen or entered — a door, a file or a shop that is open.
+
+**含义:** 形容词 open = 「开着的」,说的是**状态**;动词 open 的过去分词 opened = 「被打开」,说的是**动作**。想说「某个东西现在开着」时用 **be open**,不用 *be opened*。读到 *if an article is open* 时问过:这里的 open 不是名词,是 is 后面的形容词。
+
+**义项一:形容词 open —— 开着(状态)**
+
+1. The file is still **open** in another window.
+   这个文件还在另一个窗口里开着。
+2. **Keep** the app **open** while it syncs.
+   同步的时候别关 App。
+
+**义项二:opened —— 被打开(动作)**
+
+1. The page **was opened** at 9 a.m.
+   这个页面是早上 9 点被打开的。
+2. Someone **has opened** my laptop.
+   有人打开过我的电脑。
+
+**辨析:open 还是 opened**
+
+- 说「现在开着」用 **be open**:*The door is open.*(门开着。)
+- *The door is opened.* 读起来像在描述「门被打开」这个动作,不是「门开着」。
+- 「开着的标签页」说 **an open tab**,不说 *an opened tab*。
+
+**同类的状态形容词:**
+
+- *The light is **on** / **off**.*(灯开着 / 关着。)
+- *The store is **closed**.*(店关门了。)
+- *The window is **shut**.*(窗户关着。)
+
+**名词 open(很少见):** 只出现在固定说法里:*in the open*(在户外;公开地)、*the US Open*(美国公开赛)。

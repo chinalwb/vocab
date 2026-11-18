@@ -24,7 +24,9 @@ class VocabApp : Application() {
     val quizOut by lazy { io.github.chinalwb.vocab.review.QuizOutStore(this) }
     /** 我的笔记: my own note on each entry (synced). */
     val notes by lazy { io.github.chinalwb.vocab.review.NoteStore(this) }
-    val progress by lazy { ProgressSync(this, reviews, selfTests, stages, favs, history, readsHidden, quizOut, notes) }
+    /** 待补充: words added on the go, waiting for Claude to write their entries (synced). */
+    val requests by lazy { io.github.chinalwb.vocab.review.RequestStore(this) }
+    val progress by lazy { ProgressSync(this, reviews, selfTests, stages, favs, history, readsHidden, quizOut, notes, requests) }
     val updater by lazy { io.github.chinalwb.vocab.update.AppUpdater(this) }
     val speaker by lazy { io.github.chinalwb.vocab.ui.Speaker(this) }
 

@@ -107,6 +107,9 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     private val noteStore = (app as VocabApp).notes
     /** 我的笔记: {anchor: Note}, cleared ones included — read through written(). */
     val notes = noteStore.data
+    private val requestStore = (app as VocabApp).requests
+    /** 待补充: {id: Request}, deleted ones included — read through pending(). */
+    val requests = requestStore.data
     private val historyStore = (app as VocabApp).history
     /** 学习历史: newest first, one row per entry. */
     val history = historyStore.data
@@ -221,6 +224,7 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
             readHideStore.load()
             quizOutStore.load()
             noteStore.load()
+            requestStore.load()
             practice.load()
             progress.ready.complete(Unit)
             progress.now()
@@ -262,6 +266,21 @@ class VocabViewModel(app: Application) : AndroidViewModel(app) {
     fun toggleFav(anchor: String, en: String) = viewModelScope.launch { favStore.toggle(anchor, en); progress.soon() }
 
     fun setNote(anchor: String, text: String) = viewModelScope.launch { if (noteStore.set(anchor, text)) progress.soon() }
+
+    /** 新建 ([id] null) or an edit of a 待补充 item; synced right away — it was added on the go. */
+    fun saveRequest(id: String?, word: String, note: String) = viewModelScope.launch {
+        if (requestStore.put(id, word, note)) {
+            progress.now()
+            _messages.send(if (id == null) "已加到「待补充」" else "已保存")
+        }
+    }
+
+    fun deleteRequest(id: String) = viewModelScope.launch {
+        if (requestStore.delete(id)) {
+            progress.now()
+            _messages.send("已删除")
+        }
+    }
 
     fun connectSync(token: String) = progress.connect(token)
     fun disconnectSync() = progress.disconnect()

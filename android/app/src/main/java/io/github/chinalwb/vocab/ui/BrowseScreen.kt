@@ -68,6 +68,7 @@ import androidx.compose.ui.unit.sp
 import io.github.chinalwb.vocab.data.Entry
 import io.github.chinalwb.vocab.data.LibraryState
 import io.github.chinalwb.vocab.review.Attempt
+import io.github.chinalwb.vocab.review.Request
 import io.github.chinalwb.vocab.review.Stage
 import io.github.chinalwb.vocab.review.stageOf
 
@@ -209,6 +210,10 @@ fun BrowseScreen(
     onSheetOpen: (Boolean) -> Unit = {},
     /** How many filters / a non-default sort are on, for the icon's dot. */
     onActiveCount: (Int) -> Unit = {},
+    /** 待补充: the items still waiting for their entry, newest first (RequestStore.pending()). */
+    pending: List<Pair<String, Request>> = emptyList(),
+    /** a 待补充 item tapped: open it in the 新建 sheet */
+    onPending: (String) -> Unit = {},
 ) {
     // 筛选与排序 are kept across launches (SharedPreferences "filters", 用户 2026-10-14), like the
     // page's vk.type / vk.cefr / vk.stagef / vk.write / vk.fav; 有更新 is for this update only.
@@ -288,6 +293,8 @@ fun BrowseScreen(
         }
     }
     val shownCount = groups.sumOf { it.second.size }
+    // 待补充 items have no type and no stage yet: any narrowing beyond 学习中 hides them (as on the page)
+    val pendingShown = if (typeF == ALL && (stageF == null || stageF == Stage.Learn) && !writeOnly && !changedOnly && !favOnly && !noteOnly) pending else emptyList()
     val shownAnchors = remember(groups) { groups.flatMap { g -> g.second.map { it.anchor } } }
     val clearAll = { typeSaved = ALL; cefrSaved = null; setStage(null); writeOnly = false; changedOnly = false; favSaved = false; noteSaved = false; sortSaved = SORT_LEVEL }
     // what's on, as removable chips under the search; the same list drives the button's badge
@@ -377,7 +384,7 @@ fun BrowseScreen(
         Column {
             SyncStatus(lib, changed.size, onMarkAllSeen)
             if (lib.loadError != null) Text(lib.loadError, color = MaterialTheme.colorScheme.error)
-            if (groups.isEmpty() && lib.data != null) {
+            if (groups.isEmpty() && pendingShown.isEmpty() && lib.data != null) {
                 Text("没有匹配的条目", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(vertical = 32.dp))
             }
         }
@@ -418,6 +425,11 @@ fun BrowseScreen(
             ) {
                 item(span = StaggeredGridItemSpan.FullLine) { filters() }
                 item(span = StaggeredGridItemSpan.FullLine) { status() }
+                if (pendingShown.isNotEmpty()) {
+                    item(span = StaggeredGridItemSpan.FullLine, key = "h-rq") { GroupHeader("待补充 · ${pendingShown.size}") }
+                    gridItems(pendingShown, key = { "rq-" + it.first }) { (id, r) -> PendingCard(r, { onPending(id) }, tile = true) }
+                    if (groups.isNotEmpty()) item(span = StaggeredGridItemSpan.FullLine, key = "h-rq-end") { Spacer(Modifier.height(4.dp)) }
+                }
                 gridItems(groups.flatMap { it.second }, key = { it.anchor }) { e ->
                     EntryTile(e, badgeOf(e), foot(e)) { onOpen(e.anchor, shownAnchors) }
                 }
@@ -426,6 +438,13 @@ fun BrowseScreen(
             LazyColumn(state = listState, contentPadding = padding) {
                 item { filters() }
                 item { status() }
+                if (pendingShown.isNotEmpty()) {
+                    item(key = "h-rq") { GroupHeader("待补充 · ${pendingShown.size}") }
+                    items(pendingShown, key = { "rq-" + it.first }) { (id, r) ->
+                        PendingCard(r, { onPending(id) })
+                        Spacer(Modifier.padding(4.dp))
+                    }
+                }
                 groups.forEach { (lvl, list) ->
                     stickyHeader(key = "h-$lvl") {
                         GroupHeader(

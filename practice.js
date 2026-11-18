@@ -87,17 +87,18 @@ function specialResultsHtml(it,run){
     `<p>这次完成 ${attempts.length} 题。刚看完答案不等于已经掌握，隔几天换个时间再试。</p><div class="sp-actions"><button class="btn" type="button" data-sp="review"${specialSummary(it).review.length?"":" disabled"}>重练错题与提示题</button><button class="btn" type="button" data-sp="home">返回练习首页</button></div>`+
     `<div class="sp-results">${attempts.map((a,i)=>{const q=p.questions.find(q=>q.id===a.q);return `<details><summary>第 ${i+1} 题 · ${a.ok?(a.help?"提示后答对":"独立答对"):"需要订正"}</summary><p>${esc(q.prompt).replace(/\n/g,"<br>")}</p><p>我的答案：${esc(a.answer)}</p><p>参考答案：${esc(q.answers[0])}</p><p>${esc(q.explanation)}</p></details>`;}).join("")}</div>`;
 }
-function showSpecialPractice(it,level,i,page="home"){
+// [o.noFocus]: opened on its own (the first of the list, docked) — don't take the focus, like show()
+function showSpecialPractice(it,level,i,page="home",o={}){
   stopReading();if(scrim)scrim.remove();
   scrim=document.createElement("div");const docked=dockable()&&!document.body.classList.contains("running");
   scrim.className="scrim"+(docked?" docked":"");scrim._entry={it,level,i};
-  const sheet=document.createElement("div");sheet.className="sheet sp-sheet";sheet.style.setProperty("--sw","var(--cl-1)");
+  const sheet=document.createElement("div");sheet.className="sheet sp-sheet"+(cardFull?" full":"");sheet.style.setProperty("--sw","var(--cl-1)");
   sheet.setAttribute("role","dialog");sheet.setAttribute("aria-modal",String(!docked));sheet.setAttribute("aria-label",it.title);
   const run=specialRun(it),body=page==="run"&&run?run.status==="completed"?specialResultsHtml(it,run):specialQuestionHtml(it,run):specialHomeHtml(it);
-  sheet.innerHTML=`<button class="x" type="button" aria-label="关闭">✕</button>`+
+  sheet.innerHTML=`<button class="x" type="button" aria-label="关闭">✕</button><button class="x full sp-full" type="button" aria-label="${cardFull?"退出全屏":"全屏"}">${cardFull?ICON_UNFULL:ICON_FULL}</button>`+
     (trail.length?`<button class="back" type="button">← 返回上一条</button>`:"")+`<div class="sp-title"><span class="sp-kicker">专项练习</span><h2>${esc(it.title)}</h2></div><div class="sp-body">${body}</div>`;
   scrim.append(sheet);document.body.append(scrim);markSel(docked?it.anchor:"");
-  sheet.querySelector(".x").onclick=close;sheet.querySelector(".back")?.addEventListener("click",goBack);
+  sheet.querySelector(".x:not(.sp-full)").onclick=close;sheet.querySelector(".sp-full").onclick=()=>setFull(!cardFull);sheet.querySelector(".back")?.addEventListener("click",goBack);
   scrim.addEventListener("click",e=>{if(e.target===scrim&&!docked)close();});
   wireXrefsIn(sheet,follow);
   const form=sheet.querySelector("form");
@@ -114,7 +115,7 @@ function showSpecialPractice(it,level,i,page="home"){
   }
   const feedback=sheet.querySelector(".sp-feedback h3");
   if(feedback){feedback.tabIndex=-1;feedback.focus({preventScroll:true});feedback.scrollIntoView({block:"nearest"});}
-  else sheet.querySelector(".x").focus({preventScroll:true});
+  else if(!o.noFocus)sheet.querySelector(".x:not(.sp-full)").focus({preventScroll:true});
   sheet.addEventListener("click",e=>{
     const b=e.target.closest("[data-sp]");if(!b)return;
     const action=b.dataset.sp;

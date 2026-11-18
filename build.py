@@ -6,6 +6,7 @@
                                            when publishing as a Claude artifact
   python build.py --src users/taobao -> a student's notebook: reads its vocabulary.md and
                                            site.json (and essays.md, if any), writes the page next to them
+  python build.py --pending             -> list the 待补充 items no entry answers yet (reads origin/progress)
 Every run also writes data.json + meta.json, which the Android app (android/)
 fetches from Pages.
 """
@@ -16,6 +17,7 @@ import html
 import json
 import pathlib
 import re
+import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).parent
@@ -145,8 +147,9 @@ def inline(t):
 
 
 def strip_meta(raw):
-    # the 音标/词性/CEFR/日期/掌握/类型/标签 bullets are rendered as chips, not body text
-    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握|类型|标签|关键词)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
+    # the 音标/词性/CEFR/日期/掌握/类型/标签 bullets are rendered as chips, not body text; 请求 is the
+    # 待补充 item the entry was written for (用户 2026-11-18), never shown
+    return re.sub(r"^(?:-\s*(?:音标|词性|CEFR|日期|掌握|类型|标签|关键词|请求)[:：][^\n]*\n?)+", "", raw.strip(), flags=re.M).strip()
 
 
 def parse_blocks(raw):
@@ -391,6 +394,14 @@ def build_entries(src, own=None, essays=False):
             "blocks": blocks,
             "mistakes": extract_mistakes(e["anchor"], blocks),
         }
+        # 待补充 (用户 2026-11-18): `- 请求:<id>` = the item I added on the go that this entry answers;
+        # the page and the app drop that item once an entry carries its id. Only set when there is one,
+        # so every other entry's hash stays as it was (the app would mark them all 已更新)
+        req = meta_field(e["raw"], "请求")
+        if req:
+            if not re.fullmatch(r"[a-z0-9]{6,24}", req):
+                raise SystemExit(f"{e['anchor']}: 请求 '{req}' is not a request id (6–24 of a–z 0–9)")
+            entry["req"] = req
         # its mistakes are tagged in the sentence entries it links to; tagged here too, the 错题本 lists them twice
         if essays and entry["mistakes"]:
             raise SystemExit(f"{e['anchor']}: a 文章 carries no ❌ / ⚠️ [类型] tags — they belong in its sentence entries")
@@ -492,6 +503,8 @@ def page_data(entries, order=GROUP_ORDER):
     for e in entries:
         item = {k: e[k] for k in ("anchor", "no", "title", "ipa", "pos", "cefr", "date", "tags", "gloss", "mastery")}
         item["original"] = original_sentence(e["blocks"])
+        if e.get("req"):
+            item["req"] = e["req"]
         if e["level"] == "SELFTEST":
             item["answer"] = quote_after(e["blocks"], "答案")
         else:
@@ -575,11 +588,35 @@ def theme_css(theme):
     return f"<style>\n{css}</style>\n" if css else ""
 
 
+def list_pending():
+    """待补充 (用户 2026-11-18): the items added with 新建 that no entry answers yet.
+
+    They live in progress.json on the `progress` branch (fetched here, never written); an entry
+    answers one with a `- 请求:<id>` line in vocabulary.md.
+    """
+    subprocess.run(["git", "fetch", "-q", "origin", "progress"], cwd=ROOT, check=True)
+    raw = subprocess.run(["git", "show", "origin/progress:progress.json"], cwd=ROOT,
+                         capture_output=True, text=True, check=True).stdout
+    reqs = json.loads(raw).get("requests", {})
+    done = set(re.findall(r"^-\s*请求[:：]\s*(\S+)", (ROOT / "vocabulary.md").read_text(encoding="utf-8"), re.M))
+    items = sorted(((i, r) for i, r in reqs.items() if r.get("w") and not r.get("del") and i not in done),
+                   key=lambda x: x[1].get("c", 0))
+    for i, r in items:
+        day = datetime.datetime.fromtimestamp(r.get("c", 0) / 1000).strftime("%Y-%m-%d %H:%M")
+        print(f"{i}  {day}  {r['w']}")
+        for line in (r.get("note") or "").splitlines():
+            print(f"    {line}")
+    print(f"{len(items)} pending" + (f" ({len(done & set(reqs))} answered in vocabulary.md)" if done & set(reqs) else ""))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--artifact", metavar="PATH", help="also write the body-only variant here")
     ap.add_argument("--src", metavar="DIR", help="the notebook to build (default: the repo root)")
+    ap.add_argument("--pending", action="store_true", help="list the 待补充 items no entry answers yet (fetches origin/progress)")
     args = ap.parse_args()
+    if args.pending:
+        return list_pending()
 
     src = (ROOT / args.src).resolve() if args.src else ROOT
     site = dict(SITE)
@@ -599,11 +636,16 @@ def main():
         if not re.fullmatch(r"[A-Z]+", g.get("key", "")) or g["key"] in GROUP_ORDER or g.get("swatch") not in swatches or not g.get("kind"):
             raise SystemExit(f"{src / 'site.json'}: group {g} needs a kind, a new key in A–Z and a swatch from {sorted(swatches)}")
     own = {g["kind"]: g["key"] for g in site["groups"]}
+    # 待补充 (用户 2026-11-18): the 新建 button and the pending items; only my notebook by default
+    site["requests"] = site.get("requests", src == ROOT)
     entries = build_entries((src / "vocabulary.md").read_text(encoding="utf-8"), own)
     essay_md = src / "essays.md"
     if essay_md.exists():
         entries += build_entries(essay_md.read_text(encoding="utf-8"), own, essays=True)
     dup = {e["anchor"] for e in entries if sum(x["anchor"] == e["anchor"] for x in entries) > 1}
+    reqs = [e["req"] for e in entries if e.get("req")]
+    if len(reqs) != len(set(reqs)):
+        raise SystemExit(f"one 请求 id on two entries: {sorted({r for r in reqs if reqs.count(r) > 1})}")
     if dup:
         raise SystemExit(f"anchors used twice across vocabulary.md and essays.md: {sorted(dup)}")
     read_md = src / "readlist.md"
@@ -631,14 +673,14 @@ def main():
     meta = {
         "schema": SCHEMA,
         # reads count too, so a new 阅读 item alone makes the app fetch data.json again
-        "hash": digest([e["hash"] for e in entries] + [r["hash"] for r in reads]),
+        "hash": digest([e["hash"] for e in entries] + [r["hash"] for r in reads] + [e["hash"] for e in practice_entries]),
         "count": len(entries),
         "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     (src / "meta.json").write_text(json.dumps(meta, ensure_ascii=False), encoding="utf-8")
     (src / "data.json").write_text(
         json.dumps({**meta, "mistakeTypes": [{"key": k, "desc": d, "check": c} for k, d, c in MISTAKE_TYPES],
-                    "entries": entries, "reads": reads}, ensure_ascii=False), encoding="utf-8")
+                    "entries": entries, "reads": reads, **({"practices": practice_entries} if practice_entries else {})}, ensure_ascii=False), encoding="utf-8")
 
     if args.artifact:
         pathlib.Path(args.artifact).write_text(
@@ -650,7 +692,7 @@ def main():
           + ", ".join(f"{g['type']}:{len(g['items'])}" for g in mistakes))
     print(f"{len(reads)} reads (readlist.md)")
     if src != ROOT:
-        print(f"-> {(src / 'index.html').relative_to(ROOT)}")
+        print(f"-> {(src / 'index.html').relative_to(ROOT) if src.is_relative_to(ROOT) else src / 'index.html'}")
 
 
 if __name__ == "__main__":
