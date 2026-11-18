@@ -96,20 +96,20 @@
    "t": 1794562887023
   },
   "s-ing-subject": {
-   "due": 20775,
+   "due": 20778,
    "ease": 1.3,
-   "interval": 1,
+   "interval": 3,
    "lapses": 3,
-   "reps": 1,
-   "t": 1794915918699
+   "reps": 2,
+   "t": 1795005797981
   },
   "s-plan-is-to": {
-   "due": 20775,
+   "due": 20778,
    "ease": 1.42,
-   "interval": 1,
+   "interval": 3,
    "lapses": 2,
-   "reps": 1,
-   "t": 1794915934976
+   "reps": 2,
+   "t": 1795005814827
   },
   "s-realistic-plan": {
    "due": 20778,
@@ -222,6 +222,38 @@
    "lapses": 0,
    "reps": 3,
    "t": 1794562996390
+  },
+  "s-have-to-past": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20776,
+   "t": 1795005831042
+  },
+  "s-did-have-base": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20776,
+   "t": 1795005846223
+  },
+  "s-question-same-person": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20776,
+   "t": 1795005868421
+  },
+  "s-i-dont-have-to": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20776,
+   "t": 1795005892051
   }
  },
  "newDay": 0,
@@ -1014,6 +1046,13 @@
     "peek": false,
     "via": "review",
     "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1795005797980,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
    }
   ],
   "s-plan-is-to": [
@@ -1180,6 +1219,20 @@
    },
    {
     "t": 1794915934975,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The goal which our class needs to reach this month is to read ten English books."
+   },
+   {
+    "t": 1795005807416,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1795005814826,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -2724,6 +2777,20 @@
     "peek": false,
     "via": "entry",
     "ex": "We couldn't find our way back to the campsite. We had to ask a local family for help."
+   },
+   {
+    "t": 1795005824123,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We couldn't repair the car ourselves. We had to take it to a garage."
+   },
+   {
+    "t": 1795005831042,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We couldn't find our way back to the campsite. We had to ask a local family for help."
    }
   ],
   "s-did-have-base": [
@@ -2754,6 +2821,20 @@
     "peek": false,
     "via": "entry",
     "ex": "How much did she have to pay for the tickets to the school concert?"
+   },
+   {
+    "t": 1795005840522,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How much did he have to pay?"
+   },
+   {
+    "t": 1795005846223,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How much did she have to pay for the tickets to the school concert?"
    }
   ],
   "s-question-same-person": [
@@ -2769,6 +2850,20 @@
     "ok": true,
     "peek": false,
     "via": "entry",
+    "ex": "What time does she have to arrive at the sports centre for the swimming lesson?"
+   },
+   {
+    "t": 1795005859802,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "What time does he have to leave?"
+   },
+   {
+    "t": 1795005868420,
+    "ok": true,
+    "peek": false,
+    "via": "review",
     "ex": "What time does she have to arrive at the sports centre for the swimming lesson?"
    }
   ],
@@ -2800,11 +2895,50 @@
     "peek": false,
     "via": "entry",
     "ex": "I can spend more time reading tomorrow evening because I don't have to finish any homework."
+   },
+   {
+    "t": 1795005883495,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I can stay in bed tomorrow morning because I don't have to go to work."
+   },
+   {
+    "t": 1795005892050,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I can spend more time reading tomorrow evening because I don't have to finish any homework."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "s-i-dont-have-to",
+   "t": 1795005869075,
+   "via": "review"
+  },
+  {
+   "a": "s-question-same-person",
+   "t": 1795005846953,
+   "via": "review"
+  },
+  {
+   "a": "s-did-have-base",
+   "t": 1795005832000,
+   "via": "review"
+  },
+  {
+   "a": "s-have-to-past",
+   "t": 1795005816641,
+   "via": "review"
+  },
+  {
+   "a": "s-plan-is-to",
+   "t": 1795005800359,
+   "via": "review"
+  },
   {
    "a": "s-ing-subject",
    "t": 1795005767413,
@@ -2816,18 +2950,8 @@
    "via": "review"
   },
   {
-   "a": "s-i-dont-have-to",
-   "t": 1794979895823,
-   "via": "entry"
-  },
-  {
    "a": "p-have-to-questions",
    "t": 1794916514472,
-   "via": "entry"
-  },
-  {
-   "a": "s-have-to-past",
-   "t": 1794916049795,
    "via": "entry"
   },
   {
@@ -2843,11 +2967,6 @@
   {
    "a": "c-be-displaced-by",
    "t": 1794915935545,
-   "via": "review"
-  },
-  {
-   "a": "s-plan-is-to",
-   "t": 1794915919231,
    "via": "review"
   },
   {
