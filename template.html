@@ -515,7 +515,7 @@ button.tg:hover,button.tg:focus-visible{outline:2px solid var(--accent);outline-
 .sheet.full h2{font-size:calc(17px * var(--fs));margin:0 0 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-wrap:unset}
 /* ⤢ / ⤡ animate (用户 2026-10-24): morph() puts .morph on the scrim just for the switch, so resizing
    the window or folding the list doesn't animate the sheet */
-.scrim.morph{transition:padding .3s var(--morph-ease),left .3s var(--morph-ease),background-color .3s}
+.scrim.morph{transition:padding .3s var(--morph-ease),left .3s var(--morph-ease),top .3s var(--morph-ease),background-color .3s}
 .scrim.morph .sheet{transition:width .3s var(--morph-ease),max-width .3s var(--morph-ease),height .3s var(--morph-ease)}
 .scrim.morph .sheet h2{transition:font-size .3s var(--morph-ease),margin .3s var(--morph-ease)}
 .scrim.morph .sheet .mpill,.scrim.morph .sheet .lv{transition:max-height .3s var(--morph-ease),margin .3s var(--morph-ease),padding .3s var(--morph-ease),opacity .2s,visibility .3s}
@@ -1140,8 +1140,9 @@ body.running{overflow:hidden}
     background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;padding:20px 28px 24px;overflow:hidden;display:block}
   .scrim.docked .sheet{width:100%;max-width:860px;height:100%;margin:0 auto;box-shadow:none;border:1px solid var(--rule);background:var(--chip)}
   .scrim.docked .sheet .lvl .node{background:var(--chip)}
-  /* docked and ⤢: over the list, the whole width right of the sidebar (which stays, folded or not) */
-  .scrim.docked:has(.sheet.full){left:var(--sidew);z-index:25;padding:12px 16px 16px;background:var(--ground)}
+  /* docked and ⤢: the whole window, over the header and the sidebar too (用户 2026-11-18: a real full
+     screen, like a Google Slides slideshow; it was the area right of the sidebar) */
+  .scrim.docked:has(.sheet.full){top:0;left:0;z-index:50;padding:12px 16px 16px;background:var(--ground)}
   .scrim.docked .sheet.full{max-width:100%;height:100%}
   .scrim.docked .sheet .lvl.passed .node{background:var(--card-ink);color:var(--chip)}
   /* 错题本: the types as a bar chart and the 自检 on the left, the mistakes on the right */
@@ -1944,7 +1945,9 @@ document.addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey || !liveBank) return;
   if (e.target instanceof Element && e.target.closest("input, textarea, select, [contenteditable]")) return;
   const b = liveBank.bankEl;
-  if (!b.isConnected || !(b.checkVisibility ? b.checkVisibility() : b.offsetParent)) return;
+  // the card's back face is visibility:hidden while the notes show, which a bare checkVisibility()
+  // doesn't see: the hidden chips took J / K and Esc from the notes (found 2026-11-18)
+  if (!b.isConnected || !(b.checkVisibility ? b.checkVisibility({ visibilityProperty: true }) : b.offsetParent) || getComputedStyle(b).visibility === "hidden") return;
   let used = false;
   if (e.key === "Backspace" || e.key === "Delete") used = liveBank.back();
   else if (e.key === "Tab" || e.key === "Enter" || e.key === " ") used = liveBank.take();
@@ -2327,7 +2330,7 @@ function goNext(){
 function open(it, level, i, list = [], o = {}){   // opened from a card — starts a fresh chain
   lastFocus = document.activeElement;
   trail = [];
-  cardFull = false;
+  if (!scrim) cardFull = false;               // J / K with ⤢ on (the list is covered) stay full
   openList = list; openAt = it.anchor;
   if (!o.auto) visit(it.anchor, "entry");     // not the one a wide screen opens by itself
   show(it, level, i, o);
@@ -2722,6 +2725,26 @@ ol{margin:0;padding-left:22pt}li{margin:0 0 10pt;break-inside:avoid}
   const links = [...doc.querySelectorAll("link")];
   Promise.all(links.map(l => l.sheet ? 0 : new Promise(r => { l.onload = l.onerror = r; }))).then(load);
 }
+// ⤢ 全屏 (用户 2026-11-18): a real full screen, like a Google Slides slideshow — the entry over the
+// whole window (header and sidebar too) and the browser's own full screen where it has one (the
+// whole page goes full screen, so menus and toasts still show). Leaving the browser's (Esc) leaves
+// ⤢; ⤡ and closing the entry leave both. J / K and 下一个 keep it. Without the API (iPhone
+// Safari) or when the browser says no, the entry still covers the whole window.
+const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+function setFull(on){
+  cardFull = on;
+  const sheet = scrim && scrim.querySelector(".sheet");
+  if (sheet) {
+    morph(scrim, () => sheet.classList.toggle("full", on));
+    sheet.querySelectorAll(".full").forEach(f => { f.innerHTML = on ? ICON_UNFULL : ICON_FULL; f.setAttribute("aria-label", on ? "退出全屏" : "全屏"); f.title = on ? "退出全屏  Esc" : "全屏"; });
+  }
+  const de = document.documentElement;
+  try {
+    if (on && !fsEl()) { const go = de.requestFullscreen || de.webkitRequestFullscreen; if (go) Promise.resolve(go.call(de)).catch(() => {}); }
+    if (!on && fsEl()) { const out = document.exitFullscreen || document.webkitExitFullscreen; if (out) Promise.resolve(out.call(document)).catch(() => {}); }
+  } catch(e){}
+}
+["fullscreenchange", "webkitfullscreenchange"].forEach(ev => document.addEventListener(ev, () => { if (!fsEl() && cardFull) setFull(false); }));
 // ⤢ / ⤡: the transitions are on only while .morph is (see the CSS); none with reduced motion
 function morph(scrim, change){
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return change();
@@ -3113,11 +3136,7 @@ function show(it, level, i, o = {}){
     show(it, level, i, { from: was });
   }));
   wireTrack();
-  sheet.querySelectorAll(".full").forEach(b => b.addEventListener("click", () => {
-    cardFull = !cardFull;
-    morph(scrim, () => sheet.classList.toggle("full", cardFull));
-    sheet.querySelectorAll(".full").forEach(f => { f.innerHTML = cardFull ? ICON_UNFULL : ICON_FULL; f.setAttribute("aria-label", cardFull ? "退出全屏" : "全屏"); });
-  }));
+  sheet.querySelectorAll(".full").forEach(b => b.addEventListener("click", () => setFull(!cardFull)));
   sheet.querySelector("#to-quiz").addEventListener("click", () => {
     if (unseen) { flash(`还有 ${unseen.size} 页笔记没看(标了圆点),看完就能自测`); return; }
     reviewNow ? reviewOne({ it, level, i }) : flip(true);
@@ -3242,6 +3261,7 @@ function show(it, level, i, o = {}){
 }
 function close(){
   if (!scrim) return;
+  if (cardFull) setFull(false);
   stopReading();
   scrim.remove(); scrim = null; trail = []; openList = [];
   markSel("");
@@ -3249,7 +3269,7 @@ function close(){
   if (lastFocus) lastFocus.focus();
 }
 document.addEventListener("keydown", e => {
-  if (e.key === "Escape") { if (scrim) close(); else if (document.activeElement === q) { q.value = ""; render(); } }
+  if (e.key === "Escape") { if (scrim && cardFull) setFull(false); else if (scrim) close(); else if (document.activeElement === q) { q.value = ""; render(); } }
 });
 
 // ── 发送前自检: the mistake types, most frequent first, each with its question ──
