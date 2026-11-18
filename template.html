@@ -1783,11 +1783,17 @@ function render(){
   fgo.textContent = shown ? `显示 ${shown} 条` : "没有匹配的条目";
   if (fsumCount) fsumCount.textContent = `共 ${shown} 条`;
   document.getElementById("listn").textContent = `${shown} 条` + (pend ? ` · 待补充 ${pend}` : "");
-  // wide screens: the first entry in the list is open on the right when the view comes up
-  if (autoOpen && dockable() && !scrim) {
+  // wide screens: the first entry in the list is open on the right when the view comes up — also
+  // when a sidebar pick (分类, 学习阶段) leaves the docked entry out of the list: with a 文章 docked,
+  // 专项练习 kept showing the 文章 (用户 2026-11-18). An entry still in the list stays.
+  if (autoOpen && dockable()) {
     autoOpen = false;
-    const c = visibleCards()[0];
-    if (c) { const t = byAnchor[c.dataset.anchor]; open(t.it, t.level, t.i, listOf(c), { noFocus: true, auto: true }); }
+    const cards = visibleCards(), cur = scrim && scrim._entry && scrim._entry.it.anchor;
+    if (!scrim || !cards.some(c => c.dataset.anchor === cur)) {
+      const c = cards[0];
+      if (c) { const t = byAnchor[c.dataset.anchor]; open(t.it, t.level, t.i, listOf(c), { noFocus: true, auto: true }); }
+      else if (scrim) close();
+    }
   }
 }
 q.addEventListener("input", render);
@@ -2955,7 +2961,7 @@ function decorateNotes(root, it, ex, go, onAll){
 // [o.ex]: which example to ask (再试一次 keeps it, 下一句 adds one); by default the next by attempt count.
 // [o.step]: 2 = the sentence's ② 打字, with [o.bankOk] how its ① 选词 went.
 function show(it, level, i, o = {}){
-  if (level === "PRACTICE") return showSpecialPractice(it, level, i);
+  if (level === "PRACTICE") return showSpecialPractice(it, level, i, "home", o);
   stopReading();
   if (scrim) scrim.remove();
   scrim = document.createElement("div");

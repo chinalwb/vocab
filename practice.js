@@ -87,7 +87,8 @@ function specialResultsHtml(it,run){
     `<p>这次完成 ${attempts.length} 题。刚看完答案不等于已经掌握，隔几天换个时间再试。</p><div class="sp-actions"><button class="btn" type="button" data-sp="review"${specialSummary(it).review.length?"":" disabled"}>重练错题与提示题</button><button class="btn" type="button" data-sp="home">返回练习首页</button></div>`+
     `<div class="sp-results">${attempts.map((a,i)=>{const q=p.questions.find(q=>q.id===a.q);return `<details><summary>第 ${i+1} 题 · ${a.ok?(a.help?"提示后答对":"独立答对"):"需要订正"}</summary><p>${esc(q.prompt).replace(/\n/g,"<br>")}</p><p>我的答案：${esc(a.answer)}</p><p>参考答案：${esc(q.answers[0])}</p><p>${esc(q.explanation)}</p></details>`;}).join("")}</div>`;
 }
-function showSpecialPractice(it,level,i,page="home"){
+// [o.noFocus]: opened on its own (the first of the list, docked) — don't take the focus, like show()
+function showSpecialPractice(it,level,i,page="home",o={}){
   stopReading();if(scrim)scrim.remove();
   scrim=document.createElement("div");const docked=dockable()&&!document.body.classList.contains("running");
   scrim.className="scrim"+(docked?" docked":"");scrim._entry={it,level,i};
@@ -114,7 +115,7 @@ function showSpecialPractice(it,level,i,page="home"){
   }
   const feedback=sheet.querySelector(".sp-feedback h3");
   if(feedback){feedback.tabIndex=-1;feedback.focus({preventScroll:true});feedback.scrollIntoView({block:"nearest"});}
-  else sheet.querySelector(".x").focus({preventScroll:true});
+  else if(!o.noFocus)sheet.querySelector(".x").focus({preventScroll:true});
   sheet.addEventListener("click",e=>{
     const b=e.target.closest("[data-sp]");if(!b)return;
     const action=b.dataset.sp;
