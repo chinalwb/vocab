@@ -2785,6 +2785,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-tell-describe",
+   "t": 1794979919421,
+   "via": "entry"
+  },
+  {
    "a": "s-i-dont-have-to",
    "t": 1794979895823,
    "via": "entry"
@@ -2822,11 +2827,6 @@
   {
    "a": "s-ing-subject",
    "t": 1794915902499,
-   "via": "review"
-  },
-  {
-   "a": "s-tell-describe",
-   "t": 1794915883362,
    "via": "review"
   },
   {
