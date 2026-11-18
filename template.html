@@ -196,6 +196,29 @@ body{
 .syncdot.ok i{background:var(--st-done)}.syncdot.err i{background:var(--err)}.syncdot.busy i{background:var(--accent)}
 .today:focus-visible,.syncdot:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 @media (max-width:639px){ .today,.syncdot{display:none} }
+/* 新建 (用户 2026-11-18): a word met away from the desk, 待补充 until Claude writes the entry */
+.newreq{font:inherit;font-size:calc(13.5px * var(--fs));font-weight:600;height:34px;padding:0 14px 0 10px;border-radius:999px;border:1px solid var(--rule);background:var(--chip);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.newreq svg{width:18px;height:18px;flex:none}
+.newreq:hover{border-color:var(--ink-3)}
+.newreq:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (max-width:639px){ .newreq{width:32px;height:32px;padding:0;justify-content:center}.newreq span{display:none} }
+.rq-sect .sect-head .badge{background:transparent;color:var(--ink);border:1.5px dashed var(--ink-3)}
+.card.pend{background:var(--chip);color:var(--ink);border:1.5px dashed color-mix(in srgb,var(--ink) 30%,transparent);box-shadow:none}
+.card.pend .gloss{color:var(--ink-2);white-space:pre-line}
+.card.pend .foot{border-top-color:var(--rule);color:var(--ink-3)}
+.rq{position:fixed;z-index:71;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;max-height:calc(100dvh - 24px);overflow-y:auto;box-sizing:border-box;
+  background:var(--ground);color:var(--ink);border-radius:20px 20px 0 0;box-shadow:var(--shadow-lift);padding:20px 20px calc(14px + env(safe-area-inset-bottom,0px))}
+@media (min-width:640px){ .rq{bottom:auto;top:12vh;border-radius:20px;padding-bottom:18px} }
+.rq h3{font-family:var(--font);font-size:calc(19px * var(--fs));margin:0 0 4px}
+.rq label{display:block;font-size:calc(13px * var(--fs));font-weight:600;color:var(--ink-2);margin:14px 0 6px}
+.rq label small{font-weight:400;color:var(--ink-3);margin-left:6px}
+.rq input,.rq textarea{display:block;width:100%;box-sizing:border-box;font:inherit;font-size:max(16px,calc(15px * var(--fs)));color:var(--ink);background:var(--chip);border:1px solid var(--rule);border-radius:12px;padding:10px 12px}
+.rq textarea{min-height:7.5em;resize:vertical;line-height:1.55}
+.rq input:focus,.rq textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.rq .cnt{font-size:calc(12px * var(--fs));color:var(--ink-3);text-align:right;margin:4px 2px 0;font-variant-numeric:tabular-nums}
+.rq .hint{font-size:calc(12.5px * var(--fs));color:var(--ink-3);line-height:1.55;margin:8px 0 0}
+.rq-row{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:16px}
+.rq-row .del{margin-right:auto;color:var(--err)}
 /* off 浏览 the search row is hidden: the tab rule is then the header's only line */
 .top:has(#tools[hidden]){border-bottom-color:transparent;padding-bottom:0}
 .top:has(#tools[hidden]) .tabs{margin-bottom:0}
@@ -1116,6 +1139,8 @@ body.running{overflow:hidden}
   .col.ents .card .hw{font-size:calc(16px * var(--fs));margin:0 0 1px}
   .col.ents .card .hw::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--swd, var(--sw));border:1px solid var(--card-edge);margin-right:8px;vertical-align:1px}
   .col.ents .card .meta{display:none}
+  .col.ents .card.pend{background:transparent;border:1.5px dashed color-mix(in srgb,var(--ink) 22%,transparent)}
+  .col.ents .card.pend .hw::before{background:transparent;border:1.5px dashed var(--ink-3)}
   .col.ents .card .gloss{-webkit-line-clamp:1;font-size:calc(13px * var(--fs));color:var(--ink-2)}
   .col.ents .card .foot{border-top:0;padding-top:0;margin-top:3px;color:var(--ink-3)}
   .scrim.docked{position:fixed;z-index:15;top:calc(var(--toph,64px) + env(safe-area-inset-top,0px));left:calc(var(--sidew) + var(--listw));right:0;bottom:0;
@@ -1154,6 +1179,7 @@ body.running{overflow:hidden}
       <span class="tally" id="tally"></span>
     </div>
     <div class="hx">
+      <button class="newreq" id="newreq" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>新建</span></button>
       <button class="today" id="today" type="button"></button>
       <button class="syncdot" id="syncdot" type="button"><i aria-hidden="true"></i><span></span></button>
       <button class="theme" id="theme" type="button"></button>
@@ -1498,6 +1524,93 @@ const byAnchor = {};
 // escape text for HTML — defined before the cards are built, which need it for tags
 const esc = t => t.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
+// ── 待补充 (用户 2026-11-18): a word or phrase I meet away from my desk. 新建 adds it here (required)
+// with a note (optional, ≤ 600), it lists on top of 浏览 and syncs; back at the Mac, Claude reads
+// progress.json, writes one entry per item with a `- 请求:<id>` line, and once that entry is
+// published (it.req) the item leaves the list. {id: {w, note, c: created, t: last change, del}};
+// a delete is kept (del: true) so 同步 carries it too, newest wins per item. App: review/RequestStore.kt.
+let requests = {};
+try { requests = JSON.parse(store.get("vk.requests", "{}")) || {}; } catch(e){}
+const REQ_W = 200, REQ_NOTE = 600;
+const answered = new Set(DATA.flatMap(g => g.items.map(it => it.req).filter(Boolean)));
+const pendingReqs = () => Object.entries(requests).filter(([id, r]) => r.w && !r.del && !answered.has(id))
+  .sort((a, b) => b[1].c - a[1].c);
+const ymd = t => { const d = new Date(t); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+function putReq(id, r){
+  requests[id] = { w: r.w, note: r.note || "", c: r.c, t: Date.now(), del: !!r.del };
+  store.set("vk.requests", JSON.stringify(requests));
+  render();
+  syncNow();                                // on the go: up right away, not in 15 s
+}
+const rqSect = document.createElement("section");
+rqSect.className = "sect rq-sect"; rqSect.hidden = true;
+rqSect.innerHTML = `<div class="sect-head"><span class="badge">待补充</span><span class="nm">随手记下的词,等 Claude 补全</span><span class="ct"></span></div><div class="grid"></div>`;
+const rqGrid = rqSect.lastChild;
+rqGrid.addEventListener("click", e => { const c = e.target.closest(".card[data-rq]"); if (c) reqSheet(c.dataset.rq); });
+if (VK.requests) board.append(rqSect);      // before the sections: on top of the list
+// the pending items that fit the list as filtered: they are no type and no stage yet, so any
+// narrowing beyond 学习中 hides them; a search looks in the word and the note
+function paintReqs(term, numQ){
+  const ok = VK.requests && !numQ && typeF === "ALL" && (!stageF || stageF === "learn") && !writeOnly && !favOnly && !noteOnly;
+  const list = ok ? pendingReqs().filter(([, r]) => !term || (r.w + "\n" + r.note).toLowerCase().includes(term)) : [];
+  rqSect.hidden = !list.length;
+  rqSect.querySelector(".ct").textContent = list.length + " 条";
+  rqGrid.innerHTML = list.map(([id, r]) => `<button class="card pend" type="button" data-rq="${id}"><h3 class="hw">${esc(r.w)}</h3>` +
+    (r.note ? `<p class="gloss">${esc(r.note)}</p>` : "") +
+    `<div class="foot"><span>等 Claude 补全</span><span class="dt">${ymd(r.c)}</span></div></button>`).join("");
+  return list.length;
+}
+// 新建 (no id) or one pending item (its id): the word, the note, 提交 / 保存, and 删除 for an item
+function reqSheet(id){
+  const r = id && requests[id];
+  const back = document.createElement("div"), m = document.createElement("form");
+  back.className = "exm-back"; m.className = "rq"; m.noValidate = true;
+  m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); m.setAttribute("aria-labelledby", "rq-t");
+  const where = ghToken() ? "会原样同步到 GitHub 的公开仓库。"
+    : "还没连接同步:先存在这个浏览器里,到「练习与同步」连上 GitHub 后才会上传,Claude 才看得到。";
+  m.innerHTML = `<h3 id="rq-t">${r ? "待补充" : "新建条目"}</h3>` +
+    `<label for="rq-w">想学的词或短语</label><input id="rq-w" maxlength="${REQ_W}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="next" placeholder="比如 get over sth">` +
+    `<label for="rq-n">补充<small>可选:在哪儿看到的原句、想问什么</small></label><textarea id="rq-n" maxlength="${REQ_NOTE}"></textarea>` +
+    `<p class="cnt"></p>` +
+    `<p class="hint">${r ? `${fmtWhen(r.c)} 记下的。` : "提交后放在「浏览」最上面的「待补充」里。"}回到电脑让 Claude 补全,发布后换成正式条目。${where}</p>` +
+    `<div class="rq-row">${r ? '<button type="button" class="linkish del">删除</button>' : ""}` +
+    `<button type="button" class="btn ghost cancel">取消</button><button type="submit" class="btn">${r ? "保存" : "提交"}</button></div>`;
+  const w = m.querySelector("#rq-w"), n = m.querySelector("#rq-n"), cnt = m.querySelector(".cnt"), ok = m.querySelector("[type=submit]");
+  w.value = r ? r.w : ""; n.value = r ? r.note : "";
+  const paint = () => { cnt.textContent = `${n.value.length} / ${REQ_NOTE}`; ok.disabled = !w.value.trim(); };
+  w.addEventListener("input", paint); n.addEventListener("input", paint); paint();
+  w.addEventListener("keydown", e => { if (e.key === "Enter" && !e.isComposing && !e.metaKey && !e.ctrlKey) { e.preventDefault(); n.focus(); } });
+  const done = () => { back.remove(); m.remove(); document.removeEventListener("keydown", keys, true); };
+  const keys = e => {
+    if (e.key === "Escape") { e.stopPropagation(); done(); }
+    else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); e.stopPropagation(); m.requestSubmit(); }
+  };
+  document.addEventListener("keydown", keys, true);
+  back.addEventListener("click", done);
+  m.querySelector(".cancel").addEventListener("click", done);
+  m.addEventListener("submit", e => {
+    e.preventDefault();
+    const word = w.value.trim().replace(/\s+/g, " "), note = n.value.trim();
+    if (!word) { w.focus(); return; }
+    done();
+    if (r && word === r.w && note === r.note) return;
+    putReq(id || Date.now().toString(36) + Math.random().toString(36).slice(2, 6), { w: word, note, c: r ? r.c : Date.now() });
+    flash(r ? "已保存" : "已加到「待补充」");
+  });
+  const del = m.querySelector(".del");
+  if (del) del.addEventListener("click", () => {
+    if (!del.dataset.sure) { del.dataset.sure = "1"; del.textContent = "再点一次删除"; return; }
+    done(); putReq(id, { ...r, del: true }); flash("已删除");
+  });
+  document.body.append(back, m);
+  (r ? n : w).focus();
+}
+const newReqBtn = document.getElementById("newreq");
+newReqBtn.hidden = !VK.requests;
+newReqBtn.title = "新建条目:先记下来,回到电脑让 Claude 补全  N";
+newReqBtn.setAttribute("aria-label", "新建条目");
+newReqBtn.addEventListener("click", () => reqSheet());
+
 // build sections once
 const sections = DATA.map(g => {
   const sec = document.createElement("section");
@@ -1672,10 +1785,11 @@ function render(){
     s.el.querySelector(".ct").textContent = n + " 条";
     shown += n;
   });
-  empty.hidden = shown > 0;
+  const pend = paintReqs(term, numQ);
+  empty.hidden = shown + pend > 0;
   fgo.textContent = shown ? `显示 ${shown} 条` : "没有匹配的条目";
   if (fsumCount) fsumCount.textContent = `共 ${shown} 条`;
-  document.getElementById("listn").textContent = `${shown} 条`;
+  document.getElementById("listn").textContent = `${shown} 条` + (pend ? ` · 待补充 ${pend}` : "");
   // wide screens: the first entry in the list is open on the right when the view comes up
   if (autoOpen && dockable() && !scrim) {
     autoOpen = false;
@@ -3355,7 +3469,9 @@ const stable = v => JSON.stringify(v, (k, x) => x && typeof x === "object" && !A
   ? Object.fromEntries(Object.keys(x).sort().map(k2 => [k2, x[k2]])) : x);
 const normProgress = r => ({ v: 1, stages: r.stages || {}, cards: r.cards || {}, newDay: r.newDay || 0,
   newToday: r.newToday || 0, resetAt: r.resetAt || 0, attempts: r.attempts || {}, favs: r.favs || {},
-  history: r.history || [], historyClearAt: r.historyClearAt || 0, readsHidden: r.readsHidden || {}, quizOut: r.quizOut || {}, notes: r.notes || {} });
+  history: r.history || [], historyClearAt: r.historyClearAt || 0, readsHidden: r.readsHidden || {}, quizOut: r.quizOut || {}, notes: r.notes || {},
+  // 待补充 only in my notebook: a student's file (and the iPad that syncs it) never gets the field
+  ...(VK.requests ? { requests: r.requests || {} } : {}) });
 // 阅读 items removed from the list in the app ({anchor: {on, t}}, 用户 2026-10-23). The page has no
 // 阅读 yet; it only carries them through 同步 so a sync from here doesn't drop them.
 let readsHidden = {};
@@ -3364,7 +3480,7 @@ function progressOut(){
   const st = {}, at = {};
   for (const a in stages) st[a] = { s: stages[a], t: stageT[a] || 0 };
   for (const a in stLog) at[a] = stLog[a].map(x => ({ t: x.t, ok: x.ok, peek: !x.text, via: x.via, ex: x.ex || "" }));
-  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs, history: hist, historyClearAt: histClearAt, readsHidden, quizOut, notes: myNotes });
+  return normProgress({ stages: st, cards: rev.cards, newDay: rev.newDay, newToday: rev.newToday, resetAt: rev.resetAt, attempts: at, favs, history: hist, historyClearAt: histClearAt, readsHidden, quizOut, notes: myNotes, requests });
 }
 // Newest wins per entry (per sentence for ⭐); a reset drops every card graded before it; 自测 attempts are a union.
 function applyRemote(r){
@@ -3406,6 +3522,11 @@ function applyRemote(r){
   store.set("vk.quizout", JSON.stringify(quizOut));
   for (const a in r.notes) if (r.notes[a].t > ((myNotes[a] || {}).t || 0)) myNotes[a] = { text: String(r.notes[a].text || ""), t: r.notes[a].t };
   store.set("vk.notes", JSON.stringify(myNotes));
+  for (const id in r.requests) {
+    const o = r.requests[id];
+    if (o.t > ((requests[id] || {}).t || 0)) requests[id] = { w: String(o.w || ""), note: String(o.note || ""), c: o.c || o.t, t: o.t, del: !!o.del };
+  }
+  store.set("vk.requests", JSON.stringify(requests));
   histClearAt = Math.max(histClearAt, r.historyClearAt);
   hist = trimHist([...hist, ...r.history]);
   saveHist();
@@ -3997,6 +4118,7 @@ document.addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey || document.body.classList.contains("running")) return;
   if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable]")) return;
   if (e.key === "/") { e.preventDefault(); q.focus(); return; }
+  if (VK.requests && (e.key === "n" || e.key === "N") && !document.querySelector(".rq")) { e.preventDefault(); reqSheet(); return; }
   if (deskMQ.matches && e.key === "[") { togglePanel("vk.sideOff"); return; }
   if (dockable() && e.key === "]") { togglePanel("vk.listOff"); return; }
   if (!dockable() || (e.key !== "j" && e.key !== "k")) return;

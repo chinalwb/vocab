@@ -8,6 +8,7 @@ import io.github.chinalwb.vocab.update.AppUpdateState
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.DropdownMenu
@@ -121,6 +122,7 @@ import io.github.chinalwb.vocab.ui.LocalNoted
 import io.github.chinalwb.vocab.ui.LocalOnNote
 import io.github.chinalwb.vocab.ui.LocalStarred
 import io.github.chinalwb.vocab.review.written
+import io.github.chinalwb.vocab.review.pending
 import io.github.chinalwb.vocab.review.starred
 import io.github.chinalwb.vocab.review.removed
 import io.github.chinalwb.vocab.ui.EntryScreen
@@ -317,6 +319,23 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
     val appUpdate by vm.appUpdate.collectAsStateWithLifecycle()
     // the browse page's 筛选与排序 sheet opens from the top bar
     var filterOpen by rememberSaveable { mutableStateOf(false) }
+    // 待补充 (用户 2026-11-18): the 新建 sheet — null = closed, "" = a new item, else the item's id
+    var requestOpen by rememberSaveable { mutableStateOf<String?>(null) }
+    val requests by vm.requests.collectAsStateWithLifecycle()
+    val sync by vm.syncStatus.collectAsStateWithLifecycle()
+    val answered = remember(lib.data) { lib.data?.entries.orEmpty().mapNotNull { it.req.ifEmpty { null } }.toSet() }
+    val pending = remember(requests, answered) { requests.pending(answered) }
+    requestOpen?.let { id ->
+        val item = requests[id]?.takeIf { !it.del }
+        if (id.isNotEmpty() && item == null) LaunchedEffect(id) { requestOpen = null }   // deleted elsewhere (同步) while open
+        else io.github.chinalwb.vocab.ui.RequestSheet(
+            item = item,
+            connected = sync.connected,
+            onSave = { w, n -> vm.saveRequest(id.ifEmpty { null }, w, n); requestOpen = null },
+            onDelete = { vm.deleteRequest(id); requestOpen = null },
+            onDismiss = { requestOpen = null },
+        )
+    }
     var activeFilters by remember { mutableIntStateOf(0) }
     var menuOpen by remember { mutableStateOf(false) }
     var tab by rememberSaveable { mutableIntStateOf(0) }
@@ -424,6 +443,7 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 },
                 actions = {
                     Row(Modifier.graphicsLayer(barFade)) {
+                        if (tab == 0) IconButton(onClick = { requestOpen = "" }) { Icon(Icons.Default.Add, "新建条目") }
                         if (tab == 0) IconButton(onClick = { insets.show(WindowInsetsCompat.Type.statusBars()); nav.navigate("search") }) {
                             Icon(Icons.Default.Search, "搜索")
                         }
@@ -562,6 +582,8 @@ private fun Home(vm: VocabViewModel, nav: NavHostController) {
                 sheetOpen = filterOpen,
                 onSheetOpen = { filterOpen = it },
                 onActiveCount = { activeFilters = it },
+                pending = pending,
+                onPending = { requestOpen = it },
             )
         } else {
             val stage = when (page) { 1 -> Stage.Review; 2 -> Stage.Test; else -> Stage.Done }
