@@ -3,6 +3,12 @@
 换电脑接着做之前先看这里:每次长会话改了什么、现在的版本、没做完的事。最新的在最上面。细节规则以 `CLAUDE.md` 为准。
 
 ---
+## 2026-11-18:IELTS 原文的 ▶ 换成 🔊 · App 2.35
+
+- IELTS 条目「原文」页的原文和「表达卡片」里「原文中的用法」那句,原来是蓝色实心 ▶、贴在最右边;用户说它和 🔊 一样都是朗读,换成和别处一样的 🔊,紧跟在句子后面。网页去掉了 `originalPlayBtn()` 和 `.original-play` / `.ielts-original` 样式,改用 `spkBtn()`;App 去掉 `OriginalPlayButton`,改用 `SpeakButton`。
+- 验证:无头 Chrome 打开 oldest children 那条,两个页签都是 🔊,页面上没有 ▶;`python3 -m unittest` 8 项通过;App `compileDebugKotlin` 通过,没在真机上看。
+
+---
 ## 2026-11-18:待补充(随手新建)· App 2.34
 
 - **为什么**:不在电脑前遇到生词时没法马上问 Claude。现在网页顶栏「＋ 新建」、App 浏览页顶栏 ＋,填「想学的词或短语」(必填)和「补充」(可选,≤600 字),列表最上面出现一张虚线框的「待补充」卡片,立即同步到 `progress.json` 的 `requests`。

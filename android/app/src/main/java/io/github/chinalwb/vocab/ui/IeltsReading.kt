@@ -1,8 +1,6 @@
 package io.github.chinalwb.vocab.ui
 
 import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -74,7 +72,7 @@ internal fun IeltsSection(
                     }
                     append(text.substring(last))
                 }, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f).padding(vertical = 10.dp))
-                OriginalPlayButton(text)
+                SpeakButton(text, Modifier.padding(top = 10.dp))
                 }
             } else if (block is Block.Para) {
                 Surface(shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.primary.copy(alpha = .08f)) {
@@ -118,7 +116,7 @@ internal fun IeltsSection(
         } else {
             Row { Text(c.term, Modifier.weight(1f), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold); SpeakButton(c.term) }
             Text(c.meaning)
-            if (c.original.isNotBlank()) { Text("原文中的用法", style = MaterialTheme.typography.labelMedium); Row(Modifier.fillMaxWidth()) { Text(c.original, Modifier.weight(1f)); OriginalPlayButton(c.original) } }
+            if (c.original.isNotBlank()) { Text("原文中的用法", style = MaterialTheme.typography.labelMedium); Row { Text(c.original, Modifier.weight(1f)); SpeakButton(c.original) } }
             if (c.example.isNotBlank()) {
                 Text("新语境 · 自拟例句", style = MaterialTheme.typography.labelMedium)
                 Row { Text(c.example, Modifier.weight(1f)); SpeakButton(c.example) }
@@ -144,13 +142,4 @@ internal fun IeltsSection(
         TextButton(enabled = at < visible.lastIndex, onClick = { onIndex(visible[at + 1].index) }) { Text("下一张 →") }
     }
     Text("先回忆，再揭晓；换一天再试，并用自己的话造句。选择仅保存在此设备；独立学习条目沿用现有复习流程。", style = MaterialTheme.typography.bodySmall)
-}
-
-
-@Composable
-private fun OriginalPlayButton(text: String) {
-    val speech = speaker()
-    IconButton(onClick = { speech.speak(text) }) {
-        Icon(Icons.Filled.PlayArrow, contentDescription = "播放原文", tint = MaterialTheme.colorScheme.primary)
-    }
 }
