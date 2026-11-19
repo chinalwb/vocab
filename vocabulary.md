@@ -173,6 +173,7 @@
 176. [I'd best declare my own bias(雅思阅读 · 第 32 题)](#ielts-declare-my-own-bias)
 177. [Oldest children and "never get over" a younger sibling](#ielts-oldest-children-never-get-over)
 178. [open 的用法(开着用 be open,不用 be opened)](#open-adj)
+179. [socio-economic](#socio-economic)
 
 ---
 
@@ -5712,6 +5713,7 @@ platform 等于 10,就代表请求来自 web,对吧?
 **References**
 
 - [advent](#advent) —— 对比 arrival 与 advent：arrival 是通用的“到来”，advent 较正式，常强调重要技术、时代或潮流的出现。
+- [socio-economic](#socio-economic) —— 同样在讲兄弟姐妹：孩子越多，家庭的社会经济地位往往越低。
 
 ---
 
@@ -5755,3 +5757,47 @@ platform 等于 10,就代表请求来自 web,对吧?
 - *The window is **shut**.*(窗户关着。)
 
 **名词 open(很少见):** 只出现在固定说法里:*in the open*(在户外;公开地)、*the US Open*(美国公开赛)。
+
+---
+
+<a id="socio-economic"></a>
+## socio-economic
+
+- 音标:英 /ˌsəʊsiəʊˌiːkəˈnɒmɪk/ 美 /ˌsoʊsioʊˌekəˈnɑːmɪk/
+- 词性:adj.
+- CEFR:C1(估计,词表里没收)
+- 日期:2026-11-19
+- 掌握:会写
+- 请求:mwm3e52l6a2b
+
+**English definition:** Relating to both social and economic factors, such as income, education and the kind of job people do.
+
+**含义:** 社会经济的:把收入、受教育程度、职业这些社会和经济因素合在一起看。最常见的是 **socio-economic status**(社会经济地位)和 **socio-economic background**(家庭的社会经济背景),写教育、健康、贫富差距这类话题时很常用。
+
+**在原句里:**
+
+> The more siblings there are, the likelier the family is to have a low socio-economic status – which can also account for differences between siblings in academic performance.
+
+兄弟姐妹越多,家庭的社会经济地位往往越低——这也可以解释兄弟姐妹之间学习成绩的差别。
+
+- **a low socio-economic status** —— 社会经济地位低,大致就是「家境差」:收入少,父母受教育程度不高。反过来是 *a high socio-economic status*。
+- **The more …, the likelier …** —— *the + 比较级 …, the + 比较级 …* 就是「越……越……」。后半句来自 *the family is likely to have …*:比较级 *likelier* 带着 *the* 提到句首,*is to have* 留在原处。更常见的说法是 *the more likely the family is to have …*,两种都对。
+- **which** —— 指前面说的整件事(孩子多的家庭往往更穷),不是只指 *status*。
+- **account for** —— 解释;是……的原因,意思接近 *explain*。
+
+**例句:**
+
+1. Health is closely linked to **socio-economic status**.
+   健康和社会经济地位密切相关。
+2. Children from **low socio-economic backgrounds** often have fewer books at home.
+   来自社会经济条件差的家庭的孩子,家里的书往往更少。
+
+**常见搭配:**
+
+- **socio-economic status** —— 社会经济地位;*low / high socio-economic status*。论文里常缩写成 SES。
+- **socio-economic background** —— 家庭的社会经济背景:*students from different socio-economic backgrounds*。
+- **socio-economic factors / groups / inequality** —— 社会经济因素 / 群体 / 不平等。
+
+**拼写:** 英式多写 *socio-economic*(带连字符),美式多写 *socioeconomic*(连在一起)。一篇文章里统一用一种。
+
+**相关条目:** [Oldest children and "never get over" a younger sibling](#ielts-oldest-children-never-get-over) —— 同样在讲兄弟姐妹:出生顺序对孩子的影响。
