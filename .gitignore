@@ -27,3 +27,6 @@ android/.idea/
 
 # local screenshots (not published)
 screenshots/
+
+# Local writing reports (not committed or published)
+/reports/
