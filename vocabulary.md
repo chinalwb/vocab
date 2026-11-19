@@ -174,6 +174,8 @@
 177. [Oldest children and "never get over" a younger sibling](#ielts-oldest-children-never-get-over)
 178. [open 的用法(开着用 be open,不用 be opened)](#open-adj)
 179. [socio-economic](#socio-economic)
+180. [news outlet(s)](#news-outlets)
+181. [own company / crowded / drained vs draining](#own-company-crowded-draining)
 
 ---
 
@@ -5801,3 +5803,81 @@ platform 等于 10,就代表请求来自 web,对吧?
 **拼写:** 英式多写 *socio-economic*(带连字符),美式多写 *socioeconomic*(连在一起)。一篇文章里统一用一种。
 
 **相关条目:** [Oldest children and "never get over" a younger sibling](#ielts-oldest-children-never-get-over) —— 同样在讲兄弟姐妹:出生顺序对孩子的影响。
+
+---
+
+<a id="news-outlets"></a>
+## news outlet(s)
+
+- 音标:英 /ˈnjuːz ˌaʊtlet/ 美 /ˈnuːz ˌaʊtlet/
+- 词性:n.
+- CEFR:B2(估计)
+- 日期:2026-11-19
+- 掌握:会写
+- 请求:mwnhbtzpmqei
+
+**English definition:** An organization that reports news to the public, such as a newspaper, TV station, or news website.
+
+**含义:** **news outlet** 指发布新闻的媒体机构，如报纸、电视台或新闻网站。这里常用复数 **news outlets**，表示多家新闻媒体。注意它指媒体机构，不是某一篇新闻报道。
+
+**在原句里:**
+
+> The company's new policy received a lot of bad press from major news outlets.
+
+- **bad press** —— 负面媒体报道；*press* 在这里指新闻媒体或新闻报道。
+- **from major news outlets** —— 来自大型新闻媒体。*outlet* 本身也可指商店或销售渠道，这里是媒体义。
+
+**例句:**
+
+1. Several local **news outlets** covered the school science fair.
+   几家当地新闻媒体报道了学校的科学展。
+2. The story was reported by **news outlets** across the country.
+   全国各地的新闻媒体都报道了这件事。
+
+**常见搭配:**
+
+- **a news outlet** —— 一家新闻媒体。
+- **major / local / independent news outlets** —— 大型 / 当地 / 独立新闻媒体。
+- **a media outlet** —— 媒体机构，也可包括不以新闻为主的媒体。
+
+---
+
+<a id="own-company-crowded-draining"></a>
+## own company / crowded / drained vs draining
+
+- 词性:n. / adj.
+- CEFR:B1–B2(估计)
+- 日期:2026-11-19
+- 掌握:会写
+- 请求:mwni49604d7j
+
+**English definition:** *Your own company* means being alone; *crowded* describes a place full of people; *draining* describes something that makes you feel tired.
+
+**含义:** **enjoy / prefer your own company** 是“喜欢独处”；**crowded** 是“人多拥挤的”。形容环境或活动让人疲惫时用 **draining**；人感到精疲力尽时用 **drained**。简单记：事物让人累是 *draining*，人累了是 *drained*。
+
+**在原句里:**
+
+> Some loners genuinely prefer their own company and find crowded places drained.
+
+更自然的表达是：
+
+> Some loners genuinely prefer their own company and find crowded places **draining**.
+
+- **their own company** 用法自然，意思是“他们自己独处”。*loners* 没有语法错误，但有时带有疏离或负面的语气；如果想更中性，可以说 **some people**。
+- **find + 宾语 + 形容词**：*find crowded places draining* 意为“觉得拥挤的地方让人疲惫”。*places* 是让人疲惫的原因，所以用 **draining**；人本身才是 **drained**。
+
+**例句:**
+
+1. Some people enjoy their **own company** and avoid **crowded** places.
+   有些人喜欢独处，会避开拥挤的地方。
+2. The long school trip was **draining**, and we felt **drained** by the time we got home.
+   这趟漫长的学校旅行很累人，我们到家时已经精疲力尽。
+
+**常见搭配:**
+
+- **enjoy / prefer your own company** —— 喜欢独处。
+- **a crowded place / room / train** —— 拥挤的地方 / 房间 / 火车。
+- **a draining day / task / experience** —— 累人的一天 / 任务 / 经历。
+- **feel / look drained** —— 感到 / 看起来精疲力尽。
+
+**相关条目:** [drained](#t-overthink-drained) —— 同样用 *drained* 表达心理或精力上的疲惫。
