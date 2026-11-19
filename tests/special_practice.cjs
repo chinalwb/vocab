@@ -78,6 +78,24 @@ const {pathToFileURL}=require('node:url');const path=require('node:path');
  assert.equal(await page.evaluate(()=>specialSummary(byAnchor['p-have-to-questions'].it).review.length),0);
  assert.equal(await page.evaluate(()=>Object.keys(stLog).length),0);
  assert.equal(errors.length,0,errors.join('\n'));
- console.log('Practice browser checks passed: filters, 28-question mixed mode, draft/answer resume, blank/duplicate submissions, hints, wrong-only pool, core-note return, grading, mobile and dark mode.');
+ // 同步 (用户 2026-11-18): the records ride in progress-taobao.json, answers and all; GitHub is mocked.
+ const records=await page.evaluate(()=>localStorage.getItem('vk.taobao.specialPractice'));
+ const synced=async(remote,local)=>{
+   const ctx=await browser.newContext({viewport:{width:1440,height:1000}}),p=await ctx.newPage(),puts=[],errs=[];p.on('pageerror',e=>errs.push(e.message));
+   await ctx.route('https://api.github.com/**',route=>{const q=route.request();
+     if(q.method()==='GET')return route.fulfill({json:{sha:'s',content:Buffer.from(JSON.stringify(remote)).toString('base64')}});
+     puts.push(JSON.parse(Buffer.from(JSON.parse(q.postData()).content,'base64').toString()));return route.fulfill({json:{}});});
+   await p.addInitScript(l=>{localStorage.setItem('vk.taobao.gh','github_pat_test');if(l)localStorage.setItem('vk.taobao.specialPractice',l);},local);
+   await p.goto(url,{waitUntil:'domcontentloaded'});
+   await p.waitForFunction(()=>JSON.parse(localStorage.getItem('vk.taobao.sync')||'{}').ok);
+   const done=await p.evaluate(()=>specialSummary(byAnchor['p-have-to-questions'].it).done),out=await p.evaluate(()=>specialOut());
+   assert.equal(errs.length,0,errs.join('\n'));await ctx.close();return {puts,done,out};
+ };
+ const up=await synced({v:1},records);
+ assert.equal(up.puts.length,1);assert.deepEqual(up.puts[0].specialPractice,up.out);
+ assert(up.puts[0].specialPractice['p-have-to-questions'].attempts.some(a=>a.answer==='What time did Mia have to get up?'));
+ const down=await synced(up.puts[0],null);
+ assert.equal(down.puts.length,0,'nothing changed: no commit back');assert.equal(down.done,28);
+ console.log('Practice browser checks passed: filters, 28-question mixed mode, draft/answer resume, blank/duplicate submissions, hints, wrong-only pool, core-note return, grading, mobile and dark mode, sync up and down.');
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});

@@ -120,7 +120,7 @@ final class AppModel {
 
     func entry(_ anchor: String) -> Entry? { entries.first { $0.anchor == anchor } }
 
-    // MARK: 专项练习 (device-local; never included in Sync.swift)
+    // MARK: 专项练习 (synced whole, answers included: Sync.swift)
 
     func special(_ e: Entry) -> SpecialPracticeRecord { specialRecords[e.anchor] ?? SpecialPracticeRecord() }
     func updateSpecial(_ e: Entry, _ change: (inout SpecialPracticeRecord) -> Void) {
@@ -129,6 +129,7 @@ final class AppModel {
         change(&record)
         specialRecords[e.anchor] = record
         save(specialRecords, "special-practice.json")
+        changed()
     }
 
     // MARK: stages
@@ -346,9 +347,10 @@ final class AppModel {
     // MARK: 同步's view of the stores (Sync.swift)
 
     func replaceSynced(stages: StageData, attempts at: [String: [Attempt]], review r: ReviewData, history h: HistoryData,
-                       quizOut q: QuizOut, favs f: Favs, notes n: [String: Note]) {
-        stageData = stages; attempts = at; review = r; history = h; quizOut = q; favs = f; notes = n
+                       quizOut q: QuizOut, favs f: Favs, notes n: [String: Note], special sp: [String: SpecialPracticeRecord]) {
+        stageData = stages; attempts = at; review = r; history = h; quizOut = q; favs = f; notes = n; specialRecords = sp
         save(stageData, "stage.json"); save(attempts, "selftest.json"); save(review, "review.json")
         save(history, "history.json"); save(quizOut, "quizout.json"); save(favs, "favs.json"); save(notes, "notes.json")
+        save(specialRecords, "special-practice.json")
     }
 }

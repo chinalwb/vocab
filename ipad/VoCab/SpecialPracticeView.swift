@@ -90,7 +90,7 @@ struct SpecialPracticeView: View {
                             .font(Theme.font(13)).foregroundStyle(Theme.ink3)
                     }
                     Spacer()
-                    Button(run.completed ? "查看结果" : "继续") { change { $0.current = run.id }; showingRun = true }
+                    Button(run.completed ? "查看结果" : "继续") { change { $0.resume(run.id) }; showingRun = true }
                 }.padding(.vertical, 8)
             }
         }.font(Theme.font(17, .bold))
@@ -198,7 +198,7 @@ struct SpecialPracticeView: View {
     }
 
     private var storageNote: some View {
-        Text("进度、草稿和答题记录自动保存在这台 iPad；专项练习暂不与网页同步。提示后答对也会列入重练，不会直接算作掌握。")
+        Text("进度、草稿和答案自动保存在这台 iPad；连上「同步到 GitHub」后和网页一起同步，换设备也能接着练（答案原文会存进公开的 GitHub 仓库）。提示后答对也会列入重练，不会直接算作掌握。")
             .font(Theme.font(13)).foregroundStyle(Theme.ink3)
     }
     private func metrics(_ values: [(value: String, label: String, id: String)]) -> some View {
