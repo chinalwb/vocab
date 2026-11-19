@@ -163,7 +163,7 @@ func splitSections(_ blocks: [Block]) -> [NoteSection] {
 /// The groups taobao's notes use, in the order the sidebar lists them.
 let groupNames: [(key: String, label: String)] = [
     ("SENTENCE", "句子"), ("COLLOC", "固定搭配"), ("ESSAY", "文章"), ("PRACTICE", "专项练习"), ("SELFTEST", "自测题"),
-    ("GRAMMAR", "语法"), ("TERM", "术语"), ("KNOWLEDGE", "Knowledge"),
+    ("GRAMMAR", "语法"), ("TERM", "术语"), ("IELTS", "IELTS"), ("KNOWLEDGE", "Knowledge"),
     ("A1", "A1"), ("A2", "A2"), ("B1", "B1"), ("B2", "B2"), ("C1", "C1"), ("C2", "C2"),
 ]
 func groupLabel(_ level: String) -> String { groupNames.first { $0.key == level }?.label ?? level }
