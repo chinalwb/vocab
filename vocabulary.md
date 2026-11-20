@@ -176,6 +176,7 @@
 179. [socio-economic](#socio-economic)
 180. [news outlet(s)](#news-outlets)
 181. [own company / crowded / drained vs draining](#own-company-crowded-draining)
+182. [翻译:rub one's hands together / wipe … dry](#rub-hands-wipe-dry)
 
 ---
 
@@ -5881,3 +5882,31 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **feel / look drained** —— 感到 / 看起来精疲力尽。
 
 **相关条目:** [drained](#t-overthink-drained) —— 同样用 *drained* 表达心理或精力上的疲惫。
+
+---
+
+<a id="rub-hands-wipe-dry"></a>
+## 翻译:rub one's hands together / wipe … dry
+
+- 日期:2026-11-20
+- 掌握:会写
+- 请求:mwo8ymmhpeje
+
+**含义:** 中译英练习——「他搓了搓手把手上的水擦干。」可以理解成两个动作(先搓手,再擦干),也可以理解成靠搓手把手搓干。下面三种译法都对。
+
+**译法:**
+
+1. He **rubbed his hands together** and **wiped them dry**.
+   他搓了搓手,把手擦干。(常用说法,两个动作分开说)
+2. He **rubbed his hands dry**.
+   他把手搓干了。(最简洁:搓的结果就是手干了)
+3. He **gave his hands a quick rub** to **dry them**.
+   他很快地搓了搓手,把手弄干。(C1,书面叙述)
+
+**要点:**
+
+- **搓手** —— *rub one's hands together*:两只手互相搓,要带 *together*。只说 *rubbed his hands*,也可能是揉手、按摩手。冷了搓手、高兴得搓手也是这个说法:*rubbed his hands together for warmth / in excitement*。
+- **搓了搓** —— 中文把动词重叠,表示动作很轻、时间很短。英文不重复动词,用 *gave his hands a quick rub*;直接说 *rubbed* 也行,不用加 *a few times*。
+- **把手上的水擦干** —— 中文说「把水擦干」,英文要说把**手**弄干:*dry his hands*、*wipe his hands dry*,不说 *wipe the water dry*。想保留「水」,就说 *wipe the water off his hands*(把手上的水擦掉)。
+- **动词 + 宾语 + dry** —— 动作的结果是「干了」:*wipe the table dry*(把桌子擦干)、*pat your face dry*(把脸拍干)、*rub his hands dry*(把手搓干)。
+- **在什么上擦** —— 用 *on*:*wiped his hands on his trousers / on a towel*(在裤子上 / 毛巾上擦手)。
