@@ -152,12 +152,12 @@
    "t": 1794562777543
   },
   "s-tell-describe": {
-   "due": 20777,
+   "due": 20780,
    "ease": 1.3,
-   "interval": 1,
+   "interval": 3,
    "lapses": 4,
-   "reps": 1,
-   "t": 1795083124084
+   "reps": 2,
+   "t": 1795168106664
   },
   "c-be-witness-to": {
    "due": 20776,
@@ -1684,6 +1684,20 @@
     "peek": false,
     "via": "review",
     "ex": "This book describes a trip to the mountains in detail."
+   },
+   {
+    "t": 1795168099889,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Then the passage describes an attempt to protect a town from lava in detail."
+   },
+   {
+    "t": 1795168106663,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "This book describes a trip to the mountains in detail."
    }
   ],
   "s-realistic-plan": [
@@ -2985,6 +2999,16 @@
  "favs": {},
  "history": [
   {
+   "a": "s-tell-describe",
+   "t": 1795168092862,
+   "via": "review"
+  },
+  {
+   "a": "s-put-pressure-on",
+   "t": 1795168085208,
+   "via": "entry"
+  },
+  {
    "a": "s-i-dont-have-to",
    "t": 1795083173084,
    "via": "review"
@@ -3002,11 +3026,6 @@
   {
    "a": "s-have-to-past",
    "t": 1795083126160,
-   "via": "review"
-  },
-  {
-   "a": "s-tell-describe",
-   "t": 1795083103127,
    "via": "review"
   },
   {
@@ -3042,11 +3061,6 @@
   {
    "a": "a-iceland",
    "t": 1794739271057,
-   "via": "entry"
-  },
-  {
-   "a": "s-put-pressure-on",
-   "t": 1794707134827,
    "via": "entry"
   },
   {
