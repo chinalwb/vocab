@@ -18,12 +18,12 @@
    "t": 1794120224861
   },
   "s-ing-subject": {
-   "s": "review",
-   "t": 1794651380034
+   "s": "test",
+   "t": 1795344615880
   },
   "s-plan-is-to": {
-   "s": "review",
-   "t": 1794651484169
+   "s": "test",
+   "t": 1795344636960
   },
   "s-realistic-plan": {
    "s": "test",
@@ -70,20 +70,20 @@
    "t": 1794563014204
   },
   "s-question-same-person": {
-   "s": "review",
-   "t": 1794916291898
+   "s": "test",
+   "t": 1795344690738
   },
   "s-have-to-past": {
    "s": "review",
    "t": 1794916352297
   },
   "s-did-have-base": {
-   "s": "review",
-   "t": 1794916388312
+   "s": "test",
+   "t": 1795344674575
   },
   "s-i-dont-have-to": {
-   "s": "review",
-   "t": 1794916504715
+   "s": "test",
+   "t": 1795344704070
   }
  },
  "cards": {
@@ -96,20 +96,20 @@
    "t": 1794562887023
   },
   "s-ing-subject": {
-   "due": 20778,
+   "due": 20783,
    "ease": 1.3,
-   "interval": 3,
+   "interval": 4,
    "lapses": 3,
-   "reps": 2,
-   "t": 1795005797981
+   "reps": 3,
+   "t": 1795344615352
   },
   "s-plan-is-to": {
-   "due": 20778,
+   "due": 20783,
    "ease": 1.42,
-   "interval": 3,
+   "interval": 4,
    "lapses": 2,
-   "reps": 2,
-   "t": 1795005814827
+   "reps": 3,
+   "t": 1795344636284
   },
   "s-realistic-plan": {
    "due": 20778,
@@ -224,42 +224,567 @@
    "t": 1794562996390
   },
   "s-have-to-past": {
-   "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
-   "lapses": 0,
-   "due": 20779,
-   "t": 1795083141468
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20780,
+   "t": 1795344660854
   },
   "s-did-have-base": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20779,
-   "t": 1795083156965
+   "due": 20787,
+   "t": 1795344674185
   },
   "s-question-same-person": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20779,
-   "t": 1795083172467
+   "due": 20787,
+   "t": 1795344690250
   },
   "s-i-dont-have-to": {
    "ease": 2.5,
-   "interval": 3,
-   "reps": 2,
+   "interval": 8,
+   "reps": 3,
    "lapses": 0,
-   "due": 20779,
-   "t": 1795083182696
+   "due": 20787,
+   "t": 1795344703501
   }
  },
  "newDay": 0,
  "newToday": 0,
  "resetAt": 0,
  "attempts": {
+  "g3-a-an": [
+   {
+    "t": 1793281957664,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I have a dog."
+   },
+   {
+    "t": 1793281988937,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "It's a red pen."
+   },
+   {
+    "t": 1793282000178,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "This is an egg."
+   }
+  ],
+  "g4-where-prepositions": [
+   {
+    "t": 1793282047464,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Where is my bag?"
+   },
+   {
+    "t": 1793282058226,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "It's on the desk."
+   },
+   {
+    "t": 1793282077523,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "My cat is under the chair."
+   },
+   {
+    "t": 1793282103833,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The bus stop is near our school."
+   }
+  ],
+  "g4-can": [
+   {
+    "t": 1793282126403,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "She can swim."
+   },
+   {
+    "t": 1793282163166,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "My brother can ride a bike."
+   },
+   {
+    "t": 1793282182361,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Can you play football?"
+   },
+   {
+    "t": 1793282197849,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "No, I can't."
+   }
+  ],
+  "g4-wh-questions": [
+   {
+    "t": 1793282223664,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "What time is it?"
+   },
+   {
+    "t": 1793282241500,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "How much is this skirt?"
+   },
+   {
+    "t": 1793282285319,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "What's the weather like in Beijing?"
+   },
+   {
+    "t": 1793282315119,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Whose shoes are these?"
+   }
+  ],
+  "g4-these-those-plurals": [
+   {
+    "t": 1793282373274,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "These are my new shoes."
+   },
+   {
+    "t": 1793282412443,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Are those horses?"
+   },
+   {
+    "t": 1793282435103,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I like tomatoes."
+   },
+   {
+    "t": 1793282455169,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Look at those sheep!"
+   },
+   {
+    "t": 1793282474767,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "There are many children in the park."
+   }
+  ],
+  "a-earthquake": [
+   {
+    "t": 1793433592979,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
+   },
+   {
+    "t": 1793500800513,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
+   },
+   {
+    "t": 1793500827343,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1793500856742,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1793500883073,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "In that way, we can evacuate people from dangerous areas before an earthquake hits."
+   },
+   {
+    "t": 1793500894489,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793500914737,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We can achieve this by adding bolted foundations, shock absorbers, and steel frames."
+   },
+   {
+    "t": 1793500944721,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
+   },
+   {
+    "t": 1793501009334,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If we combine these two ways, with prediction as our top priority, earthquakes will cause less destruction and loss of life."
+   },
+   {
+    "t": 1793501648802,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "In that way, we can evacuate people from dangerous areas before an earthquake hits."
+   },
+   {
+    "t": 1793501657700,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793501677937,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We can achieve this by adding bolted foundations, shock absorbers, and steel frames."
+   },
+   {
+    "t": 1793501706981,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
+   },
+   {
+    "t": 1793501753630,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If we combine these two ways, with prediction as our top priority, earthquakes will cause less destruction and loss of life."
+   },
+   {
+    "t": 1793501803277,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
+   },
+   {
+    "t": 1793501832357,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1793501856304,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "In that way, we can evacuate people from dangerous areas before an earthquake hits."
+   },
+   {
+    "t": 1793501865555,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793501881855,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "We can achieve this by adding bolted foundations, shock absorbers, and steel frames."
+   },
+   {
+    "t": 1793501898717,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
+   },
+   {
+    "t": 1793501921003,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If we combine these two ways, with prediction as our top priority, earthquakes will cause less destruction and loss of life."
+   }
+  ],
+  "s-ing-subject": [
+   {
+    "t": 1793501119823,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793501147216,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793501157735,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793503245185,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793503250688,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793535801934,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793535813848,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793621362438,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793621372300,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793627373284,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793627385267,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793627414481,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793709694398,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793709698851,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1793961138338,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1793961142573,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1794120713634,
+    "ok": false,
+    "peek": false,
+    "via": "test",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1794120767013,
+    "ok": true,
+    "peek": false,
+    "via": "test",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1794226026867,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1794226033504,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1794294282768,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1794294287020,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1794562819086,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1794562831904,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1794651317739,
+    "ok": false,
+    "peek": false,
+    "via": "test",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1794651370015,
+    "ok": false,
+    "peek": false,
+    "via": "test",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1794915912512,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1794915918698,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1795005771894,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1795005797980,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   },
+   {
+    "t": 1795344608909,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Also, making new buildings earthquake-proof is important."
+   },
+   {
+    "t": 1795344615351,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
+   }
+  ],
   "s-same-shape-list": [
    {
     "t": 1792340801234,
@@ -544,517 +1069,6 @@
     "ex": "Our nature club has started its own bee project. It's small, but it aims to count the bees in the garden and learn about their favourite flowers."
    }
   ],
-  "a-earthquake": [
-   {
-    "t": 1793433592979,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
-   },
-   {
-    "t": 1793500800513,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
-   },
-   {
-    "t": 1793500827343,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
-   },
-   {
-    "t": 1793500856742,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
-   },
-   {
-    "t": 1793500883073,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "In that way, we can evacuate people from dangerous areas before an earthquake hits."
-   },
-   {
-    "t": 1793500894489,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793500914737,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "We can achieve this by adding bolted foundations, shock absorbers, and steel frames."
-   },
-   {
-    "t": 1793500944721,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
-   },
-   {
-    "t": 1793501009334,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "If we combine these two ways, with prediction as our top priority, earthquakes will cause less destruction and loss of life."
-   },
-   {
-    "t": 1793501648802,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "In that way, we can evacuate people from dangerous areas before an earthquake hits."
-   },
-   {
-    "t": 1793501657700,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793501677937,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "We can achieve this by adding bolted foundations, shock absorbers, and steel frames."
-   },
-   {
-    "t": 1793501706981,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
-   },
-   {
-    "t": 1793501753630,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "If we combine these two ways, with prediction as our top priority, earthquakes will cause less destruction and loss of life."
-   },
-   {
-    "t": 1793501803277,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "I don't think reinforcing old buildings is a realistic plan, as it costs too much and it will put extra pressure on the government."
-   },
-   {
-    "t": 1793501832357,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
-   },
-   {
-    "t": 1793501856304,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "In that way, we can evacuate people from dangerous areas before an earthquake hits."
-   },
-   {
-    "t": 1793501865555,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793501881855,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "We can achieve this by adding bolted foundations, shock absorbers, and steel frames."
-   },
-   {
-    "t": 1793501898717,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "If new buildings are less likely to collapse, people can just stay safe in their houses."
-   },
-   {
-    "t": 1793501921003,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "If we combine these two ways, with prediction as our top priority, earthquakes will cause less destruction and loss of life."
-   }
-  ],
-  "g3-a-an": [
-   {
-    "t": 1793281957664,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "I have a dog."
-   },
-   {
-    "t": 1793281988937,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "It's a red pen."
-   },
-   {
-    "t": 1793282000178,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "This is an egg."
-   }
-  ],
-  "g4-where-prepositions": [
-   {
-    "t": 1793282047464,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Where is my bag?"
-   },
-   {
-    "t": 1793282058226,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "It's on the desk."
-   },
-   {
-    "t": 1793282077523,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "My cat is under the chair."
-   },
-   {
-    "t": 1793282103833,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "The bus stop is near our school."
-   }
-  ],
-  "g4-can": [
-   {
-    "t": 1793282126403,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "She can swim."
-   },
-   {
-    "t": 1793282163166,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "My brother can ride a bike."
-   },
-   {
-    "t": 1793282182361,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Can you play football?"
-   },
-   {
-    "t": 1793282197849,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "No, I can't."
-   }
-  ],
-  "g4-wh-questions": [
-   {
-    "t": 1793282223664,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "What time is it?"
-   },
-   {
-    "t": 1793282241500,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "How much is this skirt?"
-   },
-   {
-    "t": 1793282285319,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "What's the weather like in Beijing?"
-   },
-   {
-    "t": 1793282315119,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "Whose shoes are these?"
-   }
-  ],
-  "g4-these-those-plurals": [
-   {
-    "t": 1793282373274,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "These are my new shoes."
-   },
-   {
-    "t": 1793282412443,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Are those horses?"
-   },
-   {
-    "t": 1793282435103,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "I like tomatoes."
-   },
-   {
-    "t": 1793282455169,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Look at those sheep!"
-   },
-   {
-    "t": 1793282474767,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "There are many children in the park."
-   }
-  ],
-  "s-ing-subject": [
-   {
-    "t": 1793501119823,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793501147216,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1793501157735,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793503245185,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1793503250688,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793535801934,
-    "ok": false,
-    "peek": false,
-    "via": "review",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793535813848,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1793621362438,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793621372300,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1793627373284,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1793627385267,
-    "ok": true,
-    "peek": false,
-    "via": "entry",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793627414481,
-    "ok": false,
-    "peek": false,
-    "via": "entry",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1793709694398,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793709698851,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1793961138338,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1793961142573,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1794120713634,
-    "ok": false,
-    "peek": false,
-    "via": "test",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1794120767013,
-    "ok": true,
-    "peek": false,
-    "via": "test",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1794226026867,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1794226033504,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1794294282768,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1794294287020,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1794562819086,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1794562831904,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1794651317739,
-    "ok": false,
-    "peek": false,
-    "via": "test",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1794651370015,
-    "ok": false,
-    "peek": false,
-    "via": "test",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1794915912512,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1794915918698,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   },
-   {
-    "t": 1795005771894,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "Also, making new buildings earthquake-proof is important."
-   },
-   {
-    "t": 1795005797980,
-    "ok": true,
-    "peek": false,
-    "via": "review",
-    "ex": "I don't think keeping a big dog in a small flat is a good idea, as it needs a lot of space."
-   }
-  ],
   "s-plan-is-to": [
    {
     "t": 1793502128957,
@@ -1233,6 +1247,20 @@
    },
    {
     "t": 1795005814826,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The goal which our class needs to reach this month is to read ten English books."
+   },
+   {
+    "t": 1795344622385,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "The plan which we need to prioritize is to research ways to predict earthquakes."
+   },
+   {
+    "t": 1795344636283,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -2833,6 +2861,20 @@
     "peek": false,
     "via": "review",
     "ex": "We couldn't find our way back to the campsite. We had to ask a local family for help."
+   },
+   {
+    "t": 1795344647733,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "We couldn't repair the car ourselves. We had to take it to a garage."
+   },
+   {
+    "t": 1795344660853,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We couldn't find our way back to the campsite. We had to ask a local family for help."
    }
   ],
   "s-did-have-base": [
@@ -2891,6 +2933,20 @@
     "peek": false,
     "via": "review",
     "ex": "How much did she have to pay for the tickets to the school concert?"
+   },
+   {
+    "t": 1795344669765,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How much did he have to pay?"
+   },
+   {
+    "t": 1795344674184,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "How much did she have to pay for the tickets to the school concert?"
    }
   ],
   "s-question-same-person": [
@@ -2931,6 +2987,20 @@
    },
    {
     "t": 1795083172466,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "What time does she have to arrive at the sports centre for the swimming lesson?"
+   },
+   {
+    "t": 1795344682913,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "What time does he have to leave?"
+   },
+   {
+    "t": 1795344690249,
     "ok": true,
     "peek": false,
     "via": "review",
@@ -2993,11 +3063,55 @@
     "peek": false,
     "via": "review",
     "ex": "I can spend more time reading tomorrow evening because I don't have to finish any homework."
+   },
+   {
+    "t": 1795344695870,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I can stay in bed tomorrow morning because I don't have to go to work."
+   },
+   {
+    "t": 1795344703500,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "I can spend more time reading tomorrow evening because I don't have to finish any homework."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "s-i-dont-have-to",
+   "t": 1795344690902,
+   "via": "review"
+  },
+  {
+   "a": "s-question-same-person",
+   "t": 1795344674737,
+   "via": "review"
+  },
+  {
+   "a": "s-did-have-base",
+   "t": 1795344662870,
+   "via": "review"
+  },
+  {
+   "a": "s-have-to-past",
+   "t": 1795344637123,
+   "via": "review"
+  },
+  {
+   "a": "s-plan-is-to",
+   "t": 1795344616043,
+   "via": "review"
+  },
+  {
+   "a": "s-ing-subject",
+   "t": 1795344598676,
+   "via": "review"
+  },
   {
    "a": "s-tell-describe",
    "t": 1795168092862,
@@ -3007,36 +3121,6 @@
    "a": "s-put-pressure-on",
    "t": 1795168085208,
    "via": "entry"
-  },
-  {
-   "a": "s-i-dont-have-to",
-   "t": 1795083173084,
-   "via": "review"
-  },
-  {
-   "a": "s-question-same-person",
-   "t": 1795083157572,
-   "via": "review"
-  },
-  {
-   "a": "s-did-have-base",
-   "t": 1795083141989,
-   "via": "review"
-  },
-  {
-   "a": "s-have-to-past",
-   "t": 1795083126160,
-   "via": "review"
-  },
-  {
-   "a": "s-plan-is-to",
-   "t": 1795005800359,
-   "via": "review"
-  },
-  {
-   "a": "s-ing-subject",
-   "t": 1795005767413,
-   "via": "review"
   },
   {
    "a": "p-have-to-questions",
@@ -3203,6 +3287,62 @@
  "specialPractice": {
   "p-have-to-questions": {
    "runs": {
+    "38ddda8f-3489-4208-b953-3ac2d3ad5fbb": {
+     "id": "38ddda8f-3489-4208-b953-3ac2d3ad5fbb",
+     "mode": "focused",
+     "skill": "",
+     "order": [
+      "past-1",
+      "past-2",
+      "past-3",
+      "past-4",
+      "past-5",
+      "past-6",
+      "past-7",
+      "base-1",
+      "base-2",
+      "base-3",
+      "base-4",
+      "base-5",
+      "base-6",
+      "base-7",
+      "person-1",
+      "person-2",
+      "person-3",
+      "person-4",
+      "person-5",
+      "person-6",
+      "person-7",
+      "agreement-1",
+      "agreement-2",
+      "agreement-3",
+      "agreement-4",
+      "agreement-5",
+      "agreement-6",
+      "agreement-7"
+     ],
+     "index": 5,
+     "drafts": {
+      "past-1": "had to ",
+      "past-2": "The museum was free last Sunday, so we didn't have to buy tickets.",
+      "past-3": "We had to leave early yesterday morning.",
+      "past-4": "had to",
+      "past-5": "I lost my key yesterday, so I had to wait outside.",
+      "past-6": "didn't have to "
+     },
+     "help": {},
+     "submissions": {
+      "past-1": "2d3a07c0-6066-417f-83e4-f2e4598f8600",
+      "past-2": "d4601a70-1b3d-4aa5-8464-bcb5aa07610a",
+      "past-3": "8f76fa9a-b609-4a36-b9e5-106cc135d269",
+      "past-4": "853e8139-0681-4e49-a304-904b2c406fd1",
+      "past-5": "617ea1a8-b4c8-444e-8475-d222774dd907",
+      "past-6": "6eb6ddb9-52ac-4649-a503-8eb2b762f714"
+     },
+     "status": "active",
+     "started": 1794916524493,
+     "t": 1794916862862
+    },
     "2310e137-b281-47b9-adca-079a4138dc3a": {
      "id": "2310e137-b281-47b9-adca-079a4138dc3a",
      "mode": "focused",
@@ -3286,62 +3426,6 @@
      "status": "active",
      "started": 1794740334580,
      "t": 1794740334580
-    },
-    "38ddda8f-3489-4208-b953-3ac2d3ad5fbb": {
-     "id": "38ddda8f-3489-4208-b953-3ac2d3ad5fbb",
-     "mode": "focused",
-     "skill": "",
-     "order": [
-      "past-1",
-      "past-2",
-      "past-3",
-      "past-4",
-      "past-5",
-      "past-6",
-      "past-7",
-      "base-1",
-      "base-2",
-      "base-3",
-      "base-4",
-      "base-5",
-      "base-6",
-      "base-7",
-      "person-1",
-      "person-2",
-      "person-3",
-      "person-4",
-      "person-5",
-      "person-6",
-      "person-7",
-      "agreement-1",
-      "agreement-2",
-      "agreement-3",
-      "agreement-4",
-      "agreement-5",
-      "agreement-6",
-      "agreement-7"
-     ],
-     "index": 5,
-     "drafts": {
-      "past-1": "had to ",
-      "past-2": "The museum was free last Sunday, so we didn't have to buy tickets.",
-      "past-3": "We had to leave early yesterday morning.",
-      "past-4": "had to",
-      "past-5": "I lost my key yesterday, so I had to wait outside.",
-      "past-6": "didn't have to "
-     },
-     "help": {},
-     "submissions": {
-      "past-1": "2d3a07c0-6066-417f-83e4-f2e4598f8600",
-      "past-2": "d4601a70-1b3d-4aa5-8464-bcb5aa07610a",
-      "past-3": "8f76fa9a-b609-4a36-b9e5-106cc135d269",
-      "past-4": "853e8139-0681-4e49-a304-904b2c406fd1",
-      "past-5": "617ea1a8-b4c8-444e-8475-d222774dd907",
-      "past-6": "6eb6ddb9-52ac-4649-a503-8eb2b762f714"
-     },
-     "status": "active",
-     "started": 1794916524493,
-     "t": 1794916862862
     }
    },
    "current": "38ddda8f-3489-4208-b953-3ac2d3ad5fbb",
