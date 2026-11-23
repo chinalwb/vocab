@@ -177,6 +177,17 @@
 180. [news outlet(s)](#news-outlets)
 181. [own company / crowded / drained vs draining](#own-company-crowded-draining)
 182. [翻译:rub one's hands together / wipe … dry](#rub-hands-wipe-dry)
+183. [mediaeval vs medieval / Celtic crosses](#ielts-mediaeval-medieval)
+184. [overlook(俯瞰)/ a sheltered cove](#ielts-overlook-cove)
+185. [Seabirds nest along the headland(海鸟在岬角上筑巢)](#ielts-seabirds-nest-headland)
+186. [organized trips / packed lunches](#ielts-organized-trips)
+187. [Incidentally / museum entrance fees](#ielts-incidentally)
+188. [single-room supplement(单房差)](#ielts-single-room-supplement)
+189. [incur a fee(产生费用)](#ielts-incur-fee)
+190. [look out at / dotted with](#ielts-looks-out-at)
+191. [call in at / a woollen mill](#ielts-call-in-at)
+192. [Tynwald and parliament(马恩岛议会)](#ielts-tynwald-parliament)
+193. [a leisurely stroll along the Victorian seafront](#ielts-leisurely-seafront)
 
 ---
 
@@ -5910,3 +5921,540 @@ platform 等于 10,就代表请求来自 web,对吧?
 - **把手上的水擦干** —— 中文说「把水擦干」,英文要说把**手**弄干:*dry his hands*、*wipe his hands dry*,不说 *wipe the water dry*。想保留「水」,就说 *wipe the water off his hands*(把手上的水擦掉)。
 - **动词 + 宾语 + dry** —— 动作的结果是「干了」:*wipe the table dry*(把桌子擦干)、*pat your face dry*(把脸拍干)、*rub his hands dry*(把手搓干)。
 - **在什么上擦** —— 用 *on*:*wiped his hands on his trousers / on a towel*(在裤子上 / 毛巾上擦手)。
+
+---
+
+<a id="ielts-mediaeval-medieval"></a>
+## mediaeval vs medieval / Celtic crosses
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwskugv8a6a1
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+同一个词的两种拼法:medieval(中世纪的)是英美通用的标准拼法,mediaeval 是英式的旧拼法。顺带认识 Celtic crosses。
+
+**Original**
+
+> Castle Rushen is one of the best-preserved mediaeval fortresses in Britain.
+
+> The island's heritage sites include medieval castles and Celtic crosses.
+
+**Explanation**
+
+参考译文:鲁申城堡是英国保存最完好的中世纪堡垒之一。/ 岛上的古迹包括中世纪的城堡和凯尔特十字。
+
+- **mediaeval 和 medieval 是同一个词**,都是「中世纪的」,大约指公元 5 世纪到 15 世纪。你的判断对了一半:*mediaeval* 确实是英式拼法,但已经是旧拼法了;现在英国人大多也写 *medieval*,美国只写 *medieval*。自己写作时用 *medieval* 就行,见到 *mediaeval* 认得出就够了。
+- 同类的 ae / e 之分:*encyclopaedia / encyclopedia*(百科全书)、*paediatric / pediatric*(儿科的)、*anaesthetic / anesthetic*(麻醉剂),前一个是英式,后一个是美式。
+- **Celtic crosses**(你的问题):凯尔特十字,一种石刻的十字架,十字交叉的地方套着一个圆环,石面上刻着交织的花纹。早期中世纪在爱尔兰、苏格兰、马恩岛一带很常见。*Celts*(凯尔特人)是古代生活在欧洲西部的民族,今天爱尔兰、苏格兰、威尔士、马恩岛的文化都和他们有关。*Celtic* 读 /ˈkeltɪk/;只有苏格兰的凯尔特人足球俱乐部读 /ˈseltɪk/。
+- **one of the best-preserved + 复数名词**:「保存最完好的……之一」,*one of the* 后面接复数 *fortresses*。*best-preserved* 是 *well-preserved* 的最高级,放在名词前面要加连字符。
+- **heritage sites**:古迹、遗产地。*heritage* 是历史、文化上的遗产,*World Heritage Site* 就是「世界遗产」。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **medieval** 英 /ˌmediˈiːvl/ 美 /ˌmiːdiˈiːvl/(B2,adj.):connected with the Middle Ages, about AD 500–1500. 中世纪的。
+- **fortress** 英 /ˈfɔːtrəs/ 美 /ˈfɔːrtrəs/(C1,n.):a large, strong building that is difficult for enemies to attack. 堡垒、要塞。
+- **heritage** /ˈherɪtɪdʒ/(B2,n.):the history, traditions and buildings of a place that are considered important. (历史、文化)遗产。
+- **Celtic** /ˈkeltɪk/(adj.):connected with the Celts, or with the cultures of Ireland, Scotland, Wales and the Isle of Man. 凯尔特的。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| medieval | 重点会用 | 中世纪的 | The island's heritage sites include medieval castles | The old town still has its narrow medieval streets. | 老城区还保留着狭窄的中世纪街道。 | mediaeval 是英式旧拼法,意思一样;写作统一用 medieval。 | |
+| mediaeval | 按需查看 | 同 medieval,英式旧拼法 | one of the best-preserved mediaeval fortresses | Some older British books spell it "mediaeval". | 一些老的英国书把这个词拼成 mediaeval。 | 认得出就行,自己写用 medieval。 | |
+| best-preserved | 理解并积累 | 保存最完好的 | one of the best-preserved mediaeval fortresses | It is one of the best-preserved Roman towns in Europe. | 它是欧洲保存最完好的罗马古城之一。 | well-preserved 保存完好;best-preserved 是最高级,后面接复数名词。 | |
+| fortresses | 理解并积累 | 堡垒、要塞 | mediaeval fortresses | The fortress was built to protect the harbour. | 这座要塞是为保护港口而建的。 | castle 城堡,常带居住功能;fortress 强调防御。 | |
+| heritage sites | 理解并积累 | 古迹、遗产地 | The island's heritage sites include… | The city has three World Heritage Sites. | 这座城市有三处世界遗产。 | heritage 文化遗产;inheritance 继承的财产。 | |
+| Celtic crosses | 按需查看 | 凯尔特十字(带圆环的石刻十字架) | medieval castles and Celtic crosses | Many old churchyards in Ireland have Celtic crosses. | 爱尔兰的许多老教堂墓地里都有凯尔特十字。 | Celtic 一般读 /ˈkeltɪk/,只有足球俱乐部读 /ˈseltɪk/。 | |
+
+**References**
+
+- [a leisurely stroll along the Victorian seafront](#ielts-leisurely-seafront) —— *Victorian*(维多利亚时代的)也是表示历史时期的形容词,和 *medieval* 一样常用来说建筑。
+- [Tynwald and parliament](#ielts-tynwald-parliament) —— 同一个岛(马恩岛)上的历史:延续了上千年的议会。
+
+---
+
+<a id="ielts-overlook-cove"></a>
+## overlook(俯瞰)/ a sheltered cove
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwskyxshfk2w
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+overlook 在这句里是「从高处俯瞰、正对着」,不是「忽视」;顺带认识 cove(小海湾),以及怎么写出这种写景的句子。
+
+**Original**
+
+> The cliff-top path overlooks a sheltered cove below.
+
+**Explanation**
+
+参考译文:悬崖顶上的小路俯瞰着下面一个避风的小海湾。
+
+你问 overlook 是不是有两种以上的用法:是的,常见的有三种,看主语就能分清。
+
+- **俯瞰、正对着**(主语是地方:路、房子、窗户):*The hotel overlooks the lake.*(酒店俯瞰湖面。)这句就是这个意思。
+- **忽视、没注意到**(主语是人):*It's easy to overlook small mistakes.*(小错误很容易被忽视。)
+- **不计较、宽恕**:*I'll overlook it this time.*(这次就不追究了。)
+- 美式英语里还能作名词,指路边的观景台:*a scenic overlook*。
+- *Overlooks* 和 *overlook* 没有区别:*-s* 是第三人称单数,大写只是因为在标题开头。
+
+句子里的其他部分:
+
+- **cliff-top path**:悬崖顶上的小路。*cliff-top* 是名词作定语,用连字符连起来。
+- **a sheltered cove**:*cove* 是海岸线上一个小小的、往里凹进去的海湾,两边通常有岩石或悬崖围着;*sheltered* 是「有遮挡、避风的」。
+- **below**:放在句尾,补充说明小海湾在下面。
+
+你还问怎么写出这种水平的句子、对美国本地人难不难:
+
+- 对受过教育的母语者,这句不难。这是旅游手册、导游词的标准写法,*cove* 他们都认识(很多海边的地名里就有 Cove),只是日常聊天用得不多。口语里更可能说:*The path along the top of the cliff looks down on a little bay.*
+- 写出这种句子,靠的不是生词量,而是一套写景的「零件」:地形词配上常用的形容词,再加一个「能看到」的动词。地形:*a sheltered cove、a sandy beach、a rocky headland、a quiet bay、steep cliffs*;「能看到」:*overlooks、looks out over、looks down on*。
+- 套用句型:**地方 + overlooks + 形容词 + 地形(+ 位置)**,比如 *Our hotel overlooks a quiet bay.*
+- 练法:挑一张你去过的地方的照片,用这个句型写一句。雅思听力 Part 2 的导游讲解就是这种文体,多听、多跟读也有用。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **overlook** 英 /ˌəʊvəˈlʊk/ 美 /ˌoʊvərˈlʊk/(B2,v.):(of a place) to have a view of something from above; to fail to notice something. 俯瞰;忽视。
+- **cove** 英 /kəʊv/ 美 /koʊv/(C2,n.):a small bay on the coast, often partly surrounded by rocks or cliffs. 小海湾。
+- **sheltered** 英 /ˈʃeltəd/ 美 /ˈʃeltərd/(C1,adj.):protected from wind and bad weather. 避风的、有遮挡的。
+- **cliff** /klɪf/(B2,n.):a high, steep area of rock, especially next to the sea. 悬崖。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| overlooks | 重点会用 | 俯瞰、正对着(主语是地方) | The cliff-top path overlooks a sheltered cove | Our hotel room overlooks the harbour. | 我们的酒店房间俯瞰着港口。 | 主语是人时多半是「忽视」:She overlooked the error.(她没注意到这个错误。) | [look out at](#ielts-looks-out-at) |
+| a sheltered cove | 理解并积累 | 一个避风的小海湾 | overlooks a sheltered cove below | We swam in a sheltered cove away from the crowds. | 我们在一个远离人群、避风的小海湾里游泳。 | cove 小而凹、常被岩石围着;bay 是较大的海湾。 | [headland](#ielts-seabirds-nest-headland) |
+| cliff-top path | 按需查看 | 悬崖顶上的小路 | The cliff-top path overlooks… | The cliff-top path is closed in bad weather. | 天气不好时,悬崖顶上的小路会关闭。 | cliff-top 名词作定语,中间加连字符。 | |
+
+**References**
+
+- [look out at / dotted with](#ielts-looks-out-at) —— 同样说一个地方「能看到什么风景」:*overlook* 强调从高处往下看,*look out at* 只说朝向。
+- [Seabirds nest along the headland](#ielts-seabirds-nest-headland) —— 同一套海岸地形词:cove 是小海湾,headland 是伸进海里的岬角,bay 是海湾。
+
+---
+
+<a id="ielts-seabirds-nest-headland"></a>
+## Seabirds nest along the headland(海鸟在岬角上筑巢)
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwsl6j57sgdy
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+一句写景:海湾上方伸出一片陡峭的岩石岬角,海鸟沿着它筑巢。难点是地形词 headland 和动词 nest。
+
+**Original**
+
+> Seabirds nest along the steep rocky headland above the bay.
+
+**Explanation**
+
+参考译文:海鸟沿着海湾上方那片陡峭多岩的岬角筑巢。
+
+你说想象不到画面。先把画面拼起来,从下往上看:
+
+- **the bay**:海湾,海岸线往陆地里凹进去的一大片水面。
+- **the headland above the bay**:海湾的一侧,有一块高高的陆地伸进海里,这就是 *headland*(岬角、海岬)。它比海面高很多,所以说 *above the bay*。
+- **steep rocky**:这块岬角很陡,全是岩石,边上基本就是悬崖。两个形容词一起修饰 *headland*;正式写作时中间常加逗号:*a steep, rocky headland*。
+- **Seabirds nest along …**:*nest* 在这里是动词「筑巢」。*along* 是「沿着」:不是只有一个鸟窝,而是沿着整片崖壁,一路都是海鸟的窝。
+- 合起来的画面:站在海湾边往一侧看,一块陡峭的岩石陆地伸进海里,崖壁的岩缝和石台上密密麻麻都是海鸟和鸟窝。
+
+读不懂主要卡在两处:*nest* 平时多当名词「鸟窝」,这里是动词;*headland* 是中文里不常说的地形词。中文的「角」常出现在地名里,比如「好望角」英文是 *the Cape of Good Hope*。*cape* 一般指比较大的岬角,*headland* 可大可小,描写风景时更常用。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **headland** /ˈhedlənd/(C2,n.):a narrow piece of high land that sticks out into the sea. 岬角、海岬。
+- **nest** /nest/(v. C1;n. B1):to build a nest and live in it. 筑巢。
+- **steep** /stiːp/(B2,adj.):rising or falling very sharply. 陡峭的。
+- **rocky** 英 /ˈrɒki/ 美 /ˈrɑːki/(B2,adj.):made of rock or covered with rocks. 多岩石的。
+- **bay** /beɪ/(B2,n.):a part of the sea that curves into the land. 海湾。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| nest | 重点会用 | (动词)筑巢 | Seabirds nest along… | Swallows nest under our roof every spring. | 每年春天都有燕子在我们的屋檐下筑巢。 | 名词 nest 是鸟窝;动词 nest 是筑巢、在那里安家。 | |
+| headland | 理解并积累 | 伸进海里的高地,岬角 | the steep rocky headland above the bay | We walked out to the headland to watch the sunset. | 我们走到岬角上去看日落。 | headland 是伸出去的陆地;bay 是凹进来的水面;cove 是小而避风的海湾。 | [cove](#ielts-overlook-cove) |
+| steep rocky | 理解并积累 | 陡峭多岩的 | the steep rocky headland | A steep, rocky path led down to the beach. | 一条陡峭多石的小路通到海滩。 | 并列的形容词之间,正式写作常加逗号:steep, rocky。 | |
+| along | 按需查看 | 沿着(一路都有) | nest along the … headland | There are cafés all along the river. | 沿河一路都是咖啡馆。 | along 是「沿着整条」;on 只说「在上面」。 | |
+
+**References**
+
+- [overlook / a sheltered cove](#ielts-overlook-cove) —— 同一套海岸地形词:cove 是小海湾,headland 是伸出去的岬角。
+- [look out at / dotted with](#ielts-looks-out-at) —— 也在写海湾(bay)的风景。
+
+---
+
+<a id="ielts-organized-trips"></a>
+## organized trips / packed lunches
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwslb51t8vzq
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+旅行团的安排:organized trips 是主办方组织好的集体出游;有出游的日子提供打包午餐。
+
+**Original**
+
+> Packed lunches are provided on days with organized trips.
+
+**Explanation**
+
+参考译文:有集体出游的日子会提供打包午餐。
+
+- **organized trips**(你的问题):由主办方安排好的出游,路线、交通、导游都定好了,大家一起去。旅行团的日程一般分成有组织的出游日和自由活动日(*free days*),所以这句的言外之意是:自由活动那几天不管午饭,要自己解决。
+- *organized* 是形容词「安排好的、有组织的」,英式拼法是 *organised*,两种都对。同类说法:*an organized tour*(跟团游)、*a guided tour*(有导游讲解的参观)、*an excursion*(短途游览,常是行程里的一部分)。
+- **packed lunch**:打包好的午餐,一般是三明治、水果、饮料,装在袋子或盒子里带着路上吃。英式说法;美式常说 *a bag lunch* 或 *a sack lunch*。
+- **are provided**:被动语态,「(由主办方)提供」。旅游、酒店的介绍里很常用:*Towels are provided.*(提供毛巾。)
+- 你记下的是 *Packed lunch are provided*,主谓不一致:*lunch* 是单数。要么用复数 *Packed lunches are provided*,要么说 *A packed lunch is provided*。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **organized** 英 /ˈɔːɡənaɪzd/ 美 /ˈɔːrɡənaɪzd/(B1,adj.):arranged or planned in advance, often for a group. 安排好的、有组织的。
+- **packed lunch** /ˌpækt ˈlʌntʃ/(B1,n.):food such as sandwiches that you take with you to eat at lunchtime. 打包午餐、自带的午饭。
+- **provide** /prəˈvaɪd/(B1,v.):to give something to someone or make it available. 提供。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| organized trips | 重点会用 | 主办方组织好的集体出游 | on days with organized trips | The school runs organized trips to museums every term. | 学校每学期都会组织学生去博物馆参观。 | organized trip 跟着安排走;free day 是自由活动日。英式拼作 organised。 | [call in at](#ielts-call-in-at) |
+| Packed lunches | 理解并积累 | 打包午餐 | Packed lunches are provided | Please bring a packed lunch on Friday. | 星期五请自带午饭。 | 英式 packed lunch;美式 bag lunch / sack lunch。 | |
+| are provided | 重点会用 | (主办方)提供 | Packed lunches are provided | Bed linen and towels are provided. | 提供床单和毛巾。 | provide sth for sb / provide sb with sth,不说 provide sb sth。 | |
+
+**References**
+
+- [call in at / a woollen mill](#ielts-call-in-at) —— 同一个行程:大巴团一路上「顺道停一下」的说法。
+- [Incidentally / museum entrance fees](#ielts-incidentally) —— 同一份行程说明,讲费用里包含什么。
+
+---
+
+<a id="ielts-incidentally"></a>
+## Incidentally / museum entrance fees
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwsldcyitab2
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+incidentally 是「顺便说一句」,用来插入一条补充信息;museum entrance fees 里的 museum 作定语,所以用单数。
+
+**Original**
+
+> Incidentally, all museum entrance fees are included in your pass.
+
+**Explanation**
+
+参考译文:顺便说一下,所有博物馆的门票费都已经包含在你的通票里了。
+
+- **incidentally**(你的第一个问题):放在句首、后面加逗号,意思是「顺便说一句」,用来插进一条相关、但不是重点的信息。导游讲解、邮件里常见,比 *by the way* 稍正式。它还有一个意思是「附带地、偶然地」:*The problem was only mentioned incidentally.*(这个问题只是被附带提了一下。)
+- **拼写**:你写的 *incidently* 少了 *al*。它是形容词 *incidental*(附带的)加 *-ly*,所以是 **incidentally**。*accidentally* 也是这样,母语者也常把这两个词拼错。
+- **为什么是 all museum entrance fees,不是 all museums**(你的第二个问题):*all* 修饰的是 *fees*,不是 *museum*。*museum entrance fees* 是「博物馆的门票费」,*museum* 在这里是名词作定语,起形容词的作用。名词作定语一般用单数,哪怕意思上是很多个:*car keys*(车钥匙)、*bus tickets*(车票)、*shoe shops*(鞋店)。「很多」的意思由最后那个名词 *fees* 的复数带出来。少数固定说法例外,定语用复数,比如 *sports car*、*sales team*。
+- 你记的是 *museum entree fees* 和 *in you pass*:门票费是 **entrance fees**(*entrance* 是入口、进入;*entrée* 是从法语来的词,指主菜或前菜);*you* 应为 **your**。
+- **be included in**:「包含在……里」。*pass* 在这里是通票:一张卡可以进好几个景点。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **incidentally** /ˌɪnsɪˈdentəli/(C1,adv.):used to add information that is less important, or to change the subject. 顺便说一句;附带地。
+- **entrance fee** /ˈentrəns fiː/(B1,n.):money you pay to go into a museum, park, etc. 门票费、入场费。
+- **pass** 英 /pɑːs/ 美 /pæs/(B1,n.):a ticket or card that lets you enter places or travel for a period of time. 通票、通行证。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| Incidentally | 重点会用 | 顺便说一句,插入补充信息 | Incidentally, all museum entrance fees are… | Incidentally, the café on the top floor has a great view. | 顺便说一句,顶楼的咖啡馆视野很好。 | by the way 更口语,incidentally 稍正式。拼写是 -ally,不是 -ly。 | |
+| museum entrance fees | 重点会用 | 博物馆门票费(museum 作定语,用单数) | all museum entrance fees | Children don't pay museum entrance fees. | 儿童不用付博物馆门票费。 | 名词作定语一般用单数:bus tickets,不说 buses tickets。 | |
+| are included in your pass | 理解并积累 | 包含在你的通票里 | are included in your pass | Breakfast is included in the room price. | 房价含早餐。 | be included in 是「包含在……里」;主动说法是 The price includes breakfast. | [supplement](#ielts-single-room-supplement) |
+
+**References**
+
+- [single-room supplement](#ielts-single-room-supplement) —— 同样在讲旅游费用:哪些包含在内,哪些要另付。
+- [organized trips / packed lunches](#ielts-organized-trips) —— 同一份行程说明。
+
+---
+
+<a id="ielts-single-room-supplement"></a>
+## single-room supplement(单房差)
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwslek332cn1
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+supplement 在旅游里是「附加费」;single-room supplement 就是中文旅行社说的「单房差」。
+
+**Original**
+
+> Solo travellers often have to pay a single-room supplement.
+
+**Explanation**
+
+参考译文:独自出行的游客往往要付单房差。
+
+- **single-room supplement**:旅行团的价格一般按两人住一间算。一个人报名、要单独住一间时,得补交差价,中文旅行社叫「单房差」。
+- **supplement 的核心意思**是「额外加上去、用来补足的东西」,常见三种用法:
+- **(n.)附加费、补价**:*a single-room supplement*、*a supplement for a sea view*(海景房加价)。
+- **(n.)补充剂;报纸的增刊**:*vitamin supplements*(维生素补充剂)、*the Sunday supplement*(周日增刊)。
+- **(v.)补充、补贴**:*She supplements her income by teaching online.*(她在网上教课补贴收入。)名词读 /ˈsʌplɪmənt/,动词最后一个音节读 /ment/。
+- **solo travellers**:独自旅行的人。*solo* 是「单独的、独自的」;*traveller* 英式双写 l,美式是 *traveler*。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **supplement** n. /ˈsʌplɪmənt/,v. /ˈsʌplɪment/(C1):an extra amount of money that you pay for an additional service; something added to improve or complete something. 附加费;补充(物)。
+- **solo** 英 /ˈsəʊləʊ/ 美 /ˈsoʊloʊ/(B2,adj./adv.):done alone, without other people. 单独的、独自地。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| single-room supplement | 重点会用 | 单房差 | pay a single-room supplement | There's no single-room supplement on this tour. | 这条线路不收单房差。 | supplement 是附加费;surcharge 也是附加费,多指临时加收的,比如 fuel surcharge(燃油附加费)。 | [incurs](#ielts-incur-fee) |
+| Solo travellers | 理解并积累 | 独自旅行的人 | Solo travellers often have to pay… | The hostel is popular with solo travellers. | 这家青旅很受独自旅行的人欢迎。 | 英式 traveller,美式 traveler。 | |
+
+**References**
+
+- [incur a fee](#ielts-incur-fee) —— 同样在讲额外的钱:改预订要付手续费。
+- [Incidentally / museum entrance fees](#ielts-incidentally) —— 哪些费用已经包含在通票里。
+
+---
+
+<a id="ielts-incur-fee"></a>
+## incur a fee(产生费用)
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwslhgqo3wwa
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+incur 是「招致、产生(费用、罚款、损失)」,很正式,常见于预订条款;这句的主语是动名词短语 Amending a confirmed booking。
+
+**Original**
+
+> Amending a confirmed booking incurs a small administrative fee.
+
+**Explanation**
+
+参考译文:修改已确认的预订会产生一小笔手续费。
+
+- **incur**:因为自己做了某件事,招来一笔费用、罚款或损失。很正式,多见于条款、通知、合同。宾语多是不好的事:*incur costs / charges / a penalty / debts / losses*。
+- 主语可以是人,也可以是那个动作:*You will incur a fee.*(你会被收手续费。)/ *Amending a booking incurs a fee.*(改预订会产生手续费。)
+- 变形要双写 r:*incurred*、*incurring*。重音在后面:/ɪnˈkɜː/。
+- **Amending a confirmed booking**:动名词短语作主语,「修改一个已确认的预订」。*amend* 是「修改」,比 *change* 正式,常用于文件、预订、法律条文。*booking* 是英式,美式多说 *reservation*。
+- **administrative fee**:手续费、管理费。口语常缩成 *admin fee*。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **incur** 英 /ɪnˈkɜː(r)/ 美 /ɪnˈkɜːr/(C1,v.):to have to pay a cost, or experience something unpleasant, because of something you have done. 招致、产生(费用、损失)。
+- **amend** /əˈmend/(C1,v.):to make changes to a document, booking, law, etc. 修改、修订。
+- **administrative** 英 /ədˈmɪnɪstrətɪv/ 美 /ədˈmɪnɪstreɪtɪv/(B2,adj.):connected with organizing and managing a business or institution. 行政的、管理的。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| incurs | 重点会用 | 产生(费用) | Amending a confirmed booking incurs a … fee | Late payments incur a 5% penalty. | 逾期付款要交 5% 的罚金。 | incur 正式,多见于条款;日常说 cost / charge:It costs £10 to change your booking. | [single-room supplement](#ielts-single-room-supplement) |
+| Amending | 理解并积累 | 修改(正式) | Amending a confirmed booking | You can amend your booking online. | 你可以在网上修改预订。 | amend 正式,用于文件、预订、法律;change 通用。 | |
+| administrative fee | 理解并积累 | 手续费、管理费 | a small administrative fee | There is a £20 administrative fee for cancellations. | 取消预订要收 20 英镑手续费。 | 口语常说 admin fee。 | |
+
+**References**
+
+- [single-room supplement](#ielts-single-room-supplement) —— 同样是旅游里的额外费用:一个人住要补单房差。
+
+---
+
+<a id="ielts-looks-out-at"></a>
+## look out at / dotted with
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwslsyu6jti4
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+房间、阳台「朝向、能看到」某处风景,用 look out at / over / onto;dotted with 是「星星点点地散布着」。
+
+**Original**
+
+> Our balcony looks out at a quiet bay dotted with fishing boats.
+
+**Explanation**
+
+参考译文:我们的阳台正对着一个安静的海湾,湾里星星点点地停着几条渔船。
+
+- **look out at / over / onto**:主语是房间、窗户、阳台,意思是「朝向、能看到」。三个介词稍有不同:
+- **look out over**:从高处望出去,看到一大片:*The flat looks out over the city.*(公寓能俯瞰整座城市。)写阳台看海,*looks out over the bay* 最常见。
+- **look out onto**:直接朝着街道、花园、广场:*Our kitchen looks out onto the garden.*(我们的厨房朝着花园。)
+- **look out at**:朝外看着某个东西,和上面两个意思接近,这句用的就是它。
+- 别和 **Look out!**(小心!)混淆:那是提醒别人注意的祈使句,后面没有宾语。
+- **dotted with**:「零星地散布着」,就像在画面上点了很多小点:*a bay dotted with fishing boats*(湾里零星停着渔船)、*hills dotted with sheep*(山坡上散落着羊群)。这里是过去分词短语作后置定语,修饰 *bay*,相当于 *a quiet bay that is dotted with fishing boats*。
+- 和 *overlook* 对比:*overlook* 一定是从高处往下看;*look out at / over* 只说朝向,平着看也行。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **balcony** /ˈbælkəni/(B1,n.):a platform on the outside of a building, above ground level. 阳台。
+- **dotted with** 英 /ˈdɒtɪd wɪð/ 美 /ˈdɑːtɪd wɪð/(C1):having many small things spread over an area. 零星散布着、点缀着。
+- **bay** /beɪ/(B2,n.):a part of the sea that curves into the land. 海湾。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| looks out at | 重点会用 | (阳台)朝向、能看到 | Our balcony looks out at a quiet bay | Our kitchen window looks out at the hills. | 我们厨房的窗户正对着山。 | 从高处看用 look out over;直接朝着街道、花园用 look out onto;Look out! 是「小心」。 | [overlooks](#ielts-overlook-cove) |
+| dotted with | 重点会用 | 零星散布着 | a quiet bay dotted with fishing boats | The hillside was dotted with sheep. | 山坡上零零散散地有些羊。 | dotted with 稀疏零散;covered with 覆盖满;full of 挤满。 | |
+| fishing boats | 按需查看 | 渔船 | dotted with fishing boats | Fishing boats come back to the harbour at dawn. | 渔船在黎明时回到港口。 | fishing 作定语:fishing boat、fishing village。 | |
+
+**References**
+
+- [overlook / a sheltered cove](#ielts-overlook-cove) —— *overlook* 是从高处俯瞰;*look out at* 只说朝向。
+- [Seabirds nest along the headland](#ielts-seabirds-nest-headland) —— 同样是海湾(bay)的风景。
+
+---
+
+<a id="ielts-call-in-at"></a>
+## call in at / a woollen mill
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwslv4nesl8i
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+call in at 是「途中顺道停一下」;calling in at … 是分词短语作伴随状语,补充大巴一路上停的地方;woollen mill 是毛纺厂。
+
+**Original**
+
+> The coach tour heads north, calling in at a traditional woollen mill.
+
+**Explanation**
+
+参考译文:大巴团一路向北,途中顺道去一家传统的毛纺厂看看。
+
+- **call in at + 地方**:在路上顺道去某处停一下,待的时间不长。英式说法,行程介绍里很常见;同义的说法有 *stop at*、*stop off at*。*call in on + 人* 是顺路去看望某人。
+- **calling in at … 是不是伴随状语**(你的第一个问题):是的。按中文语法书的叫法,这是现在分词短语作**伴随状语**,说明主句的动作(往北开)进行中发生的事,相当于 *The coach tour heads north and calls in at a traditional woollen mill.* 用分词把两个动作并成一句,读起来更紧凑,这是导游词、行程介绍的典型写法:*We drove along the coast, stopping at small villages.*(我们沿着海岸开,一路在小村子停一停。)
+- 分词的逻辑主语要和主句的主语一致:这里「顺道停靠」的就是 *the coach tour*,所以成立。
+- **mill 是不是工厂**(你的第二个问题):是,但不是所有工厂都叫 mill。*mill* 本义是「磨坊」(*windmill* 风车磨坊、*watermill* 水磨坊),后来指加工原料的工厂,尤其是纺织、造纸、钢铁这几类:*a woollen mill*(毛纺厂)、*a cotton mill*(棉纺厂)、*a paper mill*(造纸厂)、*a steel mill*(钢厂)。生产电子产品、汽车的工厂叫 *factory* 或 *plant*。
+- **a traditional woollen mill**:老式的毛纺厂,游客可以进去参观,看羊毛怎么纺成线、织成布。*woollen* 是英式拼法,美式是 *woolen*。
+- **coach tour**:坐大巴的旅游团。英式英语里 *coach* 是长途大巴,*bus* 是市内公交。
+- **heads north**:*head* 作动词是「朝……方向去」;*north* 是副词,前面不加介词:*head north / home / back*。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **call in** /ˌkɔːl ˈɪn/(B2,phr. v.):to make a short visit to a place or person, usually on the way somewhere else. 顺道拜访、顺路停一下。
+- **mill** /mɪl/(B2,n.):a building where grain is made into flour; a factory that produces cloth, paper, steel, etc. 磨坊;(纺织、造纸等)工厂。
+- **woollen** /ˈwʊlən/(B2,adj.):made of wool. 羊毛的、毛纺的。
+- **coach** 英 /kəʊtʃ/ 美 /koʊtʃ/(A2,n.):a comfortable bus for long journeys. 长途大巴。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| calling in at | 重点会用 | 途中顺道停一下 | calling in at a traditional woollen mill | On the way home, we called in at a farm shop. | 回家路上,我们顺道去了一家农场商店。 | call in at + 地方;call in on + 人(顺路看望)。 | [organized trips](#ielts-organized-trips) |
+| heads north | 理解并积累 | 向北走 | The coach tour heads north | After lunch, the group heads back to the hotel. | 午饭后,大家回酒店。 | head north 前面不加 to,不说 head to north。 | |
+| woollen mill | 理解并积累 | 毛纺厂 | a traditional woollen mill | The old mill is now a museum. | 那座老厂房现在是一座博物馆。 | mill 多指纺织、造纸、钢铁厂;一般的工厂说 factory / plant。 | |
+| coach tour | 按需查看 | 坐大巴的旅游团 | The coach tour heads north | We booked a three-day coach tour of Scotland. | 我们订了一个苏格兰三日大巴游。 | 英式英语里 coach 是长途大巴,bus 是市内公交。 | |
+
+**References**
+
+- [organized trips / packed lunches](#ielts-organized-trips) —— 同一个行程里的出游安排。
+
+---
+
+<a id="ielts-tynwald-parliament"></a>
+## Tynwald and parliament(马恩岛议会)
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwslx83umdlt
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+parliament 是「议会」这个普通名词,Tynwald 是马恩岛议会的名字,就像 Congress 是美国国会的名字。
+
+**Original**
+
+> Tynwald is the self-governing parliament of the Isle of Man.
+
+**Explanation**
+
+参考译文:Tynwald 是马恩岛的自治议会。
+
+- **二者的关系**(你的问题):*parliament* 是普通名词「议会」,指一个国家或地区里制定法律的机构;*Tynwald* 是专有名词,是马恩岛议会的名字。就像美国的议会叫 *Congress*,英国的叫 *Parliament*(大写)。这句就是在介绍 Tynwald 这个名字指的是什么。
+- **Isle of Man(马恩岛)**:在大不列颠岛和爱尔兰岛之间的爱尔兰海上。它属于英国王室,但不是英国(联合王国)的一部分,有自己的议会和法律,国防和外交由英国负责。所以说它的议会是 *self-governing*(自治的)。
+- **Tynwald** 号称世界上历史最悠久、一直延续到今天的议会,传统说法是始于公元 979 年。每年 7 月有一天(Tynwald Day)在露天的小山上开会,宣读新通过的法律。
+- **parliament 的发音**:中间的 *ia* 不发音,读 /ˈpɑːləmənt/,三个音节。指英国议会时大写,一般不加 *the*:*The bill was passed by Parliament.*(这项法案获得了议会通过。)
+- **self-governing**:自治的,自己管理自己的事务。*govern* 是「治理」,*government* 是「政府」。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **parliament** 英 /ˈpɑːləmənt/ 美 /ˈpɑːrləmənt/(B1,n.):the group of people who are elected to make and change the laws of a country. 议会、国会。
+- **self-governing** 英 /ˌself ˈɡʌvənɪŋ/ 美 /ˌself ˈɡʌvərnɪŋ/(C1,adj.):governing itself, rather than being controlled by another country. 自治的。
+- **Tynwald** /ˈtɪnwəld/(n.):the parliament of the Isle of Man. 马恩岛议会。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| parliament | 重点会用 | 议会 | the self-governing parliament | The new law was approved by parliament last week. | 新法律上周获得议会通过。 | parliament 是议会(英国等);美国国会叫 Congress。中间的 ia 不发音。 | |
+| self-governing | 理解并积累 | 自治的 | the self-governing parliament of the Isle of Man | The island has been self-governing for centuries. | 这个岛自治已有几百年了。 | self-governing 自治,仍属于另一个国家;independent 是完全独立。 | |
+| Tynwald | 按需查看 | 马恩岛议会的名字 | Tynwald is the … parliament | Tynwald meets in the open air once a year. | Tynwald 每年在露天开一次会。 | Tynwald 是名字,parliament 是类别。 | [medieval](#ielts-mediaeval-medieval) |
+
+**References**
+
+- [mediaeval vs medieval / Celtic crosses](#ielts-mediaeval-medieval) —— 同一个岛上的历史古迹:中世纪的城堡和凯尔特十字。
+
+---
+
+<a id="ielts-leisurely-seafront"></a>
+## a leisurely stroll along the Victorian seafront
+
+- 日期:2026-11-23
+- 掌握:认识
+- 请求:mwslz880tebh
+- 类型:IELTS
+- 标签:15-1 · Listening · Part 2
+
+leisurely 是形容词「悠闲的」(以 -ly 结尾,但不是副词);seafront 是海滨大道;Victorian 指维多利亚时代(1837—1901)。
+
+**Original**
+
+> Visitors can enjoy a leisurely stroll along the Victorian seafront.
+
+**Explanation**
+
+参考译文:游客可以沿着维多利亚时代的海滨大道悠闲地散步。
+
+- **leisurely**:悠闲的、不慌不忙的。它以 *-ly* 结尾,但在这里是**形容词**,修饰名词 *stroll*。同类的 -ly 形容词还有 *friendly、lovely、lonely、costly*。常见搭配:*a leisurely stroll / walk / lunch / pace*。
+- **stroll**:悠闲地散步,名词、动词都行:*take a stroll*、*stroll along the beach*。*walk* 是一般的走路;*stroll* 强调慢悠悠、没什么目的地逛。
+- **seafront**:海滨城镇里紧挨着海的那条街或步道,沿街常有酒店、咖啡馆。英式说法;美式常说 *waterfront*、*oceanfront*,木板铺的海滨步道叫 *boardwalk*。
+- **Victorian**(你的问题):「维多利亚时代的」,指英国维多利亚女王在位的 1837—1901 年。那个年代坐火车去海边度假开始流行,英国很多海滨小镇的步道、酒店和栈桥都是那时建的。所以 *the Victorian seafront* 是说这条海滨大道是那个时代建的,保留着那时的建筑和风格。它也能指那个时代的观念,比如 *Victorian values*(维多利亚时代的价值观,讲究勤劳、节制、体面)。
+- 同类的「时代 + 名词」:*a medieval castle*(中世纪城堡)、*a Georgian house*(乔治王时代的房子,约 1714—1830)、*Edwardian*(爱德华时代,1901—1910)。
+
+词汇释义(以下 CEFR 等级均为估计,供学习参考):
+
+- **leisurely** 英 /ˈleʒəli/ 美 /ˈliːʒərli/(C1,adj.):done slowly and in a relaxed way, without hurrying. 悠闲的、从容的。
+- **stroll** 英 /strəʊl/ 美 /stroʊl/(B2,n./v.):a slow, relaxed walk. 散步、闲逛。
+- **seafront** /ˈsiːfrʌnt/(B2,n.):the part of a coastal town next to the sea, often with a wide path. 海滨(大道)。
+- **Victorian** /vɪkˈtɔːriən/(B2,adj.):connected with the period when Queen Victoria ruled Britain, 1837–1901. 维多利亚时代的。
+
+**Key words**
+
+| 表达 | 学习 | 本句含义 | 原文 | 新语境 | 中文提示 | 易混 | 关联 |
+|---|---|---|---|---|---|---|---|
+| a leisurely stroll | 重点会用 | 悠闲地散步 | enjoy a leisurely stroll | After dinner, we took a leisurely stroll by the river. | 晚饭后,我们沿着河边悠闲地散了会儿步。 | leisurely 是形容词,修饰名词;副词说 slowly 或 in a leisurely way。 | |
+| seafront | 理解并积累 | 海滨大道 | along the Victorian seafront | Our hotel is right on the seafront. | 我们的酒店就在海滨大道上。 | 英式 seafront;美式 waterfront / boardwalk。 | |
+| Victorian | 理解并积累 | 维多利亚时代的(1837—1901) | the Victorian seafront | The street is lined with Victorian houses. | 这条街两旁都是维多利亚时代的房子。 | 时代形容词:medieval、Georgian、Victorian、Edwardian。 | [medieval](#ielts-mediaeval-medieval) |
+
+**References**
+
+- [mediaeval vs medieval / Celtic crosses](#ielts-mediaeval-medieval) —— *medieval* 也是表示历史时期的形容词。
