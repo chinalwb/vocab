@@ -188,6 +188,8 @@
 191. [call in at / a woollen mill](#ielts-call-in-at)
 192. [Tynwald and parliament(马恩岛议会)](#ielts-tynwald-parliament)
 193. [a leisurely stroll along the Victorian seafront](#ielts-leisurely-seafront)
+194. [negotiate](#negotiate)
+195. [glacier / puny](#glacier-puny)
 
 ---
 
@@ -6367,6 +6369,7 @@ call in at 是「途中顺道停一下」;calling in at … 是分词短语作�
 **References**
 
 - [organized trips / packed lunches](#ielts-organized-trips) —— 同一个行程里的出游安排。
+- [glacier / puny](#glacier-puny) —— 那里讲 -ing 短语的逻辑主语要和主句主语一致;悬垂修饰就是违反这条规则。
 
 ---
 
@@ -6458,3 +6461,112 @@ leisurely 是形容词「悠闲的」(以 -ly 结尾,但不是副词);seafront �
 **References**
 
 - [mediaeval vs medieval / Celtic crosses](#ielts-mediaeval-medieval) —— *medieval* 也是表示历史时期的形容词。
+
+---
+
+<a id="negotiate"></a>
+## negotiate
+
+- 音标:英 /nɪˈɡəʊʃieɪt/ 美 /nɪˈɡoʊʃieɪt/
+- 词性:v.
+- CEFR:B2
+- 日期:2026-11-23
+- 掌握:会写
+- 请求:mwt9dycmttso
+
+**English definition:** To discuss something formally in order to reach an agreement; also, to successfully get past or through a difficult place or situation.
+
+**含义:** 谈判、协商;原句用的是第二个意思——「成功穿过、越过」难走的地方:*struggle to negotiate the narrow alleys* 就是「艰难地在窄巷里穿行」。
+
+**义项一:谈判、协商(最常用)**
+
+1. The two sides are **negotiating a ceasefire**.
+   双方正在谈判停火。
+2. She **negotiated a higher salary** with her new employer.
+   她和新雇主谈到了更高的薪水。
+
+**义项二:成功穿过、越过(难走的路段)—— 原句的用法**
+
+1. Tourists often struggle to **negotiate the narrow alleys** in the old town.
+   游客常常得在老城的窄巷里艰难穿行。
+2. She **negotiated the stairs** carefully with a baby stroller.
+   她推着婴儿车小心翼翼地走完了楼梯。
+3. The hikers slowly **negotiated a steep, rocky path**.
+   徒步者慢慢越过一段陡峭的岩石小路。
+
+同一个意思也能用在抽象的情况:*negotiate a tricky situation*(把棘手的局面应付过去)、*negotiate a difficult transition*(度过艰难的过渡期)——还是「有惊无险地过去」的语感。
+
+**常见搭配:**
+
+- **negotiate with sb (over / about sth)** —— 和某人就某事谈判:*negotiate with the supplier over the price*。
+- **negotiate a deal / an agreement / a contract / a ceasefire** —— 谈成一笔交易 / 一份协议 / 一份合同 / 停火。
+- **negotiate the stairs / a bend / narrow lanes / a steep path** —— 走完楼梯 / 转过弯道 / 穿过窄巷 / 越过陡路。
+- **negotiate your way through / around sth** —— 一路设法穿过 / 绕过:*negotiate your way through the crowd*。
+
+**你的问题:**
+
+> 原文是 of the old town,我在想 in 对不对。
+
+in 没问题——两种都对,只是语气不同:
+
+- **in the old town** —— 交代位置:巷子**在老城里**。平实、日常,你这句用 in 完全自然。
+- **of the old town** —— 把小巷说成老城的**一部分、特色**,是描写性的写法,游记、导览文字里很常见:*the narrow streets of the old town*(老城的窄街)、*the busy markets of Marrakesh*(马拉喀什热闹的集市)。
+- 所以这句不用改;想读起来更「游记」一点,就用原文的 of。
+
+---
+
+<a id="glacier-puny"></a>
+## glacier / puny
+
+- 音标:puny /ˈpjuːni/;glacier 英 /ˈɡlæsiə(r)/ 美 /ˈɡleɪʃər/
+- 词性:n. / adj.
+- CEFR:B2–C1(估计)
+- 日期:2026-11-23
+- 掌握:会写
+- 请求:mwt9l0filbn4
+
+**English definition:** A *glacier* is a huge mass of ice that moves slowly down a valley. *Puny* means small and weak, or too small and unimportant to impress anyone.
+
+**含义:** **glacier** = 冰川;**puny** = 瘦小的、孱弱的,也指「微不足道、小得可怜」——原句的 *our efforts felt puny against …* 就是后一个意思:我们的努力在大自然面前微不足道。
+
+**我的原句:**
+
+> Standing beneath the glacier, our efforts felt puny against the nature.
+
+**问题:**
+
+- ❌ [逻辑] **Standing beneath the glacier, our efforts …** —— 分词短语的主语要等于主句的主语:站在冰川下看的是「我们」,不是 efforts(悬垂修饰)→ **Standing beneath the glacier, we felt …**,或把 efforts 留作主语:**As we stood beneath the glacier, our efforts felt …**。
+- ❌ [冠词] **against the nature** —— 泛指「大自然」时 nature 不可数、不加 the → **against nature**;想表达「与自然的力量相比」,**against the forces of nature** 最地道。
+
+**更地道的说法:**
+
+1. As we stood beneath the glacier, our efforts felt **puny against the forces of nature**.
+   站在冰川下,我们感到自己的努力在大自然的力量面前微不足道。
+2. Standing beneath the glacier, we felt how **puny** our efforts were against the forces of nature.
+   站在冰川下,我们感到自己的努力在大自然面前多么渺小。
+
+**你的问题:**
+
+> 为什么用 felt 而不是 feels?
+
+- **felt 是在叙述过去**:这句讲一次具体的经历——站在冰川下的那一刻,所以整句用过去时。*feels* 是一般现在时,用来说普遍规律:*Standing beneath a glacier, you feel how puny our efforts are.*(站在冰川下,你会觉得我们的努力多么微不足道。)
+- 这里还有个主语的问题:*efforts* 是复数,现在时是 **feel**,不是 *feels*;*feels* 只跟单数主语,如 *The task feels impossible.*
+- *felt* 在这里意思接近 *seemed*(「(在我们看来)显得」),所以 *our efforts felt puny* 本身没问题——要改的是前面的分词短语和句末的 the。
+
+**例句:**
+
+1. Meltwater **flows out from beneath the glacier**.
+   融水从冰川下方流出来。
+2. The team worked hard, but their **efforts looked puny against** the scale of the problem.
+   团队很努力,但他们的付出在问题的规模面前显得微不足道。
+3. He was a **puny** child who rarely played sports.
+   他是个瘦弱的孩子,很少运动。
+
+**常见搭配:**
+
+- **puny against sth** —— 在……面前微不足道:*puny against the forces of nature / the scale of the problem*。
+- **a puny budget / effort / excuse** —— 少得可怜的预算 / 微不足道的努力 / 站不住脚的借口。
+- **beneath a glacier** —— 在冰川下方;beneath 比 under 书面,常带「正下方、被笼罩」的感觉:*meltwater beneath the glacier*(冰川下的融水)。
+- **a glacier melts / retreats** —— 冰川融化 / 消退。
+
+**相关条目:** [call in at / a woollen mill](#ielts-call-in-at) —— 那里讲了 -ing 短语的逻辑主语要和主句主语一致,本条的第一处 ❌ 就是违反了这条规则。
