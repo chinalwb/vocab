@@ -33,7 +33,11 @@ class IeltsReadingTests(unittest.TestCase):
         entries = build.build_entries((ROOT / "vocabulary.md").read_text())
         ielts = [e for e in entries if e["level"] == "IELTS"]
         for entry in ielts:
-            self.assertEqual([s[0] for s in build.sections(entry["blocks"])], ["原文", "读懂这句", "表达卡片", "关联笔记"])
+            if entry.get("reading"):
+                self.assertEqual([s[0] for s in build.sections(entry["blocks"])], ["原文", "读懂这句", "表达卡片", "关联笔记"])
+            else:  # 用户 2026-11-24: written like a word entry, so quizzed like one
+                self.assertNotIn("原文", [s[0] for s in build.sections(entry["blocks"])])
+                self.assertTrue(build.quiz_examples(entry["blocks"]), entry["anchor"])
         entry = next(e for e in ielts if e["anchor"] == "ielts-oldest-children-never-get-over")
         self.assertEqual(entry["tags"], ["15-1", "Listening", "Part 2"])
         table = next(b for b in entry["blocks"] if b["t"] == "table")
@@ -42,6 +46,22 @@ class IeltsReadingTests(unittest.TestCase):
         advent = next(e for e in entries if e["anchor"] == "advent")
         self.assertIn("#ielts-oldest-children-never-get-over", build.to_html(advent["blocks"]))
         self.assertNotEqual(build.sections(advent["blocks"])[0][0], "原文")
+
+    def test_only_the_reading_format_is_read_only(self):
+        """用户 2026-11-24: the IELTS group is the source; the Original/Key words format makes it read-only."""
+        head = "<a id=\"{a}\"></a>\n## {a}\n\n- 日期:2026-11-24\n- 掌握:会写\n- 类型:IELTS\n\n"
+        toc = "## 目录\n\n1. [r](#r)\n2. [w](#w)\n\n---\n\n"
+        md = (toc + head.format(a="r") + "**Original**\n> The original sentence.\n\n**Key words**\n- **word** —— 含义。\n\n---\n\n"
+              + head.format(a="w") + "**English definition:** To do it.\n\n**含义:** 做。\n\n**例句:**\n\n1. We **do it** daily.\n   我们每天都做。\n")
+        entries = {e["anchor"]: e for e in build.build_entries(md)}
+        self.assertTrue(entries["r"].get("reading"))
+        self.assertNotIn("reading", entries["w"])
+        self.assertEqual(entries["w"]["level"], "IELTS")
+        self.assertEqual([s[0] for s in build.sections(entries["r"]["blocks"])], ["原文", "读懂这句", "表达卡片", "关联笔记"])
+        self.assertEqual(len(build.quiz_examples(entries["w"]["blocks"])), 1)
+        items = {i["anchor"]: i for g in build.page_data(list(entries.values())) for i in g["items"]}
+        self.assertTrue(items["r"]["reading"])
+        self.assertNotIn("reading", items["w"])
 
 
 if __name__ == "__main__":

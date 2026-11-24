@@ -1311,14 +1311,16 @@ const nextStage = k => (STAGES[STAGES.findIndex(s => s[0] === k) + 1] || [])[0];
 let stages = {}, stageT = {};               // stageT: when each move was made, for 同步
 try { stages = JSON.parse(store.get("vk.stage", "{}")) || {}; } catch(e){}
 try { stageT = JSON.parse(store.get("vk.stage.t", "{}")) || {}; } catch(e){}
-// IELTS (`- 类型:IELTS`, 用户 2026-11-14): reading and bookkeeping only — the notes are the point,
-// so no self-test and no stage track; it sits in 学习中 like any other note but never runs 复习 / 考核.
-const READING = level => level === "IELTS";
+// IELTS (`- 类型:IELTS`, 用户 2026-11-14): a reading note (Original / Explanation / Key words /
+// References, build.py's `reading`) is for reading and bookkeeping only — no self-test, no stage
+// track; it sits in 学习中 but never runs 复习 / 考核. Since 用户 2026-11-24 the IELTS group is the
+// source, not the behaviour: an IELTS entry written like a word entry is quizzed like one.
+const READING = it => !!(it && it.reading);
 const stageOf = (it, level) => (level === "ESSAY" || level === "PRACTICE") ? "" : stages[it.anchor] || (level === "SELFTEST" ? "test" : "learn");
 // a card's colour: its level, cycling the level's three shades (mine), or its stage (site.json
 // "cardColor": "stage", a student's page, where the colour says how far along an entry is).
 // Whatever carries data-swl is repainted by refreshStages() when an entry moves.
-const swOf = (it, level, i) => VK.cardColor === "stage" && level !== "ESSAY" && level !== "PRACTICE" && !READING(level) ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
+const swOf = (it, level, i) => VK.cardColor === "stage" && level !== "ESSAY" && level !== "PRACTICE" && !READING(it) ? "--sg-" + stageOf(it, level) : LV[level].sw[i % 3];
 // by stage, the desktop list's little square takes the stage dot's full colour (--swd); the wash is too pale there
 const SG_DOT = { learn: "--st-learn", review: "--accent", test: "--st-test", done: "--st-done" };
 function paintSw(el, it, level, i){
@@ -2577,7 +2579,7 @@ function paintIelts(deck){
   if (!visible.length) { box.innerHTML='<p>这里还没有表达。可以切换学习范围，或在其他卡片中选择想学的表达。</p>'; return; }
   const {c,i}=visible[at]; deck.dataset.card=String(i);
   const recalling=deck.dataset.recall==="true" && deck.dataset.revealed!=="true";
-  const ref=c.ref || ALL.find(t=>t.level!=="IELTS" && t.it.title.toLowerCase()===c.term.toLowerCase())?.it.anchor;
+  const ref=c.ref || ALL.find(t=>!READING(t.it) && t.it.title.toLowerCase()===c.term.toLowerCase())?.it.anchor;
   box.innerHTML=`<div class="ielts-expression"><span class="tg">${esc(c.priority)}</span>`+
     (recalling ? `<h3>试着回忆英文表达</h3><p>${esc(c.prompt || c.meaning)}</p><textarea class="ielts-answer" rows="2" aria-label="回忆英文表达" placeholder="写下你记得的英文，再对照答案…"></textarea><button type="button" class="btn" data-ielts="reveal">揭晓表达与例句</button>` :
     `<h3>${esc(c.term)} ${spkBtn(c.term)}</h3><p>${esc(c.meaning)}</p>`+
@@ -2637,7 +2639,7 @@ document.addEventListener("click",e=>{
 // [fill]: on the entry card, where the notes take the face's height (and get the ⤢ button);
 // [extra]: more [label, html] cards after the sections there (记忆, 我的笔记); empty ones are skipped
 function notesHtml(it, fill = false, withFull = true, extra = []){
-  const base = READING(it.level) ? ieltsSlides(it) : it.slides;
+  const base = READING(it) ? ieltsSlides(it) : it.slides;
   const sl = fill ? [...base, ...extra.filter(Boolean)] : base;
   if (!fill) return sl.length < 2 ? `<div class="notes-h">笔记</div>${it.html}` :
     `<div class="nv${notesAll ? " all" : ""}">` +
@@ -2856,7 +2858,7 @@ const wireXrefsIn = (root, go) => root.querySelectorAll(".xref").forEach(a => {
 });
 // the card's foot: how many sentences are still to be answered right before the next stage
 function progressHint(it, level, stage){
-  if (READING(level)) return "读懂原文 → 积累表达；想练会写的表达可单独加入复习";
+  if (READING(it)) return "读懂原文 → 积累表达；想练会写的表达可单独加入复习";
   if (level === "ESSAY") return `共 ${quizExamples(it).length} 句 · 只选词,选对就算这句答对`;
   const nx = nextStage(stage);
   if (!nx) return "已掌握,不再进复习和考核";
@@ -3003,7 +3005,7 @@ function show(it, level, i, o = {}){
   // (typing is practised in the sentence entries the essay links to)
   const essay = level === "ESSAY";
   // IELTS notes are for reading: no track, no self-test, nothing to flip to (用户 2026-11-14)
-  const reading = READING(level);
+  const reading = READING(it);
   const wantBack = stage === "test";                    // 考核 opens on the 自测 side, the rest on the notes
   if (o.face === undefined && o.from === undefined && o.ex === undefined) { delete exOrder[it.anchor]; exDone[it.anchor] = new Set(); }
   exDone[it.anchor] = exDone[it.anchor] || new Set();
@@ -4009,7 +4011,7 @@ function renderExtras(){
 
 // ── 练习: a daily imitation task and a weekly paragraph. The app picks the same ones
 // (ui/PracticeScreen.kt): pool = 会写 entries that aren't 句子 / 自测, sorted by anchor. ──
-const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST" && t.level !== "ESSAY" && t.level !== "PRACTICE" && t.level !== "IELTS")
+const POOL = ALL.filter(t => t.it.mastery === "write" && t.level !== "SENTENCE" && t.level !== "SELFTEST" && t.level !== "ESSAY" && t.level !== "PRACTICE" && !READING(t.it))
   .sort((a, b) => a.it.anchor < b.it.anchor ? -1 : a.it.anchor > b.it.anchor ? 1 : 0);
 let skip = 0;                                             // 换一题 within this visit
 const words = t => (t.match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g) || []).length;

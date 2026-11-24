@@ -149,8 +149,9 @@ fun EntryScreen(
             return@Column
         }
         val selfTest = entry.level == "SELFTEST"
-        // IELTS notes are for reading and bookkeeping: no track, no self-test (用户 2026-11-14)
-        val reading = entry.level == "IELTS"
+        // IELTS reading notes are for reading and bookkeeping: no track, no self-test (用户 2026-11-14);
+        // an IELTS entry written like a word entry is quizzed like one (用户 2026-11-24)
+        val reading = entry.reading
         var details by rememberSaveable { mutableStateOf(false) }
         var sharing by rememberSaveable { mutableStateOf(false) }
         // ⤢: the card takes the page (the headword, meta pill and track fold away)
