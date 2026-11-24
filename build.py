@@ -283,6 +283,10 @@ def sections(blocks):
     return out
 
 
+# the heading that makes an IELTS entry a read-only reading note (`**Original**`, older `**原文:**`)
+IELTS_READING = re.compile(r"^\*\*(?:Original|原文)[:：]?\*\*", re.M)
+
+
 def ielts_blocks(blocks):
     """Four reading sections for both clients; keep old passage material without extra tabs."""
     groups = {k: [] for k in ("原文", "读懂这句", "表达卡片", "关联笔记")}
@@ -376,7 +380,11 @@ def build_entries(src, own=None, essays=False):
             print(f"warning: {e['title']} ({e['anchor']}) has no 类型, 词性 or CEFR — filed as 术语; "
                   "add a '- 类型:' line or a title prefix rule", file=sys.stderr)
         blocks = parse_blocks(e["raw"])
-        if level == "IELTS":
+        # IELTS (用户 2026-11-24): the group is the source, not the behaviour. Only an entry written
+        # as the Original / Explanation / Key words / References reading note is read-only; one
+        # written like any word entry (examples with translations) runs the usual self-test flow
+        reading = level == "IELTS" and bool(IELTS_READING.search(e["raw"]))
+        if reading:
             blocks = ielts_blocks(blocks)
         entry = {
             "anchor": e["anchor"],
@@ -407,6 +415,9 @@ def build_entries(src, own=None, essays=False):
             raise SystemExit(f"{e['anchor']}: a 文章 carries no ❌ / ⚠️ [类型] tags — they belong in its sentence entries")
         # lets the app tell an edited entry from an untouched one between fetches
         entry["hash"] = digest(entry)
+        # derived from the text, so outside the hash: the older reading notes keep theirs
+        if reading:
+            entry["reading"] = True
         out.append(entry)
     return out
 
@@ -505,6 +516,8 @@ def page_data(entries, order=GROUP_ORDER):
         item["original"] = original_sentence(e["blocks"])
         if e.get("req"):
             item["req"] = e["req"]
+        if e.get("reading"):
+            item["reading"] = True
         if e["level"] == "SELFTEST":
             item["answer"] = quote_after(e["blocks"], "答案")
         else:

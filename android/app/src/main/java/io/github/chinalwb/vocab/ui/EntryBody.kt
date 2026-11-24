@@ -402,7 +402,7 @@ fun NotesPage(
     var expressionVisit by rememberSaveable(entry.anchor) { mutableStateOf(0) }
     NotesPager(entry.anchor, entry.sections, entry.blocks, onXref, quiz, modifier,
         inCard = inCard, trailing = trailing, extra = extra,
-        sectionContent = if (entry.level == "IELTS") { section, go ->
+        sectionContent = if (entry.reading) { section, go ->
             IeltsSection(entry, section, expression, expressionVisit, { expression = it }, { expression = it; expressionVisit++; go(2) }, onXref)
         } else null,
     )

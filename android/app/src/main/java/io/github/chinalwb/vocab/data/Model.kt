@@ -59,6 +59,12 @@ data class Entry(
     val hash: String = "",
     /** The 待补充 item this entry answers (`- 请求:<id>`, 用户 2026-11-18); "" for most entries. */
     val req: String = "",
+    /**
+     * An IELTS reading note (Original / Explanation / Key words / References): read-only, no track,
+     * no self-test. Since 用户 2026-11-24 the IELTS group is the source, not the behaviour — an IELTS
+     * entry written like a word entry is false here and quizzed like any other (build.py `reading`).
+     */
+    val reading: Boolean = false,
 ) {
     @Transient
     val searchText: String = buildString {
