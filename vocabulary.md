@@ -6549,7 +6549,7 @@ in 没问题——两种都对,只是语气不同:
 
 > 为什么用 felt 而不是 feels?
 
-- **felt 是在叙述过去**:这句讲一次具体的经历——站在冰川下的那一刻,所以整句用过去时。*feels* 是一般现在时,用来说普遍规律:*Standing beneath a glacier, you feel how puny our efforts are.*(站在冰川下,你会觉得我们的努力多么微不足道。)
+- **felt 是在叙述过去**:这句讲一次具体的经历——站在冰川下的那一刻,所以整句用过去时。*feels* 是一般现在时,用来说普遍规律:*Standing beneath a glacier, you feel how puny human efforts are.*(站在冰川下,你会感到人类的努力是多么渺小。)
 - 这里还有个主语的问题:*efforts* 是复数,现在时是 **feel**,不是 *feels*;*feels* 只跟单数主语,如 *The task feels impossible.*
 - *felt* 在这里意思接近 *seemed*(「(在我们看来)显得」),所以 *our efforts felt puny* 本身没问题——要改的是前面的分词短语和句末的 the。
 
