@@ -225,11 +225,11 @@
   },
   "s-have-to-past": {
    "ease": 1.42,
-   "interval": 1,
-   "reps": 1,
+   "interval": 3,
+   "reps": 2,
    "lapses": 2,
-   "due": 20783,
-   "t": 1795610129355
+   "due": 20786,
+   "t": 1795699983358
   },
   "s-did-have-base": {
    "ease": 2.5,
@@ -2927,6 +2927,20 @@
    },
    {
     "t": 1795610129353,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We couldn't find our way back to the campsite. We had to ask a local family for help."
+   },
+   {
+    "t": 1795699977627,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "We couldn't repair the car ourselves. We had to take it to a garage."
+   },
+   {
+    "t": 1795699983356,
     "ok": true,
     "peek": false,
     "via": "review",
