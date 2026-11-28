@@ -3447,6 +3447,11 @@
  "favs": {},
  "history": [
   {
+   "a": "a-earthquake",
+   "t": 1795860893563,
+   "via": "entry"
+  },
+  {
    "a": "a-iceland",
    "t": 1795860888401,
    "via": "entry"
@@ -3590,11 +3595,6 @@
    "a": "s-their-houses",
    "t": 1794562888823,
    "via": "review"
-  },
-  {
-   "a": "a-earthquake",
-   "t": 1794226375883,
-   "via": "entry"
   },
   {
    "a": "s-its-their",
