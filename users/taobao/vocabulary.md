@@ -30,6 +30,8 @@
 34. [说一种食物，用 chocolate contains](#s-chocolate-contains)
 35. [先看后面的名词，再选 too many 或 too much](#s-too-many-too-much)
 36. [「体重增加」用 weight gain](#s-weight-gain)
+37. [说「不能忽视」，用 cannot ignore](#s-cannot-ignore)
+38. [作文里加条件：as long as + 完整的句子](#s-as-long-as)
 
 ---
 
@@ -314,7 +316,7 @@
 2. I don't think **keeping** a big dog in a small flat is a good idea, as it needs a lot of space.
    我觉得在小公寓里养大狗不是个好主意,因为它需要很大的地方。
 
-相关条目:[计划是去做什么:The plan is to research…](#s-plan-is-to) · [给……压力:put pressure on someone](#s-put-pressure-on) · [现实中行得通:a realistic plan](#s-realistic-plan) · [很多人,很多个家:their houses](#s-their-houses) —— 同一篇地震作文里的另外几处,每条只练一个点。 · [说「做这件事」,直接用 -ing:exploring it](#s-exploring-it) —— 冰岛那篇里,「做某件事」同样直接用 -ing。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
+相关条目:[计划是去做什么:The plan is to research…](#s-plan-is-to) · [给……压力:put pressure on someone](#s-put-pressure-on) · [现实中行得通:a realistic plan](#s-realistic-plan) · [很多人,很多个家:their houses](#s-their-houses) —— 同一篇地震作文里的另外几处,每条只练一个点。 · [说「做这件事」,直接用 -ing:exploring it](#s-exploring-it) —— 冰岛那篇里,「做某件事」同样直接用 -ing。 · [作文里加条件：as long as + 完整的句子](#s-as-long-as) —— 巧克力那篇里，consuming chocolate 开头就用对了。 · [地震来了,政府先做什么](#a-earthquake) —— 这篇文章改好后的全文。
 
 **提升:也可以这样说**
 
@@ -1256,3 +1258,92 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
    如果每天都吃快餐，就会导致体重增加和其他健康问题。
 
 相关条目：[先看后面的名词，再选 too many 或 too much](#s-too-many-too-much) · [说一种食物，用 chocolate contains](#s-chocolate-contains) —— 同一篇作文里的另外两个错。 · [巧克力是好是坏](#a-chocolate) —— 这篇文章改好后的全文。
+
+---
+
+<a id="s-cannot-ignore"></a>
+## 说「不能忽视」，用 cannot ignore
+
+- 日期:2026-11-28
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> Despite the fact that chocolates have a lot of benefits, we can't neglect its negative effects.
+
+这是同一篇巧克力作文里的一句，从巧克力的好处转到坏处。
+
+👍 **做得好:**
+
+- Despite the fact that 是很好的转折写法，从好处自然地转到了坏处。
+- 你写的时候自己把 negative points 改成了 negative effects，改得很地道。
+
+**问题:**
+
+- ⚠️ [搭配] **can't neglect** → **cannot ignore**。说「不能不管这些坏处」用 ignore；作文里也不用 can't 这样的缩写。
+
+一步一步看:
+
+- 第 1 步：neglect 多用在「没照顾好」：*Don't neglect your pet.* 别不照顾你的宠物。
+- 第 2 步：这里想说「不能当作没看见」，用 ignore。
+- 第 3 步：作文要写得正式一点，can't 写成 cannot。
+- 第 4 步：连起来：we cannot ignore its negative effects。
+
+**改好的句子:**
+
+1. Despite the fact that chocolate has a lot of benefits, we **cannot ignore** its negative effects.
+   尽管巧克力有很多好处，我们也不能忽视它的坏处。
+
+**记住这个小规则:**
+
+- 想说「不能忽视」时问自己：是 neglect（没照顾好），还是 ignore（当作没看见）？
+
+2. Despite the fact that smartphones have a lot of benefits, we **cannot ignore** their negative effects.
+   尽管智能手机有很多好处，我们也不能忽视它们的坏处。
+
+相关条目：[说一种食物，用 chocolate contains](#s-chocolate-contains) —— 同一句话里的另一处：chocolates have → chocolate has。 · [巧克力是好是坏](#a-chocolate) —— 这篇文章改好后的全文。
+
+---
+
+<a id="s-as-long-as"></a>
+## 作文里加条件：as long as + 完整的句子
+
+- 日期:2026-11-28
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> All in all, consuming chocolate is okay, but not too much.
+
+这是同一篇巧克力作文的最后一句，总结自己的看法。
+
+👍 **做得好:**
+
+- All in all 用来收尾，很清楚。
+- consuming chocolate 用 -ing 开头当主语，用得很好。
+
+**问题:**
+
+- ⚠️ [语气] **okay, but not too much** → **fine, as long as we do not eat too much**。这是聊天时的说法，话没说完；作文里把条件写成完整的一句。
+
+一步一步看:
+
+- 第 1 步：but not too much 没说完：谁不要太多？不要太多什么？
+- 第 2 步：把条件说完整，用 as long as（只要）+ 谁 + 做什么：as long as we do not eat too much。
+- 第 3 步：okay 也是聊天用的词，作文里换成 fine。
+
+**改好的句子:**
+
+1. All in all, consuming chocolate is **fine, as long as we do not eat too much**.
+   总的来说，吃巧克力没问题，只要不吃太多。
+
+**记住这个小规则:**
+
+- 在作文里加条件时问自己：as long as 后面写了谁、做什么吗？
+
+2. All in all, playing video games is **fine, as long as we do not play for too long**.
+   总的来说，玩电子游戏没问题，只要不玩太久。
+
+相关条目：[动作当主语,用 -ing:Reinforcing old buildings is…](#s-ing-subject) —— 这句的 consuming chocolate 就用对了。 · [巧克力是好是坏](#a-chocolate) —— 这篇文章改好后的全文。

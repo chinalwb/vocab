@@ -171,13 +171,13 @@
 
 第 1 段
 
-1. In my opinion, chocolate is generally positive.
-   我认为，巧克力总的来说是好的。
+1. In my opinion, chocolate is generally **a good thing**.
+   我认为，巧克力总的来说是好东西。
 2. It is a kind of enjoyable snack that is popular **worldwide**.
    它是一种让人吃得开心的零食，在全世界都很受欢迎。
 3. **Chocolate contains** a small amount of caffeine, which is helpful for increasing alertness.
    巧克力含有少量咖啡因，有助于让人保持清醒。
-4. In addition, the calories can bring happiness and **energy to** people who eat it.
+4. In addition, **its** calories can bring happiness and **energy to** people who eat it.
    另外，它的热量能给吃的人带来快乐和能量。
 
 第 2 段
@@ -200,14 +200,14 @@
 
 第 1 段
 
-1. In my opinion, eating chocolate is generally **beneficial**.
-   我认为，吃巧克力总的来说是有好处的。
+1. In my opinion, chocolate is generally **beneficial**.
+   我认为，巧克力总的来说是有益的。
 2. It is a **delightful** snack that is popular **across the globe**.
    它是一种让人开心的零食，在全球都很受欢迎。
 3. Chocolate contains a small amount of caffeine, which can **boost** alertness.
    巧克力含有少量咖啡因，能让人更清醒。
-4. **Furthermore**, the calories can **lift people's mood** and provide energy.
-   此外，它的热量能让人心情变好，还能提供能量。
+4. **Furthermore**, it can **lift people's mood** and provide energy.
+   此外，它能让人心情变好，还能提供能量。
 
 第 2 段
 
@@ -236,3 +236,5 @@
 - [说一种食物，用 chocolate contains](#s-chocolate-contains) —— Chocolates contains → **Chocolate contains**，chocolates have → **chocolate has**
 - [先看后面的名词，再选 too many 或 too much](#s-too-many-too-much) —— too much calories and sugar → **too many calories and too much sugar**
 - [「体重增加」用 weight gain](#s-weight-gain) —— weight-gaining → **weight gain**
+- [说「不能忽视」，用 cannot ignore](#s-cannot-ignore) —— can't neglect → **cannot ignore**
+- [作文里加条件：as long as + 完整的句子](#s-as-long-as) —— okay, but not too much → **fine, as long as we do not eat too much**
