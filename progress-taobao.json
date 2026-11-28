@@ -3258,11 +3258,39 @@
     "peek": false,
     "via": "entry",
     "ex": "If too many snacks and too much juice are brought to the class party, there may be a lot left over."
+   },
+   {
+    "t": 1795838462641,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If too many calories and too much sugar are consumed, they will cause weight gain and tooth decay, thereby affecting our lives."
+   }
+  ],
+  "s-weight-gain": [
+   {
+    "t": 1795838442827,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "If too many calories and too much sugar are consumed, they will cause weight gain and tooth decay, thereby affecting our lives."
+   },
+   {
+    "t": 1795838445656,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "If more calories are consumed than the body needs over time, this may cause weight gain and make some activities harder."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "s-too-many-too-much",
+   "t": 1795838449256,
+   "via": "entry"
+  },
   {
    "a": "s-should-had-better",
    "t": 1795838213083,
@@ -3281,11 +3309,6 @@
   {
    "a": "s-weight-gain",
    "t": 1795832615744,
-   "via": "entry"
-  },
-  {
-   "a": "s-too-many-too-much",
-   "t": 1795832600778,
    "via": "entry"
   },
   {
