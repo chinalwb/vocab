@@ -3243,6 +3243,15 @@
     "via": "entry",
     "ex": "Yogurt contains a small amount of fat, which gives the body energy."
    }
+  ],
+  "s-too-many-too-much": [
+   {
+    "t": 1795838347647,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If too many calories and too much sugar are consumed, they will cause weight gain and tooth decay, thereby affecting our lives."
+   }
   ]
  },
  "favs": {},
