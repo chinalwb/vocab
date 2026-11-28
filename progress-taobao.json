@@ -3199,19 +3199,26 @@
     "peek": false,
     "via": "entry",
     "ex": "Chocolate contains a small amount of caffeine, which is helpful for increasing alertness."
+   },
+   {
+    "t": 1795838210008,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Yogurt contains a small amount of fat, which gives the body energy."
    }
   ]
  },
  "favs": {},
  "history": [
   {
-   "a": "s-chocolate-contains",
-   "t": 1795838146152,
+   "a": "s-should-had-better",
+   "t": 1795838213083,
    "via": "entry"
   },
   {
-   "a": "s-should-had-better",
-   "t": 1795838121219,
+   "a": "s-chocolate-contains",
+   "t": 1795838146152,
    "via": "entry"
   },
   {
