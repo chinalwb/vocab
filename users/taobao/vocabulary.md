@@ -27,6 +27,9 @@
 31. [I 用 don’t，不用 doesn’t](#s-i-dont-have-to)
 32. [现在该做了：It’s time + 谁 + 过去式](#s-its-time-past)
 33. [友好建议用 should，有具体后果时可以用 had better](#s-should-had-better)
+34. [说一种食物，用 chocolate contains](#s-chocolate-contains)
+35. [先看后面的名词，再选 too many 或 too much](#s-too-many-too-much)
+36. [「体重增加」用 weight gain](#s-weight-gain)
 
 ---
 
@@ -1092,3 +1095,106 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 2. You**’d better** hand in your homework now, or you’ll miss the deadline.
    你最好现在交作业，不然就要错过截止时间了。
+
+---
+
+<a id="s-chocolate-contains"></a>
+## 说一种食物，用 chocolate contains
+
+- 日期:2026-11-28
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> Chocolates contains a small amount of caffeine, which is helpful for increasing alertness.
+
+👍 **做得好:**
+
+- 你用 a small amount of caffeine 写出了咖啡因的量，还用 which 补充说明它的作用。
+
+**问题:**
+
+- ❌ [结构] **Chocolates contains** → **Chocolate contains**。这里说的是巧克力这种食物，所以 chocolate 不加 s，后面用 contains。说几颗巧克力糖时，可以用 chocolates。作文里说巧克力有很多好处时，同样用 chocolate has。
+
+**改好的句子:**
+
+1. **Chocolate contains** a small amount of caffeine, which is helpful for increasing alertness.
+   巧克力含有少量咖啡因，有助于让人保持清醒。
+
+**记住这个小规则:**
+
+- 写 chocolate 前问自己：我说的是巧克力这种食物，还是一颗颗巧克力糖？
+
+2. **Yogurt contains** a small amount of fat, which gives the body energy.
+   酸奶含有少量脂肪，可以给身体提供能量。
+
+---
+
+<a id="s-too-many-too-much"></a>
+## 先看后面的名词，再选 too many 或 too much
+
+- 日期:2026-11-28
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> If too much calories and sugar are consumed, they will cause weight-gaining and tooth decay, thereby affecting our lives.
+
+👍 **做得好:**
+
+- 你用 If 先说明什么情况下会有问题，再写可能出现的后果。
+
+**问题:**
+
+- ❌ [搭配] **too much calories and sugar** → **too many calories and too much sugar**。卡路里可以一千卡、两千卡地数，所以用 too many calories；这里说的是糖的量，所以用 too much sugar。
+
+**改好的句子:**
+
+1. If **too many** calories and **too much** sugar are consumed, they will cause weight gain and tooth decay, thereby affecting our lives.
+   如果摄入过多的卡路里和糖，就会导致体重增加和蛀牙，从而影响我们的生活。
+
+**记住这个小规则:**
+
+- 想说「太多」时，问自己：后面的名词能一个个数吗？能数用 too many，讲总量用 too much。
+
+2. If **too many** snacks and **too much** juice are brought to the class party, there may be a lot left over.
+   如果大家带太多零食和果汁来参加班级派对，最后可能会剩下很多。
+
+相关条目：[「体重增加」用 weight gain](#s-weight-gain)。
+
+---
+
+<a id="s-weight-gain"></a>
+## 「体重增加」用 weight gain
+
+- 日期:2026-11-28
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> If too much calories and sugar are consumed, they will cause weight-gaining and tooth decay, thereby affecting our lives.
+
+👍 **做得好:**
+
+- 你具体写出了两个后果：体重增加和蛀牙。
+
+**问题:**
+
+- ❌ [搭配] **weight-gaining** → **weight gain**。在 cause 后面列后果时，「体重增加」用名词短语 weight gain。
+
+**改好的句子:**
+
+1. If too many calories and too much sugar are consumed, they will cause **weight gain** and tooth decay, thereby affecting our lives.
+   如果摄入过多的卡路里和糖，就会导致体重增加和蛀牙，从而影响我们的生活。
+
+**记住这个小规则:**
+
+- 写「导致体重增加」时，问自己：我写的是 cause weight gain 吗？
+
+2. If more calories are consumed than the body needs over time, this may cause **weight gain** and make some activities harder.
+   如果长期摄入的卡路里超过身体的需要，体重可能会增加，有些活动也可能变得更吃力。
+
+相关条目：[先看后面的名词，再选 too many 或 too much](#s-too-many-too-much)。
