@@ -84,6 +84,10 @@
   "s-i-dont-have-to": {
    "s": "test",
    "t": 1795344704070
+  },
+  "s-its-time-past": {
+   "s": "review",
+   "t": 1795837973413
   }
  },
  "cards": {
@@ -3147,6 +3151,22 @@
     "peek": false,
     "via": "review",
     "ex": "I can spend more time reading tomorrow evening because I don't have to finish any homework."
+   }
+  ],
+  "s-its-time-past": [
+   {
+    "t": 1795837960637,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "It’s time the government did something about the problem."
+   },
+   {
+    "t": 1795837973411,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "It’s time the meeting ended."
    }
   ]
  },
