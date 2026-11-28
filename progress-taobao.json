@@ -3470,19 +3470,26 @@
     "peek": false,
     "via": "entry",
     "ex": "All in all, consuming chocolate is fine, as long as we do not eat too much."
+   },
+   {
+    "t": 1795874137912,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "All in all, playing video games is fine, as long as we do not play for too long."
    }
   ]
  },
  "favs": {},
  "history": [
   {
-   "a": "s-cannot-ignore",
-   "t": 1795873769902,
+   "a": "s-as-long-as",
+   "t": 1795874141668,
    "via": "entry"
   },
   {
-   "a": "s-as-long-as",
-   "t": 1795873768405,
+   "a": "s-cannot-ignore",
+   "t": 1795873769902,
    "via": "entry"
   },
   {
