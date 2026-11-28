@@ -3191,6 +3191,15 @@
     "via": "entry",
     "ex": "Thank you for coming to see us. You should come more often."
    }
+  ],
+  "s-chocolate-contains": [
+   {
+    "t": 1795838180723,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Chocolate contains a small amount of caffeine, which is helpful for increasing alertness."
+   }
   ]
  },
  "favs": {},
