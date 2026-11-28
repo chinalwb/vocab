@@ -108,6 +108,10 @@
   "s-cannot-ignore": {
    "s": "review",
    "t": 1795873977729
+  },
+  "s-as-long-as": {
+   "s": "review",
+   "t": 1795874252319
   }
  },
  "cards": {
@@ -3484,19 +3488,26 @@
     "peek": false,
     "via": "entry",
     "ex": "All in all, consuming chocolate is fine, as long as we do not eat too much."
+   },
+   {
+    "t": 1795874252318,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "All in all, playing video games is fine, as long as we do not play for too long."
    }
   ]
  },
  "favs": {},
  "history": [
   {
-   "a": "s-as-long-as",
-   "t": 1795874141668,
-   "via": "entry"
+   "a": "s-cannot-ignore",
+   "t": 1795874262508,
+   "via": "review"
   },
   {
-   "a": "s-cannot-ignore",
-   "t": 1795873769902,
+   "a": "s-as-long-as",
+   "t": 1795874141668,
    "via": "entry"
   },
   {
