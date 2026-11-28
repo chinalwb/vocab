@@ -26,7 +26,7 @@
 30. [改成问句，仍然问同一个人](#s-question-same-person)
 31. [I 用 don’t，不用 doesn’t](#s-i-dont-have-to)
 32. [现在该做了：It’s time + 谁 + 过去式](#s-its-time-past)
-33. [友好建议用 should，有具体后果时可以用 had better](#s-should-had-better)
+33. [一般的建议用 should，had better 只说眼前这一次](#s-should-had-better)
 34. [说一种食物，用 chocolate contains](#s-chocolate-contains)
 35. [先看后面的名词，再选 too many 或 too much](#s-too-many-too-much)
 36. [「体重增加」用 weight gain](#s-weight-gain)
@@ -1043,13 +1043,23 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 > It’s time the government should do something about the problem.
 
+这是语法书上的填空练习：句子里空了一两个词，把它补完整。
+
 👍 **做得好:**
 
-- 你找对了该采取行动的人，用 do something about the problem 也说清楚了要做什么。
+- 你选对了动词 do，也看懂了这句话的意思：政府现在该采取行动了。
 
 **问题:**
 
-- ❌ [动词] **should do** → **did**。It’s time 已经告诉我们「现在该做了」。在这个句型里，先写谁该做，再用动词的过去式；说的还是现在该做的事。
+- ❌ [动词] **should do** → **did**。It’s time 后面先写谁，再用动词的过去式，不加 should。
+
+一步一步看:
+
+- 第 1 步：It’s time 的意思是「早就该做了，现在就去做」，它自己已经有「应该」的意思。
+- 第 2 步：It’s time 后面先写谁该做：the government。
+- 第 3 步：再写要做的事，用过去式：do 变成 did，前面不加 should。
+- 第 4 步：did 虽然是过去式，说的还是现在该做的事：*It’s time we **left**.* 我们该走了。
+- 这一页第 2c 题你也写了 should think，同样改成过去式：*It’s about time you **thought** about me.*（It’s about time 和 It’s time 用法一样。）
 
 **改好的句子:**
 
@@ -1060,20 +1070,15 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 - 写完 It’s time + 谁，问自己：后面的动词换成过去式了吗？
 
-2. It’s time the meeting **ended**.
-   会议已经超时了。用 end 说「会议该结束了」。
+2. It’s time you **took** those books back to the library.
+   你该把那些书还给图书馆了。
 
-再看几个例子。每句都在说现在该做什么。
-
-- 出门前，公交车快到了。*It’s time we **left**.* 我们该出发了。
-- 小组展示快到了，大家还没开始准备。*It’s time our group **started** working on the presentation.* 我们小组该开始准备展示了。
-- 比赛结束后，球还散落在场地上。*It’s time the players **picked up** the balls.* 队员们该把球捡起来了。
-- 图书馆快关门了，你还没还书。*It’s time you **took** those books back to the library.* 你该把那些书还给图书馆了。
+相关条目：[一般的建议用 should，had better 只说眼前这一次](#s-should-had-better) —— 语法书同一课的另一个点。
 
 ---
 
 <a id="s-should-had-better"></a>
-## 友好建议用 should，有具体后果时可以用 had better
+## 一般的建议用 should，had better 只说眼前这一次
 
 - 日期:2026-11-28
 - 掌握:会写
@@ -1083,20 +1088,22 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 > Thank you for coming to see us. You’d better come more often.
 
+这是语法书上的选词填空：每句填 had better 或 should。
+
 👍 **做得好:**
 
-- 你用 come more often 清楚地表达了「以后常来」。
+- 这一组 8 道题你做对了 6 道。快迟到了、明天要早起这种眼前马上要做的事，你都用了 had better。
 
 **问题:**
 
-- ⚠️ **’d better** → **should**。这里是在热情地邀请对方常来。You’d better come more often 听起来像「你最好常来，不然就……」，语气比这里需要的重。
+- ❌ [语气] **You’d better** → **You should**。「以后常来」是一般的建议，不是眼前这一次的事，用 should；用 had better 听起来像在警告客人：不常来就有麻烦。
 
 一步一步看:
 
-- **should** 可以用来给建议，也可以用来热情推荐。*You **should** come more often.* 在这里就像说「和你见面真开心，以后常来呀」。
-- **had better** 常用来提醒对方留意眼前的情况。说话的人觉得，如果这次不照做，可能会有麻烦。*You’d better come more often* 放在这句感谢后面，听起来像在给客人压力。
-- 看同一个动作。给第一次去体育馆的朋友提个建议，可以说 *We **should** take the bus. It stops right outside the sports centre.*（我们可以坐公交车，车就停在体育馆门口。）比赛快开始了，走过去会迟到，就可以说 *We’**d better** take the bus, or we’ll be late for the match.*（我们最好坐公交车，不然看比赛会迟到。）
-- 后果也可以从前一句听出来。*The bus leaves in two minutes. We’**d better** hurry.*（公交车两分钟后就开了。我们最好快点。）大家都明白，慢了就会错过车。
+- 第 1 步：看这句说的是什么时候：come more often 是「以后经常来」，不是现在这一次。
+- 第 2 步：had better 只用在眼前这一次，而且不这样做就会有麻烦：*The bus leaves in two minutes. We’d better hurry.* 车两分钟后就开了，我们最好快点。
+- 第 3 步：说以后、平时、大家都该怎样，用 should：*You should come more often.*
+- 第 4 步：这一组第 8 题也是这样。所有人都该学外语，是一般的看法，用 should：*I think everybody **should** learn a foreign language.*
 
 **改好的句子:**
 
@@ -1105,10 +1112,12 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 **记住这个小规则:**
 
-- 开口前问自己：我是在给建议，还是在提醒对方这次不做会有什么后果？
+- 选 had better 还是 should 前问自己：我说的是眼前这一次，还是以后、平时？
 
-2. You**’d better** hand in your homework now, or you’ll miss the deadline.
-   你最好现在交作业，不然就要错过截止时间了。
+2. Thank you for playing football with us today. You **should** join us more often.
+   谢谢你今天和我们一起踢球。以后常来一起踢呀。
+
+相关条目：[现在该做了：It’s time + 谁 + 过去式](#s-its-time-past) —— 语法书同一课的另一个点。
 
 ---
 
@@ -1123,13 +1132,22 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 > Chocolates contains a small amount of caffeine, which is helpful for increasing alertness.
 
+这是一篇作文：说说巧克力的好处和坏处。这一句写的是第一个好处。
+
 👍 **做得好:**
 
-- 你用 a small amount of caffeine 写出了咖啡因的量，还用 which 补充说明它的作用。
+- 你用 a small amount of caffeine 写出了咖啡因的量，还用逗号 + which 补充说明它的作用。
 
 **问题:**
 
-- ❌ [结构] **Chocolates contains** → **Chocolate contains**。这里说的是巧克力这种食物，所以 chocolate 不加 s，后面用 contains。说几颗巧克力糖时，可以用 chocolates。作文里说巧克力有很多好处时，同样用 chocolate has。
+- ❌ [冠词] **Chocolates** → **Chocolate**。说巧克力这种食物时，chocolate 不能一个个数，不加 s。
+
+一步一步看:
+
+- 第 1 步：问自己：说的是巧克力这种食物，还是一颗颗巧克力糖？这里说的是食物。
+- 第 2 步：巧克力这种食物不能一个个数，所以不加 s：Chocolate。
+- 第 3 步：后面的 contains 不用改。chocolate 是一种东西，动词本来就要加 s。
+- 第 4 步：作文第 2 段你写了 chocolates have，也一样改成 **chocolate has**。
 
 **改好的句子:**
 
@@ -1142,6 +1160,14 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 2. **Yogurt contains** a small amount of fat, which gives the body energy.
    酸奶含有少量脂肪，可以给身体提供能量。
+
+相关条目：[先看后面的名词，再选 too many 或 too much](#s-too-many-too-much) · [「体重增加」用 weight gain](#s-weight-gain) —— 同一篇作文里的另外两个错。
+
+**提升:别的意思**
+
+这一页不看也没关系，是让你多知道一点的。
+
+- 一颗颗的巧克力糖能数，就可以加 s：*She gave me a box of **chocolates**.* 她送了我一盒巧克力。
 
 ---
 
@@ -1156,13 +1182,22 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 > If too much calories and sugar are consumed, they will cause weight-gaining and tooth decay, thereby affecting our lives.
 
+这是同一篇巧克力作文里的一句，写的是吃太多巧克力的坏处。
+
 👍 **做得好:**
 
 - 你用 If 先说明什么情况下会有问题，再写可能出现的后果。
 
 **问题:**
 
-- ❌ [搭配] **too much calories and sugar** → **too many calories and too much sugar**。卡路里可以一千卡、两千卡地数，所以用 too many calories；这里说的是糖的量，所以用 too much sugar。
+- ❌ [冠词] **too much calories and sugar** → **too many calories and too much sugar**。calories 能数，用 too many；sugar 说的是有多少，用 too much。
+
+一步一步看:
+
+- 第 1 步：too much 后面有两样东西：calories 和 sugar。
+- 第 2 步：calories 能一个个数（100 卡、200 卡），用 too many：too many calories。
+- 第 3 步：sugar 不能一个个数，说的是有多少，用 too much：too much sugar。
+- 第 4 步：两样东西各配一个，不能用一个 too much 管两个。
 
 **改好的句子:**
 
@@ -1171,12 +1206,12 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 **记住这个小规则:**
 
-- 想说「太多」时，问自己：后面的名词能一个个数吗？能数用 too many，讲总量用 too much。
+- 想说「太多」时，问自己：后面的名词能一个个数吗？能数用 too many，不能数用 too much。
 
 2. If **too many** snacks and **too much** juice are brought to the class party, there may be a lot left over.
    如果大家带太多零食和果汁来参加班级派对，最后可能会剩下很多。
 
-相关条目：[「体重增加」用 weight gain](#s-weight-gain)。
+相关条目：[「体重增加」用 weight gain](#s-weight-gain) · [说一种食物，用 chocolate contains](#s-chocolate-contains) —— 同一篇作文里的另外两个错。
 
 ---
 
@@ -1191,13 +1226,22 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 > If too much calories and sugar are consumed, they will cause weight-gaining and tooth decay, thereby affecting our lives.
 
+这是同一篇巧克力作文里的一句，写的是吃太多巧克力的坏处。
+
 👍 **做得好:**
 
 - 你具体写出了两个后果：体重增加和蛀牙。
+- thereby affecting our lives 写出了「从而影响我们的生活」，用得很好。
 
 **问题:**
 
-- ❌ [搭配] **weight-gaining** → **weight gain**。在 cause 后面列后果时，「体重增加」用名词短语 weight gain。
+- ❌ [搭配] **weight-gaining** → **weight gain**。「体重增加」就是 weight gain 这两个词，不加 -ing，中间也没有小短横。
+
+一步一步看:
+
+- 第 1 步：cause 后面写的是结果：体重增加、蛀牙。
+- 第 2 步：「蛀牙」你写的是 tooth decay：两个词，没有 -ing，写对了。
+- 第 3 步：「体重增加」也一样，是两个词：weight gain。
 
 **改好的句子:**
 
@@ -1206,9 +1250,9 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 **记住这个小规则:**
 
-- 写「导致体重增加」时，问自己：我写的是 cause weight gain 吗？
+- 写「体重增加」时问自己：是不是像 tooth decay 一样，两个词、不加 -ing？
 
-2. If more calories are consumed than the body needs over time, this may cause **weight gain** and make some activities harder.
-   如果长期摄入的卡路里超过身体的需要，体重可能会增加，有些活动也可能变得更吃力。
+2. If fast food is eaten every day, it will cause **weight gain** and other health problems.
+   如果每天都吃快餐，就会导致体重增加和其他健康问题。
 
-相关条目：[先看后面的名词，再选 too many 或 too much](#s-too-many-too-much)。
+相关条目：[先看后面的名词，再选 too many 或 too much](#s-too-many-too-much) · [说一种食物，用 chocolate contains](#s-chocolate-contains) —— 同一篇作文里的另外两个错。
