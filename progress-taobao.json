@@ -96,6 +96,10 @@
   "s-chocolate-contains": {
    "s": "review",
    "t": 1795838298579
+  },
+  "s-too-many-too-much": {
+   "s": "review",
+   "t": 1795838500061
   }
  },
  "cards": {
@@ -3265,6 +3269,13 @@
     "peek": false,
     "via": "entry",
     "ex": "If too many calories and too much sugar are consumed, they will cause weight gain and tooth decay, thereby affecting our lives."
+   },
+   {
+    "t": 1795838500060,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If too many snacks and too much juice are brought to the class party, there may be a lot left over."
    }
   ],
   "s-weight-gain": [
@@ -3287,6 +3298,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-weight-gain",
+   "t": 1795838501352,
+   "via": "entry"
+  },
+  {
    "a": "s-too-many-too-much",
    "t": 1795838449256,
    "via": "entry"
@@ -3304,11 +3320,6 @@
   {
    "a": "s-its-time-past",
    "t": 1795837934925,
-   "via": "entry"
-  },
-  {
-   "a": "s-weight-gain",
-   "t": 1795832615744,
    "via": "entry"
   },
   {
