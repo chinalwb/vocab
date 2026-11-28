@@ -92,6 +92,10 @@
   "s-should-had-better": {
    "s": "review",
    "t": 1795838240517
+  },
+  "s-chocolate-contains": {
+   "s": "review",
+   "t": 1795838298579
   }
  },
  "cards": {
@@ -3231,6 +3235,13 @@
     "peek": false,
     "via": "entry",
     "ex": "Chocolate contains a small amount of caffeine, which is helpful for increasing alertness."
+   },
+   {
+    "t": 1795838298578,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Yogurt contains a small amount of fat, which gives the body energy."
    }
   ]
  },
