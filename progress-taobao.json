@@ -3168,6 +3168,15 @@
     "via": "entry",
     "ex": "It’s time the meeting ended."
    }
+  ],
+  "s-should-had-better": [
+   {
+    "t": 1795837995861,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Thank you for coming to see us. You should come more often."
+   }
   ]
  },
  "favs": {},
