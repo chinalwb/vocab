@@ -1063,6 +1063,13 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 2. It’s time the meeting **ended**.
    会议已经超时了。用 end 说「会议该结束了」。
 
+再看几个例子。每句都在说现在该做什么。
+
+- 出门前，公交车快到了。*It’s time we **left**.* 我们该出发了。
+- 小组展示快到了，大家还没开始准备。*It’s time our group **started** working on the presentation.* 我们小组该开始准备展示了。
+- 比赛结束后，球还散落在场地上。*It’s time the players **picked up** the balls.* 队员们该把球捡起来了。
+- 图书馆快关门了，你还没还书。*It’s time you **took** those books back to the library.* 你该把那些书还给图书馆了。
+
 ---
 
 <a id="s-should-had-better"></a>
@@ -1083,6 +1090,13 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 **问题:**
 
 - ⚠️ **’d better** → **should**。这里是在热情地邀请对方常来。You’d better come more often 听起来像「你最好常来，不然就……」，语气比这里需要的重。
+
+一步一步看:
+
+- **should** 可以用来给建议，也可以用来热情推荐。*You **should** come more often.* 在这里就像说「和你见面真开心，以后常来呀」。
+- **had better** 常用来提醒对方留意眼前的情况。说话的人觉得，如果这次不照做，可能会有麻烦。*You’d better come more often* 放在这句感谢后面，听起来像在给客人压力。
+- 看同一个动作。给第一次去体育馆的朋友提个建议，可以说 *We **should** take the bus. It stops right outside the sports centre.*（我们可以坐公交车，车就停在体育馆门口。）比赛快开始了，走过去会迟到，就可以说 *We’**d better** take the bus, or we’ll be late for the match.*（我们最好坐公交车，不然看比赛会迟到。）
+- 后果也可以从前一句听出来。*The bus leaves in two minutes. We’**d better** hurry.*（公交车两分钟后就开了。我们最好快点。）大家都明白，慢了就会错过车。
 
 **改好的句子:**
 
