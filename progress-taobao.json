@@ -3176,6 +3176,13 @@
     "peek": false,
     "via": "entry",
     "ex": "Thank you for coming to see us. You should come more often."
+   },
+   {
+    "t": 1795838085550,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "You’d better hand in your homework now, or you’ll miss the deadline."
    }
   ]
  },
