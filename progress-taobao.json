@@ -3546,7 +3546,7 @@
  "history": [
   {
    "a": "a-chocolate",
-   "t": 1795874399873,
+   "t": 1795874547302,
    "via": "entry"
   },
   {
@@ -3779,6 +3779,28 @@
    "It’s time the government did something about the problem.": {
     "on": false,
     "t": 1795832388375
+   }
+  },
+  "a-chocolate": {
+   "In my opinion, chocolate is generally beneficial.": {
+    "on": false,
+    "t": 1795874554048
+   },
+   "It is a delightful snack that is popular across the globe.": {
+    "on": false,
+    "t": 1795874565217
+   },
+   "Chocolate contains a small amount of caffeine, which can boost alertness.": {
+    "on": false,
+    "t": 1795874579453
+   },
+   "Furthermore, it can lift people's mood and provide energy.": {
+    "on": false,
+    "t": 1795874595518
+   },
+   "Despite the fact that chocolate has plenty of advantages, we should not overlook its drawbacks.": {
+    "on": false,
+    "t": 1795874581105
    }
   }
  },
