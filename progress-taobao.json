@@ -3153,6 +3153,11 @@
  "favs": {},
  "history": [
   {
+   "a": "s-ing-subject",
+   "t": 1795832324466,
+   "via": "entry"
+  },
+  {
    "a": "s-have-to-past",
    "t": 1795699970566,
    "via": "review"
@@ -3185,11 +3190,6 @@
   {
    "a": "s-plan-is-to",
    "t": 1795344616043,
-   "via": "review"
-  },
-  {
-   "a": "s-ing-subject",
-   "t": 1795344598676,
    "via": "review"
   },
   {
