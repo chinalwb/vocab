@@ -3517,6 +3517,13 @@
     "peek": false,
     "via": "entry",
     "ex": "All in all, playing video games is fine, as long as we do not play for too long."
+   },
+   {
+    "t": 1795874352623,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "All in all, consuming chocolate is fine, as long as we do not eat too much."
    }
   ]
  },
