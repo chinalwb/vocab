@@ -104,6 +104,10 @@
   "s-weight-gain": {
    "s": "review",
    "t": 1795838736188
+  },
+  "s-cannot-ignore": {
+   "s": "review",
+   "t": 1795873977729
   }
  },
  "cards": {
@@ -3450,6 +3454,13 @@
     "peek": false,
     "via": "entry",
     "ex": "Despite the fact that chocolate has a lot of benefits, we cannot ignore its negative effects."
+   },
+   {
+    "t": 1795873977728,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Despite the fact that smartphones have a lot of benefits, we cannot ignore their negative effects."
    }
   ]
  },
