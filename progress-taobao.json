@@ -3442,6 +3442,15 @@
     "via": "review",
     "ex": "If more calories are consumed than the body needs over time, this may cause weight gain and make some activities harder."
    }
+  ],
+  "s-cannot-ignore": [
+   {
+    "t": 1795873913364,
+    "ok": false,
+    "peek": false,
+    "via": "entry",
+    "ex": "Despite the fact that chocolate has a lot of benefits, we cannot ignore its negative effects."
+   }
   ]
  },
  "favs": {},
