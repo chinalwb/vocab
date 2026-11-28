@@ -3224,6 +3224,13 @@
     "peek": false,
     "via": "entry",
     "ex": "Yogurt contains a small amount of fat, which gives the body energy."
+   },
+   {
+    "t": 1795838264500,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Chocolate contains a small amount of caffeine, which is helpful for increasing alertness."
    }
   ]
  },
