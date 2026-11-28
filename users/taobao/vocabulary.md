@@ -25,6 +25,8 @@
 29. [did 后用 have，不用 had](#s-did-have-base)
 30. [改成问句，仍然问同一个人](#s-question-same-person)
 31. [I 用 don’t，不用 doesn’t](#s-i-dont-have-to)
+32. [现在该做了：It’s time + 谁 + 过去式](#s-its-time-past)
+33. [友好建议用 should，有具体后果时可以用 had better](#s-should-had-better)
 
 ---
 
@@ -1024,3 +1026,69 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
    明天晚上我可以多读一会儿书，因为没有必须完成的作业。
 
 相关条目:[过去的事:had to / didn’t have to](#s-have-to-past) · [did 后用 have，不用 had](#s-did-have-base) · [改成问句，仍然问同一个人](#s-question-same-person) · [专项练习：have to 的问句、否定句与过去式](#p-have-to-questions)。
+
+---
+
+<a id="s-its-time-past"></a>
+## 现在该做了：It’s time + 谁 + 过去式
+
+- 日期:2026-11-28
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> It’s time the government should do something about the problem.
+
+👍 **做得好:**
+
+- 你找对了该采取行动的人，用 do something about the problem 也说清楚了要做什么。
+
+**问题:**
+
+- ❌ [动词] **should do** → **did**。It’s time 已经告诉我们「现在该做了」。在这个句型里，先写谁该做，再用动词的过去式；说的还是现在该做的事。
+
+**改好的句子:**
+
+1. It’s time the government **did** something about the problem.
+   政府该采取行动解决这个问题了。
+
+**记住这个小规则:**
+
+- 写完 It’s time + 谁，问自己：后面的动词换成过去式了吗？
+
+2. It’s time the meeting **ended**.
+   会议已经超时了。用 end 说「会议该结束了」。
+
+---
+
+<a id="s-should-had-better"></a>
+## 友好建议用 should，有具体后果时可以用 had better
+
+- 日期:2026-11-28
+- 掌握:会写
+- 类型:句子
+
+**我的原句:**
+
+> Thank you for coming to see us. You’d better come more often.
+
+👍 **做得好:**
+
+- 你用 come more often 清楚地表达了「以后常来」。
+
+**问题:**
+
+- ⚠️ **’d better** → **should**。这里是在热情地邀请对方常来。You’d better come more often 听起来像「你最好常来，不然就……」，语气比这里需要的重。
+
+**改好的句子:**
+
+1. Thank you for coming to see us. You **should** come more often.
+   谢谢你来看我们。以后要常来呀。
+
+**记住这个小规则:**
+
+- 开口前问自己：我是在给建议，还是在提醒对方这次不做会有什么后果？
+
+2. You**’d better** hand in your homework now, or you’ll miss the deadline.
+   你最好现在交作业，不然就要错过截止时间了。
