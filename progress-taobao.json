@@ -100,6 +100,10 @@
   "s-too-many-too-much": {
    "s": "review",
    "t": 1795838500061
+  },
+  "s-weight-gain": {
+   "s": "review",
+   "t": 1795838736188
   }
  },
  "cards": {
@@ -270,6 +274,46 @@
    "lapses": 0,
    "due": 20787,
    "t": 1795344703501
+  },
+  "s-its-time-past": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20786,
+   "t": 1795838753553
+  },
+  "s-should-had-better": {
+   "ease": 1.96,
+   "interval": 1,
+   "reps": 0,
+   "lapses": 1,
+   "due": 20786,
+   "t": 1795838765208
+  },
+  "s-chocolate-contains": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20786,
+   "t": 1795838784084
+  },
+  "s-too-many-too-much": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20786,
+   "t": 1795838805651
+  },
+  "s-weight-gain": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20786,
+   "t": 1795838818814
   }
  },
  "newDay": 0,
@@ -3179,6 +3223,20 @@
     "peek": false,
     "via": "entry",
     "ex": "It’s time the meeting ended."
+   },
+   {
+    "t": 1795838747584,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "It’s time the government did something about the problem."
+   },
+   {
+    "t": 1795838753552,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "It’s time the meeting ended."
    }
   ],
   "s-should-had-better": [
@@ -3216,6 +3274,20 @@
     "peek": false,
     "via": "entry",
     "ex": "Thank you for coming to see us. You should come more often."
+   },
+   {
+    "t": 1795838759118,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Thank you for coming to see us. You should come more often."
+   },
+   {
+    "t": 1795838765206,
+    "ok": false,
+    "peek": false,
+    "via": "review",
+    "ex": "You’d better hand in your homework now, or you’ll miss the deadline."
    }
   ],
   "s-chocolate-contains": [
@@ -3246,6 +3318,20 @@
     "peek": false,
     "via": "entry",
     "ex": "Yogurt contains a small amount of fat, which gives the body energy."
+   },
+   {
+    "t": 1795838776167,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Chocolate contains a small amount of caffeine, which is helpful for increasing alertness."
+   },
+   {
+    "t": 1795838784083,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "Yogurt contains a small amount of fat, which gives the body energy."
    }
   ],
   "s-too-many-too-much": [
@@ -3275,6 +3361,20 @@
     "ok": true,
     "peek": false,
     "via": "entry",
+    "ex": "If too many snacks and too much juice are brought to the class party, there may be a lot left over."
+   },
+   {
+    "t": 1795838795535,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "If too many calories and too much sugar are consumed, they will cause weight gain and tooth decay, thereby affecting our lives."
+   },
+   {
+    "t": 1795838805650,
+    "ok": true,
+    "peek": false,
+    "via": "review",
     "ex": "If too many snacks and too much juice are brought to the class party, there may be a lot left over."
    }
   ],
@@ -3320,6 +3420,27 @@
     "peek": false,
     "via": "entry",
     "ex": "If more calories are consumed than the body needs over time, this may cause weight gain and make some activities harder."
+   },
+   {
+    "t": 1795838736187,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "If more calories are consumed than the body needs over time, this may cause weight gain and make some activities harder."
+   },
+   {
+    "t": 1795838813147,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "If too many calories and too much sugar are consumed, they will cause weight gain and tooth decay, thereby affecting our lives."
+   },
+   {
+    "t": 1795838818813,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "If more calories are consumed than the body needs over time, this may cause weight gain and make some activities harder."
    }
   ]
  },
@@ -3327,28 +3448,28 @@
  "history": [
   {
    "a": "s-weight-gain",
-   "t": 1795838640658,
-   "via": "entry"
+   "t": 1795838806284,
+   "via": "review"
   },
   {
    "a": "s-too-many-too-much",
-   "t": 1795838449256,
-   "via": "entry"
-  },
-  {
-   "a": "s-should-had-better",
-   "t": 1795838213083,
-   "via": "entry"
+   "t": 1795838784771,
+   "via": "review"
   },
   {
    "a": "s-chocolate-contains",
-   "t": 1795838146152,
-   "via": "entry"
+   "t": 1795838766737,
+   "via": "review"
+  },
+  {
+   "a": "s-should-had-better",
+   "t": 1795838754340,
+   "via": "review"
   },
   {
    "a": "s-its-time-past",
-   "t": 1795837934925,
-   "via": "entry"
+   "t": 1795838738533,
+   "via": "review"
   },
   {
    "a": "s-ing-subject",
