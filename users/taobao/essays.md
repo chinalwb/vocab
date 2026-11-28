@@ -6,6 +6,7 @@
 
 1. [地震来了,政府先做什么](#a-earthquake)
 2. [冰岛三天,去哪四个地方](#a-iceland)
+3. [巧克力是好是坏](#a-chocolate)
 
 ---
 
@@ -154,3 +155,84 @@
 - [full of 后面用复数:full of surprises](#s-full-of-surprises) —— full of surprise and discovery → **full of surprises and discoveries**
 - [最后一个:Finally,不是 At last](#s-finally-at-last) —— At last → **Finally**
 - [去某处做某事:go to … to look at](#s-go-to-look-at) —— , look at → **to look at**
+
+---
+
+<a id="a-chocolate"></a>
+## 巧克力是好是坏
+
+- 日期:2026-11-28
+
+**题目:**
+
+一篇小作文：谈谈你对巧克力的看法，写出它的好处和坏处。
+
+**改好的文章（一）:**
+
+第 1 段
+
+1. In my opinion, chocolate is generally positive.
+   我认为，巧克力总的来说是好的。
+2. It is a kind of enjoyable snack that is popular **worldwide**.
+   它是一种让人吃得开心的零食，在全世界都很受欢迎。
+3. **Chocolate contains** a small amount of caffeine, which is helpful for increasing alertness.
+   巧克力含有少量咖啡因，有助于让人保持清醒。
+4. In addition, the calories can bring happiness and **energy to** people who eat it.
+   另外，它的热量能给吃的人带来快乐和能量。
+
+第 2 段
+
+1. Despite the fact that **chocolate has** a lot of benefits, we **cannot ignore** its negative effects.
+   尽管巧克力有很多好处，我们也不能忽视它的坏处。
+2. If **too many** calories and **too much** sugar are consumed, they will cause **weight gain** and tooth decay, thereby affecting our lives.
+   如果摄入过多的卡路里和糖，就会导致体重增加和蛀牙，从而影响我们的生活。
+
+第 3 段
+
+1. All in all, consuming chocolate is **fine, as long as we do not eat too much**.
+   总的来说，吃巧克力没问题，只要不吃太多。
+
+加粗的是改过的地方。
+
+**改好的文章（二）:**
+
+这一版意思和你写的一样，换了一些 FCE 作文能加分的词。不用背，下次写作文挑一两个来用。
+
+第 1 段
+
+1. In my opinion, eating chocolate is generally **beneficial**.
+   我认为，吃巧克力总的来说是有好处的。
+2. It is a **delightful** snack that is popular **across the globe**.
+   它是一种让人开心的零食，在全球都很受欢迎。
+3. Chocolate contains a small amount of caffeine, which can **boost** alertness.
+   巧克力含有少量咖啡因，能让人更清醒。
+4. **Furthermore**, the calories can **lift people's mood** and provide energy.
+   此外，它的热量能让人心情变好，还能提供能量。
+
+第 2 段
+
+1. Despite the fact that chocolate has **plenty of advantages**, we should not **overlook** its **drawbacks**.
+   尽管巧克力有很多优点，我们也不应该忽视它的缺点。
+2. If we consume too many calories and too much sugar, this may **lead to** weight gain and tooth decay, thereby **harming our health**.
+   如果我们摄入太多卡路里和糖，可能会导致体重增加和蛀牙，从而损害健康。
+
+第 3 段
+
+1. **To sum up**, consuming chocolate is fine, **provided that** it is eaten **in moderation**.
+   总之，吃巧克力没问题，只要适量就好。
+
+加粗的是比(一)换掉的地方。
+
+**原文:**
+
+> In my opinion, chocolate is generally positive. It is a kind of enjoyable snack that is popular world-wide. Chocolates contains a small amount of caffeine, which is helpful for increasing alertness. In addition, the calories can bring happiness and energy. to people who eat it.
+>
+> Despite the fact that chocolates have a lot of benefits, we can't neglect its negative effects. If too much calories and sugar are consumed, they will cause weight-gaining and tooth decay, thereby affecting our lives.
+>
+> All in all, consuming chocolate is okay, but not too much.
+
+**这篇的条目:**
+
+- [说一种食物，用 chocolate contains](#s-chocolate-contains) —— Chocolates contains → **Chocolate contains**，chocolates have → **chocolate has**
+- [先看后面的名词，再选 too many 或 too much](#s-too-many-too-much) —— too much calories and sugar → **too many calories and too much sugar**
+- [「体重增加」用 weight gain](#s-weight-gain) —— weight-gaining → **weight gain**

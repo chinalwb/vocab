@@ -1161,7 +1161,7 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 2. **Yogurt contains** a small amount of fat, which gives the body energy.
    酸奶含有少量脂肪，可以给身体提供能量。
 
-相关条目：[先看后面的名词，再选 too many 或 too much](#s-too-many-too-much) · [「体重增加」用 weight gain](#s-weight-gain) —— 同一篇作文里的另外两个错。
+相关条目：[先看后面的名词，再选 too many 或 too much](#s-too-many-too-much) · [「体重增加」用 weight gain](#s-weight-gain) —— 同一篇作文里的另外两个错。 · [巧克力是好是坏](#a-chocolate) —— 这篇文章改好后的全文。
 
 **提升:别的意思**
 
@@ -1211,7 +1211,7 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 2. If **too many** snacks and **too much** juice are brought to the class party, there may be a lot left over.
    如果大家带太多零食和果汁来参加班级派对，最后可能会剩下很多。
 
-相关条目：[「体重增加」用 weight gain](#s-weight-gain) · [说一种食物，用 chocolate contains](#s-chocolate-contains) —— 同一篇作文里的另外两个错。
+相关条目：[「体重增加」用 weight gain](#s-weight-gain) · [说一种食物，用 chocolate contains](#s-chocolate-contains) —— 同一篇作文里的另外两个错。 · [巧克力是好是坏](#a-chocolate) —— 这篇文章改好后的全文。
 
 ---
 
@@ -1255,4 +1255,4 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 2. If fast food is eaten every day, it will cause **weight gain** and other health problems.
    如果每天都吃快餐，就会导致体重增加和其他健康问题。
 
-相关条目：[先看后面的名词，再选 too many 或 too much](#s-too-many-too-much) · [说一种食物，用 chocolate contains](#s-chocolate-contains) —— 同一篇作文里的另外两个错。
+相关条目：[先看后面的名词，再选 too many 或 too much](#s-too-many-too-much) · [说一种食物，用 chocolate contains](#s-chocolate-contains) —— 同一篇作文里的另外两个错。 · [巧克力是好是坏](#a-chocolate) —— 这篇文章改好后的全文。
