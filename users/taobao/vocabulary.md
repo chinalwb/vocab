@@ -1285,10 +1285,18 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 
 一步一步看:
 
-- 第 1 步：neglect 多用在「没照顾好」：*Don't neglect your pet.* 别不照顾你的宠物。
-- 第 2 步：这里想说「不能当作没看见」，用 ignore。
+- 第 1 步：你想说的是：巧克力有坏处，我们不能当作没看见。
+- 第 2 步：「当作没看见、不去理会」用 ignore，不用 neglect。两个词有什么不同，看下面。
 - 第 3 步：作文要写得正式一点，can't 写成 cannot。
 - 第 4 步：连起来：we cannot ignore its negative effects。
+
+neglect 和 ignore 有什么不同？
+
+- **neglect**：该照顾的没照顾好，该做的事没做好。常常是一段时间都没管，不一定是故意的。后面常放人、动物，或者你自己该管的事：*neglect your pet*（没照顾好宠物）、*neglect your health*（不注意身体）、*neglect your homework*（没好好写作业）。
+- **ignore**：看到了、听到了，却不去理会，常常是故意的。后面常放别人说的话、提醒，或者一个问题、一件事：*ignore a message*（不回消息）、*ignore the warning*（不听警告）、*ignore the problem*（不管这个问题）。
+- 对比一：*She **neglected** her dog.* 她没好好照顾她的狗：没按时喂，也没带它出去散步。
+- 对比二：*She **ignored** her dog.* 她不理她的狗：狗在叫、想跟她玩，她当作没听见。
+- 作文里说坏处、问题，常用 cannot ignore：*We cannot ignore the problem.* 我们不能不管这个问题。
 
 **改好的句子:**
 
