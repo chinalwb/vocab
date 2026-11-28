@@ -330,6 +330,14 @@
    "lapses": 0,
    "due": 20786,
    "t": 1795874328503
+  },
+  "s-as-long-as": {
+   "ease": 2.5,
+   "interval": 1,
+   "reps": 1,
+   "lapses": 0,
+   "due": 20786,
+   "t": 1795874384657
   }
  },
  "newDay": 0,
@@ -3524,11 +3532,23 @@
     "peek": false,
     "via": "review",
     "ex": "All in all, consuming chocolate is fine, as long as we do not eat too much."
+   },
+   {
+    "t": 1795874384657,
+    "ok": true,
+    "peek": false,
+    "via": "review",
+    "ex": "All in all, playing video games is fine, as long as we do not play for too long."
    }
   ]
  },
  "favs": {},
  "history": [
+  {
+   "a": "a-chocolate",
+   "t": 1795874399873,
+   "via": "entry"
+  },
   {
    "a": "s-as-long-as",
    "t": 1795874329264,
@@ -3538,11 +3558,6 @@
    "a": "s-cannot-ignore",
    "t": 1795874262508,
    "via": "review"
-  },
-  {
-   "a": "a-chocolate",
-   "t": 1795861362240,
-   "via": "entry"
   },
   {
    "a": "a-iceland",
