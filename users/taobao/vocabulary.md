@@ -1063,6 +1063,13 @@ that is located in 换成了 in:意思一样,更短。to look at 为什么加 to
 2. It’s time the meeting **ended**.
    会议已经超时了。用 end 说「会议该结束了」。
 
+再看几个例子。每句都在说现在该做什么。
+
+- 出门前，公交车快到了。*It’s time we **left**.* 我们该出发了。
+- 小组展示快到了，大家还没开始准备。*It’s time our group **started** working on the presentation.* 我们小组该开始准备展示了。
+- 比赛结束后，球还散落在场地上。*It’s time the players **picked up** the balls.* 队员们该把球捡起来了。
+- 图书馆快关门了，你还没还书。*It’s time you **took** those books back to the library.* 你该把那些书还给图书馆了。
+
 ---
 
 <a id="s-should-had-better"></a>
