@@ -88,6 +88,10 @@
   "s-its-time-past": {
    "s": "review",
    "t": 1795837973413
+  },
+  "s-should-had-better": {
+   "s": "review",
+   "t": 1795838240517
   }
  },
  "cards": {
@@ -3186,6 +3190,20 @@
    },
    {
     "t": 1795838107248,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "Thank you for coming to see us. You should come more often."
+   },
+   {
+    "t": 1795838240516,
+    "ok": true,
+    "peek": false,
+    "via": "entry",
+    "ex": "You’d better hand in your homework now, or you’ll miss the deadline."
+   },
+   {
+    "t": 1795838246249,
     "ok": true,
     "peek": false,
     "via": "entry",
